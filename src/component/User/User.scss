@@ -1,0 +1,99 @@
+.DAT_UsrHeader {
+    width: 98%;
+    margin: auto;
+    margin-top: 70px;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+    &_Title {
+        font-size: 19px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    &_Filter {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        padding: 5px;
+        border-radius: 5px;
+        overflow: hidden;
+        border: solid 1px rgb(199, 199, 199);
+
+        & input {
+            border: none;
+            outline: none;
+            font-size: 13px;
+        }
+    }
+
+    &_New {
+        cursor: pointer;
+        height: 30px;
+        border: none;
+        background-color: #6495ed;
+        color: white;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: #3e80fb;
+        }
+    }
+}
+
+.DAT_Usr{
+    width: 98%;
+    height: 80vh;
+    margin: auto;
+    margin-top: 15px;
+    //margin-bottom: 100px;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;
+    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255, 0.95);
+    box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4), -2px -2px 5px rgba(198, 197, 197, 0.4);
+    padding: 20px;
+    &_Item{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-bottom: solid 1px rgb(156, 155, 155, 0.3);
+        &_Content{
+            &_Title{
+                font-size: 13px;
+                color: gray;
+                margin-bottom: 10px;
+            }
+            & img{
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                box-shadow: 0 0 0 3px rgb(213, 213, 213) ;
+            }
+            &_Label{
+                font-size: 15px;
+                color: black;
+            }
+        }
+        & span{
+            color: #6495ed;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    }
+}

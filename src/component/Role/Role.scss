@@ -1,0 +1,72 @@
+.DAT_RoleHeader {
+    width: 98%;
+    margin: auto;
+    margin-top: 70px;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+    &_Title {
+        font-size: 19px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    &_Filter {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        padding: 5px;
+        border-radius: 5px;
+        overflow: hidden;
+        border: solid 1px rgb(199, 199, 199);
+
+        & input {
+            border: none;
+            outline: none;
+            font-size: 13px;
+        }
+    }
+
+    &_New {
+        cursor: pointer;
+        height: 30px;
+        border: none;
+        background-color: #6495ed;
+        color: white;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: #3e80fb;
+        }
+    }
+}
+
+
+.DAT_Role {
+
+    width: 98%;
+    height: 82vh;
+    margin: auto;
+    margin-top: 15px;
+    //margin-bottom: 100px;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;
+    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255, 0.95);
+    box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4), -2px -2px 5px rgba(198, 197, 197, 0.4);
+    padding: 10px;
+    
+}

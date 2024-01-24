@@ -1,0 +1,946 @@
+.DAT_ProjectHeader {
+    width: 98%;
+    margin: auto;
+    margin-top: 70px;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+    &_Title {
+        font-size: 19px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    &_Filter {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        padding: 5px;
+        border-radius: 5px;
+        overflow: hidden;
+        border: solid 1px rgb(199, 199, 199);
+
+        & input {
+            border: none;
+            outline: none;
+            font-size: 13px;
+        }
+    }
+
+    &_New {
+        cursor: pointer;
+        height: 30px;
+        border: none;
+        background-color: #6495ed;
+        color: white;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: #3e80fb;
+        }
+    }
+}
+
+.DAT_Project {
+
+    width: 98%;
+    //height: 80vh;
+    margin: auto;
+    margin-top: 15px;
+    //margin-bottom: 100px;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;
+    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255, 0.95);
+    box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4), -2px -2px 5px rgba(198, 197, 197, 0.4);
+
+    &_Nav {
+        display: flex;
+        gap: 10px;
+
+        border-bottom: solid 1px rgb(199, 199, 199);
+        padding: 15px;
+
+        & span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            font-size: 15px;
+            color: gray;
+
+            &:hover {
+                color: #6495ed;
+            }
+        }
+
+    }
+
+    &_Content {
+        padding: 10px;
+        height: calc(100vh - 180px);
+        -webkit-box-sizing: border-box;
+        /* Safari/Chrome, other WebKit */
+        -moz-box-sizing: border-box;
+        /* Firefox, other Gecko */
+        box-sizing: border-box;
+    }
+}
+
+// 19/01/2024 by Phu
+.DAT_ProjectData {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(231, 231, 231);
+    z-index: 25;
+
+    // an thanh scrollbar
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+        /* Safari and Chrome */
+    }
+
+    &_Header {
+        position: fixed;
+        z-index: 25;
+        width: 100%;
+        padding-top: 58px;
+        background-color: white;
+        display: flex;
+        box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
+
+        &_Left {
+            flex: 5;
+            padding: 16px;
+
+            // &_ProjectStatus {
+            //     display: flex;
+            //     align-items: center;
+            //     font-size: 14px;
+            //     padding-bottom: 5px;
+            // }
+        }
+
+        &_Right {
+            flex: 5;
+            padding: 16px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            &_Close {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+
+                background-color: red;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(252, 122, 122);
+                }
+            }
+        }
+    }
+
+    &_Body {
+        position: relative;
+        margin-top: 156px;
+
+        &_Data {
+            width: 98%;
+            margin: auto;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 16px;
+
+            &_Left {
+                background-color: white;
+                width: 25%;
+                border-radius: 5px;
+
+                & img {
+                    width: 100%;
+                    height: 200px;
+                    border-top-right-radius: 5px;
+                    border-top-left-radius: 5px;
+                }
+
+                &_Info {
+                    padding: 16px;
+
+                    &_Addr {
+                        display: flex;
+
+                        &_Title {
+                            flex: 4;
+                            font-size: 14px;
+                            color: gray;
+                            width: 100%;
+                        }
+
+                        &_Content {
+                            flex: 6;
+                            font-size: 14px;
+                            color: black;
+                            white-space: nowrap; // ngan xuong dong
+                            overflow: hidden; // an noi dung vuot ra ngoai
+                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai       
+                        }
+                    }
+                }
+            }
+
+            &_Center {
+                background-color: white;
+                width: 50%;
+                border-radius: 5px;
+
+                &_Tit {
+                    padding: 16px;
+                }
+
+                &_Data {
+                    padding: 16px;
+                    display: flex;
+
+                    &_Chart {
+                        flex: 5;
+                        display: flex;
+                        justify-content: center;
+
+                        &_Data {
+                            border-radius: 50%;
+                            border: solid 2px rgb(103, 179, 255);
+                            padding: 16px;
+                            width: 100px;
+                            height: 100px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                    }
+
+                    &_Detail {
+                        flex: 5;
+                    }
+                }
+
+                &_Total {
+                    padding: 16px;
+                    display: flex;
+                    gap: 8px;
+
+                    &_Item {
+                        width: 100%;
+                        padding: 16px;
+                        border-radius: 5px;
+
+                        &_Tit {
+                            font-size: 14px;
+                            color: gray;
+                        }
+
+                        &_Data {
+                            margin: 4px 0px 0px 0px;
+                        }
+                    }
+                }
+
+            }
+
+            &_Right {
+                background-color: white;
+                width: 25%;
+                border-radius: 5px;
+
+            }
+        }
+
+        &_History {
+            width: 98%;
+            background-color: white;
+            margin: auto;
+            margin-bottom: 16px;
+            border-radius: 5px;
+
+            &_Tit {
+                padding: 16px;
+                display: flex;
+
+                &_Left {
+                    flex: 5;
+                }
+
+                &_Right {
+                    flex: 5;
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 8px;
+
+                    &_Date {
+                        display: flex;
+                        border: solid 1px rgb(199, 199, 199);
+                        border-radius: 5px;
+
+                        &_Item {
+                            padding-left: 6px;
+                            padding-right: 6px;
+                            height: 25px;
+                            cursor: pointer;
+
+                            &:hover {
+                                color: #6495ed;
+                            }
+                        }
+                    }
+
+                    & button {
+                        height: 25px;
+                        font-size: 14px;
+                        cursor: pointer;
+                        background-color: white;
+                        border: solid 1px rgb(199, 199, 199);
+                        border-radius: 5px;
+
+                        &:hover {
+                            border: solid 1px #6495ed;
+                            color: #6495ed;
+                        }
+                    }
+
+                    &_Export {
+                        & button {
+                            height: 25px;
+                            font-size: 14px;
+                            cursor: pointer;
+                            background-color: #6495ed;
+                            color: white;
+                            border: solid 1px #6495ed;
+                            border-radius: 5px;
+
+
+                            &:hover {
+                                background-color: #3e80fb;
+                                color: white;
+                            }
+                        }
+                    }
+
+                    & input {
+                        border: solid 1px rgb(199, 199, 199);
+                        border-radius: 5px;
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                    }
+                }
+            }
+
+            &_Content {
+                padding: 16px;
+                height: 300px;
+            }
+        }
+
+        &_More {
+            width: 98%;
+            margin: auto;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 16px;
+
+            &_Left {
+                flex: 5;
+                background-color: white;
+                border-radius: 5px;
+                padding: 16px;
+
+                &_Tit {
+                    display: flex;
+                    justify-content: space-between;
+
+                    &_Button {
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                        background-color: rgb(231, 231, 231);
+                        color: grey;
+                        padding: 4px;
+                        cursor: pointer;
+                    }
+                }
+
+                &_Content {
+                    display: flex;
+
+                    &_Item {
+                        flex: 5;
+                        padding: 16px;
+                    }
+                }
+            }
+
+            &_Right {
+                flex: 5;
+                background-color: white;
+                border-radius: 5px;
+                padding: 16px;
+
+                &_Content {
+                    padding: 16px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 150px;
+
+                    &_Col {
+                        &_Item {
+                            padding: 16px;
+                            display: flex;
+                            align-items: center;
+
+                            &_Icon {
+                                display: flex;
+                                align-items: center;
+                                margin-right: 16px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.DAT_EditProject {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(231, 231, 231);
+    z-index: 25;
+
+    // an thanh scrollbar
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+        /* Safari and Chrome */
+    }
+
+    &_Header {
+        position: fixed;
+        z-index: 25;
+        width: 100%;
+        padding-top: 58px;
+        background-color: white;
+        display: flex;
+        box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
+
+        &_Left {
+            flex: 5;
+            padding: 16px;
+            font-size: 20px;
+        }
+
+        &_Right {
+            flex: 5;
+            padding: 16px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            &_Save {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 30px;
+                padding: 0px 10px;
+                cursor: pointer;
+                background-color: #3e80fb;
+                border-radius: 5px;
+                gap: 5px;
+
+                & span {
+                    color: white;
+                }
+            }
+
+            &_Close {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+
+                background-color: red;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(252, 122, 122);
+                }
+            }
+        }
+    }
+
+    &_Content {
+        width: 98%;
+        margin: auto;
+        background-color: white;
+        border-radius: 5px;
+
+        position: relative;
+        margin-top: 134px;
+
+        &_Tit {
+            padding: 16px;
+            font-size: 18px;
+        }
+
+        &_Body {
+            margin-bottom: 16px;
+
+            &_Item {
+                width: 700px;
+                margin: auto;
+                padding-bottom: 16px;
+
+                &_Tit {
+                    padding-bottom: 8px;
+                }
+
+                & input {
+                    width: 100%;
+                    height: 40px;
+                    border-radius: 5px;
+                    border: solid 1px rgb(199, 199, 199);
+                    padding: 4px;
+                    outline: none;
+                    box-sizing: border-box;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                }
+
+                &_Content {
+                    height: 300px;
+                    border: solid 1px rgb(199, 199, 199);
+                }
+
+                &_Posi {
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+            }
+        }
+    }
+}
+
+.DAT_AddProject {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(231, 231, 231);
+    z-index: 25;
+
+    // an thanh scrollbar
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+        /* Safari and Chrome */
+    }
+
+    &_Header {
+        position: fixed;
+        z-index: 25;
+        width: 100%;
+        // height: 100px;
+        padding-top: 58px;
+        background-color: white;
+        display: flex;
+        box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
+
+        &_Left {
+            flex: 5;
+            padding: 16px;
+            font-size: 20px;
+        }
+
+        &_Right {
+            flex: 5;
+            padding: 16px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            &_Save {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 30px;
+                padding: 0px 10px;
+                cursor: pointer;
+                background-color: #3e80fb;
+                border-radius: 5px;
+                gap: 5px;
+
+                & span {
+                    color: white;
+                }
+            }
+
+            &_Close {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+
+                background-color: red;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(252, 122, 122);
+                }
+            }
+        }
+    }
+
+    &_Content {
+        width: 98%;
+        margin: auto;
+        background-color: white;
+        border-radius: 5px;
+
+        position: relative;
+        margin-top: 134px;
+
+        &_Tit {
+            padding: 16px;
+            font-size: 18px;
+        }
+
+        &_Body {
+            margin-bottom: 16px;
+
+            &_Item {
+                width: 700px;
+                margin: auto;
+                padding-bottom: 16px;
+
+                &_Tit {
+                    padding-bottom: 8px;
+                }
+
+                & input {
+                    width: 100%;
+                    height: 40px;
+                    border-radius: 5px;
+                    border: solid 1px rgb(199, 199, 199);
+                    padding: 4px;
+                    outline: none;
+                    box-sizing: border-box;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                }
+
+                &_Content {
+                    height: 300px;
+                    border: solid 1px rgb(199, 199, 199);
+                }
+
+                &_Posi {
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+            }
+        }
+    }
+}
+
+.DAT_ProjectInfor {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    background-color: white;
+    top: 0;
+    right: 0;
+    z-index: 30;
+    overflow: hidden;
+}
+
+// .DAT_Toollist_Tab_Mobile {
+//     position: relative;
+//     background-color: #ececec;
+//     padding: 5px;
+//     border-radius: 5px 5px 0 0;
+//     border-bottom: solid 1px gray;
+//     //height: 60px;
+//     display: flex;
+//     gap: 20px;
+
+//     &_content {
+//         // -webkit-appearance: none;
+//         // -moz-appearance: none;
+//         // appearance: none;
+
+//         display: flex;
+//         align-items: center;
+//         justify-content: space-between;
+//         width: 200px;
+//         height: 30px;
+//         border-radius: 5px;
+//         border: 1px solid #b4b4b4;
+//         position: relative;
+//         overflow: hidden;
+//         transition: all 0.5s ease-in;
+//         z-index: 1;
+
+//         &::before,
+//         &::after {
+//             content: '';
+//             position: absolute;
+//             top: 0;
+//             width: 0;
+//             height: 100%;
+//             transform: skew(15deg);
+//             transition: all 0.5s;
+//             overflow: hidden;
+//             z-index: -1;
+//         }
+
+
+//         &::before {
+//             left: -10px;
+//             background: #240046;
+//         }
+
+//         &::after {
+//             right: -10px;
+//             background: #5a189a;
+//         }
+
+//         &:hover::before,
+//         &:hover::after {
+//             width: 58%;
+//         }
+
+//         &:hover span {
+//             color: #e0aaff;
+//             transition: 0.3s;
+//         }
+
+//         & span {
+//             color: #03045e;
+//             font-size: 16px;
+//             transition: all 0.3s ease-in;
+//         }
+
+
+//         &:hover {
+//             background-color: #c6c6c6;
+//         }
+
+//         & span {
+//             width: 200px;
+//             white-space: nowrap;
+//             overflow: hidden;
+//             text-overflow: ellipsis;
+//         }
+
+
+//     }
+
+//     &_list {
+//         margin-top: 60px;
+//         position: absolute;
+//         z-index: 20;
+//         width: 250px;
+//         background-color: white;
+//         border-radius: 5px;
+//         overflow: hidden;
+//         box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
+
+//         &_item {
+//             font-size: 14px;
+//             padding: 7px;
+//             padding-left: 15px;
+//             cursor: pointer;
+//             border-bottom: solid 1px rgb(219, 219, 219);
+
+//             &:hover {
+//                 background-color: #c6c6c6;
+//             }
+//         }
+
+//     }
+
+//     & select {
+//         -webkit-appearance: none;
+//         -moz-appearance: none;
+//         appearance: none;
+
+//         border-radius: 5px;
+//         padding: 10px;
+//         width: 200px;
+//         cursor: pointer;
+//         white-space: nowrap;
+//         overflow: hidden;
+//         text-overflow: ellipsis;
+//         color: black;
+//         font-size: 17px;
+//         background-color: white;
+//         //text-align: center;
+//         text-align-last: center;
+//         outline: none;
+//         border: none;
+
+
+
+
+
+//     }
+// }
+
+
+// .DAT_Toollist_Tab {
+//     position: relative;
+//     display: flex;
+//     overflow-y: hidden;
+//     overflow-x: auto;
+//     background-color: #dadada;
+//     //border-radius: 10px 10px 0 0;
+//     //border-bottom: solid 1px darkgray;
+//     padding: 5px 10px 0px 10px;
+//     height: 40px;
+
+
+
+
+
+
+
+
+//     &_main {
+//         position: relative;
+//         display: flex;
+
+//         //align-items: ;
+
+//         &_left {
+//             border-radius: 45%;
+//             top: 0px;
+//             left: -25px;
+//             position: absolute;
+//             width: 25px;
+//             height: 25px;
+//             background-color: #dadada;
+//             //background-color: #3e80fb;
+//             box-shadow: 7px 10px 0px rgb(255, 255, 255);
+//         }
+
+//         &_right {
+//             border-radius: 45%;
+//             top: 0px;
+//             right: -25px;
+//             position: absolute;
+//             width: 25px;
+//             height: 25px;
+//             //background-color: #dadada;
+//             //background-color: #3e80fb;
+//             box-shadow: -7px 10px 0px white;
+//         }
+
+//         &_content2 {
+
+//             cursor: pointer;
+//             max-width: 100px;
+//             font-size: 14px;
+//             color: rgb(80, 80, 80);
+//             background-color: #dadada;
+//             padding: 10px 25px 10px 25px; //   
+//             //border-radius: 5px;
+//             // background-size: cover;
+//             // background-position: center !important;
+//             overflow: hidden;
+//             white-space: nowrap;
+//             text-overflow: ellipsis;
+
+//         }
+
+
+//         &_content1 {
+
+//             cursor: pointer;
+//             max-width: 350px;
+//             font-size: 14px;
+//             color: rgb(80, 80, 80);
+//             background-color: #dadada;
+//             padding: 10px 25px 10px 25px;
+//             //border-radius: 5px;
+//             // background-size: cover;
+//             // background-position: center !important;
+//             overflow: hidden;
+//             white-space: nowrap;
+//             text-overflow: ellipsis;
+
+//         }
+//     }
+
+
+
+// }
+
+
+
+@media (max-width: 900px) {
+    .DAT_Project {
+        width: 98%;
+        //height: 68vh;
+        // overflow: hidden;
+        &_Content{
+            height: calc(100vh - 300px);
+        }
+
+
+
+    }
+
+
+
+}

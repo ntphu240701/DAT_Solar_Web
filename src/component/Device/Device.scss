@@ -1,0 +1,579 @@
+.DAT_DeviceHeader {
+    width: 98%;
+    margin: auto;
+    margin-top: 70px;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+    &_Title {
+        font-size: 19px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    &_Filter {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        padding: 5px;
+        border-radius: 5px;
+        overflow: hidden;
+        border: solid 1px rgb(199, 199, 199);
+
+        & input {
+            border: none;
+            outline: none;
+            font-size: 13px;
+        }
+    }
+    &_New {
+        cursor: pointer;
+        height: 30px;
+        border: none;
+        background-color: #6495ed;
+        color: white;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: #3e80fb;
+        }
+    }
+}
+
+.DAT_DeviceConfig {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    background-color: rgb(188, 188, 188);
+    top: 58px;
+    right: 0;
+    z-index: 30;
+    overflow: hidden;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.DAT_DeviceInfor {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    background-color: #f0f0f1;
+    top: 0;
+    right: 0;
+    z-index: 25;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.DAT_DevicePopup {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    background-color: rgb(128, 128, 128, 0.7);
+    top: 0;
+    right: 0;
+    z-index: 25;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // overflow-y: scroll;
+    // -ms-overflow-style: none;
+    // scrollbar-width: none;
+    // &::-webkit-scrollbar {
+    //     display: none;
+    // }
+}
+
+.DAT_Device {
+    width: 98%;
+    //height: 80vh;
+    margin: auto;
+    margin-top: 15px;
+    //margin-bottom: 100px;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;
+    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255, 0.95);
+    box-shadow:
+        2px 2px 5px rgba(198, 197, 197, 0.4),
+        -2px -2px 5px rgba(198, 197, 197, 0.4);
+
+    &_Nav {
+        display: flex;
+        gap: 10px;
+
+        border-bottom: solid 1px rgb(199, 199, 199);
+        padding: 15px;
+
+        & span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+            font-size: 15px;
+            color: gray;
+
+            &:hover {
+                color: #6495ed;
+            }
+        }
+    }
+
+    &_Content {
+        padding: 10px;
+        height: calc(100vh - 180px);
+        -webkit-box-sizing: border-box;
+        /* Safari/Chrome, other WebKit */
+        -moz-box-sizing: border-box;
+        /* Firefox, other Gecko */
+        box-sizing: border-box;
+    }
+}
+
+// 19/01/2024 by Tai
+.DAT_Info {
+    width: 100%;
+    position: relative;
+    background-color: #f0f0f1;
+    top: 0;
+    right: 0;
+    z-index: 25;
+    padding-top: 160px;
+    overflow: hidden;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &_Header {
+        position: fixed;
+        display: flex;
+        width: 100%;
+        //height: 150px;
+        z-index: 25;
+        align-items: center;
+        background-color: white;
+        padding: 20px;
+        box-sizing: border-box;
+        top: 58px;
+        right: 0;
+        box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
+
+        &_Left {
+            flex: 5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            & p {
+                padding-bottom: 10px;
+                margin: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        &_Right {
+            flex: 5;
+            //padding: 16px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            &_Save {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 30px;
+                padding: 0px 10px;
+                cursor: pointer;
+                background-color: #3e80fb;
+                border-radius: 5px;
+                gap: 5px;
+
+                & span {
+                    color: white;
+                }
+            }
+
+            &_Close {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+
+                background-color: red;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(252, 122, 122);
+                }
+            }
+        }
+    }
+
+    &_Databox {
+        background-color: #fff;
+        margin: 16px;
+        padding: 16px;
+
+        &_Title {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            &_Left {
+                flex: 5;
+            }
+
+            &_Right {
+                display: flex;
+                float: right;
+                cursor: pointer;
+                color: #048fff;
+                align-items: center;
+            }
+        }
+
+        &_Content {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+
+            &_Column {
+                flex: 3.3;
+                min-width: 250px;
+                color: grey;
+                font-size: 13px;
+            }
+
+            //ELECTRIC GENERATION
+            &_ColumnElec {
+                flex: 3.3;
+                color: grey;
+                font-size: 13px;
+
+                &_Head {
+                    display: flex;
+                    gap: 1px;
+                    & p {
+                        display: flex;
+                        flex: 2.5;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                }
+
+                &_Body {
+                    display: flex;
+                    gap: 1px;
+                    & p {
+                        display: flex;
+                        flex: 2.5;
+                        justify-content: center;
+                        align-items: center;
+                        color: #048fff;
+                    }
+                }
+
+                &_Art {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 5px;
+
+                    &_BarLeft {
+                        flex: 3;
+                        height: 10px;
+                        background-color: #cce8fe;
+                        color: #cce8fe;
+                        border-radius: 5px 0 0 5px;
+                        margin-left: 5px;
+                    }
+
+                    &_Icon {
+                        flex: 1.5;
+                        color: white;
+                        background-color: #0370c8;
+                        height: 50px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        border-radius: 5px;
+                    }
+
+                    &_BarRight {
+                        flex: 3;
+                        height: 10px;
+                        background-color: #cce8fe;
+                        border-radius: 0 5px 5px 0;
+                        color: #cce8fe;
+                        margin-right: 5px;
+                    }
+                }
+
+                &_Data {
+                }
+            }
+        }
+
+        &_HistoricalData {
+            &_Picker {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 10px;
+
+                &_Type {
+                    display: flex;
+                    border-top: 1px solid grey;
+                    border-bottom: 1px solid grey;
+                    border-left: 1px solid grey;
+                    // border: 1px solid grey;
+
+                    & p {
+                        border-right: 1px solid grey;
+                        margin: 0;
+                        padding: 5px;
+                    }
+                }
+
+                &_ParametersPicker {
+                    border: 1px solid grey;
+                    padding: 5px;
+                }
+
+                &_Export {
+                    border: 1px solid grey;
+                    padding: 5px;
+                }
+
+                &_DatePicker {
+                    // border: 1px solid grey;
+                    & input {
+                        border: 1px solid grey;
+                        padding: 7px;
+                    }
+                }
+            }
+
+            &_Chart {
+                width: 100%;
+                height: 400px;
+                border: 1px solid grey;
+                margin-top: 20px;
+            }
+        }
+    }
+}
+
+.DAT_Config {
+    //margin-top: 94px;
+    position: relative;
+    height: 100%;
+    width: 98%;
+    margin: auto;
+    overflow: hidden;
+
+    &_Header {
+        position: fixed;
+        background-color: white;
+        //position: fixed;
+        right: 0px;
+        top: 58px;
+        display: flex;
+        z-index: 30;
+        // margin: 10px;
+        // height: 80px;
+        left: 0px;
+        align-items: center;
+        padding: 20px;
+        &_Left {
+            flex: 5;
+
+            & p {
+                margin: 0;
+                //padding: 16px;
+            }
+        }
+        &_Right {
+            flex: 5;
+            //padding: 16px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            &_Save {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 30px;
+                padding: 0px 10px;
+                cursor: pointer;
+                background-color: #3e80fb;
+                border-radius: 5px;
+                gap: 5px;
+
+                & span {
+                    color: white;
+                }
+            }
+
+            &_Close {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+
+                background-color: red;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(252, 122, 122);
+                }
+            }
+        }
+    }
+
+    &_Body {
+        position: relative;
+        //height: 100%;
+        // width: 100%;
+        margin-top: 100px;
+        margin-bottom: 100px;
+        &_Item {
+            background-color: white;
+            // width: 100%;
+            & h4 {
+                background-color: rgb(230, 230, 230);
+                padding: 15px;
+            }
+
+            &_CheckBox {
+                padding-bottom: 10px;
+                padding-left: 15px;
+                padding-right: 15px;
+
+                &_Option {
+                    padding-bottom: 10px;
+                    padding-top: 10px;
+                    font-size: 20px;
+                    border-bottom: 1px solid rgb(128, 128, 128, 0.3);
+
+                    & div {
+                        display: flex;
+                        gap: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.DAT_Popup_Box {
+    position: relative;
+    // margin-top: -58px;
+    width: 400px;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow:
+        2px 2px 5px rgb(73, 73, 73,0.2),
+        -2px -2px 5px rgb(67, 67, 67,0.2);
+
+    &_Head {
+        display: flex;
+        background-color: rgba(182, 182, 182, 0.4);
+        padding: 16px;
+
+        &_Left{
+            flex: 5;
+
+            & p {
+                margin: 0;
+            }
+        }
+
+        &_Right {
+            display: flex;
+            justify-content: flex-end;
+            flex: 5;
+            &_Icon {
+                display: flex;
+                align-items: center;
+
+                :hover {
+                    color: red;
+                    transform: rotate(90deg);
+                    transition: 0.2s;
+                }
+            }
+        }
+    }
+
+    &_Body {
+        font-size: 13px;
+        padding: 16px;
+        color: #505050;
+        border-bottom: 0.5px solid rgb(194, 194, 194);
+    }
+
+    &_Foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 10px;
+
+        & button {
+            padding: 5px 15px;
+            border-radius: 4px;
+            border: 1px solid;
+            cursor: pointer;
+        }
+    }
+}
+
+
+
+@media (max-width: 900px) {
+    .DAT_Device {
+        width: 98%;
+        //height: 68vh;
+        // overflow: hidden;
+        &_Content {
+            height: calc(100vh - 300px);
+        }
+    }
+}

@@ -1,0 +1,428 @@
+.DAT_HomeHeader {
+    width: 100%;
+    margin: auto;
+    margin-top: 70px;
+    padding-left: 20px;
+    -webkit-box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;
+    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &_Title {
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+}
+
+.DAT_Home {
+
+    width: 100%;
+    // height: 100vh;
+    margin: auto;
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    padding: 20px;
+    padding-top: 15px;
+    -webkit-box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;
+    /* Firefox, other Gecko */
+    box-sizing: border-box;
+
+    &_Overview {
+        background-color: rgb(255, 255, 255);
+        width: 100%;
+        //height: 300px;
+        border-radius: 7px;
+        box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+        overflow: hidden;
+        &-Head {
+
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            -webkit-box-sizing: border-box;
+            /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box;
+            /* Firefox, other Gecko */
+            box-sizing: border-box;
+            font-size: 17px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            &-Date {
+                font-size: 15px;
+                color: gray;
+            }
+
+        }
+
+        &-Main {
+            width: 100%;
+            margin-bottom: 10px;
+            border-bottom: solid 1px gray;
+            display: flex;
+            flex-wrap: wrap;
+
+
+            &-Percent {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 15px;
+                -webkit-box-sizing: border-box;
+                /* Safari/Chrome, other WebKit */
+                -moz-box-sizing: border-box;
+                /* Firefox, other Gecko */
+                box-sizing: border-box;
+
+
+                &-Item {
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                    background-color: white;
+                    border: solid 1px #6495ed;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 25px;
+
+
+                }
+            }
+
+
+            &-Value {
+                flex: 1;
+
+                &-Item {
+
+                    //border: solid 1px #6495ed;
+                    padding: 10px;
+                    -webkit-box-sizing: border-box;
+                    /* Safari/Chrome, other WebKit */
+                    -moz-box-sizing: border-box;
+                    /* Firefox, other Gecko */
+                    box-sizing: border-box;
+
+                    &-Title {
+                        font-size: 11px;
+                        color: gray;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                }
+
+            }
+        }
+
+        &-Sub {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px;
+            -webkit-box-sizing: border-box;
+            /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box;
+            /* Firefox, other Gecko */
+            box-sizing: border-box;
+            overflow: hidden;
+
+            &-Item {
+                flex: 1;
+                min-width: 120px;
+                height: 80px;
+                border-radius: 5px;
+                padding: 10px;
+                -webkit-box-sizing: border-box;
+                /* Safari/Chrome, other WebKit */
+                -moz-box-sizing: border-box;
+                /* Firefox, other Gecko */
+                box-sizing: border-box;
+                //white-space: nowrap;
+                overflow: hidden;
+
+                //text-overflow: ellipsis;
+                &-Title {
+                    font-size: 11px;
+                    color: gray;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+
+    }
+
+    &_History {
+        position: relative;
+        overflow: hidden;
+        background-color: rgb(255, 255, 255);
+        width: 100%;
+        //height: 300px;
+        border-radius: 7px;
+        box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+
+        &-Head{
+
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            -webkit-box-sizing: border-box;
+            /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box;
+            /* Firefox, other Gecko */
+            box-sizing: border-box;
+            font-size: 17px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &-Option{
+                cursor: pointer;
+                display: flex;
+              
+                font-size: 15px;
+                & span{
+                  padding: 4px; 
+                  width: 40px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  border-radius: 2px;
+                }
+            }
+            &-Datetime{
+                & input{
+                    padding: 4px;
+                    width: 120px;
+                    color: gray;
+                    border-radius: 3px;
+                    border: solid 1.5px gray;
+                }
+            }
+
+        }
+
+
+        &-Chart {
+            width: 100%;
+            //height: 200px;
+            //height: 100%;
+            padding: 10px;
+            -webkit-box-sizing: border-box;
+            /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box;
+            /* Firefox, other Gecko */
+            box-sizing: border-box;
+
+            &-label {
+                display: flex;
+                align-items: center;
+
+                &-Unit {
+                    flex: 1;
+                    font-size: 12px;
+                    color: gray;
+                }
+
+                &-Label {
+                    flex: 9;
+                    font-size: 14px;
+                    color: gray;
+                    display: flex;
+                    justify-content: center;
+                }
+
+            }
+
+            &-Content {
+                width: 100%;
+                height: 200px;
+                padding: 10px;
+                -webkit-box-sizing: border-box;
+                /* Safari/Chrome, other WebKit */
+                -moz-box-sizing: border-box;
+                /* Firefox, other Gecko */
+                box-sizing: border-box;
+            }
+
+
+        }
+    }
+
+    &_State {
+        background-color: rgb(255, 255, 255);
+        width: 100%;
+        //height: 300px;
+        border-radius: 7px;
+        box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+
+        &-Title {
+
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            -webkit-box-sizing: border-box;
+            /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box;
+            /* Firefox, other Gecko */
+            box-sizing: border-box;
+            font-size: 17px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+        }
+
+        &-Total {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 15px;
+            gap: 10px;
+            align-items: center;
+            padding-left: 15px;
+            -webkit-box-sizing: border-box;
+            /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box;
+            /* Firefox, other Gecko */
+            box-sizing: border-box;
+
+            &-Icon {
+                background-color: #8adeff;
+                min-width: 40px;
+                min-height: 40px;
+                border-radius: 50%;
+                display: flex;
+              
+                align-items: center;
+                justify-content: center;
+            }
+
+            & span{
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        &-Content {
+            width: 95%;
+            //height: 80px;
+            margin: auto;
+            //margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+
+            &-Item {
+                flex: 1;
+                min-width: 120px;
+                background-color: rgba(228, 228, 228, 0.5);
+              
+                border-radius: 5px;
+                padding: 20px;
+                -webkit-box-sizing: border-box;
+                /* Safari/Chrome, other WebKit */
+                -moz-box-sizing: border-box;
+                /* Firefox, other Gecko */
+                box-sizing: border-box;
+                //white-space: nowrap;
+                overflow: hidden;
+
+                //text-overflow: ellipsis;
+                &-Title {
+                    font-size: 11px;
+                    color: gray;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                
+            }
+        }
+
+    }
+
+    &_Distribution {
+        background-color: rgb(255, 255, 255);
+        width: 100%;
+        min-height: 300px;
+        border-radius: 7px;
+        box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+        position: relative;
+
+        &-Title {
+
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            -webkit-box-sizing: border-box;
+            /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box;
+            /* Firefox, other Gecko */
+            box-sizing: border-box;
+            font-size: 17px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+        }
+        &-Map{
+            // position: absolute;
+            // top: 0;
+            // left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 4px;
+            -webkit-box-sizing: border-box;
+            /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box;
+            /* Firefox, other Gecko */
+            box-sizing: border-box;
+           
+            overflow: hidden;
+            
+        }
+    }
+
+}
+
+
+
+@media (max-width: 900px) {
+    .DAT_Home {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+        // overflow: hidden;
+       
+
+
+    }
+
+
+
+}
