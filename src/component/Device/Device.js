@@ -209,7 +209,7 @@ function Device(props) {
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div>
+            {/* <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div> */}
             <div
               className="DAT_ModifyBox_Remove"
               id={row.id + "_" + tab.value}

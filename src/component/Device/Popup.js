@@ -2,7 +2,7 @@ import React from "react";
 import { popupState } from "./Device";
 import { IoClose } from "react-icons/io5";
 
-export default function () {
+export default function Popup() {
   return (
     <div className="DAT_Popup_Box">
       <div className="DAT_Popup_Box_Head">

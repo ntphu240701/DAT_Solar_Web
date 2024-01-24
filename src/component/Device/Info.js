@@ -280,7 +280,7 @@ const ElectricityGeneration = (props) => {
                 </div>
                 {dataAC.map((item, index) => {
                   return (
-                    <div className="DAT_Info_Databox_Content_ColumnElec_Body">
+                    <div key={index} className="DAT_Info_Databox_Content_ColumnElec_Body">
                       <p>{item.ac}</p>
                       <p>{item.voltage}</p>
                       <p>{item.current}</p>

@@ -35,7 +35,7 @@ export default function Config() {
   };
 
   return (
-    <div>
+    <>
       <div className="DAT_Config">
         <div className="DAT_Config_Header">
           <div className="DAT_Config_Header_Left">
@@ -78,50 +78,8 @@ export default function Config() {
               <CheckBox info="ABC" />
             </div>
           </div>
-          {/* <div className="DAT_Config_Body_Item">
-            <h3>Vui lòng chọn loại thiết bị bạn cần hiển thị</h3>
-            <div className="DAT_Config_Body_Item_CheckBox">
-              <CheckBox info="Biến tần" />
-              <CheckBox info="Đồng hồ đo" />
-              <CheckBox info="Mô-đun" />
-              <CheckBox info="Hộp kết hợp" />
-              <CheckBox info="Trạm thời tiết" />
-              <CheckBox info="Micro biến tần" />
-              <CheckBox info="Pin, ắc quy" />
-              <CheckBox info="Bộ khuếch đại tín hiệu" />
-              <CheckBox info="Quạt" />
-              <CheckBox info="Tủ Điện Hỗn Hợp " />
-              <CheckBox info="Đồng Hồ Thông Minh" />
-              <CheckBox info="Biến tần Hệ Thống Ngoại Lưới" />
-              <CheckBox info="Máy Biến Áp Hộp" />
-              <CheckBox info="Thiết bị Chuyển Mạch" />
-              <CheckBox info="Bộ Tối Ưu Hóa Công Suất" />
-              <CheckBox info="ABC" />
-            </div>
-          </div>
-          <div className="DAT_Config_Body_Item">
-            <h3>Vui lòng chọn loại thiết bị bạn cần hiển thị</h3>
-            <div className="DAT_Config_Body_Item_CheckBox">
-              <CheckBox info="Biến tần" />
-              <CheckBox info="Đồng hồ đo" />
-              <CheckBox info="Mô-đun" />
-              <CheckBox info="Hộp kết hợp" />
-              <CheckBox info="Trạm thời tiết" />
-              <CheckBox info="Micro biến tần" />
-              <CheckBox info="Pin, ắc quy" />
-              <CheckBox info="Bộ khuếch đại tín hiệu" />
-              <CheckBox info="Quạt" />
-              <CheckBox info="Tủ Điện Hỗn Hợp " />
-              <CheckBox info="Đồng Hồ Thông Minh" />
-              <CheckBox info="Biến tần Hệ Thống Ngoại Lưới" />
-              <CheckBox info="Máy Biến Áp Hộp" />
-              <CheckBox info="Thiết bị Chuyển Mạch" />
-              <CheckBox info="Bộ Tối Ưu Hóa Công Suất" />
-              <CheckBox info="ABC" />
-            </div>
-          </div> */}
         </div>
       </div>
-    </div>
+    </>
   );
 }
