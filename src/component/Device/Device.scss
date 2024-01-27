@@ -399,11 +399,14 @@
 
 .DAT_Config {
     //margin-top: 94px;
-    position: relative;
-    height: 100%;
+    //position: relative;
+    //height: 100%;
     width: 98%;
+    //height: 200px;
     margin: auto;
     overflow: hidden;
+    //overflow-y: scroll;
+   
 
     &_Header {
         position: fixed;
@@ -473,6 +476,7 @@
         // width: 100%;
         margin-top: 100px;
         margin-bottom: 100px;
+       
         &_Item {
             background-color: white;
             // width: 100%;
@@ -507,7 +511,7 @@
     // margin-top: -58px;
     width: 400px;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 5px;
     overflow: hidden;
     box-shadow:
         2px 2px 5px rgb(73, 73, 73,0.2),

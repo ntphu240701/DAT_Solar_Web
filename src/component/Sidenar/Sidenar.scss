@@ -49,6 +49,8 @@
             cursor: pointer;
             flex: 8;
             font-size: 15px;
+            white-space: nowrap;
+            font-size: 14px;
         }
 
         &-arrow {
@@ -73,7 +75,7 @@
 
                 // // align-items: flex-end;
 
-                font-size: 15px;
+                font-size: 14px;
                 cursor: pointer;
                 padding: 12px 22px;
                 color: rgb(107, 107, 107);

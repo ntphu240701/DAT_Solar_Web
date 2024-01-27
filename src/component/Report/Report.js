@@ -5,8 +5,12 @@ import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { signal } from "@preact/signals-react";
 import Create from "./Create";
+import Edit from "./Edit";
+import Popup from "./Popup";
 
 export const createState = signal(false);
+export const editState = signal(false);
+export const popupStateReport = signal(false);
 
 function Report(props) {
   const list = [
@@ -60,7 +64,12 @@ function Report(props) {
           <HiOutlineDocumentReport color="gray" size={25} />{" "}
           <span>Báo cáo</span>
         </div>
-        <button className="DAT_ReportHeader_New" onClick={() => createState.value = true}>Tạo mẫu báo cáo</button>
+        <button
+          className="DAT_ReportHeader_New"
+          onClick={() => (createState.value = true)}
+        >
+          Tạo mẫu báo cáo
+        </button>
       </div>
       <div className="DAT_Report">
         <div className="DAT_Report_List">
@@ -78,14 +87,28 @@ function Report(props) {
                   Ngày tạo: {item.date}
                 </div>
                 <div className="DAT_Report_List_Form_Custom">
-                  <div className="DAT_Report_List_Form_Custom_Edit">
-                    <CiEdit color="gray" size={20} />
+                  <div
+                    className="DAT_Report_List_Form_Custom_Edit"
+                    onClick={() => (editState.value = true)}
+                  >
+                    <CiEdit
+                      style={{ cursor: "pointer" }}
+                      color="gray"
+                      size={20}
+                    />
                   </div>
-                  <div className="DAT_Report_List_Form_Custom_Report">
+                  {/* <div className="DAT_Report_List_Form_Custom_Report">
                     <HiOutlineDocumentReport color="green" size={20} />
-                  </div>
-                  <div className="DAT_Report_List_Form_Custom_Remove">
-                    <RiDeleteBin6Line color="red" size={20} />
+                  </div> */}
+                  <div
+                    className="DAT_Report_List_Form_Custom_Remove"
+                    onClick={() => (popupStateReport.value = true)}
+                  >
+                    <RiDeleteBin6Line
+                      style={{ cursor: "pointer" }}
+                      color="red"
+                      size={20}
+                    />
                   </div>
                 </div>
               </div>
@@ -94,7 +117,7 @@ function Report(props) {
         </div>
       </div>
       <div
-        className="DAT_ErrorCreate"
+        className="DAT_ReportCreate"
         style={{
           height: createState.value ? "100vh" : "0px",
           transition: "0.5s",
@@ -102,6 +125,24 @@ function Report(props) {
       >
         {createState.value ? <Create /> : <></>}
       </div>
+
+      <div
+        className="DAT_ReportEdit"
+        style={{
+          height: editState.value ? "100vh" : "0px",
+          transition: "0.5s",
+        }}
+      >
+        {editState.value ? <Edit /> : <></>}
+      </div>
+
+      {popupStateReport.value ? (
+        <div className="DAT_ReportPopup">
+          <Popup></Popup>
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

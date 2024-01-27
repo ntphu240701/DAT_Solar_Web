@@ -107,7 +107,7 @@ function Role(props) {
         <>
             <div className='DAT_RoleHeader'>
                 <div className='DAT_RoleHeader_Title'>
-                    <FaUsers color='gray' size={25} /> <span>Phân quyền</span>
+                    <FaUsers color='gray' size={25} /> <span>Người dùng</span>
                 </div>
                 <div className='DAT_RoleHeader_Filter' >
                     <input type='text' placeholder='Nhập tên tài khoản' />

@@ -50,9 +50,7 @@
     }
 }
 
-
 .DAT_Report {
-
     width: 98%;
     height: 82vh;
     margin: auto;
@@ -66,19 +64,21 @@
     box-sizing: border-box;
     border-radius: 5px;
     background-color: rgb(255, 255, 255, 0.95);
-    box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4), -2px -2px 5px rgba(198, 197, 197, 0.4);
+    box-shadow:
+        2px 2px 5px rgba(198, 197, 197, 0.4),
+        -2px -2px 5px rgba(198, 197, 197, 0.4);
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
 
     /* Firefox */
     &::-webkit-scrollbar {
-      display: none;
-      /* Safari and Chrome */
+        display: none;
+        /* Safari and Chrome */
     }
 
     padding: 20px;
-    &_List{
+    &_List {
         width: 100%;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -86,57 +86,54 @@
         gap: 10px;
         flex-wrap: wrap;
 
-       
-
-        &_Form{
+        &_Form {
             min-width: 270px;
             //margin-bottom: 20px;
             //height: 120px;
             border: solid 1px rgb(199, 199, 199);
             padding: 10px;
             border-radius: 5px;
-            &_Title{
+            &_Title {
                 font-size: 18px;
                 margin-bottom: 10px;
                 color: black;
             }
-            &_Type{
+            &_Type {
                 font-size: 14px;
                 margin-bottom: 5px;
                 color: gray;
             }
-            &_Create{
+            &_Create {
                 font-size: 14px;
                 margin-bottom: 5px;
                 color: gray;
             }
-            &_Date{
+            &_Date {
                 font-size: 14px;
                 margin-bottom: 5px;
                 color: gray;
             }
-            &_Custom{
+            &_Custom {
                 display: flex;
                 width: 100%;
                 align-items: center;
                 gap: 10px;
                 justify-content: flex-end;
-                &_Edit{
+                &_Edit {
                     cursor: pointer;
                 }
-                &_Report{
+                &_Report {
                     cursor: pointer;
                 }
-                &_Delete{
+                &_Delete {
                     cursor: pointer;
                 }
             }
         }
     }
-    
 }
 
-.DAT_ErrorCreate {
+.DAT_ReportCreate {
     height: 100vh;
     width: 100%;
     position: fixed;
@@ -157,34 +154,37 @@
     //margin-top: 94px;
     position: relative;
     height: 100%;
-    width: 98%;
+    width: 100%;
     margin: auto;
     overflow: hidden;
+    // margin-bottom: 100px;
 
     &_Header {
         position: fixed;
         background-color: white;
-        //position: fixed;
         right: 0px;
         top: 58px;
         display: flex;
         z-index: 30;
-        // margin: 10px;
-        // height: 80px;
         left: 0px;
         align-items: center;
         padding: 20px;
+        box-shadow:
+            2px 2px 5px rgba(198, 197, 197, 0.4),
+            -2px -2px 5px rgba(198, 197, 197, 0.4);
         &_Left {
             flex: 5;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
 
             & p {
                 margin: 0;
-                //padding: 16px;
             }
         }
         &_Right {
             flex: 5;
-            //padding: 16px;
+
             display: flex;
             justify-content: flex-end;
             gap: 10px;
@@ -225,35 +225,345 @@
 
     &_Body {
         position: relative;
-        //height: 100%;
-        // width: 100%;
-        margin-top: 100px;
+        margin-top: 86px;
         margin-bottom: 100px;
+        margin-left: 16px;
+        margin-right: 16px;
+        // margin: auto;
+        // padding: 10px;
         &_Item {
             background-color: white;
-            // width: 100%;
-            & h4 {
-                background-color: rgb(230, 230, 230);
-                padding: 15px;
+            padding: 20px;
+            border-bottom: 1px dashed rgb(128, 128, 128, 0.3);
+            &_Type {
+                display: flex;
+                gap: 20px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                & h4 {
+                    margin: 0;
+                }
             }
+            &_Data {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                &_Name {
+                    margin-top: 20px;
+                    gap: 20px;
+                    display: flex;
+                    align-items: center;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    & input {
+                        padding: 7px;
+                        border: 1px solid rgb(128, 128, 128, 0.3);
+                        border-radius: 5px;
+                    }
+                }
+            }
+            &_Option {
+                & p {
+                    // position: fixed;
+                    margin: -32px 0 10px 10px;
+                    background-color: white;
+                    width: fit-content;
+                    padding: 0 5px 0 5px;
+                    position: block;
+                    z-index: 2;
+                    // background-color: white;
+                }
 
-            &_CheckBox {
-                padding-bottom: 10px;
-                padding-left: 15px;
-                padding-right: 15px;
+                &_Check {
+                    border: 1px solid grey;
+                    padding: 20px;
+                    margin-top: 20px;
+                    // margin-bottom: px;
+                    z-index: 1;
 
-                &_Option {
-                    padding-bottom: 10px;
-                    padding-top: 10px;
-                    font-size: 20px;
-                    border-bottom: 1px solid rgb(128, 128, 128, 0.3);
+                    &_SingleCheck {
+                        font-size: 20px;
+                        display: inline-block;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
 
-                    & div {
+                        & div {
+                            gap: 10px;
+                            display: flex;
+                        }
+                    }
+
+                    &_Head {
                         display: flex;
-                        gap: 10px;
+                        margin: -32px 0 10px 0;
+                        background-color: white;
+                        width: fit-content;
+                        padding: 0 5px 0 5px;
                     }
                 }
             }
         }
+    }
+}
+
+.DAT_Edit {
+    //margin-top: 94px;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+    // margin-bottom: 100px;
+
+    &_Header {
+        position: fixed;
+        background-color: white;
+        right: 0px;
+        top: 58px;
+        display: flex;
+        z-index: 30;
+        left: 0px;
+        align-items: center;
+        padding: 20px;
+        box-shadow:
+            2px 2px 5px rgba(198, 197, 197, 0.4),
+            -2px -2px 5px rgba(198, 197, 197, 0.4);
+        &_Left {
+            flex: 5;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            & p {
+                margin: 0;
+            }
+        }
+        &_Right {
+            flex: 5;
+
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            &_Save {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 30px;
+                padding: 0px 10px;
+                cursor: pointer;
+                background-color: #3e80fb;
+                border-radius: 5px;
+                gap: 5px;
+
+                & span {
+                    color: white;
+                }
+            }
+
+            &_Close {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+
+                background-color: red;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(252, 122, 122);
+                }
+            }
+        }
+    }
+
+    &_Body {
+        position: relative;
+        margin-top: 86px;
+        margin-bottom: 100px;
+        margin-left: 16px;
+        margin-right: 16px;
+        // margin: auto;
+        // padding: 10px;
+        &_Item {
+            background-color: white;
+            padding: 20px;
+            border-bottom: 1px dashed rgb(128, 128, 128, 0.3);
+            &_Type {
+                display: flex;
+                gap: 20px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                & h4 {
+                    margin: 0;
+                }
+            }
+            &_Data {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                &_Name {
+                    margin-top: 20px;
+                    gap: 20px;
+                    display: flex;
+                    align-items: center;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    & input {
+                        padding: 7px;
+                        border: 1px solid rgb(128, 128, 128, 0.3);
+                        border-radius: 5px;
+                    }
+                }
+            }
+            &_Option {
+                & p {
+                    // position: fixed;
+                    margin: -32px 0 10px 10px;
+                    background-color: white;
+                    width: fit-content;
+                    padding: 0 5px 0 5px;
+                    position: block;
+                    z-index: 2;
+                    // background-color: white;
+                }
+
+                &_Check {
+                    border: 1px solid grey;
+                    padding: 20px;
+                    margin-top: 20px;
+                    // margin-bottom: px;
+                    z-index: 1;
+
+                    &_SingleCheck {
+                        font-size: 20px;
+                        display: inline-block;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+
+                        & div {
+                            gap: 10px;
+                            display: flex;
+                        }
+                    }
+
+                    &_Head {
+                        display: flex;
+                        margin: -32px 0 10px 0;
+                        background-color: white;
+                        width: fit-content;
+                        padding: 0 5px 0 5px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.DAT_ReportEdit {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    background-color: rgb(188, 188, 188);
+    top: 58px;
+    right: 0;
+    z-index: 30;
+    overflow: hidden;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.DAT_ReportPopup {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    background-color: rgb(128, 128, 128, 0.7);
+    top: 0;
+    right: 0;
+    z-index: 25;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.DAT_Popup_Box {
+    position: relative;
+    // margin-top: -58px;
+    width: 400px;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow:
+        2px 2px 5px rgb(73, 73, 73, 0.2),
+        -2px -2px 5px rgb(67, 67, 67, 0.2);
+
+    &_Head {
+        display: flex;
+        background-color: rgba(182, 182, 182, 0.4);
+        padding: 16px;
+
+        &_Left {
+            flex: 5;
+
+            & p {
+                margin: 0;
+            }
+        }
+
+        &_Right {
+            display: flex;
+            justify-content: flex-end;
+            flex: 5;
+            &_Icon {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+
+                :hover {
+                    color: red;
+                    transform: rotate(90deg);
+                    transition: 0.2s;
+                }
+            }
+        }
+    }
+
+    &_Body {
+        font-size: 13px;
+        padding: 16px;
+        color: #505050;
+        border-bottom: 0.5px solid rgb(194, 194, 194);
+    }
+
+    &_Foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 10px;
+
+        & button {
+            padding: 5px 15px;
+            border-radius: 4px;
+            border: 1px solid;
+            cursor: pointer;
+        }
+    }
+}
+
+@media (max-width: 900px) {
+    .DAT_Create {
+        margin-bottom: 70px;
     }
 }

@@ -14,6 +14,7 @@ import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import ProjectData from "./ProjectData";
 import EditProject from "./EditProject";
 import AddProject from "./AddProject";
+import Popup from "./Popup";
 
 import { signal } from "@preact/signals-react";
 const tab = signal("total");
@@ -26,6 +27,7 @@ const demo = signal([]);
 export const plantState = signal("default");
 export const plantEdit = signal(false);
 export const projectData = signal({});
+export const popupState = signal(false);
 
 export const Empty = () => {
   return (
@@ -175,7 +177,7 @@ function Project(props) {
       name: "Tên",
       selector: (row) => (
         <div className="DAT_Table" id={row.id} onClick={(e) => handlePlant(e)}>
-          <img src="/dat_picture/solar.jpg"></img>
+          <img src="/dat_picture/solar_panel.png"></img>
 
           <div className="DAT_Table_Infor">
             <div className="DAT_Table_Infor_Name">{row.name}</div>
@@ -277,7 +279,12 @@ function Project(props) {
             >
               Chỉnh sửa
             </div>
-            <div className="DAT_ModifyBox_Remove">Gỡ</div>
+            <div
+              className="DAT_ModifyBox_Remove"
+              onClick={() => (popupState.value = true)}
+            >
+              Gỡ
+            </div>
           </div>
         </>
       ),
@@ -500,6 +507,14 @@ function Project(props) {
           }
         })()}
       </div>
+
+      {popupState.value ? (
+        <div className="DAT_DevicePopup">
+          <Popup></Popup>
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

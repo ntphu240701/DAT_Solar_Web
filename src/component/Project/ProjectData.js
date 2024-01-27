@@ -1,16 +1,82 @@
 import React from "react";
 import "./Project.scss";
 import { plantState, projectData } from "./Project";
-
-import { IoCloseCircle } from "react-icons/io5";
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { IoArrowForward } from "react-icons/io5";
-import { MdPermDataSetting } from "react-icons/md";
+import { MdOutlineError, MdPermDataSetting } from "react-icons/md";
 import { IoIosCloud } from "react-icons/io";
-import { FaTree } from "react-icons/fa";
+import { FaCheckCircle, FaTree } from "react-icons/fa";
 import { RiMoneyCnyCircleFill } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 
 function ProjectData(props) {
+  const v = 'Sản lượng tháng'
+
+  const data = [
+    {
+      name: '1',
+      [v]: 1.69,
+
+    },
+    {
+      name: '2',
+      [v]: 2.3,
+
+    },
+    {
+      name: '3',
+      [v]: 2.5,
+
+    },
+    {
+      name: '4',
+      [v]: 5.6,
+
+    },
+    {
+      name: '5',
+      [v]: 7.3,
+
+    },
+    {
+      name: '6',
+      [v]: 9.9,
+
+    },
+    {
+      name: '7',
+      [v]: 0.3,
+
+    },
+    {
+      name: '8',
+      [v]: 8.3,
+
+    },
+    {
+      name: '9',
+      [v]: 7.3,
+
+    },
+    {
+      name: '10',
+      [v]: 1.79,
+
+    },
+    {
+      name: '11',
+      [v]: 6.1,
+
+    },
+    {
+      name: '12',
+      [v]: 4.5,
+
+    },
+  ];
+
+
+
   return (
     <div className="DAT_ProjectData">
       <div className="DAT_ProjectData_Header">
@@ -18,20 +84,6 @@ function ProjectData(props) {
           <div style={{ fontSize: 22, paddingBottom: 5 }}>
             {projectData.value.name}
           </div>
-
-          {/* <div className="DAT_ProjectData_Header_Left_ProjectStatus">
-            {projectData.value.status ? (
-              <>
-                <FaCheckCircle size={20} color="green" />
-                <span style={{ marginLeft: 5 }}>Online</span>
-              </>
-            ) : (
-              <>
-                <MdOutlineError size={22} color="red" />
-                <span style={{ marginLeft: 5 }}>Offline</span>
-              </>
-            )}
-          </div> */}
 
           <div style={{ color: "grey", fontSize: 14 }}>
             Cập nhật lần cuối {projectData.value.lastupdate}
@@ -53,7 +105,7 @@ function ProjectData(props) {
         <div className="DAT_ProjectData_Body_Data">
           <div className="DAT_ProjectData_Body_Data_Left">
             <div className="DAT_ProjectData_Body_Data_Left_Img">
-              <img src="/dat_picture/solar.jpg" alt="" />
+              <img src="/dat_picture/solar_panel.png" alt="" />
             </div>
 
             <div className="DAT_ProjectData_Body_Data_Left_Info">
@@ -74,6 +126,29 @@ function ProjectData(props) {
                 style={{ marginBottom: "16px" }}
               >
                 <div className="DAT_ProjectData_Body_Data_Left_Info_Addr_Title">
+                  Trạng thái
+                </div>
+                <div
+                  className="DAT_ProjectData_Body_Data_Left_Info_Addr_Content"
+                  style={{ textAlign: "right" }}
+                >
+                  {projectData.value.status ? (
+                    <>
+                      <FaCheckCircle size={20} color="green" />
+                    </>
+                  ) : (
+                    <>
+                      <MdOutlineError size={20} color="red" />
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div
+                className="DAT_ProjectData_Body_Data_Left_Info_Addr"
+                style={{ marginBottom: "16px" }}
+              >
+                <div className="DAT_ProjectData_Body_Data_Left_Info_Addr_Title">
                   Loại Dự Án
                 </div>
                 <div
@@ -84,7 +159,7 @@ function ProjectData(props) {
                 </div>
               </div>
 
-              <div
+              {/* <div
                 className="DAT_ProjectData_Body_Data_Left_Info_Addr"
                 style={{ marginBottom: "16px" }}
               >
@@ -97,7 +172,7 @@ function ProjectData(props) {
                 >
                   --
                 </div>
-              </div>
+              </div> */}
 
               <div className="DAT_ProjectData_Body_Data_Left_Info_Addr">
                 <div className="DAT_ProjectData_Body_Data_Left_Info_Addr_Title">
@@ -228,7 +303,9 @@ function ProjectData(props) {
             </div>
           </div>
 
-          <div className="DAT_ProjectData_Body_Data_Right"></div>
+          <div className="DAT_ProjectData_Body_Data_Right">
+              <div className="DAT_ProjectData_Body_Data_Right_wheather"></div>
+          </div>
         </div>
 
         <div className="DAT_ProjectData_Body_History">
@@ -269,7 +346,27 @@ function ProjectData(props) {
             </div>
           </div>
 
-          <div className="DAT_ProjectData_Body_History_Content"></div>
+          <div className="DAT_ProjectData_Body_History_Content">
+
+            <div className='DAT_ProjectData_Body_History_Content_Tit'>
+              <div className='DAT_ProjectData_Body_History_Content_Tit-Unit'>MWh</div>
+              <div className='DAT_ProjectData_Body_History_Content_Tit-Label'>Sản lượng năm: 1.69 MWh</div>
+            </div>
+            <div className="DAT_ProjectData_Body_History_Content_Chart">
+
+            <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
+              <BarChart width={150} height={200} data={data}>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey={v} fill="#6495ed" barSize={15} legendType='circle' style={{ fill: "#6495ed" }} />
+              </BarChart>
+            </ResponsiveContainer>
+            </div>
+
+
+          </div>
         </div>
 
         <div className="DAT_ProjectData_Body_More">

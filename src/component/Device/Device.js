@@ -144,7 +144,7 @@ function Device(props) {
             id={row.id + "_" + tab.value}
             onClick={(e) => handleShowInfo(e)}
           >
-            <div className="DAT_Table_Infor_Name">{row.name}</div>
+            {/* <div className="DAT_Table_Infor_Name">{row.name}</div> */}
             <div className="DAT_Table_Infor_Addr">{row.SN}</div>
           </div>
         </div>

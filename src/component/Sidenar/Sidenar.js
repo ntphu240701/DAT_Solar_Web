@@ -27,7 +27,7 @@ function Sidenar(props) {
         Notif: { icon: <IoIosNotificationsOutline />, link: 'none', li: [] },
         Monitor: { icon: <SiDatabricks />, link: 'none', li: [{ link: '/Project', name: 'Dự án' }, { link: '/Device', name: 'Thiết bị' }, { link: '/Warn', name: 'Cảnh báo' }] },
         Analytics: { icon: <TbReportAnalytics />, link: 'none', li: [{ link: '/Report', name: 'Báo cáo' }, { link: '/Analytics', name: 'Phân tích' }, , { link: '/Log', name: 'Nhật ký' }] },
-        Setting: { icon: <RiSettingsLine />, link: 'none', li: [{ link: '/User', name: 'Tài khoản' }, { link: '/Role', name: 'Người dùng' }, { link: '/GroupRole', name: 'Nhóm người dùng' }, { link: '/Contact', name: 'Liên hệ' }] },
+        Setting: { icon: <RiSettingsLine />, link: 'none', li: [ { link: '/Role', name: 'Người dùng' }, { link: '/GroupRole', name: 'Nhóm người dùng' },{ link: '/User', name: 'Tài khoản' }, { link: '/Contact', name: 'Liên hệ' }] },
     }
     const handleMenu = (e) => {
         const ID = e.currentTarget.id;
@@ -102,17 +102,18 @@ function Sidenar(props) {
             <div className='DAT_Sidenar' style={(sidenar.value) ? { width: "200px" } : { width: "0px" }}  >
                 <div style={(sidenar.value) ? { display: "block" } : { display: "none" }}  >
                     {Menu('Dashboard', 'Bảng điểu khiển')}
-                    {Menu('Notif', 'Thông báo')}
+                   
                     {Menu('Monitor', 'Giám sát')}
                     {(tab.value === 'Monitor')
                         ? <>{MenuLi('Monitor')}</>
                         : <></>
                     }
-                    {Menu('Analytics', 'Vận hành')}
+                    {Menu('Analytics', 'Vận hành & bảo trì')}
                     {(tab.value === 'Analytics')
                         ? <>{MenuLi('Analytics')}</>
                         : <></>
                     }
+                     {Menu('Notif', 'Thông báo')}
                     {Menu('Setting', 'Quản lý')}
                     {(tab.value === 'Setting')
                         ? <>{MenuLi('Setting')}</>
