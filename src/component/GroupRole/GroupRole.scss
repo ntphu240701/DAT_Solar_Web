@@ -1,0 +1,198 @@
+.DAT_GRHeader {
+    width: 98%;
+    margin: auto;
+    margin-top: 70px;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+    &_Title {
+        font-size: 19px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    &_Filter {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        padding: 5px;
+        border-radius: 5px;
+        overflow: hidden;
+        border: solid 1px rgb(199, 199, 199);
+
+        & input {
+            border: none;
+            outline: none;
+            font-size: 13px;
+        }
+    }
+
+    &_New {
+        cursor: pointer;
+        height: 30px;
+        border: none;
+        background-color: #6495ed;
+        color: white;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: #3e80fb;
+        }
+    }
+}
+
+.DAT_GR {
+    width: 98%;
+    height: 82vh;
+    margin: auto;
+    margin-top: 15px;
+    //margin-bottom: 100px;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;
+    /* Firefox, other Gecko */
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255, 0.95);
+    box-shadow:
+        2px 2px 5px rgba(198, 197, 197, 0.4),
+        -2px -2px 5px rgba(198, 197, 197, 0.4);
+    padding: 20px;
+    padding-top: 100px;
+}
+
+.DAT_GroupCreate {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    background-color: rgb(188, 188, 188);
+    top: 58px;
+    right: 0;
+    z-index: 30;
+    overflow: hidden;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.DAT_CreateGroupRole {
+    //margin-top: 94px;
+    //position: relative;
+    //height: 100%;
+    width: 98%;
+    //height: 200px;
+    margin: auto;
+    overflow: hidden;
+    //overflow-y: scroll;
+
+    &_Header {
+        position: fixed;
+        background-color: white;
+        //position: fixed;
+        right: 0px;
+        top: 58px;
+        display: flex;
+        z-index: 30;
+        // margin: 10px;
+        // height: 80px;
+        left: 0px;
+        align-items: center;
+        padding: 20px;
+        box-sizing: border-box;
+        &_Left {
+            flex: 5;
+
+            & p {
+                margin: 0;
+                //padding: 16px;
+            }
+        }
+        &_Right {
+            flex: 5;
+            //padding: 16px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            &_Save {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 30px;
+                padding: 0px 10px;
+                cursor: pointer;
+                background-color: #3e80fb;
+                border-radius: 5px;
+                gap: 5px;
+
+                & span {
+                    color: white;
+                }
+            }
+
+            &_Close {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+
+                background-color: red;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(252, 122, 122);
+                }
+            }
+        }
+    }
+
+    &_Body {
+        position: relative;
+        //height: 100%;
+        // width: 100%;
+        margin-top: 100px;
+        margin-bottom: 100px;
+
+        &_Item {
+            background-color: white;
+            // width: 100%;
+            & h4 {
+                background-color: rgb(230, 230, 230);
+                padding: 15px;
+            }
+
+            &_CheckBox {
+                padding-bottom: 10px;
+                padding-left: 15px;
+                padding-right: 15px;
+
+                &_Option {
+                    padding-bottom: 10px;
+                    padding-top: 10px;
+                    font-size: 20px;
+                    border-bottom: 1px solid rgb(128, 128, 128, 0.3);
+
+                    & div {
+                        display: flex;
+                        gap: 10px;
+                    }
+                }
+            }
+        }
+    }
+}

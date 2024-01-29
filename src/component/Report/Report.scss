@@ -498,7 +498,7 @@
     align-items: center;
 }
 
-.DAT_Popup_Box {
+.DAT_PopupReport_Box {
     position: relative;
     // margin-top: -58px;
     width: 400px;
@@ -530,12 +530,6 @@
                 display: flex;
                 align-items: center;
                 cursor: pointer;
-
-                :hover {
-                    color: red;
-                    transform: rotate(90deg);
-                    transition: 0.2s;
-                }
             }
         }
     }
@@ -563,7 +557,7 @@
 }
 
 @media (max-width: 900px) {
-    .DAT_Create {
+    .DAT_Report {
         margin-bottom: 70px;
     }
 }

@@ -7,7 +7,7 @@ import { RxCross2 } from "react-icons/rx";
 const CheckBox = (props) => {
   return (
     <div className="DAT_Config_Body_Item_CheckBox_Option">
-      <div class="form-check">
+      <div className="form-check">
         <input
           className="form-check-input"
           type="checkbox"
