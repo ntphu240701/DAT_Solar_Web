@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Report.scss";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import { CiEdit } from "react-icons/ci";
@@ -12,51 +12,9 @@ import { useSelector } from "react-redux";
 export const createState = signal(false);
 export const editState = signal(false);
 export const popupStateReport = signal(false);
+export const editData = signal({});
 export const idReport = signal(0);
-export const list = signal([
-  {
-    id: 1,
-    name: "Mẫu số 1",
-    type: "Daily Data Report",
-    create: "Trí Trần",
-    date: "12/12/2022",
-  },
-  {
-    id: 2,
-    name: "Test",
-    type: "Monthly Data Report",
-    create: "Trí Trần",
-    date: "01/30/2023",
-  },
-  {
-    id: 3,
-    name: "Tòa nhà DAT",
-    type: "Daily Data Report",
-    create: "Tiến Đỗ",
-    date: "12/30/2023",
-  },
-  {
-    id: 4,
-    name: "Tòa nhà DAT",
-    type: "Monthly Data Report",
-    create: "Tiến Đỗ",
-    date: "12/30/2023",
-  },
-  {
-    id: 5,
-    name: "Tòa nhà DAT",
-    type: "Yearly Data Report",
-    create: "Tiến Đỗ",
-    date: "12/30/2023",
-  },
-  {
-    id: 6,
-    name: "Mẫu Demo",
-    type: "Monthly Data Report",
-    create: "Hiệp Solar",
-    date: "01/17/2024",
-  },
-]);
+export const lastID = signal(2);
 
 export const ReportData = signal([
   {
@@ -80,14 +38,16 @@ export const ReportData = signal([
       12: { lang: "report_12", status: false },
     },
     subinf: {
+      lang: "report_tit_1",
       status: false,
       option: {
-        1: { lang: "report_13", status: false },
+        1: { lang: "report_13", status: true },
         2: { lang: "report_14", status: false },
       },
     },
     deviceinfo: {
-      status: true,
+      lang: "report_tit_2",
+      status: false,
       option: {
         1: { lang: "report_15", status: true },
         2: { lang: "report_16", status: true },
@@ -101,7 +61,7 @@ export const ReportData = signal([
         10: { lang: "report_24", status: true },
         11: { lang: "report_25", status: false },
         12: { lang: "report_26", status: true },
-      }
+      },
     },
     customdata: {
       1: { lang: "report_27", status: false },
@@ -147,6 +107,7 @@ export const ReportData = signal([
       12: { lang: "report_12", status: false },
     },
     subinf: {
+      lang: "report_tit_1",
       status: false,
       option: {
         1: { lang: "report_13", status: false },
@@ -154,6 +115,7 @@ export const ReportData = signal([
       },
     },
     deviceinfo: {
+      lang: "report_tit_2",
       status: true,
       option: {
         1: { lang: "report_15", status: true },
@@ -168,7 +130,7 @@ export const ReportData = signal([
         10: { lang: "report_24", status: true },
         11: { lang: "report_25", status: false },
         12: { lang: "report_26", status: true },
-      }
+      },
     },
     customdata: {
       1: { lang: "report_27", status: false },
@@ -196,6 +158,7 @@ export const ReportData = signal([
 ]);
 
 function Report(props) {
+
   //DAT_MASTER
   const usr = useSelector((state) => state.admin.usr);
 
@@ -207,9 +170,10 @@ function Report(props) {
 
   const handleEditReport = (e) => {
     editState.value = true;
-    idReport.value = e.currentTarget.id;
-    console.log(idReport.value);
-  }
+    editData.value = ReportData.value.find(
+      (item) => item.id == e.currentTarget.id
+    ); //[{},{},{},{}] filrter [{}], find =>{}
+  };
 
   return (
     <>

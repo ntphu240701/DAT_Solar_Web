@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import { createState, ReportData } from "./Report";
+import { createState, ReportData, lastID } from "./Report";
 import { signal } from "@preact/signals-react";
 // import { CheckBox } from "../Device/Config";
 import { isMobile } from "../Navigation/Navigation";
@@ -9,19 +9,120 @@ import { list } from "./Report";
 import { Checkbox } from "@mui/material";
 import { useSelector } from "react-redux";
 
-export const checkbox = signal({
-  tthtc: { status: false },
-  tttb: { status: false },
+const newdata = signal({
+  id: 1,
+  name: "",
+  type: "Daily Data Report",
+  create: "",
+  date: "12/12/2022",
+  inf: {
+    1: { lang: "report_1", status: false },
+    2: { lang: "report_2", status: false },
+    3: { lang: "report_3", status: false },
+    4: { lang: "report_4", status: false },
+    5: { lang: "report_5", status: false },
+    6: { lang: "report_6", status: false },
+    7: { lang: "report_7", status: false },
+    8: { lang: "report_8", status: false },
+    9: { lang: "report_9", status: false },
+    10: { lang: "report_10", status: false },
+    11: { lang: "report_11", status: false },
+    12: { lang: "report_12", status: false },
+  },
+  subinf: {
+    lang: "report_tit_1",
+    status: false,
+    option: {
+      1: { lang: "report_13", status: false },
+      2: { lang: "report_14", status: false },
+    },
+  },
+  deviceinfo: {
+    lang: "report_tit_2",
+    status: false,
+    option: {
+      1: { lang: "report_15", status: false },
+      2: { lang: "report_16", status: false },
+      3: { lang: "report_17", status: false },
+      4: { lang: "report_18", status: false },
+      5: { lang: "report_19", status: false },
+      6: { lang: "report_20", status: false },
+      7: { lang: "report_21", status: false },
+      8: { lang: "report_22", status: false },
+      9: { lang: "report_23", status: false },
+      10: { lang: "report_24", status: false },
+      11: { lang: "report_25", status: false },
+      12: { lang: "report_26", status: false },
+    },
+  },
+  customdata: {
+    1: { lang: "report_27", status: false },
+    2: { lang: "report_28", status: false },
+    3: { lang: "report_29", status: false },
+    4: { lang: "report_30", status: false },
+    5: { lang: "report_31", status: false },
+    6: { lang: "report_32", status: false },
+    7: { lang: "report_33", status: false },
+    8: { lang: "report_34", status: false },
+    9: { lang: "report_35", status: false },
+    10: { lang: "report_36", status: false },
+    11: { lang: "report_37", status: false },
+    12: { lang: "report_38", status: false },
+    13: { lang: "report_39", status: false },
+    14: { lang: "report_40", status: false },
+    15: { lang: "report_41", status: false },
+    16: { lang: "report_42", status: false },
+    17: { lang: "report_43", status: false },
+    18: { lang: "report_44", status: false },
+    19: { lang: "report_45", status: false },
+    20: { lang: "report_46", status: false },
+  },
 });
+
 const show = signal({ id: "none", status: false });
 
 export const CheckBox = (props) => {
   const handleShow = (e) => {
-    const Check = { id: props.id, status: e.target.checked };
-    show.value = Check;
-
-    //checkbox.value[props.id].status = e.target.checked;
-    //console.log(checkbox.value)
+    let arr = props.tab.split("_");
+    switch (arr[1]) {
+      case "content":
+        newdata.value = {
+          ...newdata.value,
+          [arr[0]]: {
+            ...newdata.value[arr[0]],
+            [props.num]: {
+              ...newdata.value[arr[0]][props.num],
+              status: e.target.checked,
+            },
+          },
+        };
+        break;
+      case "option":
+        newdata.value = {
+          ...newdata.value,
+          [arr[0]]: {
+            ...newdata.value[arr[0]],
+            option: {
+              ...newdata.value[arr[0]].option,
+              [props.num]: {
+                ...newdata.value[arr[0]].option[props.num],
+                status: e.target.checked,
+              },
+            },
+          },
+        };
+        break;
+      case "tit":
+        newdata.value = {
+          ...newdata.value,
+          [arr[0]]: {
+            ...newdata.value[arr[0]],
+            status: e.target.checked,
+          },
+        };
+        break;
+    }
+    // console.log(newdata.value);
   };
 
   return (
@@ -44,7 +145,7 @@ export const CheckBox = (props) => {
           className="form-check-label"
           htmlFor={props.id}
         >
-          {props.info}
+          {props.id}
         </label>
       </div>
     </div>
@@ -59,6 +160,11 @@ export default function Create() {
   const usr = useSelector((state) => state.admin.usr);
 
   const TypeReport = (props) => {
+    const handerChangeReportName = (e) => {
+      reportnameRef.current = e.target.value;
+      //document.getElementById("reportname").value = e.target.value
+    };
+
     return (
       <div className="DAT_Create_Body_Item">
         <div className="DAT_Create_Body_Item_Data">
@@ -141,8 +247,11 @@ export default function Create() {
               type="text"
               placeholder="Required Field"
               required
-              ref={reportnameRef}
-              // onChange={(e) => {console.log(e.target.value)}}
+              //ref={reportnameRef}
+              id="reportname"
+              defaultValue={reportnameRef.current}
+              // value={newdata.value.name}
+              onChange={(e) => handerChangeReportName(e)}
             ></input>
           </div>
         </div>
@@ -150,38 +259,27 @@ export default function Create() {
     );
   };
 
-  // useEffect(() => {
-  //   console.log(reportnameRef.current.value);
-  // }, [reportnameRef]);
-
   const handleCreate = () => {
-    const newDB = {
-      id: ReportData.value[ReportData.value.length - 1].id + 1,
-      name: reportnameRef.current.value,
-      type: reportType,
-      create: usr,
-      date: "1/29/2024",
-    };
-    ReportData.value.push(newDB);
-    console.log(ReportData.value);
-    createState.value = false;
+    if (reportnameRef.current === "") {
+      alert("Please enter report name");
+    } else {
+      lastID.value = lastID.value + 1;
+      newdata.value = {
+        ...newdata.value,
+        name: reportnameRef.current,
+        type: reportType,
+        id: lastID.value,
+      };
+      ReportData.value.push(newdata.value);
+      createState.value = false;
+      console.log(ReportData.value);
+    }
   };
 
   const handleDataType = (e) => {
     // // console.log(e.currentTarget.value)
     setReportType(e.currentTarget.value);
   };
-
-  useEffect(() => {
-    if (
-      show.value.id !== "none" &&
-      checkbox.value[show.value.id]?.status !== undefined
-    ) {
-      checkbox.value[show.value.id].status = show.value.status;
-      show.value = { id: "none", status: false };
-      console.log(checkbox.value);
-    }
-  }, [show.value]);
 
   useEffect(() => {
     if (isMobile.value) {
@@ -251,40 +349,50 @@ export default function Create() {
               <label style={{ margin: "0" }}>Tùy chọn thông tin</label>
               <div className="DAT_Create_Body_Item_Option_Check">
                 <p style={{ color: "grey" }}>Thông tin dự án</p>
-                {/* {ReportData.value.map((item, index) => (
-                  // <Checkbox
-                  //   info={ReportData.value[index].inf[index].lang}
-                  //   id={ReportData.value[index].inf[index].lang}
-                  // />
-                ))} */}
-                <CheckBox info="Tên dự án" id="tda" width={widthCheckBox} />
+                {Object.entries(newdata.value.inf).map(([key, value]) => (
+                  <CheckBox
+                    key={key}
+                    num={String(key)}
+                    tab="inf_content"
+                    status={newdata.value.inf[key].status}
+                    id={newdata.value.inf[key].lang}
+                    width={widthCheckBox}
+                  />
+                ))}
               </div>
 
               <div
                 className="DAT_Create_Body_Item_Option_Check"
                 style={{
-                  border: checkbox.value.tthtc.status
+                  border: newdata.value.subinf.status
                     ? "1px solid grey"
                     : "0px",
-                  paddingBottom: checkbox.value["tthtc"].status ? "20px" : "0",
+                  paddingBottom: newdata.value.subinf.status ? "20px" : "0",
                   transition: "0.5s",
                 }}
               >
                 <div className="DAT_Create_Body_Item_Option_Check_Head">
                   <CheckBox
-                    info="Thông tin hệ thống con"
-                    id="tthtc"
+                    tab="subinf_tit"
+                    id={newdata.value.subinf.lang}
+                    status={newdata.value.subinf.status}
                     width="fit-content"
                   />
                 </div>
-                {checkbox.value["tthtc"].status ? (
+                {newdata.value.subinf.status ? (
                   <>
-                    <CheckBox info="Tên dự án" id="tda" width={widthCheckBox} />
-                    <CheckBox
-                      info="Khu vực hành chính"
-                      id="kvhc"
-                      width={widthCheckBox}
-                    />
+                    {Object.entries(newdata.value.subinf.option).map(
+                      ([key, value]) => (
+                        <CheckBox
+                          key={key}
+                          num={String(key)}
+                          tab="subinf_option"
+                          status={newdata.value.subinf.option[key].status}
+                          id={newdata.value.subinf.option[key].lang}
+                          width={widthCheckBox}
+                        />
+                      )
+                    )}
                   </>
                 ) : (
                   <></>
@@ -294,67 +402,35 @@ export default function Create() {
               <div
                 className="DAT_Create_Body_Item_Option_Check"
                 style={{
-                  border: checkbox.value["tttb"].status
+                  border: newdata.value.deviceinfo.status
                     ? "1px solid grey"
                     : "0px",
-                  paddingBottom: checkbox.value["tttb"].status ? "20px" : "0",
+                  paddingBottom: newdata.value.deviceinfo.status ? "20px" : "0",
                   transition: "0.5s",
                 }}
               >
                 <div className="DAT_Create_Body_Item_Option_Check_Head">
                   <CheckBox
-                    info="Thông tin thiết bị"
-                    id="tttb"
+                    tab="deviceinfo_tit"
+                    id={newdata.value.deviceinfo.lang}
+                    status={newdata.value.deviceinfo.status}
                     width="fit-content"
                   />
                 </div>
-                {checkbox.value["tttb"].status ? (
+                {newdata.value.deviceinfo.status ? (
                   <>
-                    <CheckBox
-                      info="Số sê-ri thiết bị"
-                      id="ssrtb"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Tên thiết bị"
-                      id="ttb"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Loại thiết bị"
-                      id="ltb"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Công suất dây thực tế"
-                      id="csdtt"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Số sê-ri logger"
-                      id="ssrlg"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Vị trí đồng hồ"
-                      id="vtdh"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Tỷ lệ dòng điện"
-                      id="tldd"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Tỷ lệ điện áp"
-                      id="tlda"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Phân loại dữ liệu đồng hồ"
-                      id="pldldb"
-                      width={widthCheckBox}
-                    />
+                    {Object.entries(newdata.value.deviceinfo.option).map(
+                      ([key, value]) => (
+                        <CheckBox
+                          key={key}
+                          num={String(key)}
+                          tab="deviceinfo_option"
+                          status={newdata.value.deviceinfo.option[key].status}
+                          id={newdata.value.deviceinfo.option[key].lang}
+                          width={widthCheckBox}
+                        />
+                      )
+                    )}
                   </>
                 ) : (
                   <></>
@@ -367,66 +443,18 @@ export default function Create() {
               <label style={{ margin: "0" }}>Tùy chọn dữ liệu</label>
               <div className="DAT_Create_Body_Item_Option_Check">
                 <p style={{ color: "grey" }}>Dữ liệu dự án</p>
-                <CheckBox info="Sản xuất" id="sx" width={widthCheckBox} />
-                <CheckBox info="Tiêu thụ" id="tt" width={widthCheckBox} />
-                <CheckBox info="Lưới đưa vào" id="ldv" width={widthCheckBox} />
-                <CheckBox
-                  info="Năng lượng mua vào"
-                  id="nlmv"
-                  width={widthCheckBox}
-                />
-                <CheckBox info="Phí" id="p" width={widthCheckBox} />
-                <CheckBox info="Xả" id="x" width={widthCheckBox} />
-                <CheckBox info="Bức xạ" id="bx" width={widthCheckBox} />
-                <CheckBox info="kWh/kWp" id="kwhkwp" width={widthCheckBox} />
-                <CheckBox
-                  info="Sản xuất lý thuyết"
-                  id="sylt"
-                  width={widthCheckBox}
-                />
-                <CheckBox info="PR" id="pr" width={widthCheckBox} />
-                <CheckBox
-                  info="Sản xuất tự dùng"
-                  id="sxtud"
-                  width={widthCheckBox}
-                />
-                <CheckBox
-                  info="Tỷ lệ tự dùng từ sản xuất"
-                  id="tltdtsx"
-                  width={widthCheckBox}
-                />
-                <CheckBox
-                  info="Tỷ lệ từ sản xuất"
-                  id="tltsx"
-                  width={widthCheckBox}
-                />
-                <CheckBox
-                  info="Sản xuất đưa vào lưới"
-                  id="sxdvl"
-                  width={widthCheckBox}
-                />
-                <CheckBox
-                  info="Tỷ lệ cấp lưới từ năng lượng mua"
-                  id="tldrvnlmv"
-                  width={widthCheckBox}
-                />
-                <CheckBox
-                  info="Tỷ lệ từ năng lượng mua vào"
-                  id="tltlmv"
-                  width={widthCheckBox}
-                />
-                <CheckBox info="Sản xuất phí" id="sxp" width={widthCheckBox} />
-                <CheckBox
-                  info="Sản xuất từ xả"
-                  id="sxtx"
-                  width={widthCheckBox}
-                />
-                <CheckBox info="Tỷ lệ từ xả" id="tltx" width={widthCheckBox} />
-                <CheckBox
-                  info="Thu nhập từ điện"
-                  id="tntd"
-                  width={widthCheckBox}
-                />
+                {Object.entries(newdata.value.customdata).map(
+                  ([key, value]) => (
+                    <CheckBox
+                      key={key}
+                      num={String(key)}
+                      tab="customdata_content"
+                      status={newdata.value.customdata[key].status}
+                      id={newdata.value.customdata[key].lang}
+                      width={widthCheckBox}
+                    />
+                  )
+                )}
               </div>
             </div>
           </div>

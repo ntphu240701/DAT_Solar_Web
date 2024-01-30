@@ -1,23 +1,63 @@
 import React, { useEffect, useState } from "react";
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import { editState, ReportData, idReport } from "./Report";
+import { editState, editData, ReportData } from "./Report";
 import { signal } from "@preact/signals-react";
 // import { CheckBox } from "../Device/Config";
 import { isMobile } from "../Navigation/Navigation";
-import { Checkbox } from "@mui/material";
 
-export const checkbox = signal({
-  tthtc: { status: false },
-  tttb: { status: false },
-});
-const show = signal({ id: "none", status: false });
+const reportname = signal();
 
 export const CheckBox = (props) => {
   const handleShow = (e) => {
-    const Check = { id: props.id, status: e.target.checked };
-    show.value = Check;
+    let arr = props.tab.split("_"); // key_content/tit
+    // console.log(arr);
+
+    switch (arr[1]) {
+      case "content":
+        editData.value = {
+          ...editData.value,
+          [arr[0]]: {
+            ...editData.value[arr[0]],
+            [props.num]: {
+              ...editData.value[arr[0]][props.num],
+              status: e.target.checked,
+            },
+          },
+        };
+        break;
+      case "option":
+        editData.value = {
+          ...editData.value,
+          [arr[0]]: {
+            ...editData.value[arr[0]],
+            option: {
+              ...editData.value[arr[0]].option,
+              [props.num]: {
+                ...editData.value[arr[0]].option[props.num],
+                status: e.target.checked,
+              },
+            },
+          },
+        };
+        break;
+      default:
+        editData.value = {
+          ...editData.value,
+          [arr[0]]: {
+            ...editData.value[arr[0]],
+            status: e.target.checked,
+          },
+        };
+        break;
+    }
+    console.log(editData.value);
   };
+
+  useEffect(() => {
+    document.getElementById(props.id).checked = props.status;
+  }, []);
+
   return (
     <div
       className="DAT_EditReport_Body_Item_Option_Check_SingleCheck"
@@ -38,7 +78,7 @@ export const CheckBox = (props) => {
           className="form-check-label"
           htmlFor={props.id}
         >
-          {props.info}
+          {props.id}
         </label>
       </div>
     </div>
@@ -46,6 +86,17 @@ export const CheckBox = (props) => {
 };
 
 const DataReport = (props) => {
+  const [nameReport, setNameReport] = useState(editData.value.name);
+  useEffect(() => {
+  })
+
+  const handlePushName = (e) => {
+    reportname.value = editData.value.name;
+    setNameReport(e.currentTarget.value);
+    reportname.value = nameReport;
+    // console.log(reportnba);
+  };
+
   return (
     <div className="DAT_EditReport_Body_Item">
       <div className="DAT_EditReport_Body_Item_Data">
@@ -59,46 +110,38 @@ const DataReport = (props) => {
         </p>
         <div className="DAT_EditReport_Body_Item_Data_Name">
           <label>Tên báo cáo: </label>
-          <input placeholder="Required Field" required></input>
+          <input
+            placeholder="Required Field"
+            value={nameReport}
+            required
+            onChange={(e) => handlePushName(e)}
+          ></input>
         </div>
       </div>
     </div>
   );
 };
 
-const reportData = signal({});
-
 export default function Create() {
-  const handleShow = (e) => {};
-
-
-
   const [widthCheckBox, setWidwidthCheckBox] = React.useState("");
-  //const [reportData, setReportData] = useState({inf:{}});
-  useEffect(() => {
-    reportData.value = ReportData.value.find(
-      (item) => item.id === parseInt(idReport.value)
-    );
-  }, []);
 
-  useEffect(() => {
-    console.log(reportData.value.inf);
-  }, [reportData.value]);
+  const handleSaveData = () => {
+    editState.value = false;
+    const index = ReportData.value.findIndex((item) => {
+      return item.id === editData.value.id;
+    });
+    ReportData.value[index] = editData.value;
+    ReportData.value[index] = {
+      ...ReportData.value[index],
+      name: reportname.value,
+    };
+    console.log(ReportData.value);
+    // console.log(reportname.value);
+  };
 
   const handleCloseCreate = () => {
     editState.value = false;
   };
-
-  useEffect(() => {
-    if (
-      show.value.id !== "none" &&
-      checkbox.value[show.value.id]?.status !== undefined
-    ) {
-      checkbox.value[show.value.id].status = show.value.status;
-      show.value = { id: "none", status: false };
-      console.log(checkbox.value);
-    }
-  }, [show.value]);
 
   useEffect(() => {
     if (isMobile.value) {
@@ -117,7 +160,10 @@ export default function Create() {
             <p style={{ fontSize: "20px" }}>Chỉnh sửa</p>
           </div>
           <div className="DAT_EditReport_Header_Right">
-            <div className="DAT_EditReport_Header_Right_Save">
+            <div
+              className="DAT_EditReport_Header_Right_Save"
+              onClick={() => handleSaveData()} 
+            >
               <FaSave size={20} color="white" />
               <span>Lưu</span>
             </div>
@@ -147,58 +193,51 @@ export default function Create() {
               <label style={{ margin: "0" }}>Tùy chọn thông tin</label>
               <div className="DAT_EditReport_Body_Item_Option_Check">
                 <p style={{ color: "grey" }}>Thông tin dự án</p>
-                {reportData.value?.inf !== undefined ? (
-                  Object.keys(reportData.value.inf).map((key, i) => {
-                    
-                      // return <div>{key}</div>
-                  
-                  })
-                ) : (
-                  <></>
-                )}
-
-                {/* {ReportData.value[parseInt(idReport.value) - 1].inf.map(
-                  (item, index) => {
-                    return (
-                      <div key={index}>
-                        <CheckBox
-                          info={item[index].lang}
-                          status={item[index].status}
-                          id={item[index].lang}
-                          width={widthCheckBox}
-                        />
-                      </div>
-                    );
-                  }
-                )} */}
-                {/* <CheckBox info="Tên dự án" id="tda" width={widthCheckBox} /> */}
+                {Object.entries(editData.value.inf).map(([key, value]) => (
+                  <CheckBox
+                    key={key}
+                    num={String(key)}
+                    tab={"inf_content"}
+                    status={editData.value.inf[key].status}
+                    id={editData.value.inf[key].lang}
+                    width={widthCheckBox}
+                  />
+                ))}
               </div>
 
               <div
                 className="DAT_EditReport_Body_Item_Option_Check"
                 style={{
-                  border: checkbox.value.tthtc.status
+                  border: editData.value.subinf.status
                     ? "1px solid grey"
                     : "0px",
-                  paddingBottom: checkbox.value["tthtc"].status ? "20px" : "0",
+                  paddingBottom: editData.value.subinf.status ? "20px" : "0",
                   transition: "0.5s",
                 }}
               >
                 <div className="DAT_EditReport_Body_Item_Option_Check_Head">
                   <CheckBox
-                    info="Thông tin hệ thống con"
-                    id="tthtc"
+                    tab={"subinf_tit"}
+                    id={editData.value.subinf.lang}
+                    status={editData.value.subinf.status}
                     width="fit-content"
                   />
+                  {/* editData.value.subinf.option[key].lang */}
                 </div>
-                {checkbox.value["tthtc"].status ? (
+                {editData.value.subinf.status ? (
                   <>
-                    <CheckBox info="Tên dự án" id="tda" width={widthCheckBox} />
-                    <CheckBox
-                      info="Khu vực hành chính"
-                      id="kvhc"
-                      width={widthCheckBox}
-                    />
+                    {Object.entries(editData.value.subinf.option).map(
+                      ([key, value]) => (
+                        <CheckBox
+                          key={key}
+                          num={String(key)}
+                          tab={"subinf_option"}
+                          status={editData.value.subinf.option[key].status}
+                          id={editData.value.subinf.option[key].lang}
+                          width={widthCheckBox}
+                        />
+                      )
+                    )}
                   </>
                 ) : (
                   <></>
@@ -208,67 +247,37 @@ export default function Create() {
               <div
                 className="DAT_EditReport_Body_Item_Option_Check"
                 style={{
-                  border: checkbox.value["tttb"].status
+                  border: editData.value.deviceinfo.status
                     ? "1px solid grey"
                     : "0px",
-                  paddingBottom: checkbox.value["tttb"].status ? "20px" : "0",
+                  paddingBottom: editData.value.deviceinfo.status
+                    ? "20px"
+                    : "0",
                   transition: "0.5s",
                 }}
               >
                 <div className="DAT_EditReport_Body_Item_Option_Check_Head">
                   <CheckBox
-                    info="Thông tin thiết bị"
-                    id="tttb"
+                    tab={"deviceinfo_tit"}
+                    id={editData.value.deviceinfo.lang}
+                    status={editData.value.deviceinfo.status}
                     width="fit-content"
                   />
                 </div>
-                {checkbox.value["tttb"].status ? (
+                {editData.value.deviceinfo.status ? (
                   <>
-                    <CheckBox
-                      info="Số sê-ri thiết bị"
-                      id="ssrtb"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Tên thiết bị"
-                      id="ttb"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Loại thiết bị"
-                      id="ltb"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Công suất dây thực tế"
-                      id="csdtt"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Số sê-ri logger"
-                      id="ssrlg"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Vị trí đồng hồ"
-                      id="vtdh"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Tỷ lệ dòng điện"
-                      id="tldd"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Tỷ lệ điện áp"
-                      id="tlda"
-                      width={widthCheckBox}
-                    />
-                    <CheckBox
-                      info="Phân loại dữ liệu đồng hồ"
-                      id="pldldb"
-                      width={widthCheckBox}
-                    />
+                    {Object.entries(editData.value.deviceinfo.option).map(
+                      ([key, value]) => (
+                        <CheckBox
+                          key={key}
+                          num={String(key)}
+                          tab={"deviceinfo_option"}
+                          status={editData.value.deviceinfo.option[key].status}
+                          id={editData.value.deviceinfo.option[key].lang}
+                          width={widthCheckBox}
+                        />
+                      )
+                    )}
                   </>
                 ) : (
                   <></>
@@ -281,66 +290,18 @@ export default function Create() {
               <label style={{ margin: "0" }}>Tùy chọn dữ liệu</label>
               <div className="DAT_EditReport_Body_Item_Option_Check">
                 <p style={{ color: "grey" }}>Dữ liệu dự án</p>
-                <CheckBox info="Sản xuất" id="sx" width={widthCheckBox} />
-                <CheckBox info="Tiêu thụ" id="tt" width={widthCheckBox} />
-                <CheckBox info="Lưới đưa vào" id="ldv" width={widthCheckBox} />
-                <CheckBox
-                  info="Năng lượng mua vào"
-                  id="nlmv"
-                  width={widthCheckBox}
-                />
-                <CheckBox info="Phí" id="p" width={widthCheckBox} />
-                <CheckBox info="Xả" id="x" width={widthCheckBox} />
-                <CheckBox info="Bức xạ" id="bx" width={widthCheckBox} />
-                <CheckBox info="kWh/kWp" id="kwhkwp" width={widthCheckBox} />
-                <CheckBox
-                  info="Sản xuất lý thuyết"
-                  id="sylt"
-                  width={widthCheckBox}
-                />
-                <CheckBox info="PR" id="pr" width={widthCheckBox} />
-                <CheckBox
-                  info="Sản xuất tự dùng"
-                  id="sxtud"
-                  width={widthCheckBox}
-                />
-                <CheckBox
-                  info="Tỷ lệ tự dùng từ sản xuất"
-                  id="tltdtsx"
-                  width={widthCheckBox}
-                />
-                <CheckBox
-                  info="Tỷ lệ từ sản xuất"
-                  id="tltsx"
-                  width={widthCheckBox}
-                />
-                <CheckBox
-                  info="Sản xuất đưa vào lưới"
-                  id="sxdvl"
-                  width={widthCheckBox}
-                />
-                <CheckBox
-                  info="Tỷ lệ cấp lưới từ năng lượng mua"
-                  id="tldrvnlmv"
-                  width={widthCheckBox}
-                />
-                <CheckBox
-                  info="Tỷ lệ từ năng lượng mua vào"
-                  id="tltlmv"
-                  width={widthCheckBox}
-                />
-                <CheckBox info="Sản xuất phí" id="sxp" width={widthCheckBox} />
-                <CheckBox
-                  info="Sản xuất từ xả"
-                  id="sxtx"
-                  width={widthCheckBox}
-                />
-                <CheckBox info="Tỷ lệ từ xả" id="tltx" width={widthCheckBox} />
-                <CheckBox
-                  info="Thu nhập từ điện"
-                  id="tntd"
-                  width={widthCheckBox}
-                />
+                {Object.entries(editData.value.customdata).map(
+                  ([key, value]) => (
+                    <CheckBox
+                      key={key}
+                      num={String(key)}
+                      tab={"customdata_content"}
+                      status={editData.value.customdata[key].status}
+                      id={editData.value.customdata[key].lang}
+                      width={widthCheckBox}
+                    />
+                  )
+                )}
               </div>
             </div>
           </div>
