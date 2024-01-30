@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import "./Navigation.scss"
 import { sidenar } from '../../component/Sidenar/Sidenar';
 import { BsFillMenuButtonWideFill } from "react-icons/bs";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { MdOutlineLanguage } from "react-icons/md";
@@ -71,7 +71,7 @@ const messageOption = signal('default')
 
 function Navigation(props) {
 
-
+    const navigate = useNavigate();
     const user_icon = useRef()
     const user_box = useRef()
     const notif_icon = useRef()
@@ -154,6 +154,27 @@ function Navigation(props) {
         }
     }, []);
 
+    let logout = function () {
+
+
+
+        //navigate('/Login');
+        const setDefault = async () => {
+            localStorage.clear();
+            sessionStorage.clear();
+            navigate('/Logout');
+            window.location.reload();
+        }
+
+        setDefault();
+
+
+
+    }
+
+
+
+
     return (
         <>
             <div className='DAT_Navigation' >
@@ -228,11 +249,11 @@ function Navigation(props) {
                         <div className='DAT_NavUser-inf-content-email'>Admin@datgroup.com.vn</div>
                     </div>
                 </div>
-                <div className='DAT_NavUser-item' style={{ cursor: "pointer", borderBottom: "1px solid gray" }} >
+                <div className='DAT_NavUser-item' style={{ cursor: "pointer", borderBottom: "1px solid gray" }}  onClick={() => navigate('/User')}>
                     <span >Tài khoản</span>
                 </div>
-                <div className="DAT_NavUser-item">
-                    <span>Đăng xuất</span>
+                <div className="DAT_NavUser-item" onClick={()=>logout()}>
+                    <span >Đăng xuất</span>
                 </div>
 
             </div>

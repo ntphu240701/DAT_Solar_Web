@@ -290,9 +290,10 @@
                 border-radius: 5px;
                 overflow: hidden;
                 box-sizing: border-box;
+
                 // padding: 5px;
                 // background-color: white;
-                &_wheather{
+                &_wheather {
                     width: 100%;
                     height: 100%;
                     background-color: #3e80fb;
@@ -300,7 +301,7 @@
                     background-size: cover;
                     background-repeat: no-repeat;
                     background-position: left;
-   
+
                 }
             }
         }
@@ -398,24 +399,27 @@
 
                 &_Tit {
                     display: flex;
+
                     &-Unit {
                         flex: 1;
                         color: gray;
                         font-size: 14px;
                     }
+
                     &-Label {
-                       width: 100%;
-                       display: flex;
-                       justify-content: center;
-                       align-items: center;
-                       color: gray;
-                       font-size: 14px; 
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        color: gray;
+                        font-size: 14px;
                     }
                 }
 
                 height: 300px;
                 padding: 20px;
-                &_Chart{
+
+                &_Chart {
                     height: 100%;
                     width: 100%;
                 }
@@ -616,54 +620,72 @@
         }
 
         &_Body {
-            &_Item {
-                width: 700px;
-                margin: auto;
-                padding: 16px;
-                overflow: hidden;
+            display: flex;
 
-                &_Tit {
-                    padding-bottom: 8px;
-                }
+            &_Left {
+                flex: 5;
 
-                & input {
-                    width: 100%;
-                    height: 40px;
-                    border-radius: 5px;
-                    border: solid 1px rgb(199, 199, 199);
-                    padding: 4px;
-                    outline: none;
-                    box-sizing: border-box;
-                    -webkit-box-sizing: border-box;
-                    -moz-box-sizing: border-box;
-                }
-
-                & select {
-                    width: 100%;
-                    height: 40px;
-                    width: 100%;
-                    height: 40px;
-                    border-radius: 5px;
-                    border: solid 1px rgb(199, 199, 199);
-                    padding: 4px;
-                }
-
-                &_Content {
-                    height: 300px;
-                }
-
-                &_Posi {
-                    display: flex;
-                    gap: 100px;
-                    flex-wrap: wrap;
+                &_Item {
+                    margin: auto;
+                    padding: 16px;
                     overflow: hidden;
 
-                    &_Content {
-                        flex: 5;
+                    &_Tit {
+                        padding-bottom: 8px;
+                    }
 
-                        &_Tit {
-                            padding-bottom: 8px;
+                    & input {
+                        width: 100%;
+                        height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                        outline: none;
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                    }
+
+                    & select {
+                        width: 100%;
+                        height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                    }
+
+                    &_Posi {
+                        display: flex;
+                        gap: 100px;
+                        flex-wrap: wrap;
+                        overflow: hidden;
+
+                        &_Content {
+                            flex: 5;
+
+                            &_Tit {
+                                padding-bottom: 8px;
+                            }
                         }
+                    }
+                }
+            }
+
+            &_Right {
+                flex: 5;
+
+                &_Item {
+                    margin: auto;
+                    padding: 16px;
+                    overflow: hidden;
+
+                    &_Tit {
+                        padding-bottom: 8px;
+                    }
+
+                    &_Content {
+                        height: 270px;
+                        box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
                     }
                 }
             }
@@ -700,48 +722,79 @@
         }
 
         &_Body {
-            &_Item {
-                width: 700px;
-                margin: auto;
-                padding: 16px;
-                overflow: hidden;
-                display: flex;
-                gap: 100px;
+            display: flex;
 
-                &_Left {
-                    flex: 5;
+            &_Left {
+                flex: 3.3;
 
-                    &_Tit {
-                        padding-bottom: 8px;
-                    }
-                }
-
-                &_Right {
-                    flex: 5;
+                &_Item {
+                    margin: auto;
+                    padding: 16px;
+                    overflow: hidden;
 
                     &_Tit {
                         padding-bottom: 8px;
                     }
-                }
 
-                & input {
-                    width: 100%;
-                    height: 40px;
-                    border-radius: 5px;
-                    border: solid 1px rgb(199, 199, 199);
-                    padding: 4px;
-                    outline: none;
-                    box-sizing: border-box;
-                    -webkit-box-sizing: border-box;
-                    -moz-box-sizing: border-box;
+                    & select {
+                        width: 100%;
+                        height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                    }
                 }
+            }
 
-                & select {
-                    width: 100%;
-                    height: 40px;
-                    border-radius: 5px;
-                    border: solid 1px rgb(199, 199, 199);
-                    padding: 4px;
+            &_Center {
+                flex: 3.3;
+
+                &_Item {
+                    margin: auto;
+                    padding: 16px;
+                    overflow: hidden;
+
+                    &_Tit {
+                        padding-bottom: 8px;
+                    }
+
+                    & input {
+                        width: 100%;
+                        height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                        outline: none;
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                    }
+                }
+            }
+
+            &_Right {
+                flex: 3.3;
+
+                &_Item {
+                    margin: auto;
+                    padding: 16px;
+                    overflow: hidden;
+
+                    &_Tit {
+                        padding-bottom: 8px;
+                    }
+
+                    & input {
+                        width: 100%;
+                        height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                        outline: none;
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                    }
                 }
             }
         }
@@ -777,49 +830,58 @@
         }
 
         &_Body {
-            &_Item {
-                width: 700px;
-                margin: auto;
-                padding: 16px;
-                overflow: hidden;
-                display: flex;
-                gap: 100px;
+            display: flex;
 
-                &_Left {
-                    flex: 5;
+            &_Left {
+                flex: 3.3;
 
-                    &_Tit {
-                        padding-bottom: 8px;
-                    }
-                }
-
-                &_Right {
-                    flex: 5;
+                &_Item {
+                    margin: auto;
+                    padding: 16px;
+                    overflow: hidden;
 
                     &_Tit {
                         padding-bottom: 8px;
                     }
-                }
 
-                & input {
-                    width: 100%;
-                    height: 40px;
-                    border-radius: 5px;
-                    border: solid 1px rgb(199, 199, 199);
-                    padding: 4px;
-                    outline: none;
-                    box-sizing: border-box;
-                    -webkit-box-sizing: border-box;
-                    -moz-box-sizing: border-box;
+                    & select {
+                        width: 100%;
+                        height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                    }
                 }
+            }
 
-                & select {
-                    width: 100%;
-                    height: 40px;
-                    border-radius: 5px;
-                    border: solid 1px rgb(199, 199, 199);
-                    padding: 4px;
+            &_Center {
+                flex: 3.3;
+
+                &_Item {
+                    margin: auto;
+                    padding: 16px;
+                    overflow: hidden;
+
+                    &_Tit {
+                        padding-bottom: 8px;
+                    }
+
+                    & input {
+                        width: 100%;
+                        height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                        outline: none;
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                    }
                 }
+            }
+
+            &_Right {
+                flex: 3.3;
             }
         }
     }
@@ -854,48 +916,83 @@
         }
 
         &_Body {
-            &_Item {
-                width: 700px;
-                margin: auto;
-                padding: 16px;
-                overflow: hidden;
-                display: flex;
-                gap: 100px;
+            display: flex;
 
-                &_Left {
-                    flex: 5;
+            &_Left {
+                flex: 3.3;
 
-                    &_Tit {
-                        padding-bottom: 8px;
-                    }
-                }
-
-                &_Right {
-                    flex: 5;
+                &_Item {
+                    margin: auto;
+                    padding: 16px;
+                    overflow: hidden;
 
                     &_Tit {
                         padding-bottom: 8px;
                     }
-                }
 
-                & input {
-                    width: 100%;
-                    height: 40px;
-                    border-radius: 5px;
-                    border: solid 1px rgb(199, 199, 199);
-                    padding: 4px;
-                    outline: none;
-                    box-sizing: border-box;
-                    -webkit-box-sizing: border-box;
-                    -moz-box-sizing: border-box;
+                    & input {
+                        width: 100%;
+                        height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                        outline: none;
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                    }
                 }
+            }
 
-                & select {
-                    width: 100%;
-                    height: 40px;
-                    border-radius: 5px;
-                    border: solid 1px rgb(199, 199, 199);
-                    padding: 4px;
+            &_Center {
+                flex: 3.3;
+
+                &_Item {
+                    margin: auto;
+                    padding: 16px;
+                    overflow: hidden;
+
+                    &_Tit {
+                        padding-bottom: 8px;
+                    }
+
+                    & input {
+                        width: 100%;
+                        height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                        outline: none;
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                    }
+                }
+            }
+
+            &_Right {
+                flex: 3.3;
+
+                &_Item {
+                    margin: auto;
+                    padding: 16px;
+                    overflow: hidden;
+
+                    &_Tit {
+                        padding-bottom: 8px;
+                    }
+
+                    & input {
+                        width: 100%;
+                        height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                        outline: none;
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                    }
                 }
             }
         }
@@ -1458,12 +1555,6 @@
                 display: flex;
                 align-items: center;
                 cursor: pointer;
-
-                :hover {
-                    color: red;
-                    transform: rotate(90deg);
-                    transition: 0.2s;
-                }
             }
         }
     }
@@ -1728,38 +1819,46 @@
 
     }
 
-    .DAT_ProjectData_Body_Data {
-        display: contents;
+    .DAT_ProjectData {
+        &_Body {
+            margin-bottom: 100px;
 
-        &_Left {
-            width: 98%;
-            height: 100%;
-            margin: auto;
-            margin-bottom: 16px;
-        }
+            &_Data {
 
-        &_Center {
-            width: 98%;
-            height: 100%;
-            margin: auto;
-            margin-bottom: 16px;
-
-            &_Total {
                 display: contents;
 
-                &_Item {
-                    width: 90%;
+                &_Left {
+                    width: 98%;
+                    height: 100%;
                     margin: auto;
-                    margin-bottom: 5px;
+                    margin-bottom: 16px;
+                }
+
+                &_Center {
+                    width: 98%;
+                    height: 100%;
+                    margin: auto;
+                    margin-bottom: 16px;
+
+                    &_Total {
+                        display: contents;
+
+                        &_Item {
+                            width: 90%;
+                            margin: auto;
+                            margin-bottom: 5px;
+                        }
+                    }
+                }
+
+                &_Right {
+                    width: 98%;
+                    margin: auto;
+                    margin-bottom: 16px;
                 }
             }
         }
 
-        &_Right {
-            width: 98%;
-            margin: auto;
-            margin-bottom: 16px;
-        }
     }
 
     .DAT_AddProject {
@@ -1858,23 +1957,7 @@
             }
 
             &_Body {
-                padding: 15px;
-
-                &_Item {
-                    display: contents;
-                    height: 100%;
-
-                    &_Posi {
-                        display: flex;
-                        flex-wrap: wrap;
-                        overflow: hidden;
-                        gap: 10px;
-
-                        &_Content {
-                            flex: 5;
-                        }
-                    }
-                }
+                display: contents;
             }
         }
 
@@ -1892,12 +1975,7 @@
             }
 
             &_Body {
-                padding: 15px;
-
-                &_Item {
-                    display: contents;
-                    height: 100%;
-                }
+                display: contents;
             }
         }
 
@@ -1915,12 +1993,7 @@
             }
 
             &_Body {
-                padding: 15px;
-
-                &_Item {
-                    display: contents;
-                    height: 100%;
-                }
+                display: contents;
             }
         }
 
@@ -1931,19 +2004,21 @@
             overflow-y: scroll;
             -ms-overflow-style: none;
             scrollbar-width: none;
+            margin-bottom: 100px;
 
             &::-webkit-scrollbar {
                 display: none;
                 /* Safari and Chrome */
             }
 
-            &_Body {
-                padding: 15px;
-
-                &_Item {
-                    display: contents;
-                    height: 100%;
+            &_Tit {
+                &_Left {
+                    min-width: 300px;
                 }
+            }
+
+            &_Body {
+                display: contents;
             }
         }
     }
@@ -1963,3 +2038,8 @@
 // white-space: nowrap; // ngan xuong dong
 // overflow: hidden; // an noi dung vuot ra ngoai
 // text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai 
+
+// input
+// box-sizing: border-box;
+// -webkit-box-sizing: border-box;
+// -moz-box-sizing: border-box;

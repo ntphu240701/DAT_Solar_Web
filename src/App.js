@@ -1,13 +1,17 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import './index.scss';
 
 import Alert, { alertDispatch } from './component/Alert/Alert';
 import Navigation from './component/Navigation/Navigation';
 import Sidenar from './component/Sidenar/Sidenar';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ClockLoader } from "react-spinners";
 import Login from './component/Login/Login';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useIntl } from 'react-intl';
+import axios from 'axios';
+import { host } from './component/Lang/Contant';
+import adminslice from "./component/Redux/adminslice";
 
 const Home = React.lazy(() => import('./component/Home/Home'));
 const Project = React.lazy(() => import('./component/Project/Project'));
@@ -26,12 +30,36 @@ const Contact = React.lazy(() => import('./component/Contact/Contact'));
 
 
 function App() {
-  
+  const [loading, setLoading] = useState(true);
   const status = useSelector((state) => state.admin.status)
-  // const dataLang = useIntl();
-  // useEffect(() => {
-  //   alertDispatch(dataLang.formatMessage({ id: "alert_0" }))
-  // }, [])
+  const dataLang = useIntl();
+  const rootDispatch = useDispatch()
+
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      await axios.get(host.AUTH + window.location.pathname, {
+
+        headers: {
+          token: JSON.parse(localStorage.getItem('token')) || JSON.parse(sessionStorage.getItem('token'))
+        },
+        withCredentials: true
+      }
+      ).then(
+        function (res) {
+          if (res.data.status) {
+            console.log(res.data)
+            rootDispatch(adminslice.actions.setstatus(res.data.status))
+            rootDispatch(adminslice.actions.setusr(res.data.usr))
+          } else {
+            setLoading(false)
+          }
+        }
+      )
+    }
+
+    checkAuth();
+  }, [])
 
   return (
     <>
@@ -45,7 +73,7 @@ function App() {
               <div className='DAT_App_Content' >
                 <Routes>
                   <Route exact path='/' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={true} /></div>}><Home /></Suspense>} />
-                  <Route exact path='/Project' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={true} /></div>}><Project/></Suspense>} />
+                  <Route exact path='/Project' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={true} /></div>}><Project /></Suspense>} />
                   <Route exact path='/Device' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={true} /></div>}><Device /></Suspense>} />
                   <Route exact path='/Warn' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={true} /></div>}><Warn /></Suspense>} />
                   <Route exact path='/Report' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={true} /></div>}><Report /></Suspense>} />
@@ -56,6 +84,8 @@ function App() {
                   <Route exact path='/Log' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={true} /></div>}><Log /></Suspense>} />
                   <Route exact path='/Language' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={true} /></div>}><Language /></Suspense>} />
                   <Route exact path='/Contact' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={true} /></div>}><Contact /></Suspense>} />
+                  <Route path='/Login' element={<Navigate to="/" />} />
+                  <Route path='/Logout' element={<Navigate to="/Login" />} />
                 </Routes>
 
               </div>

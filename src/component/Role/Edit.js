@@ -1,10 +1,9 @@
 import React from "react";
-import "./Project.scss";
-import { popupState } from "./Project";
+import "./Role.scss";
+import { popupState, roleData } from "./Role";
 import { IoClose } from "react-icons/io5";
-import { hasIn } from "lodash";
 
-export default function Popup() {
+export default function Edit() {
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -18,15 +17,15 @@ export default function Popup() {
   };
 
   return (
-    <div className="DAT_Popup_Box">
-      <div className="DAT_Popup_Box_Head">
-        <div className="DAT_Popup_Box_Head_Left">
-          <p>Xóa thiết bị</p>
+    <div className="DAT_Edit">
+      <div className="DAT_Edit_Head">
+        <div className="DAT_Edit_Head_Left">
+          <p>Chỉnh sửa</p>
         </div>
-        <div className="DAT_Popup_Box_Head_Right">
+        <div className="DAT_Edit_Head_Right">
           <div
-            className="DAT_Popup_Box_Head_Right_Icon"
-            onClick={() => (popupState.value = false)}
+            className="DAT_Edit_Head_Right_Icon"
+            onClick={() => (popupState.value = "default")}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
@@ -35,20 +34,32 @@ export default function Popup() {
           </div>
         </div>
       </div>
-      <div className="DAT_Popup_Box_Body">
-        <p>
-          Bạn có chắc chắn muốn xóa vĩnh viễn thiết bị này không? Tất cả dữ liệu
-          lịch sử của XXX sẽ bị mất.
-        </p>
+
+      <div className="DAT_Edit_Body">
+        <div className="DAT_Edit_Body_Row">
+          Tên người dùng: &nbsp;
+          {roleData.value.name}
+        </div>
+
+        <div className="DAT_Edit_Body_Row">
+          <span style={{ color: "red" }}>* </span>
+          <span style={{ color: "grey" }}>Chọn quyền: &nbsp;</span>
+          <select>
+            <option>View only</option>
+            <option>Edit</option>
+            <option>Full</option>
+          </select>
+        </div>
       </div>
-      <div className="DAT_Popup_Box_Foot">
+
+      <div className="DAT_Edit_Foot">
         <button
           style={{
             border: "1px solid #505050",
             backgroundColor: "white",
             color: "#505050",
           }}
-          onClick={() => (popupState.value = false)}
+          onClick={() => (popupState.value = "default")}
         >
           Hủy
         </button>

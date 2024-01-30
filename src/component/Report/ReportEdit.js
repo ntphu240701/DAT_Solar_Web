@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import { editState } from "./Report";
+import { editState, ReportData, idReport } from "./Report";
 import { signal } from "@preact/signals-react";
 // import { CheckBox } from "../Device/Config";
 import { isMobile } from "../Navigation/Navigation";
+import { Checkbox } from "@mui/material";
 
 export const checkbox = signal({
   tthtc: { status: false },
@@ -16,14 +17,10 @@ export const CheckBox = (props) => {
   const handleShow = (e) => {
     const Check = { id: props.id, status: e.target.checked };
     show.value = Check;
-
-    //checkbox.value[props.id].status = e.target.checked;
-    //console.log(checkbox.value)
   };
-
   return (
     <div
-      className="DAT_Edit_Body_Item_Option_Check_SingleCheck"
+      className="DAT_EditReport_Body_Item_Option_Check_SingleCheck"
       style={{ width: props.width }}
     >
       <div className="form-check">
@@ -50,8 +47,8 @@ export const CheckBox = (props) => {
 
 const DataReport = (props) => {
   return (
-    <div className="DAT_Edit_Body_Item">
-      <div className="DAT_Edit_Body_Item_Data">
+    <div className="DAT_EditReport_Body_Item">
+      <div className="DAT_EditReport_Body_Item_Data">
         <label style={{ fontWeight: "700", margin: "0" }}>
           Daily Data Report
         </label>
@@ -60,7 +57,7 @@ const DataReport = (props) => {
           including plant power generation, subsystem power generation, inverter
           power generation under plant, etc.
         </p>
-        <div className="DAT_Edit_Body_Item_Data_Name">
+        <div className="DAT_EditReport_Body_Item_Data_Name">
           <label>Tên báo cáo: </label>
           <input placeholder="Required Field" required></input>
         </div>
@@ -69,8 +66,25 @@ const DataReport = (props) => {
   );
 };
 
+const reportData = signal({});
+
 export default function Create() {
+  const handleShow = (e) => {};
+
+
+
   const [widthCheckBox, setWidwidthCheckBox] = React.useState("");
+  //const [reportData, setReportData] = useState({inf:{}});
+  useEffect(() => {
+    reportData.value = ReportData.value.find(
+      (item) => item.id === parseInt(idReport.value)
+    );
+  }, []);
+
+  useEffect(() => {
+    console.log(reportData.value.inf);
+  }, [reportData.value]);
+
   const handleCloseCreate = () => {
     editState.value = false;
   };
@@ -92,31 +106,30 @@ export default function Create() {
     } else {
       setWidwidthCheckBox("25%");
     }
-    console.log(isMobile.value);
+    // console.log(isMobile.value);
   }, [isMobile.value]);
 
   return (
     <div>
       <div className="DAT_Edit">
-        <div className="DAT_Edit_Header">
-          <div className="DAT_Edit_Header_Left">
+        <div className="DAT_EditReport_Header">
+          <div className="DAT_EditReport_Header_Left">
             <p style={{ fontSize: "20px" }}>Chỉnh sửa</p>
           </div>
-          <div className="DAT_Edit_Header_Right">
-            <div className="DAT_Edit_Header_Right_Save">
+          <div className="DAT_EditReport_Header_Right">
+            <div className="DAT_EditReport_Header_Right_Save">
               <FaSave size={20} color="white" />
               <span>Lưu</span>
             </div>
-            <div className="DAT_Edit_Header_Right_Close">
+            <div className="DAT_EditReport_Header_Right_Close">
               <RxCross2 size={20} color="white" onClick={handleCloseCreate} />
             </div>
           </div>
         </div>
 
-        <div className="DAT_Edit_Body">
-          
-          {/* <div className="DAT_Edit_Body_Item">
-            <div className="DAT_Edit_Body_Item_Type">
+        <div className="DAT_EditReport_Body">
+          {/* <div className="DAT_EditReport_Body_Item">
+            <div className="DAT_EditReport_Body_Item_Type">
               <h4>Loại báo cáo</h4>
               <select className="form-select form-select-sm mt-3">
                 <option>Báo cáo dữ liệu hàng ngày</option>
@@ -129,39 +142,40 @@ export default function Create() {
 
           <DataReport />
 
-          <div className="DAT_Edit_Body_Item">
-            <div className="DAT_Edit_Body_Item_Option">
+          <div className="DAT_EditReport_Body_Item">
+            <div className="DAT_EditReport_Body_Item_Option">
               <label style={{ margin: "0" }}>Tùy chọn thông tin</label>
-              <div className="DAT_Edit_Body_Item_Option_Check">
+              <div className="DAT_EditReport_Body_Item_Option_Check">
                 <p style={{ color: "grey" }}>Thông tin dự án</p>
-                <CheckBox info="Tên dự án" id="tda" width={widthCheckBox} />
-                <CheckBox
-                  info="Khu vực hành chính"
-                  id="kvhc"
-                  width={widthCheckBox}
-                />
-                <CheckBox info="Azimuth" id="az" width={widthCheckBox} />
-                <CheckBox info="Góc nghiêng" id="gn" width={widthCheckBox} />
-                <CheckBox info="Dung lượng" id="dl" width={widthCheckBox} />
-                <CheckBox
-                  info="Ngày kết nối lưới"
-                  id="nknl"
-                  width={widthCheckBox}
-                />
-                <CheckBox info="Tổng chi phí" id="tcp" width={widthCheckBox} />
-                <CheckBox info="Loại nhà máy" id="lnm" width={widthCheckBox} />
-                <CheckBox info="Loại hệ thống" id="lht" width={widthCheckBox} />
-                <CheckBox info="Ngày tạo" id="nt" width={widthCheckBox} />
-                <CheckBox info="Nhãn" id="tag" width={widthCheckBox} />
-                <CheckBox
-                  info="Quản lý dự án"
-                  id="qlda"
-                  width={widthCheckBox}
-                />
+                {reportData.value?.inf !== undefined ? (
+                  Object.keys(reportData.value.inf).map((key, i) => {
+                    
+                      // return <div>{key}</div>
+                  
+                  })
+                ) : (
+                  <></>
+                )}
+
+                {/* {ReportData.value[parseInt(idReport.value) - 1].inf.map(
+                  (item, index) => {
+                    return (
+                      <div key={index}>
+                        <CheckBox
+                          info={item[index].lang}
+                          status={item[index].status}
+                          id={item[index].lang}
+                          width={widthCheckBox}
+                        />
+                      </div>
+                    );
+                  }
+                )} */}
+                {/* <CheckBox info="Tên dự án" id="tda" width={widthCheckBox} /> */}
               </div>
 
               <div
-                className="DAT_Edit_Body_Item_Option_Check"
+                className="DAT_EditReport_Body_Item_Option_Check"
                 style={{
                   border: checkbox.value.tthtc.status
                     ? "1px solid grey"
@@ -170,7 +184,7 @@ export default function Create() {
                   transition: "0.5s",
                 }}
               >
-                <div className="DAT_Edit_Body_Item_Option_Check_Head">
+                <div className="DAT_EditReport_Body_Item_Option_Check_Head">
                   <CheckBox
                     info="Thông tin hệ thống con"
                     id="tthtc"
@@ -192,7 +206,7 @@ export default function Create() {
               </div>
 
               <div
-                className="DAT_Edit_Body_Item_Option_Check"
+                className="DAT_EditReport_Body_Item_Option_Check"
                 style={{
                   border: checkbox.value["tttb"].status
                     ? "1px solid grey"
@@ -201,7 +215,7 @@ export default function Create() {
                   transition: "0.5s",
                 }}
               >
-                <div className="DAT_Edit_Body_Item_Option_Check_Head">
+                <div className="DAT_EditReport_Body_Item_Option_Check_Head">
                   <CheckBox
                     info="Thông tin thiết bị"
                     id="tttb"
@@ -262,10 +276,10 @@ export default function Create() {
               </div>
             </div>
           </div>
-          <div className="DAT_Edit_Body_Item">
-            <div className="DAT_Edit_Body_Item_Option">
+          <div className="DAT_EditReport_Body_Item">
+            <div className="DAT_EditReport_Body_Item_Option">
               <label style={{ margin: "0" }}>Tùy chọn dữ liệu</label>
-              <div className="DAT_Edit_Body_Item_Option_Check">
+              <div className="DAT_EditReport_Body_Item_Option_Check">
                 <p style={{ color: "grey" }}>Dữ liệu dự án</p>
                 <CheckBox info="Sản xuất" id="sx" width={widthCheckBox} />
                 <CheckBox info="Tiêu thụ" id="tt" width={widthCheckBox} />

@@ -50,7 +50,6 @@
     }
 }
 
-
 .DAT_Role {
 
     width: 98%;
@@ -68,5 +67,372 @@
     background-color: rgb(255, 255, 255, 0.95);
     box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4), -2px -2px 5px rgba(198, 197, 197, 0.4);
     padding: 10px;
-    
+
+}
+
+.DAT_CreateRole {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(231, 231, 231);
+    z-index: 25;
+
+    // an thanh scrollbar
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+        /* Safari and Chrome */
+    }
+
+    &_Header {
+        position: fixed;
+        z-index: 25;
+        width: 100%;
+        padding-top: 58px;
+        background-color: white;
+        display: flex;
+        flex-wrap: wrap;
+        overflow: hidden;
+        box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
+
+        &_Left {
+            flex: 5;
+            padding: 16px;
+            font-size: 20px;
+        }
+
+        &_Right {
+            flex: 5;
+            padding: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+            justify-content: flex-end;
+            gap: 10px;
+
+            &_Save {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                overflow: hidden;
+                height: 30px;
+                padding: 0px 10px;
+                cursor: pointer;
+                background-color: #3e80fb;
+                border-radius: 5px;
+                gap: 5px;
+
+                & span {
+                    color: white;
+                }
+            }
+
+            &_Close {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                flex-wrap: wrap;
+                overflow: hidden;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+
+                background-color: red;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(252, 122, 122);
+                }
+            }
+        }
+    }
+
+    &_Body {
+        width: 98%;
+        margin: auto;
+        background-color: white;
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
+        margin-top: 134px;
+        margin-bottom: 16px;
+        padding: 20px;
+        box-sizing: border-box; // de padding va border khong bi tran ra ngoai
+
+        &_Row1 {
+            padding: 16px;
+            display: flex;
+            gap: 100px;
+
+            &_Left {
+                flex: 5;
+
+                &_Content {
+                    display: flex;
+                    gap: 50px;
+                }
+            }
+
+            &_Right {
+                flex: 5;
+            }
+        }
+
+        &_Row2 {
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+
+            &_Left {
+                flex: 5;
+
+                &_Content {
+
+                    &_Tit {
+                        padding-bottom: 8px;
+                    }
+
+                    & input {
+                        width: 100%;
+                        height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                        outline: none;
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                    }
+
+                    & select {
+                        width: 100%;
+                        height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                    }
+                }
+            }
+
+            &_Right {
+                flex: 5;
+
+                &_Content {
+
+                    &_Tit {
+                        padding-bottom: 8px;
+                    }
+
+                    & input {
+                        width: 100%;
+                        height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                        outline: none;
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.DAT_Delete {
+    position: relative;
+    // margin-top: -58px;
+    width: 400px;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow:
+        2px 2px 5px rgb(73, 73, 73, 0.2),
+        -2px -2px 5px rgb(67, 67, 67, 0.2);
+
+    &_Head {
+        display: flex;
+        background-color: rgba(182, 182, 182, 0.4);
+        padding: 16px;
+
+        &_Left {
+            flex: 5;
+
+            & p {
+                margin: 0;
+            }
+        }
+
+        &_Right {
+            display: flex;
+            justify-content: flex-end;
+            flex: 5;
+
+            &_Icon {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &_Body {
+        font-size: 13px;
+        padding: 16px;
+        color: #505050;
+        border-bottom: 0.5px solid rgb(194, 194, 194);
+    }
+
+    &_Foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 10px;
+
+        & button {
+            padding: 5px 15px;
+            border-radius: 4px;
+            border: 1px solid;
+            cursor: pointer;
+        }
+    }
+}
+
+.DAT_Edit {
+    position: relative;
+    // margin-top: -58px;
+    width: 400px;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow:
+        2px 2px 5px rgb(73, 73, 73, 0.2),
+        -2px -2px 5px rgb(67, 67, 67, 0.2);
+
+    &_Head {
+        display: flex;
+        background-color: rgba(182, 182, 182, 0.4);
+        padding: 16px;
+
+        &_Left {
+            flex: 5;
+
+            & p {
+                margin: 0;
+            }
+        }
+
+        &_Right {
+            display: flex;
+            justify-content: flex-end;
+            flex: 5;
+
+            &_Icon {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &_Body {
+        font-size: 13px;
+        padding: 16px;
+        color: #505050;
+        border-bottom: 0.5px solid rgb(194, 194, 194);
+
+        &_Row {
+            font-size: 16px;
+            padding: 8px;
+
+            & select {
+                width: 200px;
+                border-radius: 5px;
+                border: solid 1px rgb(199, 199, 199);
+                padding: 4px;
+            }
+        }
+    }
+
+    &_Foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 10px;
+
+        & button {
+            padding: 5px 15px;
+            border-radius: 4px;
+            border: 1px solid;
+            cursor: pointer;
+        }
+    }
+}
+
+.DAT_RoleInfor {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    background-color: white;
+    top: 0;
+    right: 0;
+    z-index: 30;
+    overflow: hidden;
+}
+
+.DAT_RolePopup {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    background-color: rgb(128, 128, 128, 0.7);
+    top: 0;
+    right: 0;
+    z-index: 25;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // overflow-y: scroll;
+    // -ms-overflow-style: none;
+    // scrollbar-width: none;
+    // &::-webkit-scrollbar {
+    //     display: none;
+    // }
+}
+
+@media (max-width: 900px) {
+    .DAT_Create {
+        &_Body {
+            margin-bottom: 100px;
+
+            &_Row1 {
+                display: contents;
+
+                &_Left {
+                    padding: 16px;
+                }
+            }
+
+            &_Row2 {
+                display: contents;
+
+                &_Left {
+                    padding: 16px;
+
+                }
+
+                &_Right {
+                    padding: 16px;
+
+                }
+            }
+        }
+    }
 }

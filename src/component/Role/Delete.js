@@ -1,10 +1,9 @@
 import React from "react";
-import "./Project.scss";
-import { popupState } from "./Project";
+import "./Role.scss";
+import { popupState, roleState } from "./Role";
 import { IoClose } from "react-icons/io5";
-import { hasIn } from "lodash";
 
-export default function Popup() {
+export default function Delete() {
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -18,15 +17,15 @@ export default function Popup() {
   };
 
   return (
-    <div className="DAT_Popup_Box">
-      <div className="DAT_Popup_Box_Head">
-        <div className="DAT_Popup_Box_Head_Left">
-          <p>Xóa thiết bị</p>
+    <div className="DAT_Delete">
+      <div className="DAT_Delete_Head">
+        <div className="DAT_Delete_Head_Left">
+          <p>Xóa người dùng</p>
         </div>
-        <div className="DAT_Popup_Box_Head_Right">
+        <div className="DAT_Delete_Head_Right">
           <div
-            className="DAT_Popup_Box_Head_Right_Icon"
-            onClick={() => (popupState.value = false)}
+            className="DAT_Delete_Head_Right_Icon"
+            onClick={() => (popupState.value = "default")}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
@@ -35,20 +34,20 @@ export default function Popup() {
           </div>
         </div>
       </div>
-      <div className="DAT_Popup_Box_Body">
+      <div className="DAT_Delete_Body">
         <p>
-          Bạn có chắc chắn muốn xóa vĩnh viễn thiết bị này không? Tất cả dữ liệu
-          lịch sử của XXX sẽ bị mất.
+          Bạn có chắc chắn muốn xóa vĩnh viễn người dùng này không? Tất cả dữ
+          liệu lịch sử của XXX sẽ bị mất.
         </p>
       </div>
-      <div className="DAT_Popup_Box_Foot">
+      <div className="DAT_Delete_Foot">
         <button
           style={{
             border: "1px solid #505050",
             backgroundColor: "white",
             color: "#505050",
           }}
-          onClick={() => (popupState.value = false)}
+          onClick={() => (popupState.value = "default")}
         >
           Hủy
         </button>

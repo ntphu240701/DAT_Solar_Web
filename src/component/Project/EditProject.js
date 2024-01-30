@@ -7,6 +7,7 @@ import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 import { isMobile } from "../Navigation/Navigation";
+import moment from "moment-timezone";
 
 const BasicInfo = (props) => {
   const [state, setState] = useState(true);
@@ -45,54 +46,58 @@ const BasicInfo = (props) => {
       >
         {state ? (
           <div className="DAT_EditProject_BasicInfo_Body">
-            <div className="DAT_EditProject_BasicInfo_Body_Item">
-              <div className="DAT_EditProject_BasicInfo_Body_Item_Tit">
-                <span style={{ color: "red" }}>* </span>
-                <span style={{ color: "grey" }}>Tên dự án:</span>
-              </div>
-              <input defaultValue={projectData.value.name}></input>
-            </div>
-
-            <div className="DAT_EditProject_BasicInfo_Body_Item">
-              <div className="DAT_EditProject_BasicInfo_Body_Item_Tit">
-                <span style={{ color: "red" }}>* </span>
-                <span style={{ color: "grey" }}>Vị trí:</span>
-              </div>
-              <div className="DAT_EditProject_BasicInfo_Body_Item_Content">
-                <GoogleMap
-                  apiKey={process.env.REACT_APP_GGKEY}
-                  defaultCenter={defaultProps.center}
-                  defaultZoom={defaultProps.zoom}
-                  //onGoogleApiLoaded={onGoogleApiLoaded}
-                ></GoogleMap>
-              </div>
-            </div>
-
-            <div className="DAT_EditProject_BasicInfo_Body_Item">
-              <div className="DAT_EditProject_BasicInfo_Body_Item_Tit">
-                <span style={{ color: "red" }}>* </span>
-                <span style={{ color: "grey" }}>Địa chỉ:</span>
-              </div>
-              <input defaultValue={projectData.value.addr}></input>
-            </div>
-
-            <div className="DAT_EditProject_BasicInfo_Body_Item">
-              <div className="DAT_EditProject_BasicInfo_Body_Item_Tit">
-                <span style={{ color: "red" }}>* </span>
-                <span style={{ color: "grey" }}>Tọa độ:</span>
-              </div>
-              <div className="DAT_EditProject_BasicInfo_Body_Item_Posi">
-                <div className="DAT_EditProject_BasicInfo_Body_Item_Posi_Content">
-                  <div className="DAT_EditProject_BasicInfo_Body_Item_Posi_Content_Tit">
-                    Kinh độ
-                  </div>
-                  <input></input>
+            <div className="DAT_EditProject_BasicInfo_Body_Left">
+              <div className="DAT_EditProject_BasicInfo_Body_Left_Item">
+                <div className="DAT_EditProject_BasicInfo_Body_Left_Item_Tit">
+                  <span style={{ color: "red" }}>* </span>
+                  <span style={{ color: "grey" }}>Tên dự án:</span>
                 </div>
-                <div className="DAT_EditProject_BasicInfo_Body_Item_Posi_Content">
-                  <div className="DAT_EditProject_BasicInfo_Body_Item_Posi_Content_Tit">
-                    Vĩ độ
+                <input defaultValue={projectData.value.name}></input>
+              </div>
+
+              <div className="DAT_EditProject_BasicInfo_Body_Left_Item">
+                <div className="DAT_EditProject_BasicInfo_Body_Left_Item_Tit">
+                  <span style={{ color: "red" }}>* </span>
+                  <span style={{ color: "grey" }}>Địa chỉ:</span>
+                </div>
+                <input defaultValue={projectData.value.addr}></input>
+              </div>
+
+              <div className="DAT_EditProject_BasicInfo_Body_Left_Item">
+                <div className="DAT_EditProject_BasicInfo_Body_Left_Item_Tit">
+                  <span style={{ color: "red" }}>* </span>
+                  <span style={{ color: "grey" }}>Tọa độ:</span>
+                </div>
+                <div className="DAT_EditProject_BasicInfo_Body_Left_Item_Posi">
+                  <div className="DAT_EditProject_BasicInfo_Body_Left_Item_Posi_Content">
+                    <div className="DAT_EditProject_BasicInfo_Body_Left_Item_Posi_Content_Tit">
+                      Kinh độ
+                    </div>
+                    <input></input>
                   </div>
-                  <input></input>
+                  <div className="DAT_EditProject_BasicInfo_Body_Left_Item_Posi_Content">
+                    <div className="DAT_EditProject_BasicInfo_Body_Left_Item_Posi_Content_Tit">
+                      Vĩ độ
+                    </div>
+                    <input></input>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="DAT_EditProject_BasicInfo_Body_Right">
+              <div className="DAT_EditProject_BasicInfo_Body_Right_Item">
+                <div className="DAT_EditProject_BasicInfo_Body_Right_Item_Tit">
+                  <span style={{ color: "red" }}>* </span>
+                  <span style={{ color: "grey" }}>Vị trí:</span>
+                </div>
+                <div className="DAT_EditProject_BasicInfo_Body_Right_Item_Content">
+                  <GoogleMap
+                    apiKey={process.env.REACT_APP_GGKEY}
+                    defaultCenter={defaultProps.center}
+                    defaultZoom={defaultProps.zoom}
+                    //onGoogleApiLoaded={onGoogleApiLoaded}
+                  ></GoogleMap>
                 </div>
               </div>
             </div>
@@ -135,9 +140,9 @@ const SystemInfo = (props) => {
       >
         {state ? (
           <div className="DAT_EditProject_SystemInfo_Body">
-            <div className="DAT_EditProject_SystemInfo_Body_Item">
-              <div className="DAT_EditProject_SystemInfo_Body_Item_Left">
-                <div className="DAT_EditProject_SystemInfo_Body_Item_Left_Tit">
+            <div className="DAT_EditProject_SystemInfo_Body_Left">
+              <div className="DAT_EditProject_SystemInfo_Body_Left_Item">
+                <div className="DAT_EditProject_SystemInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
                   <span style={{ color: "grey" }}>Loại dự án:</span>
                 </div>
@@ -147,8 +152,8 @@ const SystemInfo = (props) => {
                 </select>
               </div>
 
-              <div className="DAT_EditProject_SystemInfo_Body_Item_Right">
-                <div className="DAT_EditProject_SystemInfo_Body_Item_Right_Tit">
+              <div className="DAT_EditProject_SystemInfo_Body_Left_Item">
+                <div className="DAT_EditProject_SystemInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
                   <span style={{ color: "grey" }}>Loại hệ thống điện:</span>
                 </div>
@@ -162,39 +167,36 @@ const SystemInfo = (props) => {
               </div>
             </div>
 
-            <div className="DAT_EditProject_SystemInfo_Body_Item">
-              <div className="DAT_EditProject_SystemInfo_Body_Item_Left">
-                <div className="DAT_EditProject_SystemInfo_Body_Item_Left_Tit">
+            <div className="DAT_EditProject_SystemInfo_Body_Center">
+              <div className="DAT_EditProject_SystemInfo_Body_Center_Item">
+                <div className="DAT_EditProject_SystemInfo_Body_Center_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
                   <span style={{ color: "grey" }}>Dung lượng(kWp):</span>
                 </div>
-                <input></input>
+                <input defaultValue={projectData.value.capacity}></input>
               </div>
 
-              <div className="DAT_EditProject_SystemInfo_Body_Item_Right">
-                {/* <div className="DAT_EditProject_SystemInfo_Body_Item_Right_Tit">
+              <div className="DAT_EditProject_SystemInfo_Body_Center_Item">
+                <div className="DAT_EditProject_SystemInfo_Body_Center_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Phương vị:</span>
+                  <span style={{ color: "grey" }}>Dữ liệu trên lưới:</span>
                 </div>
-                <input></input> */}
+                <input
+                  type="date"
+                  defaultValue={moment(projectData.value.createdate).format(
+                    "YYYY-MM-DD"
+                  )}
+                ></input>
               </div>
             </div>
 
-            <div className="DAT_EditProject_SystemInfo_Body_Item">
-              <div className="DAT_EditProject_SystemInfo_Body_Item_Left">
-                <div className="DAT_EditProject_SystemInfo_Body_Item_Left_Tit">
+            <div className="DAT_EditProject_SystemInfo_Body_Right">
+              <div className="DAT_EditProject_SystemInfo_Body_Right_Item">
+                <div className="DAT_EditProject_SystemInfo_Body_Right_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
                   <span style={{ color: "grey" }}>Góc nghiêng:</span>
                 </div>
-                <input></input>
-              </div>
-
-              <div className="DAT_EditProject_SystemInfo_Body_Item_Right">
-                <div className="DAT_EditProject_SystemInfo_Body_Item_Right_Tit">
-                  <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Dữ liệu trên lưới :</span>
-                </div>
-                <input type="date"></input>
+                <input placeholder="0~90"></input>
               </div>
             </div>
           </div>
@@ -236,9 +238,9 @@ const YieldInfo = (props) => {
       >
         {state ? (
           <div className="DAT_EditProject_YieldInfo_Body">
-            <div className="DAT_EditProject_YieldInfo_Body_Item">
-              <div className="DAT_EditProject_YieldInfo_Body_Item_Left">
-                <div className="DAT_EditProject_YieldInfo_Body_Item_Left_Tit">
+            <div className="DAT_EditProject_YieldInfo_Body_Left">
+              <div className="DAT_EditProject_YieldInfo_Body_Left_Item">
+                <div className="DAT_EditProject_YieldInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
                   <span style={{ color: "grey" }}>Tiền tệ:</span>
                 </div>
@@ -247,9 +249,11 @@ const YieldInfo = (props) => {
                   <option>USD</option>
                 </select>
               </div>
+            </div>
 
-              <div className="DAT_EditProject_YieldInfo_Body_Item_Right">
-                <div className="DAT_EditProject_YieldInfo_Body_Item_Right_Tit">
+            <div className="DAT_EditProject_YieldInfo_Body_Center">
+              <div className="DAT_EditProject_YieldInfo_Body_Center_Item">
+                <div className="DAT_EditProject_YieldInfo_Body_Center_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
                   <span style={{ color: "grey" }}>Đơn giá(VND/kWh):</span>
                 </div>
@@ -257,37 +261,7 @@ const YieldInfo = (props) => {
               </div>
             </div>
 
-            {/* <div className="DAT_EditProject_YieldInfo_Body_Item">
-              <div className="DAT_EditProject_YieldInfo_Body_Item_Left">
-                <div className="DAT_EditProject_YieldInfo_Body_Item_Left_Tit">
-                  <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>
-                    Thu nhập trợ cấp(VND/kWh):
-                  </span>
-                </div>
-                <input></input>
-              </div>
-
-              <div className="DAT_EditProject_YieldInfo_Body_Item_Right">
-                <div className="DAT_EditProject_YieldInfo_Body_Item_Right_Tit">
-                  <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Tổng chi phí(VND):</span>
-                </div>
-                <input></input>
-              </div>
-            </div>
-
-            <div className="DAT_EditProject_YieldInfo_Body_Item">
-              <div className="DAT_EditProject_YieldInfo_Body_Item_Left">
-                <div className="DAT_EditProject_YieldInfo_Body_Item_Left_Tit">
-                  <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Trả nợ hàng ngày(VND):</span>
-                </div>
-                <input></input>
-              </div>
-
-              <div className="DAT_EditProject_YieldInfo_Body_Item_Right"></div>
-            </div> */}
+            <div className="DAT_EditProject_YieldInfo_Body_Right"></div>
           </div>
         ) : (
           <></>
@@ -327,17 +301,19 @@ const OwnerInfo = (props) => {
       >
         {state ? (
           <div className="DAT_EditProject_OwnerInfo_Body">
-            <div className="DAT_EditProject_OwnerInfo_Body_Item">
-              <div className="DAT_EditProject_OwnerInfo_Body_Item_Left">
-                <div className="DAT_EditProject_OwnerInfo_Body_Item_Left_Tit">
+            <div className="DAT_EditProject_OwnerInfo_Body_Left">
+              <div className="DAT_EditProject_OwnerInfo_Body_Left_Item">
+                <div className="DAT_EditProject_OwnerInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
                   <span style={{ color: "grey" }}>Người liên hệ:</span>
                 </div>
                 <input></input>
               </div>
+            </div>
 
-              <div className="DAT_EditProject_OwnerInfo_Body_Item_Right">
-                <div className="DAT_EditProject_OwnerInfo_Body_Item_Right_Tit">
+            <div className="DAT_EditProject_OwnerInfo_Body_Center">
+              <div className="DAT_EditProject_OwnerInfo_Body_Center_Item">
+                <div className="DAT_EditProject_OwnerInfo_Body_Center_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
                   <span style={{ color: "grey" }}>Số điện thoại:</span>
                 </div>
@@ -345,16 +321,14 @@ const OwnerInfo = (props) => {
               </div>
             </div>
 
-            <div className="DAT_EditProject_OwnerInfo_Body_Item">
-              <div className="DAT_EditProject_OwnerInfo_Body_Item_Left">
-                <div className="DAT_EditProject_OwnerInfo_Body_Item_Left_Tit">
+            <div className="DAT_EditProject_OwnerInfo_Body_Right">
+              <div className="DAT_EditProject_OwnerInfo_Body_Right_Item">
+                <div className="DAT_EditProject_OwnerInfo_Body_Right_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
                   <span style={{ color: "grey" }}>Tên doanh nghiệp:</span>
                 </div>
                 <input></input>
               </div>
-
-              <div className="DAT_EditProject_OwnerInfo_Body_Item_Right"></div>
             </div>
           </div>
         ) : (
@@ -388,22 +362,22 @@ function EditProject(props) {
 
       <BasicInfo
         tit={"Thông tin cơ bản"}
-        height={isMobile.value ? "600px" : "700px"}
+        height={isMobile.value ? "700px" : "350px"}
       />
 
       <SystemInfo
         tit={"Thông tin hệ thống"}
-        height={isMobile.value ? "380px" : "300px"}
+        height={isMobile.value ? "530px" : "220px"}
       />
 
       <YieldInfo
         tit={"Thông tin sản lượng"}
-        height={isMobile.value ? "170px" : "300px"}
+        height={isMobile.value ? "220px" : "120px"}
       />
 
       <OwnerInfo
         tit={"Thông tin người sở hữu"}
-        height={isMobile.value ? "240px" : "200px"}
+        height={isMobile.value ? "320px" : "120px"}
       />
     </div>
   );

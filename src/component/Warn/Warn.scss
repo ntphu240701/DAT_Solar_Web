@@ -199,7 +199,7 @@
         &_Row1 {
             padding: 16px;
             display: flex;
-            justify-content: center;
+            // justify-content: center;
             align-items: center;
             gap: 100px;
         }
@@ -423,14 +423,15 @@
 
     .DAT_Setting {
         &_Body {
+            margin-bottom: 100px;
+
             &_Row1 {
                 padding: 16px;
-                display: flex;
-                flex-wrap: wrap;
-                overflow: hidden;
-                justify-content: center;
-                align-items: center;
-                gap: 50px;
+                display: contents;
+
+                &_Item {
+                    padding-bottom: 16px;
+                }
             }
 
             &_Row2 {

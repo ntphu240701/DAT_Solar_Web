@@ -100,6 +100,43 @@ iframe {
 
 }
 
+.DAT_Table_Home {
+
+  overflow-x: scroll !important;
+  overflow-Y: auto !important;
+  //height: 65vh;
+  height: 260px;
+
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 10px;
+
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 3px;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+
+
+  
+
+}
+
 .rdt_Table {
   position: relative;
 
@@ -166,7 +203,7 @@ iframe {
     font-weight: 600;
     font-size: 12px;
     font-family: sans-serif;
-    justify-content: flex-start;   
+    justify-content: center;   
     border-right: solid 1px rgb(213, 213, 213);
     //box-shadow: 0 0 0 1px rgb(213, 213, 213);
 
@@ -206,6 +243,9 @@ iframe {
     //border-bottom: solid 1px rgb(213, 213, 213);
     justify-content: left;
     //height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
 
     & div:first-child {
