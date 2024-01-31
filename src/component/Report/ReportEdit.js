@@ -10,8 +10,7 @@ const reportname = signal();
 
 export const CheckBox = (props) => {
   const handleShow = (e) => {
-    let arr = props.tab.split("_"); // key_content/tit
-    // console.log(arr);
+    let arr = props.tab.split("_");
 
     switch (arr[1]) {
       case "content":
@@ -88,13 +87,16 @@ export const CheckBox = (props) => {
 const DataReport = (props) => {
   const [nameReport, setNameReport] = useState(editData.value.name);
   useEffect(() => {
-  })
+    reportname.value = editData.value.name
+  });
 
   const handlePushName = (e) => {
-    reportname.value = editData.value.name;
+    // reportname.value = editData.value.name;
+    // setNameReport(e.currentTarget.value);
+    // reportname.value = nameReport;
+    // console.log(e.currentTarget.value);
     setNameReport(e.currentTarget.value);
-    reportname.value = nameReport;
-    // console.log(reportnba);
+    reportname.value = e.currentTarget.value;
   };
 
   return (
@@ -126,7 +128,7 @@ export default function Create() {
   const [widthCheckBox, setWidwidthCheckBox] = React.useState("");
 
   const handleSaveData = () => {
-    editState.value = false;
+    // editState.value = false;
     const index = ReportData.value.findIndex((item) => {
       return item.id === editData.value.id;
     });
@@ -135,7 +137,8 @@ export default function Create() {
       ...ReportData.value[index],
       name: reportname.value,
     };
-    console.log(ReportData.value);
+    // console.log(ReportData.value);
+    console.log(reportname.value);
     // console.log(reportname.value);
   };
 
@@ -162,7 +165,7 @@ export default function Create() {
           <div className="DAT_EditReport_Header_Right">
             <div
               className="DAT_EditReport_Header_Right_Save"
-              onClick={() => handleSaveData()} 
+              onClick={() => handleSaveData()}
             >
               <FaSave size={20} color="white" />
               <span>Lưu</span>
