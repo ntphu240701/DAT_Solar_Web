@@ -50,7 +50,7 @@ export const CheckBox = (props) => {
         };
         break;
     }
-    console.log(editData.value);
+    // console.log(editData.value);
   };
 
   useEffect(() => {
@@ -87,17 +87,23 @@ export const CheckBox = (props) => {
 const DataReport = (props) => {
   const [nameReport, setNameReport] = useState(editData.value.name);
   useEffect(() => {
-    reportname.value = editData.value.name
+    reportname.value = editData.value.name;
   });
 
+  // useEffect(() => {
+  //   reportname.value = editData.value.name
+  // },[editData.value.name]);
+
   const handlePushName = (e) => {
-    // reportname.value = editData.value.name;
-    // setNameReport(e.currentTarget.value);
-    // reportname.value = nameReport;
-    // console.log(e.currentTarget.value);
     setNameReport(e.currentTarget.value);
     reportname.value = e.currentTarget.value;
+    // console.log(nameReport);
+    console.log(e.currentTarget.value);
   };
+
+  useEffect(() => {
+    reportname.value = nameReport;
+  });
 
   return (
     <div className="DAT_EditReport_Body_Item">
@@ -128,7 +134,7 @@ export default function Create() {
   const [widthCheckBox, setWidwidthCheckBox] = React.useState("");
 
   const handleSaveData = () => {
-    // editState.value = false;
+    editState.value = false;
     const index = ReportData.value.findIndex((item) => {
       return item.id === editData.value.id;
     });

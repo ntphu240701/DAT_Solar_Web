@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { createState, ReportData, lastID } from "./Report";
@@ -8,13 +8,14 @@ import { isMobile } from "../Navigation/Navigation";
 import { list } from "./Report";
 import { Checkbox } from "@mui/material";
 import { useSelector } from "react-redux";
+import moment from "moment-timezone";
 
 const newdata = signal({
   id: 1,
   name: "",
-  type: "Daily Data Report",
+  type: "",
   create: "",
-  date: "12/12/2022",
+  date: "",
   inf: {
     1: { lang: "report_1", status: false },
     2: { lang: "report_2", status: false },
@@ -78,6 +79,8 @@ const newdata = signal({
     20: { lang: "report_46", status: false },
   },
 });
+
+const temp = signal(newdata.value);
 
 const show = signal({ id: "none", status: false });
 
@@ -260,6 +263,14 @@ export default function Create() {
   };
 
   const handleCreate = () => {
+    const today = new Date();
+    // const day = today.getDate();
+    // const month = today.getMonth() + 1;
+    // const year = today.getFullYear();
+    // const date = month + "/" + day + "/" + year;
+
+    // console.log(moment(today).format("MM/DD/YYYY HH:mm:ss"));
+
     if (reportnameRef.current === "") {
       alert("Please enter report name");
     } else {
@@ -269,10 +280,15 @@ export default function Create() {
         name: reportnameRef.current,
         type: reportType,
         id: lastID.value,
+        date: moment(today).format("MM/DD/YYYY HH:mm:ss"),
       };
       ReportData.value.push(newdata.value);
-      createState.value = false;
-      console.log(ReportData.value);
+
+      //BAT TAT TRANG
+      // createState.value = false;
+
+      console.log(newdata.value);
+      newdata.value = temp.value;
     }
   };
 
