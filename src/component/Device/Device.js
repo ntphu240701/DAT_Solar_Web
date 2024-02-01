@@ -153,7 +153,7 @@ function Device(props) {
       minWidth: "350px",
       style: {
         justifyContent: "left",
-      },
+      }
     },
     {
       name: "Trạng thái",
@@ -175,7 +175,7 @@ function Device(props) {
       minWidth: "350px",
       style: {
         justifyContent: "left",
-      },
+      }
     },
 
     {
@@ -283,7 +283,7 @@ function Device(props) {
       minWidth: "350px",
       style: {
         justifyContent: "left",
-      },
+      }
     },
     {
       name: "Trạng thái",
@@ -305,7 +305,7 @@ function Device(props) {
       minWidth: "350px",
       style: {
         justifyContent: "left",
-      },
+      }
     },
     {
       name: "Lần cập nhật cuối",

@@ -285,7 +285,7 @@ export default function Create() {
       ReportData.value.push(newdata.value);
 
       //BAT TAT TRANG
-      // createState.value = false;
+      createState.value = false;
 
       console.log(newdata.value);
       newdata.value = temp.value;

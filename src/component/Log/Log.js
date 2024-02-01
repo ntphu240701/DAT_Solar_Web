@@ -53,6 +53,9 @@ function Log(props) {
             selector: (row) => row.SN,
             sortable: true,
             minWidth: "150px",
+            style: {
+                justifyContent: "left",
+              }
         },
         {
             name: "Loại",
@@ -112,11 +115,15 @@ function Log(props) {
                     <input type="text" placeholder="Nhập tên thiết bị" />
                     <CiSearch color="gray" size={20} />
                 </div>
-                <button className="DAT_LogHeader_New" onClick={handleShowConfig}>
+                {/* <button className="DAT_LogHeader_New" onClick={handleShowConfig}>
                     Cấu hình
-                </button>
+                </button> */}
             </div>
             <div className='DAT_Log'>
+                <div className='DAT_Log_Header' style={{padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)"}}>
+                        Danh sách nhật ký
+                </div>
+
                 <div className="DAT_Log_Content">
                     <DataTable
                         className="DAT_Table_Container"

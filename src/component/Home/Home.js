@@ -1,11 +1,15 @@
 import React from 'react';
 import './Home.scss'
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { FaSolarPanel } from "react-icons/fa6";
+import { FaSolarPanel, FaTree } from "react-icons/fa6";
 import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
 import { VscDashboard } from "react-icons/vsc";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward, IoIosCloud } from "react-icons/io";
+import { Empty } from '../Project/Project';
+import DataTable from 'react-data-table-component';
+import { MdPermDataSetting } from 'react-icons/md';
+import { RiMoneyCnyCircleFill } from 'react-icons/ri';
 
 function Home(props) {
 
@@ -71,6 +75,80 @@ function Home(props) {
             name: '12',
             [v]: 0,
 
+        },
+    ];
+
+
+    const paginationComponentOptions = {
+        rowsPerPageText: "Số hàng",
+        rangeSeparatorText: "đến",
+        selectAllRowsItem: true,
+        selectAllRowsItemText: "tất cả",
+    };
+
+    const dataHome = [
+        {
+            id: 1,
+            name: "Năng lượng DAT 01",
+            addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+            status: true,
+            warn: true,
+            capacity: "110",
+            production: "16",
+            power: "14.54",
+            lastupdate: "12/30/2023 12:07:12",
+            createdate: "05/01/2022 14:03:36",
+        },
+        {
+            id: 2,
+            name: "Năng lượng DAT 02",
+            addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+            status: false,
+            warn: false,
+            capacity: "222",
+            production: "230",
+            power: "0",
+            lastupdate: "10/30/2023 08:01:22",
+            createdate: "05/01/2022 14:08:36",
+        },
+        {
+            id: 3,
+            name: "Năng lượng DAT 03",
+            addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+            status: false,
+            warn: false,
+            capacity: "333",
+            production: "116",
+            power: "0",
+            lastupdate: "10/30/2023 08:01:22",
+            createdate: "05/01/2022 14:08:36",
+        },
+    ];
+
+    const columnHome = [
+        {
+            name: "Tên",
+            selector: (row) => row.name,
+            sortable: true,
+            minWidth: "150px",
+            style: {
+                justifyContent: "left",
+            }
+        },
+        {
+            name: "Địa chỉ",
+            selector: (row) => row.addr,
+            width: "250px",
+            style: {
+                justifyContent: "left",
+            }
+        },
+
+        {
+            name: "kWh/kWp(h)",
+            selector: (row) => row.production,
+            sortable: true,
+            width: "120px",
         },
     ];
 
@@ -218,6 +296,90 @@ function Home(props) {
                         </GoogleMap>
                     </div>
                 </div>
+                <div className='DAT_Home_Rank' >
+                    <div className='DAT_Home_Rank-Head'>
+                        <div className='DAT_Home_Rank-Head-Title'>Giờ cao điểm</div>
+                        <div className='DAT_Home_Rank-Head-Datetime'>
+                            <input type='month' defaultValue={moment(new Date()).format("YYYY-MM")} ></input>
+                        </div>
+
+                    </div>
+                    <div className='DAT_Home_Rank-Content'>
+                        <DataTable
+                            className="DAT_Table_Home"
+                            columns={columnHome}
+                            data={dataHome}
+                            pagination
+                            paginationComponentOptions={paginationComponentOptions}
+                            fixedHeader={true}
+                            noDataComponent={<Empty />}
+                        />
+
+                    </div>
+
+                </div>
+
+                <div className='DAT_Home_Benefit' >
+                    <div className='DAT_Home_Benefit-Head'>
+                        <div className='DAT_Home_Benefit-Head-Title'>Lợi ích kinh tế & môi trường</div>
+                    </div>
+
+
+
+                    <div className="DAT_Home_Benefit_Content">
+                        <div className="DAT_Home_Benefit_Content_Item">
+                            <div className="DAT_Home_Benefit_Content_Item_Icon">
+                                <MdPermDataSetting size={24} color="#6495ed" />
+                            </div>
+                            <div className='DAT_Home_Benefit_Content_Item_Detail'>
+                                <div style={{ fontSize: "14px", color: "grey" }}>
+                                    Thang đo tiêu chuẩn
+                                </div>
+                                <div>--</div>
+                            </div>
+                        </div>
+                        <div className="DAT_Home_Benefit_Content_Item">
+                            <div className="DAT_Home_Benefit_Content_Item_Icon">
+                                <FaTree size={24} color="#6495ed" />
+                            </div>
+                            <div className='DAT_Home_Benefit_Content_Item_Detail'>
+                                <div style={{ fontSize: "14px", color: "grey" }}>
+                                    Sản lượng cây trồng
+                                </div>
+                                <div>--</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="DAT_Home_Benefit_Content">
+                        <div className="DAT_Home_Benefit_Content_Item">
+                            <div className="DAT_Home_Benefit_Content_Item_Icon">
+                                <IoIosCloud size={24} color="#6495ed" />
+                            </div>
+                            <div className='DAT_Home_Benefit_Content_Item_Detail'>
+                                <div style={{ fontSize: "14px", color: "grey" }}>
+                                    Giảm khí thải CO₂
+                                </div>
+                                <div>--</div>
+                            </div>
+                        </div>
+                        <div className="DAT_Home_Benefit_Content_Item">
+                            <div className="DAT_Home_Benefit_Content_Item_Icon">
+                                <RiMoneyCnyCircleFill size={24} color="#6495ed" />
+                            </div>
+                            <div className='DAT_Home_Benefit_Content_Item_Detail'>
+                                <div style={{ fontSize: "14px", color: "grey" }}>
+                                    Tổng sản lượng
+                                </div>
+                                <div>--</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
             </div>
         </>
 

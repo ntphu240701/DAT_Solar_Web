@@ -50,7 +50,7 @@ function App() {
           if (res.data.status) {
             console.log(res.data)
             rootDispatch(adminslice.actions.setstatus(res.data.status))
-            rootDispatch(adminslice.actions.setusr(res.data.usr))
+            rootDispatch(adminslice.actions.setusr(res.data.user))
           } else {
             setLoading(false)
           }

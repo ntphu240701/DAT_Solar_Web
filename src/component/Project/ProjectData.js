@@ -27,13 +27,14 @@ import { BsMenuButtonWide } from "react-icons/bs";
 import { GoAlertFill } from "react-icons/go";
 import { signal } from "@preact/signals-react";
 import { LiaLongArrowAltLeftSolid } from "react-icons/lia";
+import { CiSearch } from "react-icons/ci";
+
 
 export const dropState = signal(false);
 
 const Graph = () => {
-
-  const path = document.querySelector('.infinity');
-  const circle = document.querySelector('.circle');
+  const path = document.querySelector(".infinity");
+  const circle = document.querySelector(".circle");
 
   // Create an object that gsap can animate
   const val = { distance: 0 };
@@ -55,56 +56,119 @@ const Graph = () => {
   //   }
   // });
 
-
   return (
-    <div className="DAT_ProjectData_Body_Data_Center_Graph">
-
-      <div className="DAT_ProjectData_Body_Data_Center_Graph_Solar">
+    <div className="DAT_ProjectData_Dashboard_Data_Center_Graph">
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_Solar">
         <img src="/dat_picture/solar.png"></img>
       </div>
-      <div className="DAT_ProjectData_Body_Data_Center_Graph_Load">
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_Load">
         <img src="/dat_picture/load.png"></img>
       </div>
-      <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1">
-
-        <svg width="330px" height="80px" version="1.1">
-          <linearGradient id="style-1" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="userSpaceOnUse">
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_Line1">
+        <svg width="120px" height="120px" version="1.1">
+          <linearGradient
+            id="style-1"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+            gradientUnits="userSpaceOnUse"
+          >
             <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
             <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
           </linearGradient>
           <path
             className="path"
-
-            d="M 1,1 l 83,0 q 16,0 16,16 l 0,31 q 0,16 16,16 l 83,0"
+            d="M 106.553 7.877 L 20.457 8.132 C 11.372 8.047 6.702 12.547 6.447 21.632 L 7.211 107.473"
             style={{
-              width: '100%',
-              height: '100%',
-              fill: 'none',
+              width: "100%",
+              height: "100%",
+              fill: "none",
               stroke: "url('#style-1')",
-              strokeWidth: '3',
+              strokeWidth: "3",
             }}
-
           ></path>
+          <circle
+            r={5}
+            style={{
+              fill: "none",
+              stroke: "url('#style-1')",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 106.553 7.877 L 20.457 8.132 C 11.372 8.047 6.702 12.547 6.447 21.632 L 7.211 107.473"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
         </svg>
-        <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div>
+        {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
       </div>
-    </div>)
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_Line2">
+        <svg width="120px" height="110px" version="1.1">
+          <linearGradient
+            id="style-2"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
+            <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
+          </linearGradient>
+          <path
+            d="M 6 7.575 L 92.199 7.575 C 101.851 7.471 106.442 12.025 106.456 20.274 L 106.697 107.021"
+            style={{
+              width: "100%",
+              height: "100%",
+              fill: "none",
+              stroke: "url('#style-2')",
+              strokeWidth: "3",
+            }}
+          ></path>
+          <circle
+            r={5}
+            style={{
+              fill: "none",
+              stroke: "url('#style-2')",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 7.696 7.575 L 92.199 7.575 C 101.851 7.471 106.442 12.025 106.456 20.274 L 106.697 107.021"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+        </svg>
+        {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line2_Ball"></div> */}
+      </div>
+    </div>
+  );
 };
 
 const Production = () => {
   return (
-    <div className="DAT_ProjectData_Body_Data_Center_Production">
-      <div className="DAT_ProjectData_Body_Data_Center_Production_Data">
-        <div className="DAT_ProjectData_Body_Data_Center_Production_Data_Chart">
+    <div className="DAT_ProjectData_Dashboard_Data_Center_Production">
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart">
           <div
-            className="DAT_ProjectData_Body_Data_Center_Production_Data_Chart_Data"
+            className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data"
             style={{ fontSize: "32px" }}
           >
             0%
           </div>
         </div>
 
-        <div className="DAT_ProjectData_Body_Data_Center_Production_Data_Detail">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Detail">
           <div style={{ marginBottom: "8px", color: "grey" }}>Năng suất</div>
           <div style={{ marginBottom: "8px" }}>
             {projectData.value.production}
@@ -149,51 +213,51 @@ const Production = () => {
         }}
       />
 
-      <div className="DAT_ProjectData_Body_Data_Center_Production_Total">
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total">
         <div
-          className="DAT_ProjectData_Body_Data_Center_Production_Total_Item"
+          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
-          <div className="DAT_ProjectData_Body_Data_Center_Production_Total_Item_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
             Năng suất ngày
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Production_Total_Item_Data">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             --
           </div>
         </div>
 
         <div
-          className="DAT_ProjectData_Body_Data_Center_Production_Total_Item"
+          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
           style={{ backgroundColor: "rgb(255, 248, 247)" }}
         >
-          <div className="DAT_ProjectData_Body_Data_Center_Production_Total_Item_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
             Năng suất tháng
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Production_Total_Item_Data">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             --
           </div>
         </div>
 
         <div
-          className="DAT_ProjectData_Body_Data_Center_Production_Total_Item"
+          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
           style={{ backgroundColor: "rgb(246, 245, 255)" }}
         >
-          <div className="DAT_ProjectData_Body_Data_Center_Production_Total_Item_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
             Năng suất năm
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Production_Total_Item_Data">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             --
           </div>
         </div>
 
         <div
-          className="DAT_ProjectData_Body_Data_Center_Production_Total_Item"
+          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
           style={{ backgroundColor: "rgb(245, 250, 246)" }}
         >
-          <div className="DAT_ProjectData_Body_Data_Center_Production_Total_Item_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
             Tổng năng suất
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Production_Total_Item_Data">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             --
           </div>
         </div>
@@ -204,64 +268,64 @@ const Production = () => {
 
 const Consumption = () => {
   return (
-    <div className="DAT_ProjectData_Body_Data_Center_Consumption">
-      <div className="DAT_ProjectData_Body_Data_Center_Consumption_Data">
-        <div className="DAT_ProjectData_Body_Data_Center_Consumption_Data_Img">
+    <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption">
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data_Img">
           <img src="/dat_picture/load.png" alt="" />
         </div>
-        <div className="DAT_ProjectData_Body_Data_Center_Consumption_Data_Data">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data_Data">
           Tiêu thụ <span>7.68</span> kW
         </div>
       </div>
 
-      <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total">
-        <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left">
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left">
           <div
-            className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left_Item"
+            className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item"
             style={{ backgroundColor: "rgb(245, 251, 255)" }}
           >
-            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left_Item_Tit">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
               Tiêu thụ ngày
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left_Item_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               --
             </div>
           </div>
 
           <div
-            className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left_Item"
+            className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item"
             style={{ backgroundColor: "rgb(246, 245, 255)" }}
           >
-            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left_Item_Tit">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
               Tiêu thụ năm
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left_Item_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               --
             </div>
           </div>
         </div>
 
-        <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right">
           <div
-            className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right_Item"
+            className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
             style={{ backgroundColor: "rgb(255, 248, 247)" }}
           >
-            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right_Item_Tit">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
               Tiêu thụ tháng
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right_Item_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
               --
             </div>
           </div>
 
           <div
-            className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right_Item"
+            className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
             style={{ backgroundColor: "rgb(245, 250, 246)" }}
           >
-            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right_Item_Tit">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
               Tổng tiêu thụ
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right_Item_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
               --
             </div>
           </div>
@@ -273,22 +337,22 @@ const Consumption = () => {
 
 const Grid = () => {
   return (
-    <div className="DAT_ProjectData_Body_Data_Center_Grid">
-      <div className="DAT_ProjectData_Body_Data_Center_Grid_Data">
-        <div className="DAT_ProjectData_Body_Data_Center_Grid_Data_Img">
+    <div className="DAT_ProjectData_Dashboard_Data_Center_Grid">
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Img">
           <img src="/dat_picture/grid.png" alt="" />
         </div>
-        <div className="DAT_ProjectData_Body_Data_Center_Grid_Data_Data">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Data">
           Lưới <span>0</span> W
         </div>
       </div>
 
-      <div className="DAT_ProjectData_Body_Data_Center_Grid_Row">
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row">
         <div
-          className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left"
+          className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
-          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit">
             Nạp vào
           </div>
           <div
@@ -296,45 +360,45 @@ const Grid = () => {
               borderLeft: "solid 1px rgb(231, 231, 231)",
             }}
           />
-          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
               Hôm nay
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
               Tháng
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
               Năm
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
               Tổng
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
         </div>
 
         <div
-          className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left"
+          className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
-          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit">
             Bán ra
           </div>
           <div
@@ -342,35 +406,35 @@ const Grid = () => {
               borderLeft: "solid 1px rgb(231, 231, 231)",
             }}
           />
-          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
               Hôm nay
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
               Tháng
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
               Năm
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
               Tổng
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
@@ -382,26 +446,26 @@ const Grid = () => {
 
 const Battery = () => {
   return (
-    <div className="DAT_ProjectData_Body_Data_Center_Battery">
-      <div className="DAT_ProjectData_Body_Data_Center_Battery_Data">
-        <div className="DAT_ProjectData_Body_Data_Center_Battery_Data_Img">
+    <div className="DAT_ProjectData_Dashboard_Data_Center_Battery">
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Img">
           <img src="/dat_picture/battery.png" alt="" />
         </div>
-        <div className="DAT_ProjectData_Body_Data_Center_Battery_Data_Status">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Status">
           Sạc 95%
           <LiaLongArrowAltLeftSolid size={30} />
         </div>
-        <div className="DAT_ProjectData_Body_Data_Center_Battery_Data_Data">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Data">
           Pin <span>0</span> W
         </div>
       </div>
 
-      <div className="DAT_ProjectData_Body_Data_Center_Battery_Row">
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row">
         <div
-          className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left"
+          className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
-          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit">
             Sạc điện
           </div>
           <div
@@ -409,45 +473,45 @@ const Battery = () => {
               borderLeft: "solid 1px rgb(231, 231, 231)",
             }}
           />
-          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
               Hôm nay
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
               Tháng
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
               Năm
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
               Tổng
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
         </div>
 
         <div
-          className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left"
+          className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
-          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit">
             Phóng điện
           </div>
           <div
@@ -455,35 +519,35 @@ const Battery = () => {
               borderLeft: "solid 1px rgb(231, 231, 231)",
             }}
           />
-          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
               Hôm nay
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
               Tháng
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
               Năm
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
               Tổng
             </div>
-            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               0 kWh
             </div>
           </div>
@@ -524,14 +588,16 @@ const Day = () => {
   ];
 
   return (
-    <div className="DAT_ProjectData_Body_History_Day">
-      <div className="DAT_ProjectData_Body_History_Year_Tit">
-        <div className="DAT_ProjectData_Body_History_Year_Tit-Unit">kWh</div>
-        <div className="DAT_ProjectData_Body_History_Year_Tit-Label">
+    <div className="DAT_ProjectData_Dashboard_History_Day">
+      <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
+        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Unit">
+          kWh
+        </div>
+        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           Sản lượng ngày: 24.3 kWh
         </div>
       </div>
-      <div className="DAT_ProjectData_Body_History_Year_Chart">
+      <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
         <ResponsiveContainer
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
@@ -587,14 +653,16 @@ const Month = () => {
   ];
 
   return (
-    <div className="DAT_ProjectData_Body_History_Year">
-      <div className="DAT_ProjectData_Body_History_Year_Tit">
-        <div className="DAT_ProjectData_Body_History_Year_Tit-Unit">kWh</div>
-        <div className="DAT_ProjectData_Body_History_Year_Tit-Label">
+    <div className="DAT_ProjectData_Dashboard_History_Year">
+      <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
+        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Unit">
+          kWh
+        </div>
+        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           Sản lượng tháng: 775.327 kWh
         </div>
       </div>
-      <div className="DAT_ProjectData_Body_History_Year_Chart">
+      <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
         <ResponsiveContainer
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
@@ -672,14 +740,16 @@ const Year = () => {
   ];
 
   return (
-    <div className="DAT_ProjectData_Body_History_Year">
-      <div className="DAT_ProjectData_Body_History_Year_Tit">
-        <div className="DAT_ProjectData_Body_History_Year_Tit-Unit">MWh</div>
-        <div className="DAT_ProjectData_Body_History_Year_Tit-Label">
+    <div className="DAT_ProjectData_Dashboard_History_Year">
+      <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
+        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Unit">
+          MWh
+        </div>
+        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           Sản lượng năm: 1.69 MWh
         </div>
       </div>
-      <div className="DAT_ProjectData_Body_History_Year_Chart">
+      <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
         <ResponsiveContainer
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
@@ -734,17 +804,19 @@ const Total = () => {
       name: "2024",
       [v]: 0.1,
     },
-  ]
+  ];
 
   return (
-    <div className="DAT_ProjectData_Body_History_Year">
-      <div className="DAT_ProjectData_Body_History_Year_Tit">
-        <div className="DAT_ProjectData_Body_History_Year_Tit-Unit">MWh</div>
-        <div className="DAT_ProjectData_Body_History_Year_Tit-Label">
+    <div className="DAT_ProjectData_Dashboard_History_Year">
+      <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
+        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Unit">
+          MWh
+        </div>
+        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           Sản lượng tổng: 13.69 MWh
         </div>
       </div>
-      <div className="DAT_ProjectData_Body_History_Year_Chart">
+      <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
         <ResponsiveContainer
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
@@ -785,6 +857,28 @@ function ProjectData(props) {
     setDate(id);
   };
 
+  const [view, setView] = useState("dashboard");
+  const handleView = (e) => {
+    var id = e.currentTarget.id;
+    setView(id);
+  };
+
+  const tit = {
+    dashboard: projectData.value.name,
+    device: "Thiết bị",
+    alert: "Cảnh báo",
+  };
+
+  const [configname, setConfigname] = useState("Chọn thông số");
+  const [dropConfig, setDropConfig] = useState(false);
+  const handleShowConfig = (e) => {
+    if (configname === "Chọn thông số") {
+      setConfigname("Thu gọn");
+    } else if (configname === "Thu gọn") {
+      setConfigname("Chọn thông số");
+    }
+  };
+
   return (
     <>
       <div className="DAT_ProjectData">
@@ -818,24 +912,62 @@ function ProjectData(props) {
           </div>
         ) : (
           <div className="DAT_ProjectData_Header">
-            <div className="DAT_ProjectData_Header_Left">
-              <div style={{ fontSize: 22, paddingBottom: 5 }}>
-                {projectData.value.name}
-              </div>
+            {(() => {
+              switch (view) {
+                case "dashboard":
+                  return (
+                    <div className="DAT_ProjectData_Header_LeftDashboard">
+                      <div style={{ fontSize: 22, paddingBottom: 5 }}>
+                        {tit[view]}
+                      </div>
 
-              <div style={{ color: "grey", fontSize: 14 }}>
-                Cập nhật lần cuối {projectData.value.lastupdate}
-              </div>
-            </div>
+                      <div style={{ color: "grey", fontSize: 14 }}>
+                        Cập nhật lần cuối {projectData.value.lastupdate}
+                      </div>
+                    </div>
+                  );
+                case "device":
+                  return (
+                    <div className="DAT_ProjectData_Header_LeftDevice">
+                      <div style={{ fontSize: 22 }}>{tit[view]}</div>
+
+                      <div className="DAT_ProjectData_Header_LeftDevice_Item">
+                        <button>Rút gọn</button>
+                        <button>Đầy đủ</button>
+                      </div>
+                    </div>
+                  );
+                case "alert":
+                  return (
+                    <div className="DAT_ProjectData_Header_LeftAlert">
+                      <div style={{ fontSize: 22 }}>{tit[view]}</div>
+                    </div>
+                  );
+                default:
+                  <></>;
+              }
+            })()}
 
             <div className="DAT_ProjectData_Header_Right">
-              <div className="DAT_ProjectData_Header_Right_Dashboard">
+              <div
+                className="DAT_ProjectData_Header_Right_Dashboard"
+                id="dashboard"
+                onClick={(e) => handleView(e)}
+              >
                 <AiOutlineDashboard size={20} color="white" />
               </div>
-              <div className="DAT_ProjectData_Header_Right_Device">
+              <div
+                className="DAT_ProjectData_Header_Right_Device"
+                id="device"
+                onClick={(e) => handleView(e)}
+              >
                 <BsMenuButtonWide size={14} color="white" />
               </div>
-              <div className="DAT_ProjectData_Header_Right_Alert">
+              <div
+                className="DAT_ProjectData_Header_Right_Alert"
+                id="alert"
+                onClick={(e) => handleView(e)}
+              >
                 <GoAlertFill size={16} color="white" />
               </div>
               {/* <div className="DAT_ProjectData_Header_Right_More">
@@ -856,365 +988,496 @@ function ProjectData(props) {
           </div>
         )}
 
-        <div className="DAT_ProjectData_Body">
-          <div className="DAT_ProjectData_Body_Data">
-            <div className="DAT_ProjectData_Body_Data_Left">
-              <div className="DAT_ProjectData_Body_Data_Left_Img">
-                <img src="/dat_picture/solar_panel.png" alt="" />
-              </div>
-
-              <div className="DAT_ProjectData_Body_Data_Left_Info">
-                <div
-                  className="DAT_ProjectData_Body_Data_Left_Info_Addr"
-                  style={{ marginBottom: "16px" }}
-                >
-                  <div className="DAT_ProjectData_Body_Data_Left_Info_Addr_Title">
-                    Địa chỉ
-                  </div>
-                  <div className="DAT_ProjectData_Body_Data_Left_Info_Addr_Content">
-                    {projectData.value.addr}
-                  </div>
-                </div>
-
-                <div
-                  className="DAT_ProjectData_Body_Data_Left_Info_Addr"
-                  style={{ marginBottom: "16px" }}
-                >
-                  <div className="DAT_ProjectData_Body_Data_Left_Info_Addr_Title">
-                    Trạng thái
-                  </div>
-                  <div
-                    className="DAT_ProjectData_Body_Data_Left_Info_Addr_Content"
-                    style={{ textAlign: "right" }}
-                  >
-                    {projectData.value.status ? (
-                      <>
-                        <FaCheckCircle size={20} color="green" />
-                      </>
-                    ) : (
-                      <>
-                        <MdOutlineError size={20} color="red" />
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                <div
-                  className="DAT_ProjectData_Body_Data_Left_Info_Addr"
-                  style={{ marginBottom: "16px" }}
-                >
-                  <div className="DAT_ProjectData_Body_Data_Left_Info_Addr_Title">
-                    Loại Dự Án
-                  </div>
-                  <div
-                    className="DAT_ProjectData_Body_Data_Left_Info_Addr_Content"
-                    style={{ textAlign: "right" }}
-                  >
-                    {projectData.value.plantype === "industrial" ? (
-                      <>Nhà máy</>
-                    ) : (
-                      <>Hộ dân</>
-                    )}
-                  </div>
-                </div>
-
-                {/* <div
-                className="DAT_ProjectData_Body_Data_Left_Info_Addr"
-                style={{ marginBottom: "16px" }}
-              >
-                <div className="DAT_ProjectData_Body_Data_Left_Info_Addr_Title">
-                  Loại Hệ Thống
-                </div>
-                <div
-                  className="DAT_ProjectData_Body_Data_Left_Info_Addr_Content"
-                  style={{ textAlign: "right" }}
-                >
-                  --
-                </div>
-              </div> */}
-
-                <div className="DAT_ProjectData_Body_Data_Left_Info_Addr">
-                  <div className="DAT_ProjectData_Body_Data_Left_Info_Addr_Title">
-                    Số Điện Thoại
-                  </div>
-                  <div
-                    className="DAT_ProjectData_Body_Data_Left_Info_Addr_Content"
-                    style={{ textAlign: "right" }}
-                  >
-                    {projectData.value.phone}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Body_Data_Center">
-              <div className="DAT_ProjectData_Body_Data_Center_Tit">
-                <div
-                  className="DAT_ProjectData_Body_Data_Center_Tit_Item"
-                  id="graph"
-                  style={{ color: nav === "graph" ? color.cur : color.pre }}
-                  onClick={(e) => handleNav(e)}
-                >
-                  Đồ thị
-                </div>
-                <div
-                  className="DAT_ProjectData_Body_Data_Center_Tit_Item"
-                  id="production"
-                  style={{
-                    color: nav === "production" ? color.cur : color.pre,
-                  }}
-                  onClick={(e) => handleNav(e)}
-                >
-                  Sản xuất
-                </div>
-                <div
-                  className="DAT_ProjectData_Body_Data_Center_Tit_Item"
-                  id="consumption"
-                  style={{
-                    color: nav === "consumption" ? color.cur : color.pre,
-                  }}
-                  onClick={(e) => handleNav(e)}
-                >
-                  Tiêu thụ
-                </div>
-                <div
-                  className="DAT_ProjectData_Body_Data_Center_Tit_Item"
-                  id="grid"
-                  style={{ color: nav === "grid" ? color.cur : color.pre }}
-                  onClick={(e) => handleNav(e)}
-                >
-                  Lưới
-                </div>
-                <div
-                  className="DAT_ProjectData_Body_Data_Center_Tit_Item"
-                  id="battery"
-                  style={{ color: nav === "battery" ? color.cur : color.pre }}
-                  onClick={(e) => handleNav(e)}
-                >
-                  Pin
-                </div>
-              </div>
-
-              {(() => {
-                switch (nav) {
-                  case "graph":
-                    return <Graph />;
-                  case "production":
-                    return <Production />;
-                  case "consumption":
-                    return <Consumption />;
-                  case "grid":
-                    return <Grid />;
-                  case "battery":
-                    return <Battery />;
-                  default:
-                    <></>;
-                }
-              })()}
-            </div>
-
-            <div className="DAT_ProjectData_Body_Data_Right">
-              <div className="DAT_ProjectData_Body_Data_Right_wheather"></div>
-            </div>
-          </div>
-
-          <div className="DAT_ProjectData_Body_History">
-            <div className="DAT_ProjectData_Body_History_Tit">
-              <div className="DAT_ProjectData_Body_History_Tit_Left">
-                Lịch sử
-              </div>
-
-              <div className="DAT_ProjectData_Body_History_Tit_Right">
-                <div className="DAT_ProjectData_Body_History_Tit_Right_Date">
-                  <div
-                    className="DAT_ProjectData_Body_History_Tit_Right_Date_Item"
-                    id="day"
-                    style={{
-                      borderRight: "solid 1px rgb(199, 199, 199)",
-                      color: date === "day" ? color.cur : color.pre,
-                    }}
-                    onClick={(e) => handleDate(e)}
-                  >
-                    Ngày
-                  </div>
-                  <div
-                    className="DAT_ProjectData_Body_History_Tit_Right_Date_Item"
-                    id="month"
-                    style={{
-                      borderRight: "solid 1px rgb(199, 199, 199)",
-                      color: date === "month" ? color.cur : color.pre,
-                    }}
-                    onClick={(e) => handleDate(e)}
-                  >
-                    Tháng
-                  </div>
-                  <div
-                    className="DAT_ProjectData_Body_History_Tit_Right_Date_Item"
-                    id="year"
-                    style={{
-                      borderRight: "solid 1px rgb(199, 199, 199)",
-                      color: date === "year" ? color.cur : color.pre,
-                    }}
-                    onClick={(e) => handleDate(e)}
-                  >
-                    Năm
-                  </div>
-                  <div
-                    className="DAT_ProjectData_Body_History_Tit_Right_Date_Item"
-                    id="total"
-                    style={{ color: date === "total" ? color.cur : color.pre }}
-                    onClick={(e) => handleDate(e)}
-                  >
-                    Tổng
-                  </div>
-                </div>
-                <div>
-                  <button>Chọn Thông Số</button>
-                </div>
-                <div className="DAT_ProjectData_Body_History_Tit_Right_Export">
-                  <button>Xuất Báo Cáo</button>
-                </div>
-                <input type="date"></input>
-              </div>
-            </div>
-
-            {(() => {
-              switch (date) {
-                case "day":
-                  return <Day />;
-                case "month":
-                  return <Month />;
-                case "year":
-                  return <Year />;
-                case "total":
-                  return <Total />;
-                default:
-                  <></>;
-              }
-            })()}
-          </div>
-
-          <div className="DAT_ProjectData_Body_More">
-            <div className="DAT_ProjectData_Body_More_Left">
-              <div className="DAT_ProjectData_Body_More_Left_Tit">
-                <span>Trình tự công việc</span>
-                <div className="DAT_ProjectData_Body_More_Left_Tit_Button">
-                  <IoArrowForward />
-                </div>
-              </div>
-
-              <div className="DAT_ProjectData_Body_More_Left_Content">
-                <div className="DAT_ProjectData_Body_More_Left_Content_Item">
-                  <div
-                    className="DAT_ProjectData_Body_More_Left_Content_Item_Value"
-                    style={{
-                      textAlign: "center",
-                      fontSize: "32px",
-                      color: "#048FFF",
-                    }}
-                  >
-                    0
-                  </div>
-
-                  <div
-                    className="DAT_ProjectData_Body_More_Left_Content_Item_Detail"
-                    style={{
-                      textAlign: "center",
-                      fontSize: "14px",
-                      color: "grey",
-                      marginTop: "8px",
-                    }}
-                  >
-                    Đang Thực Hiện
-                  </div>
-                </div>
-
-                <div className="DAT_ProjectData_Body_More_Left_Content_Item">
-                  <div
-                    className="DAT_ProjectData_Body_More_Left_Content_Item_Value"
-                    style={{
-                      textAlign: "center",
-                      fontSize: "32px",
-                      color: "#41D068",
-                    }}
-                  >
-                    0
-                  </div>
-
-                  <div
-                    className="DAT_ProjectData_Body_More_Left_Content_Item_Detail"
-                    style={{
-                      textAlign: "center",
-                      fontSize: "14px",
-                      color: "grey",
-                      marginTop: "8px",
-                    }}
-                  >
-                    Hoàn Tất
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Body_More_Right">
-              <div className="DAT_ProjectData_Body_More_Right_Tit">
-                Lợi ích môi trường và kinh tế
-              </div>
-
-              <div className="DAT_ProjectData_Body_More_Right_Content">
-                <div className="DAT_ProjectData_Body_More_Right_Content_Col">
-                  <div className="DAT_ProjectData_Body_More_Right_Content_Col_Item">
-                    <div className="DAT_ProjectData_Body_More_Right_Content_Col_Item_Icon">
-                      <MdPermDataSetting size={24} color="#6495ed" />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: "14px", color: "grey" }}>
-                        Thang đo tiêu chuẩn
+        {(() => {
+          switch (view) {
+            case "dashboard":
+              return (
+                <div className="DAT_ProjectData_Dashboard">
+                  <div className="DAT_ProjectData_Dashboard_Data">
+                    <div className="DAT_ProjectData_Dashboard_Data_Left">
+                      <div className="DAT_ProjectData_Dashboard_Data_Left_Img">
+                        <img src="/dat_picture/solar_panel.png" alt="" />
                       </div>
-                      <div>--</div>
-                    </div>
-                  </div>
-                  <div className="DAT_ProjectData_Body_More_Right_Content_Col_Item">
-                    <div className="DAT_ProjectData_Body_More_Right_Content_Col_Item_Icon">
-                      <FaTree size={24} color="#6495ed" />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: "14px", color: "grey" }}>
-                        Sản lượng cây trồng
-                      </div>
-                      <div>--</div>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="DAT_ProjectData_Body_More_Right_Content_Col">
-                  <div className="DAT_ProjectData_Body_More_Right_Content_Col_Item">
-                    <div className="DAT_ProjectData_Body_More_Right_Content_Col_Item_Icon">
-                      <IoIosCloud size={24} color="#6495ed" />
+                      <div className="DAT_ProjectData_Dashboard_Data_Left_Info">
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
+                          style={{ marginBottom: "16px" }}
+                        >
+                          <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
+                            Địa chỉ
+                          </div>
+                          <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content">
+                            {projectData.value.addr}
+                          </div>
+                        </div>
+
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
+                          style={{ marginBottom: "16px" }}
+                        >
+                          <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
+                            Trạng thái
+                          </div>
+                          <div
+                            className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
+                            style={{ textAlign: "right" }}
+                          >
+                            {projectData.value.status ? (
+                              <>
+                                <FaCheckCircle size={20} color="green" />
+                              </>
+                            ) : (
+                              <>
+                                <MdOutlineError size={20} color="red" />
+                              </>
+                            )}
+                          </div>
+                        </div>
+
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
+                          style={{ marginBottom: "16px" }}
+                        >
+                          <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
+                            Loại Dự Án
+                          </div>
+                          <div
+                            className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
+                            style={{ textAlign: "right" }}
+                          >
+                            {projectData.value.plantype === "industrial" ? (
+                              <>Nhà máy</>
+                            ) : (
+                              <>Hộ dân</>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* <div
+                    className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
+                    style={{ marginBottom: "16px" }}
+                  >
+                    <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
+                      Loại Hệ Thống
                     </div>
-                    <div>
-                      <div style={{ fontSize: "14px", color: "grey" }}>
-                        Giảm khí thải CO₂
+                    <div
+                      className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
+                      style={{ textAlign: "right" }}
+                    >
+                      --
+                    </div>
+                  </div> */}
+
+                        <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr">
+                          <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
+                            Số Điện Thoại
+                          </div>
+                          <div
+                            className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
+                            style={{ textAlign: "right" }}
+                          >
+                            {projectData.value.phone}
+                          </div>
+                        </div>
                       </div>
-                      <div>--</div>
+                    </div>
+
+                    <div className="DAT_ProjectData_Dashboard_Data_Center">
+                      <div className="DAT_ProjectData_Dashboard_Data_Center_Tit">
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
+                          id="graph"
+                          style={{
+                            color: nav === "graph" ? color.cur : color.pre,
+                          }}
+                          onClick={(e) => handleNav(e)}
+                        >
+                          Đồ thị
+                        </div>
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
+                          id="production"
+                          style={{
+                            color: nav === "production" ? color.cur : color.pre,
+                          }}
+                          onClick={(e) => handleNav(e)}
+                        >
+                          Sản xuất
+                        </div>
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
+                          id="consumption"
+                          style={{
+                            color:
+                              nav === "consumption" ? color.cur : color.pre,
+                          }}
+                          onClick={(e) => handleNav(e)}
+                        >
+                          Tiêu thụ
+                        </div>
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
+                          id="grid"
+                          style={{
+                            color: nav === "grid" ? color.cur : color.pre,
+                          }}
+                          onClick={(e) => handleNav(e)}
+                        >
+                          Lưới
+                        </div>
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
+                          id="battery"
+                          style={{
+                            color: nav === "battery" ? color.cur : color.pre,
+                          }}
+                          onClick={(e) => handleNav(e)}
+                        >
+                          Pin
+                        </div>
+                      </div>
+
+                      {(() => {
+                        switch (nav) {
+                          case "graph":
+                            return <Graph />;
+                          case "production":
+                            return <Production />;
+                          case "consumption":
+                            return <Consumption />;
+                          case "grid":
+                            return <Grid />;
+                          case "battery":
+                            return <Battery />;
+                          default:
+                            <></>;
+                        }
+                      })()}
+                    </div>
+
+                    <div className="DAT_ProjectData_Dashboard_Data_Right">
+                      <div className="DAT_ProjectData_Dashboard_Data_Right_wheather"></div>
                     </div>
                   </div>
-                  <div className="DAT_ProjectData_Body_More_Right_Content_Col_Item">
-                    <div className="DAT_ProjectData_Body_More_Right_Content_Col_Item_Icon">
-                      <RiMoneyCnyCircleFill size={24} color="#6495ed" />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: "14px", color: "grey" }}>
-                        Tổng sản lượng
+
+                  <div className="DAT_ProjectData_Dashboard_History">
+                    <div className="DAT_ProjectData_Dashboard_History_Tit">
+                      <div className="DAT_ProjectData_Dashboard_History_Tit_Left">
+                        Lịch sử
                       </div>
-                      <div>--</div>
+
+                      <div className="DAT_ProjectData_Dashboard_History_Tit_Right">
+                        <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Date">
+                          <div
+                            className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
+                            id="day"
+                            style={{
+                              borderRight: "solid 1px rgb(199, 199, 199)",
+                              color: date === "day" ? color.cur : color.pre,
+                            }}
+                            onClick={(e) => handleDate(e)}
+                          >
+                            Ngày
+                          </div>
+                          <div
+                            className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
+                            id="month"
+                            style={{
+                              borderRight: "solid 1px rgb(199, 199, 199)",
+                              color: date === "month" ? color.cur : color.pre,
+                            }}
+                            onClick={(e) => handleDate(e)}
+                          >
+                            Tháng
+                          </div>
+                          <div
+                            className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
+                            id="year"
+                            style={{
+                              borderRight: "solid 1px rgb(199, 199, 199)",
+                              color: date === "year" ? color.cur : color.pre,
+                            }}
+                            onClick={(e) => handleDate(e)}
+                          >
+                            Năm
+                          </div>
+                          <div
+                            className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
+                            id="total"
+                            style={{
+                              color: date === "total" ? color.cur : color.pre,
+                            }}
+                            onClick={(e) => handleDate(e)}
+                          >
+                            Tổng
+                          </div>
+                        </div>
+                        <div>
+                          <button
+                            onClick={(e) => {
+                              handleShowConfig(e);
+                              setDropConfig(!dropConfig);
+                            }}
+                          >
+                            {configname}
+                          </button>
+                        </div>
+                        <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Export">
+                          <button>Xuất Báo Cáo</button>
+                        </div>
+                        <input type="date"></input>
+                      </div>
+                    </div>
+
+                    {(() => {
+                      switch (date) {
+                        case "day":
+                          return <Day />;
+                        case "month":
+                          return <Month />;
+                        case "year":
+                          return <Year />;
+                        case "total":
+                          return <Total />;
+                        default:
+                          <></>;
+                      }
+                    })()}
+
+                    <div
+                      style={{
+                        height: dropConfig ? "10px" : "0px",
+                        transition: "0.5s",
+                      }}
+                    >
+                      {dropConfig ? (
+                        <div className="DAT_ProjectData_Dashboard_History_SubConfig">
+                          <div
+                            className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
+                            // style={{ height: dropConfig ? "200px" : "0px" , transition: "0.5s"}}
+                          >
+                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
+                              <input
+                                type="text"
+                                placeholder="Search by parameter name"
+                              ></input>
+                              <CiSearch size={20} />
+                            </div>
+                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
+                              <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                                <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                  <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                    Production
+                                  </th>
+                                  <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                    <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                      <input
+                                        id="Production"
+                                        type="checkbox"
+                                      ></input>
+                                      <label htmlFor="Production">
+                                        Production
+                                      </label>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                  <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                    Environment
+                                  </th>
+                                  <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                    <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                      <input
+                                        id="Weather"
+                                        type="checkbox"
+                                      ></input>
+                                      <label htmlFor="Weather">Weather</label>
+                                    </div>
+                                    <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                      <input
+                                        id="Temperature"
+                                        type="checkbox"
+                                      ></input>
+                                      <label htmlFor="Temperature">
+                                        Temperature
+                                      </label>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="DAT_ProjectData_Dashboard_More">
+                    <div className="DAT_ProjectData_Dashboard_More_Left">
+                      <div className="DAT_ProjectData_Dashboard_More_Left_Tit">
+                        <span>Trình tự công việc</span>
+                        <div className="DAT_ProjectData_Dashboard_More_Left_Tit_Button">
+                          <IoArrowForward />
+                        </div>
+                      </div>
+
+                      <div className="DAT_ProjectData_Dashboard_More_Left_Content">
+                        <div className="DAT_ProjectData_Dashboard_More_Left_Content_Item">
+                          <div
+                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
+                            style={{
+                              textAlign: "center",
+                              fontSize: "32px",
+                              color: "#048FFF",
+                            }}
+                          >
+                            0
+                          </div>
+
+                          <div
+                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
+                            style={{
+                              textAlign: "center",
+                              fontSize: "14px",
+                              color: "grey",
+                              marginTop: "8px",
+                            }}
+                          >
+                            Đang Thực Hiện
+                          </div>
+                        </div>
+
+                        <div className="DAT_ProjectData_Dashboard_More_Left_Content_Item">
+                          <div
+                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
+                            style={{
+                              textAlign: "center",
+                              fontSize: "32px",
+                              color: "#41D068",
+                            }}
+                          >
+                            0
+                          </div>
+
+                          <div
+                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
+                            style={{
+                              textAlign: "center",
+                              fontSize: "14px",
+                              color: "grey",
+                              marginTop: "8px",
+                            }}
+                          >
+                            Hoàn Tất
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="DAT_ProjectData_Dashboard_More_Right">
+                      <div className="DAT_ProjectData_Dashboard_More_Right_Tit">
+                        Lợi ích môi trường và kinh tế
+                      </div>
+
+                      <div className="DAT_ProjectData_Dashboard_More_Right_Content">
+                        <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col">
+                          <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item">
+                            <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item_Icon">
+                              <MdPermDataSetting size={24} color="#6495ed" />
+                            </div>
+                            <div>
+                              <div style={{ fontSize: "14px", color: "grey" }}>
+                                Thang đo tiêu chuẩn
+                              </div>
+                              <div>--</div>
+                            </div>
+                          </div>
+                          <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item">
+                            <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item_Icon">
+                              <FaTree size={24} color="#6495ed" />
+                            </div>
+                            <div>
+                              <div style={{ fontSize: "14px", color: "grey" }}>
+                                Sản lượng cây trồng
+                              </div>
+                              <div>--</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col">
+                          <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item">
+                            <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item_Icon">
+                              <IoIosCloud size={24} color="#6495ed" />
+                            </div>
+                            <div>
+                              <div style={{ fontSize: "14px", color: "grey" }}>
+                                Giảm khí thải CO₂
+                              </div>
+                              <div>--</div>
+                            </div>
+                          </div>
+                          <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item">
+                            <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item_Icon">
+                              <RiMoneyCnyCircleFill size={24} color="#6495ed" />
+                            </div>
+                            <div>
+                              <div style={{ fontSize: "14px", color: "grey" }}>
+                                Tổng sản lượng
+                              </div>
+                              <div>--</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
+              );
+            case "device":
+              return (
+                <div className="DAT_ProjectData_Device">
+                  <div className="DAT_ProjectData_Device_Data">
+                    <div className="DAT_ProjectData_Device_Data_Func">
+                      <select>
+                        <option hidden>Trạng thái</option>
+                        <option>Tất cả</option>
+                        <option>Online</option>
+                        <option>Cảnh báo</option>
+                        <option>Offline</option>
+                      </select>
+                      <button>Thêm</button>
+                    </div>
+
+                    <div className="DAT_ProjectData_Device_Data_Line" />
+
+                    <div className="DAT_ProjectData_Device_Data_Nav">
+                      <button>Inverter</button>
+                      <button>Logger</button>
+                    </div>
+
+                    <div className="DAT_ProjectData_Device_Data_Line" />
+
+                    <div className="DAT_ProjectData_Device_Data_Table">
+                      <button>Inverter</button>
+                      <button>Logger</button>
+                    </div>
+                  </div>
+                </div>
+              );
+            case "alert":
+              return (
+                <div className="DAT_ProjectData_Alert">
+                  <div className="DAT_ProjectData_Alert_Data"></div>
+                </div>
+              );
+            default:
+              <></>;
+          }
+        })()}
       </div>
 
       {isMobile.value ? (

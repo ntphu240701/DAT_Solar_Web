@@ -12,6 +12,7 @@ import { VscDashboard } from "react-icons/vsc";
 export const sidenar = signal(true)
 
 const tab = signal('Dashboard')
+const tabli = signal('none')
 
 function Sidenar(props) {
 
@@ -33,13 +34,19 @@ function Sidenar(props) {
         const ID = e.currentTarget.id;
         console.log(ID)
         tab.value = ID
+        if(data[ID].li.length === 0){
+            tabli.value = 'none'
+        }
+       
         if(ID === 'Notif'){
             notifNav.value = !notifNav.value
         }
+    }
 
-        if(ID === 'Dashboard'){
-            notifNav.value = false
-        }
+    const handleMenuLi = (e) => {
+        const ID = e.currentTarget.id;
+        console.log(ID)
+        tabli.value = ID
     }
 
 
@@ -83,7 +90,7 @@ function Sidenar(props) {
                                     to={data.link}
                                     style={{ textDecoration: 'none' }}
                                 >
-                                    <label >{data.name}</label>
+                                    <label id={data.link} onClick={(e) => { handleMenuLi(e)  }}  style={{ color: (tabli.value === data.link) ? dataColor.cur.color : dataColor.pre.color }}>{data.name}</label>
                                 </Link>
                         )
                     })}

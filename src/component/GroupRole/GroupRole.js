@@ -80,15 +80,20 @@ function GroupRole(props) {
         </button>
       </div>
       <div className="DAT_GR">
-        <DataTable
-          className="DAT_Table_Container"
-          columns={columnGroupRole}
-          data={dataGroupRole}
-          pagination
-          paginationComponentOptions={paginationComponentOptions}
-          fixedHeader={true}
-          noDataComponent={<Empty />}
-        />
+        <div className='DAT_GR_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>
+          Danh sách nhóm người dùng
+        </div>
+        <div className="DAT_GR_Content">
+          <DataTable
+            className="DAT_Table_Container"
+            columns={columnGroupRole}
+            data={dataGroupRole}
+            pagination
+            paginationComponentOptions={paginationComponentOptions}
+            fixedHeader={true}
+            noDataComponent={<Empty />}
+          />
+        </div>
       </div>
       <div
         className="DAT_GroupCreate"

@@ -6,8 +6,8 @@ import { CiSearch } from "react-icons/ci";
 import { Empty } from "../Project/Project";
 import { signal } from "@preact/signals-react";
 import CreateRole from "./CreateRole";
-import Delete from "./Delete";
-import Edit from "./Edit";
+import DeleteRole from "./DeleteRole";
+import EditRole from "./EditRole";
 
 export const roleData = signal({});
 export const roleState = signal("default");
@@ -54,6 +54,9 @@ function Role(props) {
       selector: (row) => row.name,
       sortable: true,
       minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      }
     },
     {
       name: "phone",
@@ -64,6 +67,9 @@ function Role(props) {
       name: "E-mail",
       selector: (row) => row.email,
       width: "210px",
+      style: {
+        justifyContent: "left",
+      }
     },
     {
       name: "Phân quyền",
@@ -130,6 +136,7 @@ function Role(props) {
     const mod = document.getElementById(arr[0] + "_Modify");
     mod.style.display = type;
   };
+
   return (
     <>
       <div className="DAT_RoleHeader">
@@ -149,15 +156,21 @@ function Role(props) {
       </div>
 
       <div className="DAT_Role">
-        <DataTable
-          className="DAT_Table_Container"
-          columns={columnrole}
-          data={datarole}
-          pagination
-          paginationComponentOptions={paginationComponentOptions}
-          fixedHeader={true}
-          noDataComponent={<Empty />}
-        />
+        <div className='DAT_Role_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>
+          Danh sách người dùng
+        </div>
+        <div className="DAT_Role_Content">
+
+          <DataTable
+            className="DAT_Table_Container"
+            columns={columnrole}
+            data={datarole}
+            pagination
+            paginationComponentOptions={paginationComponentOptions}
+            fixedHeader={true}
+            noDataComponent={<Empty />}
+          />
+        </div>
       </div>
 
       <div
@@ -186,9 +199,9 @@ function Role(props) {
         {(() => {
           switch (popupState.value) {
             case "delete":
-              return <Delete />;
+              return <DeleteRole />;
             case "edit":
-              return <Edit />;
+              return <EditRole />;
             default:
               return <></>;
           }

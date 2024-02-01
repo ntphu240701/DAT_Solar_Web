@@ -9,7 +9,7 @@ import { Empty } from "../Project/Project";
 import { LuMailWarning } from "react-icons/lu";
 import { isMobile } from "../Navigation/Navigation";
 import { IoIosArrowDown, IoIosArrowRoundForward } from "react-icons/io";
-import Setting from "./Setting";
+import SettingWarn from "./SettingWarn";
 const tab = signal("all");
 const tabLable = signal("");
 const tabMobile = signal(false);
@@ -72,6 +72,10 @@ function Warn(props) {
       selector: (row) => row.name,
       sortable: true,
       minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      }
+      
     },
     {
       name: "Trạng thái",
@@ -105,6 +109,9 @@ function Warn(props) {
       selector: (row) => row.plant,
       sortable: true,
       minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      }
     },
 
     {
@@ -318,7 +325,7 @@ function Warn(props) {
         {(() => {
           switch (warnState.value) {
             case "setting":
-              return <Setting />;
+              return <SettingWarn />;
 
             default:
               return <></>;

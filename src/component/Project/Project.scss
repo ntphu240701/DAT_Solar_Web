@@ -131,7 +131,44 @@
         overflow: hidden;
         box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
 
-        &_Left {
+        &_LeftDashboard {
+            flex: 8;
+            padding: 16px;
+            min-width: 200px;
+        }
+
+        &_LeftDevice {
+            flex: 8;
+            padding: 16px;
+            min-width: 200px;
+            display: flex;
+            gap: 20px;
+
+            &_Item {
+                display: flex;
+
+                & button {
+                    width: 80px;
+                    padding: 4px;
+                    background-color: white;
+                    border: solid 1px rgb(199, 199, 199);
+                    border-radius: 0px;
+                    cursor: pointer;
+
+                    &:hover {
+                        border: solid 1px #6495ed;
+                        color: #6495ed;
+                    }
+
+                    &:focus {
+                        border: solid 1px rgb(92, 165, 255);
+                        color: rgb(92, 165, 255);
+                    }
+                }
+            }
+        }
+
+        &_LeftAlert {
             flex: 8;
             padding: 16px;
             min-width: 200px;
@@ -228,7 +265,7 @@
         }
     }
 
-    &_Body {
+    &_Dashboard {
         position: relative;
         margin-top: 156px;
 
@@ -300,6 +337,7 @@
                     }
                 }
 
+
                 &_Graph {
                     position: relative;
                     width: 100%;
@@ -310,46 +348,69 @@
                     display: flex;
                     gap: 200px;
 
-                    &_Solar {
-                        & img {
+                    &_Solar{
+                        & img{
                             width: 70px;
                             height: 70px;
                         }
                     }
-
-                    &_Load {
+                    &_Load{
                         margin-top: 60px;
-
-                        & img {
+                        & img{
                             width: 70px;
                             height: 70px;
                         }
                     }
 
-                    &_Line1 {
+                    &_Line1{
                         position: absolute;
                         top: 40px;
-                        left: 80px;
-
+                        left: 120px;
                         &_Ball {
                             position: absolute;
                             top: 0;
                             width: 8px;
                             height: 8px;
-
+                           
                             border-radius: 50%;
                             border: .125rem solid;
                             background-color: rgb(235, 235, 235);
-
-
-
+                         
+    
+    
                             offset-path: path('M 1,1 l 83,0 q 16,0 16,16 l 0,31 q 0,16 16,16 l 83,0');
                             offset-distance: 0%;
-
+    
                             animation: red-ball 3s ease-in-out infinite;
-
+    
                         }
                     }
+                    &_Line2{
+                        position: absolute;
+                        top: 40px;
+                        left: 380px;
+                        &_Ball {
+                            position: absolute;
+                            top: 0;
+                            width: 8px;
+                            height: 8px;
+                           
+                            border-radius: 50%;
+                            border: .125rem solid;
+                            background-color: rgb(235, 235, 235);
+                         
+    
+    
+                            offset-path: path('M 1,1 l 83,0 q 16,0 16,16 l 0,31 q 0,16 16,16 l 83,0');
+                            offset-distance: 0%;
+    
+                            animation: red-ball 3s ease-in-out infinite;
+    
+                        }
+
+
+                    }
+
 
                 }
 
@@ -601,6 +662,7 @@
             margin-bottom: 20px;
             border-radius: 5px;
             padding-bottom: 10px;
+            position: relative;
 
             &_Tit {
                 padding: 16px;
@@ -727,6 +789,68 @@
                 height: 300px; // lam xong xoa dong nay di
                 // background-color: #FFD600;
             }
+
+            &_SubConfig {
+                background-color: rgb(128, 128, 128, 0.5);
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 58.6px;
+                &_Dropdown {
+                    background-color: white;
+                    border-top: 1px solid #b8b8b8;
+                    padding: 16px;
+                    &_Search {
+                        display: flex;
+                        width: fit-content;
+                        justify-self: center;
+                        align-items: center;
+                        border: 1px solid rgb(142, 142, 142);
+                        padding: 3px;
+                        border-radius: 5px;
+                        & input {
+                            border: none;
+                            width: 200px;
+                        }
+                    }
+                    &_Item {
+                        padding-top: 16px;
+                        font-size: 15px;
+                        // color: hwb(0 33% 67%);
+                        &_Table {
+                            border: solid 1px #b8b8b8;
+                            & tr:first-child {
+                                border-bottom: solid 1px #b8b8b8;
+                            }
+                        }
+                        &_Table {
+                            border-collapse: collapse;
+                            width: 100%;
+                            &_Tr {
+                                display: flex;
+                                align-items: center;
+                                &_Th {
+                                    padding: 12px;
+                                    background-color: #d4d4d4;
+                                    width: 120px;
+                                }
+
+                                &_Td {
+                                    padding-left: 16px;
+                                    display: flex;
+                                    &_Checkbox {
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 10px;
+                                        padding-left: 10px;
+                                        width: 150px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         &_More {
@@ -805,6 +929,95 @@
                     }
                 }
             }
+        }
+    }
+
+    &_Device {
+        position: relative;
+        margin-top: 134px;
+
+        &_Data {
+            width: 98%;
+            margin: auto;
+            margin-bottom: 16px;
+            background-color: white;
+            border-radius: 5px;
+
+            &_Func {
+                display: flex;
+                justify-content: space-between;
+                padding: 16px;
+
+                & button {
+                    width: 80px;
+                    padding: 4px;
+                    background-color: white;
+                    border: solid 1px rgb(199, 199, 199);
+                    border-radius: 0px;
+                    cursor: pointer;
+
+                    &:hover {
+                        border: solid 1px #6495ed;
+                        color: #6495ed;
+                    }
+                }
+
+                & select {
+                    // width: 100%;
+                    // height: 40px;
+                    border-radius: 5px;
+                    border: solid 1px rgb(199, 199, 199);
+                    padding: 4px;
+                }
+            }
+
+            &_Line {
+                width: 98%;
+                margin: auto;
+                border-bottom: solid 1px rgb(199, 199, 199);
+            }
+
+            &_Nav {
+                padding-top: 16px;
+                padding-left: 16px;
+                padding-right: 16px;
+
+                & button {
+                    width: 80px;
+                    padding: 4px;
+                    background-color: white;
+                    border: none;
+                    border-radius: 0px;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #6495ed;
+                    }
+
+                    &:focus {
+                        border-bottom: solid 2px rgb(92, 165, 255);
+                        color: rgb(92, 165, 255);
+                    }
+                }
+            }
+
+            &_Table {
+                padding: 16px;
+            }
+        }
+    }
+
+    &_Alert {
+        position: relative;
+        margin-top: 134px;
+
+        &_Data {
+            width: 98%;
+            height: 100px;
+            margin: auto;
+            margin-bottom: 16px;
+            background-color: white;
+            border-radius: 5px;
         }
     }
 }
@@ -2251,7 +2464,7 @@
             }
         }
 
-        &_Body {
+        &_Dashboard {
             margin-top: 180px;
             margin-bottom: 100px;
 

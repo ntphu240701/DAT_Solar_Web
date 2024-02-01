@@ -74,6 +74,11 @@ function Analytics(props) {
       </div>
 
       <div className="DAT_Ana">
+        <div className='DAT_Ana_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>
+          Danh sách mẫu phân tích
+        </div>
+        <div className="DAT_Ana_Content">
+
         <DataTable
           className="DAT_Table_Container"
           columns={columnAna}
@@ -83,6 +88,7 @@ function Analytics(props) {
           fixedHeader={true}
           noDataComponent={<Empty />}
         />
+        </div>
       </div>
 
       <div

@@ -52,7 +52,7 @@
 
 .DAT_GR {
     width: 98%;
-    height: 82vh;
+    //height: 80vh;
     margin: auto;
     margin-top: 15px;
     //margin-bottom: 100px;
@@ -67,8 +67,16 @@
     box-shadow:
         2px 2px 5px rgba(198, 197, 197, 0.4),
         -2px -2px 5px rgba(198, 197, 197, 0.4);
-    padding: 20px;
-    padding-top: 100px;
+
+    &_Content {
+        padding: 10px;
+        height: calc(100vh - 180px);
+        -webkit-box-sizing: border-box;
+        /* Safari/Chrome, other WebKit */
+        -moz-box-sizing: border-box;
+        /* Firefox, other Gecko */
+        box-sizing: border-box;
+    }
 }
 
 .DAT_GroupCreate {
@@ -194,5 +202,20 @@
                 }
             }
         }
+    }
+}
+
+
+@media (max-width: 900px) {
+    .DAT_Role {
+        width: 98%;
+        //height: 68vh;
+        // overflow: hidden;
+        &_Content{
+            height: calc(100vh - 300px);
+        }
+
+
+
     }
 }

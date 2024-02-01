@@ -408,6 +408,117 @@
         }
     }
 
+    &_Rank {
+        background-color: rgb(255, 255, 255);
+        width: 100%;
+        min-height: 300px;
+        border-radius: 7px;
+        box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+        position: relative;
+        &-Head{
+
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            -webkit-box-sizing: border-box;
+            /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box;
+            /* Firefox, other Gecko */
+            box-sizing: border-box;
+            font-size: 17px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &-Option{
+                cursor: pointer;
+                display: flex;
+              
+                font-size: 15px;
+                & span{
+                  padding: 4px; 
+                  width: 40px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  border-radius: 2px;
+                }
+            }
+            &-Datetime{
+                & input{
+                    padding: 4px;
+                    width: 120px;
+                    color: gray;
+                    border-radius: 3px;
+                    border: solid 1.5px gray;
+                }
+            }
+
+        }
+        &-Content{
+            padding: 10px;
+        }
+
+    }
+
+    &_Benefit {
+        background-color: rgb(255, 255, 255);
+        width: 100%;
+        min-height: 300px;
+        border-radius: 7px;
+        box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+        position: relative;
+        &-Head{
+
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            -webkit-box-sizing: border-box;
+            /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box;
+            /* Firefox, other Gecko */
+            box-sizing: border-box;
+            font-size: 17px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            //margin-bottom: 50px;
+
+            &-Datetime{
+                & input{
+                    padding: 4px;
+                    width: 120px;
+                    color: gray;
+                    border-radius: 3px;
+                    border: solid 1.5px gray;
+                }
+            }
+
+        }
+
+        &_Content{
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+           
+            &_Item{
+                padding: 20px;
+                flex: 1;
+                text-align: center;
+                min-width: 150px;
+            }
+         
+        }
+
+      
+
+    }
+
 }
 
 
