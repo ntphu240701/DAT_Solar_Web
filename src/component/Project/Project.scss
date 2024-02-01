@@ -51,6 +51,7 @@
 }
 
 .DAT_Project {
+
     width: 98%;
     //height: 80vh;
     margin: auto;
@@ -64,9 +65,7 @@
     box-sizing: border-box;
     border-radius: 5px;
     background-color: rgb(255, 255, 255, 0.95);
-    box-shadow:
-        2px 2px 5px rgba(198, 197, 197, 0.4),
-        -2px -2px 5px rgba(198, 197, 197, 0.4);
+    box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4), -2px -2px 5px rgba(198, 197, 197, 0.4);
 
     &_Nav {
         display: flex;
@@ -87,6 +86,7 @@
                 color: #6495ed;
             }
         }
+
     }
 
     &_Content {
@@ -170,11 +170,11 @@
                 justify-content: center;
                 border-radius: 50%;
 
-                background-color: #4caf50;
+                background-color: #4CAF50;
                 cursor: pointer;
 
                 &:hover {
-                    background-color: #66bb6a;
+                    background-color: #66BB6A;
                 }
             }
 
@@ -186,11 +186,11 @@
                 justify-content: center;
                 border-radius: 50%;
 
-                background-color: #ffd600;
+                background-color: #FFD600;
                 cursor: pointer;
 
                 &:hover {
-                    background-color: #ffea00;
+                    background-color: #FFEA00;
                 }
             }
 
@@ -202,11 +202,11 @@
                 justify-content: center;
                 border-radius: 50%;
 
-                background-color: #9e9e9e;
+                background-color: #9E9E9E;
                 cursor: pointer;
 
                 &:hover {
-                    background-color: #bdbdbd;
+                    background-color: #BDBDBD;
                 }
             }
 
@@ -218,7 +218,7 @@
                 justify-content: center;
                 border-radius: 50%;
 
-                background-color: #f44336;
+                background-color: #F44336;
                 cursor: pointer;
 
                 &:hover {
@@ -242,7 +242,7 @@
             &_Left {
                 background-color: white;
                 width: 25%;
-                height: 360px;
+                // height: 360px;
                 border-radius: 5px;
                 overflow: hidden;
 
@@ -265,11 +265,11 @@
                         &_Title {
                             flex: 4;
                             font-size: 14px;
-                            color: gray;
+                            color: rgb(128, 128, 128);
                             width: 100%;
                             white-space: nowrap; // ngan xuong dong
                             overflow: hidden; // an noi dung vuot ra ngoai
-                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
+                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai 
                         }
 
                         &_Content {
@@ -278,7 +278,7 @@
                             color: black;
                             white-space: nowrap; // ngan xuong dong
                             overflow: hidden; // an noi dung vuot ra ngoai
-                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
+                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai 
                         }
                     }
                 }
@@ -287,7 +287,7 @@
             &_Center {
                 background-color: white;
                 width: 50%;
-                height: 360px;
+                // height: 360px;
                 border-radius: 5px;
                 overflow: hidden;
 
@@ -301,10 +301,60 @@
                 }
 
                 &_Graph {
+                    position: relative;
                     width: 100%;
+                    height: 300px;
+                    overflow: hidden;
+                    padding: 10px;
+                    box-sizing: border-box;
+                    display: flex;
+                    gap: 200px;
+
+                    &_Solar {
+                        & img {
+                            width: 70px;
+                            height: 70px;
+                        }
+                    }
+
+                    &_Load {
+                        margin-top: 60px;
+
+                        & img {
+                            width: 70px;
+                            height: 70px;
+                        }
+                    }
+
+                    &_Line1 {
+                        position: absolute;
+                        top: 40px;
+                        left: 80px;
+
+                        &_Ball {
+                            position: absolute;
+                            top: 0;
+                            width: 8px;
+                            height: 8px;
+
+                            border-radius: 50%;
+                            border: .125rem solid;
+                            background-color: rgb(235, 235, 235);
+
+
+
+                            offset-path: path('M 1,1 l 83,0 q 16,0 16,16 l 0,31 q 0,16 16,16 l 83,0');
+                            offset-distance: 0%;
+
+                            animation: red-ball 3s ease-in-out infinite;
+
+                        }
+                    }
+
                 }
 
                 &_Production {
+
                     &_Data {
                         padding: 16px;
                         display: flex;
@@ -361,71 +411,169 @@
 
                 &_Consumption {
                     &_Data {
-                        padding: 16px;
                         display: flex;
-                        flex-wrap: wrap;
-                        overflow: hidden;
-                        gap: 16px;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 16px;
 
-                        &_Chart {
-                            flex: 5;
-                            display: flex;
-                            justify-content: center;
-
-                            &_Data {
-                                border-radius: 50%;
-                                border: solid 2px rgb(103, 179, 255);
-                                padding: 16px;
-                                width: 100px;
-                                height: 100px;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                flex-wrap: wrap;
+                        &_Img {
+                            & img {
+                                width: 120px;
+                                height: 70px;
                             }
-                        }
-
-                        &_Detail {
-                            flex: 5;
                         }
                     }
 
                     &_Total {
                         padding: 16px;
                         display: flex;
-                        // flex-wrap: wrap;
-                        overflow: hidden;
-                        gap: 8px;
+                        justify-content: center;
+                        gap: 10px;
 
-                        &_Item {
-                            width: 100%;
-                            padding: 16px;
-                            border-radius: 5px;
+                        &_Left {
+                            flex: 5;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 10px;
+
+                            &_Item {
+                                padding: 16px;
+                                border-radius: 5px;
+
+                                &_Tit {
+                                    font-size: 14px;
+                                    color: gray;
+                                }
+
+                                &_Data {
+                                    margin: 4px;
+                                }
+                            }
+                        }
+
+                        &_Right {
+                            flex: 5;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 10px;
+
+                            &_Item {
+                                padding: 16px;
+                                border-radius: 5px;
+
+                                &_Tit {
+                                    font-size: 14px;
+                                    color: gray;
+                                }
+
+                                &_Data {
+                                    margin: 4px;
+                                }
+                            }
+                        }
+
+
+                    }
+                }
+
+                &_Grid {
+                    &_Data {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 16px;
+
+                        &_Img {
+                            & img {
+                                width: 60px;
+                                height: 70px;
+                            }
+                        }
+                    }
+
+                    &_Row {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                        padding: 16px;
+
+                        &_Left {
+                            display: flex;
+                            gap: 10px;
 
                             &_Tit {
-                                font-size: 14px;
-                                color: gray;
+                                padding: 16px;
+                                display: flex;
+                                align-items: center;
+                                width: 60px;
                             }
 
                             &_Data {
-                                margin: 4px 0px 0px 0px;
+                                padding: 16px;
+
+                                &_Tit {
+                                    font-size: 14px;
+                                    color: grey;
+                                }
                             }
                         }
                     }
                 }
 
-                &_Grid {
-                    width: 100%;
+                &_Battery {
+                    &_Data {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 16px;
+
+                        &_Img {
+                            & img {
+                                width: 60px;
+                                height: 70px;
+                            }
+                        }
+
+                        &_Status {
+                            display: flex;
+                            flex-direction: column;
+                        }
+                    }
+
+                    &_Row {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                        padding: 16px;
+
+                        &_Left {
+                            display: flex;
+                            gap: 10px;
+
+                            &_Tit {
+                                padding: 16px;
+                                display: flex;
+                                align-items: center;
+                                width: 90px;
+                            }
+
+                            &_Data {
+                                padding: 16px;
+
+                                &_Tit {
+                                    font-size: 14px;
+                                    color: grey;
+                                }
+                            }
+                        }
+                    }
                 }
 
-                &_Batterry {
-                    width: 100%;
-                }
             }
 
             &_Right {
                 width: 25%;
-                height: 360px;
+                // height: 360px;
                 border-radius: 5px;
                 overflow: hidden;
                 box-sizing: border-box;
@@ -440,6 +588,7 @@
                     background-size: cover;
                     background-repeat: no-repeat;
                     background-position: left;
+
                 }
             }
         }
@@ -514,6 +663,7 @@
                             border: solid 1px #6495ed;
                             border-radius: 5px;
 
+
                             &:hover {
                                 background-color: #3e80fb;
                                 color: white;
@@ -533,60 +683,14 @@
 
             &_Day {
                 padding: 20px;
-                height: 300px;
-
-                &_Tit {
-                    display: flex;
-
-                    &-Unit {
-                        flex: 1;
-                        color: gray;
-                        font-size: 14px;
-                    }
-
-                    &-Label {
-                        width: 100%;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        color: gray;
-                        font-size: 14px;
-                    }
-                }
-
-                &_Chart {
-                    height: 100%;
-                    width: 100%;
-                }
+                height: 300px; // lam xong xoa dong nay di
+                // background-color: #3e80fb;
             }
 
             &_Month {
                 padding: 20px;
-                height: 300px;
-
-                &_Tit {
-                    display: flex;
-
-                    &-Unit {
-                        flex: 1;
-                        color: gray;
-                        font-size: 14px;
-                    }
-
-                    &-Label {
-                        width: 100%;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        color: gray;
-                        font-size: 14px;
-                    }
-                }
-
-                &_Chart {
-                    height: 100%;
-                    width: 100%;
-                }
+                height: 300px; // lam xong xoa dong nay di
+                // background-color: #4CAF50;
             }
 
             &_Year {
@@ -620,31 +724,8 @@
 
             &_Total {
                 padding: 20px;
-                height: 300px;
-
-                &_Tit {
-                    display: flex;
-
-                    &-Unit {
-                        flex: 1;
-                        color: gray;
-                        font-size: 14px;
-                    }
-
-                    &-Label {
-                        width: 100%;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        color: gray;
-                        font-size: 14px;
-                    }
-                }
-
-                &_Chart {
-                    height: 100%;
-                    width: 100%;
-                }
+                height: 300px; // lam xong xoa dong nay di
+                // background-color: #FFD600;
             }
         }
 
@@ -689,6 +770,7 @@
                     &_Item {
                         flex: 5;
                         padding: 16px;
+
                     }
                 }
             }
@@ -767,11 +849,11 @@
         justify-content: center;
         border-radius: 50%;
 
-        background-color: #4caf50;
+        background-color: #4CAF50;
         cursor: pointer;
 
         &:hover {
-            background-color: #66bb6a;
+            background-color: #66BB6A;
         }
     }
 
@@ -783,11 +865,11 @@
         justify-content: center;
         border-radius: 50%;
 
-        background-color: #ffd600;
+        background-color: #FFD600;
         cursor: pointer;
 
         &:hover {
-            background-color: #ffea00;
+            background-color: #FFEA00;
         }
     }
 
@@ -799,11 +881,11 @@
         justify-content: center;
         border-radius: 50%;
 
-        background-color: #9e9e9e;
+        background-color: #9E9E9E;
         cursor: pointer;
 
         &:hover {
-            background-color: #bdbdbd;
+            background-color: #BDBDBD;
         }
     }
 }
@@ -929,7 +1011,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -986,7 +1070,7 @@
                     }
 
                     &_Content {
-                        height: 270px;
+                        height: 220px;
                         box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
                     }
                 }
@@ -1031,7 +1115,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1053,7 +1139,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1079,7 +1167,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1139,7 +1229,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1161,7 +1253,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1225,7 +1319,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1251,7 +1347,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1277,7 +1375,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1422,7 +1522,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1479,7 +1581,7 @@
                     }
 
                     &_Content {
-                        height: 270px;
+                        height: 220px;
                         box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
                     }
                 }
@@ -1524,7 +1626,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1546,7 +1650,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1572,7 +1678,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1632,7 +1740,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1654,7 +1764,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1718,7 +1830,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1744,7 +1858,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1770,7 +1886,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1923,6 +2041,7 @@
 //             z-index: -1;
 //         }
 
+
 //         &::before {
 //             left: -10px;
 //             background: #240046;
@@ -1949,6 +2068,7 @@
 //             transition: all 0.3s ease-in;
 //         }
 
+
 //         &:hover {
 //             background-color: #c6c6c6;
 //         }
@@ -1959,6 +2079,7 @@
 //             overflow: hidden;
 //             text-overflow: ellipsis;
 //         }
+
 
 //     }
 
@@ -2006,8 +2127,13 @@
 //         outline: none;
 //         border: none;
 
+
+
+
+
 //     }
 // }
+
 
 // .DAT_Toollist_Tab {
 //     position: relative;
@@ -2019,6 +2145,13 @@
 //     //border-bottom: solid 1px darkgray;
 //     padding: 5px 10px 0px 10px;
 //     height: 40px;
+
+
+
+
+
+
+
 
 //     &_main {
 //         position: relative;
@@ -2057,7 +2190,7 @@
 //             font-size: 14px;
 //             color: rgb(80, 80, 80);
 //             background-color: #dadada;
-//             padding: 10px 25px 10px 25px; //
+//             padding: 10px 25px 10px 25px; //   
 //             //border-radius: 5px;
 //             // background-size: cover;
 //             // background-position: center !important;
@@ -2066,6 +2199,7 @@
 //             text-overflow: ellipsis;
 
 //         }
+
 
 //         &_content1 {
 
@@ -2085,7 +2219,11 @@
 //         }
 //     }
 
+
+
 // }
+
+
 
 @media (max-width: 900px) {
     .DAT_Project {
@@ -2096,6 +2234,9 @@
         &_Content {
             height: calc(100vh - 300px);
         }
+
+
+
     }
 
     .DAT_ProjectData {
@@ -2115,6 +2256,7 @@
             margin-bottom: 100px;
 
             &_Data {
+
                 display: contents;
 
                 &_Left {
@@ -2148,6 +2290,7 @@
                 }
             }
         }
+
     }
 
     .DAT_ProjectDataDrop {
@@ -2317,6 +2460,20 @@
     }
 }
 
+
+@keyframes red-ball {
+    from {
+        offset-distance: 0%;
+    }
+
+    to {
+        offset-distance: 100%;
+    }
+}
+
+
+
+
 // Hidden scrollbar
 //     overflow-y: scroll;
 //     -ms-overflow-style: none;
@@ -2330,7 +2487,7 @@
 // text
 // white-space: nowrap; // ngan xuong dong
 // overflow: hidden; // an noi dung vuot ra ngoai
-// text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
+// text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai 
 
 // input
 // box-sizing: border-box;

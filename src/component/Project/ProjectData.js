@@ -3,9 +3,10 @@ import "./Project.scss";
 import { plantState, projectData } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
 import {
-  LineChart,
   BarChart,
   Bar,
+  Line,
+  LineChart,
   Cell,
   XAxis,
   YAxis,
@@ -13,7 +14,6 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Line,
 } from "recharts";
 import { IoArrowForward } from "react-icons/io5";
 import { MdOutlineError, MdPermDataSetting } from "react-icons/md";
@@ -26,11 +26,69 @@ import { IoMenu } from "react-icons/io5";
 import { BsMenuButtonWide } from "react-icons/bs";
 import { GoAlertFill } from "react-icons/go";
 import { signal } from "@preact/signals-react";
+import { LiaLongArrowAltLeftSolid } from "react-icons/lia";
 
 export const dropState = signal(false);
 
 const Graph = () => {
-  return <></>;
+
+  const path = document.querySelector('.infinity');
+  const circle = document.querySelector('.circle');
+
+  // Create an object that gsap can animate
+  const val = { distance: 0 };
+  // Create a tween
+  // gsap.to(val, {
+  //   // Animate from distance 0 to the total distance
+  //   distance: path.getTotalLength(),
+  //   // Loop the animation
+  //   repeat: -1,
+  //   // Make the animation lasts 5 seconds
+  //   duration: 5,
+  //   // Function call on each frame of the animation
+  //   onUpdate: () => {
+  //     // Query a point at the new distance value
+  //     const point = path.getPointAtLength(val.distance);
+  //     // Update the circle coordinates
+  //     circle.setAttribute('cx', point.x);
+  //     circle.setAttribute('cy', point.y);
+  //   }
+  // });
+
+
+  return (
+    <div className="DAT_ProjectData_Body_Data_Center_Graph">
+
+      <div className="DAT_ProjectData_Body_Data_Center_Graph_Solar">
+        <img src="/dat_picture/solar.png"></img>
+      </div>
+      <div className="DAT_ProjectData_Body_Data_Center_Graph_Load">
+        <img src="/dat_picture/load.png"></img>
+      </div>
+      <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1">
+
+        <svg width="330px" height="80px" version="1.1">
+          <linearGradient id="style-1" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
+            <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
+          </linearGradient>
+          <path
+            className="path"
+
+            d="M 1,1 l 83,0 q 16,0 16,16 l 0,31 q 0,16 16,16 l 83,0"
+            style={{
+              width: '100%',
+              height: '100%',
+              fill: 'none',
+              stroke: "url('#style-1')",
+              strokeWidth: '3',
+            }}
+
+          ></path>
+        </svg>
+        <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div>
+      </div>
+    </div>)
 };
 
 const Production = () => {
@@ -148,106 +206,64 @@ const Consumption = () => {
   return (
     <div className="DAT_ProjectData_Body_Data_Center_Consumption">
       <div className="DAT_ProjectData_Body_Data_Center_Consumption_Data">
-        <div className="DAT_ProjectData_Body_Data_Center_Consumption_Data_Chart">
-          <div
-            className="DAT_ProjectData_Body_Data_Center_Consumption_Data_Chart_Data"
-            style={{ fontSize: "32px" }}
-          >
-            0%
-          </div>
+        <div className="DAT_ProjectData_Body_Data_Center_Consumption_Data_Img">
+          <img src="/dat_picture/load.png" alt="" />
         </div>
-
-        <div className="DAT_ProjectData_Body_Data_Center_Consumption_Data_Detail">
-          <div style={{ marginBottom: "8px", color: "grey" }}>Năng suất</div>
-          <div style={{ marginBottom: "8px" }}>
-            {projectData.value.production}
-            <span
-              style={{
-                marginLeft: "8px",
-                fontSize: "12px",
-                color: "grey",
-              }}
-            >
-              kW
-            </span>
-          </div>
-          <div
-            style={{
-              borderBottom: "solid 1px rgb(199, 199, 199)",
-              width: "50%",
-              marginBottom: "8px",
-            }}
-          />
-          <div style={{ marginBottom: "8px", color: "grey" }}>Dung lượng</div>
-          <div>
-            {projectData.value.capacity}
-            <span
-              style={{
-                marginLeft: "8px",
-                fontSize: "12px",
-                color: "grey",
-              }}
-            >
-              kWp
-            </span>
-          </div>
+        <div className="DAT_ProjectData_Body_Data_Center_Consumption_Data_Data">
+          Tiêu thụ <span>7.68</span> kW
         </div>
       </div>
 
-      <div
-        style={{
-          borderBottom: "solid 1px rgb(199, 199, 199)",
-          height: "16px",
-          marginBottom: "16px",
-        }}
-      />
-
       <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total">
-        <div
-          className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Item"
-          style={{ backgroundColor: "rgb(245, 251, 255)" }}
-        >
-          <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Item_Tit">
-            Năng suất ngày
+        <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left">
+          <div
+            className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left_Item"
+            style={{ backgroundColor: "rgb(245, 251, 255)" }}
+          >
+            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left_Item_Tit">
+              Tiêu thụ ngày
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left_Item_Data">
+              --
+            </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Item_Data">
-            --
+
+          <div
+            className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left_Item"
+            style={{ backgroundColor: "rgb(246, 245, 255)" }}
+          >
+            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left_Item_Tit">
+              Tiêu thụ năm
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Left_Item_Data">
+              --
+            </div>
           </div>
         </div>
 
-        <div
-          className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Item"
-          style={{ backgroundColor: "rgb(255, 248, 247)" }}
-        >
-          <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Item_Tit">
-            Năng suất tháng
+        <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right">
+          <div
+            className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right_Item"
+            style={{ backgroundColor: "rgb(255, 248, 247)" }}
+          >
+            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right_Item_Tit">
+              Tiêu thụ tháng
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right_Item_Data">
+              --
+            </div>
           </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Item_Data">
-            --
-          </div>
-        </div>
 
-        <div
-          className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Item"
-          style={{ backgroundColor: "rgb(246, 245, 255)" }}
-        >
-          <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Item_Tit">
-            Năng suất năm
-          </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Item_Data">
-            --
-          </div>
-        </div>
-
-        <div
-          className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Item"
-          style={{ backgroundColor: "rgb(245, 250, 246)" }}
-        >
-          <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Item_Tit">
-            Tổng năng suất
-          </div>
-          <div className="DAT_ProjectData_Body_Data_Center_Production_Total_Item_Data">
-            --
+          <div
+            className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right_Item"
+            style={{ backgroundColor: "rgb(245, 250, 246)" }}
+          >
+            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right_Item_Tit">
+              Tổng tiêu thụ
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Consumption_Total_Right_Item_Data">
+              --
+            </div>
           </div>
         </div>
       </div>
@@ -256,11 +272,225 @@ const Consumption = () => {
 };
 
 const Grid = () => {
-  return <></>;
+  return (
+    <div className="DAT_ProjectData_Body_Data_Center_Grid">
+      <div className="DAT_ProjectData_Body_Data_Center_Grid_Data">
+        <div className="DAT_ProjectData_Body_Data_Center_Grid_Data_Img">
+          <img src="/dat_picture/grid.png" alt="" />
+        </div>
+        <div className="DAT_ProjectData_Body_Data_Center_Grid_Data_Data">
+          Lưới <span>0</span> W
+        </div>
+      </div>
+
+      <div className="DAT_ProjectData_Body_Data_Center_Grid_Row">
+        <div
+          className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left"
+          style={{ backgroundColor: "rgb(245, 251, 255)" }}
+        >
+          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Tit">
+            Nạp vào
+          </div>
+          <div
+            style={{
+              borderLeft: "solid 1px rgb(231, 231, 231)",
+            }}
+          />
+          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+              Hôm nay
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+              Tháng
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+              Năm
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+              Tổng
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left"
+          style={{ backgroundColor: "rgb(245, 251, 255)" }}
+        >
+          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Tit">
+            Bán ra
+          </div>
+          <div
+            style={{
+              borderLeft: "solid 1px rgb(231, 231, 231)",
+            }}
+          />
+          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+              Hôm nay
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+              Tháng
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+              Năm
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Tit">
+              Tổng
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Grid_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const Battery = () => {
-  return <></>;
+  return (
+    <div className="DAT_ProjectData_Body_Data_Center_Battery">
+      <div className="DAT_ProjectData_Body_Data_Center_Battery_Data">
+        <div className="DAT_ProjectData_Body_Data_Center_Battery_Data_Img">
+          <img src="/dat_picture/battery.png" alt="" />
+        </div>
+        <div className="DAT_ProjectData_Body_Data_Center_Battery_Data_Status">
+          Sạc 95%
+          <LiaLongArrowAltLeftSolid size={30} />
+        </div>
+        <div className="DAT_ProjectData_Body_Data_Center_Battery_Data_Data">
+          Pin <span>0</span> W
+        </div>
+      </div>
+
+      <div className="DAT_ProjectData_Body_Data_Center_Battery_Row">
+        <div
+          className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left"
+          style={{ backgroundColor: "rgb(245, 251, 255)" }}
+        >
+          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Tit">
+            Sạc điện
+          </div>
+          <div
+            style={{
+              borderLeft: "solid 1px rgb(231, 231, 231)",
+            }}
+          />
+          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+              Hôm nay
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+              Tháng
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+              Năm
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+              Tổng
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+        </div>
+
+        <div
+          className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left"
+          style={{ backgroundColor: "rgb(245, 251, 255)" }}
+        >
+          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Tit">
+            Phóng điện
+          </div>
+          <div
+            style={{
+              borderLeft: "solid 1px rgb(231, 231, 231)",
+            }}
+          />
+          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+              Hôm nay
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+              Tháng
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+              Năm
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Tit">
+              Tổng
+            </div>
+            <div className="DAT_ProjectData_Body_Data_Center_Battery_Row_Left_Data_Data">
+              0 kWh
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 const Day = () => {
@@ -295,13 +525,13 @@ const Day = () => {
 
   return (
     <div className="DAT_ProjectData_Body_History_Day">
-      <div className="DAT_ProjectData_Body_History_Day_Tit">
-        <div className="DAT_ProjectData_Body_History_Day_Tit-Unit">kWh</div>
-        <div className="DAT_ProjectData_Body_History_Day_Tit-Label">
+      <div className="DAT_ProjectData_Body_History_Year_Tit">
+        <div className="DAT_ProjectData_Body_History_Year_Tit-Unit">kWh</div>
+        <div className="DAT_ProjectData_Body_History_Year_Tit-Label">
           Sản lượng ngày: 24.3 kWh
         </div>
       </div>
-      <div className="DAT_ProjectData_Body_History_Day_Chart">
+      <div className="DAT_ProjectData_Body_History_Year_Chart">
         <ResponsiveContainer
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
@@ -357,14 +587,14 @@ const Month = () => {
   ];
 
   return (
-    <div className="DAT_ProjectData_Body_History_Month">
-      <div className="DAT_ProjectData_Body_History_Month_Tit">
-        <div className="DAT_ProjectData_Body_History_Month_Tit-Unit">kWh</div>
-        <div className="DAT_ProjectData_Body_History_Month_Tit-Label">
+    <div className="DAT_ProjectData_Body_History_Year">
+      <div className="DAT_ProjectData_Body_History_Year_Tit">
+        <div className="DAT_ProjectData_Body_History_Year_Tit-Unit">kWh</div>
+        <div className="DAT_ProjectData_Body_History_Year_Tit-Label">
           Sản lượng tháng: 775.327 kWh
         </div>
       </div>
-      <div className="DAT_ProjectData_Body_History_Month_Chart">
+      <div className="DAT_ProjectData_Body_History_Year_Chart">
         <ResponsiveContainer
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
@@ -388,7 +618,7 @@ const Month = () => {
 };
 
 const Year = () => {
-  const v = "Sản lượng tháng";
+  const v = "Sản lượng năm";
 
   const data = [
     {
@@ -504,17 +734,17 @@ const Total = () => {
       name: "2024",
       [v]: 0.1,
     },
-  ];
+  ]
 
   return (
-    <div className="DAT_ProjectData_Body_History_Total">
-      <div className="DAT_ProjectData_Body_History_Total_Tit">
-        <div className="DAT_ProjectData_Body_History_Total_Tit-Unit">MWh</div>
-        <div className="DAT_ProjectData_Body_History_Total_Tit-Label">
-          Sản lượng năm: 13.69 MWh
+    <div className="DAT_ProjectData_Body_History_Year">
+      <div className="DAT_ProjectData_Body_History_Year_Tit">
+        <div className="DAT_ProjectData_Body_History_Year_Tit-Unit">MWh</div>
+        <div className="DAT_ProjectData_Body_History_Year_Tit-Label">
+          Sản lượng tổng: 13.69 MWh
         </div>
       </div>
-      <div className="DAT_ProjectData_Body_History_Total_Chart">
+      <div className="DAT_ProjectData_Body_History_Year_Chart">
         <ResponsiveContainer
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
@@ -537,14 +767,6 @@ const Total = () => {
   );
 };
 
-const Custom = () => {
-  return (
-    <div className="DAT_ProjectData_Body_History_Custom">
-
-    </div>
-  )
-}
-
 function ProjectData(props) {
   const color = {
     cur: "blue",
@@ -558,13 +780,7 @@ function ProjectData(props) {
   };
 
   const [date, setDate] = useState("day");
-  const [configname, setConfigname] = useState("Chọn thông số");
   const handleDate = (e) => {
-    if(configname === "Chọn thông số"){
-      setConfigname("Thu gọn");
-    } else if (configname === "Thu gọn"){
-      setConfigname("Chọn thông số");
-    }
     var id = e.currentTarget.id;
     setDate(id);
   };
@@ -853,9 +1069,7 @@ function ProjectData(props) {
                   </div>
                 </div>
                 <div>
-                  <button id="custom" onClick={(e) => handleDate(e)}>
-                    {configname}
-                  </button>
+                  <button>Chọn Thông Số</button>
                 </div>
                 <div className="DAT_ProjectData_Body_History_Tit_Right_Export">
                   <button>Xuất Báo Cáo</button>
@@ -874,8 +1088,6 @@ function ProjectData(props) {
                   return <Year />;
                 case "total":
                   return <Total />;
-                case "custom":
-                  return <Custom />;
                 default:
                   <></>;
               }
@@ -1036,9 +1248,9 @@ function ProjectData(props) {
         <>
           {dropState.value ? (
             <div className="DAT_ProjectDataDrop">
+              {/* <div className="DAT_ProjectDataDrop_Item">Xem chi tiết</div>
               <div className="DAT_ProjectDataDrop_Item">Xem chi tiết</div>
-              <div className="DAT_ProjectDataDrop_Item">Xem chi tiết</div>
-              <div className="DAT_ProjectDataDrop_Item">Xem chi tiết</div>
+              <div className="DAT_ProjectDataDrop_Item">Xem chi tiết</div> */}
             </div>
           ) : (
             <></>

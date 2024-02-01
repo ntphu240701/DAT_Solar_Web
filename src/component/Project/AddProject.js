@@ -504,7 +504,7 @@ function AddProject(props) {
   return (
     <div className="DAT_AddProject">
       <div className="DAT_AddProject_Header">
-        <div className="DAT_AddProject_Header_Left">Thêm Dự Án</div>
+        <div className="DAT_AddProject_Header_Left">Thêm dự án</div>
 
         <div className="DAT_AddProject_Header_Right">
           <div
@@ -526,22 +526,22 @@ function AddProject(props) {
 
       <BasicInfo
         tit={"Thông tin cơ bản"}
-        height={isMobile.value ? "700px" : "350px"}
+        height={isMobile.value ? "700px" : "300px"}
       />
 
       <SystemInfo
         tit={"Thông tin hệ thống"}
-        height={isMobile.value ? "530px" : "220px"}
+        height={isMobile.value ? "530px" : "190px"}
       />
 
       <YieldInfo
         tit={"Thông tin sản lượng"}
-        height={isMobile.value ? "220px" : "120px"}
+        height={isMobile.value ? "220px" : "100px"}
       />
 
       <OwnerInfo
         tit={"Thông tin người sở hữu"}
-        height={isMobile.value ? "320px" : "120px"}
+        height={isMobile.value ? "320px" : "100px"}
       />
     </div>
   );
