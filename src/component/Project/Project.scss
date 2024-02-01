@@ -132,18 +132,83 @@
         box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
 
         &_Left {
-            flex: 9;
+            flex: 8;
             padding: 16px;
             min-width: 200px;
         }
 
         &_Right {
-            flex: 1;
+            flex: 2;
             padding: 16px;
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-end;
             align-items: center;
+            gap: 8px;
+
+            &_Dashboard {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+
+                background-color: #3e80fb;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #6495ed;
+                }
+            }
+
+            &_Device {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+
+                background-color: #4CAF50;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #66BB6A;
+                }
+            }
+
+            &_Alert {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+
+                background-color: #FFD600;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #FFEA00;
+                }
+            }
+
+            &_More {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+
+                background-color: #9E9E9E;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #BDBDBD;
+                }
+            }
 
             &_Close {
                 width: 30px;
@@ -153,7 +218,7 @@
                 justify-content: center;
                 border-radius: 50%;
 
-                background-color: red;
+                background-color: #F44336;
                 cursor: pointer;
 
                 &:hover {
@@ -177,7 +242,7 @@
             &_Left {
                 background-color: white;
                 width: 25%;
-                height: 360px;
+                // height: 360px;
                 border-radius: 5px;
                 overflow: hidden;
 
@@ -200,7 +265,7 @@
                         &_Title {
                             flex: 4;
                             font-size: 14px;
-                            color: gray;
+                            color: rgb(128, 128, 128);
                             width: 100%;
                             white-space: nowrap; // ngan xuong dong
                             overflow: hidden; // an noi dung vuot ra ngoai
@@ -222,71 +287,293 @@
             &_Center {
                 background-color: white;
                 width: 50%;
-                height: 360px;
+                // height: 360px;
                 border-radius: 5px;
                 overflow: hidden;
 
                 &_Tit {
-                    padding: 16px;
-                }
-
-                &_Data {
-                    padding: 16px;
                     display: flex;
-                    flex-wrap: wrap;
-                    overflow: hidden;
-                    gap: 16px;
-
-                    &_Chart {
-                        flex: 5;
-                        display: flex;
-                        justify-content: center;
-
-                        &_Data {
-                            border-radius: 50%;
-                            border: solid 2px rgb(103, 179, 255);
-                            padding: 16px;
-                            width: 100px;
-                            height: 100px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            flex-wrap: wrap;
-                        }
-                    }
-
-                    &_Detail {
-                        flex: 5;
-                    }
-                }
-
-                &_Total {
-                    padding: 16px;
-                    display: flex;
-                    // flex-wrap: wrap;
-                    overflow: hidden;
-                    gap: 8px;
 
                     &_Item {
-                        width: 100%;
                         padding: 16px;
-                        border-radius: 5px;
+                        cursor: pointer;
+                    }
+                }
 
-                        &_Tit {
-                            font-size: 14px;
-                            color: gray;
+                &_Graph {
+                    position: relative;
+                    width: 100%;
+                    height: 300px;
+                    overflow: hidden;
+                    padding: 10px;
+                    box-sizing: border-box;
+                    display: flex;
+                    gap: 200px;
+
+                    &_Solar {
+                        & img {
+                            width: 70px;
+                            height: 70px;
+                        }
+                    }
+
+                    &_Load {
+                        margin-top: 60px;
+
+                        & img {
+                            width: 70px;
+                            height: 70px;
+                        }
+                    }
+
+                    &_Line1 {
+                        position: absolute;
+                        top: 40px;
+                        left: 80px;
+
+                        &_Ball {
+                            position: absolute;
+                            top: 0;
+                            width: 8px;
+                            height: 8px;
+
+                            border-radius: 50%;
+                            border: .125rem solid;
+                            background-color: rgb(235, 235, 235);
+
+
+
+                            offset-path: path('M 1,1 l 83,0 q 16,0 16,16 l 0,31 q 0,16 16,16 l 83,0');
+                            offset-distance: 0%;
+
+                            animation: red-ball 3s ease-in-out infinite;
+
+                        }
+                    }
+
+                }
+
+                &_Production {
+
+                    &_Data {
+                        padding: 16px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        overflow: hidden;
+                        gap: 16px;
+
+                        &_Chart {
+                            flex: 5;
+                            display: flex;
+                            justify-content: center;
+
+                            &_Data {
+                                border-radius: 50%;
+                                border: solid 2px rgb(103, 179, 255);
+                                padding: 16px;
+                                width: 100px;
+                                height: 100px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                flex-wrap: wrap;
+                            }
                         }
 
-                        &_Data {
-                            margin: 4px 0px 0px 0px;
+                        &_Detail {
+                            flex: 5;
+                        }
+                    }
+
+                    &_Total {
+                        padding: 16px;
+                        display: flex;
+                        // flex-wrap: wrap;
+                        overflow: hidden;
+                        gap: 8px;
+
+                        &_Item {
+                            width: 100%;
+                            padding: 16px;
+                            border-radius: 5px;
+
+                            &_Tit {
+                                font-size: 14px;
+                                color: gray;
+                            }
+
+                            &_Data {
+                                margin: 4px 0px 0px 0px;
+                            }
                         }
                     }
                 }
+
+                &_Consumption {
+                    &_Data {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 16px;
+
+                        &_Img {
+                            & img {
+                                width: 120px;
+                                height: 70px;
+                            }
+                        }
+                    }
+
+                    &_Total {
+                        padding: 16px;
+                        display: flex;
+                        justify-content: center;
+                        gap: 10px;
+
+                        &_Left {
+                            flex: 5;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 10px;
+
+                            &_Item {
+                                padding: 16px;
+                                border-radius: 5px;
+
+                                &_Tit {
+                                    font-size: 14px;
+                                    color: gray;
+                                }
+
+                                &_Data {
+                                    margin: 4px;
+                                }
+                            }
+                        }
+
+                        &_Right {
+                            flex: 5;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 10px;
+
+                            &_Item {
+                                padding: 16px;
+                                border-radius: 5px;
+
+                                &_Tit {
+                                    font-size: 14px;
+                                    color: gray;
+                                }
+
+                                &_Data {
+                                    margin: 4px;
+                                }
+                            }
+                        }
+
+
+                    }
+                }
+
+                &_Grid {
+                    &_Data {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 16px;
+
+                        &_Img {
+                            & img {
+                                width: 60px;
+                                height: 70px;
+                            }
+                        }
+                    }
+
+                    &_Row {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                        padding: 16px;
+
+                        &_Left {
+                            display: flex;
+                            gap: 10px;
+
+                            &_Tit {
+                                padding: 16px;
+                                display: flex;
+                                align-items: center;
+                                width: 60px;
+                            }
+
+                            &_Data {
+                                padding: 16px;
+
+                                &_Tit {
+                                    font-size: 14px;
+                                    color: grey;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &_Battery {
+                    &_Data {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 16px;
+
+                        &_Img {
+                            & img {
+                                width: 60px;
+                                height: 70px;
+                            }
+                        }
+
+                        &_Status {
+                            display: flex;
+                            flex-direction: column;
+                        }
+                    }
+
+                    &_Row {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                        padding: 16px;
+
+                        &_Left {
+                            display: flex;
+                            gap: 10px;
+
+                            &_Tit {
+                                padding: 16px;
+                                display: flex;
+                                align-items: center;
+                                width: 90px;
+                            }
+
+                            &_Data {
+                                padding: 16px;
+
+                                &_Tit {
+                                    font-size: 14px;
+                                    color: grey;
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
 
             &_Right {
                 width: 25%;
-                height: 360px;
+                // height: 360px;
                 border-radius: 5px;
                 overflow: hidden;
                 box-sizing: border-box;
@@ -309,12 +596,11 @@
         &_History {
             width: 98%;
             overflow: hidden;
-            //height: 450px;
             background-color: white;
             margin: auto;
             margin-bottom: 20px;
             border-radius: 5px;
-            padding-bottom: 20px;
+            padding-bottom: 10px;
 
             &_Tit {
                 padding: 16px;
@@ -395,7 +681,21 @@
                 }
             }
 
-            &_Content {
+            &_Day {
+                padding: 20px;
+                height: 300px; // lam xong xoa dong nay di
+                // background-color: #3e80fb;
+            }
+
+            &_Month {
+                padding: 20px;
+                height: 300px; // lam xong xoa dong nay di
+                // background-color: #4CAF50;
+            }
+
+            &_Year {
+                padding: 20px;
+                height: 300px;
 
                 &_Tit {
                     display: flex;
@@ -416,13 +716,16 @@
                     }
                 }
 
-                height: 300px;
-                padding: 20px;
-
                 &_Chart {
                     height: 100%;
                     width: 100%;
                 }
+            }
+
+            &_Total {
+                padding: 20px;
+                height: 300px; // lam xong xoa dong nay di
+                // background-color: #FFD600;
             }
         }
 
@@ -502,6 +805,87 @@
                     }
                 }
             }
+        }
+    }
+}
+
+.DAT_ProjectDataDrop {
+    position: fixed;
+    top: 128px;
+    right: 50px;
+    // width: 300px;
+    // height: 300px;
+    padding: 16px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
+    z-index: 35;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    &_Dashboard {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+
+        background-color: #3e80fb;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #6495ed;
+        }
+    }
+
+    &_Device {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+
+        background-color: #4CAF50;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #66BB6A;
+        }
+    }
+
+    &_Alert {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+
+        background-color: #FFD600;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #FFEA00;
+        }
+    }
+
+    &_More {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+
+        background-color: #9E9E9E;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #BDBDBD;
         }
     }
 }
@@ -627,7 +1011,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -684,7 +1070,7 @@
                     }
 
                     &_Content {
-                        height: 270px;
+                        height: 220px;
                         box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
                     }
                 }
@@ -729,7 +1115,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -751,7 +1139,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -777,7 +1167,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -837,7 +1229,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -859,7 +1253,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -923,7 +1319,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -949,7 +1347,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -975,7 +1375,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1120,7 +1522,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1177,7 +1581,7 @@
                     }
 
                     &_Content {
-                        height: 270px;
+                        height: 220px;
                         box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
                     }
                 }
@@ -1222,7 +1626,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1244,7 +1650,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1270,7 +1678,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1330,7 +1740,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1352,7 +1764,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1416,7 +1830,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1442,7 +1858,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1468,7 +1886,9 @@
 
                 &_Item {
                     margin: auto;
-                    padding: 16px;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    padding-bottom: 16px;
                     overflow: hidden;
 
                     &_Tit {
@@ -1820,7 +2240,19 @@
     }
 
     .DAT_ProjectData {
+        &_Header {
+            &_Left {
+                flex: 5;
+                // min-width: 200px;
+            }
+
+            &_Right {
+                flex: 5;
+            }
+        }
+
         &_Body {
+            margin-top: 180px;
             margin-bottom: 100px;
 
             &_Data {
@@ -1859,6 +2291,10 @@
             }
         }
 
+    }
+
+    .DAT_ProjectDataDrop {
+        top: 140px;
     }
 
     .DAT_AddProject {
@@ -2023,6 +2459,20 @@
         }
     }
 }
+
+
+@keyframes red-ball {
+    from {
+        offset-distance: 0%;
+    }
+
+    to {
+        offset-distance: 100%;
+    }
+}
+
+
+
 
 // Hidden scrollbar
 //     overflow-y: scroll;
