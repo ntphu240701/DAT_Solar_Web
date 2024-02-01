@@ -3,11 +3,9 @@ import "./Project.scss";
 import DataTable from "react-data-table-component";
 import { isMobile } from "../Navigation/Navigation";
 
-import { FaCheckCircle } from "react-icons/fa";
-import { MdOutlineError } from "react-icons/md";
-import { MdEditDocument } from "react-icons/md";
+import { FaCheckCircle, FaRegFileAlt } from "react-icons/fa";
+import { MdOutlineError, MdEditDocument } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
-import { FaRegFileAlt } from "react-icons/fa";
 import { GoProject } from "react-icons/go";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 
@@ -42,6 +40,57 @@ export const Empty = () => {
   );
 };
 
+export const lastId = signal(2);
+
+export const dataproject = signal([
+  {
+    id: 1,
+    name: "Năng lượng DAT 01",
+    addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+    long: "--",
+    lat: "--",
+    plantype: "residential",
+    systemtype: "grid",
+    capacity: "110",
+    griddate: "",
+    angle: "--",
+    currency: "vnd",
+    price: "--",
+    contact: "--",
+    phone: "0123456789",
+    business: "--",
+    status: true,
+    warn: true,
+    production: "16",
+    power: "14.54",
+    lastupdate: "12/30/2023 12:07:12",
+    createdate: "05/01/2022 14:03:36",
+  },
+  {
+    id: 2,
+    name: "Năng lượng DAT 02",
+    addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+    long: "--",
+    lat: "--",
+    plantype: "industrial",
+    systemtype: "consumption",
+    capacity: "222",
+    griddate: "",
+    angle: "--",
+    currency: "vnd",
+    price: "--",
+    contact: "--",
+    phone: "07123872311",
+    business: "--",
+    status: false,
+    warn: false,
+    production: "230",
+    power: "0",
+    lastupdate: "10/30/2023 08:01:22",
+    createdate: "05/01/2022 14:08:36",
+  },
+]);
+
 function Project(props) {
   const listTab = [
     { id: "total", name: "Tổng" },
@@ -51,7 +100,7 @@ function Project(props) {
     { id: "demo", name: "Chạy thử" },
   ];
 
-  const color = { cur: "#6495ed", pre: "gray" };
+  // const color = { cur: "#6495ed", pre: "gray" };
 
   const paginationComponentOptions = {
     rowsPerPageText: "Số hàng",
@@ -60,124 +109,124 @@ function Project(props) {
     selectAllRowsItemText: "tất cả",
   };
 
-  const dataproject = [
-    {
-      id: 1,
-      name: "Năng lượng DAT 01",
-      addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-      status: true,
-      warn: true,
-      capacity: "110",
-      production: "16",
-      power: "14.54",
-      lastupdate: "12/30/2023 12:07:12",
-      createdate: "05/01/2022 14:03:36",
-    },
-    {
-      id: 2,
-      name: "Năng lượng DAT 02",
-      addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-      status: false,
-      warn: false,
-      capacity: "222",
-      production: "230",
-      power: "0",
-      lastupdate: "10/30/2023 08:01:22",
-      createdate: "05/01/2022 14:08:36",
-    },
-    {
-      id: 3,
-      name: "Năng lượng DAT 03",
-      addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-      status: false,
-      warn: false,
-      capacity: "333",
-      production: "116",
-      power: "0",
-      lastupdate: "10/30/2023 08:01:22",
-      createdate: "05/01/2022 14:08:36",
-    },
-    {
-      id: 4,
-      name: "Năng lượng DAT 04",
-      addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-      status: false,
-      warn: false,
-      capacity: "120",
-      production: "16",
-      power: "0",
-      lastupdate: "10/30/2023 08:01:22",
-      createdate: "05/01/2022 14:08:36",
-    },
-    {
-      id: 5,
-      name: "Năng lượng DAT 05",
-      addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-      status: false,
-      warn: false,
-      capacity: "120",
-      production: "123",
-      power: "0",
-      lastupdate: "10/30/2023 08:01:22",
-      createdate: "05/01/2022 14:08:36",
-    },
-    {
-      id: 6,
-      name: "Năng lượng DAT 06",
-      addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-      status: false,
-      warn: false,
-      capacity: "90",
-      production: "168",
-      power: "0",
-      lastupdate: "10/30/2023 08:01:22",
-      createdate: "05/01/2022 14:08:36",
-    },
-    {
-      id: 7,
-      name: "Năng lượng DAT 07",
-      addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-      status: false,
-      warn: false,
-      capacity: "150",
-      production: "160",
-      power: "0",
-      lastupdate: "10/30/2023 08:01:22",
-      createdate: "05/01/2022 14:08:36",
-    },
+  // const dataproject = [
+  //   {
+  //     id: 1,
+  //     name: "Năng lượng DAT 01",
+  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+  //     status: true,
+  //     warn: true,
+  //     capacity: "110",
+  //     production: "16",
+  //     power: "14.54",
+  //     lastupdate: "12/30/2023 12:07:12",
+  //     createdate: "05/01/2022 14:03:36",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Năng lượng DAT 02",
+  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+  //     status: false,
+  //     warn: false,
+  //     capacity: "222",
+  //     production: "230",
+  //     power: "0",
+  //     lastupdate: "10/30/2023 08:01:22",
+  //     createdate: "05/01/2022 14:08:36",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Năng lượng DAT 03",
+  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+  //     status: false,
+  //     warn: false,
+  //     capacity: "333",
+  //     production: "116",
+  //     power: "0",
+  //     lastupdate: "10/30/2023 08:01:22",
+  //     createdate: "05/01/2022 14:08:36",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Năng lượng DAT 04",
+  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+  //     status: false,
+  //     warn: false,
+  //     capacity: "120",
+  //     production: "16",
+  //     power: "0",
+  //     lastupdate: "10/30/2023 08:01:22",
+  //     createdate: "05/01/2022 14:08:36",
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Năng lượng DAT 05",
+  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+  //     status: false,
+  //     warn: false,
+  //     capacity: "120",
+  //     production: "123",
+  //     power: "0",
+  //     lastupdate: "10/30/2023 08:01:22",
+  //     createdate: "05/01/2022 14:08:36",
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Năng lượng DAT 06",
+  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+  //     status: false,
+  //     warn: false,
+  //     capacity: "90",
+  //     production: "168",
+  //     power: "0",
+  //     lastupdate: "10/30/2023 08:01:22",
+  //     createdate: "05/01/2022 14:08:36",
+  //   },
+  //   {
+  //     id: 7,
+  //     name: "Năng lượng DAT 07",
+  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+  //     status: false,
+  //     warn: false,
+  //     capacity: "150",
+  //     production: "160",
+  //     power: "0",
+  //     lastupdate: "10/30/2023 08:01:22",
+  //     createdate: "05/01/2022 14:08:36",
+  //   },
 
-    {
-      id: 8,
-      name: "Năng lượng DAT 08",
-      addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-      status: false,
-      warn: false,
-      capacity: "100",
-      production: "18",
-      power: "0",
-      lastupdate: "10/30/2023 08:01:22",
-      createdate: "05/01/2022 14:08:36",
-    },
-    {
-      id: 9,
-      name: "Năng lượng DAT 09",
-      addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-      status: false,
-      warn: false,
-      capacity: "110",
-      production: "6",
-      power: "0",
-      lastupdate: "10/30/2023 08:01:22",
-      createdate: "05/01/2022 14:08:36",
-    },
-  ];
+  //   {
+  //     id: 8,
+  //     name: "Năng lượng DAT 08",
+  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+  //     status: false,
+  //     warn: false,
+  //     capacity: "100",
+  //     production: "18",
+  //     power: "0",
+  //     lastupdate: "10/30/2023 08:01:22",
+  //     createdate: "05/01/2022 14:08:36",
+  //   },
+  //   {
+  //     id: 9,
+  //     name: "Năng lượng DAT 09",
+  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+  //     status: false,
+  //     warn: false,
+  //     capacity: "110",
+  //     production: "6",
+  //     power: "0",
+  //     lastupdate: "10/30/2023 08:01:22",
+  //     createdate: "05/01/2022 14:08:36",
+  //   },
+  // ];
 
   const columnproject = [
     {
       name: "Tên",
       selector: (row) => (
         <div className="DAT_Table" id={row.id} onClick={(e) => handlePlant(e)}>
-          <img src="/dat_picture/solar_panel.png"></img>
+          <img src="/dat_picture/solar_panel.png" alt="" />
 
           <div className="DAT_Table_Infor">
             <div className="DAT_Table_Infor_Name">{row.name}</div>
@@ -187,6 +236,9 @@ function Project(props) {
       ),
       sortable: true,
       minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      },
     },
     {
       name: "Kết nối",
@@ -281,7 +333,8 @@ function Project(props) {
             </div>
             <div
               className="DAT_ModifyBox_Remove"
-              onClick={() => (popupState.value = true)}
+              id={row.id}
+              onClick={(e) => handleDelete(e)}
             >
               Gỡ
             </div>
@@ -294,20 +347,26 @@ function Project(props) {
 
   const handlePlant = (e) => {
     plantState.value = "info";
-    const id = e.currentTarget.id;
-    const newPlant = dataproject.find((item) => item.id == id);
+    const newPlant = dataproject.value.find(
+      (item) => item.id == e.currentTarget.id
+    );
     projectData.value = newPlant;
   };
 
   const handleEdit = (e) => {
     plantState.value = "edit";
-    const id = e.currentTarget.id;
-    const newPlant = dataproject.find((item) => item.id == id);
+    const newPlant = dataproject.value.find(
+      (item) => item.id == e.currentTarget.id
+    );
     projectData.value = newPlant;
   };
 
-  const handleAdd = (e) => {
-    plantState.value = "add";
+  const handleDelete = (e) => {
+    popupState.value = true;
+    const newPlant = dataproject.value.find(
+      (item) => item.id == e.currentTarget.id
+    );
+    projectData.value = newPlant;
   };
 
   const handleModify = (e, type) => {
@@ -325,10 +384,10 @@ function Project(props) {
   };
 
   useEffect(() => {
-    online.value = dataproject.filter((item) => item.status == true);
-    offline.value = dataproject.filter((item) => item.status == false);
+    online.value = dataproject.value.filter((item) => item.status == true);
+    offline.value = dataproject.value.filter((item) => item.status == false);
     tabLable.value = listTab[0].name;
-  }, []);
+  }, [dataproject.value]);
 
   return (
     <>
@@ -342,7 +401,10 @@ function Project(props) {
           <CiSearch color="gray" size={20} />
         </div>
 
-        <button className="DAT_ProjectHeader_New" onClick={(e) => handleAdd(e)}>
+        <button
+          className="DAT_ProjectHeader_New"
+          onClick={() => (plantState.value = "add")}
+        >
           Tạo mới
         </button>
       </div>
@@ -362,9 +424,8 @@ function Project(props) {
               className="DAT_Toollist_Tab_Mobile_content"
               onClick={() => (tabMobile.value = !tabMobile.value)}
             >
-              {" "}
-              <span> {tabLable.value}</span>{" "}
-              {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}{" "}
+              <span> {tabLable.value}</span>
+              {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}
             </button>
             <div className="DAT_Toollist_Tab_Mobile_list">
               {listTab.map((item, i) => {
@@ -372,7 +433,7 @@ function Project(props) {
                   <div
                     className="DAT_Toollist_Tab_Mobile_list_item"
                     style={{ display: tabMobile.value ? "block" : "none" }}
-                    key={i}
+                    key={"tabmobile_" + i}
                     id={item.id}
                     onClick={(e) => handleTabMobile(e)}
                   >
@@ -386,7 +447,7 @@ function Project(props) {
           <div className="DAT_Toollist_Tab">
             {listTab.map((item, i) => {
               return tab.value === item.id ? (
-                <div key={i} className="DAT_Toollist_Tab_main">
+                <div key={"tab_" + i} className="DAT_Toollist_Tab_main">
                   <p className="DAT_Toollist_Tab_main_left"></p>
                   <span
                     className="DAT_Toollist_Tab_main_content1"
@@ -405,7 +466,7 @@ function Project(props) {
               ) : (
                 <span
                   className="DAT_Toollist_Tab_main_content2"
-                  key={i}
+                  key={"tab_" + i}
                   id={item.id}
                   style={{ backgroundColor: "#dadada" }}
                   onClick={(e) => (tab.value = item.id)}
@@ -425,7 +486,7 @@ function Project(props) {
                   <DataTable
                     className="DAT_Table_Container"
                     columns={columnproject}
-                    data={dataproject}
+                    data={dataproject.value}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     fixedHeader={true}
@@ -510,7 +571,7 @@ function Project(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup></Popup>
+          <Popup />
         </div>
       ) : (
         <></>

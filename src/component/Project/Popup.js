@@ -1,6 +1,6 @@
 import React from "react";
 import "./Project.scss";
-import { popupState } from "./Project";
+import { dataproject, popupState, projectData } from "./Project";
 import { IoClose } from "react-icons/io5";
 import { hasIn } from "lodash";
 
@@ -17,11 +17,18 @@ export default function Popup() {
     popup.style.color = popup_state[state].color;
   };
 
+  const handleDelete = (e) => {
+    popupState.value = false;
+    dataproject.value = dataproject.value.filter(
+      (item) => item.id !== parseInt(e.currentTarget.id)
+    );
+  };
+
   return (
     <div className="DAT_Popup_Box">
       <div className="DAT_Popup_Box_Head">
         <div className="DAT_Popup_Box_Head_Left">
-          <p>Xóa thiết bị</p>
+          <p>Xóa dự án</p>
         </div>
         <div className="DAT_Popup_Box_Head_Right">
           <div
@@ -31,14 +38,14 @@ export default function Popup() {
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
           >
-            <IoClose size={20}></IoClose>
+            <IoClose size={20} />
           </div>
         </div>
       </div>
       <div className="DAT_Popup_Box_Body">
         <p>
-          Bạn có chắc chắn muốn xóa vĩnh viễn thiết bị này không? Tất cả dữ liệu
-          lịch sử của XXX sẽ bị mất.
+          Bạn có chắc chắn muốn xóa vĩnh viễn dự án này không? Tất cả dữ liệu
+          lịch sử của {projectData.value.name} sẽ bị mất.
         </p>
       </div>
       <div className="DAT_Popup_Box_Foot">
@@ -52,7 +59,11 @@ export default function Popup() {
         >
           Hủy
         </button>
-        <button style={{ backgroundColor: "#048FFF", color: "white" }}>
+        <button
+          id={projectData.value.id}
+          style={{ backgroundColor: "#048FFF", color: "white" }}
+          onClick={(e) => handleDelete(e)}
+        >
           Xác nhận
         </button>
       </div>
