@@ -849,6 +849,38 @@ const Total = () => {
   );
 };
 
+// const Weather = () => {
+//   const lat = "10.8230989";
+//   const long = "106.6296638";
+//   const xy = lat + "," + long;
+//   const days = 7;
+//   const keyAPI = "d5e7a9e22d9b4bf997e73539240202";
+
+//   // const urlAPI =
+//   //   "http://api.weatherapi.com/v1/forecast.json?key=" +
+//   //   { keyAPI } +
+//   //   "&q=" +
+//   //   { xy } +
+//   //   "&days=" +
+//   //   { days } +
+//   //   "&aqi=no&alerts=no";
+
+//   // useEffect(() => {
+//   //   axios
+//   //     .get(urlAPI)
+//   //     .then((res) => {
+//   //       if (res.status === 200) {
+//   //         console.log(res.data);
+//   //       }
+//   //     })
+//   //     .catch((err) => {
+//   //       console.log(err);
+//   //     });
+//   // },[urlAPI]);
+
+//   return <div className="DAT_ProjectData_Dashboard_Weather"></div>;
+// };
+
 function ProjectData(props) {
   const color = {
     cur: "blue",
@@ -1253,15 +1285,15 @@ function ProjectData(props) {
                 case "dashboard":
                   return (
                     <div className="DAT_ProjectData_Header_LeftDashboard">
-                      <div style={{ fontSize: 22, paddingBottom: 5 }}>
-                        {tit[view]}
-                      </div>
+              <div style={{ fontSize: 22, paddingBottom: 5 }}>
+                {tit[view]}
+              </div>
 
-                      <div style={{ color: "grey", fontSize: 14 }}>
-                        Cập nhật lần cuối {projectData.value.lastupdate}
-                      </div>
-                    </div>
-                  );
+              <div style={{ color: "grey", fontSize: 14 }}>
+                Cập nhật lần cuối {projectData.value.lastupdate}
+              </div>
+            </div>
+);
                 case "device":
                   return (
                     <div className="DAT_ProjectData_Header_LeftDevice">
@@ -1315,6 +1347,11 @@ function ProjectData(props) {
                   return (
                     <div className="DAT_ProjectData_Header_LeftDevice">
                       <div style={{ fontSize: 22 }}>{tit[view]}</div>
+
+                      <div className="DAT_ProjectData_Header_LeftDevice_Item">
+                        <button>Rút gọn</button>
+                        <button>Đầy đủ</button>
+                      </div>
                     </div>
                   );
                 case "alert":
@@ -1626,27 +1663,27 @@ function ProjectData(props) {
                     })()}
 
                     <div
-                      style={{
+                                            style={{
                         height: dropConfig ? "10px" : "0px",
                         transition: "0.5s",
-                      }}
+                                              }}
                     >
                       {dropConfig ? (
-                        <div className="DAT_ProjectData_Dashboard_History_SubConfig">
-                          <div
-                            className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
-                            // style={{ height: dropConfig ? "200px" : "0px" , transition: "0.5s"}}
-                          >
-                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
-                              <input
-                                type="text"
-                                placeholder="Search by parameter name"
-                              ></input>
-                              <CiSearch size={20} />
-                            </div>
-                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
-                              <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
-                                <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+<div className="DAT_ProjectData_Dashboard_History_SubConfig">
+                        <div
+                          className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
+                          // style={{ height: dropConfig ? "200px" : "0px" , transition: "0.5s"}}
+                        >
+                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
+                            <input
+                              type="text"
+                              placeholder="Search by parameter name"
+                            ></input>
+                            <CiSearch size={20} />
+                          </div>
+                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
+                            <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                                                              <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                   <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
                                     Production
                                   </th>
@@ -1685,8 +1722,8 @@ function ProjectData(props) {
                                     </div>
                                   </td>
                                 </tr>
-                              </table>
-                            </div>
+                                                          </table>
+</div>
                           </div>
                         </div>
                       ) : (
@@ -1822,15 +1859,15 @@ function ProjectData(props) {
                 <div className="DAT_ProjectData_Device">
                   <div className="DAT_ProjectData_Device_Analysis">
                     <div className="DAT_ProjectData_Device_Analysis_Func">
-                      <div className="DAT_ProjectData_Device_Analysis_Func_Select">
-                        <select>
-                          <option hidden>Trạng thái</option>
-                          <option>Tất cả</option>
-                          <option>Online</option>
-                          <option>Cảnh báo</option>
-                          <option>Offline</option>
-                        </select>
-                        <select>
+<div className="DAT_ProjectData_Device_Analysis_Func_Select">
+                      <select>
+                        <option hidden>Trạng thái</option>
+                        <option>Tất cả</option>
+                        <option>Online</option>
+                        <option>Cảnh báo</option>
+                        <option>Offline</option>
+                      </select>
+                      <select>
                           <option hidden>Hiệu suất</option>
                           <option>Tắt</option>
                           <option>Rất thấp</option>
@@ -1848,14 +1885,14 @@ function ProjectData(props) {
                             className="DAT_Toollist_Tab_Mobile_content"
                             onClick={() => (tabMobile.value = !tabMobile.value)}
                           >
-                            <span> {tabLable.value}</span>
+                      <span> {tabLable.value}</span>
                             {tabMobile.value ? (
                               <IoIosArrowDown />
                             ) : (
                               <IoIosArrowForward />
                             )}
                           </button>
-                          <div className="DAT_Toollist_Tab_Mobile_list">
+                      <div className="DAT_Toollist_Tab_Mobile_list">
                             {listDeviceTab.map((item, i) => {
                               return (
                                 <div
@@ -1868,8 +1905,8 @@ function ProjectData(props) {
                                   onClick={(e) => handleTabMobileDevice(e)}
                                 >
                                   {i + 1}: {item.name}
-                                </div>
-                              );
+                    </div>
+);
                             })}
                           </div>
                         </div>
@@ -1911,7 +1948,7 @@ function ProjectData(props) {
                         </div>
                       )}
 
-                      <div className="DAT_ProjectData_Device_Analysis_Table_Content">
+                    <div className="DAT_ProjectData_Device_Analysis_Table_Content">
                         {(() => {
                           switch (tab.value) {
                             case "inverter":
@@ -2126,7 +2163,7 @@ function ProjectData(props) {
               >
                 <GoAlertFill size={20} color="white" />
               </div>
-            </div>
+                          </div>
           ) : (
             <></>
           )}
