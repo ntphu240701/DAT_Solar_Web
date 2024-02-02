@@ -43,6 +43,7 @@ const open = signal([]);
 const close = signal([]);
 
 const addNav = signal(false);
+const addStateNav = signal([false, false]);
 
 const Graph = () => {
   const path = document.querySelector(".infinity");
@@ -1485,6 +1486,15 @@ function ProjectData(props) {
     tabLableAlert.value = listAlertTab[0].name;
   }, []);
 
+  const handleOutsideAdd = () => {
+    setTimeout(() => {
+      if (addStateNav.value[1] == false) {
+        addNav.value = false;
+        addStateNav.value = [false, false];
+      }
+    }, 250);
+  };
+
   return (
     <>
       <div className="DAT_ProjectData">
@@ -2080,7 +2090,14 @@ function ProjectData(props) {
                           <option>Bình thường</option>
                         </select>
                       </div>
-                      <button id="add" onMouseEnter={() => {}}>
+                      <button
+                        id="add"
+                        onMouseEnter={() => {
+                          addNav.value = true;
+                          addStateNav.value = [true, false];
+                        }}
+                        onMouseLeave={() => handleOutsideAdd()}
+                      >
                         Thêm
                       </button>
                     </div>
@@ -2343,6 +2360,23 @@ function ProjectData(props) {
               <></>;
           }
         })()}
+      </div>
+
+      <div
+        className="DAT_AddNav"
+        style={{ display: addNav.value ? "block" : "none" }}
+        onMouseEnter={() => (addStateNav.value = [true, true])}
+        onMouseLeave={() => {
+          addNav.value = false;
+          addStateNav.value = [false, false];
+        }}
+      >
+        <div className="DAT_AddNav-item">
+          <span>Thêm Gateway/Logger</span>
+        </div>
+        <div className="DAT_AddNav-item">
+          <span>Thêm Subsystem</span>
+        </div>
       </div>
 
       {isMobile.value ? (
