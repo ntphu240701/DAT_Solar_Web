@@ -29,6 +29,7 @@ import { CiSearch } from "react-icons/ci";
 
 import { signal } from "@preact/signals-react";
 import DataTable from "react-data-table-component";
+import moment from "moment-timezone";
 
 export const dropState = signal(false);
 const tabMobile = signal(false);
@@ -76,7 +77,7 @@ const Graph = () => {
       </div>
       <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_Load">
         <img src="/dat_picture/load.png"></img>
-      </div> */}
+</div> */}
       <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P1">
           <svg width="120px" height="160px" version="1.1">
@@ -1092,6 +1093,38 @@ const Total = () => {
   );
 };
 
+// const Weather = () => {
+//   const lat = "10.8230989";
+//   const long = "106.6296638";
+//   const xy = lat + "," + long;
+//   const days = 7;
+//   const keyAPI = "d5e7a9e22d9b4bf997e73539240202";
+
+//   // const urlAPI =
+//   //   "http://api.weatherapi.com/v1/forecast.json?key=" +
+//   //   { keyAPI } +
+//   //   "&q=" +
+//   //   { xy } +
+//   //   "&days=" +
+//   //   { days } +
+//   //   "&aqi=no&alerts=no";
+
+//   // useEffect(() => {
+//   //   axios
+//   //     .get(urlAPI)
+//   //     .then((res) => {
+//   //       if (res.status === 200) {
+//   //         console.log(res.data);
+//   //       }
+//   //     })
+//   //     .catch((err) => {
+//   //       console.log(err);
+//   //     });
+//   // },[urlAPI]);
+
+//   return <div className="DAT_ProjectData_Dashboard_Weather"></div>;
+// };
+
 function ProjectData(props) {
   const color = {
     cur: "blue",
@@ -1567,6 +1600,11 @@ function ProjectData(props) {
                   return (
                     <div className="DAT_ProjectData_Header_LeftDevice">
                       <div style={{ fontSize: 22 }}>{tit[view]}</div>
+
+                      {/* <div className="DAT_ProjectData_Header_LeftDevice_Item">
+                        <button>Rút gọn</button>
+                        <button>Đầy đủ</button>
+                      </div> */}
                     </div>
                   );
                 case "alert":
@@ -1858,7 +1896,10 @@ function ProjectData(props) {
                         <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Export">
                           <button>Xuất Báo Cáo</button>
                         </div>
-                        <input type="date"></input>
+                        <input
+                          defaultValue={moment(new Date()).format("YYYY-MM-DD")}
+                          type="date"
+                        ></input>
                       </div>
                     </div>
 
@@ -1876,28 +1917,31 @@ function ProjectData(props) {
                           <></>;
                       }
                     })()}
-
                     <div
+                      className="DAT_ProjectData_Dashboard_History_SubConfig"
                       style={{
-                        height: dropConfig ? "10px" : "0px",
+                        height: dropConfig ? "500px" : "0px",
                         transition: "0.5s",
                       }}
                     >
                       {dropConfig ? (
-                        <div className="DAT_ProjectData_Dashboard_History_SubConfig">
-                          <div
-                            className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
-                            // style={{ height: dropConfig ? "200px" : "0px" , transition: "0.5s"}}
-                          >
-                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
-                              <input
-                                type="text"
-                                placeholder="Search by parameter name"
-                              ></input>
-                              <CiSearch size={20} />
-                            </div>
-                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
-                              <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                        <div
+                          className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
+                          style={{
+                            height: dropConfig ? "200px" : "0px",
+                            transition: "0.5s",
+                          }}
+                        >
+                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
+                            <input
+                              type="text"
+                              placeholder="Search by parameter name"
+                            ></input>
+                            <CiSearch size={20} />
+                          </div>
+                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
+                            <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                              <tbody>
                                 <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                   <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
                                     Production
@@ -1937,8 +1981,8 @@ function ProjectData(props) {
                                     </div>
                                   </td>
                                 </tr>
-                              </table>
-                            </div>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                       ) : (
