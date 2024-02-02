@@ -29,6 +29,7 @@ import { CiSearch } from "react-icons/ci";
 
 import { signal } from "@preact/signals-react";
 import DataTable from "react-data-table-component";
+import moment from "moment-timezone";
 
 export const dropState = signal(false);
 const tabMobile = signal(false);
@@ -120,9 +121,9 @@ const Graph = () => {
             </circle>
           </svg>
           {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
-      </div>
-      <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2">
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Solar">
+        </div>
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Solar">
             <img src="/dat_picture/solar.png"></img>
           </div>
           <svg width="70px" height="40px" version="1.1">
@@ -221,93 +222,93 @@ const Graph = () => {
           <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_T">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P1">
               <svg width="120px" height="45px" version="1.1">
-          <linearGradient
-            id="style-1"
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-            <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-          </linearGradient>
-          <path
-            className="path"
-            d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-            style={{
-              width: "100%",
-              height: "100%",
-              fill: "none",
-              stroke: "url('#style-1')",
-              strokeWidth: "3",
-            }}
-          ></path>
-          <circle
-            r={5}
-            style={{
-              fill: "none",
-              stroke: "url('#style-1')",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        </svg>
-        {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
-      </div>
-      <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P2">
-        <svg width="110px" height="45px" version="1.1">
-          <linearGradient
-            id="style-2"
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-            <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-          </linearGradient>
-          <path
-            d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
-            style={{
-              width: "100%",
-              height: "100%",
-              fill: "none",
-              stroke: "url('#style-2')",
-              strokeWidth: "3",
-            }}
-          ></path>
-          <circle
-            r={5}
-            style={{
-              fill: "none",
-              stroke: "url('#style-2')",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        </svg>
-        {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line2_Ball"></div> */}
-      </div>
-    </div>
-<div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineBottom_G_B">
+                <linearGradient
+                  id="style-1"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
+                  <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
+                </linearGradient>
+                <path
+                  className="path"
+                  d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    fill: "none",
+                    stroke: "url('#style-1')",
+                    strokeWidth: "3",
+                  }}
+                ></path>
+                <circle
+                  r={5}
+                  style={{
+                    fill: "none",
+                    stroke: "url('#style-1')",
+                    strokeWidth: "3",
+                    position: "absolute",
+                    top: "0",
+                    left: "0",
+                  }}
+                >
+                  <animateMotion
+                    path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
+                    dur="2s"
+                    repeatCount="indefinite"
+                  ></animateMotion>
+                </circle>
+              </svg>
+              {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
+            </div>
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P2">
+              <svg width="110px" height="45px" version="1.1">
+                <linearGradient
+                  id="style-2"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
+                  <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
+                </linearGradient>
+                <path
+                  d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    fill: "none",
+                    stroke: "url('#style-2')",
+                    strokeWidth: "3",
+                  }}
+                ></path>
+                <circle
+                  r={5}
+                  style={{
+                    fill: "none",
+                    stroke: "url('#style-2')",
+                    strokeWidth: "3",
+                    position: "absolute",
+                    top: "0",
+                    left: "0",
+                  }}
+                >
+                  <animateMotion
+                    path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+                    dur="2s"
+                    repeatCount="indefinite"
+                  ></animateMotion>
+                </circle>
+              </svg>
+              {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line2_Ball"></div> */}
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineBottom_G_B">
             <svg width="220px" height="25px" verssion="1.1">
               <linearGradient
                 id="style-1"
@@ -569,15 +570,6 @@ const Consumption = () => {
               --
             </div>
           </div>
-
-
-
-
-
-
-
-
-
 
           <div
             className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
@@ -1536,15 +1528,15 @@ function ProjectData(props) {
                 case "dashboard":
                   return (
                     <div className="DAT_ProjectData_Header_LeftDashboard">
-              <div style={{ fontSize: 22, paddingBottom: 5 }}>
-                {tit[view]}
-              </div>
+                      <div style={{ fontSize: 22, paddingBottom: 5 }}>
+                        {tit[view]}
+                      </div>
 
-              <div style={{ color: "grey", fontSize: 14 }}>
-                Cập nhật lần cuối {projectData.value.lastupdate}
-              </div>
-            </div>
-);
+                      <div style={{ color: "grey", fontSize: 14 }}>
+                        Cập nhật lần cuối {projectData.value.lastupdate}
+                      </div>
+                    </div>
+                  );
                 case "device":
                   return (
                     <div className="DAT_ProjectData_Header_LeftDevice">
@@ -1599,10 +1591,10 @@ function ProjectData(props) {
                     <div className="DAT_ProjectData_Header_LeftDevice">
                       <div style={{ fontSize: 22 }}>{tit[view]}</div>
 
-                      <div className="DAT_ProjectData_Header_LeftDevice_Item">
+                      {/* <div className="DAT_ProjectData_Header_LeftDevice_Item">
                         <button>Rút gọn</button>
                         <button>Đầy đủ</button>
-                      </div>
+                      </div> */}
                     </div>
                   );
                 case "alert":
@@ -1894,7 +1886,10 @@ function ProjectData(props) {
                         <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Export">
                           <button>Xuất Báo Cáo</button>
                         </div>
-                        <input type="date"></input>
+                        <input
+                          defaultValue={moment(new Date()).format("YYYY-MM-DD")}
+                          type="date"
+                        ></input>
                       </div>
                     </div>
 
@@ -1912,18 +1907,20 @@ function ProjectData(props) {
                           <></>;
                       }
                     })()}
-
                     <div
-                                            style={{
-                        height: dropConfig ? "10px" : "0px",
+                      className="DAT_ProjectData_Dashboard_History_SubConfig"
+                      style={{
+                        height: dropConfig ? "500px" : "0px",
                         transition: "0.5s",
-                                              }}
+                      }}
                     >
                       {dropConfig ? (
-<div className="DAT_ProjectData_Dashboard_History_SubConfig">
                         <div
                           className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
-                          // style={{ height: dropConfig ? "200px" : "0px" , transition: "0.5s"}}
+                          style={{
+                            height: dropConfig ? "200px" : "0px",
+                            transition: "0.5s",
+                          }}
                         >
                           <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
                             <input
@@ -1934,7 +1931,8 @@ function ProjectData(props) {
                           </div>
                           <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
                             <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
-                                                              <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                              <tbody>
+                                <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                   <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
                                     Production
                                   </th>
@@ -1973,8 +1971,8 @@ function ProjectData(props) {
                                     </div>
                                   </td>
                                 </tr>
-                                                          </table>
-</div>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                       ) : (
@@ -2110,15 +2108,15 @@ function ProjectData(props) {
                 <div className="DAT_ProjectData_Device">
                   <div className="DAT_ProjectData_Device_Analysis">
                     <div className="DAT_ProjectData_Device_Analysis_Func">
-<div className="DAT_ProjectData_Device_Analysis_Func_Select">
-                      <select>
-                        <option hidden>Trạng thái</option>
-                        <option>Tất cả</option>
-                        <option>Online</option>
-                        <option>Cảnh báo</option>
-                        <option>Offline</option>
-                      </select>
-                      <select>
+                      <div className="DAT_ProjectData_Device_Analysis_Func_Select">
+                        <select>
+                          <option hidden>Trạng thái</option>
+                          <option>Tất cả</option>
+                          <option>Online</option>
+                          <option>Cảnh báo</option>
+                          <option>Offline</option>
+                        </select>
+                        <select>
                           <option hidden>Hiệu suất</option>
                           <option>Tắt</option>
                           <option>Rất thấp</option>
@@ -2138,14 +2136,14 @@ function ProjectData(props) {
                             className="DAT_Toollist_Tab_Mobile_content"
                             onClick={() => (tabMobile.value = !tabMobile.value)}
                           >
-                      <span> {tabLable.value}</span>
+                            <span> {tabLable.value}</span>
                             {tabMobile.value ? (
                               <IoIosArrowDown />
                             ) : (
                               <IoIosArrowForward />
                             )}
                           </button>
-                      <div className="DAT_Toollist_Tab_Mobile_list">
+                          <div className="DAT_Toollist_Tab_Mobile_list">
                             {listDeviceTab.map((item, i) => {
                               return (
                                 <div
@@ -2158,8 +2156,8 @@ function ProjectData(props) {
                                   onClick={(e) => handleTabMobileDevice(e)}
                                 >
                                   {i + 1}: {item.name}
-                    </div>
-);
+                                </div>
+                              );
                             })}
                           </div>
                         </div>
@@ -2201,7 +2199,7 @@ function ProjectData(props) {
                         </div>
                       )}
 
-                    <div className="DAT_ProjectData_Device_Analysis_Table_Content">
+                      <div className="DAT_ProjectData_Device_Analysis_Table_Content">
                         {(() => {
                           switch (tab.value) {
                             case "inverter":
@@ -2416,7 +2414,7 @@ function ProjectData(props) {
               >
                 <GoAlertFill size={20} color="white" />
               </div>
-                          </div>
+            </div>
           ) : (
             <></>
           )}
