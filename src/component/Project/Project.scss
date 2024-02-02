@@ -345,7 +345,7 @@
                     overflow: hidden;
                     padding: 10px;
                     box-sizing: border-box;
-                    display: flex;
+                    //display: flex;
                     gap: 200px;
 
                     &_Solar {
@@ -364,55 +364,131 @@
                         }
                     }
 
-                    &_Line1 {
-                        position: absolute;
-                        top: 40px;
-                        left: 120px;
+                    &_LineTop {
+                        display: flex;
+                        width: 100%;
+                        justify-content: center;
+                        align-items: center;
+                        // background-color: #3e80fb;
 
-                        &_Ball {
-                            position: absolute;
-                            top: 0;
-                            width: 8px;
-                            height: 8px;
-
-                            border-radius: 50%;
-                            border: .125rem solid;
-                            background-color: rgb(235, 235, 235);
+                        &_P1 {
+                            flex: 1;
+                            display: flex;
+                            align-items: center;
+                            justify-content: flex-end;
 
 
+                            // position: absolute;
+                            // top: 40px;
+                            // left: 120px;
+                            // &_Ball {
+                            //     position: absolute;
+                            //     top: 0;
+                            //     width: 8px;
+                            //     height: 8px;
 
-                            offset-path: path('M 1,1 l 83,0 q 16,0 16,16 l 0,31 q 0,16 16,16 l 83,0');
-                            offset-distance: 0%;
+                            //     border-radius: 50%;
+                            //     border: .125rem solid;
+                            //     background-color: rgb(235, 235, 235);
 
-                            animation: red-ball 3s ease-in-out infinite;
 
+
+                            //     offset-path: path('M 1,1 l 83,0 q 16,0 16,16 l 0,31 q 0,16 16,16 l 83,0');
+                            //     offset-distance: 0%;
+
+                            //     animation: red-ball 3s ease-in-out infinite;
+
+                            // }
+                        }
+
+                        &_P2 {
+                            width: 70px;
+
+                            &_Solar {
+                                & img {
+                                    width: 70px;
+                                    height: 70px;
+                                }
+                            }
+
+                            &_Load {
+                                & img {
+                                    width: 70px;
+                                    height: 70px;
+                                }
+                            }
+
+
+
+                        }
+
+                        &_P3 {
+                            flex: 1;
+                            display: flex;
+                            align-items: center;
+                            justify-content: flex-start
                         }
                     }
 
-                    &_Line2 {
-                        position: absolute;
-                        top: 40px;
-                        left: 380px;
+                    &_LineMid {
+                        display: flex;
+                        width: 100%;
+                        align-items: center;
+                        justify-content: center;
 
-                        &_Ball {
-                            position: absolute;
-                            top: 0;
-                            width: 8px;
-                            height: 8px;
-
-                            border-radius: 50%;
-                            border: .125rem solid;
-                            background-color: rgb(235, 235, 235);
-
-
-
-                            offset-path: path('M 1,1 l 83,0 q 16,0 16,16 l 0,31 q 0,16 16,16 l 83,0');
-                            offset-distance: 0%;
-
-                            animation: red-ball 3s ease-in-out infinite;
-
+                        // background-color: #3e80fb;
+                        &_Pin {
+                            & img {
+                                width: 70px;
+                                height: 70px;
+                            }
                         }
 
+                        &_G {
+                            &_T {
+                                display: flex;
+                            }
+
+                            &_B {}
+                        }
+
+                        &_Grid {
+                            & img {
+                                width: 70px;
+                                height: 70px;
+                            }
+                        }
+
+                        // &_P1{
+                        //     flex: 1;
+                        //     display: flex;
+                        //     align-items: center;
+                        //     justify-content: flex-end;
+
+
+
+                        // }
+                        // &_P2{
+                        //     flex: 1;
+                        //     display: flex;
+                        //     align-items: center;
+                        //     justify-content: flex-start;
+
+
+
+                        // }
+                    }
+
+                    &_LineBottom {
+
+                        width: 100%;
+                        // background-color: #3e80fb;
+                        display: flex;
+                        justify-content: center;
+
+                        // background-color: #3e80fb;
+
+                        &_P {}
 
                     }
 
