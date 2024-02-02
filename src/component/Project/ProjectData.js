@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Project.scss";
 import { plantState, projectData } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
@@ -28,7 +28,8 @@ import { GoAlertFill } from "react-icons/go";
 import { signal } from "@preact/signals-react";
 import { LiaLongArrowAltLeftSolid } from "react-icons/lia";
 import { CiSearch } from "react-icons/ci";
-
+import moment, { Moment } from "moment-timezone";
+import axios from "axios";
 
 export const dropState = signal(false);
 
@@ -839,6 +840,38 @@ const Total = () => {
   );
 };
 
+// const Weather = () => {
+//   const lat = "10.8230989";
+//   const long = "106.6296638";
+//   const xy = lat + "," + long;
+//   const days = 7;
+//   const keyAPI = "d5e7a9e22d9b4bf997e73539240202";
+
+//   // const urlAPI =
+//   //   "http://api.weatherapi.com/v1/forecast.json?key=" +
+//   //   { keyAPI } +
+//   //   "&q=" +
+//   //   { xy } +
+//   //   "&days=" +
+//   //   { days } +
+//   //   "&aqi=no&alerts=no";
+
+//   // useEffect(() => {
+//   //   axios
+//   //     .get(urlAPI)
+//   //     .then((res) => {
+//   //       if (res.status === 200) {
+//   //         console.log(res.data);
+//   //       }
+//   //     })
+//   //     .catch((err) => {
+//   //       console.log(err);
+//   //     });
+//   // },[urlAPI]);
+
+//   return <div className="DAT_ProjectData_Dashboard_Weather"></div>;
+// };
+
 function ProjectData(props) {
   const color = {
     cur: "blue",
@@ -1157,7 +1190,9 @@ function ProjectData(props) {
                     </div>
 
                     <div className="DAT_ProjectData_Dashboard_Data_Right">
-                      <div className="DAT_ProjectData_Dashboard_Data_Right_wheather"></div>
+                      <div className="DAT_ProjectData_Dashboard_Data_Right_Weather">
+                        {/* <Weather /> */}
+                      </div>
                     </div>
                   </div>
 
@@ -1226,7 +1261,10 @@ function ProjectData(props) {
                         <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Export">
                           <button>Xuất Báo Cáo</button>
                         </div>
-                        <input type="date"></input>
+                        <input
+                          type="date"
+                          defaultValue={moment(new Date()).format("YYYY-MM-DD")}
+                        ></input>
                       </div>
                     </div>
 
@@ -1246,26 +1284,82 @@ function ProjectData(props) {
                     })()}
 
                     <div
+                      className="DAT_ProjectData_Dashboard_History_SubConfig"
                       style={{
-                        height: dropConfig ? "10px" : "0px",
+                        height: dropConfig ? "500px" : "0px",
                         transition: "0.5s",
+                        overflow: "hidden",
                       }}
                     >
+                      {/* <div
+                        className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
+                        style={{
+                          display: dropConfig ? "block" : "none",
+                          transition: "0.5s",
+                        }}
+                      >
+                        <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
+                          <input
+                            type="text"
+                            placeholder="Search by parameter name"
+                          ></input>
+                          <CiSearch size={20} />
+                        </div>
+                        <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
+                          <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                            <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                              <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                Production
+                              </th>
+                              <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    id="Production"
+                                    type="checkbox"
+                                  ></input>
+                                  <label htmlFor="Production">Production</label>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                              <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                Environment
+                              </th>
+                              <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input id="Weather" type="checkbox"></input>
+                                  <label htmlFor="Weather">Weather</label>
+                                </div>
+                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    id="Temperature"
+                                    type="checkbox"
+                                  ></input>
+                                  <label htmlFor="Temperature">
+                                    Temperature
+                                  </label>
+                                </div>
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div> */}
+
                       {dropConfig ? (
-                        <div className="DAT_ProjectData_Dashboard_History_SubConfig">
-                          <div
-                            className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
-                            // style={{ height: dropConfig ? "200px" : "0px" , transition: "0.5s"}}
-                          >
-                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
-                              <input
-                                type="text"
-                                placeholder="Search by parameter name"
-                              ></input>
-                              <CiSearch size={20} />
-                            </div>
-                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
-                              <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                        <div
+                          className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
+                          // style={{ height: dropConfig ? "200px" : "0px" , transition: "0.5s"}}
+                        >
+                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
+                            <input
+                              type="text"
+                              placeholder="Search by parameter name"
+                            ></input>
+                            <CiSearch size={20} />
+                          </div>
+                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
+                            <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                              <tbody>
                                 <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                   <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
                                     Production
@@ -1305,8 +1399,8 @@ function ProjectData(props) {
                                     </div>
                                   </td>
                                 </tr>
-                              </table>
-                            </div>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                       ) : (
