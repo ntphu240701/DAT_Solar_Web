@@ -75,7 +75,7 @@ const Graph = () => {
       </div>
       <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_Load">
         <img src="/dat_picture/load.png"></img>
-      </div> */}
+</div> */}
       <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P1">
           <svg width="120px" height="160px" version="1.1">
@@ -120,9 +120,9 @@ const Graph = () => {
             </circle>
           </svg>
           {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
-        </div>
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2">
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Solar">
+      </div>
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Solar">
             <img src="/dat_picture/solar.png"></img>
           </div>
           <svg width="70px" height="40px" version="1.1">
@@ -221,93 +221,93 @@ const Graph = () => {
           <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_T">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P1">
               <svg width="120px" height="45px" version="1.1">
-                <linearGradient
-                  id="style-1"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="100%"
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                  <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                </linearGradient>
-                <path
-                  className="path"
-                  d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    fill: "none",
-                    stroke: "url('#style-1')",
-                    strokeWidth: "3",
-                  }}
-                ></path>
-                <circle
-                  r={5}
-                  style={{
-                    fill: "none",
-                    stroke: "url('#style-1')",
-                    strokeWidth: "3",
-                    position: "absolute",
-                    top: "0",
-                    left: "0",
-                  }}
-                >
-                  <animateMotion
-                    path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-                    dur="2s"
-                    repeatCount="indefinite"
-                  ></animateMotion>
-                </circle>
-              </svg>
-              {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
-            </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P2">
-              <svg width="110px" height="45px" version="1.1">
-                <linearGradient
-                  id="style-2"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="100%"
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                  <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                </linearGradient>
-                <path
-                  d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    fill: "none",
-                    stroke: "url('#style-2')",
-                    strokeWidth: "3",
-                  }}
-                ></path>
-                <circle
-                  r={5}
-                  style={{
-                    fill: "none",
-                    stroke: "url('#style-2')",
-                    strokeWidth: "3",
-                    position: "absolute",
-                    top: "0",
-                    left: "0",
-                  }}
-                >
-                  <animateMotion
-                    path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
-                    dur="2s"
-                    repeatCount="indefinite"
-                  ></animateMotion>
-                </circle>
-              </svg>
-              {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line2_Ball"></div> */}
-            </div>
-          </div>
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineBottom_G_B">
+          <linearGradient
+            id="style-1"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
+            <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
+          </linearGradient>
+          <path
+            className="path"
+            d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
+            style={{
+              width: "100%",
+              height: "100%",
+              fill: "none",
+              stroke: "url('#style-1')",
+              strokeWidth: "3",
+            }}
+          ></path>
+          <circle
+            r={5}
+            style={{
+              fill: "none",
+              stroke: "url('#style-1')",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+        </svg>
+        {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
+      </div>
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P2">
+        <svg width="110px" height="45px" version="1.1">
+          <linearGradient
+            id="style-2"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
+            <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
+          </linearGradient>
+          <path
+            d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+            style={{
+              width: "100%",
+              height: "100%",
+              fill: "none",
+              stroke: "url('#style-2')",
+              strokeWidth: "3",
+            }}
+          ></path>
+          <circle
+            r={5}
+            style={{
+              fill: "none",
+              stroke: "url('#style-2')",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+        </svg>
+        {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line2_Ball"></div> */}
+      </div>
+    </div>
+<div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineBottom_G_B">
             <svg width="220px" height="25px" verssion="1.1">
               <linearGradient
                 id="style-1"
@@ -569,6 +569,15 @@ const Consumption = () => {
               --
             </div>
           </div>
+
+
+
+
+
+
+
+
+
 
           <div
             className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
