@@ -348,64 +348,69 @@
                     display: flex;
                     gap: 200px;
 
-                    &_Solar{
-                        & img{
-                            width: 70px;
-                            height: 70px;
-                        }
-                    }
-                    &_Load{
-                        margin-top: 60px;
-                        & img{
+                    &_Solar {
+                        & img {
                             width: 70px;
                             height: 70px;
                         }
                     }
 
-                    &_Line1{
+                    &_Load {
+                        margin-top: 60px;
+
+                        & img {
+                            width: 70px;
+                            height: 70px;
+                        }
+                    }
+
+                    &_Line1 {
                         position: absolute;
                         top: 40px;
                         left: 120px;
+
                         &_Ball {
                             position: absolute;
                             top: 0;
                             width: 8px;
                             height: 8px;
-                           
+
                             border-radius: 50%;
                             border: .125rem solid;
                             background-color: rgb(235, 235, 235);
-                         
-    
-    
+
+
+
                             offset-path: path('M 1,1 l 83,0 q 16,0 16,16 l 0,31 q 0,16 16,16 l 83,0');
                             offset-distance: 0%;
-    
+
                             animation: red-ball 3s ease-in-out infinite;
-    
+
                         }
                     }
-                    &_Line2{
+
+                    &_Line2 {
                         position: absolute;
                         top: 40px;
                         left: 380px;
+
                         &_Ball {
                             position: absolute;
                             top: 0;
                             width: 8px;
                             height: 8px;
-                           
+
                             border-radius: 50%;
                             border: .125rem solid;
                             background-color: rgb(235, 235, 235);
-                         
-    
-    
+
+
+
                             offset-path: path('M 1,1 l 83,0 q 16,0 16,16 l 0,31 q 0,16 16,16 l 83,0');
                             offset-distance: 0%;
-    
+
                             animation: red-ball 3s ease-in-out infinite;
-    
+
                         }
 
 
@@ -641,7 +646,7 @@
 
                 // padding: 5px;
                 // background-color: white;
-                &_Weather {
+                &_wheather {
                     width: 100%;
                     height: 100%;
                     background-color: #3e80fb;
@@ -793,13 +798,15 @@
             &_SubConfig {
                 background-color: rgb(128, 128, 128, 0.5);
                 width: 100%;
-                // height: 100%;
+                height: 100%;
                 position: absolute;
                 top: 58.6px;
+
                 &_Dropdown {
                     background-color: white;
                     border-top: 1px solid #b8b8b8;
                     padding: 16px;
+
                     &_Search {
                         display: flex;
                         width: fit-content;
@@ -808,27 +815,34 @@
                         border: 1px solid rgb(142, 142, 142);
                         padding: 3px;
                         border-radius: 5px;
+
                         & input {
                             border: none;
                             width: 200px;
                         }
                     }
+
                     &_Item {
                         padding-top: 16px;
                         font-size: 15px;
+
                         // color: hwb(0 33% 67%);
                         &_Table {
                             border: solid 1px #b8b8b8;
+
                             & tr:first-child {
                                 border-bottom: solid 1px #b8b8b8;
                             }
                         }
+
                         &_Table {
                             border-collapse: collapse;
                             width: 100%;
+
                             &_Tr {
                                 display: flex;
                                 align-items: center;
+
                                 &_Th {
                                     padding: 12px;
                                     background-color: #d4d4d4;
@@ -838,6 +852,7 @@
                                 &_Td {
                                     padding-left: 16px;
                                     display: flex;
+
                                     &_Checkbox {
                                         display: flex;
                                         align-items: center;
@@ -936,10 +951,9 @@
         position: relative;
         margin-top: 134px;
 
-        &_Data {
+        &_Analysis {
             width: 98%;
             margin: auto;
-            margin-bottom: 16px;
             background-color: white;
             border-radius: 5px;
 
@@ -948,26 +962,31 @@
                 justify-content: space-between;
                 padding: 16px;
 
+                &_Select {
+                    display: flex;
+                    gap: 16px;
+
+                    & select {
+                        // width: 100%;
+                        // height: 40px;
+                        border-radius: 5px;
+                        border: solid 1px rgb(199, 199, 199);
+                        padding: 4px;
+                    }
+                }
+
                 & button {
                     width: 80px;
                     padding: 4px;
                     background-color: white;
                     border: solid 1px rgb(199, 199, 199);
-                    border-radius: 0px;
+                    border-radius: 5px;
                     cursor: pointer;
 
                     &:hover {
                         border: solid 1px #6495ed;
                         color: #6495ed;
                     }
-                }
-
-                & select {
-                    // width: 100%;
-                    // height: 40px;
-                    border-radius: 5px;
-                    border: solid 1px rgb(199, 199, 199);
-                    padding: 4px;
                 }
             }
 
@@ -978,7 +997,7 @@
             }
 
             &_Nav {
-                padding-top: 16px;
+                // padding-top: 16px;
                 padding-left: 16px;
                 padding-right: 16px;
 
@@ -1002,7 +1021,27 @@
             }
 
             &_Table {
-                padding: 16px;
+                width: 98%;
+                margin: auto;
+                overflow: hidden;
+                -webkit-box-sizing: border-box;
+                /* Safari/Chrome, other WebKit */
+                -moz-box-sizing: border-box;
+                /* Firefox, other Gecko */
+                box-sizing: border-box;
+                border-radius: 5px;
+                // background-color: rgb(255, 255, 255, 0.95);
+                // box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4), -2px -2px 5px rgba(198, 197, 197, 0.4);
+
+                &_Content {
+                    padding: 10px;
+                    // height: calc(100vh - 180px);
+                    -webkit-box-sizing: border-box;
+                    /* Safari/Chrome, other WebKit */
+                    -moz-box-sizing: border-box;
+                    /* Firefox, other Gecko */
+                    box-sizing: border-box;
+                }
             }
         }
     }
@@ -1013,11 +1052,26 @@
 
         &_Data {
             width: 98%;
-            height: 100px;
             margin: auto;
-            margin-bottom: 16px;
-            background-color: white;
+            overflow: hidden;
+            -webkit-box-sizing: border-box;
+            /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box;
+            /* Firefox, other Gecko */
+            box-sizing: border-box;
             border-radius: 5px;
+            background-color: rgb(255, 255, 255, 0.95);
+            box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4), -2px -2px 5px rgba(198, 197, 197, 0.4);
+
+            &_Table {
+                padding: 10px;
+                // height: calc(100vh - 180px);
+                -webkit-box-sizing: border-box;
+                /* Safari/Chrome, other WebKit */
+                -moz-box-sizing: border-box;
+                /* Firefox, other Gecko */
+                box-sizing: border-box;
+            }
         }
     }
 }
@@ -2454,9 +2508,11 @@
 
     .DAT_ProjectData {
         &_Header {
+
             &_Left {
                 flex: 5;
-                // min-width: 200px;
+                min-width: 200px;
+                padding: 16px;
             }
 
             &_Right {
@@ -2504,10 +2560,19 @@
             }
         }
 
+        &_Device {
+            margin-top: 134px;
+            margin-bottom: 100px;
+        }
+
     }
 
     .DAT_ProjectDataDrop {
         top: 140px;
+    }
+
+    .DAT_ProjectDataDrop2 {
+        top: 116px;
     }
 
     .DAT_AddProject {

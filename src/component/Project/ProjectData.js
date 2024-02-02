@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Project.scss";
-import { plantState, projectData } from "./Project";
+import { Empty, plantState, projectData } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
 import {
   BarChart,
@@ -15,23 +15,32 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { IoArrowForward } from "react-icons/io5";
+import { IoIosArrowDown, IoIosArrowForward, IoIosCloud } from "react-icons/io";
+import { IoArrowForward, IoMenu } from "react-icons/io5";
 import { MdOutlineError, MdPermDataSetting } from "react-icons/md";
-import { IoIosCloud } from "react-icons/io";
 import { FaCheckCircle, FaTree } from "react-icons/fa";
 import { RiMoneyCnyCircleFill } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 import { AiOutlineDashboard } from "react-icons/ai";
-import { IoMenu } from "react-icons/io5";
 import { BsMenuButtonWide } from "react-icons/bs";
 import { GoAlertFill } from "react-icons/go";
-import { signal } from "@preact/signals-react";
 import { LiaLongArrowAltLeftSolid } from "react-icons/lia";
 import { CiSearch } from "react-icons/ci";
-import moment, { Moment } from "moment-timezone";
-import axios from "axios";
+
+import { signal } from "@preact/signals-react";
+import DataTable from "react-data-table-component";
 
 export const dropState = signal(false);
+const tabMobile = signal(false);
+const tabLable = signal("");
+const tab = signal("inverter");
+
+const tabMobileAlert = signal(false);
+const tabLableAlert = signal("");
+const tabAlert = signal("all");
+
+const open = signal([]);
+const close = signal([]);
 
 const Graph = () => {
   const path = document.querySelector(".infinity");
@@ -840,38 +849,6 @@ const Total = () => {
   );
 };
 
-// const Weather = () => {
-//   const lat = "10.8230989";
-//   const long = "106.6296638";
-//   const xy = lat + "," + long;
-//   const days = 7;
-//   const keyAPI = "d5e7a9e22d9b4bf997e73539240202";
-
-//   // const urlAPI =
-//   //   "http://api.weatherapi.com/v1/forecast.json?key=" +
-//   //   { keyAPI } +
-//   //   "&q=" +
-//   //   { xy } +
-//   //   "&days=" +
-//   //   { days } +
-//   //   "&aqi=no&alerts=no";
-
-//   // useEffect(() => {
-//   //   axios
-//   //     .get(urlAPI)
-//   //     .then((res) => {
-//   //       if (res.status === 200) {
-//   //         console.log(res.data);
-//   //       }
-//   //     })
-//   //     .catch((err) => {
-//   //       console.log(err);
-//   //     });
-//   // },[urlAPI]);
-
-//   return <div className="DAT_ProjectData_Dashboard_Weather"></div>;
-// };
-
 function ProjectData(props) {
   const color = {
     cur: "blue",
@@ -912,20 +889,395 @@ function ProjectData(props) {
     }
   };
 
+  const paginationComponentOptions = {
+    rowsPerPageText: "Số hàng",
+    rangeSeparatorText: "đến",
+    selectAllRowsItem: true,
+    selectAllRowsItemText: "tất cả",
+  };
+
+  const dataInverter = [
+    {
+      id: 1,
+      SN: "I0000145",
+      name: "Inverter 01",
+      plant: "Năng lượng DAT 01",
+      status: true,
+      production: "16",
+      dailyproduction: "123.4",
+      updated: "12/30/2023 12:07:12",
+    },
+    {
+      id: 2,
+      SN: "I0000012",
+      name: "Inverter 02",
+      plant: "Năng lượng DAT 01",
+      status: true,
+      production: "18",
+      dailyproduction: "238.4",
+      updated: "12/30/2023 12:07:12",
+    },
+    {
+      id: 3,
+      SN: "I0000001",
+      name: "Inverter 03",
+      plant: "Năng lượng DAT 01",
+      status: false,
+      production: "562",
+      dailyproduction: "897.4",
+      updated: "12/30/2023 12:07:12",
+    },
+  ];
+
+  const columnInverter = [
+    {
+      name: "Tên",
+      selector: (row) => (
+        <div>
+          <div>{row.name}</div>
+          <div>{row.SN}</div>
+        </div>
+      ),
+      sortable: true,
+      // minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Trạng thái",
+      selector: (row) => (
+        <>
+          {row.status ? (
+            <FaCheckCircle size={20} color="green" />
+          ) : (
+            <MdOutlineError size={22} color="red" />
+          )}
+        </>
+      ),
+      // width: "110px",
+    },
+    {
+      name: "Sản lượng(kW)",
+      selector: (row) => row.production,
+      sortable: true,
+      // width: "140px",
+    },
+    {
+      name: "SL tức thời(kWh)",
+      selector: (row) => row.dailyproduction,
+      sortable: true,
+      // width: "150px",
+    },
+    {
+      name: "Hiệu suất",
+      selector: (row) => "--",
+      sortable: true,
+    },
+    {
+      name: "Lần cập nhật cuối",
+      selector: (row) => row.updated,
+      sortable: true,
+      // width: "180px",
+    },
+  ];
+
+  const dataMeter = [
+    {
+      id: 1,
+      SN: "M0000223",
+      name: "Meter 01",
+      plant: "Năng lượng DAT 02",
+      status: true,
+      production: "66",
+      dailyproduction: "895.4",
+      updated: "12/30/2023 12:07:12",
+    },
+    {
+      id: 2,
+      SN: "M0000009",
+      name: "Meter 02",
+      plant: "Năng lượng DAT 02",
+      status: true,
+      production: "18",
+      dailyproduction: "1238.4",
+      updated: "12/30/2023 12:07:12",
+    },
+    {
+      id: 3,
+      SN: "M0000327",
+      name: "Meter 03",
+      plant: "Năng lượng DAT 02",
+      status: true,
+      production: "45",
+      dailyproduction: "1024.4",
+      updated: "12/30/2023 12:07:12",
+    },
+  ];
+
+  const columnMeter = [
+    {
+      name: "Tên",
+      selector: (row) => (
+        <div>
+          <div>{row.name}</div>
+          <div>{row.SN}</div>
+        </div>
+      ),
+      sortable: true,
+      // minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Trạng thái",
+      selector: (row) => (
+        <>
+          {row.status ? (
+            <FaCheckCircle size={20} color="green" />
+          ) : (
+            <MdOutlineError size={22} color="red" />
+          )}
+        </>
+      ),
+      // width: "110px",
+    },
+    {
+      name: "Sản lượng(kW)",
+      selector: (row) => row.production,
+      sortable: true,
+      // width: "140px",
+    },
+    {
+      name: "SL tức thời(kWh)",
+      selector: (row) => row.dailyproduction,
+      sortable: true,
+      // width: "150px",
+    },
+    {
+      name: "Hiệu suất",
+      selector: (row) => "--",
+      sortable: true,
+    },
+    {
+      name: "Lần cập nhật cuối",
+      selector: (row) => row.updated,
+      sortable: true,
+      // width: "180px",
+    },
+  ];
+
+  const dataLogger = [
+    {
+      id: 1,
+      SN: "L0000102",
+      name: "Logger 01",
+      plant: "Năng lượng DAT 01",
+      status: true,
+      updated: "12/30/2023 12:07:12",
+    },
+    {
+      id: 2,
+      SN: "L0000101",
+      name: "Logger 02",
+      plant: "Năng lượng DAT 01",
+      status: true,
+      updated: "12/30/2023 12:07:12",
+    },
+    {
+      id: 3,
+      SN: "L0000103",
+      name: "Logger 03",
+      plant: "Năng lượng DAT 02",
+      status: false,
+      updated: "12/30/2023 12:07:12",
+    },
+  ];
+
+  const columnLogger = [
+    {
+      name: "Tên",
+      selector: (row) => (
+        <div>
+          <div>{row.name}</div>
+          <div>{row.SN}</div>
+        </div>
+      ),
+      sortable: true,
+      // minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Trạng thái",
+      selector: (row) => (
+        <>
+          {row.status ? (
+            <FaCheckCircle size={20} color="green" />
+          ) : (
+            <MdOutlineError size={22} color="red" />
+          )}
+        </>
+      ),
+      // width: "110px",
+    },
+    {
+      name: "Lần cập nhật cuối",
+      selector: (row) => row.updated,
+      sortable: true,
+      // width: "180px",
+    },
+  ];
+
+  const listDeviceTab = [
+    { id: "inverter", name: "Inverter" },
+    { id: "meter", name: "Meter" },
+    { id: "logger", name: "Logger" },
+  ];
+
+  const handleTabMobileDevice = (e) => {
+    const id = e.currentTarget.id;
+    tab.value = id;
+    const newLabel = listDeviceTab.find((item) => item.id == id);
+    tabLable.value = newLabel.name;
+  };
+
+  const listAlertTab = [
+    { id: "all", name: "Tất cả" },
+    { id: "open", name: "Mở" },
+    { id: "closed", name: "Đóng" },
+  ];
+
+  const handleTabMobileAlert = (e) => {
+    const id = e.currentTarget.id;
+    tabAlert.value = id;
+    const newLabel = listAlertTab.find((item) => item.id == id);
+    tabLableAlert.value = newLabel.name;
+  };
+
+  const dataAlert = [
+    {
+      id: 1,
+      name: "Input UV",
+      status: true,
+      importance: "Cao",
+      device: "Inverter 01",
+      SN: "I0000145",
+      openedtime: "12/30/2023 12:07:12",
+      closedtime: "12/30/2023 15:07:12",
+    },
+    {
+      id: 2,
+      name: "Cmd Shut",
+      status: false,
+      importance: "Thấp",
+      device: "Inverter 01",
+      SN: "I0000145",
+      openedtime: "12/30/2023 12:07:12",
+      closedtime: "12/30/2023 15:07:12",
+    },
+  ];
+
+  const columnAlert = [
+    {
+      name: "Tên",
+      selector: (row) => (
+        <div>
+          <div>{row.name}</div>
+        </div>
+      ),
+      sortable: true,
+      // minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Trạng thái",
+      selector: (row) => (
+        <>
+          {row.status ? (
+            <FaCheckCircle size={20} color="green" />
+          ) : (
+            <MdOutlineError size={22} color="red" />
+          )}
+        </>
+      ),
+      // width: "110px",
+    },
+    {
+      name: "Mức quan trọng",
+      selector: (row) => row.importance,
+      sortable: true,
+      // width: "140px",
+    },
+    {
+      name: "Thiết bị",
+      selector: (row) => (
+        <div>
+          <div>{row.device}</div>
+          <div>{row.SN}</div>
+        </div>
+      ),
+      sortable: true,
+      // width: "150px",
+    },
+    {
+      name: "Giờ mở",
+      selector: (row) => row.openedtime,
+      sortable: true,
+    },
+    {
+      name: "Giờ đóng",
+      selector: (row) => row.closedtime,
+      sortable: true,
+      // width: "180px",
+    },
+  ];
+
+  useEffect(() => {
+    open.value = dataAlert.filter((item) => item.status == true);
+    close.value = dataAlert.filter((item) => item.status == false);
+    tabLableAlert.value = listAlertTab[0].name;
+  }, []);
+
   return (
     <>
       <div className="DAT_ProjectData">
         {isMobile.value ? (
           <div className="DAT_ProjectData_Header">
-            <div className="DAT_ProjectData_Header_Left">
-              <div style={{ fontSize: 22, paddingBottom: 5 }}>
-                {projectData.value.name}
-              </div>
+            {(() => {
+              switch (view) {
+                case "dashboard":
+                  return (
+                    <div className="DAT_ProjectData_Header_LeftDashboard">
+                      <div style={{ fontSize: 22, paddingBottom: 5 }}>
+                        {tit[view]}
+                      </div>
 
-              <div style={{ color: "grey", fontSize: 14 }}>
-                Cập nhật lần cuối {projectData.value.lastupdate}
-              </div>
-            </div>
+                      <div style={{ color: "grey", fontSize: 14 }}>
+                        Cập nhật lần cuối {projectData.value.lastupdate}
+                      </div>
+                    </div>
+                  );
+                case "device":
+                  return (
+                    <div className="DAT_ProjectData_Header_LeftDevice">
+                      <div style={{ fontSize: 22 }}>{tit[view]}</div>
+                    </div>
+                  );
+                case "alert":
+                  return (
+                    <div className="DAT_ProjectData_Header_LeftAlert">
+                      <div style={{ fontSize: 22 }}>{tit[view]}</div>
+                    </div>
+                  );
+                default:
+                  <></>;
+              }
+            })()}
 
             <div className="DAT_ProjectData_Header_Right">
               <div
@@ -963,11 +1315,6 @@ function ProjectData(props) {
                   return (
                     <div className="DAT_ProjectData_Header_LeftDevice">
                       <div style={{ fontSize: 22 }}>{tit[view]}</div>
-
-                      <div className="DAT_ProjectData_Header_LeftDevice_Item">
-                        <button>Rút gọn</button>
-                        <button>Đầy đủ</button>
-                      </div>
                     </div>
                   );
                 case "alert":
@@ -1190,9 +1537,7 @@ function ProjectData(props) {
                     </div>
 
                     <div className="DAT_ProjectData_Dashboard_Data_Right">
-                      <div className="DAT_ProjectData_Dashboard_Data_Right_Weather">
-                        {/* <Weather /> */}
-                      </div>
+                      <div className="DAT_ProjectData_Dashboard_Data_Right_wheather"></div>
                     </div>
                   </div>
 
@@ -1261,10 +1606,7 @@ function ProjectData(props) {
                         <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Export">
                           <button>Xuất Báo Cáo</button>
                         </div>
-                        <input
-                          type="date"
-                          defaultValue={moment(new Date()).format("YYYY-MM-DD")}
-                        ></input>
+                        <input type="date"></input>
                       </div>
                     </div>
 
@@ -1284,82 +1626,26 @@ function ProjectData(props) {
                     })()}
 
                     <div
-                      className="DAT_ProjectData_Dashboard_History_SubConfig"
                       style={{
-                        height: dropConfig ? "500px" : "0px",
+                        height: dropConfig ? "10px" : "0px",
                         transition: "0.5s",
-                        overflow: "hidden",
                       }}
                     >
-                      {/* <div
-                        className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
-                        style={{
-                          display: dropConfig ? "block" : "none",
-                          transition: "0.5s",
-                        }}
-                      >
-                        <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
-                          <input
-                            type="text"
-                            placeholder="Search by parameter name"
-                          ></input>
-                          <CiSearch size={20} />
-                        </div>
-                        <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
-                          <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
-                            <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-                              <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                Production
-                              </th>
-                              <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                  <input
-                                    id="Production"
-                                    type="checkbox"
-                                  ></input>
-                                  <label htmlFor="Production">Production</label>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-                              <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                Environment
-                              </th>
-                              <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                  <input id="Weather" type="checkbox"></input>
-                                  <label htmlFor="Weather">Weather</label>
-                                </div>
-                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                  <input
-                                    id="Temperature"
-                                    type="checkbox"
-                                  ></input>
-                                  <label htmlFor="Temperature">
-                                    Temperature
-                                  </label>
-                                </div>
-                              </td>
-                            </tr>
-                          </table>
-                        </div>
-                      </div> */}
-
                       {dropConfig ? (
-                        <div
-                          className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
-                          // style={{ height: dropConfig ? "200px" : "0px" , transition: "0.5s"}}
-                        >
-                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
-                            <input
-                              type="text"
-                              placeholder="Search by parameter name"
-                            ></input>
-                            <CiSearch size={20} />
-                          </div>
-                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
-                            <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
-                              <tbody>
+                        <div className="DAT_ProjectData_Dashboard_History_SubConfig">
+                          <div
+                            className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
+                            // style={{ height: dropConfig ? "200px" : "0px" , transition: "0.5s"}}
+                          >
+                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
+                              <input
+                                type="text"
+                                placeholder="Search by parameter name"
+                              ></input>
+                              <CiSearch size={20} />
+                            </div>
+                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
+                              <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
                                 <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                   <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
                                     Production
@@ -1399,8 +1685,8 @@ function ProjectData(props) {
                                     </div>
                                   </td>
                                 </tr>
-                              </tbody>
-                            </table>
+                              </table>
+                            </div>
                           </div>
                         </div>
                       ) : (
@@ -1534,30 +1820,147 @@ function ProjectData(props) {
             case "device":
               return (
                 <div className="DAT_ProjectData_Device">
-                  <div className="DAT_ProjectData_Device_Data">
-                    <div className="DAT_ProjectData_Device_Data_Func">
-                      <select>
-                        <option hidden>Trạng thái</option>
-                        <option>Tất cả</option>
-                        <option>Online</option>
-                        <option>Cảnh báo</option>
-                        <option>Offline</option>
-                      </select>
-                      <button>Thêm</button>
+                  <div className="DAT_ProjectData_Device_Analysis">
+                    <div className="DAT_ProjectData_Device_Analysis_Func">
+                      <div className="DAT_ProjectData_Device_Analysis_Func_Select">
+                        <select>
+                          <option hidden>Trạng thái</option>
+                          <option>Tất cả</option>
+                          <option>Online</option>
+                          <option>Cảnh báo</option>
+                          <option>Offline</option>
+                        </select>
+                        <select>
+                          <option hidden>Hiệu suất</option>
+                          <option>Tắt</option>
+                          <option>Rất thấp</option>
+                          <option>Thấp</option>
+                          <option>Bình thường</option>
+                        </select>
+                      </div>
+                      <button id="add">Thêm</button>
                     </div>
 
-                    <div className="DAT_ProjectData_Device_Data_Line" />
+                    <div className="DAT_ProjectData_Device_Analysis_Table">
+                      {isMobile.value ? (
+                        <div className="DAT_Toollist_Tab_Mobile">
+                          <button
+                            className="DAT_Toollist_Tab_Mobile_content"
+                            onClick={() => (tabMobile.value = !tabMobile.value)}
+                          >
+                            <span> {tabLable.value}</span>
+                            {tabMobile.value ? (
+                              <IoIosArrowDown />
+                            ) : (
+                              <IoIosArrowForward />
+                            )}
+                          </button>
+                          <div className="DAT_Toollist_Tab_Mobile_list">
+                            {listDeviceTab.map((item, i) => {
+                              return (
+                                <div
+                                  className="DAT_Toollist_Tab_Mobile_list_item"
+                                  style={{
+                                    display: tabMobile.value ? "block" : "none",
+                                  }}
+                                  key={"tabmobile_" + i}
+                                  id={item.id}
+                                  onClick={(e) => handleTabMobileDevice(e)}
+                                >
+                                  {i + 1}: {item.name}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="DAT_Toollist_Tab">
+                          {listDeviceTab.map((item, i) => {
+                            return tab.value === item.id ? (
+                              <div
+                                key={"tab_" + i}
+                                className="DAT_Toollist_Tab_main"
+                              >
+                                <p className="DAT_Toollist_Tab_main_left"></p>
+                                <span
+                                  className="DAT_Toollist_Tab_main_content1"
+                                  id={item.id}
+                                  style={{
+                                    backgroundColor: "White",
+                                    color: "black",
+                                    borderRadius: "10px 10px 0 0",
+                                  }}
+                                  onClick={(e) => (tab.value = item.id)}
+                                >
+                                  {item.name}
+                                </span>
+                                <p className="DAT_Toollist_Tab_main_right"></p>
+                              </div>
+                            ) : (
+                              <span
+                                className="DAT_Toollist_Tab_main_content2"
+                                key={"tab_" + i}
+                                id={item.id}
+                                style={{ backgroundColor: "#dadada" }}
+                                onClick={(e) => (tab.value = item.id)}
+                              >
+                                {item.name}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
 
-                    <div className="DAT_ProjectData_Device_Data_Nav">
-                      <button>Inverter</button>
-                      <button>Logger</button>
-                    </div>
-
-                    <div className="DAT_ProjectData_Device_Data_Line" />
-
-                    <div className="DAT_ProjectData_Device_Data_Table">
-                      <button>Inverter</button>
-                      <button>Logger</button>
+                      <div className="DAT_ProjectData_Device_Analysis_Table_Content">
+                        {(() => {
+                          switch (tab.value) {
+                            case "inverter":
+                              return (
+                                <DataTable
+                                  className="DAT_Table_Device"
+                                  columns={columnInverter}
+                                  data={dataInverter}
+                                  pagination
+                                  paginationComponentOptions={
+                                    paginationComponentOptions
+                                  }
+                                  fixedHeader={true}
+                                  noDataComponent={<Empty />}
+                                />
+                              );
+                            case "meter":
+                              return (
+                                <DataTable
+                                  className="DAT_Table_Device"
+                                  columns={columnMeter}
+                                  data={dataMeter}
+                                  pagination
+                                  paginationComponentOptions={
+                                    paginationComponentOptions
+                                  }
+                                  fixedHeader={true}
+                                  noDataComponent={<Empty />}
+                                />
+                              );
+                            case "logger":
+                              return (
+                                <DataTable
+                                  className="DAT_Table_Device"
+                                  columns={columnLogger}
+                                  data={dataLogger}
+                                  pagination
+                                  paginationComponentOptions={
+                                    paginationComponentOptions
+                                  }
+                                  fixedHeader={true}
+                                  noDataComponent={<Empty />}
+                                />
+                              );
+                            default:
+                              return <></>;
+                          }
+                        })()}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1565,7 +1968,131 @@ function ProjectData(props) {
             case "alert":
               return (
                 <div className="DAT_ProjectData_Alert">
-                  <div className="DAT_ProjectData_Alert_Data"></div>
+                  <div className="DAT_ProjectData_Alert_Data">
+                    {isMobile.value ? (
+                      <div className="DAT_Toollist_Tab_Mobile">
+                        <button
+                          className="DAT_Toollist_Tab_Mobile_content"
+                          onClick={() =>
+                            (tabMobileAlert.value = !tabMobileAlert.value)
+                          }
+                        >
+                          <span> {tabLableAlert.value}</span>
+                          {tabMobileAlert.value ? (
+                            <IoIosArrowDown />
+                          ) : (
+                            <IoIosArrowForward />
+                          )}
+                        </button>
+                        <div className="DAT_Toollist_Tab_Mobile_list">
+                          {listAlertTab.map((item, i) => {
+                            return (
+                              <div
+                                className="DAT_Toollist_Tab_Mobile_list_item"
+                                style={{
+                                  display: tabMobileAlert.value
+                                    ? "block"
+                                    : "none",
+                                }}
+                                key={"tabmobile_" + i}
+                                id={item.id}
+                                onClick={(e) => handleTabMobileAlert(e)}
+                              >
+                                {i + 1}: {item.name}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="DAT_Toollist_Tab">
+                        {listAlertTab.map((item, i) => {
+                          return tabAlert.value === item.id ? (
+                            <div
+                              key={"tab_" + i}
+                              className="DAT_Toollist_Tab_main"
+                            >
+                              <p className="DAT_Toollist_Tab_main_left"></p>
+                              <span
+                                className="DAT_Toollist_Tab_main_content1"
+                                id={item.id}
+                                style={{
+                                  backgroundColor: "White",
+                                  color: "black",
+                                  borderRadius: "10px 10px 0 0",
+                                }}
+                                onClick={(e) => (tabAlert.value = item.id)}
+                              >
+                                {item.name}
+                              </span>
+                              <p className="DAT_Toollist_Tab_main_right"></p>
+                            </div>
+                          ) : (
+                            <span
+                              className="DAT_Toollist_Tab_main_content2"
+                              key={"tab_" + i}
+                              id={item.id}
+                              style={{ backgroundColor: "#dadada" }}
+                              onClick={(e) => (tabAlert.value = item.id)}
+                            >
+                              {item.name}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    <div className="DAT_ProjectData_Alert_Data_Table">
+                      {(() => {
+                        switch (tabAlert.value) {
+                          case "all":
+                            return (
+                              <DataTable
+                                className="DAT_Table_Alert"
+                                columns={columnAlert}
+                                data={dataAlert}
+                                pagination
+                                paginationComponentOptions={
+                                  paginationComponentOptions
+                                }
+                                fixedHeader={true}
+                                noDataComponent={<Empty />}
+                              />
+                            );
+                          case "open":
+                            return (
+                              <DataTable
+                                className="DAT_Table_Alert"
+                                columns={columnAlert}
+                                data={open.value}
+                                pagination
+                                paginationComponentOptions={
+                                  paginationComponentOptions
+                                }
+                                fixedHeader={true}
+                                noDataComponent={<Empty />}
+                              />
+                            );
+                          case "closed":
+                            return (
+                              <DataTable
+                                className="DAT_Table_Alert"
+                                columns={columnAlert}
+                                data={close.value}
+                                pagination
+                                paginationComponentOptions={
+                                  paginationComponentOptions
+                                }
+                                fixedHeader={true}
+                                noDataComponent={<Empty />}
+                              />
+                            );
+                          default:
+                            return <></>;
+                        }
+                      })()}
+                    </div>
+                  </div>
                 </div>
               );
             default:
@@ -1578,24 +2105,27 @@ function ProjectData(props) {
         <>
           {dropState.value ? (
             <div className="DAT_ProjectDataDrop">
-              <div className="DAT_ProjectDataDrop_Dashboard">
+              <div
+                className="DAT_ProjectDataDrop_Dashboard"
+                id="dashboard"
+                onClick={(e) => handleView(e)}
+              >
                 <AiOutlineDashboard size={20} color="white" />
               </div>
-              <div className="DAT_ProjectDataDrop_Device">
+              <div
+                className="DAT_ProjectDataDrop_Device"
+                id="device"
+                onClick={(e) => handleView(e)}
+              >
                 <BsMenuButtonWide size={20} color="white" />
               </div>
-              <div className="DAT_ProjectDataDrop_Alert">
+              <div
+                className="DAT_ProjectDataDrop_Alert"
+                id="alert"
+                onClick={(e) => handleView(e)}
+              >
                 <GoAlertFill size={20} color="white" />
               </div>
-              {/* <div className="DAT_ProjectData_Header_Right_Dashboard">
-              <AiOutlineDashboard size={20} color="white" />
-            </div>
-            <div className="DAT_ProjectData_Header_Right_Device">
-              <BsMenuButtonWide size={20} color="white" />
-            </div>
-            <div className="DAT_ProjectData_Header_Right_Alert">
-              <GoAlertFill size={20} color="white" />
-            </div> */}
             </div>
           ) : (
             <></>
