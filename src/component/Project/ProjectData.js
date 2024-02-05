@@ -1096,38 +1096,6 @@ const Total = () => {
   );
 };
 
-// const Weather = () => {
-//   const lat = "10.8230989";
-//   const long = "106.6296638";
-//   const xy = lat + "," + long;
-//   const days = 7;
-//   const keyAPI = "d5e7a9e22d9b4bf997e73539240202";
-
-//   // const urlAPI =
-//   //   "http://api.weatherapi.com/v1/forecast.json?key=" +
-//   //   { keyAPI } +
-//   //   "&q=" +
-//   //   { xy } +
-//   //   "&days=" +
-//   //   { days } +
-//   //   "&aqi=no&alerts=no";
-
-//   // useEffect(() => {
-//   //   axios
-//   //     .get(urlAPI)
-//   //     .then((res) => {
-//   //       if (res.status === 200) {
-//   //         console.log(res.data);
-//   //       }
-//   //     })
-//   //     .catch((err) => {
-//   //       console.log(err);
-//   //     });
-//   // },[urlAPI]);
-
-//   return <div className="DAT_ProjectData_Dashboard_Weather"></div>;
-// };
-
 function ProjectData(props) {
   const color = {
     cur: "blue",
