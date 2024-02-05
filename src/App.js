@@ -57,8 +57,11 @@ function App() {
         }
       )
     }
+    //SUA DE DANG NHAP OFFLINE
+    rootDispatch(adminslice.actions.setstatus(true))
 
-    checkAuth();
+    //SUA DE DANG NHAP ONLINE
+    // checkAuth();
   }, [])
 
   return (
