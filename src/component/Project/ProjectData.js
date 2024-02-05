@@ -30,6 +30,7 @@ import { CiSearch } from "react-icons/ci";
 import { signal } from "@preact/signals-react";
 import DataTable from "react-data-table-component";
 import moment from "moment-timezone";
+import Weather from "./Weather";
 
 export const dropState = signal(false);
 const tabMobile = signal(false);
@@ -1806,7 +1807,9 @@ function ProjectData(props) {
                     </div>
 
                     <div className="DAT_ProjectData_Dashboard_Data_Right">
-                      <div className="DAT_ProjectData_Dashboard_Data_Right_Weather"></div>
+                      <div className="DAT_ProjectData_Dashboard_Data_Right_Weather">
+                        <Weather />
+                      </div>
                     </div>
                   </div>
 
