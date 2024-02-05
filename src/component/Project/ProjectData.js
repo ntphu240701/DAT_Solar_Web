@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Project.scss";
-import { Empty, plantState, projectData } from "./Project";
+import AddGateway from "./AddGateway";
+import { Empty, plantState, projectData, deviceData, device } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
 import {
   BarChart,
@@ -31,6 +32,8 @@ import { signal } from "@preact/signals-react";
 import DataTable from "react-data-table-component";
 import moment from "moment-timezone";
 import Weather from "./Weather";
+import AddSubsystem from "./AddSubsystem";
+import { set } from "lodash";
 
 export const dropState = signal(false);
 const tabMobile = signal(false);
@@ -49,6 +52,8 @@ const addStateNav = signal([false, false]);
 
 export const popupAddGateway = signal(false);
 export const popupAddSubsystem = signal(false);
+
+const production = signal(0);
 
 const Graph = () => {
   const path = document.querySelector(".infinity");
@@ -429,7 +434,7 @@ const Production = () => {
         <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Detail">
           <div style={{ marginBottom: "8px", color: "grey" }}>Năng suất</div>
           <div style={{ marginBottom: "8px" }}>
-            {projectData.value.production}
+            {deviceData.value.production}
             <span
               style={{
                 marginLeft: "8px",
@@ -480,7 +485,7 @@ const Production = () => {
             Năng suất ngày
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            --
+            {deviceData.value.dailyproduction} kW
           </div>
         </div>
 
@@ -492,7 +497,7 @@ const Production = () => {
             Năng suất tháng
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            --
+            {deviceData.value.monthlyproduction} kW
           </div>
         </div>
 
@@ -504,7 +509,7 @@ const Production = () => {
             Năng suất năm
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            --
+            {deviceData.value.yearlyproduction} kW
           </div>
         </div>
 
@@ -516,7 +521,7 @@ const Production = () => {
             Tổng năng suất
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            --
+            {deviceData.value.totalproduction} kW
           </div>
         </div>
       </div>
@@ -1231,36 +1236,36 @@ function ProjectData(props) {
   ];
 
   const dataMeter = [
-    {
-      id: 1,
-      SN: "M0000223",
-      name: "Meter 01",
-      plant: "Năng lượng DAT 02",
-      status: true,
-      production: "66",
-      dailyproduction: "895.4",
-      updated: "12/30/2023 12:07:12",
-    },
-    {
-      id: 2,
-      SN: "M0000009",
-      name: "Meter 02",
-      plant: "Năng lượng DAT 02",
-      status: true,
-      production: "18",
-      dailyproduction: "1238.4",
-      updated: "12/30/2023 12:07:12",
-    },
-    {
-      id: 3,
-      SN: "M0000327",
-      name: "Meter 03",
-      plant: "Năng lượng DAT 02",
-      status: true,
-      production: "45",
-      dailyproduction: "1024.4",
-      updated: "12/30/2023 12:07:12",
-    },
+    // {
+    //   id: 1,
+    //   SN: "M0000223",
+    //   name: "Meter 01",
+    //   plant: "Năng lượng DAT 02",
+    //   status: true,
+    //   production: "66",
+    //   dailyproduction: "895.4",
+    //   updated: "12/30/2023 12:07:12",
+    // },
+    // {
+    //   id: 2,
+    //   SN: "M0000009",
+    //   name: "Meter 02",
+    //   plant: "Năng lượng DAT 02",
+    //   status: true,
+    //   production: "18",
+    //   dailyproduction: "1238.4",
+    //   updated: "12/30/2023 12:07:12",
+    // },
+    // {
+    //   id: 3,
+    //   SN: "M0000327",
+    //   name: "Meter 03",
+    //   plant: "Năng lượng DAT 02",
+    //   status: true,
+    //   production: "45",
+    //   dailyproduction: "1024.4",
+    //   updated: "12/30/2023 12:07:12",
+    // },
   ];
 
   const columnMeter = [
@@ -1507,6 +1512,21 @@ function ProjectData(props) {
   const handleAddSubsystem = (e) => {
     popupAddSubsystem.value = true;
   };
+
+  const [temp, setTemp] = useState({});
+
+  useEffect(() => {
+    setTemp([]);
+    deviceData.value.map((item) => {
+      const db = device.value.find((data) => data.SN === item.SN);
+      setTemp((old) => [...old, db]);
+    });
+    // production.value += temp.production;
+  }, []);
+
+  useEffect(() => {
+    console.log(temp);
+  }, [temp]);
 
   return (
     <>
@@ -2405,7 +2425,21 @@ function ProjectData(props) {
         </div>
       </div>
 
-      {popupAddGateway.value ? <div className="DAT_Add"></div> : <></>}
+      {popupAddGateway.value ? (
+        <div className="DAT_AddGatewayPopup">
+          <AddGateway />
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {popupAddSubsystem.value ? (
+        <div className="DAT_AddGatewayPopup">
+          <AddSubsystem />
+        </div>
+      ) : (
+        <></>
+      )}
 
       {isMobile.value ? (
         <>

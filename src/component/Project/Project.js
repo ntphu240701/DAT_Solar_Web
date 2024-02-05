@@ -26,6 +26,7 @@ export const plantState = signal("default");
 export const plantEdit = signal(false);
 export const projectData = signal({});
 export const popupState = signal(false);
+export const deviceData = signal([]);
 
 export const Empty = () => {
   return (
@@ -51,14 +52,14 @@ export const dataproject = signal([
     lat: "--",
     plantype: "residential",
     systemtype: "grid",
-    capacity: "110",
+    capacity: 110,
     griddate: "",
     angle: "--",
     currency: "vnd",
     price: "--",
     contact: "--",
     phone: "0123456789",
-    business: "--",
+    business: "DAT Group",
     status: true,
     warn: true,
     production: "16",
@@ -88,6 +89,120 @@ export const dataproject = signal([
     power: "0",
     lastupdate: "10/30/2023 08:01:22",
     createdate: "05/01/2022 14:08:36",
+  },
+]);
+
+export const devicePlant = signal([
+  {
+    plantId: 1,
+    SN: "11111111",
+  },
+  {
+    plantId: 1,
+    SN: "22222222",
+  },
+  {
+    plantId: 2,
+    SN: "33333333",
+  },
+]);
+
+export const device = signal([
+  {
+    SN: "11111111",
+    capacity: 110,
+    production: 16,
+    dailyproduction: 0.5,
+    monthlyproduction: 15,
+    yearlyproduction: 180,
+    totalproduction: 180,
+    consumption: 7.68,
+    dailyconsumption: 0.25,
+    monthlyconsumption: 7.5,
+    yearlyconsumption: 90,
+    totalconsumption: 90,
+    grid: 4.56,
+    feedindailygrid: 0.15,
+    feedinmonthlygrid: 4.5,
+    feedinyearlygrid: 54,
+    feedintotalgrid: 54,
+    purchaseddailygrid: 0.1,
+    purchasedmonthlygrid: 3,
+    purchasedyearlygrid: 36,
+    purchasedtotalgrid: 36,
+    battery: 3.12,
+    chargedailybattery: 0.1,
+    chargemonthlybattery: 3,
+    chargeyearlybattery: 36,
+    chargetotalbattery: 36,
+    dischargedailybattery: 0.05,
+    dischargemonthlybattery: 1.5,
+    dischargeyearlybattery: 18,
+    dischargetotalbattery: 18,
+  },
+  {
+    SN: "22222222",
+    capacity: 222,
+    production: 230,
+    dailyproduction: 7.5,
+    monthlyproduction: 225,
+    yearlyproduction: 2700,
+    totalproduction: 2700,
+    consumption: 100,
+    dailyconsumption: 3.3,
+    monthlyconsumption: 99,
+    yearlyconsumption: 1188,
+    totalconsumption: 1188,
+    grid: 130,
+    feedindailygrid: 4.3,
+    feedinmonthlygrid: 129,
+    feedinyearlygrid: 1548,
+    feedintotalgrid: 1548,
+    purchaseddailygrid: 3,
+    purchasedmonthlygrid: 90,
+    purchasedyearlygrid: 1080,
+    purchasedtotalgrid: 1080,
+    battery: 70,
+    chargedailybattery: 2.3,
+    chargemonthlybattery: 69,
+    chargeyearlybattery: 828,
+    chargetotalbattery: 828,
+    dischargedailybattery: 1.5,
+    dischargemonthlybattery: 45,
+    dischargeyearlybattery: 540,
+    dischargetotalbattery: 540,
+  },
+  {
+    SN: "33333333",
+    capacity: 333,
+    production: 116,
+    dailyproduction: 3.8,
+    monthlyproduction: 114,
+    yearlyproduction: 1368,
+    totalproduction: 1368,
+    consumption: 50,
+    dailyconsumption: 1.6,
+    monthlyconsumption: 48,
+    yearlyconsumption: 576,
+    totalconsumption: 576,
+    grid: 66,
+    feedindailygrid: 2.2,
+    feedinmonthlygrid: 66,
+    feedinyearlygrid: 792,
+    feedintotalgrid: 792,
+    purchaseddailygrid: 1.5,
+    purchasedmonthlygrid: 45,
+    purchasedyearlygrid: 540,
+    purchasedtotalgrid: 540,
+    battery: 33,
+    chargedailybattery: 1.1,
+    chargemonthlybattery: 33,
+    chargeyearlybattery: 396,
+    chargetotalbattery: 396,
+    dischargedailybattery: 0.7,
+    dischargemonthlybattery: 21,
+    dischargeyearlybattery: 252,
+    dischargetotalbattery: 252,
   },
 ]);
 
@@ -351,6 +466,12 @@ function Project(props) {
       (item) => item.id == e.currentTarget.id
     );
     projectData.value = newPlant;
+
+    const newDevicePlant = devicePlant.value.filter(
+      (item) => item.plantId == e.currentTarget.id
+    );
+    deviceData.value = newDevicePlant;
+    console.log("deviceplant: ", deviceData.value);
   };
 
   const handleEdit = (e) => {
