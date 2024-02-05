@@ -51,7 +51,6 @@
 }
 
 .DAT_Project {
-
     width: 98%;
     //height: 80vh;
     margin: auto;
@@ -65,7 +64,9 @@
     box-sizing: border-box;
     border-radius: 5px;
     background-color: rgb(255, 255, 255, 0.95);
-    box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4), -2px -2px 5px rgba(198, 197, 197, 0.4);
+    box-shadow:
+        2px 2px 5px rgba(198, 197, 197, 0.4),
+        -2px -2px 5px rgba(198, 197, 197, 0.4);
 
     &_Nav {
         display: flex;
@@ -86,7 +87,6 @@
                 color: #6495ed;
             }
         }
-
     }
 
     &_Content {
@@ -207,11 +207,11 @@
                 justify-content: center;
                 border-radius: 50%;
 
-                background-color: #4CAF50;
+                background-color: #4caf50;
                 cursor: pointer;
 
                 &:hover {
-                    background-color: #66BB6A;
+                    background-color: #66bb6a;
                 }
             }
 
@@ -223,11 +223,11 @@
                 justify-content: center;
                 border-radius: 50%;
 
-                background-color: #FFD600;
+                background-color: #ffd600;
                 cursor: pointer;
 
                 &:hover {
-                    background-color: #FFEA00;
+                    background-color: #ffea00;
                 }
             }
 
@@ -239,11 +239,11 @@
                 justify-content: center;
                 border-radius: 50%;
 
-                background-color: #9E9E9E;
+                background-color: #9e9e9e;
                 cursor: pointer;
 
                 &:hover {
-                    background-color: #BDBDBD;
+                    background-color: #bdbdbd;
                 }
             }
 
@@ -255,7 +255,7 @@
                 justify-content: center;
                 border-radius: 50%;
 
-                background-color: #F44336;
+                background-color: #f44336;
                 cursor: pointer;
 
                 &:hover {
@@ -306,7 +306,7 @@
                             width: 100%;
                             white-space: nowrap; // ngan xuong dong
                             overflow: hidden; // an noi dung vuot ra ngoai
-                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai 
+                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
                         }
 
                         &_Content {
@@ -315,7 +315,7 @@
                             color: black;
                             white-space: nowrap; // ngan xuong dong
                             overflow: hidden; // an noi dung vuot ra ngoai
-                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai 
+                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
                         }
                     }
                 }
@@ -336,7 +336,6 @@
                         cursor: pointer;
                     }
                 }
-
 
                 &_Graph {
                     position: relative;
@@ -377,7 +376,6 @@
                             align-items: center;
                             justify-content: flex-end;
 
-
                             // position: absolute;
                             // top: 40px;
                             // left: 120px;
@@ -390,8 +388,6 @@
                             //     border-radius: 50%;
                             //     border: .125rem solid;
                             //     background-color: rgb(235, 235, 235);
-
-
 
                             //     offset-path: path('M 1,1 l 83,0 q 16,0 16,16 l 0,31 q 0,16 16,16 l 83,0');
                             //     offset-distance: 0%;
@@ -417,16 +413,13 @@
                                     height: 70px;
                                 }
                             }
-
-
-
                         }
 
                         &_P3 {
                             flex: 1;
                             display: flex;
                             align-items: center;
-                            justify-content: flex-start
+                            justify-content: flex-start;
                         }
                     }
 
@@ -449,7 +442,8 @@
                                 display: flex;
                             }
 
-                            &_B {}
+                            &_B {
+                            }
                         }
 
                         &_Grid {
@@ -465,8 +459,6 @@
                         //     align-items: center;
                         //     justify-content: flex-end;
 
-
-
                         // }
                         // &_P2{
                         //     flex: 1;
@@ -474,13 +466,10 @@
                         //     align-items: center;
                         //     justify-content: flex-start;
 
-
-
                         // }
                     }
 
                     &_LineBottom {
-
                         width: 100%;
                         // background-color: #3e80fb;
                         display: flex;
@@ -488,15 +477,12 @@
 
                         // background-color: #3e80fb;
 
-                        &_P {}
-
+                        &_P {
+                        }
                     }
-
-
                 }
 
                 &_Production {
-
                     &_Data {
                         padding: 16px;
                         display: flex;
@@ -613,8 +599,6 @@
                                 }
                             }
                         }
-
-
                     }
                 }
 
@@ -710,7 +694,6 @@
                         }
                     }
                 }
-
             }
 
             &_Right {
@@ -725,12 +708,81 @@
                 &_Weather {
                     width: 100%;
                     height: 100%;
-                    background-color: #3e80fb;
+                    background-color: #ffffff;
                     // background-image: url("../../../public/dat_picture/wheather.png");
                     background-size: cover;
                     background-repeat: no-repeat;
                     background-position: left;
 
+                    &_Inside {
+                        padding: 10px;
+                        height: 100%;
+                        box-sizing: border-box;
+
+                        &_Current {
+                            display: flex;
+                            &_Left {
+                                flex: 5;
+                                display: flex;
+                                align-items: center;
+                                gap: 2px;
+                                // justify-content: space-between;
+
+                                &_Deg {
+                                    font-size: 32px;
+                                    font-family: Arial, Helvetica, sans-serif;
+                                    font-weight: 550;
+                                }
+                                &_PickType {
+                                    font-family: Arial, Helvetica, sans-serif;
+                                    font-weight: 500;
+                                    font-size: 20px;
+                                    cursor: pointer;
+                                    border-right: 1px solid gray;
+                                    padding-right: 7px;
+                                    height: 50px;
+                                    display: flex;
+                                    justify-content: center;
+                                    gap: 5px;
+                                }
+                                &_Describe {
+                                    font-size: 14px;
+                                    padding-left: 10px;
+                                    color: gray;
+                                }
+                            }
+                            &_Right {
+                                flex: 5;
+                                // align-items: flex-end;
+                                display: flex;
+                                justify-content: flex-end;
+                                align-items: center;
+
+                                &_Tit {
+                                    display: flex;
+                                    align-items: flex-end;
+                                    flex-direction: column;
+                                    font-size: 14px;
+                                    color: gray;
+                                }
+                            }
+                        }
+                        &_Bottom {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            &_Box {
+                                width: 80px;
+                                height: 110px;
+                                background-color: white;
+                                cursor: pointer;
+
+                                :hover {
+                                    background-color: rgb(205, 205, 205);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -805,7 +857,6 @@
                             color: white;
                             border: solid 1px #6495ed;
                             border-radius: 5px;
-
 
                             &:hover {
                                 background-color: #3e80fb;
@@ -985,7 +1036,6 @@
                     &_Item {
                         flex: 5;
                         padding: 16px;
-
                     }
                 }
             }
@@ -1137,7 +1187,9 @@
             box-sizing: border-box;
             border-radius: 5px;
             background-color: rgb(255, 255, 255, 0.95);
-            box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4), -2px -2px 5px rgba(198, 197, 197, 0.4);
+            box-shadow:
+                2px 2px 5px rgba(198, 197, 197, 0.4),
+                -2px -2px 5px rgba(198, 197, 197, 0.4);
 
             &_Table {
                 padding: 10px;
@@ -1162,14 +1214,15 @@
 
     border-radius: 5px;
     background-color: white;
-    box-shadow: 3px 3px 5px rgba(198, 197, 197, 0.4), -3px -3px 5px rgba(198, 197, 197, 0.4);
+    box-shadow:
+        3px 3px 5px rgba(198, 197, 197, 0.4),
+        -3px -3px 5px rgba(198, 197, 197, 0.4);
     overflow: hidden;
 
     -webkit-animation: animatetop 0.6s;
     animation: animatetop 0.6s;
 
     &-item {
-
         cursor: pointer;
         font-size: 12px;
         color: black;
@@ -1226,11 +1279,11 @@
         justify-content: center;
         border-radius: 50%;
 
-        background-color: #4CAF50;
+        background-color: #4caf50;
         cursor: pointer;
 
         &:hover {
-            background-color: #66BB6A;
+            background-color: #66bb6a;
         }
     }
 
@@ -1242,11 +1295,11 @@
         justify-content: center;
         border-radius: 50%;
 
-        background-color: #FFD600;
+        background-color: #ffd600;
         cursor: pointer;
 
         &:hover {
-            background-color: #FFEA00;
+            background-color: #ffea00;
         }
     }
 
@@ -1258,11 +1311,11 @@
         justify-content: center;
         border-radius: 50%;
 
-        background-color: #9E9E9E;
+        background-color: #9e9e9e;
         cursor: pointer;
 
         &:hover {
-            background-color: #BDBDBD;
+            background-color: #bdbdbd;
         }
     }
 }
@@ -2418,7 +2471,6 @@
 //             z-index: -1;
 //         }
 
-
 //         &::before {
 //             left: -10px;
 //             background: #240046;
@@ -2445,7 +2497,6 @@
 //             transition: all 0.3s ease-in;
 //         }
 
-
 //         &:hover {
 //             background-color: #c6c6c6;
 //         }
@@ -2456,7 +2507,6 @@
 //             overflow: hidden;
 //             text-overflow: ellipsis;
 //         }
-
 
 //     }
 
@@ -2504,13 +2554,8 @@
 //         outline: none;
 //         border: none;
 
-
-
-
-
 //     }
 // }
-
 
 // .DAT_Toollist_Tab {
 //     position: relative;
@@ -2522,13 +2567,6 @@
 //     //border-bottom: solid 1px darkgray;
 //     padding: 5px 10px 0px 10px;
 //     height: 40px;
-
-
-
-
-
-
-
 
 //     &_main {
 //         position: relative;
@@ -2567,7 +2605,7 @@
 //             font-size: 14px;
 //             color: rgb(80, 80, 80);
 //             background-color: #dadada;
-//             padding: 10px 25px 10px 25px; //   
+//             padding: 10px 25px 10px 25px; //
 //             //border-radius: 5px;
 //             // background-size: cover;
 //             // background-position: center !important;
@@ -2576,7 +2614,6 @@
 //             text-overflow: ellipsis;
 
 //         }
-
 
 //         &_content1 {
 
@@ -2596,11 +2633,7 @@
 //         }
 //     }
 
-
-
 // }
-
-
 
 @media (max-width: 900px) {
     .DAT_Project {
@@ -2611,14 +2644,10 @@
         &_Content {
             height: calc(100vh - 300px);
         }
-
-
-
     }
 
     .DAT_ProjectData {
         &_Header {
-
             &_Left {
                 flex: 5;
                 min-width: 200px;
@@ -2635,7 +2664,6 @@
             margin-bottom: 100px;
 
             &_Data {
-
                 display: contents;
 
                 &_Left {
@@ -2674,7 +2702,6 @@
             margin-top: 134px;
             margin-bottom: 100px;
         }
-
     }
 
     .DAT_ProjectDataDrop {
@@ -2848,7 +2875,6 @@
     }
 }
 
-
 @keyframes red-ball {
     from {
         offset-distance: 0%;
@@ -2858,9 +2884,6 @@
         offset-distance: 100%;
     }
 }
-
-
-
 
 // Hidden scrollbar
 //     overflow-y: scroll;
@@ -2875,7 +2898,7 @@
 // text
 // white-space: nowrap; // ngan xuong dong
 // overflow: hidden; // an noi dung vuot ra ngoai
-// text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai 
+// text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
 
 // input
 // box-sizing: border-box;
