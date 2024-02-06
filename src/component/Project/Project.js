@@ -471,7 +471,7 @@ function Project(props) {
       (item) => item.plantId == e.currentTarget.id
     );
     deviceData.value = newDevicePlant;
-    console.log("deviceplant: ", deviceData.value);
+    // console.log("deviceplant: ", deviceData.value);
   };
 
   const handleEdit = (e) => {

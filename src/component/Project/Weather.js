@@ -14,7 +14,6 @@ import {
 } from "recharts";
 import { PacmanLoader } from "react-spinners";
 
-
 const temp = [
   {
     name: "Page A",
@@ -91,7 +90,7 @@ export default function Weather() {
     axios.get(url).then((response) => {
       setData(response.data);
       setForecastdata([]);
-      console.log(response.data);
+      // console.log(response.data);
       response.data.forecast.forecastday.map((item) => {
         let dateObj = new Date(item.date);
         let weekday = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
@@ -119,25 +118,24 @@ export default function Weather() {
       "Saturday",
     ];
     let day = weekday[dateObj.getDay()];
-    console.log(day); // Output: Tuesday
+    // console.log(day); // Output: Tuesday
     const v = "Nhiệt độ";
-    console.log(forecastdata);
-
+    // console.log(forecastdata);
   }, []);
 
   const [type, setType] = useState("C");
   const handleChangeType = (e) => {
-    console.log(e.currentTarget.id);
+    // console.log(e.currentTarget.id);
     setType(e.currentTarget.id);
   };
 
   useEffect(() => {
-    console.log(isMobile.value);
+    // console.log(isMobile.value);
   });
 
   return isLoading ? (
     <div>
-        <PacmanLoader color="#0082CA" size={20} />
+      <PacmanLoader color="#0082CA" size={20} />
     </div>
   ) : (
     <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside">
@@ -233,15 +231,17 @@ export default function Weather() {
         </ResponsiveContainer>
       </div>
       <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom">
-      {/* <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom_Box">
+        {/* <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom_Box">
         hihi
         </div> */}
-        {data.forecast.forecastday.map((item,index) => (
-          <div key={index} className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom_Box">
+        {data.forecast.forecastday.map((item, index) => (
+          <div
+            key={index}
+            className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom_Box"
+          >
             {item.date}
           </div>
         ))}
-        
       </div>
     </div>
   );

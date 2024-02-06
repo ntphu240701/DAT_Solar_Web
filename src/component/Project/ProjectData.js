@@ -34,6 +34,7 @@ import moment from "moment-timezone";
 import Weather from "./Weather";
 import AddSubsystem from "./AddSubsystem";
 import { set } from "lodash";
+import { data } from "jquery";
 
 export const dropState = signal(false);
 const tabMobile = signal(false);
@@ -52,8 +53,6 @@ const addStateNav = signal([false, false]);
 
 export const popupAddGateway = signal(false);
 export const popupAddSubsystem = signal(false);
-
-const production = signal(0);
 
 const Graph = () => {
   const path = document.querySelector(".infinity");
@@ -418,7 +417,62 @@ const Graph = () => {
   );
 };
 
-const Production = () => {
+const Production = (props) => {
+  const [capacity, setCapacity] = useState(0);
+  const [production, setProduction] = useState(0);
+  const [dailyproduction, setDailyproduction] = useState(0);
+  const [monthlyproduction, setMonthlyproduction] = useState(0);
+  const [yearlyproduction, setYearlyproduction] = useState(0);
+  const [totalproduction, setTotalproduction] = useState(0);
+
+  useEffect(() => {
+    setCapacity(0);
+    props.data.map((item) => {
+      setCapacity((capacity) => capacity + item.capacity);
+    });
+
+    setProduction(0);
+    props.data.map((item) => {
+      setProduction((production) => production + item.production);
+    });
+
+    setDailyproduction(0);
+    props.data.map((item) => {
+      setDailyproduction(
+        (dailyproduction) => dailyproduction + item.dailyproduction
+      );
+    });
+
+    setMonthlyproduction(0);
+    props.data.map((item) => {
+      setMonthlyproduction(
+        (monthlyproduction) => monthlyproduction + item.monthlyproduction
+      );
+    });
+
+    setYearlyproduction(0);
+    props.data.map((item) => {
+      setYearlyproduction(
+        (yearlyproduction) => yearlyproduction + item.yearlyproduction
+      );
+    });
+
+    setTotalproduction(0);
+    props.data.map((item) => {
+      setTotalproduction(
+        (totalproduction) => totalproduction + item.totalproduction
+      );
+    });
+  }, [
+    props.data,
+    production,
+    capacity,
+    dailyproduction,
+    monthlyproduction,
+    yearlyproduction,
+    totalproduction,
+  ]);
+
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Production">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data">
@@ -434,7 +488,7 @@ const Production = () => {
         <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Detail">
           <div style={{ marginBottom: "8px", color: "grey" }}>Năng suất</div>
           <div style={{ marginBottom: "8px" }}>
-            {deviceData.value.production}
+            {production}
             <span
               style={{
                 marginLeft: "8px",
@@ -454,7 +508,7 @@ const Production = () => {
           />
           <div style={{ marginBottom: "8px", color: "grey" }}>Dung lượng</div>
           <div>
-            {projectData.value.capacity}
+            {capacity}
             <span
               style={{
                 marginLeft: "8px",
@@ -485,7 +539,7 @@ const Production = () => {
             Năng suất ngày
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            {deviceData.value.dailyproduction} kW
+            {dailyproduction} kW
           </div>
         </div>
 
@@ -497,7 +551,7 @@ const Production = () => {
             Năng suất tháng
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            {deviceData.value.monthlyproduction} kW
+            {monthlyproduction} kW
           </div>
         </div>
 
@@ -509,7 +563,7 @@ const Production = () => {
             Năng suất năm
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            {deviceData.value.yearlyproduction} kW
+            {yearlyproduction} kW
           </div>
         </div>
 
@@ -521,7 +575,7 @@ const Production = () => {
             Tổng năng suất
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            {deviceData.value.totalproduction} kW
+            {totalproduction} kW
           </div>
         </div>
       </div>
@@ -529,7 +583,54 @@ const Production = () => {
   );
 };
 
-const Consumption = () => {
+const Consumption = (props) => {
+  const [consumption, setConsumption] = useState(0);
+  const [dailyconsumption, setDailyconsumption] = useState(0);
+  const [monthlyconsumption, setMonthlyconsumption] = useState(0);
+  const [yearlyconsumption, setYearlyconsumption] = useState(0);
+  const [totalconsumption, setTotalconsumption] = useState(0);
+
+  useEffect(() => {
+    setConsumption(0);
+    props.data.map((item) => {
+      setConsumption((consumption) => consumption + item.consumption);
+    });
+
+    setDailyconsumption(0);
+    props.data.map((item) => {
+      setDailyconsumption(
+        (dailyconsumption) => dailyconsumption + item.dailyconsumption
+      );
+    });
+
+    setMonthlyconsumption(0);
+    props.data.map((item) => {
+      setMonthlyconsumption(
+        (monthlyconsumption) => monthlyconsumption + item.monthlyconsumption
+      );
+    });
+
+    setYearlyconsumption(0);
+    props.data.map((item) => {
+      setYearlyconsumption(
+        (yearlyconsumption) => yearlyconsumption + item.yearlyconsumption
+      );
+    });
+
+    setTotalconsumption(0);
+    props.data.map((item) => {
+      setTotalconsumption(
+        (totalconsumption) => totalconsumption + item.totalconsumption
+      );
+    });
+  }, [
+    props.data,
+    consumption,
+    dailyconsumption,
+    monthlyconsumption,
+    yearlyconsumption,
+    totalconsumption,
+  ]);
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data">
@@ -537,7 +638,7 @@ const Consumption = () => {
           <img src="/dat_picture/load.png" alt="" />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data_Data">
-          Tiêu thụ <span>7.68</span> kW
+          Tiêu thụ <span>{consumption}</span> kW
         </div>
       </div>
 
@@ -551,7 +652,7 @@ const Consumption = () => {
               Tiêu thụ ngày
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
-              --
+              {dailyconsumption} kWh
             </div>
           </div>
 
@@ -563,7 +664,7 @@ const Consumption = () => {
               Tiêu thụ năm
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
-              --
+              {yearlyconsumption} kWh
             </div>
           </div>
         </div>
@@ -577,7 +678,7 @@ const Consumption = () => {
               Tiêu thụ tháng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
-              --
+              {monthlyconsumption} kWh
             </div>
           </div>
 
@@ -589,7 +690,7 @@ const Consumption = () => {
               Tổng tiêu thụ
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
-              --
+              {totalconsumption} kWh
             </div>
           </div>
         </div>
@@ -598,7 +699,92 @@ const Consumption = () => {
   );
 };
 
-const Grid = () => {
+const Grid = (props) => {
+  const [grid, setGrid] = useState(0);
+  const [feedindailygrid, setFeedindailygrid] = useState(0);
+  const [feedinmonthlygrid, setFeedinmonthlygrid] = useState(0);
+  const [feedinyearlygrid, setFeedinyearlygrid] = useState(0);
+  const [feedintotalgrid, setFeedintotalgrid] = useState(0);
+  const [purchaseddailygrid, setPurchaseddailygrid] = useState(0);
+  const [purchasedmonthlygrid, setPurchasedmonthlygrid] = useState(0);
+  const [purchasedyearlygrid, setPurchasedyearlygrid] = useState(0);
+  const [purchasedtotalgrid, setPurchasedtotalgrid] = useState(0);
+
+  useEffect(() => {
+    setGrid(0);
+    props.data.map((item) => {
+      setGrid((grid) => grid + item.grid);
+    });
+
+    setFeedindailygrid(0);
+    props.data.map((item) => {
+      setFeedindailygrid(
+        (feedindailygrid) => feedindailygrid + item.feedindailygrid
+      );
+    });
+
+    setFeedinmonthlygrid(0);
+    props.data.map((item) => {
+      setFeedinmonthlygrid(
+        (feedinmonthlygrid) => feedinmonthlygrid + item.feedinmonthlygrid
+      );
+    });
+
+    setFeedinyearlygrid(0);
+    props.data.map((item) => {
+      setFeedinyearlygrid(
+        (feedinyearlygrid) => feedinyearlygrid + item.feedinyearlygrid
+      );
+    });
+
+    setFeedintotalgrid(0);
+    props.data.map((item) => {
+      setFeedintotalgrid(
+        (feedintotalgrid) => feedintotalgrid + item.feedintotalgrid
+      );
+    });
+
+    setPurchaseddailygrid(0);
+    props.data.map((item) => {
+      setPurchaseddailygrid(
+        (purchaseddailygrid) => purchaseddailygrid + item.purchaseddailygrid
+      );
+    });
+
+    setPurchasedmonthlygrid(0);
+    props.data.map((item) => {
+      setPurchasedmonthlygrid(
+        (purchasedmonthlygrid) =>
+          purchasedmonthlygrid + item.purchasedmonthlygrid
+      );
+    });
+
+    setPurchasedyearlygrid(0);
+    props.data.map((item) => {
+      setPurchasedyearlygrid(
+        (purchasedyearlygrid) => purchasedyearlygrid + item.purchasedyearlygrid
+      );
+    });
+
+    setPurchasedtotalgrid(0);
+    props.data.map((item) => {
+      setPurchasedtotalgrid(
+        (purchasedtotalgrid) => purchasedtotalgrid + item.purchasedtotalgrid
+      );
+    });
+  }, [
+    props.data,
+    grid,
+    feedindailygrid,
+    feedinmonthlygrid,
+    feedinyearlygrid,
+    feedintotalgrid,
+    purchaseddailygrid,
+    purchasedmonthlygrid,
+    purchasedyearlygrid,
+    purchasedtotalgrid,
+  ]);
+
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Grid">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data">
@@ -606,7 +792,7 @@ const Grid = () => {
           <img src="/dat_picture/grid.png" alt="" />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Data">
-          Lưới <span>0</span> W
+          Lưới <span>{grid}</span> W
         </div>
       </div>
 
@@ -628,7 +814,7 @@ const Grid = () => {
               Hôm nay
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              0 kWh
+              {feedindailygrid} kWh
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
@@ -636,7 +822,7 @@ const Grid = () => {
               Tháng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              0 kWh
+              {feedinmonthlygrid} kWh
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
@@ -644,7 +830,7 @@ const Grid = () => {
               Năm
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              0 kWh
+              {feedinyearlygrid} kWh
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
@@ -652,7 +838,7 @@ const Grid = () => {
               Tổng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              0 kWh
+              {feedintotalgrid} kWh
             </div>
           </div>
         </div>
@@ -674,7 +860,7 @@ const Grid = () => {
               Hôm nay
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              0 kWh
+              {purchaseddailygrid} kWh
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
@@ -682,7 +868,7 @@ const Grid = () => {
               Tháng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              0 kWh
+              {purchasedmonthlygrid} kWh
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
@@ -690,7 +876,7 @@ const Grid = () => {
               Năm
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              0 kWh
+              {purchasedyearlygrid} kWh
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
@@ -698,7 +884,7 @@ const Grid = () => {
               Tổng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              0 kWh
+              {purchasedtotalgrid} kWh
             </div>
           </div>
         </div>
@@ -707,7 +893,96 @@ const Grid = () => {
   );
 };
 
-const Battery = () => {
+const Battery = (props) => {
+  const [battery, setBattery] = useState(0);
+  const [chargedailybattery, setChargedailybattery] = useState(0);
+  const [chargemonthlybattery, setChargemonthlybattery] = useState(0);
+  const [chargeyearlybattery, setChargeyearlybattery] = useState(0);
+  const [chargetotalbattery, setChargetotalbattery] = useState(0);
+  const [dischargedailybattery, setDischargedailybattery] = useState(0);
+  const [dischargemonthlybattery, setDischargemonthlybattery] = useState(0);
+  const [dischargeyearlybattery, setDischargeyearlybattery] = useState(0);
+  const [dischargetotalbattery, setDischargetotalbattery] = useState(0);
+
+  useEffect(() => {
+    setBattery(0);
+    props.data.map((item) => {
+      setBattery((battery) => battery + item.battery);
+    });
+
+    setChargedailybattery(0);
+    props.data.map((item) => {
+      setChargedailybattery(
+        (chargedailybattery) => chargedailybattery + item.chargedailybattery
+      );
+    });
+
+    setChargemonthlybattery(0);
+    props.data.map((item) => {
+      setChargemonthlybattery(
+        (chargemonthlybattery) =>
+          chargemonthlybattery + item.chargemonthlybattery
+      );
+    });
+
+    setChargeyearlybattery(0);
+    props.data.map((item) => {
+      setChargeyearlybattery(
+        (chargeyearlybattery) => chargeyearlybattery + item.chargeyearlybattery
+      );
+    });
+
+    setChargetotalbattery(0);
+    props.data.map((item) => {
+      setChargetotalbattery(
+        (chargetotalbattery) => chargetotalbattery + item.chargetotalbattery
+      );
+    });
+
+    setDischargedailybattery(0);
+    props.data.map((item) => {
+      setDischargedailybattery(
+        (dischargedailybattery) =>
+          dischargedailybattery + item.dischargedailybattery
+      );
+    });
+
+    setDischargemonthlybattery(0);
+    props.data.map((item) => {
+      setDischargemonthlybattery(
+        (dischargemonthlybattery) =>
+          dischargemonthlybattery + item.dischargemonthlybattery
+      );
+    });
+
+    setDischargeyearlybattery(0);
+    props.data.map((item) => {
+      setDischargeyearlybattery(
+        (dischargeyearlybattery) =>
+          dischargeyearlybattery + item.dischargeyearlybattery
+      );
+    });
+
+    setDischargetotalbattery(0);
+    props.data.map((item) => {
+      setDischargetotalbattery(
+        (dischargetotalbattery) =>
+          dischargetotalbattery + item.dischargetotalbattery
+      );
+    });
+  }, [
+    props.data,
+    battery,
+    chargedailybattery,
+    chargemonthlybattery,
+    chargeyearlybattery,
+    chargetotalbattery,
+    dischargedailybattery,
+    dischargemonthlybattery,
+    dischargeyearlybattery,
+    dischargetotalbattery,
+  ]);
+
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Battery">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data">
@@ -719,7 +994,7 @@ const Battery = () => {
           <LiaLongArrowAltLeftSolid size={30} />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Data">
-          Pin <span>0</span> W
+          Pin <span>{battery}</span> W
         </div>
       </div>
 
@@ -741,7 +1016,7 @@ const Battery = () => {
               Hôm nay
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              0 kWh
+              {chargedailybattery} kWh
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
@@ -749,7 +1024,7 @@ const Battery = () => {
               Tháng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              0 kWh
+              {chargemonthlybattery} kWh
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
@@ -757,7 +1032,7 @@ const Battery = () => {
               Năm
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              0 kWh
+              {chargeyearlybattery} kWh
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
@@ -765,7 +1040,7 @@ const Battery = () => {
               Tổng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              0 kWh
+              {chargetotalbattery} kWh
             </div>
           </div>
         </div>
@@ -787,7 +1062,7 @@ const Battery = () => {
               Hôm nay
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              0 kWh
+              {dischargedailybattery} kWh
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
@@ -795,7 +1070,7 @@ const Battery = () => {
               Tháng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              0 kWh
+              {dischargemonthlybattery} kWh
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
@@ -803,7 +1078,7 @@ const Battery = () => {
               Năm
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              0 kWh
+              {dischargeyearlybattery} kWh
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
@@ -811,7 +1086,7 @@ const Battery = () => {
               Tổng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              0 kWh
+              {dischargetotalbattery} kWh
             </div>
           </div>
         </div>
@@ -1521,12 +1796,11 @@ function ProjectData(props) {
       const db = device.value.find((data) => data.SN === item.SN);
       setTemp((old) => [...old, db]);
     });
-    // production.value += temp.production;
   }, []);
 
-  useEffect(() => {
-    console.log(temp);
-  }, [temp]);
+  // useEffect(() => {
+  //   console.log(temp);
+  // }, [temp]);
 
   return (
     <>
@@ -1813,13 +2087,13 @@ function ProjectData(props) {
                           case "graph":
                             return <Graph />;
                           case "production":
-                            return <Production />;
+                            return <Production data={temp} />;
                           case "consumption":
-                            return <Consumption />;
+                            return <Consumption data={temp} />;
                           case "grid":
-                            return <Grid />;
+                            return <Grid data={temp} />;
                           case "battery":
-                            return <Battery />;
+                            return <Battery data={temp} />;
                           default:
                             <></>;
                         }

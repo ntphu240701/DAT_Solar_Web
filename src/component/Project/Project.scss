@@ -442,8 +442,7 @@
                                 display: flex;
                             }
 
-                            &_B {
-                            }
+                            &_B {}
                         }
 
                         &_Grid {
@@ -477,8 +476,7 @@
 
                         // background-color: #3e80fb;
 
-                        &_P {
-                        }
+                        &_P {}
                     }
                 }
 
@@ -636,6 +634,7 @@
 
                             &_Data {
                                 padding: 16px;
+                                // width: 100px;
 
                                 &_Tit {
                                     font-size: 14px;
@@ -721,6 +720,7 @@
 
                         &_Current {
                             display: flex;
+
                             &_Left {
                                 flex: 5;
                                 display: flex;
@@ -733,6 +733,7 @@
                                     font-family: Arial, Helvetica, sans-serif;
                                     font-weight: 550;
                                 }
+
                                 &_PickType {
                                     font-family: Arial, Helvetica, sans-serif;
                                     font-weight: 500;
@@ -745,12 +746,14 @@
                                     justify-content: center;
                                     gap: 5px;
                                 }
+
                                 &_Describe {
                                     font-size: 14px;
                                     padding-left: 10px;
                                     color: gray;
                                 }
                             }
+
                             &_Right {
                                 flex: 5;
                                 // align-items: flex-end;
@@ -767,10 +770,12 @@
                                 }
                             }
                         }
+
                         &_Bottom {
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
+
                             &_Box {
                                 width: 80px;
                                 height: 110px;
