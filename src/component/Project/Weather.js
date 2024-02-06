@@ -87,27 +87,27 @@ export default function Weather() {
   //CALL DATA BY AXIOS
   const [forecastdata, setForecastdata] = useState([]);
   useEffect(() => {
-    axios.get(url).then((response) => {
-      setData(response.data);
-      setForecastdata([]);
-      console.log(response.data);
-      response.data.forecast.forecastday.map((item) => {
-        let dateObj = new Date(item.date);
-        let weekday = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
-        let day = weekday[dateObj.getUTCDay()];
-        const db = {
-          name: day,
-          [v]: item.day.maxtemp_c,
-        };
-        setForecastdata((old) => [...old, db]);
-      });
-      setIsLoading(false);
-    });
+    // axios.get(url).then((response) => {
+    //   setData(response.data);
+    //   setForecastdata([]);
+    //   // console.log(response.data);
+    //   response.data.forecast.forecastday.map((item) => {
+    //     let dateObj = new Date(item.date);
+    //     let weekday = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+    //     let day = weekday[dateObj.getUTCDay()];
+    //     const db = {
+    //       name: day,
+    //       [v]: item.day.maxtemp_c,
+    //     };
+    //     setForecastdata((old) => [...old, db]);
+    //   });
+    //   setIsLoading(false);
+    // });
   }, []);
 
   const [type, setType] = useState("C");
   const handleChangeType = (e) => {
-    console.log(e.currentTarget.id);
+    // console.log(e.currentTarget.id);
     setType(e.currentTarget.id);
   };
 
@@ -117,7 +117,7 @@ export default function Weather() {
   });
 
   return isLoading ? (
-    <div style={{ display: "flex", justifyContent: "center" , alignItems: "center"}}>
+    <div style={{ width: "100%", height: "100%", display: "flex", justifyContent: "center" , alignItems: "center"}}>
       <PacmanLoader color="#0082CA" size={20} />
     </div>
   ) : (
