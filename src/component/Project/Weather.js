@@ -14,7 +14,6 @@ import {
 } from "recharts";
 import { PacmanLoader } from "react-spinners";
 
-
 const temp = [
   {
     name: "Page A",
@@ -85,8 +84,8 @@ export default function Weather() {
   //     // console.log(url);
   //   });
 
-  const [forecastdata, setForecastdata] = useState([]);
   //CALL DATA BY AXIOS
+  const [forecastdata, setForecastdata] = useState([]);
   useEffect(() => {
     axios.get(url).then((response) => {
       setData(response.data);
@@ -106,25 +105,6 @@ export default function Weather() {
     });
   }, []);
 
-  useEffect(() => {
-    let dateStr = "2024-02-05 14:15";
-    let dateObj = new Date(dateStr);
-    let weekday = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    let day = weekday[dateObj.getDay()];
-    console.log(day); // Output: Tuesday
-    const v = "Nhiệt độ";
-    console.log(forecastdata);
-
-  }, []);
-
   const [type, setType] = useState("C");
   const handleChangeType = (e) => {
     console.log(e.currentTarget.id);
@@ -133,11 +113,12 @@ export default function Weather() {
 
   useEffect(() => {
     console.log(isMobile.value);
+    console.log(forecastdata);
   });
 
   return isLoading ? (
-    <div>
-        <PacmanLoader color="#0082CA" size={20} />
+    <div style={{ display: "flex", justifyContent: "center" , alignItems: "center"}}>
+      <PacmanLoader color="#0082CA" size={20} />
     </div>
   ) : (
     <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside">
@@ -145,7 +126,7 @@ export default function Weather() {
         <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Left">
           <img
             src={"https:" + data.current.condition.icon}
-            style={{ width: "80px", height: "80px" }}
+            style={{ width: "70px", height: "70px" }}
           ></img>
           <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Left_Deg">
             {type === "C" ? data.current.temp_c : data.current.temp_f}
@@ -187,7 +168,8 @@ export default function Weather() {
         {isMobile.value ? (
           <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right">
             <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit">
-              {data.location.name}, {data.location.country}
+              {data.location.name}, 
+              {/* {data.location.country} */}
               <div>{data.location.localtime}</div>
               <div>Mô tả: {data.current.condition.text}</div>
             </div>
@@ -200,7 +182,7 @@ export default function Weather() {
         <ResponsiveContainer width={"100%"} height={150}>
           <AreaChart
             data={forecastdata}
-            margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+            margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
           >
             <defs>
               {/* <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
@@ -218,10 +200,10 @@ export default function Weather() {
                 <stop offset="95%" stopColor="#FEB400" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <XAxis dataKey="name" />
+            <XAxis dataKey="name" hide={true} />
             {/* <YAxis /> */}
             {/* <CartesianGrid strokeDasharray="3 3" /> */}
-            <Tooltip />
+            <Tooltip animationEasing="ease-in-out" />
             <Area
               type="monotone"
               dataKey={v}
@@ -233,15 +215,28 @@ export default function Weather() {
         </ResponsiveContainer>
       </div>
       <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom">
-      {/* <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom_Box">
-        hihi
-        </div> */}
-        {data.forecast.forecastday.map((item,index) => (
-          <div key={index} className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom_Box">
-            {item.date}
-          </div>
-        ))}
-        
+        {data.forecast.forecastday.map((item, index) => {
+          const weekdays = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+          const dateObj = new Date(item.date);
+          const weekday = weekdays[dateObj.getUTCDay()];
+          return (
+            <div
+              key={index}
+              className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom_Box"
+            >
+              <div>{weekday}</div>
+              <div
+                style={{
+                  fontFamily: "Arial, Helvetica, sans-serif",
+                  fontWeight: "550",
+                }}
+              >
+                {item.day.avgtemp_c}°C
+              </div>
+              <img src={"https:" + item.day.condition.icon}></img>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
