@@ -161,6 +161,23 @@ function Home(props) {
         zoom: 7.0
     };
 
+    const TriangleBar = (props) => {
+        const { fill, x, y, width, height } = props;
+    
+        return (
+          <rect
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+            fill={"rgb(4,143,255)"}
+            rx="3"
+            ry="3"
+            opacity="1"
+          ></rect>
+        );
+      };
+
 
     return (
         <>
@@ -238,7 +255,7 @@ function Home(props) {
                                     <YAxis />
                                     <Tooltip />
                                     <Legend />
-                                    <Bar dataKey={v} fill="#6495ed" barSize={15} legendType='circle' style={{ fill: "#6495ed" }} />
+                                    <Bar shape={<TriangleBar />} dataKey={v} fill="#6495ed" barSize={15} legendType='circle' style={{ fill: "#6495ed" }} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>

@@ -15,6 +15,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  AreaChart,
+  Area,
 } from "recharts";
 import { IoIosArrowDown, IoIosArrowForward, IoIosCloud } from "react-icons/io";
 import { IoArrowForward, IoMenu } from "react-icons/io5";
@@ -1136,7 +1138,7 @@ const Day = () => {
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-        <ResponsiveContainer
+        {/* <ResponsiveContainer
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
           <LineChart width={100} height={300} data={data}>
@@ -1147,6 +1149,46 @@ const Day = () => {
             <Tooltip />
             <Legend />
           </LineChart>
+        </ResponsiveContainer> */}
+
+        <ResponsiveContainer
+          style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+        >
+          <AreaChart
+            width={100}
+            height={300}
+            data={data}
+            // margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          >
+            <defs>
+              <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+              </linearGradient>
+              {/* <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+              </linearGradient> */}
+            </defs>
+            <XAxis dataKey="time" axisLine={false} tickLine={false} />
+            <YAxis axisLine={false} tickLine={false} />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <Tooltip />
+            <Area
+              type="monotone"
+              dataKey={v}
+              stroke="#8884d8"
+              fillOpacity={1}
+              fill="url(#colorday)"
+            />
+            {/* <Area
+              type="monotone"
+              dataKey="pv"
+              stroke="#82ca9d"
+              fillOpacity={1}
+              fill="url(#colorPv)"
+            /> */}
+          </AreaChart>
         </ResponsiveContainer>
       </div>
     </div>
@@ -1190,6 +1232,23 @@ const Month = () => {
     { name: "31", [v]: 21.23 },
   ];
 
+  const TriangleBar = (props) => {
+    const { fill, x, y, width, height } = props;
+
+    return (
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill={"rgb(4,143,255)"}
+        rx="3"
+        ry="3"
+        opacity="1"
+      ></rect>
+    );
+  };
+
   return (
     <div className="DAT_ProjectData_Dashboard_History_Year">
       <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
@@ -1205,11 +1264,13 @@ const Month = () => {
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
           <BarChart width={150} height={200} data={data}>
-            <XAxis dataKey="name" />
-            <YAxis />
+            <XAxis dataKey="name" axisLine={false} tickLine={false} />
+            <YAxis axisLine={false} tickLine={false} />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
             <Bar
+            shape={<TriangleBar />}
               dataKey={v}
               fill="#6495ed"
               barSize={15}
@@ -1277,6 +1338,23 @@ const Year = () => {
     },
   ];
 
+  const TriangleBar = (props) => {
+    const { fill, x, y, width, height } = props;
+
+    return (
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill={"rgb(4,143,255)"}
+        rx="3"
+        ry="3"
+        opacity="1"
+      ></rect>
+    );
+  };
+
   return (
     <div className="DAT_ProjectData_Dashboard_History_Year">
       <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
@@ -1292,11 +1370,13 @@ const Year = () => {
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
           <BarChart width={150} height={200} data={data}>
-            <XAxis dataKey="name" />
-            <YAxis />
+            <XAxis dataKey="name" axisLine={false} tickLine={false} />
+            <YAxis axisLine={false} tickLine={false} />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
             <Bar
+            shape={<TriangleBar />}
               dataKey={v}
               fill="#6495ed"
               barSize={15}
@@ -1344,6 +1424,23 @@ const Total = () => {
     },
   ];
 
+  const TriangleBar = (props) => {
+    const { fill, x, y, width, height } = props;
+
+    return (
+      <rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        fill={"rgb(4,143,255)"}
+        rx="3"
+        ry="3"
+        opacity="1"
+      ></rect>
+    );
+  };
+
   return (
     <div className="DAT_ProjectData_Dashboard_History_Year">
       <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
@@ -1359,16 +1456,18 @@ const Total = () => {
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
           <BarChart width={150} height={200} data={data}>
-            <XAxis dataKey="name" />
-            <YAxis />
+            <XAxis dataKey="name" axisLine={false} tickLine={false} />
+            <YAxis axisLine={false} tickLine={false} />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
             <Bar
+              shape={<TriangleBar />}
               dataKey={v}
               fill="#6495ed"
               barSize={15}
               legendType="circle"
-              style={{ fill: "#6495ed" }}
+              //style={{ fill: "#6495ed" }}
             />
           </BarChart>
         </ResponsiveContainer>
