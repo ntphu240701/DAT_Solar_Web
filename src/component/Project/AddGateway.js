@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { IoClose } from "react-icons/io5";
 import { popupAddGateway } from "./ProjectData";
 import { signal } from "@preact/signals-react";
@@ -16,6 +16,12 @@ export default function AddGateway(props) {
     popup.style.transform = popup_state[state].transform;
     popup.style.transition = popup_state[state].transition;
     popup.style.color = popup_state[state].color;
+  };
+
+  const handleClose = () => {
+    popupAddGateway.value = false;
+    oldDevice.current.checked = false;
+    check.value = "newDevice";
   };
 
   const newDevice = useRef();
@@ -39,7 +45,7 @@ export default function AddGateway(props) {
         <div className="DAT_AddGateway_Head_Right">
           <div
             className="DAT_AddGateway_Head_Right_Icon"
-            onClick={() => (popupAddGateway.value = false)}
+            onClick={() => handleClose()}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
@@ -81,8 +87,13 @@ export default function AddGateway(props) {
           <div className="DAT_AddGateway_Body_Select">
             <span>Chọn thiết bị thay thế:</span>
             <select>
-              <option value="1">Gateway 1</option>
-              <option value="2">Gateway 2</option>
+              {props.data.map((item, index) => {
+                return (
+                  <option key={index} value={item.id}>
+                    {item.SN}
+                  </option>
+                );
+              })}
             </select>
           </div>
         ) : (
@@ -97,7 +108,7 @@ export default function AddGateway(props) {
             backgroundColor: "white",
             color: "#505050",
           }}
-          onClick={() => (popupAddGateway.value = false)}
+          onClick={() => handleClose()}
         >
           Hủy
         </button>

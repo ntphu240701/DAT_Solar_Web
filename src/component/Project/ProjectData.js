@@ -1,7 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Project.scss";
 import AddGateway from "./AddGateway";
-import { Empty, plantState, projectData, deviceData, device } from "./Project";
+import {
+  Empty,
+  plantState,
+  projectData,
+  deviceData,
+  device,
+  Logger,
+  InverterbyLogger,
+  Inverter,
+  inverterData,
+} from "./Project";
 import { isMobile } from "../Navigation/Navigation";
 import {
   BarChart,
@@ -37,6 +47,7 @@ import Weather from "./Weather";
 import AddSubsystem from "./AddSubsystem";
 import { set } from "lodash";
 import { data } from "jquery";
+import YearPicker from "react-year-picker";
 
 export const dropState = signal(false);
 const tabMobile = signal(false);
@@ -1097,35 +1108,14 @@ const Battery = (props) => {
   );
 };
 
-const Day = () => {
-  const v = "Sản lượng ngày";
+const Day = (props) => {
+  const [data, setData] = useState([]);
+  const [v, setV] = useState("--");
 
-  const data = [
-    { time: "00:00", [v]: 1.234 },
-    { time: "01:00", [v]: 2.345 },
-    { time: "02:00", [v]: 3.456 },
-    { time: "03:00", [v]: 4.567 },
-    { time: "04:00", [v]: 5.678 },
-    { time: "05:00", [v]: 6.789 },
-    { time: "06:00", [v]: 7.89 },
-    { time: "07:00", [v]: 8.901 },
-    { time: "08:00", [v]: 9.012 },
-    { time: "09:00", [v]: 1.013 },
-    { time: "10:00", [v]: 1.124 },
-    { time: "11:00", [v]: 1.235 },
-    { time: "12:00", [v]: 1.346 },
-    { time: "13:00", [v]: 1.457 },
-    { time: "14:00", [v]: 1.568 },
-    { time: "15:00", [v]: 1.679 },
-    { time: "16:00", [v]: 1.78 },
-    { time: "17:00", [v]: 1.891 },
-    { time: "18:00", [v]: 1.902 },
-    { time: "19:00", [v]: 2.013 },
-    { time: "20:00", [v]: 2.124 },
-    { time: "21:00", [v]: 2.235 },
-    { time: "22:00", [v]: 2.346 },
-    { time: "23:00", [v]: 2.457 },
-  ];
+  useEffect(() => {
+    setData(props.data);
+    setV(props.v);
+  }, [props.data, props.v]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_History_Day">
@@ -1195,42 +1185,14 @@ const Day = () => {
   );
 };
 
-const Month = () => {
-  const v = "Sản lượng tháng";
+const Month = (props) => {
+  const [data, setData] = useState([]);
+  const [v, setV] = useState("--");
 
-  const data = [
-    { name: "1", [v]: 21.69 },
-    { name: "2", [v]: 22.31 },
-    { name: "3", [v]: 23.45 },
-    { name: "4", [v]: 24.56 },
-    { name: "5", [v]: 25.67 },
-    { name: "6", [v]: 26.78 },
-    { name: "7", [v]: 27.89 },
-    { name: "8", [v]: 28.9 },
-    { name: "9", [v]: 29.01 },
-    { name: "10", [v]: 22.12 },
-    { name: "11", [v]: 23.23 },
-    { name: "12", [v]: 22.34 },
-    { name: "13", [v]: 24.45 },
-    { name: "14", [v]: 23.56 },
-    { name: "15", [v]: 22.67 },
-    { name: "16", [v]: 24.78 },
-    { name: "17", [v]: 21.89 },
-    { name: "18", [v]: 21.9 },
-    { name: "19", [v]: 22.01 },
-    { name: "20", [v]: 20.12 },
-    { name: "21", [v]: 21.23 },
-    { name: "22", [v]: 22.34 },
-    { name: "23", [v]: 23.45 },
-    { name: "24", [v]: 24.56 },
-    { name: "25", [v]: 25.67 },
-    { name: "26", [v]: 24.78 },
-    { name: "27", [v]: 23.89 },
-    { name: "28", [v]: 22.9 },
-    { name: "29", [v]: 23.01 },
-    { name: "30", [v]: 21.12 },
-    { name: "31", [v]: 21.23 },
-  ];
+  useEffect(() => {
+    setData(props.data);
+    setV(props.v);
+  }, [props.data, props.v]);
 
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
@@ -1264,13 +1226,13 @@ const Month = () => {
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
           <BarChart width={150} height={200} data={data}>
-            <XAxis dataKey="name" axisLine={false} tickLine={false} />
+            <XAxis dataKey="time" axisLine={false} tickLine={false} />
             <YAxis axisLine={false} tickLine={false} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
             <Bar
-            shape={<TriangleBar />}
+              shape={<TriangleBar />}
               dataKey={v}
               fill="#6495ed"
               barSize={15}
@@ -1284,59 +1246,14 @@ const Month = () => {
   );
 };
 
-const Year = () => {
-  const v = "Sản lượng năm";
+const Year = (props) => {
+  const [data, setData] = useState([]);
+  const [v, setV] = useState("--");
 
-  const data = [
-    {
-      name: "1",
-      [v]: 1.69,
-    },
-    {
-      name: "2",
-      [v]: 2.3,
-    },
-    {
-      name: "3",
-      [v]: 2.5,
-    },
-    {
-      name: "4",
-      [v]: 5.6,
-    },
-    {
-      name: "5",
-      [v]: 7.3,
-    },
-    {
-      name: "6",
-      [v]: 9.9,
-    },
-    {
-      name: "7",
-      [v]: 0.3,
-    },
-    {
-      name: "8",
-      [v]: 8.3,
-    },
-    {
-      name: "9",
-      [v]: 7.3,
-    },
-    {
-      name: "10",
-      [v]: 1.79,
-    },
-    {
-      name: "11",
-      [v]: 6.1,
-    },
-    {
-      name: "12",
-      [v]: 4.5,
-    },
-  ];
+  useEffect(() => {
+    setData(props.data);
+    setV(props.v);
+  }, [props.data, props.v]);
 
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
@@ -1370,13 +1287,13 @@ const Year = () => {
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
           <BarChart width={150} height={200} data={data}>
-            <XAxis dataKey="name" axisLine={false} tickLine={false} />
+            <XAxis dataKey="time" axisLine={false} tickLine={false} />
             <YAxis axisLine={false} tickLine={false} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
             <Bar
-            shape={<TriangleBar />}
+              shape={<TriangleBar />}
               dataKey={v}
               fill="#6495ed"
               barSize={15}
@@ -1391,38 +1308,34 @@ const Year = () => {
 };
 
 const Total = () => {
-  const v = "Sản lượng tổng";
-
-  const data = [
+  const db = [
     {
-      name: "2018",
-      [v]: 1.69,
-    },
-    {
-      name: "2019",
-      [v]: 1.87,
-    },
-    {
-      name: "2020",
-      [v]: 2.09,
-    },
-    {
-      name: "2021",
-      [v]: 2.01,
-    },
-    {
-      name: "2022",
-      [v]: 2.03,
-    },
-    {
-      name: "2023",
-      [v]: 2.12,
-    },
-    {
-      name: "2024",
-      [v]: 0.1,
+      name: "Sản lượng năm",
+      data: [
+        { time: "2018", val: 21.69 },
+        { time: "2019", val: 22.31 },
+        { time: "2020", val: 23.45 },
+        { time: "2021", val: 24.56 },
+        { time: "2022", val: 25.67 },
+        { time: "2023", val: 26.78 },
+        { time: "2024", val: 27.89 },
+      ],
     },
   ];
+
+  const [data, setData] = useState([]);
+  const [v, setV] = useState("--");
+
+  useEffect(() => {
+    db.map((item) => {
+      let v = item.name;
+      setData([]);
+      item.data.map((item) => {
+        setData((old) => [...old, { time: item.time, [v]: item.val }]);
+      });
+      setV(item.name);
+    });
+  }, []);
 
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
@@ -1456,7 +1369,7 @@ const Total = () => {
           style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
         >
           <BarChart width={150} height={200} data={data}>
-            <XAxis dataKey="name" axisLine={false} tickLine={false} />
+            <XAxis dataKey="time" axisLine={false} tickLine={false} />
             <YAxis axisLine={false} tickLine={false} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
@@ -1522,39 +1435,6 @@ function ProjectData(props) {
     selectAllRowsItem: true,
     selectAllRowsItemText: "tất cả",
   };
-
-  const dataInverter = [
-    {
-      id: 1,
-      SN: "I0000145",
-      name: "Inverter 01",
-      plant: "Năng lượng DAT 01",
-      status: true,
-      production: "16",
-      dailyproduction: "123.4",
-      updated: "12/30/2023 12:07:12",
-    },
-    {
-      id: 2,
-      SN: "I0000012",
-      name: "Inverter 02",
-      plant: "Năng lượng DAT 01",
-      status: true,
-      production: "18",
-      dailyproduction: "238.4",
-      updated: "12/30/2023 12:07:12",
-    },
-    {
-      id: 3,
-      SN: "I0000001",
-      name: "Inverter 03",
-      plant: "Năng lượng DAT 01",
-      status: false,
-      production: "562",
-      dailyproduction: "897.4",
-      updated: "12/30/2023 12:07:12",
-    },
-  ];
 
   const columnInverter = [
     {
@@ -1695,33 +1575,6 @@ function ProjectData(props) {
     },
   ];
 
-  const dataLogger = [
-    {
-      id: 1,
-      SN: "L0000102",
-      name: "Logger 01",
-      plant: "Năng lượng DAT 01",
-      status: true,
-      updated: "12/30/2023 12:07:12",
-    },
-    {
-      id: 2,
-      SN: "L0000101",
-      name: "Logger 02",
-      plant: "Năng lượng DAT 01",
-      status: true,
-      updated: "12/30/2023 12:07:12",
-    },
-    {
-      id: 3,
-      SN: "L0000103",
-      name: "Logger 03",
-      plant: "Năng lượng DAT 02",
-      status: false,
-      updated: "12/30/2023 12:07:12",
-    },
-  ];
-
   const columnLogger = [
     {
       name: "Tên",
@@ -1760,7 +1613,7 @@ function ProjectData(props) {
 
   const listDeviceTab = [
     { id: "inverter", name: "Inverter" },
-    { id: "meter", name: "Meter" },
+    // { id: "meter", name: "Meter" },
     { id: "logger", name: "Logger" },
   ];
 
@@ -1888,7 +1741,6 @@ function ProjectData(props) {
   };
 
   const [temp, setTemp] = useState({});
-
   useEffect(() => {
     setTemp([]);
     deviceData.value.map((item) => {
@@ -1897,9 +1749,283 @@ function ProjectData(props) {
     });
   }, []);
 
-  // useEffect(() => {
-  //   console.log(temp);
-  // }, [temp]);
+  const [tempLogger, setTempLogger] = useState({});
+  useEffect(() => {
+    setTempLogger([]);
+    deviceData.value.map((item) => {
+      const db = Logger.value.find((data) => data.SN == item.loggerSN);
+      setTempLogger((old) => [...old, db]);
+    });
+  }, []);
+
+  const [tempInverter, setTempInverter] = useState({});
+  useEffect(() => {
+    setTempInverter([]);
+    deviceData.value.map((item) => {
+      const db = Inverter.value.find((data) => data.SN == item.inverterSN);
+      setTempInverter((old) => [...old, db]);
+    });
+  }, []);
+
+  // Day
+  const dbDay = [
+    {
+      date: "19/02/2024",
+      name: "Sản lượng ngày",
+      data: [
+        { time: "00:00", val: 1.234 },
+        { time: "01:00", val: 2.345 },
+        { time: "02:00", val: 3.456 },
+        { time: "03:00", val: 4.567 },
+        { time: "04:00", val: 5.678 },
+        { time: "05:00", val: 6.789 },
+        { time: "06:00", val: 7.89 },
+        { time: "07:00", val: 8.901 },
+        { time: "08:00", val: 9.012 },
+        { time: "09:00", val: 1.013 },
+        { time: "10:00", val: 1.124 },
+        { time: "11:00", val: 1.235 },
+        { time: "12:00", val: 1.346 },
+        { time: "13:00", val: 1.457 },
+        { time: "14:00", val: 1.568 },
+        { time: "15:00", val: 1.679 },
+        { time: "16:00", val: 1.78 },
+        { time: "17:00", val: 1.891 },
+        { time: "18:00", val: 1.902 },
+        { time: "19:00", val: 2.013 },
+        { time: "20:00", val: 2.124 },
+        { time: "21:00", val: 2.235 },
+        { time: "22:00", val: 2.346 },
+        { time: "23:00", val: 2.457 },
+      ],
+    },
+    {
+      date: "20/02/2024",
+      name: "Sản lượng ngày",
+      data: [
+        { time: "00:00", val: 9.234 },
+        { time: "01:00", val: 8.345 },
+        { time: "02:00", val: 7.456 },
+        { time: "03:00", val: 6.567 },
+        { time: "04:00", val: 5.678 },
+        { time: "05:00", val: 4.789 },
+        { time: "06:00", val: 3.89 },
+        { time: "07:00", val: 2.901 },
+        { time: "08:00", val: 1.012 },
+        { time: "09:00", val: 1.013 },
+        { time: "10:00", val: 3.124 },
+        { time: "11:00", val: 5.235 },
+        { time: "12:00", val: 7.346 },
+        { time: "13:00", val: 8.457 },
+        { time: "14:00", val: 1.568 },
+        { time: "15:00", val: 1.679 },
+        { time: "16:00", val: 2.78 },
+        { time: "17:00", val: 3.891 },
+        { time: "18:00", val: 4.902 },
+        { time: "19:00", val: 5.013 },
+        { time: "20:00", val: 6.124 },
+        { time: "21:00", val: 7.235 },
+        { time: "22:00", val: 8.346 },
+        { time: "23:00", val: 9.457 },
+      ],
+    },
+  ];
+
+  const [dataDay, setDataDay] = useState([]);
+  const [vDay, setVDay] = useState("--");
+
+  useEffect(() => {
+    const newData = dbDay.find((item) => item.date === "20/02/2024");
+    if (newData) {
+      let vDay = newData.name;
+      setDataDay([]);
+      newData.data.map((item) => {
+        setDataDay((old) => [...old, { time: item.time, [vDay]: item.val }]);
+      });
+      setVDay(newData.name);
+    }
+  }, []);
+
+  const handleDay = (e) => {
+    const newData = dbDay.find(
+      (item) => item.date === moment(e.currentTarget.value).format("DD/MM/YYYY")
+    );
+    let vDay = newData.name;
+    setDataDay([]);
+    newData.data.map((item) => {
+      setDataDay((old) => [...old, { time: item.time, [vDay]: item.val }]);
+    });
+    setVDay(newData.name);
+  };
+
+  // Month
+  const dbMonth = [
+    {
+      month: "01/2024",
+      name: "Sản lượng tháng",
+      data: [
+        { time: "1", val: 21.69 },
+        { time: "2", val: 22.31 },
+        { time: "3", val: 23.45 },
+        { time: "4", val: 24.56 },
+        { time: "5", val: 25.67 },
+        { time: "6", val: 26.78 },
+        { time: "7", val: 27.89 },
+        { time: "8", val: 28.9 },
+        { time: "9", val: 29.01 },
+        { time: "10", val: 22.12 },
+        { time: "11", val: 23.23 },
+        { time: "12", val: 22.34 },
+        { time: "13", val: 24.45 },
+        { time: "14", val: 23.56 },
+        { time: "15", val: 22.67 },
+        { time: "16", val: 24.78 },
+        { time: "17", val: 21.89 },
+        { time: "18", val: 21.9 },
+        { time: "19", val: 22.01 },
+        { time: "20", val: 20.12 },
+        { time: "21", val: 21.23 },
+        { time: "22", val: 22.34 },
+        { time: "23", val: 23.45 },
+        { time: "24", val: 24.56 },
+        { time: "25", val: 25.67 },
+        { time: "26", val: 24.78 },
+        { time: "27", val: 23.89 },
+        { time: "28", val: 22.9 },
+        { time: "29", val: 23.01 },
+        { time: "30", val: 21.12 },
+        { time: "31", val: 21.23 },
+      ],
+    },
+    {
+      month: "02/2024",
+      name: "Sản lượng tháng",
+      data: [
+        { time: "1", val: 24.78 },
+        { time: "2", val: 21.89 },
+        { time: "3", val: 22.9 },
+        { time: "4", val: 21.9 },
+        { time: "5", val: 22.01 },
+        { time: "6", val: 20.12 },
+        { time: "7", val: 27.89 },
+        { time: "8", val: 28.9 },
+        { time: "9", val: 29.01 },
+        { time: "10", val: 21.23 },
+        { time: "11", val: 23.23 },
+        { time: "12", val: 22.34 },
+        { time: "13", val: 24.45 },
+        { time: "14", val: 23.56 },
+        { time: "15", val: 22.67 },
+        { time: "16", val: 24.78 },
+        { time: "17", val: 21.89 },
+        { time: "18", val: 21.9 },
+        { time: "19", val: 22.01 },
+        { time: "20", val: 20.12 },
+        { time: "21", val: 21.23 },
+        { time: "22", val: 22.34 },
+        { time: "23", val: 23.45 },
+        { time: "24", val: 24.56 },
+        { time: "25", val: 25.67 },
+        { time: "26", val: 24.78 },
+        { time: "27", val: 23.89 },
+        { time: "28", val: 22.9 },
+        { time: "29", val: 23.01 },
+        { time: "30", val: 21.12 },
+        { time: "31", val: 21.23 },
+      ],
+    },
+  ];
+
+  const [dataMonth, setDataMonth] = useState([]);
+  const [vMonth, setVMonth] = useState("--");
+
+  useEffect(() => {
+    const newData = dbMonth.find((item) => item.month === "01/2024");
+    let v = newData.name;
+    setDataMonth([]);
+    newData.data.map((item) => {
+      setDataMonth((old) => [...old, { time: item.time, [v]: item.val }]);
+    });
+    setVMonth(newData.name);
+  }, []);
+
+  const handleMonth = (e) => {
+    const newData = dbMonth.find(
+      (item) => item.month === moment(e.currentTarget.value).format("MM/YYYY")
+    );
+    let v = newData.name;
+    setDataMonth([]);
+    newData.data.map((item) => {
+      setDataMonth((old) => [...old, { time: item.time, [v]: item.val }]);
+    });
+    setVMonth(newData.name);
+  };
+
+  // Year
+  const dbYear = [
+    {
+      year: "2024",
+      name: "Sản lượng năm",
+      data: [
+        { time: "1", val: 21.69 },
+        { time: "2", val: 22.31 },
+        { time: "3", val: 23.45 },
+        { time: "4", val: 24.56 },
+        { time: "5", val: 25.67 },
+        { time: "6", val: 26.78 },
+        { time: "7", val: 27.89 },
+        { time: "8", val: 28.9 },
+        { time: "9", val: 29.01 },
+        { time: "10", val: 22.12 },
+        { time: "11", val: 23.23 },
+        { time: "12", val: 22.34 },
+      ],
+    },
+    {
+      year: "2023",
+      name: "Sản lượng năm",
+      data: [
+        { time: "1", val: 24.78 },
+        { time: "2", val: 21.89 },
+        { time: "3", val: 22.9 },
+        { time: "4", val: 24.56 },
+        { time: "5", val: 25.67 },
+        { time: "6", val: 26.78 },
+        { time: "7", val: 27.89 },
+        { time: "8", val: 28.9 },
+        { time: "9", val: 29.01 },
+        { time: "10", val: 22.12 },
+        { time: "11", val: 23.23 },
+        { time: "12", val: 22.34 },
+      ],
+    },
+  ];
+
+  const [dataYear, setDataYear] = useState([]);
+  const [vYear, setVYear] = useState("--");
+
+  useEffect(() => {
+    const newData = dbYear.find((item) => item.year === "2023");
+    let v = newData.name;
+    setDataYear([]);
+    newData.data.map((item) => {
+      setDataYear((old) => [...old, { time: item.time, [v]: item.val }]);
+    });
+    setVYear(newData.name);
+  }, []);
+
+  const handleYear = (e) => {
+    const year = e.currentTarget.value;
+    const year_ = year.split("-")[0];
+
+    const newData = dbYear.find((item) => item.year === year_);
+    let v = newData.name;
+    setDataYear([]);
+    newData.data.map((item) => {
+      setDataYear((old) => [...old, { time: item.time, [v]: item.val }]);
+    });
+    setVYear(newData.name);
+  };
 
   return (
     <>
@@ -2154,6 +2280,10 @@ function ProjectData(props) {
                           style={{
                             color:
                               nav === "consumption" ? color.cur : color.pre,
+                            display:
+                              projectData.value.systemtype === "grid"
+                                ? "none"
+                                : "block",
                           }}
                           onClick={(e) => handleNav(e)}
                         >
@@ -2164,6 +2294,10 @@ function ProjectData(props) {
                           id="grid"
                           style={{
                             color: nav === "grid" ? color.cur : color.pre,
+                            display:
+                              projectData.value.systemtype === "grid"
+                                ? "none"
+                                : "block",
                           }}
                           onClick={(e) => handleNav(e)}
                         >
@@ -2174,6 +2308,11 @@ function ProjectData(props) {
                           id="battery"
                           style={{
                             color: nav === "battery" ? color.cur : color.pre,
+                            display:
+                              projectData.value.systemtype === "grid" ||
+                              projectData.value.systemtype === "consumption"
+                                ? "none"
+                                : "block",
                           }}
                           onClick={(e) => handleNav(e)}
                         >
@@ -2258,7 +2397,8 @@ function ProjectData(props) {
                             Tổng
                           </div>
                         </div>
-                        <div>
+
+                        <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Config">
                           <button
                             onClick={(e) => {
                               handleShowConfig(e);
@@ -2268,30 +2408,75 @@ function ProjectData(props) {
                             {configname}
                           </button>
                         </div>
+
                         <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Export">
                           <button>Xuất Báo Cáo</button>
                         </div>
-                        <input
-                          defaultValue={moment(new Date()).format("YYYY-MM-DD")}
-                          type="date"
-                        ></input>
+
+                        {(() => {
+                          switch (date) {
+                            case "day":
+                              return (
+                                <input
+                                  defaultValue={moment(new Date()).format(
+                                    "YYYY-MM-DD"
+                                  )}
+                                  type="date"
+                                  onChange={(e) => handleDay(e)}
+                                />
+                              );
+                            case "month":
+                              return (
+                                <input
+                                  defaultValue={moment(new Date()).format(
+                                    "YYYY-MM-DD"
+                                  )}
+                                  type="month"
+                                  onChange={(e) => handleMonth(e)}
+                                />
+                              );
+                            case "year":
+                              return (
+                                <input
+                                  defaultValue={moment(new Date()).format(
+                                    "YYYY-MM-DD"
+                                  )}
+                                  type="month"
+                                  onChange={(e) => handleYear(e)}
+                                />
+                              );
+                            case "total":
+                              return (
+                                <input
+                                  defaultValue={moment(new Date()).format(
+                                    "YYYY"
+                                  )}
+                                  disabled
+                                  type="year"
+                                />
+                              );
+                            default:
+                              <></>;
+                          }
+                        })()}
                       </div>
                     </div>
 
                     {(() => {
                       switch (date) {
                         case "day":
-                          return <Day />;
+                          return <Day data={dataDay} v={vDay} />;
                         case "month":
-                          return <Month />;
+                          return <Month data={dataMonth} v={vMonth} />;
                         case "year":
-                          return <Year />;
+                          return <Year data={dataYear} v={vYear} />;
                         case "total":
                           return <Total />;
                         default:
                           <></>;
                       }
                     })()}
+
                     <div
                       className="DAT_ProjectData_Dashboard_History_SubConfig"
                       style={{
@@ -2599,7 +2784,7 @@ function ProjectData(props) {
                                 <DataTable
                                   className="DAT_Table_Device"
                                   columns={columnInverter}
-                                  data={dataInverter}
+                                  data={tempInverter}
                                   pagination
                                   paginationComponentOptions={
                                     paginationComponentOptions
@@ -2627,7 +2812,7 @@ function ProjectData(props) {
                                 <DataTable
                                   className="DAT_Table_Device"
                                   columns={columnLogger}
-                                  data={dataLogger}
+                                  data={tempLogger}
                                   pagination
                                   paginationComponentOptions={
                                     paginationComponentOptions
@@ -2800,7 +2985,7 @@ function ProjectData(props) {
 
       {popupAddGateway.value ? (
         <div className="DAT_AddGatewayPopup">
-          <AddGateway />
+          <AddGateway data={tempLogger} />
         </div>
       ) : (
         <></>
