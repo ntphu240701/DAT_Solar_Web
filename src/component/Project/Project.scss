@@ -760,6 +760,17 @@
                                     display: flex;
                                     justify-content: center;
                                     gap: 2px;
+
+                                }
+
+                                &_Describe {
+                                    width: 170px;
+                                    height: 70px;
+                                    font-size: 14px;
+                                    // padding-left: 10px;
+                                    overflow: hidden;
+                                    color: gray;
+                                    white-space: nowrap
                                 }
                             }
 
@@ -795,6 +806,7 @@
                             align-items: center;
                             overflow: hidden;
                             overflow-x: auto;
+
                             &::-webkit-scrollbar {
                                 width: 8px;
                                 height: 10px;
@@ -834,6 +846,7 @@
                                 &:hover {
                                     background-color: rgba(224, 224, 224, 0.8);
                                 }
+
                                 // padding: 2px;
                             }
                         }

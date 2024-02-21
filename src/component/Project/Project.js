@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Project.scss";
 import DataTable from "react-data-table-component";
 import { isMobile } from "../Navigation/Navigation";
@@ -15,6 +15,7 @@ import AddProject from "./AddProject";
 import Popup from "./Popup";
 
 import { signal } from "@preact/signals-react";
+import { filter, set } from "lodash";
 import { lowerCase, set } from "lodash";
 const tab = signal("total");
 const tabLable = signal("");
@@ -28,6 +29,7 @@ export const plantEdit = signal(false);
 export const projectData = signal({});
 export const popupState = signal(false);
 export const deviceData = signal([]);
+export const inverterData = signal([]);
 
 export const Empty = () => {
   return (
@@ -97,14 +99,20 @@ export const devicePlant = signal([
   {
     plantId: 1,
     SN: "11111111",
+    loggerSN: "L0000102",
+    inverterSN: "I0000145",
   },
   {
     plantId: 1,
     SN: "22222222",
+    loggerSN: "L0000101",
+    inverterSN: "I0000012",
   },
   {
     plantId: 2,
     SN: "33333333",
+    loggerSN: "L0000103",
+    inverterSN: "I0000333",
   },
 ]);
 
@@ -204,6 +212,81 @@ export const device = signal([
     dischargemonthlybattery: 21,
     dischargeyearlybattery: 252,
     dischargetotalbattery: 252,
+  },
+]);
+
+export const Logger = signal([
+  {
+    id: 1,
+    SN: "L0000102",
+    name: "Logger 01",
+    plant: "Năng lượng DAT 01",
+    status: true,
+    updated: "12/30/2023 12:07:12",
+  },
+  {
+    id: 2,
+    SN: "L0000101",
+    name: "Logger 02",
+    plant: "Năng lượng DAT 01",
+    status: true,
+    updated: "12/30/2023 12:07:12",
+  },
+  {
+    id: 3,
+    SN: "L0000103",
+    name: "Logger 03",
+    plant: "Năng lượng DAT 02",
+    status: false,
+    updated: "12/30/2023 12:07:12",
+  },
+]);
+
+export const InverterbyLogger = signal([
+  {
+    loggerSN: "L0000102",
+    inverterSN: "I0000145",
+  },
+  {
+    loggerSN: "L0000101",
+    inverterSN: "I0000012",
+  },
+  {
+    loggerSN: "L0000103",
+    inverterSN: "I0000333",
+  },
+]);
+
+export const Inverter = signal([
+  {
+    id: 1,
+    SN: "I0000145",
+    name: "Inverter 01",
+    plant: "Năng lượng DAT 01",
+    status: true,
+    production: "16",
+    dailyproduction: "123.4",
+    updated: "12/30/2023 12:07:12",
+  },
+  {
+    id: 2,
+    SN: "I0000012",
+    name: "Inverter 02",
+    plant: "Năng lượng DAT 01",
+    status: false,
+    production: "18",
+    dailyproduction: "238.4",
+    updated: "12/30/2023 12:07:12",
+  },
+  {
+    id: 3,
+    SN: "I0000333",
+    name: "Inverter 03",
+    plant: "Năng lượng DAT 02",
+    status: false,
+    production: "116",
+    dailyproduction: "123.4",
+    updated: "12/30/2023 12:07:12",
   },
 ]);
 
@@ -472,7 +555,6 @@ function Project(props) {
       (item) => item.plantId == e.currentTarget.id
     );
     deviceData.value = newDevicePlant;
-    // console.log("deviceplant: ", deviceData.value);
   };
 
   const handleEdit = (e) => {

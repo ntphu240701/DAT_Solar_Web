@@ -240,7 +240,7 @@ const SystemInfo = (props) => {
                   <option value="consumption">Hệ thống hòa lưới bám tải</option>
                   <option value="hybrid">Hệ thống lưu trữ hybrid</option>
                   <option value="ESS">Hệ thống lưu trữ năng lượng ESS</option>
-                  <option value="pump">Hệ thống solar pump</option>
+                  {/* <option value="pump">Hệ thống solar pump</option> */}
                 </select>
               </div>
             </div>
@@ -496,8 +496,6 @@ function AddProject(props) {
         lastupdate: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),
         createdate: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),
       };
-      // console.log(dataproject.value);
-      // console.log(lastId.value);
     }
   };
 

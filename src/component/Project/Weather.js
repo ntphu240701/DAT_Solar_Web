@@ -111,10 +111,10 @@ export default function Weather() {
     setType(e.currentTarget.id);
   };
 
-  useEffect(() => {
-    console.log(isMobile.value);
-    console.log(forecastdata);
-  });
+  // useEffect(() => {
+  //   console.log(isMobile.value);
+  //   console.log(forecastdata);
+  // });
 
   return isLoading ? (
     <div

@@ -18,6 +18,12 @@ function AddSubsystem(props) {
     popup.style.color = popup_state[state].color;
   };
 
+  const handleClose = () => {
+    popupAddSubsystem.value = false;
+    consumption.current.checked = false;
+    check.value = "production";
+  };
+
   const production = useRef();
   const consumption = useRef();
   const handleCheck = (e) => {
@@ -39,7 +45,7 @@ function AddSubsystem(props) {
         <div className="DAT_AddSubsystem_Head_Right">
           <div
             className="DAT_AddSubsystem_Head_Right_Icon"
-            onClick={() => (popupAddSubsystem.value = false)}
+            onClick={() => handleClose()}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
@@ -97,7 +103,7 @@ function AddSubsystem(props) {
             backgroundColor: "white",
             color: "#505050",
           }}
-          onClick={() => (popupAddSubsystem.value = false)}
+          onClick={() => handleClose()}
         >
           Hủy
         </button>
