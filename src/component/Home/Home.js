@@ -251,8 +251,9 @@ function Home(props) {
 
                             <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
                                 <BarChart width={150} height={200} data={data}>
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
+                                    <XAxis dataKey="name" axisLine={false} tickLine={false}/>
+                                    <YAxis axisLine={false} tickLine={false}/>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                     <Tooltip />
                                     <Legend />
                                     <Bar shape={<TriangleBar />} dataKey={v} fill="#6495ed" barSize={15} legendType='circle' style={{ fill: "#6495ed" }} />

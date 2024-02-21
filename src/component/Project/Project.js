@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Project.scss";
 import DataTable from "react-data-table-component";
 import { isMobile } from "../Navigation/Navigation";
@@ -15,6 +15,7 @@ import AddProject from "./AddProject";
 import Popup from "./Popup";
 
 import { signal } from "@preact/signals-react";
+import { lowerCase, set } from "lodash";
 const tab = signal("total");
 const tabLable = signal("");
 const tabMobile = signal(false);
@@ -504,11 +505,54 @@ function Project(props) {
     tabLable.value = newLabel.name;
   };
 
+  const [datafilter, setDatafilter] = useState([]);
+  // const [filter, setFilter] = useState("");
+
+  useEffect(() => {
+    setDatafilter(dataproject.value);
+  }, [dataproject.value]);
+
+  const handleSearch = (e) => {
+    if (e.target.value == "") {
+      setDatafilter(dataproject.value);
+    } else {
+      const t = e.target.value;
+      const db = dataproject.value.filter((row) =>
+        // item.name.includes(t)
+        {
+          console.log(row.power);
+          switch(type){
+            case "name":
+              return row.name.toLowerCase().includes(lowerCase(t));
+            case "capacity":
+              return String(row.capacity) === t;
+            case "production":
+              return String(row.production) === t;
+            case "power":
+              return row.power === t;
+            case "lastupdate":
+              return row.lastupdate === t;
+            case "createdate":
+              return row.createdate === t;
+          }
+        }
+      );
+      console.log(db);
+      setDatafilter(db);
+    }
+  };
+
   useEffect(() => {
     online.value = dataproject.value.filter((item) => item.status == true);
     offline.value = dataproject.value.filter((item) => item.status == false);
     tabLable.value = listTab[0].name;
   }, [dataproject.value]);
+
+  const [type, setType] = useState("name");
+
+  const pickTypeFilter = (e) => {
+    setType(e.target.value);
+  };
 
   return (
     <>
@@ -518,8 +562,24 @@ function Project(props) {
         </div>
 
         <div className="DAT_ProjectHeader_Filter">
-          <input type="text" placeholder="Nhập tên dự án" />
+          <input
+            type="text"
+            placeholder="Nhập tên dự án"
+            onChange={(e) => handleSearch(e)}
+          />
           <CiSearch color="gray" size={20} />
+        </div>
+        <div className="DAT_ProjectHeader_Type">
+          <select onChange={(e) => pickTypeFilter(e)}>
+            <option value={"name"}>Tên</option>
+            <option value={"connect"}>Kết nối</option>
+            <option value={"status"}>Trạng thái</option>
+            <option value={"capacity"}>Dung lượng</option>
+            <option value={"production"}>Sản xuất</option>
+            <option value={"power"}>Nguồn cấp</option>
+            <option value={"lastupdate"}>Lần cập nhật cuối</option>
+            <option value={"createdate"}>Ngày tạo</option>
+          </select>
         </div>
 
         <button
@@ -607,7 +667,7 @@ function Project(props) {
                   <DataTable
                     className="DAT_Table_Container"
                     columns={columnproject}
-                    data={dataproject.value}
+                    data={datafilter}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     fixedHeader={true}

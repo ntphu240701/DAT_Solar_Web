@@ -117,7 +117,15 @@ export default function Weather() {
   });
 
   return isLoading ? (
-    <div style={{ width: "100%", height: "100%", display: "flex", justifyContent: "center" , alignItems: "center"}}>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <PacmanLoader color="#0082CA" size={20} />
     </div>
   ) : (
@@ -154,29 +162,28 @@ export default function Weather() {
               °F
             </div>
           </div>
-          <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Left_Describe">
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <WiHumidity />: {data.current.humidity} %
-            </div>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <WiStrongWind size={20} />: {data.current.wind_kph} km/h
-            </div>
-            <div>UV: {data.current.uv} nm</div>
-          </div>
         </div>
-
-        {isMobile.value ? (
-          <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right">
+        <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right">
             <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit">
-              {data.location.name}, 
-              {/* {data.location.country} */}
+              {data.location.name},{/* {data.location.country} */}
               <div>{data.location.localtime}</div>
               <div>Mô tả: {data.current.condition.text}</div>
             </div>
           </div>
-        ) : (
-          <></>
-        )}
+
+        
+        
+      </div>
+      <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Describe">
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <WiHumidity />: {data.current.humidity} % |
+        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <WiStrongWind size={20} />: {data.current.wind_kph} km/h |
+        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          UV: {data.current.uv} nm
+        </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Forecast">
         <ResponsiveContainer width={"100%"} height={150}>
