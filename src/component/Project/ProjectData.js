@@ -1405,6 +1405,11 @@ function ProjectData(props) {
   const handleDate = (e) => {
     var id = e.currentTarget.id;
     setDate(id);
+    console.log(id);
+    // if (id === "day") {
+    //   let date_ = document.getElementById("date_chart");
+    //   console.log(date_);
+    // }
   };
 
   const [view, setView] = useState("dashboard");
@@ -1835,7 +1840,9 @@ function ProjectData(props) {
   const [vDay, setVDay] = useState("--");
 
   useEffect(() => {
-    const newData = dbDay.find((item) => item.date === "20/02/2024");
+    const newData = dbDay.find(
+      (item) => item.date === moment(new Date()).format("DD/MM/YYYY")
+    );
     if (newData) {
       let vDay = newData.name;
       setDataDay([]);
@@ -1850,12 +1857,17 @@ function ProjectData(props) {
     const newData = dbDay.find(
       (item) => item.date === moment(e.currentTarget.value).format("DD/MM/YYYY")
     );
-    let vDay = newData.name;
-    setDataDay([]);
-    newData.data.map((item) => {
-      setDataDay((old) => [...old, { time: item.time, [vDay]: item.val }]);
-    });
-    setVDay(newData.name);
+    if (newData) {
+      let vDay = newData.name;
+      setDataDay([]);
+      newData.data.map((item) => {
+        setDataDay((old) => [...old, { time: item.time, [vDay]: item.val }]);
+      });
+      setVDay(newData.name);
+    } else {
+      setDataDay([]);
+      setVDay("--");
+    }
   };
 
   // Month
@@ -2418,6 +2430,7 @@ function ProjectData(props) {
                             case "day":
                               return (
                                 <input
+                                  id="date_chart"
                                   defaultValue={moment(new Date()).format(
                                     "YYYY-MM-DD"
                                   )}
@@ -2428,6 +2441,7 @@ function ProjectData(props) {
                             case "month":
                               return (
                                 <input
+                                  id="month_chart"
                                   defaultValue={moment(new Date()).format(
                                     "YYYY-MM-DD"
                                   )}
@@ -2438,6 +2452,7 @@ function ProjectData(props) {
                             case "year":
                               return (
                                 <input
+                                  id="year_chart"
                                   defaultValue={moment(new Date()).format(
                                     "YYYY-MM-DD"
                                   )}
@@ -2448,6 +2463,7 @@ function ProjectData(props) {
                             case "total":
                               return (
                                 <input
+                                  id="total_chart"
                                   defaultValue={moment(new Date()).format(
                                     "YYYY"
                                   )}

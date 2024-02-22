@@ -15,8 +15,7 @@ import AddProject from "./AddProject";
 import Popup from "./Popup";
 
 import { signal } from "@preact/signals-react";
-import { filter, set } from "lodash";
-import { lowerCase, set } from "lodash";
+import { filter, set, lowerCase } from "lodash";
 const tab = signal("total");
 const tabLable = signal("");
 const tabMobile = signal(false);
@@ -603,7 +602,7 @@ function Project(props) {
         // item.name.includes(t)
         {
           console.log(row.power);
-          switch(type){
+          switch (type) {
             case "name":
               return row.name.toLowerCase().includes(lowerCase(t));
             case "capacity":
