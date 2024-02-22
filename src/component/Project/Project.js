@@ -16,7 +16,7 @@ import Popup from "./Popup";
 
 import { signal } from "@preact/signals-react";
 import { filter, set } from "lodash";
-import { lowerCase, set } from "lodash";
+import { lowerCase } from "lodash";
 const tab = signal("total");
 const tabLable = signal("");
 const tabMobile = signal(false);
