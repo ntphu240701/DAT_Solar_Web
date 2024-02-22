@@ -15,7 +15,7 @@ import AddProject from "./AddProject";
 import Popup from "./Popup";
 
 import { signal } from "@preact/signals-react";
-import { filter, set } from "lodash";
+// import { filter, set } from "lodash";
 import { lowerCase } from "lodash";
 const tab = signal("total");
 const tabLable = signal("");
@@ -595,15 +595,14 @@ function Project(props) {
   }, [dataproject.value]);
 
   const handleSearch = (e) => {
-    if (e.target.value == "") {
+    if (e.target.value === "") {
       setDatafilter(dataproject.value);
     } else {
       const t = e.target.value;
       const db = dataproject.value.filter((row) =>
         // item.name.includes(t)
         {
-          console.log(row.power);
-          switch(type){
+          switch (type) {
             case "name":
               return row.name.toLowerCase().includes(lowerCase(t));
             case "capacity":
@@ -616,17 +615,18 @@ function Project(props) {
               return row.lastupdate === t;
             case "createdate":
               return row.createdate === t;
+            default:
+              return row.name.toLowerCase().includes(lowerCase(t));
           }
         }
       );
-      console.log(db);
       setDatafilter(db);
     }
   };
 
   useEffect(() => {
-    online.value = dataproject.value.filter((item) => item.status == true);
-    offline.value = dataproject.value.filter((item) => item.status == false);
+    online.value = dataproject.value.filter((item) => item.status === true);
+    offline.value = dataproject.value.filter((item) => item.status === false);
     tabLable.value = listTab[0].name;
   }, [dataproject.value]);
 

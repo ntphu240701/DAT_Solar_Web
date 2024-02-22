@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./GroupRole.scss";
 // import DataTable from "react-data-table-component";
 import { IoMdAnalytics } from "react-icons/io";
@@ -8,24 +8,42 @@ import { signal } from "@preact/signals-react";
 import CreateGroupRole from "./CreateGroupRole";
 import { FaUserPlus } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 import Popup from "./Popup";
 import AddUsers from "./AddUsers";
+import ConfirmDeleteGroup from "./ConfirmDeleteGroup";
+import EditGroup from "./EditGroup";
 
 export const addState = signal(false);
 export const popupState = signal(false);
+export const groupDelState = signal(false);
+export const editState = signal(false);
 export const userDel = signal();
 export const groupID = signal(1);
+export const groupDelID = signal();
 
 export const group = signal([
   {
     id: 1,
     name: "Phòng RnD",
     subinfo: "CTy DAT Group - Head: Ngài Tô",
+    role: {
+      1: { lang: "role1", status: true },
+      2: { lang: "role2", status: true },
+      3: { lang: "role3", status: false },
+      4: { lang: "role4", status: false },
+    },
   },
   {
     id: 2,
     name: "Nhóm 2",
     subinfo: "CTy DAT Group - Head: Phó Lũ",
+    role: {
+      1: { lang: "role1", status: false },
+      2: { lang: "role2", status: true },
+      3: { lang: "role3", status: true },
+      4: { lang: "role4", status: false },
+    },
   },
 ]);
 
@@ -83,7 +101,6 @@ export const groupUser = signal([
 ]);
 
 const GroupUsers = () => {
-
   const handleChangeGroup = (e) => {
     groupID.value = Number(e.currentTarget.id);
   };
@@ -91,6 +108,14 @@ const GroupUsers = () => {
   const handleDeleteUser = (e) => {
     popupState.value = true;
     userDel.value = e.currentTarget.id;
+  };
+
+  const handleDeleteGroup = (e) => {
+    groupDelState.value = true;
+  };
+
+  const handleEditGroup = (e) => {
+    editState.value = true;
   };
 
   return (
@@ -107,7 +132,7 @@ const GroupUsers = () => {
               id={item.id}
               style={{
                 backgroundColor:
-                  groupID.value == item.id ? "rgb(207, 207, 207, 0.4)" : "",
+                  groupID.value === item.id ? "rgb(207, 207, 207, 0.4)" : "",
               }}
               onClick={(e) => handleChangeGroup(e)}
             >
@@ -123,24 +148,25 @@ const GroupUsers = () => {
               >
                 {item.subinfo}
               </div>
+              <div
+                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Delete"
+                id={item.id}
+                onClick={(e) => handleDeleteGroup(e)}
+              >
+                <MdDelete size={20} />
+              </div>
+              <div
+                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Edit"
+                style={{ right: "40px" }}
+                onClick={(e) => handleEditGroup(e)}
+              >
+                <MdEdit size={20} color="#216990" />
+              </div>
             </div>
           ))}
-          {/* <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item">
-            <div
-              className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
-              style={{ fontSize: "15px" }}
-            >
-              
-            </div>
-            <div
-              className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
-              style={{ fontSize: "13px", color: "grey" }}
-            >
-              CTy DAT Group
-            </div>
-          </div> */}
         </div>
       </div>
+
       <div className="DAT_GR_Content_DevideTable_Right">
         <div className="DAT_GR_Content_DevideTable_Right_Head">
           Danh sách người dùng
@@ -177,20 +203,26 @@ const GroupUsers = () => {
                     onClick={(e) => handleDeleteUser(e)}
                     id={user.username}
                   >
-                    <MdDelete color="red" />
+                    <MdDelete size={20} />
                   </div>
                 </div>
               ))
             )}
 
-          <div
-            className="DAT_GR_Content_DevideTable_Right_ItemList_Item"
-            onClick={() => (addState.value = true)}
-          >
-            <div className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Plus">
-              <FaUserPlus size={20} color="#216990" />
+          {groupID.value === 0 ? (
+            <></>
+          ) : (
+            <div
+              className="DAT_GR_Content_DevideTable_Right_ItemList_Item"
+              onClick={() => (
+                (addState.value = true), console.log(groupID.value)
+              )}
+            >
+              <div className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Plus">
+                <FaUserPlus size={20} color="#216990" />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
@@ -313,6 +345,20 @@ function GroupRole(props) {
       {addState.value ? (
         <div className="DAT_AddUserPopup">
           <AddUsers />
+        </div>
+      ) : (
+        <></>
+      )}
+      {groupDelState.value ? (
+        <div className="DAT_DeleteGroupPopup">
+          <ConfirmDeleteGroup />
+        </div>
+      ) : (
+        <></>
+      )}
+      {editState.value ? (
+        <div className="DAT_EditGroup">
+          <EditGroup />
         </div>
       ) : (
         <></>

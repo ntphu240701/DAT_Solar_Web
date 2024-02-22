@@ -62,7 +62,6 @@ function App() {
     }
 
     rootDispatch(adminslice.actions.setstatus(true))
-
     // checkAuth();
     // checkApi();
   }, [])
