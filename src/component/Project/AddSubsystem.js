@@ -6,6 +6,8 @@ import { signal } from "@preact/signals-react";
 const check = signal("production");
 
 function AddSubsystem(props) {
+  const production = useRef();
+  const consumption = useRef();
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -24,8 +26,6 @@ function AddSubsystem(props) {
     check.value = "production";
   };
 
-  const production = useRef();
-  const consumption = useRef();
   const handleCheck = (e) => {
     if (e.target.id === "production") {
       consumption.current.checked = false;

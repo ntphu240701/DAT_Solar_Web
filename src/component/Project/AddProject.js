@@ -1,14 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Project.scss";
-import { dataproject, lastId, plantState, projectData } from "./Project";
+import { dataproject, lastId, plantState } from "./Project";
+import { isMobile } from "../Navigation/Navigation";
+
+import { signal } from "@preact/signals-react";
 import GoogleMap from "google-maps-react-markers";
+import moment from "moment-timezone";
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
-import { isMobile } from "../Navigation/Navigation";
-import { signal } from "@preact/signals-react";
-import moment from "moment-timezone";
 
 export const plantData = signal({
   name: "",
@@ -35,6 +36,7 @@ export const plantData = signal({
 
 const BasicInfo = (props) => {
   const [state, setState] = useState(true);
+  
   const defaultProps = {
     center: {
       lat: 16.054083398111068,

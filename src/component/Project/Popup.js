@@ -2,7 +2,6 @@ import React from "react";
 import "./Project.scss";
 import { dataproject, popupState, projectData } from "./Project";
 import { IoClose } from "react-icons/io5";
-import { hasIn } from "lodash";
 
 export default function Popup() {
   const popup_state = {

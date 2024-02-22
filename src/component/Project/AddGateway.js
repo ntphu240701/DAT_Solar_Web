@@ -6,6 +6,9 @@ import { signal } from "@preact/signals-react";
 const check = signal("newDevice");
 
 export default function AddGateway(props) {
+  const newDevice = useRef();
+  const oldDevice = useRef();
+
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -23,9 +26,7 @@ export default function AddGateway(props) {
     oldDevice.current.checked = false;
     check.value = "newDevice";
   };
-
-  const newDevice = useRef();
-  const oldDevice = useRef();
+  
   const handleCheck = (e) => {
     if (e.target.id === "newDevice") {
       oldDevice.current.checked = false;

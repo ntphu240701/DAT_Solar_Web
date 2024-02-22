@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Project.scss";
 import DataTable from "react-data-table-component";
 import { isMobile } from "../Navigation/Navigation";
@@ -15,7 +15,6 @@ import AddProject from "./AddProject";
 import Popup from "./Popup";
 
 import { signal } from "@preact/signals-react";
-// import { filter, set } from "lodash";
 import { lowerCase } from "lodash";
 const tab = signal("total");
 const tabLable = signal("");
@@ -291,6 +290,10 @@ export const Inverter = signal([
 ]);
 
 function Project(props) {
+  const [datafilter, setDatafilter] = useState([]);
+  const [type, setType] = useState("name");
+  // const [filter, setFilter] = useState("");
+
   const listTab = [
     { id: "total", name: "Tổng" },
     { id: "online", name: "Online" },
@@ -587,12 +590,9 @@ function Project(props) {
     tabLable.value = newLabel.name;
   };
 
-  const [datafilter, setDatafilter] = useState([]);
-  // const [filter, setFilter] = useState("");
-
-  useEffect(() => {
-    setDatafilter(dataproject.value);
-  }, [dataproject.value]);
+  const pickTypeFilter = (e) => {
+    setType(e.target.value);
+  };
 
   const handleSearch = (e) => {
     if (e.target.value === "") {
@@ -602,6 +602,7 @@ function Project(props) {
       const db = dataproject.value.filter((row) =>
         // item.name.includes(t)
         {
+          console.log(row.power);
           switch (type) {
             case "name":
               return row.name.toLowerCase().includes(lowerCase(t));
@@ -625,16 +626,14 @@ function Project(props) {
   };
 
   useEffect(() => {
-    online.value = dataproject.value.filter((item) => item.status === true);
-    offline.value = dataproject.value.filter((item) => item.status === false);
-    tabLable.value = listTab[0].name;
+    setDatafilter(dataproject.value);
   }, [dataproject.value]);
 
-  const [type, setType] = useState("name");
-
-  const pickTypeFilter = (e) => {
-    setType(e.target.value);
-  };
+  useEffect(() => {
+    online.value = dataproject.value.filter((item) => item.status == true);
+    offline.value = dataproject.value.filter((item) => item.status == false);
+    tabLable.value = listTab[0].name;
+  }, [dataproject.value]);
 
   return (
     <>
@@ -811,8 +810,7 @@ function Project(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_ProjectInfor"
+      <div className="DAT_ProjectInfor"
         style={{
           height: plantState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",
