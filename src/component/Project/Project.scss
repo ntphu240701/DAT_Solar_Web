@@ -39,6 +39,7 @@
     &_Type {
         position: relative;
         font-family: Arial;
+
         & select {
             padding: 5px;
             border: none;
@@ -452,8 +453,7 @@
                                 display: flex;
                             }
 
-                            &_B {
-                            }
+                            &_B {}
                         }
 
                         &_Grid {
@@ -487,8 +487,7 @@
 
                         // background-color: #3e80fb;
 
-                        &_P {
-                        }
+                        &_P {}
                     }
                 }
 
@@ -782,6 +781,7 @@
                                 align-items: center;
                                 white-space: nowrap;
                                 overflow: hidden;
+
                                 &_Tit {
                                     display: flex;
                                     align-items: flex-end;
@@ -2729,6 +2729,24 @@
             cursor: pointer;
         }
     }
+}
+
+.DAT_Picker {
+    height: 40px;
+    width: 200px;
+    outline: none;
+    border: none;
+}
+
+.DAT_CustomPicker {
+    height: 40px;
+    width: 120px;
+    border: solid 1px rgb(199, 199, 199);
+    margin-right: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: gray;
 }
 
 // .DAT_Toollist_Tab_Mobile {

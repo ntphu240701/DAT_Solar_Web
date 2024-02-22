@@ -435,7 +435,6 @@ const OwnerInfo = (props) => {
 
 function EditProject(props) {
   const handleSave = () => {
-    // console.log(projectData.value);
     var check = 0;
     Object.entries(projectData.value).map(([key, value]) => {
       if (projectData.value[key] === "") {
@@ -444,9 +443,9 @@ function EditProject(props) {
     });
 
     if (check !== 0) {
-      console.log("vui long nhap day du thong tin");
+      alert("vui long nhap day du thong tin");
     } else {
-      console.log("cap nhat thanh cong");
+      alert("cap nhat thanh cong");
       plantState.value = "default";
     }
   };
