@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./GroupRole.scss";
 // import DataTable from "react-data-table-component";
 import { IoMdAnalytics } from "react-icons/io";
@@ -13,15 +13,23 @@ import Popup from "./Popup";
 import AddUsers from "./AddUsers";
 import ConfirmDeleteGroup from "./ConfirmDeleteGroup";
 import EditGroup from "./EditGroup";
+import DataTable from "react-data-table-component";
+import { Empty } from "../Project/Project";
+import { IoMdPersonAdd } from "react-icons/io";
 
+//CONST SIGNALS
+export const createState = signal(false);
 export const addState = signal(false);
 export const popupState = signal(false);
 export const groupDelState = signal(false);
 export const editState = signal(false);
-export const userDel = signal();
-export const groupID = signal(1);
+export const groupID = signal(0);
 export const groupDelID = signal();
+export const userDel = signal();
+export const groupEdit = signal();
+export const dataUsers = signal([]);
 
+//DATA TEMP
 export const group = signal([
   {
     id: 1,
@@ -101,13 +109,65 @@ export const groupUser = signal([
 ]);
 
 const GroupUsers = () => {
+  const paginationComponentOptions = {
+    rowsPerPageText: "Số hàng",
+    rangeSeparatorText: "đến",
+    selectAllRowsItem: true,
+    selectAllRowsItemText: "tất cả",
+  };
+
+  const columnGroupRole = [
+    {
+      name: "Tên",
+      selector: (user) => user.name,
+      sortable: true,
+      // width: "150px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Tên người dùng",
+      selector: (user) => user.username,
+      sortable: true,
+      // width: "150px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Thông tin",
+      selector: (user) => user.subinfo,
+      sortable: true,
+      // width: "150px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Chỉnh sửa",
+      selector: (user) => (
+        <div
+          className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Delete"
+          id={user.username}
+          onClick={(e) => handleDeleteUser(e)}
+        >
+          <MdDelete size={20} />
+        </div>
+      ),
+      width: "100px",
+    },
+  ];
+
   const handleChangeGroup = (e) => {
     groupID.value = Number(e.currentTarget.id);
+    console.log(groupID.value);
   };
 
   const handleDeleteUser = (e) => {
     popupState.value = true;
     userDel.value = e.currentTarget.id;
+    console.log(groupUser.value);
   };
 
   const handleDeleteGroup = (e) => {
@@ -116,6 +176,9 @@ const GroupUsers = () => {
 
   const handleEditGroup = (e) => {
     editState.value = true;
+    groupEdit.value = group.value.find(
+      (item) => item.id == Number(e.currentTarget.id)
+    );
   };
 
   return (
@@ -144,7 +207,7 @@ const GroupUsers = () => {
               </div>
               <div
                 className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
-                style={{ fontSize: "13px", color: "grey" }}
+                style={{ fontSize: "13px", color: "grey", maxWidth: "100px" }}
               >
                 {item.subinfo}
               </div>
@@ -158,9 +221,18 @@ const GroupUsers = () => {
               <div
                 className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Edit"
                 style={{ right: "40px" }}
+                id={item.id}
                 onClick={(e) => handleEditGroup(e)}
               >
                 <MdEdit size={20} color="#216990" />
+              </div>
+              <div
+                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Add"
+                onClick={() => (
+                  (addState.value = true)
+                )}
+              >
+                <IoMdPersonAdd size={20}/>
               </div>
             </div>
           ))}
@@ -172,7 +244,7 @@ const GroupUsers = () => {
           Danh sách người dùng
         </div>
         <div className="DAT_GR_Content_DevideTable_Right_ItemList">
-          {groupUser.value
+          {/* {groupUser.value
             .filter((item) => item.groupid == groupID.value)
             .map((group) =>
               group.users.map((user, key) => (
@@ -207,9 +279,9 @@ const GroupUsers = () => {
                   </div>
                 </div>
               ))
-            )}
+            )} */}
 
-          {groupID.value === 0 ? (
+          {/* {groupID.value === 0 ? (
             <></>
           ) : (
             <div
@@ -222,6 +294,23 @@ const GroupUsers = () => {
                 <FaUserPlus size={20} color="#216990" />
               </div>
             </div>
+          )} */}
+          {groupID.value === 0 ? (
+            <Empty />
+          ) : (
+            <DataTable
+              className="DAT_Table_GroupRole"
+              columns={columnGroupRole}
+              data={
+                groupUser.value.filter(
+                  (item) => item.groupid == groupID.value
+                )[0].users
+              }
+              pagination
+              paginationComponentOptions={paginationComponentOptions}
+              fixedHeader={true}
+              noDataComponent={<Empty />}
+            />
           )}
         </div>
       </div>
@@ -229,59 +318,7 @@ const GroupUsers = () => {
   );
 };
 
-export const createState = signal(false);
-
 function GroupRole(props) {
-  // const paginationComponentOptions = {
-  //   rowsPerPageText: "Số hàng",
-  //   rangeSeparatorText: "đến",
-  //   selectAllRowsItem: true,
-  //   selectAllRowsItemText: "tất cả",
-  // };
-
-  // const dataGroupRole = [];
-
-  // const columnGroupRole = [
-  //   {
-  //     name: "Tên",
-  //     selector: (row) => row.name,
-  //     sortable: true,
-  //     minWidth: "350px",
-  //   },
-  //   {
-  //     name: "Tùy chỉnh",
-  //     selector: (row) => (
-  //       <>
-  //         <div className="DAT_TableEdit">
-  //           <span
-  //             id={row.id + "_MORE"}
-  //             onMouseEnter={(e) => handleModify(e, "block")}
-  //           >
-  //             ...
-  //           </span>
-  //         </div>
-
-  //         <div
-  //           className="DAT_ModifyBox"
-  //           id={row.id + "_Modify"}
-  //           style={{ display: "none" }}
-  //           onMouseLeave={(e) => handleModify(e, "none")}
-  //         >
-  //           <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div>
-  //           <div className="DAT_ModifyBox_Remove">Gỡ</div>
-  //         </div>
-  //       </>
-  //     ),
-  //     width: "100px",
-  //   },
-  // ];
-  const handleModify = (e, type) => {
-    const id = e.currentTarget.id;
-    var arr = id.split("_");
-    const mod = document.getElementById(arr[0] + "_Modify");
-    mod.style.display = type;
-  };
-
   return (
     <>
       <div className="DAT_GRHeader">
@@ -314,16 +351,6 @@ function GroupRole(props) {
         </div>
         <div className="DAT_GR_Content">
           <GroupUsers />
-
-          {/* <DataTable
-            className="DAT_Table_Container"
-            columns={columnGroupRole}
-            data={dataGroupRole}
-            pagination
-            paginationComponentOptions={paginationComponentOptions}
-            fixedHeader={true}
-            noDataComponent={<Empty />}
-          /> */}
         </div>
       </div>
       <div

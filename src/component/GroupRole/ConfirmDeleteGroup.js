@@ -1,6 +1,6 @@
 import React from "react";
 import "./GroupRole.scss";
-import { group, groupID, groupUser, popupState } from "./GroupRole";
+import { dataUsers, group, groupEdit, groupID, groupUser, popupState } from "./GroupRole";
 import { IoClose } from "react-icons/io5";
 import { groupDelState } from "./GroupRole";
 
@@ -25,7 +25,8 @@ export default function ConfirmDeleteGroup() {
     );
     groupUser.value = groupUser.value.filter(
       (item) => item.groupid != groupID.value
-    )
+    );
+    dataUsers.value = [];
     groupID.value = 0;
   };
 
