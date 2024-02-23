@@ -144,16 +144,16 @@ function Device(props) {
             id={row.id + "_" + tab.value}
             onClick={(e) => handleShowInfo(e)}
           >
-            {/* <div className="DAT_Table_Infor_Name">{row.name}</div> */}
+            <div className="DAT_Table_Infor_Name">{row.name}</div>
             <div className="DAT_Table_Infor_Addr">{row.SN}</div>
           </div>
         </div>
       ),
       sortable: true,
-      minWidth: "350px",
+      // minWidth: "350px",
       style: {
         justifyContent: "left",
-      }
+      },
     },
     {
       name: "Trạng thái",
@@ -175,23 +175,23 @@ function Device(props) {
       minWidth: "350px",
       style: {
         justifyContent: "left",
-      }
+      },
     },
 
     {
-      name: "Sản lượng(kW)",
-      selector: (row) => row.production,
+      name: "Sản lượng phát điện",
+      selector: (row) => row.production + " kW",
       sortable: true,
-      width: "140px",
+      width: "170px",
     },
     {
-      name: "SL tức thời(kWh)",
-      selector: (row) => row.dailyproduction,
+      name: "Sản lượng điện hàng ngày",
+      selector: (row) => row.dailyproduction + " kWh",
       sortable: true,
-      width: "150px",
+      width: "210px",
     },
     {
-      name: "Lần cập nhật cuối",
+      name: "Cập nhật",
       selector: (row) => row.updated,
       sortable: true,
       width: "180px",
@@ -283,7 +283,7 @@ function Device(props) {
       minWidth: "350px",
       style: {
         justifyContent: "left",
-      }
+      },
     },
     {
       name: "Trạng thái",
@@ -305,10 +305,10 @@ function Device(props) {
       minWidth: "350px",
       style: {
         justifyContent: "left",
-      }
+      },
     },
     {
-      name: "Lần cập nhật cuối",
+      name: "Cập nhật",
       selector: (row) => row.updated,
       sortable: true,
       width: "180px",

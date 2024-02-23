@@ -16,6 +16,7 @@ import Popup from "./Popup";
 
 import { signal } from "@preact/signals-react";
 import { lowerCase } from "lodash";
+
 const tab = signal("total");
 const tabLable = signal("");
 const tabMobile = signal(false);
@@ -88,6 +89,29 @@ export const dataproject = signal([
     status: false,
     warn: false,
     production: "230",
+    power: "0",
+    lastupdate: "10/30/2023 08:01:22",
+    createdate: "05/01/2022 14:08:36",
+  },
+  {
+    id: 3,
+    name: "Năng lượng DAT 03",
+    addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+    long: "--",
+    lat: "--",
+    plantype: "industrial",
+    systemtype: "ess",
+    capacity: "333",
+    griddate: "",
+    angle: "--",
+    currency: "vnd",
+    price: "--",
+    contact: "--",
+    phone: "07123872311",
+    business: "--",
+    status: true,
+    warn: false,
+    production: "116",
     power: "0",
     lastupdate: "10/30/2023 08:01:22",
     createdate: "05/01/2022 14:08:36",
@@ -239,6 +263,132 @@ export const Logger = signal([
     status: false,
     updated: "12/30/2023 12:07:12",
   },
+  // {
+  //   id: 1,
+  //   SN: "T0623A000162",
+  //   name: "Logger 01",
+  //   state: 0,
+  //   type: "L01",
+  //   version: "0.1",
+  //   data: {
+  //     pro_1: 16,
+  //     pro_2: 110,
+  //     pro_3: 0.5,
+  //     // monthlyproduction: 15,
+  //     // yearlyproduction: 180,
+  //     // totalproduction: 180,
+  //     con_1: 7.68,
+  //     con_2: 0.25,
+  //     // monthlyconsumption: 7.5,
+  //     // yearlyconsumption: 90,
+  //     // totalconsumption: 90,
+  //     grid_1: 4.56,
+  //     grid_in_1: 0.15,
+  //     // feedinmonthlygrid: 4.5,
+  //     // feedinyearlygrid: 54,
+  //     grid_in_2: 54,
+  //     grid_out_1: 0.1,
+  //     // purchasedmonthlygrid: 3,
+  //     // purchasedyearlygrid: 36,
+  //     grid_out_2: 36,
+  //     bat_1: 3.12,
+  //     bat_2: 74.1,
+  //     bat_in_1: 0.1,
+  //     // chargemonthlybattery: 3,
+  //     // chargeyearlybattery: 36,
+  //     // chargetotalbattery: 36,
+  //     bat_out_1: 0.05,
+  //     // dischargemonthlybattery: 1.5,
+  //     // dischargeyearlybattery: 18,
+  //     // dischargetotalbattery: 18,
+  //   },
+  //   setting: {},
+  //   plantid: 1,
+  // },
+  // {
+  //   id: 2,
+  //   SN: " T0623A000166",
+  //   name: "Logger 02",
+  //   state: 1,
+  //   type: "L01",
+  //   version: "0.1",
+  //   data: {
+  //     pro_1: 222,
+  //     pro_2: 230,
+  //     pro_3: 7.5,
+  //     // monthlyproduction: 225,
+  //     // yearlyproduction: 2700,
+  //     // totalproduction: 2700,
+  //     con_1: 100,
+  //     con_2: 3.3,
+  //     // monthlyconsumption: 99,
+  //     // yearlyconsumption: 1188,
+  //     // totalconsumption: 1188,
+  //     grid_1: 130,
+  //     grid_in_1: 4.3,
+  //     // feedinmonthlygrid: 129,
+  //     // feedinyearlygrid: 1548,
+  //     // grid_in_2: 1548,
+  //     grid_out_1: 3,
+  //     // purchasedmonthlygrid: 90,
+  //     // purchasedyearlygrid: 1080,
+  //     // grid_out_2: 1080,
+  //     bat_1: 70,
+  //     bat_2: 70,
+  //     bat_in_1: 2.3,
+  //     // chargemonthlybattery: 69,
+  //     // chargeyearlybattery: 828,
+  //     // chargetotalbattery: 828,
+  //     bat_out_1: 1.5,
+  //     // dischargemonthlybattery: 45,
+  //     // dischargeyearlybattery: 540,
+  //     // dischargetotalbattery: 540,
+  //   },
+  //   setting: {},
+  //   plantid: 1,
+  // },
+  // {
+  //   id: 3,
+  //   SN: "T0623A000177",
+  //   name: "Logger 03",
+  //   state: 0,
+  //   type: "L01",
+  //   version: "0.1",
+  //   data: {
+  //     pro_1: 333,
+  //     pro_2: 116,
+  //     pro_3: 3.8,
+  //     // monthlyproduction: 114,
+  //     // yearlyproduction: 1368,
+  //     // totalproduction: 1368,
+  //     con_1: 50,
+  //     con_2: 1.6,
+  //     // monthlyconsumption: 48,
+  //     // yearlyconsumption: 576,
+  //     // totalconsumption: 576,
+  //     grid_1: 66,
+  //     grid_in_1: 2.2,
+  //     // feedinmonthlygrid: 66,
+  //     // feedinyearlygrid: 792,
+  //     grid_in_2: 792,
+  //     grid_out_1: 1.5,
+  //     // purchasedmonthlygrid: 45,
+  //     // purchasedyearlygrid: 540,
+  //     // purchasedtotalgrid: 540,
+  //     bat_1: 33,
+  //     bat_2: 69,
+  //     bat_in_1: 1.1,
+  //     // chargemonthlybattery: 33,
+  //     // chargeyearlybattery: 396,
+  //     // chargetotalbattery: 396,
+  //     bat_out_1: 0.7,
+  //     // dischargemonthlybattery: 21,
+  //     // dischargeyearlybattery: 252,
+  //     // dischargetotalbattery: 252,
+  //   },
+  //   setting: {},
+  //   plantid: 2,
+  // },
 ]);
 
 export const InverterbyLogger = signal([
@@ -296,8 +446,8 @@ function Project(props) {
 
   const listTab = [
     { id: "total", name: "Tổng" },
-    { id: "online", name: "Online" },
-    { id: "offline", name: "Offline" },
+    { id: "online", name: "Trực tuyến" },
+    { id: "offline", name: "Ngoại tuyến" },
     { id: "warn", name: "Cảnh báo" },
     { id: "demo", name: "Chạy thử" },
   ];
@@ -445,19 +595,6 @@ function Project(props) {
     {
       name: "Kết nối",
       selector: (row) => (
-        <div>
-          {row.warn ? (
-            <FaCheckCircle size={20} color="green" />
-          ) : (
-            <MdOutlineError size={22} color="red" />
-          )}
-        </div>
-      ),
-      width: "100px",
-    },
-    {
-      name: "Trạng thái",
-      selector: (row) => (
         <>
           {row.status ? (
             <FaCheckCircle size={20} color="green" />
@@ -469,22 +606,35 @@ function Project(props) {
       width: "110px",
     },
     {
-      name: "Dung lượng(kWp)",
-      selector: (row) => row.capacity,
+      name: "Cảnh báo",
+      selector: (row) => (
+        <div>
+          {row.warn ? (
+            <FaCheckCircle size={20} color="green" />
+          ) : (
+            <MdOutlineError size={22} color="red" />
+          )}
+        </div>
+      ),
+      width: "100px",
+    },
+    {
+      name: "Công suất lắp đặt",
+      selector: (row) => row.capacity + " kWp",
       sortable: true,
       width: "160px",
     },
     {
-      name: "Sản xuất(kW)",
-      selector: (row) => row.production,
+      name: "Sản lượng điện phát",
+      selector: (row) => row.production + " kWh",
       sortable: true,
-      width: "140px",
+      width: "180px",
     },
     {
-      name: "Nguồn cấp(%)",
-      selector: (row) => row.power,
+      name: "Nguồn cấp",
+      selector: (row) => row.power + " %",
       sortable: true,
-      width: "140px",
+      // width: "140px",
     },
     {
       name: "Tag",
@@ -496,7 +646,7 @@ function Project(props) {
       width: "100px",
     },
     {
-      name: "Lần cập nhật cuối",
+      name: "Cập nhật lần cuối",
       selector: (row) => row.lastupdate,
       sortable: true,
       width: "180px",
@@ -600,26 +750,26 @@ function Project(props) {
     } else {
       const t = e.target.value;
       const db = dataproject.value.filter((row) =>
-        // item.name.includes(t)
-        {
-          console.log(row.power);
-          switch (type) {
-            case "name":
-              return row.name.toLowerCase().includes(lowerCase(t));
-            case "capacity":
-              return String(row.capacity) === t;
-            case "production":
-              return String(row.production) === t;
-            case "power":
-              return row.power === t;
-            case "lastupdate":
-              return row.lastupdate === t;
-            case "createdate":
-              return row.createdate === t;
-            default:
-              return row.name.toLowerCase().includes(lowerCase(t));
-          }
+      // item.name.includes(t)
+      {
+        console.log(row.power);
+        switch (type) {
+          case "name":
+            return row.name.toLowerCase().includes(lowerCase(t));
+          case "capacity":
+            return String(row.capacity) === t;
+          case "production":
+            return String(row.production) === t;
+          case "power":
+            return row.power === t;
+          case "lastupdate":
+            return row.lastupdate === t;
+          case "createdate":
+            return row.createdate === t;
+          default:
+            return row.name.toLowerCase().includes(lowerCase(t));
         }
+      }
       );
       setDatafilter(db);
     }
@@ -810,7 +960,8 @@ function Project(props) {
         </div>
       </div>
 
-      <div className="DAT_ProjectInfor"
+      <div
+        className="DAT_ProjectInfor"
         style={{
           height: plantState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",

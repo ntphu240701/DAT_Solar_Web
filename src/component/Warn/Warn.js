@@ -74,8 +74,7 @@ function Warn(props) {
       minWidth: "350px",
       style: {
         justifyContent: "left",
-      }
-      
+      },
     },
     {
       name: "Trạng thái",
@@ -111,7 +110,7 @@ function Warn(props) {
       minWidth: "350px",
       style: {
         justifyContent: "left",
-      }
+      },
     },
 
     {
@@ -121,16 +120,16 @@ function Warn(props) {
       width: "140px",
     },
     {
-      name: "opentime",
+      name: "Thời gian mở cảnh báo",
       selector: (row) => row.opentime,
       sortable: true,
-      width: "180px",
+      width: "200px",
     },
     {
-      name: "closedtime",
+      name: "Thời gian đóng cảnh báo",
       selector: (row) => row.closedtime,
       sortable: true,
-      width: "180px",
+      width: "200px",
     },
     // {
     //   name: "Tùy chỉnh",

@@ -294,6 +294,21 @@ const dbYear = [
   },
 ];
 
+const dbTotal = [
+  {
+    name: "Sản lượng năm",
+    data: [
+      { time: "2018", val: 21.69 },
+      { time: "2019", val: 22.31 },
+      { time: "2020", val: 23.45 },
+      { time: "2021", val: 24.56 },
+      { time: "2022", val: 25.67 },
+      { time: "2023", val: 26.78 },
+      { time: "2024", val: 27.89 },
+    ],
+  },
+]
+
 function ProjectData(props) {
   const [nav, setNav] = useState("graph");
   const [dateType, setDateType] = useState("date");
@@ -312,6 +327,8 @@ function ProjectData(props) {
   const [vMonth, setVMonth] = useState("--");
   const [dataYear, setDataYear] = useState([]);
   const [vYear, setVYear] = useState("--");
+  const [dataTotal, setDataTotal] = useState([]);
+  const [vTotal, setVTotal] = useState("--");
 
   const [d, setD] = useState({
     date: moment(new Date()).format("YYYY-MM-DD"),
@@ -603,29 +620,11 @@ function ProjectData(props) {
     popupAddSubsystem.value = true;
   };
 
-  // const handleYear = (e) => {
-  //   const year = e.currentTarget.value;
-  //   const year_ = year.split("-")[0];
-
-  //   const newData = dbYear.find((item) => item.year === year_);
-  //   let v = newData.name;
-  //   setDataYear([]);
-  //   newData.data.map((item) => {
-  //     setDataYear((old) => [...old, { time: item.time, [v]: item.val }]);
-  //   });
-  //   setVYear(newData.name);
-  // };
-
   const handleChart = (date) => {
     if (dateType === "date") {
-      setD({
-        ...d,
-        date: moment(date).format("DD/MM/YYYY"),
-      });
+      setD({ ...d, date: moment(date).format("DD/MM/YYYY") });
 
-      const newData = dbDay.find(
-        (item) => item.date === moment(date).format("DD/MM/YYYY")
-      );
+      const newData = dbDay.find((item) => item.date === moment(date).format("DD/MM/YYYY"));
       if (newData) {
         let vDay = newData.name;
         setDataDay([]);
@@ -638,21 +637,14 @@ function ProjectData(props) {
         setVDay("--");
       }
     } else if (dateType === "month") {
-      setD({
-        ...d,
-        month: moment(date).format("MM/YYYY"),
-      });
-      const newData = dbMonth.find(
-        (item) => item.month === moment(date).format("MM/YYYY")
-      );
+      setD({ ...d, month: moment(date).format("MM/YYYY") });
+
+      const newData = dbMonth.find((item) => item.month === moment(date).format("MM/YYYY"));
       if (newData) {
         let vMonth = newData.name;
         setDataMonth([]);
         newData.data.map((item) => {
-          setDataMonth((old) => [
-            ...old,
-            { time: item.time, [vMonth]: item.val },
-          ]);
+          setDataMonth((old) => [...old, { time: item.time, [vMonth]: item.val }]);
         });
         setVMonth(newData.name);
       } else {
@@ -660,10 +652,7 @@ function ProjectData(props) {
         setVMonth("--");
       }
     } else if (dateType === "year") {
-      setD({
-        ...d,
-        year: moment(date).format("YYYY"),
-      });
+      setD({ ...d, year: moment(date).format("YYYY") });
 
       const year = moment(date).format("YYYY");
       const year_ = year.split("-")[0];
@@ -673,10 +662,7 @@ function ProjectData(props) {
         let vYear = newData.name;
         setDataYear([]);
         newData.data.map((item) => {
-          setDataYear((old) => [
-            ...old,
-            { time: item.time, [vYear]: item.val },
-          ]);
+          setDataYear((old) => [...old, { time: item.time, [vYear]: item.val }]);
         });
         setVYear(newData.name);
       } else {
@@ -714,9 +700,7 @@ function ProjectData(props) {
     });
 
     // data Day
-    const newDataDay = dbDay.find(
-      (item) => item.date === moment(new Date()).format("DD/MM/YYYY")
-    );
+    const newDataDay = dbDay.find((item) => item.date === moment(new Date()).format("DD/MM/YYYY"));
     if (newDataDay) {
       let vDay = newDataDay.name;
       setDataDay([]);
@@ -727,9 +711,7 @@ function ProjectData(props) {
     }
 
     //data Month
-    const newDataMonth = dbMonth.find(
-      (item) => item.month === moment(new Date()).format("MM/YYYY")
-    );
+    const newDataMonth = dbMonth.find((item) => item.month === moment(new Date()).format("MM/YYYY"));
     let vMonth = newDataMonth.name;
     setDataMonth([]);
     newDataMonth.data.map((item) => {
@@ -738,15 +720,23 @@ function ProjectData(props) {
     setVMonth(newDataMonth.name);
 
     //data Year
-    const newData = dbYear.find(
-      (item) => item.year === moment(new Date()).format("YYYY")
-    );
+    const newData = dbYear.find((item) => item.year === moment(new Date()).format("YYYY"));
     let vYear = newData.name;
     setDataYear([]);
     newData.data.map((item) => {
       setDataYear((old) => [...old, { time: item.time, [vYear]: item.val }]);
     });
     setVYear(newData.name);
+
+    //data Total
+    dbTotal.map((item) => {
+      let vTotal = item.name;
+      setDataTotal([]);
+      item.data.map((item) => {
+        setDataTotal((old) => [...old, { time: item.time, [vTotal]: item.val }]);
+      });
+      setVTotal(item.name);
+    });
 
     // eslint-disable-next-line
   }, []);
@@ -788,8 +778,7 @@ function ProjectData(props) {
             })()}
 
             <div className="DAT_ProjectData_Header_Right">
-              <div
-                className="DAT_ProjectData_Header_Right_More"
+              <div className="DAT_ProjectData_Header_Right_More"
                 onClick={() => (dropState.value = !dropState.value)}
               >
                 <IoMenu size={20} color="white" />
@@ -842,22 +831,19 @@ function ProjectData(props) {
             })()}
 
             <div className="DAT_ProjectData_Header_Right">
-              <div
-                className="DAT_ProjectData_Header_Right_Dashboard"
+              <div className="DAT_ProjectData_Header_Right_Dashboard"
                 id="dashboard"
                 onClick={(e) => handleView(e)}
               >
                 <AiOutlineDashboard size={20} color="white" />
               </div>
-              <div
-                className="DAT_ProjectData_Header_Right_Device"
+              <div className="DAT_ProjectData_Header_Right_Device"
                 id="device"
                 onClick={(e) => handleView(e)}
               >
                 <BsMenuButtonWide size={14} color="white" />
               </div>
-              <div
-                className="DAT_ProjectData_Header_Right_Alert"
+              <div className="DAT_ProjectData_Header_Right_Alert"
                 id="alert"
                 onClick={(e) => handleView(e)}
               >
@@ -893,8 +879,7 @@ function ProjectData(props) {
                       </div>
 
                       <div className="DAT_ProjectData_Dashboard_Data_Left_Info">
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
+                        <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
                           style={{ marginBottom: "16px" }}
                         >
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
@@ -905,15 +890,13 @@ function ProjectData(props) {
                           </div>
                         </div>
 
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
+                        <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
                           style={{ marginBottom: "16px" }}
                         >
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
                             Trạng thái
                           </div>
-                          <div
-                            className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
+                          <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
                             style={{ textAlign: "right" }}
                           >
                             {projectData.value.status ? (
@@ -928,15 +911,13 @@ function ProjectData(props) {
                           </div>
                         </div>
 
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
+                        <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
                           style={{ marginBottom: "16px" }}
                         >
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
                             Loại Dự Án
                           </div>
-                          <div
-                            className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
+                          <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
                             style={{ textAlign: "right" }}
                           >
                             {projectData.value.plantype === "industrial" ? (
@@ -978,8 +959,7 @@ function ProjectData(props) {
 
                     <div className="DAT_ProjectData_Dashboard_Data_Center">
                       <div className="DAT_ProjectData_Dashboard_Data_Center_Tit">
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
+                        <div className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
                           id="graph"
                           style={{
                             color: nav === "graph" ? color.cur : color.pre,
@@ -988,18 +968,16 @@ function ProjectData(props) {
                         >
                           Đồ thị
                         </div>
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
+                        <div className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
                           id="production"
                           style={{
                             color: nav === "production" ? color.cur : color.pre,
                           }}
                           onClick={(e) => handleNav(e)}
                         >
-                          Sản xuất
+                          Sản lượng phát điện
                         </div>
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
+                        <div className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
                           id="consumption"
                           style={{
                             color:
@@ -1011,10 +989,9 @@ function ProjectData(props) {
                           }}
                           onClick={(e) => handleNav(e)}
                         >
-                          Tiêu thụ
+                          Điện năng tiêu thụ
                         </div>
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
+                        <div className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
                           id="grid"
                           style={{
                             color: nav === "grid" ? color.cur : color.pre,
@@ -1025,22 +1002,21 @@ function ProjectData(props) {
                           }}
                           onClick={(e) => handleNav(e)}
                         >
-                          Lưới
+                          Lưới điện
                         </div>
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
+                        <div className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
                           id="battery"
                           style={{
                             color: nav === "battery" ? color.cur : color.pre,
                             display:
                               projectData.value.systemtype === "grid" ||
-                              projectData.value.systemtype === "consumption"
+                                projectData.value.systemtype === "consumption"
                                 ? "none"
                                 : "block",
                           }}
                           onClick={(e) => handleNav(e)}
                         >
-                          Pin
+                          Ắc quy
                         </div>
                       </div>
 
@@ -1072,13 +1048,12 @@ function ProjectData(props) {
                   <div className="DAT_ProjectData_Dashboard_History">
                     <div className="DAT_ProjectData_Dashboard_History_Tit">
                       <div className="DAT_ProjectData_Dashboard_History_Tit_Left">
-                        Lịch sử
+                        Lịch sử phát điện
                       </div>
 
                       <div className="DAT_ProjectData_Dashboard_History_Tit_Right">
                         <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Date">
-                          <div
-                            className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
+                          <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
                             id="date"
                             style={{
                               borderRight: "solid 1px rgb(199, 199, 199)",
@@ -1089,8 +1064,7 @@ function ProjectData(props) {
                           >
                             Ngày
                           </div>
-                          <div
-                            className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
+                          <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
                             id="month"
                             style={{
                               borderRight: "solid 1px rgb(199, 199, 199)",
@@ -1101,8 +1075,7 @@ function ProjectData(props) {
                           >
                             Tháng
                           </div>
-                          <div
-                            className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
+                          <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
                             id="year"
                             style={{
                               borderRight: "solid 1px rgb(199, 199, 199)",
@@ -1113,8 +1086,7 @@ function ProjectData(props) {
                           >
                             Năm
                           </div>
-                          <div
-                            className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
+                          <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
                             id="total"
                             style={{
                               color:
@@ -1141,16 +1113,7 @@ function ProjectData(props) {
                           <button>Xuất Báo Cáo</button>
                         </div>
 
-                        {/* <input
-                          id="dateChart"
-                          list="dateCharts"
-                          type={(dateType ==="date" || dateType === "month")? dateType : "text"}
-                          value={d[dateType]}
-                          onChange={(e) => handleChart(e)}
-                        /> */}
-
                         <DatePicker
-                          // className="DAT_Picker"
                           onChange={(date) => handleChart(date)}
                           showMonthYearPicker={
                             dateType === "date" ? false : true
@@ -1167,51 +1130,7 @@ function ProjectData(props) {
                               <IoCalendarOutline color="gray" />
                             </button>
                           }
-                          // showIcon
                         />
-
-                        {/* {(() => {
-                          switch (dateType) {
-                            case "day":
-                              return (
-                                <input
-                                  id="date_chart"
-                                  type="date"
-                                  defaultValue={moment(new Date()).format("YYYY-MM-DD")}
-                                  onChange={(e) => handleDay(e)}
-                                />
-                              );
-                            case "month":
-                              return (
-                                <input
-                                  id="month_chart"
-                                  type="month"
-                                  defaultValue={moment(new Date()).format("YYYY-MM-DD")}
-                                  onChange={(e) => handleMonth(e)}
-                                />
-                              );
-                            case "year":
-                              return (
-                                <input
-                                  id="year_chart"
-                                  type="month"
-                                  defaultValue={moment(new Date()).format("YYYY-MM-DD")}
-                                  onChange={(e) => handleYear(e)}
-                                />
-                              );
-                            case "total":
-                              return (
-                                <input
-                                  id="total_chart"
-                                  type="year"
-                                  defaultValue={moment(new Date()).format("YYYY")}
-                                  disabled
-                                />
-                              );
-                            default:
-                              <></>;
-                          }
-                        })()} */}
                       </div>
                     </div>
 
@@ -1224,22 +1143,20 @@ function ProjectData(props) {
                         case "year":
                           return <Year data={dataYear} v={vYear} />;
                         case "total":
-                          return <Total />;
+                          return <Total data={dataTotal} v={vTotal} />;
                         default:
                           <></>;
                       }
                     })()}
 
-                    <div
-                      className="DAT_ProjectData_Dashboard_History_SubConfig"
+                    <div className="DAT_ProjectData_Dashboard_History_SubConfig"
                       style={{
                         height: dropConfig ? "500px" : "0px",
                         transition: "0.5s",
                       }}
                     >
                       {dropConfig ? (
-                        <div
-                          className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
+                        <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
                           style={{
                             height: dropConfig ? "200px" : "0px",
                             transition: "0.5s",
@@ -1261,10 +1178,7 @@ function ProjectData(props) {
                                   </th>
                                   <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                     <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                      <input
-                                        id="Production"
-                                        type="checkbox"
-                                      ></input>
+                                      <input id="Production" type="checkbox" />
                                       <label htmlFor="Production">
                                         Production
                                       </label>
@@ -1309,50 +1223,28 @@ function ProjectData(props) {
 
                       <div className="DAT_ProjectData_Dashboard_More_Left_Content">
                         <div className="DAT_ProjectData_Dashboard_More_Left_Content_Item">
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#048FFF",
-                            }}
+                          <div className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
+                            style={{ textAlign: "center", fontSize: "32px", color: "#048FFF" }}
                           >
                             0
                           </div>
 
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
+                          <div className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
+                            style={{ textAlign: "center", fontSize: "14px", color: "grey", marginTop: "8px" }}
                           >
                             Đang Thực Hiện
                           </div>
                         </div>
 
                         <div className="DAT_ProjectData_Dashboard_More_Left_Content_Item">
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#41D068",
-                            }}
+                          <div className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
+                            style={{ textAlign: "center", fontSize: "32px", color: "#41D068" }}
                           >
                             0
                           </div>
 
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
+                          <div className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
+                            style={{ textAlign: "center", fontSize: "14px", color: "grey", marginTop: "8px" }}
                           >
                             Hoàn Tất
                           </div>
@@ -1362,7 +1254,7 @@ function ProjectData(props) {
 
                     <div className="DAT_ProjectData_Dashboard_More_Right">
                       <div className="DAT_ProjectData_Dashboard_More_Right_Tit">
-                        Lợi ích môi trường và kinh tế
+                        Môi trường và lợi ích kinh tế
                       </div>
 
                       <div className="DAT_ProjectData_Dashboard_More_Right_Content">
@@ -1373,7 +1265,7 @@ function ProjectData(props) {
                             </div>
                             <div>
                               <div style={{ fontSize: "14px", color: "grey" }}>
-                                Thang đo tiêu chuẩn
+                                Lượng than tiết kiệm
                               </div>
                               <div>--</div>
                             </div>
@@ -1398,7 +1290,7 @@ function ProjectData(props) {
                             </div>
                             <div>
                               <div style={{ fontSize: "14px", color: "grey" }}>
-                                Giảm khí thải CO₂
+                                Lượng CO₂ tiết giảm
                               </div>
                               <div>--</div>
                             </div>
@@ -1409,7 +1301,7 @@ function ProjectData(props) {
                             </div>
                             <div>
                               <div style={{ fontSize: "14px", color: "grey" }}>
-                                Tổng sản lượng
+                                Tổng doanh thu
                               </div>
                               <div>--</div>
                             </div>
@@ -1443,10 +1335,7 @@ function ProjectData(props) {
                       </div>
                       <button
                         id="add"
-                        onMouseEnter={() => {
-                          addNav.value = true;
-                          addStateNav.value = [true, false];
-                        }}
+                        onMouseEnter={() => { addNav.value = true; addStateNav.value = [true, false] }}
                         onMouseLeave={() => handleOutsideAdd()}
                       >
                         Thêm
@@ -1456,8 +1345,7 @@ function ProjectData(props) {
                     <div className="DAT_ProjectData_Device_Analysis_Table">
                       {isMobile.value ? (
                         <div className="DAT_Toollist_Tab_Mobile">
-                          <button
-                            className="DAT_Toollist_Tab_Mobile_content"
+                          <button className="DAT_Toollist_Tab_Mobile_content"
                             onClick={() => (tabMobile.value = !tabMobile.value)}
                           >
                             <span> {tabLable.value}</span>
@@ -1470,11 +1358,8 @@ function ProjectData(props) {
                           <div className="DAT_Toollist_Tab_Mobile_list">
                             {listDeviceTab.map((item, i) => {
                               return (
-                                <div
-                                  className="DAT_Toollist_Tab_Mobile_list_item"
-                                  style={{
-                                    display: tabMobile.value ? "block" : "none",
-                                  }}
+                                <div className="DAT_Toollist_Tab_Mobile_list_item"
+                                  style={{ display: tabMobile.value ? "block" : "none" }}
                                   key={"tabmobile_" + i}
                                   id={item.id}
                                   onClick={(e) => handleTabMobileDevice(e)}
@@ -1489,19 +1374,13 @@ function ProjectData(props) {
                         <div className="DAT_Toollist_Tab">
                           {listDeviceTab.map((item, i) => {
                             return tab.value === item.id ? (
-                              <div
-                                className="DAT_Toollist_Tab_main"
+                              <div className="DAT_Toollist_Tab_main"
                                 key={"tab_" + i}
                               >
                                 <p className="DAT_Toollist_Tab_main_left"></p>
-                                <span
-                                  className="DAT_Toollist_Tab_main_content1"
+                                <span className="DAT_Toollist_Tab_main_content1"
                                   id={item.id}
-                                  style={{
-                                    backgroundColor: "White",
-                                    color: "black",
-                                    borderRadius: "10px 10px 0 0",
-                                  }}
+                                  style={{ backgroundColor: "White", color: "black", borderRadius: "10px 10px 0 0" }}
                                   onClick={(e) => (tab.value = item.id)}
                                 >
                                   {item.name}
@@ -1509,8 +1388,7 @@ function ProjectData(props) {
                                 <p className="DAT_Toollist_Tab_main_right"></p>
                               </div>
                             ) : (
-                              <span
-                                className="DAT_Toollist_Tab_main_content2"
+                              <span className="DAT_Toollist_Tab_main_content2"
                                 key={"tab_" + i}
                                 id={item.id}
                                 style={{ backgroundColor: "#dadada" }}
@@ -1528,42 +1406,33 @@ function ProjectData(props) {
                           switch (tab.value) {
                             case "inverter":
                               return (
-                                <DataTable
-                                  className="DAT_Table_Device"
+                                <DataTable className="DAT_Table_Device"
                                   columns={columnInverter}
                                   data={tempInverter}
                                   pagination
-                                  paginationComponentOptions={
-                                    paginationComponentOptions
-                                  }
+                                  paginationComponentOptions={paginationComponentOptions}
                                   fixedHeader={true}
                                   noDataComponent={<Empty />}
                                 />
                               );
                             case "meter":
                               return (
-                                <DataTable
-                                  className="DAT_Table_Device"
+                                <DataTable className="DAT_Table_Device"
                                   columns={columnMeter}
                                   data={dataMeter}
                                   pagination
-                                  paginationComponentOptions={
-                                    paginationComponentOptions
-                                  }
+                                  paginationComponentOptions={paginationComponentOptions}
                                   fixedHeader={true}
                                   noDataComponent={<Empty />}
                                 />
                               );
                             case "logger":
                               return (
-                                <DataTable
-                                  className="DAT_Table_Device"
+                                <DataTable className="DAT_Table_Device"
                                   columns={columnLogger}
                                   data={tempLogger}
                                   pagination
-                                  paginationComponentOptions={
-                                    paginationComponentOptions
-                                  }
+                                  paginationComponentOptions={paginationComponentOptions}
                                   fixedHeader={true}
                                   noDataComponent={<Empty />}
                                 />
@@ -1713,14 +1582,10 @@ function ProjectData(props) {
         })()}
       </div>
 
-      <div
-        className="DAT_AddNav"
+      <div className="DAT_AddNav"
         style={{ display: addNav.value ? "block" : "none" }}
         onMouseEnter={() => (addStateNav.value = [true, true])}
-        onMouseLeave={() => {
-          addNav.value = false;
-          addStateNav.value = [false, false];
-        }}
+        onMouseLeave={() => { addNav.value = false; addStateNav.value = [false, false] }}
       >
         <div className="DAT_AddNav-item">
           <span onClick={(e) => handleAddGateway(e)}>Thêm Gateway/Logger</span>
@@ -1750,22 +1615,19 @@ function ProjectData(props) {
         <>
           {dropState.value ? (
             <div className="DAT_ProjectDataDrop">
-              <div
-                className="DAT_ProjectDataDrop_Dashboard"
+              <div className="DAT_ProjectDataDrop_Dashboard"
                 id="dashboard"
                 onClick={(e) => handleView(e)}
               >
                 <AiOutlineDashboard size={20} color="white" />
               </div>
-              <div
-                className="DAT_ProjectDataDrop_Device"
+              <div className="DAT_ProjectDataDrop_Device"
                 id="device"
                 onClick={(e) => handleView(e)}
               >
                 <BsMenuButtonWide size={20} color="white" />
               </div>
-              <div
-                className="DAT_ProjectDataDrop_Alert"
+              <div className="DAT_ProjectDataDrop_Alert"
                 id="alert"
                 onClick={(e) => handleView(e)}
               >
@@ -2169,58 +2031,29 @@ const Production = (props) => {
 
   useEffect(() => {
     setCapacity(0);
-    props.data.map((item) => {
-      setCapacity((capacity) => capacity + item.capacity);
-    });
+    props.data.map((item) => { setCapacity((capacity) => capacity + item.capacity) });
 
     setProduction(0);
-    props.data.map((item) => {
-      setProduction((production) => production + item.production);
-    });
+    props.data.map((item) => { setProduction((production) => production + item.production) });
 
     setDailyproduction(0);
-    props.data.map((item) => {
-      setDailyproduction(
-        (dailyproduction) => dailyproduction + item.dailyproduction
-      );
-    });
+    props.data.map((item) => { setDailyproduction((dailyproduction) => dailyproduction + item.dailyproduction) });
 
     setMonthlyproduction(0);
-    props.data.map((item) => {
-      setMonthlyproduction(
-        (monthlyproduction) => monthlyproduction + item.monthlyproduction
-      );
-    });
+    props.data.map((item) => { setMonthlyproduction((monthlyproduction) => monthlyproduction + item.monthlyproduction) });
 
     setYearlyproduction(0);
-    props.data.map((item) => {
-      setYearlyproduction(
-        (yearlyproduction) => yearlyproduction + item.yearlyproduction
-      );
-    });
+    props.data.map((item) => { setYearlyproduction((yearlyproduction) => yearlyproduction + item.yearlyproduction) });
 
     setTotalproduction(0);
-    props.data.map((item) => {
-      setTotalproduction(
-        (totalproduction) => totalproduction + item.totalproduction
-      );
-    });
-  }, [
-    props.data,
-    production,
-    capacity,
-    dailyproduction,
-    monthlyproduction,
-    yearlyproduction,
-    totalproduction,
-  ]);
+    props.data.map((item) => { setTotalproduction((totalproduction) => totalproduction + item.totalproduction) });
+  }, [props.data, production, capacity, dailyproduction, monthlyproduction, yearlyproduction, totalproduction]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Production">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart">
-          <div
-            className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data"
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data"
             style={{ fontSize: "32px" }}
           >
             0%
@@ -2228,85 +2061,69 @@ const Production = (props) => {
         </div>
 
         <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Detail">
-          <div style={{ marginBottom: "8px", color: "grey" }}>Năng suất</div>
+          <div style={{ marginBottom: "8px", color: "grey" }}>
+            Công suất tức thời
+          </div>
           <div style={{ marginBottom: "8px" }}>
             {production}
-            <span
-              style={{ marginLeft: "8px", fontSize: "12px", color: "grey" }}
-            >
+            <span style={{ marginLeft: "8px", fontSize: "12px", color: "grey" }}>
               kW
             </span>
           </div>
-          <div
-            style={{
-              borderBottom: "solid 1px rgb(199, 199, 199)",
-              width: "50%",
-              marginBottom: "8px",
-            }}
-          />
-          <div style={{ marginBottom: "8px", color: "grey" }}>Dung lượng</div>
+          <div style={{ borderBottom: "solid 1px rgb(199, 199, 199)", width: "50%", marginBottom: "8px" }} />
+          <div style={{ marginBottom: "8px", color: "grey" }}>
+            Công suất lắp đặt
+          </div>
           <div>
             {capacity}
-            <span
-              style={{ marginLeft: "8px", fontSize: "12px", color: "grey" }}
-            >
+            <span style={{ marginLeft: "8px", fontSize: "12px", color: "grey" }} >
               kWp
             </span>
           </div>
         </div>
       </div>
 
-      <div
-        style={{
-          borderBottom: "solid 1px rgb(199, 199, 199)",
-          height: "16px",
-          marginBottom: "16px",
-        }}
-      />
+      <div style={{ borderBottom: "solid 1px rgb(199, 199, 199)", height: "16px", marginBottom: "16px" }} />
 
       <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total">
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
-          style={{ backgroundColor: "rgb(245, 251, 255)" }}
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
+          style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            Năng suất ngày
+            Sản lượng điện ngày
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             {dailyproduction} kW
           </div>
         </div>
 
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
-          style={{ backgroundColor: "rgb(255, 248, 247)" }}
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
+          style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            Năng suất tháng
+            Sản lượng điện tháng
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             {monthlyproduction} kW
           </div>
         </div>
 
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
-          style={{ backgroundColor: "rgb(246, 245, 255)" }}
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
+          style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            Năng suất năm
+            Sản lượng điện năm
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             {yearlyproduction} kW
           </div>
         </div>
 
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
-          style={{ backgroundColor: "rgb(245, 250, 246)" }}
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
+          style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            Tổng năng suất
+            Tổng sản lượng điện
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             {totalproduction} kW
@@ -2326,45 +2143,20 @@ const Consumption = (props) => {
 
   useEffect(() => {
     setConsumption(0);
-    props.data.map((item) => {
-      setConsumption((consumption) => consumption + item.consumption);
-    });
+    props.data.map((item) => { setConsumption((consumption) => consumption + item.consumption) });
 
     setDailyconsumption(0);
-    props.data.map((item) => {
-      setDailyconsumption(
-        (dailyconsumption) => dailyconsumption + item.dailyconsumption
-      );
-    });
+    props.data.map((item) => { setDailyconsumption((dailyconsumption) => dailyconsumption + item.dailyconsumption) });
 
     setMonthlyconsumption(0);
-    props.data.map((item) => {
-      setMonthlyconsumption(
-        (monthlyconsumption) => monthlyconsumption + item.monthlyconsumption
-      );
-    });
+    props.data.map((item) => { setMonthlyconsumption((monthlyconsumption) => monthlyconsumption + item.monthlyconsumption) });
 
     setYearlyconsumption(0);
-    props.data.map((item) => {
-      setYearlyconsumption(
-        (yearlyconsumption) => yearlyconsumption + item.yearlyconsumption
-      );
-    });
+    props.data.map((item) => { setYearlyconsumption((yearlyconsumption) => yearlyconsumption + item.yearlyconsumption) });
 
     setTotalconsumption(0);
-    props.data.map((item) => {
-      setTotalconsumption(
-        (totalconsumption) => totalconsumption + item.totalconsumption
-      );
-    });
-  }, [
-    props.data,
-    consumption,
-    dailyconsumption,
-    monthlyconsumption,
-    yearlyconsumption,
-    totalconsumption,
-  ]);
+    props.data.map((item) => { setTotalconsumption((totalconsumption) => totalconsumption + item.totalconsumption) });
+  }, [props.data, consumption, dailyconsumption, monthlyconsumption, yearlyconsumption, totalconsumption]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption">
@@ -2379,8 +2171,7 @@ const Consumption = (props) => {
 
       <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left">
-          <div
-            className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item"
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item"
             style={{ backgroundColor: "rgb(245, 251, 255)" }}
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
@@ -2391,8 +2182,7 @@ const Consumption = (props) => {
             </div>
           </div>
 
-          <div
-            className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item"
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item"
             style={{ backgroundColor: "rgb(246, 245, 255)" }}
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
@@ -2405,8 +2195,7 @@ const Consumption = (props) => {
         </div>
 
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right">
-          <div
-            className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
             style={{ backgroundColor: "rgb(255, 248, 247)" }}
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
@@ -2417,8 +2206,7 @@ const Consumption = (props) => {
             </div>
           </div>
 
-          <div
-            className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
             style={{ backgroundColor: "rgb(245, 250, 246)" }}
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
@@ -2447,78 +2235,32 @@ const Grid = (props) => {
 
   useEffect(() => {
     setGrid(0);
-    props.data.map((item) => {
-      setGrid((grid) => grid + item.grid);
-    });
+    props.data.map((item) => { setGrid((grid) => grid + item.grid) });
 
     setFeedindailygrid(0);
-    props.data.map((item) => {
-      setFeedindailygrid(
-        (feedindailygrid) => feedindailygrid + item.feedindailygrid
-      );
-    });
+    props.data.map((item) => { setFeedindailygrid((feedindailygrid) => feedindailygrid + item.feedindailygrid) });
 
     setFeedinmonthlygrid(0);
-    props.data.map((item) => {
-      setFeedinmonthlygrid(
-        (feedinmonthlygrid) => feedinmonthlygrid + item.feedinmonthlygrid
-      );
-    });
+    props.data.map((item) => { setFeedinmonthlygrid((feedinmonthlygrid) => feedinmonthlygrid + item.feedinmonthlygrid) });
 
     setFeedinyearlygrid(0);
-    props.data.map((item) => {
-      setFeedinyearlygrid(
-        (feedinyearlygrid) => feedinyearlygrid + item.feedinyearlygrid
-      );
-    });
+    props.data.map((item) => { setFeedinyearlygrid((feedinyearlygrid) => feedinyearlygrid + item.feedinyearlygrid) });
 
     setFeedintotalgrid(0);
-    props.data.map((item) => {
-      setFeedintotalgrid(
-        (feedintotalgrid) => feedintotalgrid + item.feedintotalgrid
-      );
-    });
+    props.data.map((item) => { setFeedintotalgrid((feedintotalgrid) => feedintotalgrid + item.feedintotalgrid) });
 
     setPurchaseddailygrid(0);
-    props.data.map((item) => {
-      setPurchaseddailygrid(
-        (purchaseddailygrid) => purchaseddailygrid + item.purchaseddailygrid
-      );
-    });
+    props.data.map((item) => { setPurchaseddailygrid((purchaseddailygrid) => purchaseddailygrid + item.purchaseddailygrid) });
 
     setPurchasedmonthlygrid(0);
-    props.data.map((item) => {
-      setPurchasedmonthlygrid(
-        (purchasedmonthlygrid) =>
-          purchasedmonthlygrid + item.purchasedmonthlygrid
-      );
-    });
+    props.data.map((item) => { setPurchasedmonthlygrid((purchasedmonthlygrid) => purchasedmonthlygrid + item.purchasedmonthlygrid) });
 
     setPurchasedyearlygrid(0);
-    props.data.map((item) => {
-      setPurchasedyearlygrid(
-        (purchasedyearlygrid) => purchasedyearlygrid + item.purchasedyearlygrid
-      );
-    });
+    props.data.map((item) => { setPurchasedyearlygrid((purchasedyearlygrid) => purchasedyearlygrid + item.purchasedyearlygrid) });
 
     setPurchasedtotalgrid(0);
-    props.data.map((item) => {
-      setPurchasedtotalgrid(
-        (purchasedtotalgrid) => purchasedtotalgrid + item.purchasedtotalgrid
-      );
-    });
-  }, [
-    props.data,
-    grid,
-    feedindailygrid,
-    feedinmonthlygrid,
-    feedinyearlygrid,
-    feedintotalgrid,
-    purchaseddailygrid,
-    purchasedmonthlygrid,
-    purchasedyearlygrid,
-    purchasedtotalgrid,
-  ]);
+    props.data.map((item) => { setPurchasedtotalgrid((purchasedtotalgrid) => purchasedtotalgrid + item.purchasedtotalgrid) });
+  }, [props.data, grid, feedindailygrid, feedinmonthlygrid, feedinyearlygrid, feedintotalgrid, purchaseddailygrid, purchasedmonthlygrid, purchasedyearlygrid, purchasedtotalgrid]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Grid">
@@ -2532,8 +2274,7 @@ const Grid = (props) => {
       </div>
 
       <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row">
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit">
@@ -2574,8 +2315,7 @@ const Grid = (props) => {
           </div>
         </div>
 
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit">
@@ -2633,82 +2373,32 @@ const Battery = (props) => {
 
   useEffect(() => {
     setBattery(0);
-    props.data.map((item) => {
-      setBattery((battery) => battery + item.battery);
-    });
+    props.data.map((item) => { setBattery((battery) => battery + item.battery) });
 
     setChargedailybattery(0);
-    props.data.map((item) => {
-      setChargedailybattery(
-        (chargedailybattery) => chargedailybattery + item.chargedailybattery
-      );
-    });
+    props.data.map((item) => { setChargedailybattery((chargedailybattery) => chargedailybattery + item.chargedailybattery) });
 
     setChargemonthlybattery(0);
-    props.data.map((item) => {
-      setChargemonthlybattery(
-        (chargemonthlybattery) =>
-          chargemonthlybattery + item.chargemonthlybattery
-      );
-    });
+    props.data.map((item) => { setChargemonthlybattery((chargemonthlybattery) => chargemonthlybattery + item.chargemonthlybattery) });
 
     setChargeyearlybattery(0);
-    props.data.map((item) => {
-      setChargeyearlybattery(
-        (chargeyearlybattery) => chargeyearlybattery + item.chargeyearlybattery
-      );
-    });
+    props.data.map((item) => { setChargeyearlybattery((chargeyearlybattery) => chargeyearlybattery + item.chargeyearlybattery) });
 
     setChargetotalbattery(0);
-    props.data.map((item) => {
-      setChargetotalbattery(
-        (chargetotalbattery) => chargetotalbattery + item.chargetotalbattery
-      );
-    });
+    props.data.map((item) => { setChargetotalbattery((chargetotalbattery) => chargetotalbattery + item.chargetotalbattery) });
 
     setDischargedailybattery(0);
-    props.data.map((item) => {
-      setDischargedailybattery(
-        (dischargedailybattery) =>
-          dischargedailybattery + item.dischargedailybattery
-      );
-    });
+    props.data.map((item) => { setDischargedailybattery((dischargedailybattery) => dischargedailybattery + item.dischargedailybattery) });
 
     setDischargemonthlybattery(0);
-    props.data.map((item) => {
-      setDischargemonthlybattery(
-        (dischargemonthlybattery) =>
-          dischargemonthlybattery + item.dischargemonthlybattery
-      );
-    });
+    props.data.map((item) => { setDischargemonthlybattery((dischargemonthlybattery) => dischargemonthlybattery + item.dischargemonthlybattery) });
 
     setDischargeyearlybattery(0);
-    props.data.map((item) => {
-      setDischargeyearlybattery(
-        (dischargeyearlybattery) =>
-          dischargeyearlybattery + item.dischargeyearlybattery
-      );
-    });
+    props.data.map((item) => { setDischargeyearlybattery((dischargeyearlybattery) => dischargeyearlybattery + item.dischargeyearlybattery) });
 
     setDischargetotalbattery(0);
-    props.data.map((item) => {
-      setDischargetotalbattery(
-        (dischargetotalbattery) =>
-          dischargetotalbattery + item.dischargetotalbattery
-      );
-    });
-  }, [
-    props.data,
-    battery,
-    chargedailybattery,
-    chargemonthlybattery,
-    chargeyearlybattery,
-    chargetotalbattery,
-    dischargedailybattery,
-    dischargemonthlybattery,
-    dischargeyearlybattery,
-    dischargetotalbattery,
-  ]);
+    props.data.map((item) => { setDischargetotalbattery((dischargetotalbattery) => dischargetotalbattery + item.dischargetotalbattery) });
+  }, [props.data, battery, chargedailybattery, chargemonthlybattery, chargeyearlybattery, chargetotalbattery, dischargedailybattery, dischargemonthlybattery, dischargeyearlybattery, dischargetotalbattery]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Battery">
@@ -2726,8 +2416,7 @@ const Battery = (props) => {
       </div>
 
       <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row">
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit">
@@ -2768,8 +2457,7 @@ const Battery = (props) => {
           </div>
         </div>
 
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit">
@@ -2835,56 +2523,19 @@ const Day = (props) => {
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-        {/* <ResponsiveContainer
-          style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-        >
-          <LineChart width={100} height={300} data={data}>
-            <XAxis dataKey="time" />
-            <YAxis />
-            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-            <Line type="monotone" dataKey={v} stroke="#8884d8" />
-            <Tooltip />
-            <Legend />
-          </LineChart>
-        </ResponsiveContainer> */}
-
-        <ResponsiveContainer
-          style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-        >
-          <AreaChart
-            width={100}
-            height={300}
-            data={data}
-            // margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-          >
+        <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
+          <AreaChart width={100} height={300} data={data}>
             <defs>
               <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
                 <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
               </linearGradient>
-              {/* <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-              </linearGradient> */}
             </defs>
             <XAxis dataKey="time" axisLine={false} tickLine={false} />
             <YAxis axisLine={false} tickLine={false} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
-            <Area
-              type="monotone"
-              dataKey={v}
-              stroke="#8884d8"
-              fillOpacity={1}
-              fill="url(#colorday)"
-            />
-            {/* <Area
-              type="monotone"
-              dataKey="pv"
-              stroke="#82ca9d"
-              fillOpacity={1}
-              fill="url(#colorPv)"
-            /> */}
+            <Area type="monotone" dataKey={v} stroke="#8884d8" fillOpacity={1} fill="url(#colorday)" />
           </AreaChart>
         </ResponsiveContainer>
       </div>
@@ -2905,16 +2556,7 @@ const Month = (props) => {
     const { fill, x, y, width, height } = props;
 
     return (
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        fill={"rgb(4,143,255)"}
-        rx="3"
-        ry="3"
-        opacity="1"
-      ></rect>
+      <rect x={x} y={y} width={width} height={height} fill={"rgb(4,143,255)"} rx="3" ry="3" opacity="1" />
     );
   };
 
@@ -2929,23 +2571,14 @@ const Month = (props) => {
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-        <ResponsiveContainer
-          style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-        >
+        <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
           <BarChart width={150} height={200} data={data}>
             <XAxis dataKey="time" axisLine={false} tickLine={false} />
             <YAxis axisLine={false} tickLine={false} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
-            <Bar
-              shape={<TriangleBar />}
-              dataKey={v}
-              fill="#6495ed"
-              barSize={15}
-              legendType="circle"
-              style={{ fill: "#6495ed" }}
-            />
+            <Bar shape={<TriangleBar />} dataKey={v} fill="#6495ed" barSize={15} legendType="circle" style={{ fill: "#6495ed" }} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -2966,16 +2599,7 @@ const Year = (props) => {
     const { fill, x, y, width, height } = props;
 
     return (
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        fill={"rgb(4,143,255)"}
-        rx="3"
-        ry="3"
-        opacity="1"
-      ></rect>
+      <rect x={x} y={y} width={width} height={height} fill={"rgb(4,143,255)"} rx="3" ry="3" opacity="1" />
     );
   };
 
@@ -2990,23 +2614,14 @@ const Year = (props) => {
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-        <ResponsiveContainer
-          style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-        >
+        <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
           <BarChart width={150} height={200} data={data}>
             <XAxis dataKey="time" axisLine={false} tickLine={false} />
             <YAxis axisLine={false} tickLine={false} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
-            <Bar
-              shape={<TriangleBar />}
-              dataKey={v}
-              fill="#6495ed"
-              barSize={15}
-              legendType="circle"
-              style={{ fill: "#6495ed" }}
-            />
+            <Bar shape={<TriangleBar />} dataKey={v} fill="#6495ed" barSize={15} legendType="circle" style={{ fill: "#6495ed" }} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -3014,50 +2629,20 @@ const Year = (props) => {
   );
 };
 
-const Total = () => {
-  const db = [
-    {
-      name: "Sản lượng năm",
-      data: [
-        { time: "2018", val: 21.69 },
-        { time: "2019", val: 22.31 },
-        { time: "2020", val: 23.45 },
-        { time: "2021", val: 24.56 },
-        { time: "2022", val: 25.67 },
-        { time: "2023", val: 26.78 },
-        { time: "2024", val: 27.89 },
-      ],
-    },
-  ];
-
+const Total = (props) => {
   const [data, setData] = useState([]);
   const [v, setV] = useState("--");
 
   useEffect(() => {
-    db.map((item) => {
-      let v = item.name;
-      setData([]);
-      item.data.map((item) => {
-        setData((old) => [...old, { time: item.time, [v]: item.val }]);
-      });
-      setV(item.name);
-    });
-  }, []);
+    setData(props.data);
+    setV(props.v);
+  }, [props.data, props.v]);
 
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
 
     return (
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        fill={"rgb(4,143,255)"}
-        rx="3"
-        ry="3"
-        opacity="1"
-      ></rect>
+      <rect x={x} y={y} width={width} height={height} fill={"rgb(4,143,255)"} rx="3" ry="3" opacity="1" />
     );
   };
 
@@ -3072,23 +2657,14 @@ const Total = () => {
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-        <ResponsiveContainer
-          style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-        >
+        <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
           <BarChart width={150} height={200} data={data}>
             <XAxis dataKey="time" axisLine={false} tickLine={false} />
             <YAxis axisLine={false} tickLine={false} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
-            <Bar
-              shape={<TriangleBar />}
-              dataKey={v}
-              fill="#6495ed"
-              barSize={15}
-              legendType="circle"
-              //style={{ fill: "#6495ed" }}
-            />
+            <Bar shape={<TriangleBar />} dataKey={v} fill="#6495ed" barSize={15} legendType="circle" />
           </BarChart>
         </ResponsiveContainer>
       </div>
