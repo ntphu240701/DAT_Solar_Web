@@ -2,19 +2,74 @@ import React, { useEffect, useState } from "react";
 import "./GroupRole.scss";
 import { IoClose } from "react-icons/io5";
 import { addState, groupID, groupUser } from "./GroupRole";
+import DataTable from "react-data-table-component";
+import { signal } from "@preact/signals-react";
+
+const infouser = signal([
+  {
+    name: "Tiến Bịp DAT",
+    username: "tiendat_012",
+    subinfo: "RnD Center",
+  },
+  {
+    name: "Hiệp sĩ đường phố",
+    username: "hiepdat_012",
+    subinfo: "RnD Center",
+  },
+  {
+    name: "Johnny Trí Nguyễn",
+    username: "tridat_012",
+    subinfo: "RnD Center",
+  },
+  {
+    name: "Tony Trần",
+    username: "tonydat_012",
+    subinfo: "RnD Center",
+  },
+  {
+    name: "Phó Lũ",
+    username: "phudat_012",
+    subinfo: "RnD Center",
+  },
+  {
+    name: "Anh A",
+    username: "anhadat_012",
+    subinfo: "RnD Center",
+  },
+  {
+    name: "Anh B",
+    username: "anhbdat_012",
+    subinfo: "RnD Center",
+  },
+  {
+    name: "Anh C",
+    username: "anhcdat_012",
+    subinfo: "RnD Center",
+  },
+  {
+    name: "Anh D",
+    username: "anhddat_012",
+    subinfo: "RnD Center",
+  },
+  {
+    name: "Anh E",
+    username: "anhedat_012",
+    subinfo: "RnD Center",
+  },
+]);
 
 export default function AddUsers() {
-  const [name, setName] = useState("");
   const [username, setUsername] = useState("");
-  const [subinfo, setSubinfo] = useState("");
-
-  //   useEffect(() => {
-  //       console.log(name, username, subinfo);
-  //   })
-
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
+  };
+
+  const paginationComponentOptions = {
+    rowsPerPageText: "Số hàng",
+    rangeSeparatorText: "đến",
+    selectAllRowsItem: true,
+    selectAllRowsItemText: "tất cả",
   };
 
   const handlePopup = (state) => {
@@ -26,13 +81,31 @@ export default function AddUsers() {
 
   const handleAddUser = () => {
     addState.value = false;
-    console.log(groupID.value);
-    groupUser.value.forEach((item) => {
-      if (item.groupid === groupID.value) {
-        item.users.push({ name: name, username: username, subinfo: subinfo });
+    const i = groupUser.value.findIndex(
+      (item) => item.groupid === groupID.value
+    );
+    // console.log(i);
+    const check = groupUser.value[i].users.findIndex(
+      (item) => item.username === username
+    );
+    if (check === -1) {
+      const t = infouser.value.find((item) => item.username === username);
+      if(t !== undefined){
+        // groupUser.value[i].users.push(t);
+        groupUser.value[i] = {
+          ...groupUser.value[i],
+          users:[
+            ...groupUser.value[i].users,
+            t
+          ]
+        }
+        console.log(groupUser.value);
+      } else {
+        alert("Không tim thay người dùng, vui lòng kiểm tra tên tài khoản.");
       }
-    });
-    // console.log(groupUser.value);
+    } else {
+      alert("Người dùng đã ở trong nhóm.");
+    }
   };
 
   return (
@@ -55,27 +128,11 @@ export default function AddUsers() {
       </div>
       <div className="DAT_AddUserPopup_Box_Body">
         <div className="DAT_AddUserPopup_Box_Body_Input">
-          <span>Tên người dùng:</span>
-          <input
-            type="text"
-            required
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className="DAT_AddUserPopup_Box_Body_Input">
           <span>Tên tài khoản:</span>
           <input
             type="text"
             required
             onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div className="DAT_AddUserPopup_Box_Body_Input">
-          <span>Thông tin:</span>
-          <input
-            type="text"
-            required
-            onChange={(e) => setSubinfo(e.target.value)}
           />
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import "./GroupRole.scss";
-import { groupID, groupUser, popupState } from "./GroupRole";
+import { dataUsers, groupID, groupUser, popupState } from "./GroupRole";
 import { IoClose } from "react-icons/io5";
 import { userDel } from "./GroupRole";
 
@@ -26,6 +26,7 @@ export default function Popup() {
         );
       }
     });
+    console.log(groupUser.value);
   };
 
   return (

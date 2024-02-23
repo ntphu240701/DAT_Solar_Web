@@ -86,7 +86,7 @@
             &_Left {
                 display: flex;
                 flex-direction: column;
-                flex: 4;
+                flex: 3;
                 border-right: 1px solid rgb(207, 207, 207);
                 &_Head {
                     display: flex;
@@ -96,6 +96,9 @@
                     border-bottom: 1px solid rgb(207, 207, 207);
                     background-color: #216990;
                     color: white;
+                    white-space: nowrap; // ngan xuong dong
+                    overflow: hidden; // an noi dung vuot ra ngoai
+                    text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
                 }
                 &_ItemList {
                     background-color: rgb(207, 207, 207, 0.4);
@@ -104,7 +107,7 @@
                         display: flex;
                         justify-content: center;
                         flex-direction: column;
-                        height: 60px;
+                        // height: 60px;
                         padding: 15px;
                         background-color: white;
                         border-bottom: 1px solid rgb(207, 207, 207);
@@ -118,6 +121,9 @@
                             right: 10px;
                             color: red;
                             cursor: pointer;
+                            white-space: nowrap; // ngan xuong dong
+                            overflow: hidden; // an noi dung vuot ra ngoai
+                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
                             :hover {
                                 border-radius: 50%;
                                 transition: 0.1s;
@@ -130,10 +136,28 @@
                             right: 10px;
                             color: #216990;
                             cursor: pointer;
+                            white-space: nowrap; // ngan xuong dong
+                            overflow: hidden; // an noi dung vuot ra ngoai
+                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
                             :hover {
                                 border-radius: 50%;
                                 transition: 0.1s;
                                 color: #67afd6;
+                            }
+                        }
+
+                        &_Add {
+                            position: absolute;
+                            right: 75px;
+                            color: rgb(3, 142, 3);
+                            cursor: pointer;
+                            white-space: nowrap; // ngan xuong dong
+                            overflow: hidden; // an noi dung vuot ra ngoai
+                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
+                            :hover {
+                                border-radius: 50%;
+                                transition: 0.1s;
+                                color: rgb(3, 142, 3, 0.4);
                             }
                         }
                     }
@@ -142,7 +166,7 @@
             &_Right {
                 display: flex;
                 flex-direction: column;
-                flex: 6;
+                flex: 7;
                 // overflow-y: scroll;
 
                 &_Head {
@@ -153,11 +177,15 @@
                     border-bottom: 1px solid rgb(207, 207, 207);
                     background-color: #216990;
                     color: white;
+                    white-space: nowrap; // ngan xuong dong
+                    overflow: hidden; // an noi dung vuot ra ngoai
+                    text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
                 }
                 &_ItemList {
                     height: calc(100vh - 240px);
                     border-right: 1px solid rgb(207, 207, 207);
                     margin-bottom: 500px;
+                    background-color: #FEFEFE;
                     overflow: hidden;
                     overflow-y: auto;
                     &::-webkit-scrollbar {
@@ -202,10 +230,11 @@
                             }
                         }
                         &_Delete {
-                            position: absolute;
-                            right: 10px;
                             color: red;
                             cursor: pointer;
+                            white-space: nowrap; // ngan xuong dong
+                            overflow: hidden; // an noi dung vuot ra ngoai
+                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
                             :hover {
                                 border-radius: 50%;
                                 transition: 0.1s;
@@ -430,15 +459,15 @@
     border-radius: 5px;
     overflow: hidden;
     box-shadow:
-        2px 2px 5px rgb(73, 73, 73,0.2),
-        -2px -2px 5px rgb(67, 67, 67,0.2);
+        2px 2px 5px rgb(73, 73, 73, 0.2),
+        -2px -2px 5px rgb(67, 67, 67, 0.2);
 
     &_Head {
         display: flex;
         background-color: rgba(182, 182, 182, 0.4);
         padding: 16px;
 
-        &_Left{
+        &_Left {
             flex: 5;
 
             & p {
@@ -454,8 +483,6 @@
                 display: flex;
                 align-items: center;
                 cursor: pointer;
-
-                
             }
         }
     }
@@ -490,15 +517,15 @@
     border-radius: 5px;
     overflow: hidden;
     box-shadow:
-        2px 2px 5px rgb(73, 73, 73,0.2),
-        -2px -2px 5px rgb(67, 67, 67,0.2);
+        2px 2px 5px rgb(73, 73, 73, 0.2),
+        -2px -2px 5px rgb(67, 67, 67, 0.2);
 
     &_Head {
         display: flex;
         background-color: rgba(182, 182, 182, 0.4);
         padding: 16px;
 
-        &_Left{
+        &_Left {
             flex: 5;
 
             & p {
@@ -514,8 +541,6 @@
                 display: flex;
                 align-items: center;
                 cursor: pointer;
-
-                
             }
         }
     }
@@ -564,15 +589,15 @@
     border-radius: 5px;
     overflow: hidden;
     box-shadow:
-        2px 2px 5px rgb(73, 73, 73,0.2),
-        -2px -2px 5px rgb(67, 67, 67,0.2);
+        2px 2px 5px rgb(73, 73, 73, 0.2),
+        -2px -2px 5px rgb(67, 67, 67, 0.2);
 
     &_Head {
         display: flex;
         background-color: rgba(182, 182, 182, 0.4);
         padding: 16px;
 
-        &_Left{
+        &_Left {
             flex: 5;
 
             & p {
@@ -588,8 +613,6 @@
                 display: flex;
                 align-items: center;
                 cursor: pointer;
-
-                
             }
         }
     }

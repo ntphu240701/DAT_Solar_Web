@@ -33,7 +33,7 @@ export const inverterData = signal([]);
 
 export const Empty = () => {
   return (
-    <div className="DAT_TableEmpty">
+    <div className="DAT_TableEmpty" style={{backgroundColor: "#FEFEFE"}}>
       <div className="DAT_TableEmpty_Group">
         <div className="DAT_TableEmpty_Group_Icon">
           <FaRegFileAlt size={50} color="gray" />
