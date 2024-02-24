@@ -34,7 +34,7 @@ export const group = signal([
   {
     id: 1,
     name: "Phòng RnD",
-    subinfo: "CTy DAT Group - Head: Ngài Tô",
+    email: "CTy DAT Group - Head: Ngài Tô",
     role: {
       1: { lang: "role1", status: true },
       2: { lang: "role2", status: true },
@@ -45,7 +45,7 @@ export const group = signal([
   {
     id: 2,
     name: "Nhóm 2",
-    subinfo: "CTy DAT Group - Head: Phó Lũ",
+    email: "CTy DAT Group - Head: Phó Lũ",
     role: {
       1: { lang: "role1", status: false },
       2: { lang: "role2", status: true },
@@ -60,29 +60,39 @@ export const groupUser = signal([
     groupid: 1,
     users: [
       {
-        name: "Tiến Bịp DAT",
-        username: "tiendat_012",
-        subinfo: "RnD Center",
+        username: "tantaingo",
+        name: "Tài Giỏi",
+        email: "tantai.ngo@datgroup.com.vn",
       },
       {
-        name: "Hiệp sĩ đường phố",
-        username: "hiepdat_012",
-        subinfo: "RnD Center",
-      },
-      {
-        name: "Johnny Trí Nguyễn",
-        username: "tridat_012",
-        subinfo: "RnD Center",
-      },
-      {
+        username: "loctp",
         name: "Tony Trần",
-        username: "tonydat_012",
-        subinfo: "RnD Center",
+        email: "locdat_012@datgroup.com.vn",
       },
       {
-        name: "Phó Lũ",
+        username: "tiendv",
+        name: "Tiến Bịp DAT",
+        email: "tiendat_012@datgroup.com.vn",
+      },
+      {
+        username: "hiepga",
+        name: "Hiệp sĩ đường phố",
+        email: "hiepdat_012@datgroup.com.vn",
+      },
+      {
+        username: "tridat",
+        name: "Johnny Trí Nguyễn",
+        email: "tridat_012@datgroup.com.vn",
+      },
+      {
+        username: "tonydat_012",
+        name: "Tony Trần",
+        email: "tonydat_012@datgroup.com.vn",
+      },
+      {
         username: "phudat_012",
-        subinfo: "RnD Center",
+        name: "Phú Hộ",
+        email: "phudat_012@datgroup.com.vn",
       },
     ],
   },
@@ -90,19 +100,19 @@ export const groupUser = signal([
     groupid: 2,
     users: [
       {
-        name: "Anh A",
         username: "anhadat_012",
-        subinfo: "RnD Center",
+        name: "Anh A",
+        email: "anhadat_012@datgroup.com.vn",
       },
       {
-        name: "Anh B",
         username: "anhbdat_012",
-        subinfo: "RnD Center",
+        name: "Anh B",
+        email: "anhadat_012@datgroup.com.vn",
       },
       {
         name: "Anh C",
         username: "anhcdat_012",
-        subinfo: "RnD Center",
+        email: "anhcdat_012@datgroup.com.vn",
       },
     ],
   },
@@ -118,26 +128,32 @@ const GroupUsers = () => {
 
   const columnGroupRole = [
     {
+      name: "STT",
+      selector: (row, index) => index + 1,
+      sortable: true,
+      width: "80px",
+    },
+    {
+      name: "Tài khoản",
+      selector: (user) => user.username,
+      sortable: true,
+      width: "200px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
       name: "Tên",
       selector: (user) => user.name,
       sortable: true,
-      // width: "150px",
+      width: "200px",
       style: {
         justifyContent: "left",
       },
     },
     {
-      name: "Tên người dùng",
-      selector: (user) => user.username,
-      sortable: true,
-      // width: "150px",
-      style: {
-        justifyContent: "left",
-      },
-    },
-    {
-      name: "Thông tin",
-      selector: (user) => user.subinfo,
+      name: "Email",
+      selector: (user) => user.email,
       sortable: true,
       // width: "150px",
       style: {
@@ -161,7 +177,6 @@ const GroupUsers = () => {
 
   const handleChangeGroup = (e) => {
     groupID.value = Number(e.currentTarget.id);
-    console.log(groupID.value);
   };
 
   const handleDeleteUser = (e) => {
@@ -209,7 +224,7 @@ const GroupUsers = () => {
                 className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
                 style={{ fontSize: "13px", color: "grey", maxWidth: "100px" }}
               >
-                {item.subinfo}
+                {item.email}
               </div>
               <div
                 className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Delete"
@@ -228,11 +243,9 @@ const GroupUsers = () => {
               </div>
               <div
                 className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Add"
-                onClick={() => (
-                  (addState.value = true)
-                )}
+                onClick={() => (addState.value = true)}
               >
-                <IoMdPersonAdd size={20}/>
+                <IoMdPersonAdd size={20} />
               </div>
             </div>
           ))}
@@ -268,7 +281,7 @@ const GroupUsers = () => {
                     className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Info"
                     style={{ fontSize: "13px", color: "grey" }}
                   >
-                    {user.subinfo}
+                    {user.email}
                   </div>
                   <div
                     className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Delete"
