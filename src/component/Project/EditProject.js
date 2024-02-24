@@ -121,7 +121,7 @@ const BasicInfo = (props) => {
                     apiKey={process.env.REACT_APP_GGKEY}
                     defaultCenter={defaultProps.center}
                     defaultZoom={defaultProps.zoom}
-                    //onGoogleApiLoaded={onGoogleApiLoaded}
+                  //onGoogleApiLoaded={onGoogleApiLoaded}
                   />
                 </div>
               </div>
@@ -443,9 +443,9 @@ function EditProject(props) {
     });
 
     if (check !== 0) {
-      alert("vui long nhap day du thong tin");
+      console.log("vui long nhap day du thong tin");
     } else {
-      alert("cap nhat thanh cong");
+      console.log("cap nhat thanh cong");
       plantState.value = "default";
     }
   };

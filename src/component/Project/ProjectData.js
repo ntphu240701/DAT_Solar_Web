@@ -6,7 +6,6 @@ import {
   plantState,
   projectData,
   deviceData,
-  device,
   Logger,
   Inverter,
 } from "./Project";
@@ -318,7 +317,6 @@ function ProjectData(props) {
   const [dropConfig, setDropConfig] = useState(false);
 
   const [temp, setTemp] = useState({});
-  const [tempLogger, setTempLogger] = useState({});
   const [tempInverter, setTempInverter] = useState({});
 
   const [dataDay, setDataDay] = useState([]);
@@ -486,7 +484,7 @@ function ProjectData(props) {
       name: "Trạng thái",
       selector: (row) => (
         <>
-          {row.status ? (
+          {row.state === 0 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
             <MdOutlineError size={22} color="red" />
@@ -681,16 +679,16 @@ function ProjectData(props) {
     // dataLogger
     setTemp([]);
     deviceData.value.map((item) => {
-      const db = device.value.find((data) => data.SN === item.SN);
+      const db = Logger.value.find((data) => data.SN == item.loggerSN);
       setTemp((old) => [...old, db]);
     });
 
     // data LoggerTable
-    setTempLogger([]);
-    deviceData.value.map((item) => {
-      const db = Logger.value.find((data) => data.SN == item.loggerSN);
-      setTempLogger((old) => [...old, db]);
-    });
+    // setTempLogger([]);
+    // deviceData.value.map((item) => {
+    //   const db = Logger.value.find((data) => data.SN == item.loggerSN);
+    //   setTempLogger((old) => [...old, db]);
+    // });
 
     // data InverterTable
     setTempInverter([]);
@@ -1430,7 +1428,7 @@ function ProjectData(props) {
                               return (
                                 <DataTable className="DAT_Table_Device"
                                   columns={columnLogger}
-                                  data={tempLogger}
+                                  data={temp}
                                   pagination
                                   paginationComponentOptions={paginationComponentOptions}
                                   fixedHeader={true}
@@ -1597,7 +1595,7 @@ function ProjectData(props) {
 
       {popupAddGateway.value ? (
         <div className="DAT_AddGatewayPopup">
-          <AddGateway data={tempLogger} />
+          <AddGateway data={temp} />
         </div>
       ) : (
         <></>
@@ -2022,41 +2020,33 @@ const Graph = () => {
 };
 
 const Production = (props) => {
-  const [capacity, setCapacity] = useState(0);
   const [production, setProduction] = useState(0);
+  const [capacity, setCapacity] = useState(0);
   const [dailyproduction, setDailyproduction] = useState(0);
-  const [monthlyproduction, setMonthlyproduction] = useState(0);
-  const [yearlyproduction, setYearlyproduction] = useState(0);
-  const [totalproduction, setTotalproduction] = useState(0);
+  const result = getDaysInCurrentMonth();
 
   useEffect(() => {
-    setCapacity(0);
-    props.data.map((item) => { setCapacity((capacity) => capacity + item.capacity) });
-
     setProduction(0);
-    props.data.map((item) => { setProduction((production) => production + item.production) });
+    props.data.map((item) => { setProduction((production) => production + item.data.pro_1) });
+
+    setCapacity(0);
+    props.data.map((item) => { setCapacity((capacity) => capacity + item.data.pro_2) });
 
     setDailyproduction(0);
-    props.data.map((item) => { setDailyproduction((dailyproduction) => dailyproduction + item.dailyproduction) });
-
-    setMonthlyproduction(0);
-    props.data.map((item) => { setMonthlyproduction((monthlyproduction) => monthlyproduction + item.monthlyproduction) });
-
-    setYearlyproduction(0);
-    props.data.map((item) => { setYearlyproduction((yearlyproduction) => yearlyproduction + item.yearlyproduction) });
-
-    setTotalproduction(0);
-    props.data.map((item) => { setTotalproduction((totalproduction) => totalproduction + item.totalproduction) });
-  }, [props.data, production, capacity, dailyproduction, monthlyproduction, yearlyproduction, totalproduction]);
+    props.data.map((item) => { setDailyproduction((dailyproduction) => dailyproduction + item.data.pro_3) });
+  }, [props.data, production, capacity, dailyproduction]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Production">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart">
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data"
-            style={{ fontSize: "32px" }}
+            style={{ fontSize: "28px" }}
           >
-            0%
+            <span style={{ height: "40px", display: "flex", alignItems: "flex-end" }}>
+              {parseFloat((production / capacity) * 100).toFixed(2)}
+            </span> &nbsp;
+            <span style={{ fontSize: "18px", color: "grey", height: "40px", display: "flex", alignItems: "flex-end", paddingBottom: "3px" }}>%</span>
           </div>
         </div>
 
@@ -2065,8 +2055,11 @@ const Production = (props) => {
             Công suất tức thời
           </div>
           <div style={{ marginBottom: "8px" }}>
-            {production}
-            <span style={{ marginLeft: "8px", fontSize: "12px", color: "grey" }}>
+            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+              {production}
+            </span>
+            &nbsp;
+            <span style={{ fontSize: "12px", color: "grey" }}>
               kW
             </span>
           </div>
@@ -2075,8 +2068,11 @@ const Production = (props) => {
             Công suất lắp đặt
           </div>
           <div>
-            {capacity}
-            <span style={{ marginLeft: "8px", fontSize: "12px", color: "grey" }} >
+            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+              {capacity}
+            </span>
+            &nbsp;
+            <span style={{ fontSize: "12px", color: "grey" }} >
               kWp
             </span>
           </div>
@@ -2093,7 +2089,13 @@ const Production = (props) => {
             Sản lượng điện ngày
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            {dailyproduction} kW
+            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+              {dailyproduction}
+            </span>
+            &nbsp;
+            <span style={{ fontSize: "12px", color: "grey" }}>
+              kW
+            </span>
           </div>
         </div>
 
@@ -2104,7 +2106,13 @@ const Production = (props) => {
             Sản lượng điện tháng
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            {monthlyproduction} kW
+            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+              {parseFloat(dailyproduction * result).toFixed(2)}
+            </span>
+            &nbsp;
+            <span style={{ fontSize: "12px", color: "grey" }}>
+              kW
+            </span>
           </div>
         </div>
 
@@ -2115,7 +2123,13 @@ const Production = (props) => {
             Sản lượng điện năm
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            {yearlyproduction} kW
+            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+              {parseFloat((dailyproduction * result) * 12).toFixed(2)}
+            </span>
+            &nbsp;
+            <span style={{ fontSize: "12px", color: "grey" }}>
+              kW
+            </span>
           </div>
         </div>
 
@@ -2126,7 +2140,13 @@ const Production = (props) => {
             Tổng sản lượng điện
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            {totalproduction} kW
+            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+              ?
+            </span>
+            &nbsp;
+            <span style={{ fontSize: "12px", color: "grey" }}>
+              kW
+            </span>
           </div>
         </div>
       </div>
@@ -2137,26 +2157,15 @@ const Production = (props) => {
 const Consumption = (props) => {
   const [consumption, setConsumption] = useState(0);
   const [dailyconsumption, setDailyconsumption] = useState(0);
-  const [monthlyconsumption, setMonthlyconsumption] = useState(0);
-  const [yearlyconsumption, setYearlyconsumption] = useState(0);
-  const [totalconsumption, setTotalconsumption] = useState(0);
+  const result = getDaysInCurrentMonth();
 
   useEffect(() => {
     setConsumption(0);
-    props.data.map((item) => { setConsumption((consumption) => consumption + item.consumption) });
+    props.data.map((item) => { setConsumption((consumption) => consumption + item.data.con_1) });
 
     setDailyconsumption(0);
-    props.data.map((item) => { setDailyconsumption((dailyconsumption) => dailyconsumption + item.dailyconsumption) });
-
-    setMonthlyconsumption(0);
-    props.data.map((item) => { setMonthlyconsumption((monthlyconsumption) => monthlyconsumption + item.monthlyconsumption) });
-
-    setYearlyconsumption(0);
-    props.data.map((item) => { setYearlyconsumption((yearlyconsumption) => yearlyconsumption + item.yearlyconsumption) });
-
-    setTotalconsumption(0);
-    props.data.map((item) => { setTotalconsumption((totalconsumption) => totalconsumption + item.totalconsumption) });
-  }, [props.data, consumption, dailyconsumption, monthlyconsumption, yearlyconsumption, totalconsumption]);
+    props.data.map((item) => { setDailyconsumption((dailyconsumption) => dailyconsumption + item.data.con_2) });
+  }, [props.data, consumption, dailyconsumption]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption">
@@ -2165,7 +2174,15 @@ const Consumption = (props) => {
           <img src="/dat_picture/load.png" alt="" />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data_Data">
-          Tiêu thụ <span>{consumption}</span> kW
+          <span>
+            Tiêu thụ
+          </span>
+          &nbsp;
+          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{consumption}</span>
+          &nbsp;
+          <span style={{ fontSize: "12px", color: "grey" }}>
+            kW
+          </span>
         </div>
       </div>
 
@@ -2178,7 +2195,13 @@ const Consumption = (props) => {
               Tiêu thụ ngày
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
-              {dailyconsumption} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {dailyconsumption}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
 
@@ -2189,7 +2212,13 @@ const Consumption = (props) => {
               Tiêu thụ năm
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
-              {yearlyconsumption} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {parseFloat((dailyconsumption * result) * 12).toFixed(2)}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
         </div>
@@ -2202,7 +2231,13 @@ const Consumption = (props) => {
               Tiêu thụ tháng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
-              {monthlyconsumption} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {parseFloat(dailyconsumption * result).toFixed(2)}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
 
@@ -2213,7 +2248,13 @@ const Consumption = (props) => {
               Tổng tiêu thụ
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
-              {totalconsumption} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                ?
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
         </div>
@@ -2225,42 +2266,27 @@ const Consumption = (props) => {
 const Grid = (props) => {
   const [grid, setGrid] = useState(0);
   const [feedindailygrid, setFeedindailygrid] = useState(0);
-  const [feedinmonthlygrid, setFeedinmonthlygrid] = useState(0);
-  const [feedinyearlygrid, setFeedinyearlygrid] = useState(0);
   const [feedintotalgrid, setFeedintotalgrid] = useState(0);
   const [purchaseddailygrid, setPurchaseddailygrid] = useState(0);
-  const [purchasedmonthlygrid, setPurchasedmonthlygrid] = useState(0);
-  const [purchasedyearlygrid, setPurchasedyearlygrid] = useState(0);
   const [purchasedtotalgrid, setPurchasedtotalgrid] = useState(0);
+  const result = getDaysInCurrentMonth();
 
   useEffect(() => {
     setGrid(0);
-    props.data.map((item) => { setGrid((grid) => grid + item.grid) });
+    props.data.map((item) => { setGrid((grid) => grid + item.data.grid_1) });
 
     setFeedindailygrid(0);
-    props.data.map((item) => { setFeedindailygrid((feedindailygrid) => feedindailygrid + item.feedindailygrid) });
-
-    setFeedinmonthlygrid(0);
-    props.data.map((item) => { setFeedinmonthlygrid((feedinmonthlygrid) => feedinmonthlygrid + item.feedinmonthlygrid) });
-
-    setFeedinyearlygrid(0);
-    props.data.map((item) => { setFeedinyearlygrid((feedinyearlygrid) => feedinyearlygrid + item.feedinyearlygrid) });
+    props.data.map((item) => { setFeedindailygrid((feedindailygrid) => feedindailygrid + item.data.grid_in_1) });
 
     setFeedintotalgrid(0);
-    props.data.map((item) => { setFeedintotalgrid((feedintotalgrid) => feedintotalgrid + item.feedintotalgrid) });
+    props.data.map((item) => { setFeedintotalgrid((feedintotalgrid) => feedintotalgrid + item.data.grid_in_2) });
 
     setPurchaseddailygrid(0);
-    props.data.map((item) => { setPurchaseddailygrid((purchaseddailygrid) => purchaseddailygrid + item.purchaseddailygrid) });
-
-    setPurchasedmonthlygrid(0);
-    props.data.map((item) => { setPurchasedmonthlygrid((purchasedmonthlygrid) => purchasedmonthlygrid + item.purchasedmonthlygrid) });
-
-    setPurchasedyearlygrid(0);
-    props.data.map((item) => { setPurchasedyearlygrid((purchasedyearlygrid) => purchasedyearlygrid + item.purchasedyearlygrid) });
+    props.data.map((item) => { setPurchaseddailygrid((purchaseddailygrid) => purchaseddailygrid + item.data.grid_out_1) });
 
     setPurchasedtotalgrid(0);
-    props.data.map((item) => { setPurchasedtotalgrid((purchasedtotalgrid) => purchasedtotalgrid + item.purchasedtotalgrid) });
-  }, [props.data, grid, feedindailygrid, feedinmonthlygrid, feedinyearlygrid, feedintotalgrid, purchaseddailygrid, purchasedmonthlygrid, purchasedyearlygrid, purchasedtotalgrid]);
+    props.data.map((item) => { setPurchasedtotalgrid((purchasedtotalgrid) => purchasedtotalgrid + item.data.grid_out_2) });
+  }, [props.data, grid, feedindailygrid, feedintotalgrid, purchaseddailygrid, purchasedtotalgrid]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Grid">
@@ -2269,7 +2295,17 @@ const Grid = (props) => {
           <img src="/dat_picture/grid.png" alt="" />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Data">
-          Lưới <span>{grid}</span> W
+          <span>
+            Lưới
+          </span>
+          &nbsp;
+          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+            {grid}
+          </span>
+          &nbsp;
+          <span style={{ fontSize: "12px", color: "grey" }}>
+            W
+          </span>
         </div>
       </div>
 
@@ -2286,7 +2322,13 @@ const Grid = (props) => {
               Hôm nay
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              {feedindailygrid} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {feedindailygrid}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
@@ -2294,7 +2336,13 @@ const Grid = (props) => {
               Tháng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              {feedinmonthlygrid} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {parseFloat(feedindailygrid * result).toFixed(2)}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
@@ -2302,7 +2350,13 @@ const Grid = (props) => {
               Năm
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              {feedinyearlygrid} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {parseFloat((feedindailygrid * result) * 12).toFixed(2)}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
@@ -2310,7 +2364,13 @@ const Grid = (props) => {
               Tổng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              {feedintotalgrid} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {feedintotalgrid}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
         </div>
@@ -2327,7 +2387,13 @@ const Grid = (props) => {
               Hôm nay
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              {purchaseddailygrid} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {purchaseddailygrid}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
@@ -2335,7 +2401,13 @@ const Grid = (props) => {
               Tháng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              {purchasedmonthlygrid} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {parseFloat(purchaseddailygrid * result).toFixed(2)}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
@@ -2343,7 +2415,13 @@ const Grid = (props) => {
               Năm
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              {purchasedyearlygrid} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {parseFloat((purchaseddailygrid * result) * 12).toFixed(2)}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
@@ -2351,7 +2429,13 @@ const Grid = (props) => {
               Tổng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              {purchasedtotalgrid} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {purchasedtotalgrid}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
         </div>
@@ -2362,43 +2446,24 @@ const Grid = (props) => {
 
 const Battery = (props) => {
   const [battery, setBattery] = useState(0);
+  const [percent, setPercent] = useState(0);
   const [chargedailybattery, setChargedailybattery] = useState(0);
-  const [chargemonthlybattery, setChargemonthlybattery] = useState(0);
-  const [chargeyearlybattery, setChargeyearlybattery] = useState(0);
-  const [chargetotalbattery, setChargetotalbattery] = useState(0);
   const [dischargedailybattery, setDischargedailybattery] = useState(0);
-  const [dischargemonthlybattery, setDischargemonthlybattery] = useState(0);
-  const [dischargeyearlybattery, setDischargeyearlybattery] = useState(0);
-  const [dischargetotalbattery, setDischargetotalbattery] = useState(0);
+  const result = getDaysInCurrentMonth();
 
   useEffect(() => {
     setBattery(0);
-    props.data.map((item) => { setBattery((battery) => battery + item.battery) });
+    props.data.map((item) => { setBattery((battery) => battery + item.data.bat_1) });
+
+    setPercent(0);
+    props.data.map((item) => { setPercent((percent) => percent + item.data.bat_2) });
 
     setChargedailybattery(0);
-    props.data.map((item) => { setChargedailybattery((chargedailybattery) => chargedailybattery + item.chargedailybattery) });
-
-    setChargemonthlybattery(0);
-    props.data.map((item) => { setChargemonthlybattery((chargemonthlybattery) => chargemonthlybattery + item.chargemonthlybattery) });
-
-    setChargeyearlybattery(0);
-    props.data.map((item) => { setChargeyearlybattery((chargeyearlybattery) => chargeyearlybattery + item.chargeyearlybattery) });
-
-    setChargetotalbattery(0);
-    props.data.map((item) => { setChargetotalbattery((chargetotalbattery) => chargetotalbattery + item.chargetotalbattery) });
+    props.data.map((item) => { setChargedailybattery((chargedailybattery) => chargedailybattery + item.data.bat_in_1) });
 
     setDischargedailybattery(0);
-    props.data.map((item) => { setDischargedailybattery((dischargedailybattery) => dischargedailybattery + item.dischargedailybattery) });
-
-    setDischargemonthlybattery(0);
-    props.data.map((item) => { setDischargemonthlybattery((dischargemonthlybattery) => dischargemonthlybattery + item.dischargemonthlybattery) });
-
-    setDischargeyearlybattery(0);
-    props.data.map((item) => { setDischargeyearlybattery((dischargeyearlybattery) => dischargeyearlybattery + item.dischargeyearlybattery) });
-
-    setDischargetotalbattery(0);
-    props.data.map((item) => { setDischargetotalbattery((dischargetotalbattery) => dischargetotalbattery + item.dischargetotalbattery) });
-  }, [props.data, battery, chargedailybattery, chargemonthlybattery, chargeyearlybattery, chargetotalbattery, dischargedailybattery, dischargemonthlybattery, dischargeyearlybattery, dischargetotalbattery]);
+    props.data.map((item) => { setDischargedailybattery((dischargedailybattery) => dischargedailybattery + item.data.bat_out_1) });
+  }, [props.data, battery, percent, chargedailybattery, dischargedailybattery]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Battery">
@@ -2407,11 +2472,29 @@ const Battery = (props) => {
           <img src="/dat_picture/battery.png" alt="" />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Status">
-          Sạc 95%
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: "4px" }}>
+            <span>
+              Sạc
+            </span>
+            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+              {percent}
+            </span>
+            <span style={{ fontSize: "12px", color: "grey" }}>
+              %
+            </span>
+          </div>
           <LiaLongArrowAltLeftSolid size={30} />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Data">
-          Pin <span>{battery}</span> W
+          <span>
+            Pin
+          </span>
+          &nbsp;
+          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{battery}</span>
+          &nbsp;
+          <span style={{ fontSize: "12px", color: "grey" }}>
+            W
+          </span>
         </div>
       </div>
 
@@ -2428,7 +2511,13 @@ const Battery = (props) => {
               Hôm nay
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              {chargedailybattery} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {chargedailybattery}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
@@ -2436,7 +2525,13 @@ const Battery = (props) => {
               Tháng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              {chargemonthlybattery} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {parseFloat(chargedailybattery * result).toFixed(2)}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
@@ -2444,7 +2539,13 @@ const Battery = (props) => {
               Năm
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              {chargeyearlybattery} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {parseFloat((chargedailybattery * result) * 12).toFixed(2)}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
@@ -2452,7 +2553,13 @@ const Battery = (props) => {
               Tổng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              {chargetotalbattery} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                ?
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
         </div>
@@ -2469,7 +2576,13 @@ const Battery = (props) => {
               Hôm nay
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              {dischargedailybattery} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {dischargedailybattery}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
@@ -2477,7 +2590,13 @@ const Battery = (props) => {
               Tháng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              {dischargemonthlybattery} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {parseFloat(dischargedailybattery * result).toFixed(2)}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
@@ -2485,7 +2604,13 @@ const Battery = (props) => {
               Năm
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              {dischargeyearlybattery} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                {parseFloat((dischargedailybattery * result) * 12).toFixed(2)}
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
@@ -2493,7 +2618,13 @@ const Battery = (props) => {
               Tổng
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              {dischargetotalbattery} kWh
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                ?
+              </span>
+              &nbsp;
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                kWh
+              </span>
             </div>
           </div>
         </div>
@@ -2671,3 +2802,13 @@ const Total = (props) => {
     </div>
   );
 };
+
+const getDaysInCurrentMonth = () => {
+  const date = new Date();
+
+  return new Date(
+    date.getFullYear(),
+    date.getMonth() + 1,
+    0,
+  ).getDate();
+}
