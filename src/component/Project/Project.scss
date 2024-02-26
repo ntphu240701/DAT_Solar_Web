@@ -113,34 +113,21 @@
 
 // 19/01/2024 by Phu
 .DAT_ProjectData {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    position: relative;
+    width: 95%;
+    margin: auto;
+    overflow: hidden;
+    margin-top: 80px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px rgba(193, 193, 193, 0.5);
     background-color: rgb(231, 231, 231);
-    z-index: 25;
-
-    // an thanh scrollbar
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-        display: none;
-        /* Safari and Chrome */
-    }
 
     &_Header {
-        position: fixed;
-        z-index: 25;
-        width: 100%;
-        padding-top: 58px;
         background-color: white;
         display: flex;
         flex-wrap: wrap;
         overflow: hidden;
-        box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
 
         &_LeftDashboard {
             flex: 8;
@@ -249,9 +236,9 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
-
-                background-color: #9e9e9e;
                 cursor: pointer;
+
+                // background-color: #9e9e9e;
 
                 &:hover {
                     background-color: #bdbdbd;
@@ -278,7 +265,7 @@
 
     &_Dashboard {
         position: relative;
-        margin-top: 156px;
+        margin-top: 16px;
 
         &_Data {
             width: 98%;
@@ -498,6 +485,7 @@
                         flex-wrap: wrap;
                         overflow: hidden;
                         gap: 16px;
+                        border-bottom: solid 1px rgb(199, 199, 199);
 
                         &_Chart {
                             flex: 5;
@@ -860,7 +848,7 @@
             overflow: hidden;
             background-color: white;
             margin: auto;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             border-radius: 5px;
             padding-bottom: 10px;
             position: relative;
@@ -1143,7 +1131,8 @@
 
     &_Device {
         position: relative;
-        margin-top: 134px;
+        margin-top: 16px;
+        margin-bottom: 16px;
 
         &_Analysis {
             width: 98%;
@@ -1242,7 +1231,8 @@
 
     &_Alert {
         position: relative;
-        margin-top: 134px;
+        margin-top: 16px;
+        margin-bottom: 16px;
 
         &_Data {
             width: 98%;
@@ -1308,20 +1298,15 @@
 }
 
 .DAT_ProjectDataDrop {
-    position: fixed;
-    top: 128px;
-    right: 50px;
-    // width: 300px;
-    // height: 300px;
-    padding: 16px;
+    position: absolute;
+    top: 140px;
+    right: 90px;
     border-radius: 5px;
     background-color: white;
     box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
     z-index: 35;
-
     display: flex;
     flex-direction: column;
-    gap: 10px;
 
     &_Dashboard {
         width: 30px;
@@ -1386,37 +1371,33 @@
             background-color: #bdbdbd;
         }
     }
+
+    &_Item {
+        padding: 8px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgba(236, 236, 236, 0.7);
+        }
+    }
 }
 
 .DAT_EditProject {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
+    position: relative;
+    width: 95%;
+    margin: auto;
+    overflow: hidden;
+    margin-top: 80px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px rgba(193, 193, 193, 0.5);
     background-color: rgb(231, 231, 231);
-    z-index: 25;
-
-    // an thanh scrollbar
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-        display: none;
-        /* Safari and Chrome */
-    }
 
     &_Header {
-        position: fixed;
-        z-index: 25;
-        width: 100%;
-        padding-top: 58px;
         background-color: white;
         display: flex;
         flex-wrap: wrap;
         overflow: hidden;
-        box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
 
         &_Left {
             flex: 5;
@@ -1478,7 +1459,7 @@
         border-radius: 5px;
         overflow: hidden;
         position: relative;
-        margin-top: 134px;
+        margin-top: 16px;
         margin-bottom: 16px;
 
         &_Tit {
@@ -1897,37 +1878,115 @@
             }
         }
     }
+
+    &_ImgInfo {
+        width: 98%;
+        margin: auto;
+        background-color: white;
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 16px;
+
+        &_Tit {
+            padding: 16px;
+            font-size: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            overflow: hidden;
+
+            &_Left {
+                flex: 5;
+            }
+
+            &_Right {
+                flex: 5;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                cursor: pointer;
+            }
+        }
+
+        &_Body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &_Ava {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+                padding-top: 16px;
+                padding-left: 16px;
+                padding-right: 16px;
+                padding-bottom: 16px;
+
+                &_Img {
+                    background-color: white;
+                    // background-color: rgb(197, 197, 197);
+                    display: flex;
+                    // border-radius: 50%;
+                    box-shadow: 0 0 6px 6px rgba(193, 193, 193, 0.5);
+
+                    & img {
+                        display: block;
+                        min-width: 0px !important;
+                        min-height: 0px !important;
+                        width: 300px;
+                        height: 150px;
+                        // border-radius: 50%;
+                        // stroke-dasharray: none;
+                        // border-style:none;
+                    }
+                }
+
+                & input {
+                    width: 0.1px;
+                    height: 0.1px;
+                    opacity: 0;
+                    overflow: hidden;
+                    // position: absolute;
+                    z-index: -1;
+                }
+
+                & label {
+                    width: 150px;
+                    background-color: rgb(128, 128, 128, 0.1);
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 5px;
+
+                    :hover {
+                        background-color: rgb(128, 128, 128, 0.7);
+                    }
+                }
+            }
+
+        }
+    }
 }
 
 .DAT_AddProject {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
+    position: relative;
+    width: 95%;
+    margin: auto;
+    overflow: hidden;
+    margin-top: 80px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px rgba(193, 193, 193, 0.5);
     background-color: rgb(231, 231, 231);
-    z-index: 25;
-
-    // an thanh scrollbar
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-        display: none;
-        /* Safari and Chrome */
-    }
 
     &_Header {
-        position: fixed;
-        z-index: 25;
-        width: 100%;
-        padding-top: 58px;
         background-color: white;
         display: flex;
         flex-wrap: wrap;
         overflow: hidden;
-        box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
 
         &_Left {
             flex: 5;
@@ -1989,7 +2048,7 @@
         border-radius: 5px;
         overflow: hidden;
         position: relative;
-        margin-top: 134px;
+        margin-top: 16px;
         margin-bottom: 16px;
 
         &_Tit {
@@ -2414,11 +2473,19 @@
     height: 100vh;
     width: 100%;
     position: fixed;
-    background-color: white;
-    top: 0;
+    background-color: rgb(188, 188, 188, 0.7);
+    top: 0px;
     right: 0;
     z-index: 30;
     overflow: hidden;
+
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .DAT_DevicePopup {

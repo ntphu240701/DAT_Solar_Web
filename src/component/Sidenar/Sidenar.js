@@ -9,6 +9,7 @@ import { SiDatabricks } from "react-icons/si";
 import { RiSettingsLine } from "react-icons/ri";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { VscDashboard } from "react-icons/vsc";
+import  { userInfor } from "../../App";
 export const sidenar = signal(true)
 
 const tab = signal('Dashboard')
@@ -134,7 +135,7 @@ function Sidenar(props) {
             <div className="DAT_User" style={(sidenar.value) ? { width: "200px" } : { width: "0px" }} >
                 <div className="DAT_User-group" style={(sidenar.value) ? { display: "block" } : { display: "none" }} >
                     <div className="DAT_User-group-Tit">Đăng nhập bởi:</div>
-                    <div className="DAT_User-group-ID">RnD Center</div>
+                    <div className="DAT_User-group-ID">{userInfor.value.name}</div>
                 </div>
             </div>
             <div className="DAT_Shadow" id="DAT_Shadow" style={(sidenar.value) ? { display: "block" } : { display: "none" }} onClick={(event) => { handleShadow(event) }}></div>

@@ -53,8 +53,8 @@
     height: 100vh;
     width: 100%;
     position: fixed;
-    background-color: rgb(188, 188, 188);
-    top: 58px;
+    background-color: rgb(188, 188, 188,0.7);
+    top: 0px;
     right: 0;
     z-index: 30;
     overflow: hidden;
@@ -397,27 +397,20 @@
     }
 }
 
+
 .DAT_Config {
-    //margin-top: 94px;
-    //position: relative;
-    //height: 100%;
-    width: 98%;
-    //height: 200px;
+    position: relative;
+    width: 95%;
     margin: auto;
     overflow: hidden;
-    //overflow-y: scroll;
-   
+    margin-top: 80px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px rgba(193, 193, 193, 0.5);
 
     &_Header {
-        position: fixed;
         background-color: white;
-        //position: fixed;
-        right: 0px;
-        top: 58px;
         display: flex;
-        z-index: 30;
-        // margin: 10px;
-        // height: 80px;
         left: 0px;
         align-items: center;
         padding: 20px;
@@ -426,12 +419,10 @@
 
             & p {
                 margin: 0;
-                //padding: 16px;
             }
         }
         &_Right {
             flex: 5;
-            //padding: 16px;
             display: flex;
             justify-content: flex-end;
             gap: 10px;
@@ -470,17 +461,11 @@
         }
     }
 
-    &_Body {
-        position: relative;
-        //height: 100%;
-        // width: 100%;
-        margin-top: 100px;
-        margin-bottom: 100px;
-       
+    &_Body {       
         &_Item {
             background-color: white;
             // width: 100%;
-            & h4 {
+            &_Tit {
                 background-color: rgb(230, 230, 230);
                 padding: 15px;
             }
@@ -500,6 +485,9 @@
                         display: flex;
                         gap: 10px;
                     }
+                }
+                & div:last-child{
+                    border-bottom: none;
                 }
             }
         }

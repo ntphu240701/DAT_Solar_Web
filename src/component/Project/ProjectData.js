@@ -30,7 +30,7 @@ import { FaCheckCircle, FaTree } from "react-icons/fa";
 import { RiMoneyCnyCircleFill } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 import { AiOutlineDashboard } from "react-icons/ai";
-import { BsMenuButtonWide } from "react-icons/bs";
+import { BsMenuButtonWide, BsThreeDotsVertical } from "react-icons/bs";
 import { GoAlertFill } from "react-icons/go";
 import { LiaLongArrowAltLeftSolid } from "react-icons/lia";
 import { CiSearch } from "react-icons/ci";
@@ -42,6 +42,7 @@ import Weather from "./Weather";
 import AddSubsystem from "./AddSubsystem";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -335,6 +336,8 @@ function ProjectData(props) {
     total: "Tổng",
   });
 
+  const navigate = useNavigate();
+
   const color = {
     cur: "blue",
     pre: "black",
@@ -564,6 +567,11 @@ function ProjectData(props) {
     },
   ];
 
+  const handleWarn = () => {
+    navigate('/Warn');
+    window.location.reload();
+  }
+
   const handleNav = (e) => {
     var id = e.currentTarget.id;
     setNav(id);
@@ -577,6 +585,7 @@ function ProjectData(props) {
   const handleView = (e) => {
     var id = e.currentTarget.id;
     setView(id);
+    dropState.value = !dropState.value
   };
 
   const handleShowConfig = (e) => {
@@ -797,7 +806,7 @@ function ProjectData(props) {
                 case "dashboard":
                   return (
                     <div className="DAT_ProjectData_Header_LeftDashboard">
-                      <div style={{ fontSize: 22, paddingBottom: 5 }}>
+                      <div style={{ fontSize: 22, marginBottom: "8px" }}>
                         {tit[view]}
                       </div>
 
@@ -810,11 +819,6 @@ function ProjectData(props) {
                   return (
                     <div className="DAT_ProjectData_Header_LeftDevice">
                       <div style={{ fontSize: 22 }}>{tit[view]}</div>
-
-                      {/* <div className="DAT_ProjectData_Header_LeftDevice_Item">
-                        <button>Rút gọn</button>
-                        <button>Đầy đủ</button>
-                      </div> */}
                     </div>
                   );
                 case "alert":
@@ -829,31 +833,13 @@ function ProjectData(props) {
             })()}
 
             <div className="DAT_ProjectData_Header_Right">
-              <div className="DAT_ProjectData_Header_Right_Dashboard"
-                id="dashboard"
-                onClick={(e) => handleView(e)}
-              >
-                <AiOutlineDashboard size={20} color="white" />
-              </div>
-              <div className="DAT_ProjectData_Header_Right_Device"
-                id="device"
-                onClick={(e) => handleView(e)}
-              >
-                <BsMenuButtonWide size={14} color="white" />
-              </div>
-              <div className="DAT_ProjectData_Header_Right_Alert"
-                id="alert"
-                onClick={(e) => handleView(e)}
-              >
-                <GoAlertFill size={16} color="white" />
-              </div>
-              {/* <div className="DAT_ProjectData_Header_Right_More">
-                <IoMenu
+              <div className="DAT_ProjectData_Header_Right_More">
+                <BsThreeDotsVertical
                   size={20}
-                  color="white"
+                  color="#9e9e9e"
                   onClick={() => (dropState.value = !dropState.value)}
                 />
-              </div> */}
+              </div>
               <div className="DAT_ProjectData_Header_Right_Close">
                 <RxCross2
                   size={20}
@@ -1640,9 +1626,26 @@ function ProjectData(props) {
         <>
           {dropState.value ? (
             <div className="DAT_ProjectDataDrop">
-              {/* <div className="DAT_ProjectDataDrop_Item">Xem chi tiết</div>
-              <div className="DAT_ProjectDataDrop_Item">Xem chi tiết</div>
-              <div className="DAT_ProjectDataDrop_Item">Xem chi tiết</div> */}
+              <div className="DAT_ProjectDataDrop_Item"
+                id="dashboard"
+                style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                onClick={(e) => handleView(e)}
+              >
+                Giám sát
+              </div>
+              <div className="DAT_ProjectDataDrop_Item"
+                id="device"
+                style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                onClick={(e) => handleView(e)}
+              >
+                Thiết bị
+              </div>
+              <div className="DAT_ProjectDataDrop_Item"
+                id="alert"
+                onClick={() => handleWarn()}
+              >
+                Cảnh báo
+              </div>
             </div>
           ) : (
             <></>
@@ -2079,8 +2082,6 @@ const Production = (props) => {
           </div>
         </div>
       </div>
-
-      <div style={{ borderBottom: "solid 1px rgb(199, 199, 199)", height: "16px", marginBottom: "16px" }} />
 
       <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
