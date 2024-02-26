@@ -3,6 +3,7 @@ import "./User.scss";
 import { FaRegUser } from "react-icons/fa";
 import Popup from "./Popup";
 import { signal } from "@preact/signals-react";
+import { partnerInfor } from "../../App";
 
 export const popupStateUser = signal(false);
 export const editType = signal();
@@ -38,7 +39,7 @@ function User(props) {
         <div className="DAT_Usr_Item">
           <div className="DAT_Usr_Item_Content">
             <div className="DAT_Usr_Item_Content_Title">Tên</div>
-            <div className="DAT_Usr_Item_Content_Label">RnD Center</div>
+            <div className="DAT_Usr_Item_Content_Label">{partnerInfor.value.name}</div>
           </div>
           <span onClick={() => (popupStateUser.value = true, editType.value = "name")}>Chỉnh sửa</span>
         </div>
@@ -47,7 +48,7 @@ function User(props) {
           <div className="DAT_Usr_Item_Content">
             <div className="DAT_Usr_Item_Content_Title">E-mail</div>
             <div className="DAT_Usr_Item_Content_Label">
-              Admin@datgroup.com.vn
+              {partnerInfor.value.mail}
             </div>
           </div>
           <span onClick={() => (popupStateUser.value = true, editType.value = "email")}>Chỉnh sửa</span>

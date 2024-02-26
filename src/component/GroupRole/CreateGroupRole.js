@@ -81,7 +81,7 @@ export default function CreateGroupRole() {
       groupUser.value.push(arr);
       group.value.push(newdb.value);
       newdb.value = temp.value;
-      console.log(group.value, groupUser.value);
+      // console.log(group.value);
       createState.value = false;
     }
   };
