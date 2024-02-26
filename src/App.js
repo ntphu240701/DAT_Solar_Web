@@ -34,8 +34,27 @@ export const userInfor = signal({
   name: '',
   phone: '',
   addr: '',
-  rule: 'User',
+  ruleid: '2',
+  partnerid: '1',
   package: 'Limited',
+});
+
+export const ruleInfor = signal({
+  ruleid: '',
+  name: '',
+  setting: {},
+});
+
+
+export const partnerInfor = signal({
+  partnerid: '',
+  name: '',
+  phone: '',
+  mail:'',
+  businessname: '',
+  businessmodel: '',
+  businesstype: '',
+  area: '',
 });
 
 
@@ -51,8 +70,9 @@ function App() {
 
       if (window.location.pathname !== '/Verify' && window.location.pathname !== '/VerifyRegister') {
         let inf = await callApi('get', host.AUTH + '/Inf')
-        console.log(inf)
+        //console.log(inf)
         if (inf.status) {
+         
           rootDispatch(adminslice.actions.setstatus(inf.status))
           rootDispatch(adminslice.actions.setusr(inf.data.usr))
           rootDispatch(adminslice.actions.setlang(inf.data.lang))
@@ -62,7 +82,8 @@ function App() {
             name: inf.data.name,
             phone: inf.data.phone,
             addr: inf.data.addr,
-            rule: inf.data.rule,
+            ruleid: inf.data.ruleid,
+            partnerid: inf.data.partnerid,
             package: inf.data.package
           }
           setLoading(false)
@@ -72,6 +93,37 @@ function App() {
       }
 
     }
+    const checkRule =async(id)=>{
+       const data = await callApi('post', host.AUTH + '/Rule', { ruleid: id })
+     
+       if(data.status){
+        console.log("Rule",data.data)
+        ruleInfor.value = {
+          ruleid: data.data.ruleid,
+          name: data.data.name,
+          setting: data.data.setting
+        }
+       }
+    }
+
+    const checkPartner =async(id)=>{
+      const data = await callApi('post', host.AUTH + '/Partner', { partnerid: id })
+    
+      if(data.status){
+       console.log("Partner",data.data)
+       partnerInfor.value = {
+         partnerid: data.data.partnerid,
+         name: data.data.name,
+         phone: data.data.phone,
+         mail: data.data.mail,
+         businessname: data.data.businessname,
+         businessmodel: data.data.businessmodel,
+         businesstype: data.data.businesstype,
+         area: data.data.area,
+       }
+      
+      }
+   }
 
     const checkApi = async () => {
       //let data = await callApi('post', host.AUTH + '/getInf', { usr: 'solar_master' })
@@ -82,6 +134,11 @@ function App() {
       //let data = await callApi('post', host.DATA + '/editPlant', {plantid: '3', usr: 'solar_master', name: 'solar 03', company:'Công ty Cổ Phần Tập Đoàn DAT', addr: '12 Đường Đông Hưng Thuận 10, Phường Đông Hưng Thuận, Quận 12, TP.HCM	', long: '10.8357066', lat: '106.6271617', contact: 'hoang', phone: '0928382825', business: 'DAT Group', type: 'industry', mode: 'solar', griddate: '02/20/2024', capacity:'500', angle: '0', currency: 'vnd', price: '1000', production: '500', power: '50'})
     }
     checkAuth();
+    if(status){
+        checkRule(userInfor.value.ruleid)
+        checkPartner(userInfor.value.partnerid)
+        console.log("Inf",userInfor.value)
+    }
     //checkApi();
   }, [status])
 
