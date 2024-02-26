@@ -163,7 +163,7 @@ export default function Create() {
 
   return (
     <div>
-      <div className="DAT_Edit">
+      <div className="DAT_EditReport">
         <div className="DAT_EditReport_Header">
           <div className="DAT_EditReport_Header_Left">
             <p style={{ fontSize: "20px" }}>Chỉnh sửa</p>

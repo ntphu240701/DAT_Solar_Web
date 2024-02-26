@@ -12,12 +12,12 @@ const CheckBox = (props) => {
           className="form-check-input"
           type="checkbox"
           value=""
-          //   id="flexCheckDefault"
+            id={props.info}
         ></input>
         <label
           style={{ cursor: "pointer", fontSize: "15px", color: "grey" }}
           className="form-check-label"
-          //   for="flexCheckDefault"
+            htmlFor={props.info}
         >
           {props.info}
         </label>
