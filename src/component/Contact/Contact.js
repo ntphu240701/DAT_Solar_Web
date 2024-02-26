@@ -85,8 +85,7 @@ function Contact(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_ContactInfo"
+      <div className="DAT_ContactInfo"
         style={{
           height: contactState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",

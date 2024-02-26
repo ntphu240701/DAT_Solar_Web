@@ -173,8 +173,7 @@ function Role(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_RoleInfor"
+      <div className="DAT_RoleInfor"
         style={{
           height: roleState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",
@@ -190,8 +189,7 @@ function Role(props) {
         })()}
       </div>
 
-      <div
-        className="DAT_RolePopup"
+      <div className="DAT_RolePopup"
         style={{
           height: popupState.value === "default" ? "0px" : "100vh",
         }}

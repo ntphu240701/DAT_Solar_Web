@@ -357,8 +357,7 @@ const OwnerInfo = (props) => {
       <div className="DAT_EditProject_OwnerInfo_Tit">
         <div className="DAT_EditProject_OwnerInfo_Tit_Left">{props.tit}</div>
 
-        <div
-          className="DAT_EditProject_OwnerInfo_Tit_Right"
+        <div className="DAT_EditProject_OwnerInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -433,6 +432,64 @@ const OwnerInfo = (props) => {
   );
 };
 
+const ImgInfo = (props) => {
+  const [state, setState] = useState(true);
+  const [ava, setAva] = React.useState();
+  const handleChooseAvatar = (e) => {
+    setAva(URL.createObjectURL(e.target.files[0]));
+    console.log(e.target.files[0].name);
+  };
+
+  return (
+    <div className="DAT_EditProject_ImgInfo">
+      <div className="DAT_EditProject_ImgInfo_Tit">
+        <div className="DAT_EditProject_ImgInfo_Tit_Left">{props.tit}</div>
+
+        <div className="DAT_EditProject_ImgInfo_Tit_Right"
+          onClick={() => setState(!state)}
+        >
+          <IoIosArrowDown
+            size={20}
+            style={{
+              transform: state ? "rotate(0deg)" : "rotate(180deg)",
+              transition: "0.5s",
+            }}
+          />
+        </div>
+      </div>
+
+      <div
+        style={{
+          height: state ? props.height : "0px",
+          transition: "0.5s",
+          overflow: "hidden",
+        }}
+      >
+        {state ? (
+          <div className="DAT_EditProject_ImgInfo_Body">
+            <div className="DAT_EditProject_ImgInfo_Body_Ava">
+              <div className="DAT_EditProject_ImgInfo_Body_Ava_Img">
+                <img src={ava} alt="" />
+              </div>
+              <input
+                type="file"
+                id="file"
+                accept="image/png, image/gif, image/jpeg"
+                onChange={(e) => handleChooseAvatar(e)}
+              />
+              <label htmlFor="file" style={{ cursor: "pointer" }}>
+                Chọn ảnh
+              </label>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function EditProject(props) {
   const handleSave = () => {
     var check = 0;
@@ -491,6 +548,11 @@ function EditProject(props) {
       <OwnerInfo
         tit={"Thông tin người sở hữu"}
         height={isMobile.value ? "320px" : "100px"}
+      />
+
+      <ImgInfo
+        tit={"Ảnh đại diện"}
+        height={isMobile.value ? "320px" : "260px"}
       />
     </div>
   );
