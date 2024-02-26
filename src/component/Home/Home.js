@@ -194,7 +194,15 @@ function Home(props) {
 
           <div className="DAT_Home_Overview-Main">
             <div className="DAT_Home_Overview-Main-Percent">
-              <div className="DAT_Home_Overview-Main-Percent-Item">0%</div>
+              <div className="DAT_Home_Overview-Main-Percent-Item">
+                <span style={{ height: "40px", display: "flex", alignItems: "flex-end" }}>
+                  0
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "18px", color: "grey", height: "40px", display: "flex", alignItems: "flex-end", paddingBottom: "3px" }}>
+                  %
+                </span>
+              </div>
             </div>
             <div className="DAT_Home_Overview-Main-Value">
               <div className="DAT_Home_Overview-Main-Value-Item">
@@ -202,8 +210,9 @@ function Home(props) {
                   Tổng công suất tức thời
                 </div>
                 <div>
-                  <span style={{ color: "black", fontSize: "20px" }}>0</span>{" "}
-                  <span style={{ color: "gray", fontSize: "13px" }}>w</span>
+                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                  &nbsp;
+                  <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
                 </div>
               </div>
               <div className="DAT_Home_Overview-Main-Value-Item">
@@ -211,8 +220,9 @@ function Home(props) {
                   Công suất lắp đặt
                 </div>
                 <div>
-                  <span style={{ color: "black", fontSize: "20px" }}>0</span>{" "}
-                  <span style={{ color: "gray", fontSize: "13px" }}>kwp</span>
+                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                  &nbsp;
+                  <span style={{ color: "gray", fontSize: "13px" }}>kWp</span>
                 </div>
               </div>
             </div>
@@ -227,7 +237,8 @@ function Home(props) {
                 Sản lượng điện ngày
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px" }}>0</span>{" "}
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwp</span>
               </div>
             </div>
@@ -239,7 +250,8 @@ function Home(props) {
                 Sản lượng điện tháng
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px" }}>0</span>{" "}
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwp</span>
               </div>
             </div>
@@ -251,7 +263,8 @@ function Home(props) {
                 Sản lượng điện năm
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px" }}>0</span>{" "}
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwp</span>
               </div>
             </div>
@@ -263,7 +276,8 @@ function Home(props) {
                 Tổng sản lượng điện
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px" }}>0</span>{" "}
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwp</span>
               </div>
             </div>
@@ -341,7 +355,7 @@ function Home(props) {
             <span style={{ color: "gray", fontSize: "13px" }}>
               Tổng số dự án:
             </span>
-            <span style={{ color: "black", fontSize: "20px" }}>2</span>
+            <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>2</span>
           </div>
           <div className="DAT_Home_State-Content">
             <div className="DAT_Home_State-Content-Item">
@@ -349,7 +363,7 @@ function Home(props) {
                 Trực tuyến
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px" }}>1</span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>1</span>
               </div>
             </div>
             <div className="DAT_Home_State-Content-Item">
@@ -357,7 +371,7 @@ function Home(props) {
                 Ngoại tuyến
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px" }}>1</span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>1</span>
               </div>
             </div>
           </div>
@@ -365,7 +379,7 @@ function Home(props) {
             <div className="DAT_Home_State-Content-Item">
               <div className="DAT_Home_State-Content-Item-Title">Chạy thử</div>
               <div>
-                <span style={{ color: "black", fontSize: "20px" }}>0</span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
               </div>
             </div>
             <div className="DAT_Home_State-Content-Item">
@@ -373,7 +387,7 @@ function Home(props) {
                 Dự án có cảnh báo
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px" }}>0</span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
               </div>
             </div>
           </div>
@@ -386,7 +400,7 @@ function Home(props) {
               apiKey={process.env.REACT_APP_GGKEY}
               defaultCenter={defaultProps.center}
               defaultZoom={defaultProps.zoom}
-              //onGoogleApiLoaded={onGoogleApiLoaded}
+            //onGoogleApiLoaded={onGoogleApiLoaded}
             ></GoogleMap>
           </div>
         </div>

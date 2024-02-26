@@ -919,12 +919,8 @@ function Project(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_ProjectInfor"
-        style={{
-          height: plantState.value === "default" ? "0px" : "100vh",
-          transition: "0.5s",
-        }}
+      <div className="DAT_ProjectInfor"
+        style={{ height: plantState.value === "default" ? "0px" : "100vh", transition: "0.5s", }}
       >
         {(() => {
           switch (plantState.value) {

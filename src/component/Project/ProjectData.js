@@ -2045,7 +2045,8 @@ const Production = (props) => {
           >
             <span style={{ height: "40px", display: "flex", alignItems: "flex-end" }}>
               {parseFloat((production / capacity) * 100).toFixed(2)}
-            </span> &nbsp;
+            </span>
+            &nbsp;
             <span style={{ fontSize: "18px", color: "grey", height: "40px", display: "flex", alignItems: "flex-end", paddingBottom: "3px" }}>%</span>
           </div>
         </div>
