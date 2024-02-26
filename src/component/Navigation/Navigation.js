@@ -9,7 +9,8 @@ import { MdOutlineLanguage } from "react-icons/md";
 import { signal } from '@preact/signals-react';
 import { FaRegMessage } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
-
+import  { userInfor } from "../../App";
+import { useSelector } from 'react-redux';
 
 export const isMobile = signal(false)
 const userNav = signal(false)
@@ -76,7 +77,7 @@ function Navigation(props) {
     const user_box = useRef()
     const notif_icon = useRef()
     const notif_box = useRef()
-
+    const mail = useSelector((state) => state.admin.mail);
 
 
     const handleWindowResize = () => {
@@ -245,8 +246,8 @@ function Navigation(props) {
                         <img src={"/dat_icon/user_manager.png"} alt="" />
                     </div>
                     <div className='DAT_NavUser-inf-content'>
-                        <div className='DAT_NavUser-inf-content-name'>RnD Center</div>
-                        <div className='DAT_NavUser-inf-content-email'>Admin@datgroup.com.vn</div>
+                        <div className='DAT_NavUser-inf-content-name'>{userInfor.value.name}</div>
+                        <div className='DAT_NavUser-inf-content-email'>{mail}</div>
                     </div>
                 </div>
                 <div className='DAT_NavUser-item' style={{ cursor: "pointer", borderBottom: "1px solid gray" }}  onClick={() => navigate('/User')}>

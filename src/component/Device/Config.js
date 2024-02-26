@@ -35,7 +35,7 @@ export default function Config() {
   };
 
   return (
-    <>
+  
       <div className="DAT_Config">
         <div className="DAT_Config_Header">
           <div className="DAT_Config_Header_Left">
@@ -58,7 +58,7 @@ export default function Config() {
 
         <div className="DAT_Config_Body">
           <div className="DAT_Config_Body_Item">
-            <h4>Vui lòng chọn loại thiết bị bạn cần hiển thị</h4>
+            <div className="DAT_Config_Body_Item_Tit">Vui lòng chọn loại thiết bị bạn cần hiển thị</div>
             <div className="DAT_Config_Body_Item_CheckBox">
               <CheckBox info="Biến tần" />
               <CheckBox info="Đồng hồ đo" />
@@ -80,6 +80,6 @@ export default function Config() {
           </div>
         </div>
       </div>
-    </>
+
   );
 }
