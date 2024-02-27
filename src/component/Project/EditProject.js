@@ -10,7 +10,6 @@ import { isMobile } from "../Navigation/Navigation";
 import moment from "moment-timezone";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { useSelector } from "react-redux";
 
 const BasicInfo = (props) => {
   const [state, setState] = useState(true);
@@ -213,7 +212,7 @@ const SystemInfo = (props) => {
                   <option value="consumption">Hệ thống hòa lưới bám tải</option>
                   <option value="hybrid">Hệ thống lưu trữ hybrid</option>
                   <option value="ESS">Hệ thống lưu trữ năng lượng ESS</option>
-                  <option value="pump">Hệ thống solar pump</option>
+                  {/* <option value="pump">Hệ thống solar pump</option> */}
                 </select>
               </div>
             </div>
@@ -549,9 +548,7 @@ function EditProject(props) {
           production: production,
           power: power,
         })
-        console.log(d);
       };
-      //console.log(props.usr);
       editProject(
         projectData.value.plantid,
         props.usr,
