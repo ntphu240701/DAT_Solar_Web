@@ -28,6 +28,7 @@ const GroupRole = React.lazy(() => import('./component/GroupRole/GroupRole'));
 const Log = React.lazy(() => import('./component/Log/Log'));
 const Language = React.lazy(() => import('./component/Language/Language'));
 const Contact = React.lazy(() => import('./component/Contact/Contact'));
+const Rule = React.lazy(() => import('./component/Rule/Rule'));
 
 export const userInfor = signal({
   usrid: '',
@@ -168,6 +169,7 @@ function App() {
                       <Route path='/Log' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Log /></Suspense>} />
                       <Route path='/Language' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Language /></Suspense>} />
                       <Route path='/Contact' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Contact /></Suspense>} />
+                      <Route path='/Rule' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Rule /></Suspense>}/>
                       <Route path='/Login' element={<Navigate to="/" />} />
                       <Route path='/Logout' element={<Navigate to="/Login" />} />
                     </Routes>

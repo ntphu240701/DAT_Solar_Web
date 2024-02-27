@@ -34,16 +34,10 @@
             outline: none;
             font-size: 13px;
         }
-    }
-
-    &_Type {
-        position: relative;
-        font-family: Arial;
 
         & select {
-            padding: 5px;
             border: none;
-            border-radius: 5px;
+            outline: none;
         }
     }
 

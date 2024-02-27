@@ -16,6 +16,8 @@ import EditGroup from "./EditGroup";
 import DataTable from "react-data-table-component";
 import { Empty } from "../Project/Project";
 import { IoMdPersonAdd } from "react-icons/io";
+import { data } from "jquery";
+import { IoMdMore } from "react-icons/io";
 
 //DATA TEMP
 export const group = signal([
@@ -200,6 +202,21 @@ const GroupUsers = () => {
     );
   };
 
+  const handleShowFunction = (e) => {
+    const id = e.currentTarget.id;
+    const idArr = id.split("_");
+
+    const mod = document.getElementById(idArr[0] + "_function");
+    const t = document.getElementById(idArr[0] + "_dot");
+    if (t.style.display === "none") {
+      t.style.display = "flex";
+      mod.style.display = "none";
+    } else {
+      t.style.display = "none";
+      mod.style.display = "flex";
+    }
+  }
+
   return (
     <div className="DAT_GR_Content_DevideTable">
       <div className="DAT_GR_Content_DevideTable_Left">
@@ -230,26 +247,41 @@ const GroupUsers = () => {
               >
                 {item.subinfo}
               </div>
-              <div
-                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Delete"
-                id={item.id}
-                onClick={(e) => handleDeleteGroup(e)}
+
+              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Shortcut"
+              id={item.id +"_dot"}
+              onMouseEnter={(e)=> handleShowFunction(e)}
               >
-                <MdDelete size={20} />
+                <IoMdMore size={20}/>
               </div>
+
               <div
-                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Edit"
-                style={{ right: "40px" }}
-                id={item.id}
-                onClick={(e) => handleEditGroup(e)}
+                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More"
+                id={item.id +"_function"}
+                style={{ display: "none" }}
+                onMouseLeave={(e) => handleShowFunction(e)}
               >
-                <MdEdit size={20} color="#216990" />
-              </div>
-              <div
-                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Add"
-                onClick={() => (addState.value = true)}
-              >
-                <IoMdPersonAdd size={20} />
+                <div
+                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Delete"
+                  id={item.id}
+                  onClick={(e) => handleDeleteGroup(e)}
+                >
+                  <MdDelete size={20} />
+                </div>
+                <div
+                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Edit"
+                  style={{ right: "40px" }}
+                  id={item.id}
+                  onClick={(e) => handleEditGroup(e)}
+                >
+                  <MdEdit size={20} color="#216990" />
+                </div>
+                <div
+                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
+                  onClick={() => (addState.value = true)}
+                >
+                  <IoMdPersonAdd size={20} />
+                </div>
               </div>
             </div>
           ))}
@@ -287,12 +319,22 @@ const GroupUsers = () => {
 function GroupRole(props) {
   const handleFilter = (e) => {
     filter.value = e.target.value;
-    for(const group of dataGroupUser.value){
-      // for(const user of group.users){
-      //   if(user.name.includes(filter.value)){
-      //     console.log(group.groupid);
-      //   }
-      // }
+    if (filter.value !== "") {
+      for (const group of dataGroupUser.value) {
+        for (const user of group.users) {
+          if (user.username.includes(filter.value)) {
+            const t = dataGroupUser.value.find(
+              (item) => item.groupid == group.groupid
+            );
+            console.log(t);
+          } else {
+            // console.log("khong tim thay");
+          }
+        }
+        // console.log(group);
+      }
+    } else {
+      dataGroupUser.value = groupUser.value;
     }
   };
 
