@@ -5,9 +5,11 @@ import PopupAvatar from "./PopupAva";
 import { MdOutlineContactPhone } from "react-icons/md";
 import { signal } from "@preact/signals-react";
 import EditContactInfo from "./EditContactInfo";
+import { partnerInfor } from "../../App";
 
 export const popupStateContact = signal(false);
 export const contactState = signal("default");
+
 
 function Contact(props) {
   return (
@@ -29,19 +31,19 @@ function Contact(props) {
             </div>
             <div className="DAT_Contact_Item_Registation_Content">
               <div>Mô hình kinh doanh</div>
-              <div>Doanh nghiệp</div>
+              <div>{partnerInfor.value.businessmodel}</div>
             </div>
             <div className="DAT_Contact_Item_Registation_Content">
               <div>Tên kinh doanh</div>
-              <div>DATTECHNOLOGYCO.,LTD_7082</div>
+              <div>{partnerInfor.value.businessname}</div>
             </div>
             <div className="DAT_Contact_Item_Registation_Content">
               <div>Khu vực</div>
-              <div>Hồ Chí Minh</div>
+              <div>{partnerInfor.value.area}</div>
             </div>
             <div className="DAT_Contact_Item_Registation_Content">
               <div>Loại</div>
-              <div>Nhà phân phối</div>
+              <div>{partnerInfor.value.businesstype}</div>
             </div>
           </div>
 
@@ -58,16 +60,16 @@ function Contact(props) {
             </div>
             <div className="DAT_Contact_Item_Contact_Content">
               <div>Tên</div>
-              <div>DATSOLAR</div>
+              <div>{partnerInfor.value.name}</div>
             </div>
             <div className="DAT_Contact_Item_Contact_Content">
               <div>Điện thoại</div>
-              <div>--</div>
+              <div>{partnerInfor.value.phone}</div>
             </div>
 
             <div className="DAT_Contact_Item_Contact_Content">
               <div>E-mail</div>
-              <div>Support.datsolar@dattech.com.vn</div>
+              <div>{partnerInfor.value.mail}</div>
             </div>
           </div>
 

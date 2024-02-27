@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./GroupRole.scss";
 // import DataTable from "react-data-table-component";
 import { IoMdAnalytics } from "react-icons/io";
@@ -17,24 +17,12 @@ import DataTable from "react-data-table-component";
 import { Empty } from "../Project/Project";
 import { IoMdPersonAdd } from "react-icons/io";
 
-//CONST SIGNALS
-export const createState = signal(false);
-export const addState = signal(false);
-export const popupState = signal(false);
-export const groupDelState = signal(false);
-export const editState = signal(false);
-export const groupID = signal(0);
-export const groupDelID = signal();
-export const userDel = signal();
-export const groupEdit = signal();
-export const dataUsers = signal([]);
-
 //DATA TEMP
 export const group = signal([
   {
     id: 1,
     name: "Phòng RnD",
-    email: "CTy DAT Group - Head: Ngài Tô",
+    subinfo: "CTy DAT Group - Head: Ngài Tô",
     role: {
       1: { lang: "role1", status: true },
       2: { lang: "role2", status: true },
@@ -45,7 +33,7 @@ export const group = signal([
   {
     id: 2,
     name: "Nhóm 2",
-    email: "CTy DAT Group - Head: Phó Lũ",
+    subinfo: "CTy DAT Group - Head: Phó Lũ",
     role: {
       1: { lang: "role1", status: false },
       2: { lang: "role2", status: true },
@@ -117,6 +105,22 @@ export const groupUser = signal([
     ],
   },
 ]);
+
+//CONST SIGNALS
+export const createState = signal(false);
+export const addState = signal(false);
+export const popupState = signal(false);
+export const groupDelState = signal(false);
+export const editState = signal(false);
+export const groupID = signal(0);
+export const groupDelID = signal();
+export const userDel = signal();
+export const groupEdit = signal();
+export const dataUsers = signal([]);
+
+const filter = signal("");
+const dataGroup = signal([]);
+const dataGroupUser = signal([]);
 
 const GroupUsers = () => {
   const paginationComponentOptions = {
@@ -203,7 +207,7 @@ const GroupUsers = () => {
           Nhóm người dùng
         </div>
         <div className="DAT_GR_Content_DevideTable_Left_ItemList">
-          {group.value.map((item) => (
+          {dataGroup.value.map((item) => (
             <div
               className="DAT_GR_Content_DevideTable_Left_ItemList_Item"
               key={item.id}
@@ -224,7 +228,7 @@ const GroupUsers = () => {
                 className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
                 style={{ fontSize: "13px", color: "grey", maxWidth: "100px" }}
               >
-                {item.email}
+                {item.subinfo}
               </div>
               <div
                 className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Delete"
@@ -257,57 +261,6 @@ const GroupUsers = () => {
           Danh sách người dùng
         </div>
         <div className="DAT_GR_Content_DevideTable_Right_ItemList">
-          {/* {groupUser.value
-            .filter((item) => item.groupid == groupID.value)
-            .map((group) =>
-              group.users.map((user, key) => (
-                <div
-                  key={key}
-                  className="DAT_GR_Content_DevideTable_Right_ItemList_Item"
-                >
-                  <div
-                    className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Name"
-                    style={{ fontSize: "15px" }}
-                  >
-                    {user.name}
-                  </div>
-                  <div
-                    className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Info"
-                    style={{ fontSize: "13px", color: "grey" }}
-                  >
-                    {user.username}
-                  </div>
-                  <div
-                    className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Info"
-                    style={{ fontSize: "13px", color: "grey" }}
-                  >
-                    {user.email}
-                  </div>
-                  <div
-                    className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Delete"
-                    onClick={(e) => handleDeleteUser(e)}
-                    id={user.username}
-                  >
-                    <MdDelete size={20} />
-                  </div>
-                </div>
-              ))
-            )} */}
-
-          {/* {groupID.value === 0 ? (
-            <></>
-          ) : (
-            <div
-              className="DAT_GR_Content_DevideTable_Right_ItemList_Item"
-              onClick={() => (
-                (addState.value = true), console.log(groupID.value)
-              )}
-            >
-              <div className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Plus">
-                <FaUserPlus size={20} color="#216990" />
-              </div>
-            </div>
-          )} */}
           {groupID.value === 0 ? (
             <Empty />
           ) : (
@@ -315,7 +268,7 @@ const GroupUsers = () => {
               className="DAT_Table_GroupRole"
               columns={columnGroupRole}
               data={
-                groupUser.value.filter(
+                dataGroupUser.value.filter(
                   (item) => item.groupid == groupID.value
                 )[0].users
               }
@@ -332,6 +285,24 @@ const GroupUsers = () => {
 };
 
 function GroupRole(props) {
+  const handleFilter = (e) => {
+    filter.value = e.target.value;
+    for(const group of dataGroupUser.value){
+      // for(const user of group.users){
+      //   if(user.name.includes(filter.value)){
+      //     console.log(group.groupid);
+      //   }
+      // }
+    }
+  };
+
+  useEffect(() => {
+    dataGroup.value = group.value;
+    dataGroupUser.value = groupUser.value;
+    // for(const group of dataGroupUser.value){ console.log(group)}
+    // // console.log(dataGroupUser.value);
+  }, []);
+
   return (
     <>
       <div className="DAT_GRHeader">
@@ -339,9 +310,15 @@ function GroupRole(props) {
           <IoMdAnalytics color="gray" size={25} /> <span>Nhóm người dùng</span>
         </div>
         <div className="DAT_GRHeader_Filter">
-          <input type="text" placeholder="Nhập tên thiết bị" />
+          <input
+            type="text"
+            placeholder="Nhập thông tin"
+            value={filter.value}
+            onChange={(e) => handleFilter(e)}
+          />
           <CiSearch color="gray" size={20} />
         </div>
+        <div></div>
         <button
           className="DAT_GRHeader_New"
           onClick={() => (createState.value = true)}
