@@ -1,27 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./Project.scss";
 import AddGateway from "./AddGateway";
-import {
-  Empty,
-  plantState,
-  projectData,
-  deviceData,
-  Logger,
-  Inverter,
-} from "./Project";
+import { Empty, plantState, projectData, deviceData, Logger, Inverter } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from "recharts";
 
 import { IoIosArrowDown, IoIosArrowForward, IoIosCloud } from "react-icons/io";
 import { IoArrowForward, IoCalendarOutline, IoMenu } from "react-icons/io5";
@@ -344,7 +326,7 @@ function ProjectData(props) {
   };
 
   const tit = {
-    dashboard: projectData.value.name,
+    dashboard: projectData.value.plantname,
     device: "Thiết bị",
     alert: "Cảnh báo",
   };
@@ -883,7 +865,7 @@ function ProjectData(props) {
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
                             style={{ textAlign: "right" }}
                           >
-                            {projectData.value.status ? (
+                            {projectData.value.state === 1 ? (
                               <>
                                 <FaCheckCircle size={20} color="green" />
                               </>

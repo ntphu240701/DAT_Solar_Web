@@ -14,8 +14,11 @@ import EditProject from "./EditProject";
 import AddProject from "./AddProject";
 import Popup from "./Popup";
 
-import { signal } from "@preact/signals-react";
 import { lowerCase } from "lodash";
+import { callApi } from '../Api/Api';
+import { host } from "../Lang/Contant";
+import { useSelector } from "react-redux";
+import { signal } from "@preact/signals-react";
 
 const tab = signal("total");
 const tabLable = signal("");
@@ -47,75 +50,75 @@ export const Empty = () => {
 export const lastId = signal(2);
 
 export const dataproject = signal([
-  {
-    id: 1,
-    name: "Năng lượng DAT 01",
-    addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-    long: "--",
-    lat: "--",
-    plantype: "residential",
-    systemtype: "grid",
-    capacity: 110,
-    griddate: "",
-    angle: "--",
-    currency: "vnd",
-    price: "--",
-    contact: "--",
-    phone: "0123456789",
-    business: "DAT Group",
-    status: true,
-    warn: true,
-    production: "16",
-    power: "14.54",
-    lastupdate: "12/30/2023 12:07:12",
-    createdate: "05/01/2022 14:03:36",
-  },
-  {
-    id: 2,
-    name: "Năng lượng DAT 02",
-    addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-    long: "--",
-    lat: "--",
-    plantype: "industrial",
-    systemtype: "consumption",
-    capacity: "222",
-    griddate: "",
-    angle: "--",
-    currency: "vnd",
-    price: "--",
-    contact: "--",
-    phone: "07123872311",
-    business: "--",
-    status: false,
-    warn: false,
-    production: "230",
-    power: "0",
-    lastupdate: "10/30/2023 08:01:22",
-    createdate: "05/01/2022 14:08:36",
-  },
-  {
-    id: 3,
-    name: "Năng lượng DAT 03",
-    addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-    long: "--",
-    lat: "--",
-    plantype: "industrial",
-    systemtype: "ess",
-    capacity: "333",
-    griddate: "",
-    angle: "--",
-    currency: "vnd",
-    price: "--",
-    contact: "--",
-    phone: "07123872311",
-    business: "--",
-    status: true,
-    warn: false,
-    production: "116",
-    power: "0",
-    lastupdate: "10/30/2023 08:01:22",
-    createdate: "05/01/2022 14:08:36",
-  },
+  // {
+  //   id: 1,
+  //   name: "Năng lượng DAT 01",
+  //   addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+  //   long: "--",
+  //   lat: "--",
+  //   plantype: "residential",
+  //   systemtype: "grid",
+  //   capacity: 110,
+  //   griddate: "",
+  //   angle: "--",
+  //   currency: "vnd",
+  //   price: "--",
+  //   contact: "--",
+  //   phone: "0123456789",
+  //   business: "DAT Group",
+  //   status: true,
+  //   warn: true,
+  //   production: "16",
+  //   power: "14.54",
+  //   lastupdate: "12/30/2023 12:07:12",
+  //   createdate: "05/01/2022 14:03:36",
+  // },
+  // {
+  //   id: 2,
+  //   name: "Năng lượng DAT 02",
+  //   addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+  //   long: "--",
+  //   lat: "--",
+  //   plantype: "industrial",
+  //   systemtype: "consumption",
+  //   capacity: "222",
+  //   griddate: "",
+  //   angle: "--",
+  //   currency: "vnd",
+  //   price: "--",
+  //   contact: "--",
+  //   phone: "07123872311",
+  //   business: "--",
+  //   status: false,
+  //   warn: false,
+  //   production: "230",
+  //   power: "0",
+  //   lastupdate: "10/30/2023 08:01:22",
+  //   createdate: "05/01/2022 14:08:36",
+  // },
+  // {
+  //   id: 3,
+  //   name: "Năng lượng DAT 03",
+  //   addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
+  //   long: "--",
+  //   lat: "--",
+  //   plantype: "industrial",
+  //   systemtype: "ess",
+  //   capacity: "333",
+  //   griddate: "",
+  //   angle: "--",
+  //   currency: "vnd",
+  //   price: "--",
+  //   contact: "--",
+  //   phone: "07123872311",
+  //   business: "--",
+  //   status: true,
+  //   warn: false,
+  //   production: "116",
+  //   power: "0",
+  //   lastupdate: "10/30/2023 08:01:22",
+  //   createdate: "05/01/2022 14:08:36",
+  // },
 ]);
 
 export const devicePlant = signal([
@@ -399,6 +402,7 @@ export const Inverter = signal([
 ]);
 
 function Project(props) {
+  const user = useSelector(state => state.admin.usr);
   const [datafilter, setDatafilter] = useState([]);
   const [type, setType] = useState("name");
   // const [filter, setFilter] = useState("");
@@ -536,11 +540,11 @@ function Project(props) {
     {
       name: "Tên",
       selector: (row) => (
-        <div className="DAT_Table" id={row.id} onClick={(e) => handlePlant(e)}>
+        <div className="DAT_Table" id={row.plantid} onClick={(e) => handlePlant(e)}>
           <img src="/dat_picture/solar_panel.png" alt="" />
 
           <div className="DAT_Table_Infor">
-            <div className="DAT_Table_Infor_Name">{row.name}</div>
+            <div className="DAT_Table_Infor_Name">{row.plantname}</div>
             <div className="DAT_Table_Infor_Addr">{row.addr}</div>
           </div>
         </div>
@@ -555,7 +559,7 @@ function Project(props) {
       name: "Kết nối",
       selector: (row) => (
         <>
-          {row.status ? (
+          {row.state === 1 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
             <MdOutlineError size={22} color="red" />
@@ -568,7 +572,7 @@ function Project(props) {
       name: "Cảnh báo",
       selector: (row) => (
         <div>
-          {row.warn ? (
+          {row.warn === 1 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
             <MdOutlineError size={22} color="red" />
@@ -637,7 +641,7 @@ function Project(props) {
           >
             <div
               className="DAT_ModifyBox_Fix"
-              id={row.id}
+              id={row.plantid}
               onClick={(e) => handleEdit(e)}
             >
               Chỉnh sửa
@@ -659,7 +663,7 @@ function Project(props) {
   const handlePlant = (e) => {
     plantState.value = "info";
     const newPlant = dataproject.value.find(
-      (item) => item.id == e.currentTarget.id
+      (item) => item.plantid == e.currentTarget.id
     );
     projectData.value = newPlant;
 
@@ -672,9 +676,10 @@ function Project(props) {
   const handleEdit = (e) => {
     plantState.value = "edit";
     const newPlant = dataproject.value.find(
-      (item) => item.id == e.currentTarget.id
+      (item) => item.plantid == e.currentTarget.id
     );
     projectData.value = newPlant;
+    console.log(projectData.value);
   };
 
   const handleDelete = (e) => {
@@ -743,6 +748,17 @@ function Project(props) {
     offline.value = dataproject.value.filter((item) => item.status == false);
     tabLable.value = listTab[0].name;
   }, [dataproject.value]);
+
+  useEffect(() => {
+    const getPlant = async (usrname) => {
+      let d = await callApi('post', host.DATA + '/getPlant', { usr: usrname });
+      if (d.status === true) {
+        dataproject.value = d.data;
+      }
+    }
+
+    getPlant(user);
+  }, []);
 
   return (
     <>
@@ -927,7 +943,7 @@ function Project(props) {
             case "info":
               return <ProjectData />;
             case "edit":
-              return <EditProject />;
+              return <EditProject usr={user} />;
             case "add":
               return <AddProject />;
             default:

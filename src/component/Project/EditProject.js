@@ -8,6 +8,9 @@ import { RxCross2 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 import { isMobile } from "../Navigation/Navigation";
 import moment from "moment-timezone";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
+import { useSelector } from "react-redux";
 
 const BasicInfo = (props) => {
   const [state, setState] = useState(true);
@@ -58,9 +61,9 @@ const BasicInfo = (props) => {
                   <span style={{ color: "grey" }}>Tên dự án:</span>
                 </div>
                 <input
-                  id="name"
+                  id="plantname"
                   type="text"
-                  defaultValue={projectData.value.name}
+                  defaultValue={projectData.value.plantname}
                   onChange={(e) => handleBasic(e)}
                 />
               </div>
@@ -187,12 +190,12 @@ const SystemInfo = (props) => {
                   <span style={{ color: "grey" }}>Loại dự án:</span>
                 </div>
                 <select
-                  id="plantype"
-                  defaultValue={projectData.value["plantype"]}
+                  id="planttype"
+                  defaultValue={projectData.value.planttype}
                   onChange={(e) => handleSystem(e)}
                 >
                   <option value="residential">Hộ dân</option>
-                  <option value="industrial">Nhà máy</option>
+                  <option value="industry">Nhà máy</option>
                 </select>
               </div>
 
@@ -202,8 +205,8 @@ const SystemInfo = (props) => {
                   <span style={{ color: "grey" }}>Loại hệ thống điện:</span>
                 </div>
                 <select
-                  id="systemtype"
-                  defaultValue={projectData.value["systemtype"]}
+                  id="plantmode"
+                  defaultValue={projectData.value.plantmode}
                   onChange={(e) => handleSystem(e)}
                 >
                   <option value="grid">Hệ thống hòa lưới</option>
@@ -237,7 +240,7 @@ const SystemInfo = (props) => {
                 <input
                   id="griddate"
                   type="date"
-                  defaultValue={moment(projectData.value.createdate).format(
+                  defaultValue={moment(projectData.value.griddate).format(
                     "YYYY-MM-DD"
                   )}
                   onChange={(e) => handleDate(e)}
@@ -311,7 +314,7 @@ const YieldInfo = (props) => {
                 </div>
                 <select
                   id="currency"
-                  defaultValue={projectData.value["currency"]}
+                  defaultValue={projectData.value.currency}
                   onChange={(e) => handleYield(e)}
                 >
                   <option value="vnd">VND</option>
@@ -503,7 +506,76 @@ function EditProject(props) {
       console.log("vui long nhap day du thong tin");
     } else {
       console.log("cap nhat thanh cong");
+
+      const editProject = async (
+        plantid,
+        usrname,
+        plantname,
+        company,
+        addr,
+        long,
+        lat,
+        contact,
+        phone,
+        business,
+        planttype,
+        plantmode,
+        griddate,
+        capacity,
+        angle,
+        currency,
+        price,
+        production,
+        power,
+      ) => {
+        let d = await callApi('post', host.DATA + '/editPlant', {
+          plantid: plantid,
+          usr: usrname,
+          name: plantname,
+          company: company,
+          addr: addr,
+          long: long,
+          lat: lat,
+          contact: contact,
+          phone: phone,
+          business: business,
+          type: planttype,
+          mode: plantmode,
+          griddate: griddate,
+          capacity: capacity,
+          angle: angle,
+          currency: currency,
+          price: price,
+          production: production,
+          power: power,
+        })
+        console.log(d);
+      };
+      //console.log(props.usr);
+      editProject(
+        projectData.value.plantid,
+        props.usr,
+        projectData.value.plantname,
+        projectData.value.company,
+        projectData.value.addr,
+        projectData.value.long,
+        projectData.value.lat,
+        projectData.value.contact,
+        projectData.value.phone,
+        projectData.value.business,
+        projectData.value.planttype,
+        projectData.value.plantmode,
+        projectData.value.griddate,
+        projectData.value.capacity,
+        projectData.value.angle,
+        projectData.value.currency,
+        projectData.value.price,
+        projectData.value.production,
+        projectData.value.power,
+      );
+
       plantState.value = "default";
+
     }
   };
 

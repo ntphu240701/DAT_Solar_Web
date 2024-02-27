@@ -36,7 +36,7 @@ export const plantData = signal({
 
 const BasicInfo = (props) => {
   const [state, setState] = useState(true);
-  
+
   const defaultProps = {
     center: {
       lat: 16.054083398111068,
@@ -153,7 +153,7 @@ const BasicInfo = (props) => {
                     apiKey={process.env.REACT_APP_GGKEY}
                     defaultCenter={defaultProps.center}
                     defaultZoom={defaultProps.zoom}
-                    //onGoogleApiLoaded={onGoogleApiLoaded}
+                  //onGoogleApiLoaded={onGoogleApiLoaded}
                   />
                 </div>
               </div>
@@ -459,6 +459,64 @@ const OwnerInfo = (props) => {
   );
 };
 
+const ImgInfo = (props) => {
+  const [state, setState] = useState(true);
+  const [ava, setAva] = React.useState();
+  const handleChooseAvatar = (e) => {
+    setAva(URL.createObjectURL(e.target.files[0]));
+    console.log(e.target.files[0].name);
+  };
+
+  return (
+    <div className="DAT_AddProject_ImgInfo">
+      <div className="DAT_AddProject_ImgInfo_Tit">
+        <div className="DAT_AddProject_ImgInfo_Tit_Left">{props.tit}</div>
+
+        <div className="DAT_AddProject_ImgInfo_Tit_Right"
+          onClick={() => setState(!state)}
+        >
+          <IoIosArrowDown
+            size={20}
+            style={{
+              transform: state ? "rotate(0deg)" : "rotate(180deg)",
+              transition: "0.5s",
+            }}
+          />
+        </div>
+      </div>
+
+      <div
+        style={{
+          height: state ? props.height : "0px",
+          transition: "0.5s",
+          overflow: "hidden",
+        }}
+      >
+        {state ? (
+          <div className="DAT_AddProject_ImgInfo_Body">
+            <div className="DAT_AddProject_ImgInfo_Body_Ava">
+              <div className="DAT_AddProject_ImgInfo_Body_Ava_Img">
+                <img src={ava} alt="" />
+              </div>
+              <input
+                type="file"
+                id="file"
+                accept="image/png, image/gif, image/jpeg"
+                onChange={(e) => handleChooseAvatar(e)}
+              />
+              <label htmlFor="file" style={{ cursor: "pointer" }}>
+                Chọn ảnh
+              </label>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function AddProject(props) {
   const handleSaveBasic = () => {
     var check = 0;
@@ -542,6 +600,11 @@ function AddProject(props) {
       <OwnerInfo
         tit={"Thông tin người sở hữu"}
         height={isMobile.value ? "320px" : "100px"}
+      />
+
+      <ImgInfo
+        tit={"Ảnh đại diện"}
+        height={isMobile.value ? "320px" : "260px"}
       />
     </div>
   );
