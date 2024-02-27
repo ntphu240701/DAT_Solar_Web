@@ -1,5 +1,6 @@
 export const host = {
-    AUTH: process.env.REACT_APP_SOLAR+'/auth',
+    AUTH: process.env.REACT_APP_SOLAR + '/auth',
+    DATA: process.env.REACT_APP_SOLAR + '/data',
 };
 
 
@@ -10,11 +11,11 @@ export const messages = {
         email: 'Email',
         login: 'Login',
         save_login: 'Save login',
-        pwd:'Change password',
+        pwd: 'Change password',
         forgot_pwd: 'Forgot password',
         new_pwd: 'New password',
         auth_pwd: 'Confirm new password',
-        register: 'Register', 
+        register: 'Register',
         name: 'Name',
         phone: 'Phone number',
         addr: 'Address',
@@ -42,10 +43,10 @@ export const messages = {
         new_pwd: 'Mật khẩu mới',
         auth_pwd: 'Xác nhận mật khẩu',
         register: 'Đăng ký',
-        name:'Tên người dùng',
+        name: 'Tên người dùng',
         phone: 'Số điện thoại',
         addr: 'Địa chỉ',
-        join:'Mã truy cập',
+        join: 'Mã truy cập',
         alert_0: "Tài khoản hoặc mật khẩu không đúng!",
         alert_1: "Đổi mật khẩu thành công!",
         alert_2: "Link đã hết hiệu lực, bạn vui lòng thực hiện lại!",
@@ -59,7 +60,7 @@ export const messages = {
         alert_10: "Tài khoản này đã tồn tại!",
         alert_11: "Mail này đã tồn tại!",
 
-       
+
 
     }
 }

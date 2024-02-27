@@ -2,8 +2,10 @@ import React from "react";
 import "./Project.scss";
 import { dataproject, popupState, projectData } from "./Project";
 import { IoClose } from "react-icons/io5";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
 
-export default function Popup() {
+export default function Popup(props) {
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -17,9 +19,20 @@ export default function Popup() {
   };
 
   const handleDelete = (e) => {
+    const dropProject = async (
+      plantid, usr
+    ) => {
+      let d = await callApi('post', host.DATA + '/dropPlant', {
+        plantid: plantid,
+        usr: usr,
+      })
+      console.log(d)
+    };
+    dropProject(e.currentTarget.id, props.usr)
+
     popupState.value = false;
     dataproject.value = dataproject.value.filter(
-      (item) => item.id !== parseInt(e.currentTarget.id)
+      (item) => item.plantid !== parseInt(e.currentTarget.id)
     );
   };
 
@@ -42,10 +55,16 @@ export default function Popup() {
         </div>
       </div>
       <div className="DAT_Popup_Box_Body">
-        <p>
+        <span>
           Bạn có chắc chắn muốn xóa vĩnh viễn dự án này không? Tất cả dữ liệu
-          lịch sử của {projectData.value.name} sẽ bị mất.
-        </p>
+          lịch sử của
+          &nbsp;
+          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+            {projectData.value.plantname}
+          </span>
+          &nbsp;
+          sẽ bị xóa.
+        </span>
       </div>
       <div className="DAT_Popup_Box_Foot">
         <button
@@ -59,7 +78,7 @@ export default function Popup() {
           Hủy
         </button>
         <button
-          id={projectData.value.id}
+          id={projectData.value.plantid}
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={(e) => handleDelete(e)}
         >

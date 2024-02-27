@@ -14,8 +14,11 @@ import EditProject from "./EditProject";
 import AddProject from "./AddProject";
 import Popup from "./Popup";
 
-import { signal } from "@preact/signals-react";
 import { lowerCase } from "lodash";
+import { callApi } from '../Api/Api';
+import { host } from "../Lang/Contant";
+import { useSelector } from "react-redux";
+import { signal } from "@preact/signals-react";
 
 const tab = signal("total");
 const tabLable = signal("");
@@ -30,6 +33,7 @@ export const projectData = signal({});
 export const popupState = signal(false);
 export const deviceData = signal([]);
 export const inverterData = signal([]);
+export const dataproject = signal([]);
 
 export const Empty = () => {
   return (
@@ -43,80 +47,6 @@ export const Empty = () => {
     </div>
   );
 };
-
-export const lastId = signal(2);
-
-export const dataproject = signal([
-  {
-    id: 1,
-    name: "Năng lượng DAT 01",
-    addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-    long: "--",
-    lat: "--",
-    plantype: "residential",
-    systemtype: "grid",
-    capacity: 110,
-    griddate: "",
-    angle: "--",
-    currency: "vnd",
-    price: "--",
-    contact: "--",
-    phone: "0123456789",
-    business: "DAT Group",
-    status: true,
-    warn: true,
-    production: "16",
-    power: "14.54",
-    lastupdate: "12/30/2023 12:07:12",
-    createdate: "05/01/2022 14:03:36",
-  },
-  {
-    id: 2,
-    name: "Năng lượng DAT 02",
-    addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-    long: "--",
-    lat: "--",
-    plantype: "industrial",
-    systemtype: "consumption",
-    capacity: "222",
-    griddate: "",
-    angle: "--",
-    currency: "vnd",
-    price: "--",
-    contact: "--",
-    phone: "07123872311",
-    business: "--",
-    status: false,
-    warn: false,
-    production: "230",
-    power: "0",
-    lastupdate: "10/30/2023 08:01:22",
-    createdate: "05/01/2022 14:08:36",
-  },
-  {
-    id: 3,
-    name: "Năng lượng DAT 03",
-    addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-    long: "--",
-    lat: "--",
-    plantype: "industrial",
-    systemtype: "ess",
-    capacity: "333",
-    griddate: "",
-    angle: "--",
-    currency: "vnd",
-    price: "--",
-    contact: "--",
-    phone: "07123872311",
-    business: "--",
-    status: true,
-    warn: false,
-    production: "116",
-    power: "0",
-    lastupdate: "10/30/2023 08:01:22",
-    createdate: "05/01/2022 14:08:36",
-  },
-]);
 
 export const devicePlant = signal([
   {
@@ -145,209 +75,110 @@ export const devicePlant = signal([
   },
 ]);
 
-// export const device = signal([
-//   {
-//     SN: "11111111",
-//     capacity: 110,
-//     production: 16,
-//     dailyproduction: 0.5,
-//     monthlyproduction: 15,
-//     yearlyproduction: 180,
-//     totalproduction: 180,
-//     consumption: 7.68,
-//     dailyconsumption: 0.25,
-//     monthlyconsumption: 7.5,
-//     yearlyconsumption: 90,
-//     totalconsumption: 90,
-//     grid: 4.56,
-//     feedindailygrid: 0.15,
-//     feedinmonthlygrid: 4.5,
-//     feedinyearlygrid: 54,
-//     feedintotalgrid: 54,
-//     purchaseddailygrid: 0.1,
-//     purchasedmonthlygrid: 3,
-//     purchasedyearlygrid: 36,
-//     purchasedtotalgrid: 36,
-//     battery: 3.12,
-//     chargedailybattery: 0.1,
-//     chargemonthlybattery: 3,
-//     chargeyearlybattery: 36,
-//     chargetotalbattery: 36,
-//     dischargedailybattery: 0.05,
-//     dischargemonthlybattery: 1.5,
-//     dischargeyearlybattery: 18,
-//     dischargetotalbattery: 18,
-//   },
-//   {
-//     SN: "22222222",
-//     capacity: 222,
-//     production: 230,
-//     dailyproduction: 7.5,
-//     monthlyproduction: 225,
-//     yearlyproduction: 2700,
-//     totalproduction: 2700,
-//     consumption: 100,
-//     dailyconsumption: 3.3,
-//     monthlyconsumption: 99,
-//     yearlyconsumption: 1188,
-//     totalconsumption: 1188,
-//     grid: 130,
-//     feedindailygrid: 4.3,
-//     feedinmonthlygrid: 129,
-//     feedinyearlygrid: 1548,
-//     feedintotalgrid: 1548,
-//     purchaseddailygrid: 3,
-//     purchasedmonthlygrid: 90,
-//     purchasedyearlygrid: 1080,
-//     purchasedtotalgrid: 1080,
-//     battery: 70,
-//     chargedailybattery: 2.3,
-//     chargemonthlybattery: 69,
-//     chargeyearlybattery: 828,
-//     chargetotalbattery: 828,
-//     dischargedailybattery: 1.5,
-//     dischargemonthlybattery: 45,
-//     dischargeyearlybattery: 540,
-//     dischargetotalbattery: 540,
-//   },
-//   {
-//     SN: "33333333",
-//     capacity: 333,
-//     production: 116,
-//     dailyproduction: 3.8,
-//     monthlyproduction: 114,
-//     yearlyproduction: 1368,
-//     totalproduction: 1368,
-//     consumption: 50,
-//     dailyconsumption: 1.6,
-//     monthlyconsumption: 48,
-//     yearlyconsumption: 576,
-//     totalconsumption: 576,
-//     grid: 66,
-//     feedindailygrid: 2.2,
-//     feedinmonthlygrid: 66,
-//     feedinyearlygrid: 792,
-//     feedintotalgrid: 792,
-//     purchaseddailygrid: 1.5,
-//     purchasedmonthlygrid: 45,
-//     purchasedyearlygrid: 540,
-//     purchasedtotalgrid: 540,
-//     battery: 33,
-//     chargedailybattery: 1.1,
-//     chargemonthlybattery: 33,
-//     chargeyearlybattery: 396,
-//     chargetotalbattery: 396,
-//     dischargedailybattery: 0.7,
-//     dischargemonthlybattery: 21,
-//     dischargeyearlybattery: 252,
-//     dischargetotalbattery: 252,
-//   },
-// ]);
-
 export const Logger = signal([
-  {
-    id: 1,
-    SN: "T0623A000162",
-    name: "Logger 01",
-    state: 0,
-    type: "L01",
-    version: "0.1",
-    data: {
-      pro_1: 16,
-      pro_2: 110,
-      pro_3: 0.5,
-      con_1: 7.68,
-      con_2: 0.25,
-      grid_1: 4.56,
-      grid_in_1: 0.15,
-      grid_in_2: 54,
-      grid_out_1: 0.1,
-      grid_out_2: 36,
-      bat_1: 3.12,
-      bat_2: 74.1,
-      bat_in_1: 0.1,
-      bat_out_1: 0.05,
-    },
-    setting: {},
-    plantid: 1,
-  },
-  {
-    id: 2,
-    SN: "T0623A000166",
-    name: "Logger 02",
-    state: 1,
-    type: "L01",
-    version: "0.1",
-    data: {
-      pro_1: 222,
-      pro_2: 230,
-      pro_3: 7.5,
-      con_1: 100,
-      con_2: 3.3,
-      grid_1: 130,
-      grid_in_1: 4.3,
-      grid_out_1: 3,
-      grid_out_2: 1080,
-      bat_1: 70,
-      bat_2: 70,
-      bat_in_1: 2.3,
-      bat_out_1: 1.5,
-    },
-    setting: {},
-    plantid: 1,
-  },
-  {
-    id: 3,
-    SN: "T0623A000177",
-    name: "Logger 03",
-    state: 0,
-    type: "L01",
-    version: "0.1",
-    data: {
-      pro_1: 116,
-      pro_2: 333,
-      pro_3: 3.8,
-      con_1: 50,
-      con_2: 1.6,
-      grid_1: 66,
-      grid_in_1: 2.2,
-      grid_in_2: 792,
-      grid_out_1: 1.5,
-      grid_out_2: 540,
-      bat_1: 33,
-      bat_2: 69,
-      bat_in_1: 1.1,
-      bat_out_1: 0.7,
-    },
-    setting: {},
-    plantid: 2,
-  },
-  {
-    id: 4,
-    SN: "T0623A000188",
-    name: "Logger 04",
-    state: 0,
-    type: "L01",
-    version: "0.1",
-    data: {
-      pro_1: 7.89,
-      pro_2: 11.6,
-      pro_3: 8.8,
-      con_1: 90,
-      con_2: 16,
-      grid_1: 6.6,
-      grid_in_1: 22.2,
-      grid_in_2: 79.2,
-      grid_out_1: 15.5,
-      grid_out_2: 54,
-      bat_1: 3.3,
-      bat_2: 6.9,
-      bat_in_1: 81.1,
-      bat_out_1: 60.7,
-    },
-    setting: {},
-    plantid: 3,
-  },
+  // {
+  //   id: 1,
+  //   SN: "T0623A000162",
+  //   name: "Logger 01",
+  //   state: 0,
+  //   type: "L01",
+  //   version: "0.1",
+  //   data: {
+  //     pro_1: 16,
+  //     // pro_2: 110,
+  //     pro_2: 0.5,
+  //     con_1: 7.68,
+  //     con_2: 0.25,
+  //     grid_1: 4.56,
+  //     grid_in_1: 0.15,
+  //     grid_in_2: 54,
+  //     grid_out_1: 0.1,
+  //     grid_out_2: 36,
+  //     bat_1: 3.12,
+  //     bat_2: 74.1,
+  //     bat_in_1: 0.1,
+  //     bat_out_1: 0.05,
+  //   },
+  //   setting: {},
+  //   plantid: 1,
+  // },
+  // {
+  //   id: 2,
+  //   SN: "T0623A000166",
+  //   name: "Logger 02",
+  //   state: 1,
+  //   type: "L01",
+  //   version: "0.1",
+  //   data: {
+  //     pro_1: 222,
+  //     // pro_2: 230,
+  //     pro_2: 7.5,
+  //     con_1: 100,
+  //     con_2: 3.3,
+  //     grid_1: 130,
+  //     grid_in_1: 4.3,
+  //     grid_out_1: 3,
+  //     grid_out_2: 1080,
+  //     bat_1: 70,
+  //     bat_2: 70,
+  //     bat_in_1: 2.3,
+  //     bat_out_1: 1.5,
+  //   },
+  //   setting: {},
+  //   plantid: 1,
+  // },
+  // {
+  //   id: 3,
+  //   SN: "T0623A000177",
+  //   name: "Logger 03",
+  //   state: 0,
+  //   type: "L01",
+  //   version: "0.1",
+  //   data: {
+  //     pro_1: 116,
+  //     // pro_2: 333,
+  //     pro_2: 3.8,
+  //     con_1: 50,
+  //     con_2: 1.6,
+  //     grid_1: 66,
+  //     grid_in_1: 2.2,
+  //     grid_in_2: 792,
+  //     grid_out_1: 1.5,
+  //     grid_out_2: 540,
+  //     bat_1: 33,
+  //     bat_2: 69,
+  //     bat_in_1: 1.1,
+  //     bat_out_1: 0.7,
+  //   },
+  //   setting: {},
+  //   plantid: 2,
+  // },
+  // {
+  //   id: 4,
+  //   SN: "T0623A000188",
+  //   name: "Logger 04",
+  //   state: 0,
+  //   type: "L01",
+  //   version: "0.1",
+  //   data: {
+  //     pro_1: 7.89,
+  //     // pro_2: 11.6,
+  //     pro_2: 8.8,
+  //     con_1: 90,
+  //     con_2: 16,
+  //     grid_1: 6.6,
+  //     grid_in_1: 22.2,
+  //     grid_in_2: 79.2,
+  //     grid_out_1: 15.5,
+  //     grid_out_2: 54,
+  //     bat_1: 3.3,
+  //     bat_2: 6.9,
+  //     bat_in_1: 81.1,
+  //     bat_out_1: 60.7,
+  //   },
+  //   setting: {},
+  //   plantid: 3,
+  // },
 ]);
 
 export const InverterbyLogger = signal([
@@ -399,6 +230,7 @@ export const Inverter = signal([
 ]);
 
 function Project(props) {
+  const user = useSelector(state => state.admin.usr);
   const [datafilter, setDatafilter] = useState([]);
   const [type, setType] = useState("name");
   // const [filter, setFilter] = useState("");
@@ -536,11 +368,11 @@ function Project(props) {
     {
       name: "Tên",
       selector: (row) => (
-        <div className="DAT_Table" id={row.id} onClick={(e) => handlePlant(e)}>
+        <div className="DAT_Table" id={row.plantid} onClick={(e) => handlePlant(e)}>
           <img src="/dat_picture/solar_panel.png" alt="" />
 
           <div className="DAT_Table_Infor">
-            <div className="DAT_Table_Infor_Name">{row.name}</div>
+            <div className="DAT_Table_Infor_Name">{row.plantname}</div>
             <div className="DAT_Table_Infor_Addr">{row.addr}</div>
           </div>
         </div>
@@ -555,7 +387,7 @@ function Project(props) {
       name: "Kết nối",
       selector: (row) => (
         <>
-          {row.status ? (
+          {row.state === 1 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
             <MdOutlineError size={22} color="red" />
@@ -568,7 +400,7 @@ function Project(props) {
       name: "Cảnh báo",
       selector: (row) => (
         <div>
-          {row.warn ? (
+          {row.warn === 1 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
             <MdOutlineError size={22} color="red" />
@@ -622,7 +454,7 @@ function Project(props) {
         <>
           <div className="DAT_TableEdit">
             <span
-              id={row.id + "_MORE"}
+              id={row.plantid + "_MORE"}
               onMouseEnter={(e) => handleModify(e, "block")}
             >
               ...
@@ -631,20 +463,20 @@ function Project(props) {
 
           <div
             className="DAT_ModifyBox"
-            id={row.id + "_Modify"}
+            id={row.plantid + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             <div
               className="DAT_ModifyBox_Fix"
-              id={row.id}
+              id={row.plantid}
               onClick={(e) => handleEdit(e)}
             >
               Chỉnh sửa
             </div>
             <div
               className="DAT_ModifyBox_Remove"
-              id={row.id}
+              id={row.plantid}
               onClick={(e) => handleDelete(e)}
             >
               Gỡ
@@ -659,7 +491,7 @@ function Project(props) {
   const handlePlant = (e) => {
     plantState.value = "info";
     const newPlant = dataproject.value.find(
-      (item) => item.id == e.currentTarget.id
+      (item) => item.plantid == e.currentTarget.id
     );
     projectData.value = newPlant;
 
@@ -672,7 +504,7 @@ function Project(props) {
   const handleEdit = (e) => {
     plantState.value = "edit";
     const newPlant = dataproject.value.find(
-      (item) => item.id == e.currentTarget.id
+      (item) => item.plantid == e.currentTarget.id
     );
     projectData.value = newPlant;
   };
@@ -680,7 +512,7 @@ function Project(props) {
   const handleDelete = (e) => {
     popupState.value = true;
     const newPlant = dataproject.value.find(
-      (item) => item.id == e.currentTarget.id
+      (item) => item.plantid == e.currentTarget.id
     );
     projectData.value = newPlant;
   };
@@ -739,10 +571,21 @@ function Project(props) {
   }, [dataproject.value]);
 
   useEffect(() => {
-    online.value = dataproject.value.filter((item) => item.status == true);
-    offline.value = dataproject.value.filter((item) => item.status == false);
+    online.value = dataproject.value.filter((item) => item.state == 1);
+    offline.value = dataproject.value.filter((item) => item.state == 0);
+    warn.value = dataproject.value.filter((item) => item.warn == 0);
     tabLable.value = listTab[0].name;
   }, [dataproject.value]);
+
+  useEffect(() => {
+    const getPlant = async (usrname) => {
+      let d = await callApi('post', host.DATA + '/getPlant', { usr: usrname });
+      if (d.status === true) {
+        dataproject.value = d.data;
+      }
+    }
+    getPlant(user);
+  }, []);
 
   return (
     <>
@@ -929,9 +772,9 @@ function Project(props) {
             case "info":
               return <ProjectData />;
             case "edit":
-              return <EditProject />;
+              return <EditProject usr={user} />;
             case "add":
-              return <AddProject />;
+              return <AddProject usr={user} />;
             default:
               return <></>;
           }
@@ -940,7 +783,7 @@ function Project(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup />
+          <Popup usr={user} />
         </div>
       ) : (
         <></>

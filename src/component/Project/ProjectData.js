@@ -1,27 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./Project.scss";
 import AddGateway from "./AddGateway";
-import {
-  Empty,
-  plantState,
-  projectData,
-  deviceData,
-  Logger,
-  Inverter,
-} from "./Project";
+import { Empty, plantState, projectData, deviceData, Logger, Inverter } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from "recharts";
 
 import { IoIosArrowDown, IoIosArrowForward, IoIosCloud } from "react-icons/io";
 import { IoArrowForward, IoCalendarOutline, IoMenu } from "react-icons/io5";
@@ -43,6 +25,8 @@ import AddSubsystem from "./AddSubsystem";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -338,13 +322,54 @@ function ProjectData(props) {
 
   const navigate = useNavigate();
 
+  const [invt, setInvt] = useState({
+    '14494-1': '50',
+    '14491-1': '50',
+    '14651-1': '50',
+    '14600-1': '50',
+    '14490-1': '50',
+    '14489-1': '10',
+    '14485-1': '50',
+    '14487-1': '10',
+    '14486-1': '50',
+    '14488-1': '50',
+    '14365-1': '50',
+    '14482-1': '50',
+    '14364-1': '50',
+    '14384-1': '50',
+    '14390-1': '50',
+    '14391-1': '10',
+    '14392-1': '50',
+    '14393-1': '10',
+    '14394-1': '50',
+    '14395-1': '10',
+    '14396-1': '50',
+    '14397-1': '10',
+    '14398-1': '50',
+    '14399-1': '10',
+    '14400-1': '50',
+    '14401-1': '10',
+    '14402-1': '50',
+    '14403-1': '10',
+    '14404-1': '50',
+    '14405-1': '10',
+    '14406-1': '50',
+    '14407-1': '10',
+    '14408-1': '50',
+    '14409-1': '10',
+    '14410-1': '50',
+    '14411-1': '10',
+    '14412-1': '50',
+    '14413-1': '10',
+  })
+
   const color = {
     cur: "blue",
     pre: "black",
   };
 
   const tit = {
-    dashboard: projectData.value.name,
+    dashboard: projectData.value.plantname,
     device: "Thiết bị",
     alert: "Cảnh báo",
   };
@@ -474,7 +499,7 @@ function ProjectData(props) {
       selector: (row) => (
         <div>
           <div>{row.name}</div>
-          <div>{row.SN}</div>
+          <div style={{ color: "grey" }}>{row.sn}</div>
         </div>
       ),
       sortable: true,
@@ -487,7 +512,7 @@ function ProjectData(props) {
       name: "Trạng thái",
       selector: (row) => (
         <>
-          {row.state === 0 ? (
+          {row.status === 1 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
             <MdOutlineError size={22} color="red" />
@@ -497,8 +522,8 @@ function ProjectData(props) {
       // width: "110px",
     },
     {
-      name: "Lần cập nhật cuối",
-      selector: (row) => row.updated,
+      name: "Loại logger",
+      selector: (row) => row.type,
       sortable: true,
       // width: "180px",
     },
@@ -685,20 +710,6 @@ function ProjectData(props) {
     close.value = dataAlert.filter((item) => item.status == false);
     tabLableAlert.value = listAlertTab[0].name;
 
-    // dataLogger
-    setTemp([]);
-    deviceData.value.map((item) => {
-      const db = Logger.value.find((data) => data.SN == item.loggerSN);
-      setTemp((old) => [...old, db]);
-    });
-
-    // data LoggerTable
-    // setTempLogger([]);
-    // deviceData.value.map((item) => {
-    //   const db = Logger.value.find((data) => data.SN == item.loggerSN);
-    //   setTempLogger((old) => [...old, db]);
-    // });
-
     // data InverterTable
     setTempInverter([]);
     deviceData.value.map((item) => {
@@ -744,6 +755,12 @@ function ProjectData(props) {
       });
       setVTotal(item.name);
     });
+
+    const getLogger = async (plantid) => {
+      let d = await callApi('post', host.DATA + '/getLogger', { plantid: plantid })
+      setTemp(d)
+    };
+    getLogger(projectData.value.plantid);
 
     // eslint-disable-next-line
   }, []);
@@ -883,7 +900,7 @@ function ProjectData(props) {
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
                             style={{ textAlign: "right" }}
                           >
-                            {projectData.value.status ? (
+                            {projectData.value.state === 1 ? (
                               <>
                                 <FaCheckCircle size={20} color="green" />
                               </>
@@ -904,7 +921,7 @@ function ProjectData(props) {
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
                             style={{ textAlign: "right" }}
                           >
-                            {projectData.value.plantype === "industrial" ? (
+                            {projectData.value.planttype === "industry" ? (
                               <>Nhà máy</>
                             ) : (
                               <>Hộ dân</>
@@ -967,7 +984,7 @@ function ProjectData(props) {
                             color:
                               nav === "consumption" ? color.cur : color.pre,
                             display:
-                              projectData.value.systemtype === "grid"
+                              projectData.value.plantmode === "grid"
                                 ? "none"
                                 : "block",
                           }}
@@ -980,7 +997,7 @@ function ProjectData(props) {
                           style={{
                             color: nav === "grid" ? color.cur : color.pre,
                             display:
-                              projectData.value.systemtype === "grid"
+                              projectData.value.plantmode === "grid"
                                 ? "none"
                                 : "block",
                           }}
@@ -993,8 +1010,8 @@ function ProjectData(props) {
                           style={{
                             color: nav === "battery" ? color.cur : color.pre,
                             display:
-                              projectData.value.systemtype === "grid" ||
-                                projectData.value.systemtype === "consumption"
+                              projectData.value.plantmode === "grid" ||
+                                projectData.value.plantmode === "consumption"
                                 ? "none"
                                 : "block",
                           }}
@@ -1009,13 +1026,13 @@ function ProjectData(props) {
                           case "graph":
                             return <Graph />;
                           case "production":
-                            return <Production data={temp} />;
+                            return <Production data={temp} invt={invt} />;
                           case "consumption":
-                            return <Consumption data={temp} />;
+                            return <Consumption data={temp} invt={invt} />;
                           case "grid":
-                            return <Grid data={temp} />;
+                            return <Grid data={temp} invt={invt} />;
                           case "battery":
-                            return <Battery data={temp} />;
+                            return <Battery data={temp} invt={invt} />;
                           default:
                             <></>;
                         }
@@ -2023,21 +2040,18 @@ const Graph = () => {
 };
 
 const Production = (props) => {
+  const [data, setData] = useState(props.invt);
   const [production, setProduction] = useState(0);
-  const [capacity, setCapacity] = useState(0);
   const [dailyproduction, setDailyproduction] = useState(0);
   const result = getDaysInCurrentMonth();
 
   useEffect(() => {
     setProduction(0);
-    props.data.map((item) => { setProduction((production) => production + item.data.pro_1) });
-
-    setCapacity(0);
-    props.data.map((item) => { setCapacity((capacity) => capacity + item.data.pro_2) });
+    props.data.map((item) => { setProduction((production) => production + eval(item.data.pro_1)) });
 
     setDailyproduction(0);
-    props.data.map((item) => { setDailyproduction((dailyproduction) => dailyproduction + item.data.pro_3) });
-  }, [props.data, production, capacity, dailyproduction]);
+    props.data.map((item) => { setDailyproduction((dailyproduction) => dailyproduction + eval(item.data.pro_2)) });
+  }, [props.data]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Production">
@@ -2047,7 +2061,7 @@ const Production = (props) => {
             style={{ fontSize: "28px" }}
           >
             <span style={{ height: "40px", display: "flex", alignItems: "flex-end" }}>
-              {parseFloat((production / capacity) * 100).toFixed(2)}
+              {parseFloat((production / projectData.value.capacity) * 100).toFixed(2)}
             </span>
             &nbsp;
             <span style={{ fontSize: "18px", color: "grey", height: "40px", display: "flex", alignItems: "flex-end", paddingBottom: "3px" }}>%</span>
@@ -2073,7 +2087,7 @@ const Production = (props) => {
           </div>
           <div>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {capacity}
+              {projectData.value.capacity}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }} >
@@ -2088,7 +2102,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            Sản lượng điện ngày
+            Sản lượng ngày
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2105,7 +2119,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            Sản lượng điện tháng
+            Sản lượng tháng
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2122,7 +2136,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            Sản lượng điện năm
+            Sản lượng năm
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2139,7 +2153,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            Tổng sản lượng điện
+            Tổng sản lượng
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2157,17 +2171,18 @@ const Production = (props) => {
 };
 
 const Consumption = (props) => {
+  const [data, setData] = useState(props.invt);
   const [consumption, setConsumption] = useState(0);
   const [dailyconsumption, setDailyconsumption] = useState(0);
   const result = getDaysInCurrentMonth();
 
   useEffect(() => {
     setConsumption(0);
-    props.data.map((item) => { setConsumption((consumption) => consumption + item.data.con_1) });
+    props.data.map((item) => { setConsumption((consumption) => consumption + eval(item.data.con_1)) });
 
     setDailyconsumption(0);
-    props.data.map((item) => { setDailyconsumption((dailyconsumption) => dailyconsumption + item.data.con_2) });
-  }, [props.data, consumption, dailyconsumption]);
+    props.data.map((item) => { setDailyconsumption((dailyconsumption) => dailyconsumption + eval(item.data.con_2)) });
+  }, [props.data]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption">
@@ -2266,6 +2281,7 @@ const Consumption = (props) => {
 };
 
 const Grid = (props) => {
+  const [data, setData] = useState(props.invt);
   const [grid, setGrid] = useState(0);
   const [feedindailygrid, setFeedindailygrid] = useState(0);
   const [feedintotalgrid, setFeedintotalgrid] = useState(0);
@@ -2275,20 +2291,20 @@ const Grid = (props) => {
 
   useEffect(() => {
     setGrid(0);
-    props.data.map((item) => { setGrid((grid) => grid + item.data.grid_1) });
+    props.data.map((item) => { setGrid((grid) => grid + eval(item.data.grid_1)) });
 
     setFeedindailygrid(0);
-    props.data.map((item) => { setFeedindailygrid((feedindailygrid) => feedindailygrid + item.data.grid_in_1) });
+    props.data.map((item) => { setFeedindailygrid((feedindailygrid) => feedindailygrid + eval(item.data.grid_in_1)) });
 
     setFeedintotalgrid(0);
-    props.data.map((item) => { setFeedintotalgrid((feedintotalgrid) => feedintotalgrid + item.data.grid_in_2) });
+    // props.data.map((item) => { setFeedintotalgrid((feedintotalgrid) => feedintotalgrid + eval(item.data.grid_in_2)) });
 
     setPurchaseddailygrid(0);
-    props.data.map((item) => { setPurchaseddailygrid((purchaseddailygrid) => purchaseddailygrid + item.data.grid_out_1) });
+    props.data.map((item) => { setPurchaseddailygrid((purchaseddailygrid) => purchaseddailygrid + eval(item.data.grid_out_1)) });
 
     setPurchasedtotalgrid(0);
-    props.data.map((item) => { setPurchasedtotalgrid((purchasedtotalgrid) => purchasedtotalgrid + item.data.grid_out_2) });
-  }, [props.data, grid, feedindailygrid, feedintotalgrid, purchaseddailygrid, purchasedtotalgrid]);
+    // props.data.map((item) => { setPurchasedtotalgrid((purchasedtotalgrid) => purchasedtotalgrid + eval(item.data.grid_out_2)) });
+  }, [props.data]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Grid">
@@ -2447,6 +2463,7 @@ const Grid = (props) => {
 };
 
 const Battery = (props) => {
+  const [data, setData] = useState(props.invt);
   const [battery, setBattery] = useState(0);
   const [percent, setPercent] = useState(0);
   const [chargedailybattery, setChargedailybattery] = useState(0);
@@ -2455,16 +2472,16 @@ const Battery = (props) => {
 
   useEffect(() => {
     setBattery(0);
-    props.data.map((item) => { setBattery((battery) => battery + item.data.bat_1) });
+    props.data.map((item) => { setBattery((battery) => battery + eval(item.data.bat_1)) });
 
     setPercent(0);
-    props.data.map((item) => { setPercent((percent) => percent + item.data.bat_2) });
+    props.data.map((item) => { setPercent((percent) => percent + eval(item.data.bat_2)) });
 
     setChargedailybattery(0);
-    props.data.map((item) => { setChargedailybattery((chargedailybattery) => chargedailybattery + item.data.bat_in_1) });
+    props.data.map((item) => { setChargedailybattery((chargedailybattery) => chargedailybattery + eval(item.data.bat_in_1)) });
 
     setDischargedailybattery(0);
-    props.data.map((item) => { setDischargedailybattery((dischargedailybattery) => dischargedailybattery + item.data.bat_out_1) });
+    props.data.map((item) => { setDischargedailybattery((dischargedailybattery) => dischargedailybattery + eval(item.data.bat_out_1)) });
   }, [props.data, battery, percent, chargedailybattery, dischargedailybattery]);
 
   return (

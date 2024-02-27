@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Project.scss";
-import { dataproject, lastId, plantState } from "./Project";
+import { dataproject, plantState } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
 
 import { signal } from "@preact/signals-react";
@@ -10,33 +10,36 @@ import moment from "moment-timezone";
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
 
 export const plantData = signal({
-  name: "",
   addr: "",
-  long: "",
-  lat: "",
-  plantype: "residential",
-  systemtype: "grid",
-  capacity: "",
-  griddate: "",
   angle: "",
-  currency: "vnd",
-  price: "",
-  contact: "",
-  phone: "",
   business: "",
-  status: false,
-  warn: false,
-  production: "0",
-  power: "0",
-  lastupdate: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),
+  capacity: "",
+  company: "DAT Group",
+  contact: "",
   createdate: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),
+  currency: "vnd",
+  griddate: "",
+  lastupdate: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),
+  lat: "",
+  long: "",
+  phone: "",
+  plantmode: "grid",
+  plantname: "",
+  planttype: "residential",
+  power: "0",
+  price: "",
+  production: "0",
+  state: 0,
+  warn: 0,
 });
 
 const BasicInfo = (props) => {
   const [state, setState] = useState(true);
-  
+
   const defaultProps = {
     center: {
       lat: 16.054083398111068,
@@ -88,7 +91,7 @@ const BasicInfo = (props) => {
                   <span style={{ color: "grey" }}>Tên dự án:</span>
                 </div>
                 <input
-                  id="name"
+                  id="plantname"
                   type="text"
                   // ref={name}
                   onChange={(e) => handleBasic(e)}
@@ -153,7 +156,7 @@ const BasicInfo = (props) => {
                     apiKey={process.env.REACT_APP_GGKEY}
                     defaultCenter={defaultProps.center}
                     defaultZoom={defaultProps.zoom}
-                    //onGoogleApiLoaded={onGoogleApiLoaded}
+                  //onGoogleApiLoaded={onGoogleApiLoaded}
                   />
                 </div>
               </div>
@@ -219,8 +222,8 @@ const SystemInfo = (props) => {
                   <span style={{ color: "grey" }}>Loại dự án:</span>
                 </div>
                 <select
-                  id="plantype"
-                  defaultValue={plantData.value["plantype"]}
+                  id="planttype"
+                  defaultValue={plantData.value["planttype"]}
                   onChange={(e) => handleSystem(e)}
                 >
                   <option value="residential">Hộ dân</option>
@@ -234,8 +237,8 @@ const SystemInfo = (props) => {
                   <span style={{ color: "grey" }}>Loại hệ thống điện:</span>
                 </div>
                 <select
-                  id="systemtype"
-                  defaultValue={plantData.value["systemtype"]}
+                  id="plantmode"
+                  defaultValue={plantData.value["plantmode"]}
                   onChange={(e) => handleSystem(e)}
                 >
                   <option value="grid">Hệ thống hòa lưới</option>
@@ -459,6 +462,64 @@ const OwnerInfo = (props) => {
   );
 };
 
+const ImgInfo = (props) => {
+  const [state, setState] = useState(true);
+  const [ava, setAva] = React.useState();
+  const handleChooseAvatar = (e) => {
+    setAva(URL.createObjectURL(e.target.files[0]));
+    console.log(e.target.files[0].name);
+  };
+
+  return (
+    <div className="DAT_AddProject_ImgInfo">
+      <div className="DAT_AddProject_ImgInfo_Tit">
+        <div className="DAT_AddProject_ImgInfo_Tit_Left">{props.tit}</div>
+
+        <div className="DAT_AddProject_ImgInfo_Tit_Right"
+          onClick={() => setState(!state)}
+        >
+          <IoIosArrowDown
+            size={20}
+            style={{
+              transform: state ? "rotate(0deg)" : "rotate(180deg)",
+              transition: "0.5s",
+            }}
+          />
+        </div>
+      </div>
+
+      <div
+        style={{
+          height: state ? props.height : "0px",
+          transition: "0.5s",
+          overflow: "hidden",
+        }}
+      >
+        {state ? (
+          <div className="DAT_AddProject_ImgInfo_Body">
+            <div className="DAT_AddProject_ImgInfo_Body_Ava">
+              <div className="DAT_AddProject_ImgInfo_Body_Ava_Img">
+                <img src={ava} alt="" />
+              </div>
+              <input
+                type="file"
+                id="file"
+                accept="image/png, image/gif, image/jpeg"
+                onChange={(e) => handleChooseAvatar(e)}
+              />
+              <label htmlFor="file" style={{ cursor: "pointer" }}>
+                Chọn ảnh
+              </label>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function AddProject(props) {
   const handleSaveBasic = () => {
     var check = 0;
@@ -472,31 +533,93 @@ function AddProject(props) {
       console.log("vui long nhap day du thong tin");
     } else {
       console.log("tao du an thanh cong");
-      lastId.value = lastId.value + 1;
-      plantData.value["id"] = lastId.value;
+
+      const addProject = async (
+        usrname,
+        plantname,
+        company,
+        addr,
+        long,
+        lat,
+        contact,
+        phone,
+        business,
+        plantytype,
+        plantmode,
+        griddate,
+        capacity,
+        angle,
+        currency,
+        price,
+        production,
+        power,
+      ) => {
+        let d = await callApi('post', host.DATA + '/addPlant', {
+          usr: usrname,
+          name: plantname,
+          company: company,
+          addr: addr,
+          long: long,
+          lat: lat,
+          contact: contact,
+          phone: phone,
+          business: business,
+          type: plantytype,
+          mode: plantmode,
+          griddate: griddate,
+          capacity: capacity,
+          angle: angle,
+          currency: currency,
+          price: price,
+          production: production,
+          power: power,
+        })
+      };
+      addProject(
+        props.usr,
+        plantData.value.plantname,
+        plantData.value.company,
+        plantData.value.addr,
+        plantData.value.long,
+        plantData.value.lat,
+        plantData.value.contact,
+        plantData.value.phone,
+        plantData.value.business,
+        plantData.value.planttype,
+        plantData.value.plantmode,
+        plantData.value.griddate,
+        plantData.value.capacity,
+        plantData.value.angle,
+        plantData.value.currency,
+        plantData.value.price,
+        plantData.value.production,
+        plantData.value.power,
+      )
+
       dataproject.value = [...dataproject.value, plantData.value];
       plantState.value = "default";
       plantData.value = {
-        name: "",
         addr: "",
-        long: "",
-        lat: "",
-        plantype: "residential",
-        systemtype: "grid",
-        capacity: "",
-        griddate: "",
         angle: "",
-        currency: "vnd",
-        price: "",
-        contact: "",
-        phone: "",
         business: "",
-        status: false,
-        warn: false,
-        production: "0",
-        power: "0",
-        lastupdate: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),
+        capacity: "",
+        company: "",
+        contact: "",
         createdate: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),
+        currency: "vnd",
+        griddate: "",
+        lastupdate: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),
+        lat: "",
+        long: "",
+        phone: "",
+        plantmode: "grid",
+        plantname: "",
+        planttype: "residential",
+        power: "0",
+        price: "",
+        production: "0",
+        state: 0,
+        warn: 0,
       };
     }
   };
@@ -542,6 +665,11 @@ function AddProject(props) {
       <OwnerInfo
         tit={"Thông tin người sở hữu"}
         height={isMobile.value ? "320px" : "100px"}
+      />
+
+      <ImgInfo
+        tit={"Ảnh đại diện"}
+        height={isMobile.value ? "320px" : "260px"}
       />
     </div>
   );
