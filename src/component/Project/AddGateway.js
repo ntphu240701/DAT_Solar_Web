@@ -1,13 +1,15 @@
 import React, { useEffect, useRef } from "react";
+import { Empty, plantState, projectData, deviceData, Logger, Inverter } from "./Project";
 import { IoClose } from "react-icons/io5";
 import { popupAddGateway } from "./ProjectData";
 import { signal } from "@preact/signals-react";
-
-const check = signal("newDevice");
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
 
 export default function AddGateway(props) {
-  const newDevice = useRef();
-  const oldDevice = useRef();
+  const sn = useRef();
+  const name = useRef();
+  const type = useRef();
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
@@ -23,17 +25,14 @@ export default function AddGateway(props) {
 
   const handleClose = () => {
     popupAddGateway.value = false;
-    oldDevice.current.checked = false;
-    check.value = "newDevice";
   };
-  
-  const handleCheck = (e) => {
-    if (e.target.id === "newDevice") {
-      oldDevice.current.checked = false;
-      check.value = "newDevice";
+
+  const handleSave = async (e) => {
+    if (sn.current.value === "" || name.current.value === "" || type.current.value === "") {
+      console.log("Không được để trống thông tin");
     } else {
-      newDevice.current.checked = false;
-      check.value = "oldDevice";
+      const d = await callApi('post', host.DATA + '/addLogger', { plantid: projectData.value.plantid, sn: sn.current.value, name: name.current.value, type: type.current.value });
+      console.log(d);
     }
   };
 
@@ -57,49 +56,18 @@ export default function AddGateway(props) {
       </div>
 
       <div className="DAT_AddGateway_Body">
-        <div className="DAT_AddGateway_Body_Radio">
-          <div className="DAT_AddGateway_Body_Radio_Item">
-            <input
-              id="newDevice"
-              type="radio"
-              defaultChecked={true}
-              ref={newDevice}
-              onChange={(e) => handleCheck(e)}
-            />
-            Thêm thiết bị mới
-          </div>
-          <div className="DAT_AddGateway_Body_Radio_Item">
-            <input
-              id="oldDevice"
-              type="radio"
-              ref={oldDevice}
-              onChange={(e) => handleCheck(e)}
-            />
-            Thay thế gateway/logger cũ
-          </div>
-        </div>
-
         <div className="DAT_AddGateway_Body_Input">
           <span>SN:</span>
-          <input type="text" placeholder="Nhập mã" />
+          <input id="sn" type="text" placeholder="Nhập mã" ref={sn} />
         </div>
-
-        {check.value === "oldDevice" ? (
-          <div className="DAT_AddGateway_Body_Select">
-            <span>Chọn thiết bị thay thế:</span>
-            <select>
-              {props.data.map((item, index) => {
-                return (
-                  <option key={index} value={item.id}>
-                    {item.SN}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-        ) : (
-          <></>
-        )}
+        <div className="DAT_AddGateway_Body_Input">
+          <span>Tên:</span>
+          <input id="name" type="text" placeholder="Nhập tên" ref={name} />
+        </div>
+        <div className="DAT_AddGateway_Body_Input">
+          <span>Kiểu:</span>
+          <input id="type" type="text" placeholder="Nhập kiểu" ref={type} />
+        </div>
       </div>
 
       <div className="DAT_AddGateway_Foot">
@@ -116,7 +84,7 @@ export default function AddGateway(props) {
         <button
           //   id={projectData.value.id}
           style={{ backgroundColor: "#048FFF", color: "white" }}
-          //   onClick={(e) => handleDelete(e)}
+          onClick={(e) => handleSave(e)}
         >
           Xác nhận
         </button>

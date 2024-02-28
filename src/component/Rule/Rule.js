@@ -105,7 +105,7 @@ export default function Rule() {
             </div>
             <div
               className="DAT_ModifyBox_Remove"
-              onClick={() => (popupState.value = "delete")}
+            // onClick={() => (popupState.value = "delete")}
             >
               Gỡ
             </div>
@@ -117,10 +117,10 @@ export default function Rule() {
   ];
 
   const handleEdit = (e) => {
-    popupState.value = "edit";
+    // popupState.value = "edit";
     const id = e.currentTarget.id;
     const newRole = datarole.find((item) => item.id == id);
-    roleData.value = newRole;
+    // roleData.value = newRole;
   };
 
   const handleModify = (e, type) => {
@@ -142,7 +142,7 @@ export default function Rule() {
         </div>
         <button
           className="DAT_RuleHeader_New"
-          onClick={() => (roleState.value = "create")}
+        // onClick={() => (roleState.value = "create")}
         >
           Tạo tài khoản mới
         </button>

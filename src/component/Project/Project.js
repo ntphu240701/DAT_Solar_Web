@@ -541,26 +541,26 @@ function Project(props) {
     } else {
       const t = e.target.value;
       const db = dataproject.value.filter((row) =>
-        // item.name.includes(t)
-        {
-          console.log(row.power);
-          switch (type) {
-            case "name":
-              return row.name.toLowerCase().includes(lowerCase(t));
-            case "capacity":
-              return String(row.capacity) === t;
-            case "production":
-              return String(row.production) === t;
-            case "power":
-              return row.power === t;
-            case "lastupdate":
-              return row.lastupdate === t;
-            case "createdate":
-              return row.createdate === t;
-            default:
-              return row.name.toLowerCase().includes(lowerCase(t));
-          }
+      // item.name.includes(t)
+      {
+        console.log(row.power);
+        switch (type) {
+          case "name":
+            return row.name.toLowerCase().includes(lowerCase(t));
+          case "capacity":
+            return String(row.capacity) === t;
+          case "production":
+            return String(row.production) === t;
+          case "power":
+            return row.power === t;
+          case "lastupdate":
+            return row.lastupdate === t;
+          case "createdate":
+            return row.createdate === t;
+          default:
+            return row.name.toLowerCase().includes(lowerCase(t));
         }
+      }
       );
       setDatafilter(db);
     }
@@ -760,8 +760,7 @@ function Project(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_ProjectInfor"
+      <div className="DAT_ProjectInfor"
         style={{
           height: plantState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",
