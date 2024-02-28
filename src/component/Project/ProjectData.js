@@ -32,6 +32,7 @@ import { set } from "lodash";
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
 export const popupAddSubsystem = signal(false);
+export const temp = signal([]);
 
 const tabMobile = signal(false);
 const tabLable = signal("");
@@ -300,7 +301,7 @@ function ProjectData(props) {
   const [configname, setConfigname] = useState("Chọn thông số");
   const [dropConfig, setDropConfig] = useState(false);
 
-  const [temp, setTemp] = useState({});
+  // const [temp, setTemp] = useState([]);
   const [tempInverter, setTempInverter] = useState({});
 
   const [dataDay, setDataDay] = useState([]);
@@ -748,8 +749,13 @@ function ProjectData(props) {
   const handleEdit = (e) => { console.log("sua") };
 
   const handleDelete = async (e) => {
-    const d = await callApi('post', host.DATA + '/dropLogger', { plantid: projectData.value.plantid, sn: e.currentTarget.id });
-    console.log(d);
+    const id = e.currentTarget.id;
+    const d = await callApi('post', host.DATA + '/dropLogger', { plantid: projectData.value.plantid, sn: id });
+    // console.log(e.currentTarget.id);
+    if (d.status) {
+      console.log(d);
+      temp.value = temp.value.filter((item) => item.sn != id);
+    }
   };
 
   useEffect(() => {
@@ -807,7 +813,8 @@ function ProjectData(props) {
     //data Logger
     const getLogger = async (plantid) => {
       let d = await callApi('post', host.DATA + '/getLogger', { plantid: plantid })
-      setTemp(d)
+      // setTemp(d)
+      temp.value = d;
       console.log(d)
       let _invt = {}
       d.map((item) => {
@@ -1119,15 +1126,15 @@ function ProjectData(props) {
                       {(() => {
                         switch (nav) {
                           case "graph":
-                            return <Graph />;
+                            return <Graph type={projectData.value.plantmode} />;
                           case "production":
-                            return <Production data={temp} invt={invt} />;
+                            return <Production data={temp.value} invt={invt} />;
                           case "consumption":
-                            return <Consumption data={temp} invt={invt} />;
+                            return <Consumption data={temp.value} invt={invt} />;
                           case "grid":
-                            return <Grid data={temp} invt={invt} />;
+                            return <Grid data={temp.value} invt={invt} />;
                           case "battery":
-                            return <Battery data={temp} invt={invt} />;
+                            return <Battery data={temp.value} invt={invt} />;
                           default:
                             <></>;
                         }
@@ -1525,7 +1532,7 @@ function ProjectData(props) {
                               return (
                                 <DataTable className="DAT_Table_Device"
                                   columns={columnLogger}
-                                  data={temp}
+                                  data={temp.value}
                                   pagination
                                   paginationComponentOptions={paginationComponentOptions}
                                   fixedHeader={true}
@@ -1679,7 +1686,7 @@ function ProjectData(props) {
 
       {popupAddGateway.value ? (
         <div className="DAT_AddGatewayPopup">
-          <AddGateway data={temp} />
+          <AddGateway data={temp.value} />
         </div>
       ) : (
         <></>
@@ -1749,12 +1756,16 @@ function ProjectData(props) {
 export default ProjectData;
 
 // Thẻ Data
-const Graph = () => {
+const Graph = (props) => {
   const path = document.querySelector(".infinity");
   const circle = document.querySelector(".circle");
+  const val = { distance: 0 };
+
+  useEffect(() => {
+    console.log(props.type);
+  }, []);
 
   // Create an object that gsap can animate
-  const val = { distance: 0 };
   // Create a tween
   // gsap.to(val, {
   //   // Animate from distance 0 to the total distance

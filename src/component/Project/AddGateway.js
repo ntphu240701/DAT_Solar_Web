@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Empty, plantState, projectData, deviceData, Logger, Inverter } from "./Project";
 import { IoClose } from "react-icons/io5";
-import { popupAddGateway } from "./ProjectData";
+import { popupAddGateway, temp } from "./ProjectData";
 import { signal } from "@preact/signals-react";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
@@ -33,6 +33,10 @@ export default function AddGateway(props) {
     } else {
       const d = await callApi('post', host.DATA + '/addLogger', { plantid: projectData.value.plantid, sn: sn.current.value, name: name.current.value, type: type.current.value });
       console.log(d);
+      if (d.status) {
+        temp.value = [...temp.value, d.data];
+      }
+      popupAddGateway.value = false;
     }
   };
 
