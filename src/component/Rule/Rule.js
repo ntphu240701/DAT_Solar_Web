@@ -5,6 +5,171 @@ import { CiSearch } from "react-icons/ci";
 import { Empty } from "../Project/Project";
 import { signal } from "@preact/signals-react";
 import DataTable from "react-data-table-component";
+import CreateRule from "./CreateRule";
+import ConfirmDeleteRule from "./ConfirmDeleteRule";
+
+export const ruleID = signal()
+export const editRuleState = signal(false);
+export const confirmDeleteState = signal(false);
+export const createruleState = signal(false);
+export const datarule = signal([
+  {
+    ruleid: 1,
+    name: "Master",
+    setting: {
+      alert: {
+        lang: "Thông báo",
+        option: {
+          1: { lang: "Chỉnh sửa", status: true },
+          2: { lang: "Xóa", status: true },
+        },
+      },
+      device: {
+        lang: "Thiết bị",
+        option: {
+          1: { lang: "Chỉnh sửa", status: true },
+          2: { lang: "Xóa", status: true },
+          3: { lang: "Tạo mới", status: true },
+        },
+      },
+      partner: {
+        lang: "Đối tác",
+        option: {
+          1: { lang: "Chỉnh sửa", status: true },
+        },
+      },
+      plant: {
+        lang: "Dự án",
+        option: {
+          1: { lang: "Chỉnh sửa", status: true },
+          2: { lang: "Xóa", status: true },
+          3: { lang: "Tạo mới", status: true },
+        },
+      },
+      report: {
+        lang: "Báo cáo",
+        option: {
+          1: { lang: "Chỉnh sửa", status: true },
+          2: { lang: "Xóa", status: true },
+          3: { lang: "Tạo mới", status: true },
+        },
+      },
+      rule: {
+        lang: "Phân quyền",
+        option: {
+          1: { lang: "Chỉnh sửa", status: true },
+          2: { lang: "Xóa", status: true },
+          3: { lang: "Thêm", status: true },
+          4: { lang: "Trạng thái", status: true },
+        },
+      },
+    },
+  },
+  {
+    ruleid: 2,
+    name: "Admin",
+    setting: {
+      alert: {
+        lang: "Thông báo",
+        option: {
+          1: { lang: "Chỉnh sửa", status: true },
+          2: { lang: "Xóa", status: true },
+        },
+      },
+      device: {
+        lang: "Thiết bị",
+        option: {
+          1: { lang: "Chỉnh sửa", status: true },
+          2: { lang: "Xóa", status: true },
+          3: { lang: "Tạo mới", status: true },
+        },
+      },
+      partner: {
+        lang: "Đối tác",
+        option: {
+          1: { lang: "Chỉnh sửa", status: true },
+        },
+      },
+      plant: {
+        lang: "Dự án",
+        option: {
+          1: { lang: "Chỉnh sửa", status: true },
+          2: { lang: "Xóa", status: true },
+          3: { lang: "Tạo mới", status: true },
+        },
+      },
+      report: {
+        lang: "Báo cáo",
+        option: {
+          1: { lang: "Chỉnh sửa", status: true },
+          2: { lang: "Xóa", status: true },
+          3: { lang: "Tạo mới", status: true },
+        },
+      },
+      rule: {
+        lang: "Phân quyền",
+        option: {
+          1: { lang: "Chỉnh sửa", status: true },
+          2: { lang: "Xóa", status: true },
+          3: { lang: "Thêm", status: true },
+          4: { lang: "Trạng thái", status: true },
+        },
+      },
+    },
+  },
+  {
+    ruleid: 3,
+    name: "User",
+    setting: {
+      alert: {
+        lang: "Thông báo",
+        option: {
+          1: { lang: "Chỉnh sửa", status: false },
+          2: { lang: "Xóa", status: false },
+        },
+      },
+      device: {
+        lang: "Thiết bị",
+        option: {
+          1: { lang: "Chỉnh sửa", status: false },
+          2: { lang: "Xóa", status: false },
+          3: { lang: "Tạo mới", status: false },
+        },
+      },
+      partner: {
+        lang: "Đối tác",
+        option: {
+          1: { lang: "Chỉnh sửa", status: false },
+        },
+      },
+      plant: {
+        lang: "Dự án",
+        option: {
+          1: { lang: "Chỉnh sửa", status: false },
+          2: { lang: "Xóa", status: false },
+          3: { lang: "Tạo mới", status: false },
+        },
+      },
+      report: {
+        lang: "Báo cáo",
+        option: {
+          1: { lang: "Chỉnh sửa", status: false },
+          2: { lang: "Xóa", status: false },
+          3: { lang: "Tạo mới", status: false },
+        },
+      },
+      rule: {
+        lang: "Phân quyền",
+        option: {
+          1: { lang: "Chỉnh sửa", status: false },
+          2: { lang: "Xóa", status: false },
+          3: { lang: "Thêm", status: false },
+          4: { lang: "Trạng thái", status: false },
+        },
+      },
+    },
+  },
+]);
 
 export default function Rule() {
   const paginationComponentOptions = {
@@ -14,68 +179,29 @@ export default function Rule() {
     selectAllRowsItemText: "tất cả",
   };
 
-  const datarole = [
-    {
-      id: 1,
-      name: "Trí Trần",
-      email: "tritran@datgroup.com.vn",
-      phone: "--",
-      role: "View only",
-      createdate: "05/01/2022 14:03:36",
-    },
-    {
-      id: 2,
-      name: "Tiến Đỗ",
-      email: "tiendo@datgroup.com.vn",
-      phone: "--",
-      role: "Edit",
-      createdate: "12/25/2023 14:08:36",
-    },
-    {
-      id: 3,
-      name: "Hiệp Solar",
-      email: "hiepsolar@datgroup.com.vn",
-      phone: "--",
-      role: "Full",
-      createdate: "01/17/2024 14:08:36",
-    },
-  ];
+  
 
-  const columnrole = [
+  const columnrule = [
     {
-      name: "Tên",
-      selector: (row) => row.name,
+      name: "STT",
+      selector: (row, index) => index + 1,
       sortable: true,
-      minWidth: "350px",
-      style: {
-        justifyContent: "left",
-      },
-    },
-    {
-      name: "phone",
-      selector: (row) => row.phone,
       width: "100px",
     },
     {
-      name: "E-mail",
-      selector: (row) => row.email,
-      width: "210px",
+      name: "Tên quyền",
+      selector: (row) => row.name,
+      sortable: true,
+      minWidth: "200px",
       style: {
         justifyContent: "left",
       },
     },
     {
-      name: "Phân quyền",
-      selector: (row) => row.role,
+      name: "ID",
+      selector: (row) => row.ruleid,
       sortable: true,
-      width: "160px",
-    },
-
-    {
-      name: "Ngày tạo",
-      selector: (row) => row.createdate,
-      sortable: true,
-      width: "180px",
+      width: "100px",
     },
     {
       name: "Tùy chỉnh",
@@ -83,7 +209,7 @@ export default function Rule() {
         <>
           <div className="DAT_TableEdit">
             <span
-              id={row.id + "_MORE"}
+              id={row.ruleid + "_MORE"}
               onMouseEnter={(e) => handleModify(e, "block")}
             >
               ...
@@ -92,7 +218,7 @@ export default function Rule() {
 
           <div
             className="DAT_ModifyBox"
-            id={row.id + "_Modify"}
+            id={row.ruleid + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
@@ -105,7 +231,7 @@ export default function Rule() {
             </div>
             <div
               className="DAT_ModifyBox_Remove"
-              onClick={() => (popupState.value = "delete")}
+              onClick={() => (confirmDeleteState.value = "delete")}
             >
               Gỡ
             </div>
@@ -117,15 +243,13 @@ export default function Rule() {
   ];
 
   const handleEdit = (e) => {
-    popupState.value = "edit";
-    const id = e.currentTarget.id;
-    const newRole = datarole.find((item) => item.id == id);
-    roleData.value = newRole;
+    editRuleState.value = true;
   };
 
   const handleModify = (e, type) => {
     const id = e.currentTarget.id;
     var arr = id.split("_");
+    ruleID.value = parseInt(arr[0]);
     const mod = document.getElementById(arr[0] + "_Modify");
     mod.style.display = type;
   };
@@ -142,9 +266,9 @@ export default function Rule() {
         </div>
         <button
           className="DAT_RuleHeader_New"
-          onClick={() => (roleState.value = "create")}
+          onClick={() => (createruleState.value = true)}
         >
-          Tạo tài khoản mới
+          Tạo quyền mới
         </button>
       </div>
 
@@ -156,13 +280,13 @@ export default function Rule() {
             backgroundColor: "rgba(233, 233, 233, 0.5)",
           }}
         >
-          Danh sách người dùng
+          Danh sách phân quyền
         </div>
         <div className="DAT_Rule_Content">
           <DataTable
             className="DAT_Table_Container"
-            columns={columnrole}
-            data={datarole}
+            columns={columnrule}
+            data={datarule.value}
             pagination
             paginationComponentOptions={paginationComponentOptions}
             fixedHeader={true}
@@ -171,40 +295,23 @@ export default function Rule() {
         </div>
       </div>
 
-      {/* <div
-        className="DAT_RuleInfor"
-        // style={{
-        //   height: roleState.value === "default" ? "0px" : "100vh",
-        //   transition: "0.5s",
-        // }}
+      <div
+        className="DAT_RuleCreate"
+        style={{
+          height: createruleState.value ? "100vh" : "0px",
+          transition: "0.5s",
+        }}
       >
-     {(() => {
-          switch (roleState.value) {
-            case "create":
-              return <CreateRole />;
-            default:
-              return <></>;
-          }
-        })()} 
-      </div> */}
+        {createruleState.value ? <CreateRule /> : <></>}
+      </div>
 
-      {/* <div
-        className="DAT_RulePopup"
-        // style={{
-        //   height: popupState.value === "default" ? "0px" : "100vh",
-        // }}
-      >
-        {(() => {
-          switch (popupState.value) {
-            case "delete":
-              return <DeleteRole />;
-            case "edit":
-              return <EditRole />;
-            default:
-              return <></>;
-          }
-        })()} 
-      </div> */}
+      {confirmDeleteState.value ? (
+        <div className="DAT_ComfirmDeletePopup">
+          <ConfirmDeleteRule/>
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 }
