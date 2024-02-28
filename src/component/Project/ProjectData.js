@@ -27,6 +27,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { set } from "lodash";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -34,14 +35,12 @@ export const popupAddSubsystem = signal(false);
 
 const tabMobile = signal(false);
 const tabLable = signal("");
-const tab = signal("inverter");
+const tab = signal("logger");
 const tabMobileAlert = signal(false);
 const tabLableAlert = signal("");
 const tabAlert = signal("all");
 const open = signal([]);
 const close = signal([]);
-const addNav = signal(false);
-const addStateNav = signal([false, false]);
 
 const dataMeter = [
   // {
@@ -323,44 +322,58 @@ function ProjectData(props) {
   const navigate = useNavigate();
 
   const [invt, setInvt] = useState({
-    '14494-1': '50',
-    '14491-1': '50',
-    '14651-1': '50',
-    '14600-1': '50',
-    '14490-1': '50',
-    '14489-1': '10',
-    '14485-1': '50',
-    '14487-1': '10',
-    '14486-1': '50',
-    '14488-1': '50',
-    '14365-1': '50',
-    '14482-1': '50',
-    '14364-1': '50',
-    '14384-1': '50',
-    '14390-1': '50',
-    '14391-1': '10',
-    '14392-1': '50',
-    '14393-1': '10',
-    '14394-1': '50',
-    '14395-1': '10',
-    '14396-1': '50',
-    '14397-1': '10',
-    '14398-1': '50',
-    '14399-1': '10',
-    '14400-1': '50',
-    '14401-1': '10',
-    '14402-1': '50',
-    '14403-1': '10',
-    '14404-1': '50',
-    '14405-1': '10',
-    '14406-1': '50',
-    '14407-1': '10',
-    '14408-1': '50',
-    '14409-1': '10',
-    '14410-1': '50',
-    '14411-1': '10',
-    '14412-1': '50',
-    '14413-1': '10',
+    // T0623A000162: {
+    //   '14494-1': '10',
+
+    //   '14491-1': '20',
+
+    //   '14651-1': '30',
+
+    //   '14600-1': '40',
+
+    //   '14490-1': '18442',
+    //   '14489-1': '39466',
+
+    //   '14485-1': '70',
+
+    //   '14487-1': '18442',
+    //   '14486-1': '39466',
+
+    //   '14488-1': '10',
+
+    //   '14365-1': '20',
+
+    //   '14482-1': '30',
+
+    //   '14364-1': '40',
+
+    //   '14384-1': '50',
+
+    //   '14390-1': '60',
+    //   '14391-1': '70',
+    //   '14392-1': '80',
+    //   '14393-1': '90',
+    //   '14394-1': '10',
+    //   '14395-1': '20',
+    //   '14396-1': '30',
+    //   '14397-1': '40',
+    //   '14398-1': '50',
+    //   '14399-1': '60',
+    //   '14400-1': '70',
+    //   '14401-1': '80',
+    //   '14402-1': '90',
+    //   '14403-1': '10',
+    //   '14404-1': '20',
+    //   '14405-1': '30',
+    //   '14406-1': '40',
+    //   '14407-1': '50',
+    //   '14408-1': '60',
+    //   '14409-1': '70',
+    //   '14410-1': '80',
+    //   '14411-1': '90',
+    //   '14412-1': '10',
+    //   '14413-1': '20',
+    // }
   })
 
   const color = {
@@ -382,7 +395,7 @@ function ProjectData(props) {
   };
 
   const listDeviceTab = [
-    { id: "inverter", name: "Inverter" },
+    // { id: "inverter", name: "Inverter" },
     // { id: "meter", name: "Meter" },
     { id: "logger", name: "Logger" },
   ];
@@ -527,6 +540,44 @@ function ProjectData(props) {
       sortable: true,
       // width: "180px",
     },
+    {
+      name: "Tùy chỉnh",
+      selector: (row) => (
+        <>
+          <div className="DAT_TableEdit">
+            <span
+              id={row.sn + "_MORE"}
+              onMouseEnter={(e) => handleModify(e, "block")}
+            >
+              ...
+            </span>
+          </div>
+
+          <div
+            className="DAT_ModifyBox"
+            id={row.sn + "_Modify"}
+            style={{ display: "none" }}
+            onMouseLeave={(e) => handleModify(e, "none")}
+          >
+            <div
+              className="DAT_ModifyBox_Fix"
+              id={row.sn}
+              onClick={(e) => handleEdit(e)}
+            >
+              Chỉnh sửa
+            </div>
+            <div
+              className="DAT_ModifyBox_Remove"
+              id={row.sn}
+              onClick={(e) => handleDelete(e)}
+            >
+              Gỡ
+            </div>
+          </div>
+        </>
+      ),
+      width: "100px",
+    },
   ];
 
   const listAlertTab = [
@@ -635,23 +686,6 @@ function ProjectData(props) {
     tabLableAlert.value = newLabel.name;
   };
 
-  const handleOutsideAdd = () => {
-    setTimeout(() => {
-      if (addStateNav.value[1] == false) {
-        addNav.value = false;
-        addStateNav.value = [false, false];
-      }
-    }, 250);
-  };
-
-  const handleAddGateway = (e) => {
-    popupAddGateway.value = true;
-  };
-
-  const handleAddSubsystem = (e) => {
-    popupAddSubsystem.value = true;
-  };
-
   const handleChart = (date) => {
     if (dateType === "date") {
       setD({ ...d, date: moment(date).format("DD/MM/YYYY") });
@@ -702,6 +736,20 @@ function ProjectData(props) {
         setVYear("--");
       }
     }
+  };
+
+  const handleModify = (e, type) => {
+    const id = e.currentTarget.id;
+    var arr = id.split("_");
+    const mod = document.getElementById(arr[0] + "_Modify");
+    mod.style.display = type;
+  };
+
+  const handleEdit = (e) => { console.log("sua") };
+
+  const handleDelete = async (e) => {
+    const d = await callApi('post', host.DATA + '/dropLogger', { plantid: projectData.value.plantid, sn: e.currentTarget.id });
+    console.log(d);
   };
 
   useEffect(() => {
@@ -756,10 +804,57 @@ function ProjectData(props) {
       setVTotal(item.name);
     });
 
+    //data Logger
     const getLogger = async (plantid) => {
       let d = await callApi('post', host.DATA + '/getLogger', { plantid: plantid })
       setTemp(d)
+      console.log(d)
+      let _invt = {}
+      d.map((item) => {
+        _invt[item.sn] = {
+          '14494-1': '10',
+          '14491-1': '20',
+          '14651-1': '30',
+          '14600-1': '40',
+          '14490-1': '18442',
+          '14489-1': '39466',
+          '14485-1': '70',
+          '14487-1': '18442',
+          '14486-1': '39466',
+          '14488-1': '10',
+          '14365-1': '20',
+          '14482-1': '30',
+          '14364-1': '40',
+          '14384-1': '50',
+          '14390-1': '60',
+          '14391-1': '70',
+          '14392-1': '80',
+          '14393-1': '90',
+          '14394-1': '10',
+          '14395-1': '20',
+          '14396-1': '30',
+          '14397-1': '40',
+          '14398-1': '50',
+          '14399-1': '60',
+          '14400-1': '70',
+          '14401-1': '80',
+          '14402-1': '90',
+          '14403-1': '10',
+          '14404-1': '20',
+          '14405-1': '30',
+          '14406-1': '40',
+          '14407-1': '50',
+          '14408-1': '60',
+          '14409-1': '70',
+          '14410-1': '80',
+          '14411-1': '90',
+          '14412-1': '10',
+          '14413-1': '20',
+        }
+      })
+      setInvt(_invt)
     };
+
     getLogger(projectData.value.plantid);
 
     // eslint-disable-next-line
@@ -1336,8 +1431,7 @@ function ProjectData(props) {
                       </div>
                       <button
                         id="add"
-                        onMouseEnter={() => { addNav.value = true; addStateNav.value = [true, false] }}
-                        onMouseLeave={() => handleOutsideAdd()}
+                        onClick={() => popupAddGateway.value = true}
                       >
                         Thêm
                       </button>
@@ -1583,30 +1677,9 @@ function ProjectData(props) {
         })()}
       </div>
 
-      <div className="DAT_AddNav"
-        style={{ display: addNav.value ? "block" : "none" }}
-        onMouseEnter={() => (addStateNav.value = [true, true])}
-        onMouseLeave={() => { addNav.value = false; addStateNav.value = [false, false] }}
-      >
-        <div className="DAT_AddNav-item">
-          <span onClick={(e) => handleAddGateway(e)}>Thêm Gateway/Logger</span>
-        </div>
-        <div className="DAT_AddNav-item">
-          <span onClick={(e) => handleAddSubsystem(e)}>Thêm Subsystem</span>
-        </div>
-      </div>
-
       {popupAddGateway.value ? (
         <div className="DAT_AddGatewayPopup">
           <AddGateway data={temp} />
-        </div>
-      ) : (
-        <></>
-      )}
-
-      {popupAddSubsystem.value ? (
-        <div className="DAT_AddGatewayPopup">
-          <AddSubsystem />
         </div>
       ) : (
         <></>
@@ -2047,10 +2120,92 @@ const Production = (props) => {
 
   useEffect(() => {
     setProduction(0);
-    props.data.map((item) => { setProduction((production) => production + eval(item.data.pro_1)) });
+    props.data.map((item) => {
+      const type = (item.data.pro_1.type);
+      const cal = JSON.parse(item.data.pro_1.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.pro_1.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setProduction((old) => old + sum);
+          break;
+        case "word":
+          let d = JSON.parse(item.data.pro_1.register);
+          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "float");
+          setProduction((old) => parseFloat(old) + parseFloat(view32bit));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.pro_1.register]) * parseFloat(item.data.pro_1.cal);
+          setProduction((old) => old + num);
+          break;
+      }
+    });
 
     setDailyproduction(0);
-    props.data.map((item) => { setDailyproduction((dailyproduction) => dailyproduction + eval(item.data.pro_2)) });
+    props.data.map((item) => {
+      const type = (item.data.pro_2.type);
+      const cal = JSON.parse(item.data.pro_2.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.pro_2.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setDailyproduction((old) => old + sum);
+          break;
+        case "word":
+          let d = JSON.parse(item.data.pro_2.register);
+          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "float");
+          setDailyproduction((old) => parseFloat(old) + parseFloat(view32bit));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.pro_2.register]) * parseFloat(item.data.pro_2.cal);
+          setDailyproduction((old) => old + num);
+          break;
+      }
+    });
   }, [props.data]);
 
   return (
@@ -2178,10 +2333,92 @@ const Consumption = (props) => {
 
   useEffect(() => {
     setConsumption(0);
-    props.data.map((item) => { setConsumption((consumption) => consumption + eval(item.data.con_1)) });
+    props.data.map((item) => {
+      const type = (item.data.con_1.type);
+      const cal = JSON.parse(item.data.con_1.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.con_1.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setConsumption((old) => old + sum);
+          break;
+        case "word":
+          let d = JSON.parse(item.data.con_1.register);
+          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "float");
+          setConsumption((old) => parseFloat(old) + parseFloat(view32bit));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.con_1.register]) * parseFloat(item.data.con_1.cal);
+          setConsumption((old) => old + num);
+          break;
+      }
+    });
 
     setDailyconsumption(0);
-    props.data.map((item) => { setDailyconsumption((dailyconsumption) => dailyconsumption + eval(item.data.con_2)) });
+    props.data.map((item) => {
+      const type = (item.data.con_2.type);
+      const cal = JSON.parse(item.data.con_2.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.con_2.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setDailyconsumption((old) => old + sum);
+          break;
+        case "word":
+          let d = JSON.parse(item.data.con_2.register);
+          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "float");
+          setDailyconsumption((old) => parseFloat(old) + parseFloat(view32bit));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.con_2.register]) * parseFloat(item.data.con_2.cal);
+          setDailyconsumption((old) => old + num);
+          break;
+      }
+    });
   }, [props.data]);
 
   return (
@@ -2291,19 +2528,224 @@ const Grid = (props) => {
 
   useEffect(() => {
     setGrid(0);
-    props.data.map((item) => { setGrid((grid) => grid + eval(item.data.grid_1)) });
+    props.data.map((item) => {
+      const type = (item.data.grid_1.type);
+      const cal = JSON.parse(item.data.grid_1.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.grid_1.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setGrid((old) => old + sum);
+          break;
+        case "word":
+          let d = JSON.parse(item.data.grid_1.register);
+          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "float");
+          setGrid((old) => parseFloat(old) + parseFloat(view32bit));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.grid_1.register]) * parseFloat(item.data.grid_1.cal);
+          setGrid((old) => old + num);
+          break;
+      }
+    });
 
     setFeedindailygrid(0);
-    props.data.map((item) => { setFeedindailygrid((feedindailygrid) => feedindailygrid + eval(item.data.grid_in_1)) });
+    props.data.map((item) => {
+      const type = (item.data.grid_in_1.type);
+      const cal = JSON.parse(item.data.grid_in_1.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.grid_in_1.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setFeedindailygrid((old) => old + sum);
+          break;
+        case "word":
+          let d = JSON.parse(item.data.grid_in_1.register);
+          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "float");
+          setFeedindailygrid((old) => parseFloat(old) + parseFloat(view32bit));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.grid_in_1.register]) * parseFloat(item.data.grid_in_1.cal);
+          setFeedindailygrid((old) => old + num);
+          break;
+      }
+    });
 
     setFeedintotalgrid(0);
-    // props.data.map((item) => { setFeedintotalgrid((feedintotalgrid) => feedintotalgrid + eval(item.data.grid_in_2)) });
+    props.data.map((item) => {
+      const type = (item.data.grid_in_2.type);
+      const cal = JSON.parse(item.data.grid_in_2.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.grid_in_2.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setFeedintotalgrid((old) => old + sum);
+          break;
+        case "word":
+          let d = JSON.parse(item.data.grid_in_2.register);
+          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "float");
+          setFeedintotalgrid((old) => parseFloat(old) + parseFloat(view32bit));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.grid_in_2.register]) * parseFloat(item.data.grid_in_2.cal);
+          setFeedintotalgrid((old) => old + num);
+          break;
+      }
+    });
 
     setPurchaseddailygrid(0);
-    props.data.map((item) => { setPurchaseddailygrid((purchaseddailygrid) => purchaseddailygrid + eval(item.data.grid_out_1)) });
+    props.data.map((item) => {
+      const type = (item.data.grid_out_1.type);
+      const cal = JSON.parse(item.data.grid_out_1.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.grid_out_1.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setPurchaseddailygrid((old) => old + sum);
+          break;
+        case "word":
+          let d = JSON.parse(item.data.grid_out_1.register);
+          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "float");
+          setPurchaseddailygrid((old) => parseFloat(old) + parseFloat(view32bit));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.grid_out_1.register]) * parseFloat(item.data.grid_out_1.cal);
+          setPurchaseddailygrid((old) => old + num);
+          break;
+      }
+    });
 
     setPurchasedtotalgrid(0);
-    // props.data.map((item) => { setPurchasedtotalgrid((purchasedtotalgrid) => purchasedtotalgrid + eval(item.data.grid_out_2)) });
+    props.data.map((item) => {
+      const type = (item.data.grid_out_2.type);
+      const cal = JSON.parse(item.data.grid_out_2.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.grid_out_2.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setPurchasedtotalgrid((old) => old + sum);
+          break;
+        case "word":
+          let d = JSON.parse(item.data.grid_out_2.register);
+          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "float");
+          setPurchasedtotalgrid((old) => parseFloat(old) + parseFloat(view32bit));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.grid_out_2.register]) * parseFloat(item.data.grid_out_2.cal);
+          setPurchasedtotalgrid((old) => old + num);
+          break;
+      }
+    });
   }, [props.data]);
 
   return (
@@ -2472,17 +2914,181 @@ const Battery = (props) => {
 
   useEffect(() => {
     setBattery(0);
-    props.data.map((item) => { setBattery((battery) => battery + eval(item.data.bat_1)) });
+    props.data.map((item) => {
+      const type = (item.data.bat_1.type);
+      const cal = JSON.parse(item.data.bat_1.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.bat_1.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setBattery((old) => old + sum);
+          break;
+        case "word":
+          let d = JSON.parse(item.data.bat_1.register);
+          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "float");
+          setBattery((old) => parseFloat(old) + parseFloat(view32bit));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.bat_1.register]) * parseFloat(item.data.bat_1.cal);
+          setBattery((old) => old + num);
+          break;
+      }
+    });
 
     setPercent(0);
-    props.data.map((item) => { setPercent((percent) => percent + eval(item.data.bat_2)) });
+    props.data.map((item) => {
+      const type = (item.data.bat_2.type);
+      const cal = JSON.parse(item.data.bat_2.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.bat_2.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setPercent((old) => old + sum);
+          break;
+        case "word":
+          let d = JSON.parse(item.data.bat_2.register);
+          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "float");
+          setPercent((old) => parseFloat(old) + parseFloat(view32bit));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.bat_2.register]) * parseFloat(item.data.bat_2.cal);
+          setPercent((old) => old + num);
+          break;
+      }
+    });
 
     setChargedailybattery(0);
-    props.data.map((item) => { setChargedailybattery((chargedailybattery) => chargedailybattery + eval(item.data.bat_in_1)) });
+    props.data.map((item) => {
+      const type = (item.data.bat_in_1.type);
+      const cal = JSON.parse(item.data.bat_in_1.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.bat_in_1.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setChargedailybattery((old) => old + sum);
+          break;
+        case "word":
+          let d = JSON.parse(item.data.bat_in_1.register);
+          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "float");
+          setChargedailybattery((old) => parseFloat(old) + parseFloat(view32bit));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.bat_in_1.register]) * parseFloat(item.data.bat_in_1.cal);
+          setChargedailybattery((old) => old + num);
+          break;
+      }
+    });
 
     setDischargedailybattery(0);
-    props.data.map((item) => { setDischargedailybattery((dischargedailybattery) => dischargedailybattery + eval(item.data.bat_out_1)) });
-  }, [props.data, battery, percent, chargedailybattery, dischargedailybattery]);
+    props.data.map((item) => {
+      const type = (item.data.bat_out_1.type);
+      const cal = JSON.parse(item.data.bat_out_1.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.bat_out_1.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setDischargedailybattery((old) => old + sum);
+          break;
+        case "word":
+          let d = JSON.parse(item.data.bat_out_1.register);
+          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "float");
+          setDischargedailybattery((old) => parseFloat(old) + parseFloat(view32bit));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.bat_out_1.register]) * parseFloat(item.data.bat_out_1.cal);
+          setDischargedailybattery((old) => old + num);
+          break;
+      }
+    });
+  }, [props.data]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Battery">
