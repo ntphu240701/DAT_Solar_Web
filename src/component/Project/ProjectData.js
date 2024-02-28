@@ -546,7 +546,7 @@ function ProjectData(props) {
         <>
           <div className="DAT_TableEdit">
             <span
-              id={row.id + "_MORE"}
+              id={row.sn + "_MORE"}
               onMouseEnter={(e) => handleModify(e, "block")}
             >
               ...
@@ -555,7 +555,7 @@ function ProjectData(props) {
 
           <div
             className="DAT_ModifyBox"
-            id={row.id + "_Modify"}
+            id={row.sn + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
