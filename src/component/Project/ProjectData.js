@@ -28,6 +28,8 @@ import { useNavigate } from "react-router-dom";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { set } from "lodash";
+import { Token } from "../../App";
+import axios from "axios";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -322,60 +324,7 @@ function ProjectData(props) {
 
   const navigate = useNavigate();
 
-  const [invt, setInvt] = useState({
-    // T0623A000162: {
-    //   '14494-1': '10',
-
-    //   '14491-1': '20',
-
-    //   '14651-1': '30',
-
-    //   '14600-1': '40',
-
-    //   '14490-1': '18442',
-    //   '14489-1': '39466',
-
-    //   '14485-1': '70',
-
-    //   '14487-1': '18442',
-    //   '14486-1': '39466',
-
-    //   '14488-1': '10',
-
-    //   '14365-1': '20',
-
-    //   '14482-1': '30',
-
-    //   '14364-1': '40',
-
-    //   '14384-1': '50',
-
-    //   '14390-1': '60',
-    //   '14391-1': '70',
-    //   '14392-1': '80',
-    //   '14393-1': '90',
-    //   '14394-1': '10',
-    //   '14395-1': '20',
-    //   '14396-1': '30',
-    //   '14397-1': '40',
-    //   '14398-1': '50',
-    //   '14399-1': '60',
-    //   '14400-1': '70',
-    //   '14401-1': '80',
-    //   '14402-1': '90',
-    //   '14403-1': '10',
-    //   '14404-1': '20',
-    //   '14405-1': '30',
-    //   '14406-1': '40',
-    //   '14407-1': '50',
-    //   '14408-1': '60',
-    //   '14409-1': '70',
-    //   '14410-1': '80',
-    //   '14411-1': '90',
-    //   '14412-1': '10',
-    //   '14413-1': '20',
-    // }
-  })
+  const [invt, setInvt] = useState({})
 
   const color = {
     cur: "blue",
@@ -644,6 +593,35 @@ function ProjectData(props) {
     },
   ];
 
+  const invtCloud = async (data, token) => {
+
+    var reqData = {
+      "data": data,
+      "token": token
+    };
+
+    try {
+
+      const response = await axios({
+        url: host.CLOUD,
+        method: "post",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data: Object.keys(reqData).map(function (key) { return encodeURIComponent(key) + '=' + encodeURIComponent(reqData[key]) }).join('&'),
+      });
+
+      return response.data
+
+    }
+
+    catch (e) {
+      return ({ ret: 1, msg: "cloud err" })
+    }
+
+
+  }
+
   const handleWarn = () => {
     navigate('/Warn');
     window.location.reload();
@@ -817,55 +795,73 @@ function ProjectData(props) {
       temp.value = d;
       console.log(d)
       let _invt = {}
-      d.map((item) => {
-        _invt[item.sn] = {
-          '14494-1': '10',
-          '14491-1': '20',
-          '14651-1': '30',
-          '14600-1': '40',
-          '14490-1': '18442',
-          '14489-1': '39466',
-          '14485-1': '70',
-          '14487-1': '18442',
-          '14486-1': '39466',
-          '14488-1': '10',
-          '14365-1': '20',
-          '14482-1': '30',
-          '14364-1': '40',
-          '14384-1': '50',
-          '14390-1': '60',
-          '14391-1': '70',
-          '14392-1': '80',
-          '14393-1': '90',
-          '14394-1': '10',
-          '14395-1': '20',
-          '14396-1': '30',
-          '14397-1': '40',
-          '14398-1': '50',
-          '14399-1': '60',
-          '14400-1': '70',
-          '14401-1': '80',
-          '14402-1': '90',
-          '14403-1': '10',
-          '14404-1': '20',
-          '14405-1': '30',
-          '14406-1': '40',
-          '14407-1': '50',
-          '14408-1': '60',
-          '14409-1': '70',
-          '14410-1': '80',
-          '14411-1': '90',
-          '14412-1': '10',
-          '14413-1': '20',
-        }
+      d.map(async(item) => {
+
+        const res = await invtCloud('{"deviceCode":"' + item.sn + '"}', Token.value.token);
+            console.log(res)
+            if (res.ret === 0) {
+                //console.log(res.data)
+                setInvt(pre => ({ ...pre, [item.sn]: res.data }))
+              
+            } else {
+                setInvt(pre => ({ ...pre, [item.sn]: {} }))
+      }
+
+      // console.log(invt)
+
+        // _invt[item.sn] = {
+        //   '14494-1': '10',
+        //   '14491-1': '20',
+        //   '14651-1': '30',
+        //   '14600-1': '40',
+        //   '14490-1': '18442',
+        //   '14489-1': '39466',
+        //   '14485-1': '70',
+        //   '14487-1': '18442',
+        //   '14486-1': '39466',
+        //   '14488-1': '10',
+        //   '14365-1': '20',
+        //   '14482-1': '30',
+        //   '14364-1': '40',
+        //   '14384-1': '50',
+        //   '14390-1': '60',
+        //   '14391-1': '70',
+        //   '14392-1': '80',
+        //   '14393-1': '90',
+        //   '14394-1': '10',
+        //   '14395-1': '20',
+        //   '14396-1': '30',
+        //   '14397-1': '40',
+        //   '14398-1': '50',
+        //   '14399-1': '60',
+        //   '14400-1': '70',
+        //   '14401-1': '80',
+        //   '14402-1': '90',
+        //   '14403-1': '10',
+        //   '14404-1': '20',
+        //   '14405-1': '30',
+        //   '14406-1': '40',
+        //   '14407-1': '50',
+        //   '14408-1': '60',
+        //   '14409-1': '70',
+        //   '14410-1': '80',
+        //   '14411-1': '90',
+        //   '14412-1': '10',
+        //   '14413-1': '20',
+        // }
       })
-      setInvt(_invt)
+      //setInvt(_invt)
     };
 
     getLogger(projectData.value.plantid);
 
     // eslint-disable-next-line
   }, []);
+
+
+  useEffect(() => {
+      console.log(invt)
+  },[invt])
 
   return (
     <>
@@ -2140,7 +2136,7 @@ const Production = (props) => {
         case "sum":
           Object.entries(item.data.pro_1.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]]  || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -2184,7 +2180,7 @@ const Production = (props) => {
         case "sum":
           Object.entries(item.data.pro_2.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]]||0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -2212,7 +2208,7 @@ const Production = (props) => {
           setDailyproduction((old) => parseFloat(old) + parseFloat(view32bit));
           break;
         default:
-          num = parseFloat(data[item.sn][item.data.pro_2.register]) * parseFloat(item.data.pro_2.cal);
+          num = parseFloat(data[item.sn]?.[item.data.pro_2.register] || 0) * parseFloat(item.data.pro_2.cal);
           setDailyproduction((old) => old + num);
           break;
       }
@@ -2353,7 +2349,7 @@ const Consumption = (props) => {
         case "sum":
           Object.entries(item.data.con_1.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -2381,7 +2377,7 @@ const Consumption = (props) => {
           setConsumption((old) => parseFloat(old) + parseFloat(view32bit));
           break;
         default:
-          num = parseFloat(data[item.sn][item.data.con_1.register]) * parseFloat(item.data.con_1.cal);
+          num = parseFloat(data[item.sn]?.[item.data.con_1.register] || 0) * parseFloat(item.data.con_1.cal);
           setConsumption((old) => old + num);
           break;
       }
@@ -2397,7 +2393,7 @@ const Consumption = (props) => {
         case "sum":
           Object.entries(item.data.con_2.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -2425,7 +2421,7 @@ const Consumption = (props) => {
           setDailyconsumption((old) => parseFloat(old) + parseFloat(view32bit));
           break;
         default:
-          num = parseFloat(data[item.sn][item.data.con_2.register]) * parseFloat(item.data.con_2.cal);
+          num = parseFloat(data[item.sn]?.[item.data.con_2.register] || 0) * parseFloat(item.data.con_2.cal);
           setDailyconsumption((old) => old + num);
           break;
       }
@@ -2548,7 +2544,7 @@ const Grid = (props) => {
         case "sum":
           Object.entries(item.data.grid_1.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -2576,7 +2572,7 @@ const Grid = (props) => {
           setGrid((old) => parseFloat(old) + parseFloat(view32bit));
           break;
         default:
-          num = parseFloat(data[item.sn][item.data.grid_1.register]) * parseFloat(item.data.grid_1.cal);
+          num = parseFloat(data[item.sn]?.[item.data.grid_1.register] || 0) * parseFloat(item.data.grid_1.cal);
           setGrid((old) => old + num);
           break;
       }
@@ -2592,7 +2588,7 @@ const Grid = (props) => {
         case "sum":
           Object.entries(item.data.grid_in_1.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -2620,7 +2616,7 @@ const Grid = (props) => {
           setFeedindailygrid((old) => parseFloat(old) + parseFloat(view32bit));
           break;
         default:
-          num = parseFloat(data[item.sn][item.data.grid_in_1.register]) * parseFloat(item.data.grid_in_1.cal);
+          num = parseFloat(data[item.sn]?.[item.data.grid_in_1.register] || 0) * parseFloat(item.data.grid_in_1.cal);
           setFeedindailygrid((old) => old + num);
           break;
       }
@@ -2636,7 +2632,7 @@ const Grid = (props) => {
         case "sum":
           Object.entries(item.data.grid_in_2.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -2647,7 +2643,7 @@ const Grid = (props) => {
           break;
         case "word":
           let d = JSON.parse(item.data.grid_in_2.register);
-          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+          let e = [data[item.sn]?.[d[0]] || 0, data[item.sn]?.[d[1]] || 0];
 
           const convertToDoublewordAndFloat = (word, type) => {
             var doubleword = ((word[1]) << 16) | (word[0]);
@@ -2664,7 +2660,7 @@ const Grid = (props) => {
           setFeedintotalgrid((old) => parseFloat(old) + parseFloat(view32bit));
           break;
         default:
-          num = parseFloat(data[item.sn][item.data.grid_in_2.register]) * parseFloat(item.data.grid_in_2.cal);
+          num = parseFloat(data[item.sn]?.[item.data.grid_in_2.register] || 0) * parseFloat(item.data.grid_in_2.cal);
           setFeedintotalgrid((old) => old + num);
           break;
       }
@@ -2680,7 +2676,7 @@ const Grid = (props) => {
         case "sum":
           Object.entries(item.data.grid_out_1.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -2708,7 +2704,7 @@ const Grid = (props) => {
           setPurchaseddailygrid((old) => parseFloat(old) + parseFloat(view32bit));
           break;
         default:
-          num = parseFloat(data[item.sn][item.data.grid_out_1.register]) * parseFloat(item.data.grid_out_1.cal);
+          num = parseFloat(data[item.sn]?.[item.data.grid_out_1.register] || 0) * parseFloat(item.data.grid_out_1.cal);
           setPurchaseddailygrid((old) => old + num);
           break;
       }
@@ -2724,7 +2720,7 @@ const Grid = (props) => {
         case "sum":
           Object.entries(item.data.grid_out_2.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -2735,7 +2731,7 @@ const Grid = (props) => {
           break;
         case "word":
           let d = JSON.parse(item.data.grid_out_2.register);
-          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
+          let e = [data[item.sn]?.[d[0]] || 0, data[item.sn]?.[d[1]] || 0];
 
           const convertToDoublewordAndFloat = (word, type) => {
             var doubleword = ((word[1]) << 16) | (word[0]);
@@ -2752,7 +2748,7 @@ const Grid = (props) => {
           setPurchasedtotalgrid((old) => parseFloat(old) + parseFloat(view32bit));
           break;
         default:
-          num = parseFloat(data[item.sn][item.data.grid_out_2.register]) * parseFloat(item.data.grid_out_2.cal);
+          num = parseFloat(data[item.sn]?.[item.data.grid_out_2.register] || 0) * parseFloat(item.data.grid_out_2.cal);
           setPurchasedtotalgrid((old) => old + num);
           break;
       }
@@ -2934,7 +2930,7 @@ const Battery = (props) => {
         case "sum":
           Object.entries(item.data.bat_1.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -2962,7 +2958,7 @@ const Battery = (props) => {
           setBattery((old) => parseFloat(old) + parseFloat(view32bit));
           break;
         default:
-          num = parseFloat(data[item.sn][item.data.bat_1.register]) * parseFloat(item.data.bat_1.cal);
+          num = parseFloat(data[item.sn]?.[item.data.bat_1.register] || 0) * parseFloat(item.data.bat_1.cal);
           setBattery((old) => old + num);
           break;
       }
@@ -2978,7 +2974,7 @@ const Battery = (props) => {
         case "sum":
           Object.entries(item.data.bat_2.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -3006,7 +3002,7 @@ const Battery = (props) => {
           setPercent((old) => parseFloat(old) + parseFloat(view32bit));
           break;
         default:
-          num = parseFloat(data[item.sn][item.data.bat_2.register]) * parseFloat(item.data.bat_2.cal);
+          num = parseFloat(data[item.sn]?.[item.data.bat_2.register] || 0) * parseFloat(item.data.bat_2.cal);
           setPercent((old) => old + num);
           break;
       }
@@ -3022,7 +3018,7 @@ const Battery = (props) => {
         case "sum":
           Object.entries(item.data.bat_in_1.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -3050,7 +3046,7 @@ const Battery = (props) => {
           setChargedailybattery((old) => parseFloat(old) + parseFloat(view32bit));
           break;
         default:
-          num = parseFloat(data[item.sn][item.data.bat_in_1.register]) * parseFloat(item.data.bat_in_1.cal);
+          num = parseFloat(data[item.sn]?.[item.data.bat_in_1.register] || 0) * parseFloat(item.data.bat_in_1.cal);
           setChargedailybattery((old) => old + num);
           break;
       }
@@ -3066,7 +3062,7 @@ const Battery = (props) => {
         case "sum":
           Object.entries(item.data.bat_out_1.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn][n[0]]) * parseFloat(cal[0]) * parseFloat(data[item.sn][n[1]]) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -3094,7 +3090,7 @@ const Battery = (props) => {
           setDischargedailybattery((old) => parseFloat(old) + parseFloat(view32bit));
           break;
         default:
-          num = parseFloat(data[item.sn][item.data.bat_out_1.register]) * parseFloat(item.data.bat_out_1.cal);
+          num = parseFloat(data[item.sn]?.[item.data.bat_out_1.register] || 0) * parseFloat(item.data.bat_out_1.cal);
           setDischargedailybattery((old) => old + num);
           break;
       }
