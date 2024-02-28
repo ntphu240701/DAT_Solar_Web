@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Project.scss";
-import AddGateway from "./AddGateway";
+import AddGateway, { crudtype, raiseBoxState } from "./AddGateway";
 import { Empty, plantState, projectData, deviceData, Logger, Inverter } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from "recharts";
@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { set } from "lodash";
+import RaiseBox from "./RaiseBox";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -747,9 +748,27 @@ function ProjectData(props) {
 
   const handleEdit = (e) => { console.log("sua") };
 
+  const [state, setState] = useState();
   const handleDelete = async (e) => {
     const d = await callApi('post', host.DATA + '/dropLogger', { plantid: projectData.value.plantid, sn: e.currentTarget.id });
     console.log(d);
+    if (d.status === true) {
+      raiseBoxState.value = {
+        status: true,
+        text: "Đã xóa thành công thiết bị",
+      };
+    } else if (d.number == 0) {
+      raiseBoxState.value = {
+        status: true,
+        text: "Không thể xóa thiết bị, lỗi định dạng",
+      };
+      setState("Không thể xóa thiết bị, lỗi định dạng");
+    } else if (d.number == 1) {
+      raiseBoxState.value = {
+        status: true,
+        text: "Không thể xóa thiết bị, lỗi hệ thống",
+      };
+    }
   };
 
   useEffect(() => {
@@ -1431,7 +1450,7 @@ function ProjectData(props) {
                       </div>
                       <button
                         id="add"
-                        onClick={() => popupAddGateway.value = true}
+                        onClick={() => {popupAddGateway.value = true}}
                       >
                         Thêm
                       </button>
@@ -1677,9 +1696,19 @@ function ProjectData(props) {
         })()}
       </div>
 
+
+
       {popupAddGateway.value ? (
         <div className="DAT_AddGatewayPopup">
           <AddGateway data={temp} />
+        </div>
+      ) : (
+        <></>
+      )}
+
+{raiseBoxState.value.status ? (
+        <div className="DAT_RaiseBoxPopup">
+          <RaiseBox state={raiseBoxState.value.text} />
         </div>
       ) : (
         <></>
