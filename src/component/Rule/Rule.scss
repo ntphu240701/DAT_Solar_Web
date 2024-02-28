@@ -78,3 +78,237 @@
         box-sizing: border-box;
     }
 }
+
+.DAT_RuleCreate {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    background-color: rgb(188, 188, 188, 0.7);
+    top: 0px;
+    right: 0;
+    z-index: 30;
+    overflow: hidden;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.DAT_CreateRule {
+    position: relative;
+    width: 95%;
+    margin: auto;
+    overflow: hidden;
+    margin-top: 80px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px rgba(193, 193, 193, 0.5);
+
+    &_Header {
+        background-color: rgb(237, 237, 237);
+        display: flex;
+        left: 0px;
+        align-items: center;
+        padding: 20px;
+        &_Left {
+            flex: 5;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            & p {
+                margin: 0;
+            }
+        }
+        &_Right {
+            flex: 5;
+
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            &_Save {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 30px;
+                padding: 0px 10px;
+                cursor: pointer;
+                background-color: #3e80fb;
+                border-radius: 5px;
+                gap: 5px;
+
+                & span {
+                    color: white;
+                }
+            }
+
+            &_Close {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+
+                background-color: red;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(252, 122, 122);
+                }
+            }
+        }
+    }
+
+    &_Body {
+        &_Item {
+            background-color: white;
+            padding: 20px;
+            border-bottom: 1px dashed rgb(128, 128, 128, 0.3);
+            &_Type {
+                display: flex;
+                gap: 20px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                & h4 {
+                    margin: 0;
+                }
+            }
+            &_Data {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                &_Name {
+                    // margin-top: 20px;
+                    gap: 20px;
+                    display: flex;
+                    align-items: center;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    & input {
+                        padding: 7px;
+                        border: 1px solid rgb(128, 128, 128, 0.3);
+                        border-radius: 5px;
+                    }
+                }
+            }
+            &_Option {
+                & p {
+                    // position: fixed;
+                    margin: -32px 0 10px 10px;
+                    background-color: white;
+                    width: fit-content;
+                    padding: 0 5px 0 5px;
+                    position: block;
+                    z-index: 2;
+                    // background-color: white;
+                }
+
+                &_Check {
+                    border: 1px solid grey;
+                    padding: 20px;
+                    margin-top: 30px;
+                    // margin-bottom: px;
+                    z-index: 1;
+
+                    &_SingleCheck {
+                        font-size: 20px;
+                        display: inline-block;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+
+                        & div {
+                            gap: 10px;
+                            display: flex;
+                        }
+                    }
+
+                    &_Head {
+                        display: flex;
+                        margin: -32px 0 10px 0;
+                        background-color: white;
+                        width: fit-content;
+                        padding: 0 5px 0 5px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.DAT_ComfirmDeletePopup {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    background-color: rgb(128, 128, 128, 0.7);
+    top: 0;
+    right: 0;
+    z-index: 25;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.DAT_ConfirmPopup_Box {
+    position: relative;
+    // margin-top: -58px;
+    width: 400px;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow:
+        2px 2px 5px rgb(73, 73, 73, 0.2),
+        -2px -2px 5px rgb(67, 67, 67, 0.2);
+
+    &_Head {
+        display: flex;
+        background-color: rgba(182, 182, 182, 0.4);
+        padding: 16px;
+
+        &_Left {
+            flex: 5;
+
+            & p {
+                margin: 0;
+            }
+        }
+
+        &_Right {
+            display: flex;
+            justify-content: flex-end;
+            flex: 5;
+            &_Icon {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &_Body {
+        font-size: 13px;
+        padding: 16px;
+        color: #505050;
+        border-bottom: 0.5px solid rgb(194, 194, 194);
+    }
+
+    &_Foot {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 10px;
+
+        & button {
+            padding: 5px 15px;
+            border-radius: 4px;
+            border: 1px solid;
+            cursor: pointer;
+        }
+    }
+}

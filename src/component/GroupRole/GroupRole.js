@@ -215,7 +215,7 @@ const GroupUsers = () => {
       t.style.display = "none";
       mod.style.display = "flex";
     }
-  }
+  };
 
   return (
     <div className="DAT_GR_Content_DevideTable">
@@ -248,16 +248,17 @@ const GroupUsers = () => {
                 {item.subinfo}
               </div>
 
-              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Shortcut"
-              id={item.id +"_dot"}
-              onMouseEnter={(e)=> handleShowFunction(e)}
+              <div
+                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Shortcut"
+                id={item.id + "_dot"}
+                onMouseEnter={(e) => handleShowFunction(e)}
               >
-                <IoMdMore size={20}/>
+                <IoMdMore size={20} />
               </div>
 
               <div
                 className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More"
-                id={item.id +"_function"}
+                id={item.id + "_function"}
                 style={{ display: "none" }}
                 onMouseLeave={(e) => handleShowFunction(e)}
               >
