@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { confirmDeleteState, datarule, ruleID } from "./Rule";
+import { alertDispatch } from "../Alert/Alert";
 
 export default function ConfirmDeleteRule() {
   const [del, setDel] = useState(true);
@@ -13,6 +14,7 @@ export default function ConfirmDeleteRule() {
         (item) => item.ruleid !== ruleID.value
       );
       confirmDeleteState.value = false;
+      alertDispatch("Xóa phân quyền thành công.")
     }
   };
 
