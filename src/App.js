@@ -30,6 +30,11 @@ const Language = React.lazy(() => import('./component/Language/Language'));
 const Contact = React.lazy(() => import('./component/Contact/Contact'));
 const Rule = React.lazy(() => import('./component/Rule/Rule'));
 
+export const Token = signal({
+  token: '',
+  date: ''
+});
+
 export const userInfor = signal({
   usrid: '',
   name: '',
@@ -64,9 +69,46 @@ function App() {
   const status = useSelector((state) => state.admin.status)
   const dataLang = useIntl();
   const rootDispatch = useDispatch()
+  const [data, setData] = useState({
+    I0622B066940: {
+      '14390-1': '50',
+      '14391-1': '10',
+      '14392-1': '50',
+      '14393-1': '10',
+      '14394-1': '50',
+      '14395-1': '10',
+      '14396-1': '50',
+      '14397-1': '10',
+      '14398-1': '50',
+      '14399-1': '10',
+      '14400-1': '50',
+      '14401-1': '10',
+      '14402-1': '50',
+      '14403-1': '10',
+      '14404-1': '50',
+      '14405-1': '10',
+      '14406-1': '50',
+      '14407-1': '10',
+      '14408-1': '50',
+      '14409-1': '10',
+      '14410-1': '50',
+      '14411-1': '10',
+      '14412-1': '50',
+      '14413-1': '10',
+    }
+  })
 
 
   useEffect(() => {
+    const generateOTP = () => {
+      let digits =
+        '0123456789abcdefghijklmnopqrstuvwxyz';
+      let OTP = '';
+      for (let i = 0; i < 6; i++) {
+        OTP += digits[Math.floor(Math.random() * 10)];
+      }
+      return OTP;
+    }
     const checkAuth = async () => {
 
       if (window.location.pathname !== '/Verify' && window.location.pathname !== '/VerifyRegister') {
@@ -125,20 +167,36 @@ function App() {
 
       }
     }
+    const checkToken = async () => {
+      const d = await callApi('get', host.DATA + '/getToken')
+
+      if (d.status) {
+        console.log("Token", d.data)
+        Token.value = {
+          token: d.data.token,
+          date: d.data.date
+        }
+      }
+
+    }
 
     const checkApi = async () => {
-      //let data = await callApi('post', host.AUTH + '/getInf', { usr: 'solar_master' })
-      // let d = await callApi('post', host.DATA + '/getPlant', { usr: 'solar_master' })
-      //let data = await callApi('post', host.DATA + '/getLogger', { plantid: '1' })
+      const d = await callApi('post', host.DATA + '/addLogger', {plantid:'3', sn:'T0623A000169', name:'LOGGER 02', type:'L01'})
+      //const d = await callApi('post', host.DATA + '/namePlant', { id: '3', name: 'SOLAR 001' })
+      // const d = await callApi('post', host.AUTH + '/getInf', { usr: 'solar_master' })
+      //let data = await callApi('post', host.DATA + '/getPlant', { usr: 'solar_master' })
+      //let d = await callApi('post', host.DATA + '/getLogger', { plantid: '3' })
       //let data = await callApi('post', host.DATA + '/addPlant', { usr: 'solar_master', name: 'solar 03', company:'DAT', addr: '123, đường 1, phường 2, quận 3', long: '10.123', lat: '106.123', contact: 'hoang', phone: '0928382825', business: 'DAT Group', type: 'industry', mode: 'solar', griddate: '02/20/2024', capacity:'123', angle: '123', currency: '123', price: '123', production: '123', power: '123'})
       //let data = await callApi('post', host.DATA + '/dropPlant', {plantid: '4', usr: 'solar_master' })
-      //let d = await callApi('post', host.DATA + '/editPlant', { plantid: '3', usr: 'solar_master', name: 'solar 02', company: 'Công ty Cổ Phần Tập Đoàn DAT', addr: '12 Đường Đông Hưng Thuận 10, Phường Đông Hưng Thuận, Quận 12, TP.HCM	', long: '10.8357066', lat: '106.6271617', contact: 'hoang', phone: '0928382825', business: 'DAT Group', type: 'industry', mode: 'solar', griddate: '02/20/2024', capacity: '500', angle: '0', currency: 'vnd', price: '1000', production: '500', power: '50' })
-      //console.log(d)
+      //let data = await callApi('post', host.DATA + '/editPlant', {plantid: '3', usr: 'solar_master', name: 'solar 03', company:'Công ty Cổ Phần Tập Đoàn DAT', addr: '12 Đường Đông Hưng Thuận 10, Phường Đông Hưng Thuận, Quận 12, TP.HCM	', long: '10.8357066', lat: '106.6271617', contact: 'hoang', phone: '0928382825', business: 'DAT Group', type: 'industry', mode: 'solar', griddate: '02/20/2024', capacity:'500', angle: '0', currency: 'vnd', price: '1000', production: '500', power: '50'})
+      console.log(d)
+      //console.log(eval(d[0].data.pro_1))
     }
     checkAuth();
     if (status) {
       checkRule(userInfor.value.ruleid)
       checkPartner(userInfor.value.partnerid)
+      checkToken();
       console.log("Inf", userInfor.value)
     }
     checkApi();
@@ -170,7 +228,7 @@ function App() {
                       <Route path='/Log' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Log /></Suspense>} />
                       <Route path='/Language' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Language /></Suspense>} />
                       <Route path='/Contact' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Contact /></Suspense>} />
-                      <Route path='/Rule' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Rule /></Suspense>}/>
+                      <Route path='/Rule' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Rule /></Suspense>} />
                       <Route path='/Login' element={<Navigate to="/" />} />
                       <Route path='/Logout' element={<Navigate to="/Login" />} />
                     </Routes>

@@ -284,7 +284,7 @@ export const CheckBox = (props) => {
   );
 };
 
-export default function Create() {
+export default function CreateRule() {
   const [widthCheckBox, setWidwidthCheckBox] = React.useState("");
   const rulenameRef = useRef("");
 

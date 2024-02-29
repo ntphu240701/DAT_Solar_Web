@@ -8,7 +8,7 @@ import {
   Inverter,
 } from "./Project";
 import { IoClose } from "react-icons/io5";
-import { popupAddGateway } from "./ProjectData";
+import { popupAddGateway, temp } from "./ProjectData";
 import { signal } from "@preact/signals-react";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
@@ -58,6 +58,10 @@ export default function AddGateway(props) {
         type: type.current.value,
       });
       //console.log(d);
+      if (d.status) {
+        temp.value = [...temp.value, d.data];
+      }
+      popupAddGateway.value = false;
       if (d.status === true) {
         raiseBoxState.value = {
           status: true,
