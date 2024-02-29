@@ -8,6 +8,7 @@ import DataTable from "react-data-table-component";
 import CreateRule from "./CreateRule";
 import ConfirmDeleteRule from "./ConfirmDeleteRule";
 import EditRule, { editruledata } from "./EditRule";
+import { alertDispatch } from "../Alert/Alert";
 
 export const ruleID = signal();
 export const editRuleState = signal(false);
@@ -242,10 +243,14 @@ export default function Rule() {
   ];
 
   const handleEdit = (e) => {
-    editRuleState.value = true;
-    editruledata.value = datarule.value.find(
-      (data) => data.ruleid === ruleID.value
-    );
+    if (ruleID.value === 1) {
+      alertDispatch("Không thể thay đổi phân quyền này !");
+    } else {
+      editRuleState.value = true;
+      editruledata.value = datarule.value.find(
+        (data) => data.ruleid === ruleID.value
+      );
+    }
   };
 
   const handleModify = (e, type) => {

@@ -143,9 +143,7 @@ export default function Create() {
       ...ReportData.value[index],
       name: reportname.value,
     };
-    // console.log(ReportData.value);
     console.log(reportname.value);
-    // console.log(reportname.value);
   };
 
   const handleCloseCreate = () => {
