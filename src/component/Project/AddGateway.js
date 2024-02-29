@@ -1,16 +1,30 @@
-import React, { useEffect, useRef } from "react";
-import { Empty, plantState, projectData, deviceData, Logger, Inverter } from "./Project";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Empty,
+  plantState,
+  projectData,
+  deviceData,
+  Logger,
+  Inverter,
+} from "./Project";
 import { IoClose } from "react-icons/io5";
 import { popupAddGateway, temp } from "./ProjectData";
 import { signal } from "@preact/signals-react";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
+import RaiseBox from "./RaiseBox";
+
+export const raiseBoxState = signal({
+  state: false,
+  text: "",
+});
 
 export default function AddGateway(props) {
   const sn = useRef();
   const name = useRef();
   const type = useRef();
+  const [state, setState] = useState("");
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
@@ -30,15 +44,31 @@ export default function AddGateway(props) {
 
   const handleSave = async (e) => {
     if (sn.current.value === "" || name.current.value === "" || type.current.value === "") {
-      alertDispatch("Không được để trống thông tin")
-      // console.log("Không được để trống thông tin");
+      alertDispatch("Không được để trống thông tin");
     } else {
-      const d = await callApi('post', host.DATA + '/addLogger', { plantid: projectData.value.plantid, sn: sn.current.value, name: name.current.value, type: type.current.value });
-      console.log(d);
+      const d = await callApi("post", host.DATA + "/addLogger", {
+        plantid: projectData.value.plantid,
+        sn: sn.current.value,
+        name: name.current.value,
+        type: type.current.value,
+      });
       if (d.status) {
         temp.value = [...temp.value, d.data];
+        popupAddGateway.value = false;
       }
-      popupAddGateway.value = false;
+      if (d.status === true) {
+        alertDispatch("Thiết bị được thêm thành công");
+      } else if (d.number === 0) {
+        alertDispatch("Lỗi định dạng");
+      } else if (d.number === 1) {
+        alertDispatch("Không tìm thấy thiết bị");
+      } else if (d.number === 2) {
+        alertDispatch("Thiết bị đã tồn tại");
+      } else if (d.number === 3) {
+        alertDispatch("Không tìm thấy thiết bị");
+      } else if (d.number === 4) {
+        alertDispatch("Hệ thống lỗi");
+      }
     }
   };
 
@@ -95,6 +125,14 @@ export default function AddGateway(props) {
           Xác nhận
         </button>
       </div>
+
+      {raiseBoxState.value.status ? (
+        <div className="DAT_RaiseBoxPopup">
+          <RaiseBox state={raiseBoxState.value.text} />
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

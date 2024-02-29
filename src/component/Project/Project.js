@@ -493,6 +493,7 @@ function Project(props) {
     const newPlant = dataproject.value.find(
       (item) => item.plantid == e.currentTarget.id
     );
+    //console.log(newPlant);
     projectData.value = newPlant;
 
     const newDevicePlant = devicePlant.value.filter(
@@ -782,7 +783,7 @@ function Project(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup usr={user} />
+          <Popup plantid={projectData.value.plantid} type="plant" usr={user} />
         </div>
       ) : (
         <></>

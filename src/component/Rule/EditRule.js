@@ -3,72 +3,12 @@ import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { signal } from "@preact/signals-react";
 import { isMobile } from "../Navigation/Navigation";
-import { createruleState, datarule } from "./Rule";
+import { createruleState, datarule, editRuleState, ruleID } from "./Rule";
+import { ruletitle } from "./CreateRule";
+import { alertDispatch } from "../Alert/Alert";
 
-export const lastruleID = signal(3);
 
-const newruledata = signal({
-  ruleid: 1,
-  name: "",
-  setting: {
-    alert: {
-      lang: "Thông báo",
-      option: {
-        1: { lang: "Chỉnh sửa", status: false },
-        2: { lang: "Xóa", status: false },
-      },
-    },
-    device: {
-      lang: "Thiết bị",
-      option: {
-        1: { lang: "Chỉnh sửa", status: false },
-        2: { lang: "Xóa", status: false },
-        3: { lang: "Tạo mới", status: false },
-      },
-    },
-    partner: {
-      lang: "Đối tác",
-      option: {
-        1: { lang: "Chỉnh sửa", status: false },
-      },
-    },
-    plant: {
-      lang: "Dự án",
-      option: {
-        1: { lang: "Chỉnh sửa", status: false },
-        2: { lang: "Xóa", status: false },
-        3: { lang: "Tạo mới", status: false },
-      },
-    },
-    report: {
-      lang: "Báo cáo",
-      option: {
-        1: { lang: "Chỉnh sửa", status: false },
-        2: { lang: "Xóa", status: false },
-        3: { lang: "Tạo mới", status: false },
-      },
-    },
-    rule: {
-      lang: "Phân quyền",
-      option: {
-        1: { lang: "Chỉnh sửa", status: false },
-        2: { lang: "Xóa", status: false },
-        3: { lang: "Thêm", status: false },
-        4: { lang: "Trạng thái", status: false },
-      },
-    },
-  },
-});
-export const ruletitle = signal([
-  "alert",
-  "device",
-  "partner",
-  "plant",
-  "report",
-  "rule",
-]);
-const temp = signal(newdata.value);
-const show = signal({ id: "none", status: false });
+export const editruledata = signal();
 
 export const CheckBox = (props) => {
   const handleShow = (e) => {
@@ -76,16 +16,16 @@ export const CheckBox = (props) => {
     console.log(arr[0]);
     switch (arr[0]) {
       case "alert":
-        newruledata.value = {
-          ...newruledata.value,
+        editruledata.value = {
+          ...editruledata.value,
           setting: {
-            ...newruledata.value.setting,
+            ...editruledata.value.setting,
             alert: {
-              ...newruledata.value.setting.alert,
+              ...editruledata.value.setting.alert,
               option: {
-                ...newruledata.value.setting.alert.option,
+                ...editruledata.value.setting.alert.option,
                 [props.num]: {
-                  ...newruledata.value.setting.alert.option[props.num],
+                  ...editruledata.value.setting.alert.option[props.num],
                   status: e.target.checked,
                 },
               },
@@ -94,16 +34,16 @@ export const CheckBox = (props) => {
         };
         break;
       case "device":
-        newruledata.value = {
-          ...newruledata.value,
+        editruledata.value = {
+          ...editruledata.value,
           setting: {
-            ...newruledata.value.setting,
+            ...editruledata.value.setting,
             device: {
-              ...newruledata.value.setting.device,
+              ...editruledata.value.setting.device,
               option: {
-                ...newruledata.value.setting.device.option,
+                ...editruledata.value.setting.device.option,
                 [props.num]: {
-                  ...newruledata.value.setting.device.option[props.num],
+                  ...editruledata.value.setting.device.option[props.num],
                   status: e.target.checked,
                 },
               },
@@ -112,16 +52,16 @@ export const CheckBox = (props) => {
         };
         break;
       case "partner":
-        newruledata.value = {
-          ...newruledata.value,
+        editruledata.value = {
+          ...editruledata.value,
           setting: {
-            ...newruledata.value.setting,
+            ...editruledata.value.setting,
             partner: {
-              ...newruledata.value.setting.partner,
+              ...editruledata.value.setting.partner,
               option: {
-                ...newruledata.value.setting.partner.option,
+                ...editruledata.value.setting.partner.option,
                 [props.num]: {
-                  ...newruledata.value.setting.partner.option[props.num],
+                  ...editruledata.value.setting.partner.option[props.num],
                   status: e.target.checked,
                 },
               },
@@ -130,16 +70,16 @@ export const CheckBox = (props) => {
         };
         break;
       case "plant":
-        newruledata.value = {
-          ...newruledata.value,
+        editruledata.value = {
+          ...editruledata.value,
           setting: {
-            ...newruledata.value.setting,
+            ...editruledata.value.setting,
             plant: {
-              ...newruledata.value.setting.plant,
+              ...editruledata.value.setting.plant,
               option: {
-                ...newruledata.value.setting.plant.option,
+                ...editruledata.value.setting.plant.option,
                 [props.num]: {
-                  ...newruledata.value.setting.plant.option[props.num],
+                  ...editruledata.value.setting.plant.option[props.num],
                   status: e.target.checked,
                 },
               },
@@ -148,16 +88,16 @@ export const CheckBox = (props) => {
         };
         break;
       case "report":
-        newruledata.value = {
-          ...newruledata.value,
+        editruledata.value = {
+          ...editruledata.value,
           setting: {
-            ...newruledata.value.setting,
+            ...editruledata.value.setting,
             report: {
-              ...newruledata.value.setting.report,
+              ...editruledata.value.setting.report,
               option: {
-                ...newruledata.value.setting.report.option,
+                ...editruledata.value.setting.report.option,
                 [props.num]: {
-                  ...newruledata.value.setting.report.option[props.num],
+                  ...editruledata.value.setting.report.option[props.num],
                   status: e.target.checked,
                 },
               },
@@ -166,16 +106,16 @@ export const CheckBox = (props) => {
         };
         break;
       case "rule":
-        newruledata.value = {
-          ...newruledata.value,
+        editruledata.value = {
+          ...editruledata.value,
           setting: {
-            ...newruledata.value.setting,
+            ...editruledata.value.setting,
             rule: {
-              ...newruledata.value.setting.rule,
+              ...editruledata.value.setting.rule,
               option: {
-                ...newruledata.value.setting.rule.option,
+                ...editruledata.value.setting.rule.option,
                 [props.num]: {
-                  ...newruledata.value.setting.rule.option[props.num],
+                  ...editruledata.value.setting.rule.option[props.num],
                   status: e.target.checked,
                 },
               },
@@ -184,7 +124,7 @@ export const CheckBox = (props) => {
         };
         break;
     }
-    console.log(newruledata.value);
+    console.log(editruledata.value);
   };
 
   return (
@@ -198,6 +138,7 @@ export const CheckBox = (props) => {
           type="checkbox"
           value=""
           id={props.html}
+          defaultChecked={props.status}
           onChange={(e) => {
             handleShow(e);
           }}
@@ -214,14 +155,15 @@ export const CheckBox = (props) => {
   );
 };
 
-export default function Create() {
+
+
+export default function EditRule() {
   const [widthCheckBox, setWidwidthCheckBox] = React.useState("");
-  const rulenameRef = useRef("");
+  const rulenameRef = useRef(editruledata.value.name);
 
   const TypeReport = (props) => {
-    const handerChangeReportName = (e) => {
+    const handelChangeRuleName = (e) => {
       rulenameRef.current = e.target.value;
-      //   console.log(rulenameRef.current);
     };
 
     return (
@@ -235,7 +177,7 @@ export default function Create() {
               required
               id="reportname"
               defaultValue={rulenameRef.current}
-              onChange={(e) => handerChangeReportName(e)}
+              onChange={(e) => handelChangeRuleName(e)}
             ></input>
           </div>
         </div>
@@ -243,21 +185,26 @@ export default function Create() {
     );
   };
 
-  const handleCreate = () => {
+  const handleSave = () => {
     if (rulenameRef.current !== "") {
-      lastruleID.value = lastruleID.value + 1;
-      newruledata.value = {
-        ...newruledata.value,
+      editruledata.value = {
+        ...editruledata.value,
         name: rulenameRef.current,
-        ruleid: lastruleID.value,
       };
-      datarule.value = [...datarule.value, newruledata.value];
-      console.log(datarule.value);
-      createruleState.value = false;
+      const i = datarule.value.findIndex(
+        (item) => item.ruleid === editruledata.value.ruleid
+      )
+      datarule.value = [
+        ...datarule.value.slice(0, i),
+        editruledata.value,
+        ...datarule.value.slice(i + 1),
+      ]
+      editRuleState.value = false;
+      alertDispatch("Cập nhật thành công phân quyền !")
     } else {
-      alert("Please enter report name");
+      alertDispatch("Vui lòng nhập tên phân quyền !");
     }
-    console.log()
+    
   };
 
   useEffect(() => {
@@ -274,12 +221,12 @@ export default function Create() {
       <div className="DAT_CreateRule">
         <div className="DAT_CreateRule_Header">
           <div className="DAT_CreateRule_Header_Left">
-            <p style={{ fontSize: "20px" }}>Tạo phân quyền mới</p>
+            <p style={{ fontSize: "20px" }}>Chỉnh sửa phân quyền</p>
           </div>
           <div className="DAT_CreateRule_Header_Right">
             <div
               className="DAT_CreateRule_Header_Right_Save"
-              onClick={() => handleCreate()}
+              onClick={() => handleSave()}
             >
               <FaSave size={20} color="white" />
               <span>Lưu</span>
@@ -288,38 +235,13 @@ export default function Create() {
               <RxCross2
                 size={20}
                 color="white"
-                onClick={() => (createruleState.value = false)}
+                onClick={() => (editRuleState.value = false)}
               />
             </div>
           </div>
         </div>
 
         <div className="DAT_CreateRule_Body">
-          {/* <div className="DAT_CreateRule_Body_Item">
-            <div className="DAT_CreateRule_Body_Item_Type">
-              <h4>Loại báo cáo</h4>
-              <select
-                className="form-select form-select-sm mt-3"
-                defaultValue={"Daily Data Report"}
-                onChange={(e) => {
-                  handleDataType(e);
-                }}
-              >
-                <option value={"Daily Data Report"}>
-                  Báo cáo dữ liệu hàng ngày
-                </option>
-                <option value={"Monthly Data Report"}>
-                  Báo cáo dữ liệu hàng tháng
-                </option>
-                <option value={"Yearly Data Report"}>
-                  Báo cáo dữ liệu hàng năm
-                </option>
-                <option value={"Total Data Report"}>
-                  Báo cáo dữ liệu tổng
-                </option>
-              </select>
-            </div>
-          </div> */}
 
           <TypeReport />
 
@@ -332,9 +254,9 @@ export default function Create() {
                   className="DAT_CreateRule_Body_Item_Option_Check"
                 >
                   <p style={{ color: "grey" }}>
-                    {newruledata.value.setting[item].lang}
+                    {editruledata.value.setting[item].lang}
                   </p>
-                  {Object.entries(newruledata.value.setting[item].option).map(
+                  {Object.entries(editruledata.value.setting[item].option).map(
                     ([key, value]) => (
                       <CheckBox
                         key={key}
@@ -349,18 +271,6 @@ export default function Create() {
                   )}
                 </div>
               ))}
-              {/* {Object.entries(newdata.value.customdata).map(
-                  ([key, value]) => (
-                    <CheckBox
-                      key={key}
-                      num={String(key)}
-                      tab="customdata_content"
-                      status={newdata.value.customdata[key].status}
-                      id={newdata.value.customdata[key].lang}
-                      width={widthCheckBox}
-                    />
-                  )
-                )} */}
             </div>
           </div>
         </div>

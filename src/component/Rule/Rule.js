@@ -7,8 +7,9 @@ import { signal } from "@preact/signals-react";
 import DataTable from "react-data-table-component";
 import CreateRule from "./CreateRule";
 import ConfirmDeleteRule from "./ConfirmDeleteRule";
+import EditRule, { editruledata } from "./EditRule";
 
-export const ruleID = signal()
+export const ruleID = signal();
 export const editRuleState = signal(false);
 export const confirmDeleteState = signal(false);
 export const createruleState = signal(false);
@@ -179,8 +180,6 @@ export default function Rule() {
     selectAllRowsItemText: "tất cả",
   };
 
-  
-
   const columnrule = [
     {
       name: "STT",
@@ -244,6 +243,9 @@ export default function Rule() {
 
   const handleEdit = (e) => {
     editRuleState.value = true;
+    editruledata.value = datarule.value.find(
+      (data) => data.ruleid === ruleID.value
+    );
   };
 
   const handleModify = (e, type) => {
@@ -298,6 +300,16 @@ export default function Rule() {
       <div
         className="DAT_RuleCreate"
         style={{
+          height: editRuleState.value ? "100vh" : "0px",
+          transition: "0.5s",
+        }}
+      >
+        {editRuleState.value ? <EditRule /> : <></>}
+      </div>
+
+      <div
+        className="DAT_RuleCreate"
+        style={{
           height: createruleState.value ? "100vh" : "0px",
           transition: "0.5s",
         }}
@@ -307,7 +319,7 @@ export default function Rule() {
 
       {confirmDeleteState.value ? (
         <div className="DAT_ComfirmDeletePopup">
-          <ConfirmDeleteRule/>
+          <ConfirmDeleteRule />
         </div>
       ) : (
         <></>
