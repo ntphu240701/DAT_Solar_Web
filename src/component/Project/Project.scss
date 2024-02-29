@@ -223,6 +223,22 @@
                 }
             }
 
+            &_Add {
+                & button {
+                    width: 80px;
+                    padding: 4px;
+                    background-color: white;
+                    border: solid 1px rgb(199, 199, 199);
+                    border-radius: 5px;
+                    cursor: pointer;
+
+                    &:hover {
+                        border: solid 1px #6495ed;
+                        color: #6495ed;
+                    }
+                }
+            }
+
             &_More {
                 width: 30px;
                 height: 30px;
@@ -1128,14 +1144,15 @@
 
     &_Device {
         position: relative;
-        margin-top: 16px;
-        margin-bottom: 16px;
+        // margin-top: 16px;
+        // margin-bottom: 16px;
 
         &_Analysis {
-            width: 98%;
-            margin: auto;
+            // width: 98%;
+            // margin: auto;
             background-color: white;
-            border-radius: 5px;
+            // border-radius: 5px;
+            height: calc(100vh - 170px);
 
             &_Func {
                 display: flex;

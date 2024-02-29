@@ -795,19 +795,19 @@ function ProjectData(props) {
       temp.value = d;
       console.log(d)
       let _invt = {}
-      d.map(async(item) => {
+      d.map(async (item) => {
 
         const res = await invtCloud('{"deviceCode":"' + item.sn + '"}', Token.value.token);
-            console.log(res)
-            if (res.ret === 0) {
-                //console.log(res.data)
-                setInvt(pre => ({ ...pre, [item.sn]: res.data }))
-              
-            } else {
-                setInvt(pre => ({ ...pre, [item.sn]: {} }))
-      }
+        console.log(res)
+        if (res.ret === 0) {
+          //console.log(res.data)
+          setInvt(pre => ({ ...pre, [item.sn]: res.data }))
 
-      // console.log(invt)
+        } else {
+          setInvt(pre => ({ ...pre, [item.sn]: {} }))
+        }
+
+        // console.log(invt)
 
         // _invt[item.sn] = {
         //   '14494-1': '10',
@@ -860,8 +860,8 @@ function ProjectData(props) {
 
 
   useEffect(() => {
-      console.log(invt)
-  },[invt])
+    console.log(invt)
+  }, [invt])
 
   return (
     <>
@@ -948,6 +948,14 @@ function ProjectData(props) {
             })()}
 
             <div className="DAT_ProjectData_Header_Right">
+              <div className="DAT_ProjectData_Header_Right_Add" style={{ display: view === "device" ? "block" : "none" }}>
+                <button
+                  id="add"
+                  onClick={() => popupAddGateway.value = true}
+                >
+                  Thêm
+                </button>
+              </div>
               <div className="DAT_ProjectData_Header_Right_More">
                 <BsThreeDotsVertical
                   size={20}
@@ -1415,7 +1423,7 @@ function ProjectData(props) {
               return (
                 <div className="DAT_ProjectData_Device">
                   <div className="DAT_ProjectData_Device_Analysis">
-                    <div className="DAT_ProjectData_Device_Analysis_Func">
+                    {/* <div className="DAT_ProjectData_Device_Analysis_Func">
                       <div className="DAT_ProjectData_Device_Analysis_Func_Select">
                         <select>
                           <option hidden>Trạng thái</option>
@@ -1438,7 +1446,7 @@ function ProjectData(props) {
                       >
                         Thêm
                       </button>
-                    </div>
+                    </div> */}
 
                     <div className="DAT_ProjectData_Device_Analysis_Table">
                       {isMobile.value ? (
@@ -1733,12 +1741,12 @@ function ProjectData(props) {
               >
                 Thiết bị
               </div>
-              <div className="DAT_ProjectDataDrop_Item"
+              {/* <div className="DAT_ProjectDataDrop_Item"
                 id="alert"
                 onClick={() => handleWarn()}
               >
                 Cảnh báo
-              </div>
+              </div> */}
             </div>
           ) : (
             <></>
@@ -2136,7 +2144,7 @@ const Production = (props) => {
         case "sum":
           Object.entries(item.data.pro_1.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]]  || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -2180,7 +2188,7 @@ const Production = (props) => {
         case "sum":
           Object.entries(item.data.pro_2.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]]||0) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
