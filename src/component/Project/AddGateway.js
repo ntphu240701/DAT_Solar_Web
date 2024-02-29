@@ -5,6 +5,7 @@ import { popupAddGateway, temp } from "./ProjectData";
 import { signal } from "@preact/signals-react";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { alertDispatch } from "../Alert/Alert";
 
 export default function AddGateway(props) {
   const sn = useRef();
@@ -29,7 +30,8 @@ export default function AddGateway(props) {
 
   const handleSave = async (e) => {
     if (sn.current.value === "" || name.current.value === "" || type.current.value === "") {
-      console.log("Không được để trống thông tin");
+      alertDispatch("Không được để trống thông tin")
+      // console.log("Không được để trống thông tin");
     } else {
       const d = await callApi('post', host.DATA + '/addLogger', { plantid: projectData.value.plantid, sn: sn.current.value, name: name.current.value, type: type.current.value });
       console.log(d);
