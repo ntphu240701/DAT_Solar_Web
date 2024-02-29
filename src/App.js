@@ -29,6 +29,7 @@ const Log = React.lazy(() => import('./component/Log/Log'));
 const Language = React.lazy(() => import('./component/Language/Language'));
 const Contact = React.lazy(() => import('./component/Contact/Contact'));
 const Rule = React.lazy(() => import('./component/Rule/Rule'));
+const Notif = React.lazy(() => import('./component/Notif/Notif'));
 
 export const Token = signal({
   token: '',
@@ -224,11 +225,12 @@ function App() {
                       <Route path='/Analytics' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Analytics /></Suspense>} />
                       <Route path='/User' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><User /></Suspense>} />
                       <Route path='/Role' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Role /></Suspense>} />
-                      <Route path='/GroupRole' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><GroupRole /></Suspense>} />
+                      <Route path='/GroupRole' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><GroupRole/></Suspense>} />
                       <Route path='/Log' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Log /></Suspense>} />
-                      <Route path='/Language' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Language /></Suspense>} />
-                      <Route path='/Contact' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Contact /></Suspense>} />
-                      <Route path='/Rule' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Rule /></Suspense>} />
+                      <Route path='/Language' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Language/></Suspense>} />
+                      <Route path='/Contact' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Contact/></Suspense>} />
+                      <Route path='/Rule' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Rule/></Suspense>} />
+                      <Route path='/Notif' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Notif/></Suspense>} />
                       <Route path='/Login' element={<Navigate to="/" />} />
                       <Route path='/Logout' element={<Navigate to="/Login" />} />
                     </Routes>

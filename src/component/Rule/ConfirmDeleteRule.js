@@ -52,34 +52,42 @@ export default function ConfirmDeleteRule() {
       </div>
       <div className="DAT_ConfirmPopup_Box_Body">
         {del ? (
-          <p>
-            Bạn có chắc chắn muốn xóa phân quyền này không? Tất cả dữ
-            liệu lịch sử của XXX sẽ bị mất.
-          </p>
+          <p>Bạn có chắc chắn muốn xóa phân quyền này không?</p>
         ) : (
           <p>Không thể xóa phân quyền này.</p>
         )}
       </div>
       <div className="DAT_ConfirmPopup_Box_Foot">
-        <button
-          style={{
-            border: "1px solid #505050",
-            backgroundColor: "white",
-            color: "#505050",
-          }}
-          onClick={() => (confirmDeleteState.value = false)}
-        >
-          Hủy
-        </button>
         {del ? (
-          <button
-            style={{ backgroundColor: "#048FFF", color: "white" }}
-            onClick={(e) => handleDeleteReport(e)}
-          >
-            Xác nhận
-          </button>
+          <>
+            <button
+              style={{
+                border: "1px solid #505050",
+                backgroundColor: "white",
+                color: "#505050",
+              }}
+              onClick={() => (confirmDeleteState.value = false)}
+            >
+              Hủy
+            </button>
+            <button
+              style={{ backgroundColor: "#048FFF", color: "white" }}
+              onClick={(e) => handleDeleteReport(e)}
+            >
+              Xác nhận
+            </button>
+          </>
         ) : (
-          <></>
+          <button
+            style={{
+              border: "1px solid #505050",
+              backgroundColor: "white",
+              color: "#505050",
+            }}
+            onClick={() => (confirmDeleteState.value = false)}
+          >
+            Thoát
+          </button>
         )}
       </div>
     </div>

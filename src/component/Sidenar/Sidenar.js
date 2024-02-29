@@ -26,7 +26,7 @@ function Sidenar(props) {
   };
   const data = {
     Dashboard: { icon: <VscDashboard />, link: "/", li: [] },
-    Notif: { icon: <IoIosNotificationsOutline />, link: "none", li: [] },
+    Notif: { icon: <IoIosNotificationsOutline />, link: "/Notif", li: [] },
     Monitor: {
       icon: <SiDatabricks />,
       link: "none",
@@ -66,9 +66,9 @@ function Sidenar(props) {
       tabli.value = "none";
     }
 
-    if (ID === "Notif") {
-      notifNav.value = !notifNav.value;
-    }
+    // if (ID === "Notif") {
+    //   notifNav.value = !notifNav.value;
+    // }
   };
 
   const handleMenuLi = (e) => {
