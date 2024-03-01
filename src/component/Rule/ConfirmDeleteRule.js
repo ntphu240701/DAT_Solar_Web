@@ -38,7 +38,7 @@ export default function ConfirmDeleteRule() {
     <div className="DAT_ConfirmPopup_Box">
       <div className="DAT_ConfirmPopup_Box_Head">
         <div className="DAT_ConfirmPopup_Box_Head_Left">
-          <p>Xóa thiết bị</p>
+          <p>Xóa phân quyền</p>
         </div>
         <div className="DAT_ConfirmPopup_Box_Head_Right">
           <div

@@ -44,6 +44,7 @@ export const userInfor = signal({
   ruleid: '2',
   partnerid: '1',
   package: 'Limited',
+  type: "",
 });
 
 export const ruleInfor = signal({
@@ -128,7 +129,8 @@ function App() {
             addr: inf.data.addr,
             ruleid: inf.data.ruleid,
             partnerid: inf.data.partnerid,
-            package: inf.data.package
+            package: inf.data.package,
+            type: inf.data.type,
           }
           setLoading(false)
         } else {
@@ -182,7 +184,7 @@ function App() {
     }
 
     const checkApi = async () => {
-      const d = await callApi('post', host.DATA + '/addLogger', {plantid:'3', sn:'T0623A000169', name:'LOGGER 02', type:'L01'})
+      // const d = await callApi('post', host.DATA + '/addLogger', {plantid:'3', sn:'T0623A000169', name:'LOGGER 02', type:'L01'})
       //const d = await callApi('post', host.DATA + '/namePlant', { id: '3', name: 'SOLAR 001' })
       // const d = await callApi('post', host.AUTH + '/getInf', { usr: 'solar_master' })
       //let data = await callApi('post', host.DATA + '/getPlant', { usr: 'solar_master' })
@@ -190,7 +192,7 @@ function App() {
       //let data = await callApi('post', host.DATA + '/addPlant', { usr: 'solar_master', name: 'solar 03', company:'DAT', addr: '123, đường 1, phường 2, quận 3', long: '10.123', lat: '106.123', contact: 'hoang', phone: '0928382825', business: 'DAT Group', type: 'industry', mode: 'solar', griddate: '02/20/2024', capacity:'123', angle: '123', currency: '123', price: '123', production: '123', power: '123'})
       //let data = await callApi('post', host.DATA + '/dropPlant', {plantid: '4', usr: 'solar_master' })
       //let data = await callApi('post', host.DATA + '/editPlant', {plantid: '3', usr: 'solar_master', name: 'solar 03', company:'Công ty Cổ Phần Tập Đoàn DAT', addr: '12 Đường Đông Hưng Thuận 10, Phường Đông Hưng Thuận, Quận 12, TP.HCM	', long: '10.8357066', lat: '106.6271617', contact: 'hoang', phone: '0928382825', business: 'DAT Group', type: 'industry', mode: 'solar', griddate: '02/20/2024', capacity:'500', angle: '0', currency: 'vnd', price: '1000', production: '500', power: '50'})
-      console.log(d)
+      // console.log(d)
       //console.log(eval(d[0].data.pro_1))
     }
     checkAuth();
