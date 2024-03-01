@@ -38,7 +38,12 @@ export const dropState = signal(false);
 export const popupAddGateway = signal(false);
 export const popupAddSubsystem = signal(false);
 export const temp = signal([]);
-
+export const coalsave = signal({
+  value: 1,
+  ef: 0.7221,
+  avr: 0.517,
+  tree: 0.054
+});
 
 const tabMobile = signal(false);
 const tabLable = signal("");
@@ -854,10 +859,41 @@ function ProjectData(props) {
       //setInvt(_invt)
     };
 
+
     getLogger(projectData.value.plantid);
 
     // eslint-disable-next-line
   }, []);
+
+
+  useEffect(() => {
+    coalsave.value.value = 0;
+    temp.value.map(async (item) => {
+      const type = (item.data.pro_3.type);
+      const cal = JSON.parse(item.data.pro_3.cal);
+      let num = [];
+
+
+      let d = JSON.parse(item.data.pro_3.register);
+      let e = [invt[item.sn]?.[d[0]] || 0, invt[item.sn]?.[d[1]] || 0];
+
+      const convertToDoublewordAndFloat = (word, type) => {
+        var doubleword = ((word[1]) << 16) | (word[0]);
+        var buffer = new ArrayBuffer(4);
+        var intView = new Int32Array(buffer);
+        var floatView = new Float32Array(buffer);
+        intView[0] = doubleword;
+        var float_value = floatView[0];
+
+        return type === "int" ? parseFloat(doubleword * cal).toFixed(2) : parseFloat(float_value * cal).toFixed(2) || 0;
+      }
+
+      let view32bit = convertToDoublewordAndFloat(e, "int");
+      //setTotalproduction((old) => parseFloat(old + view32bit).toFixed(2));
+      coalsave.value.value = parseFloat(Number(coalsave.value.value) + Number(view32bit)).toFixed(2);
+
+    })
+  }, [invt]);
 
   return (
     <>
@@ -1370,7 +1406,11 @@ function ProjectData(props) {
                               <div style={{ fontSize: "14px", color: "grey" }}>
                                 Lượng than tiết kiệm
                               </div>
-                              <div>--</div>
+                              <div>{parseFloat(coalsave.value.value * coalsave.value.ef).toFixed(2)}
+                                &nbsp;
+                                <span style={{ color: "grey", fontSize: "12px" }}>
+                                  t
+                                </span></div>
                             </div>
                           </div>
                           <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item">
@@ -1381,7 +1421,12 @@ function ProjectData(props) {
                               <div style={{ fontSize: "14px", color: "grey" }}>
                                 Sản lượng cây trồng
                               </div>
-                              <div>--</div>
+                              <div>{parseFloat(coalsave.value.value * coalsave.value.tree).toFixed(2)}
+                                &nbsp;
+                                <span style={{ color: "grey", fontSize: "12px" }}>
+                                  Cây
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1395,7 +1440,12 @@ function ProjectData(props) {
                               <div style={{ fontSize: "14px", color: "grey" }}>
                                 Lượng CO₂ tiết giảm
                               </div>
-                              <div>--</div>
+                              <div>{parseFloat(coalsave.value.value * coalsave.value.avr).toFixed(2)}
+                                &nbsp;
+                                <span style={{ color: "grey", fontSize: "12px" }}>
+                                  t
+                                </span>
+                              </div>
                             </div>
                           </div>
                           <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item">
@@ -1406,7 +1456,12 @@ function ProjectData(props) {
                               <div style={{ fontSize: "14px", color: "grey" }}>
                                 Tổng doanh thu
                               </div>
-                              <div>--</div>
+                              <div>{parseFloat((coalsave.value.value * projectData.value.price) / 1000).toFixed(2)}
+                                &nbsp;
+                                <span style={{ color: "grey", fontSize: "12px" }}>
+                                  k{projectData.value.currency}
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1682,21 +1737,25 @@ function ProjectData(props) {
               <></>;
           }
         })()}
-      </div>
+      </div >
 
-      {popupAddGateway.value ? (
-        <div className="DAT_AddGatewayPopup">
-          <AddGateway data={temp.value} />
-        </div>
-      ) : (
-        <></>
-      )}
+      {
+        popupAddGateway.value ? (
+          <div className="DAT_AddGatewayPopup">
+            <AddGateway data={temp.value} />
+          </div>
+        ) : (
+          <></>
+        )
+      }
 
-      {popupState.value ? (
-        <div className="DAT_DevicePopup">
-          <Popup plantid={projectData.value.plantid} type="logger" sn={snlogger} data={temp.value} />
-        </div>
-      ) : (<> </>)}
+      {
+        popupState.value ? (
+          <div className="DAT_DevicePopup">
+            <Popup plantid={projectData.value.plantid} type="logger" sn={snlogger} data={temp.value} />
+          </div>
+        ) : (<> </>)
+      }
 
       {/* {raiseBoxState.value.status ? (
         <div className="DAT_RaiseBoxPopup">
@@ -1706,63 +1765,65 @@ function ProjectData(props) {
         <></>
       )} */}
 
-      {isMobile.value ? (
-        <>
-          {dropState.value ? (
-            <div className="DAT_ProjectDataDrop">
-              <div className="DAT_ProjectDataDrop_Dashboard"
-                id="dashboard"
-                onClick={(e) => handleView(e)}
-              >
-                <AiOutlineDashboard size={20} color="white" />
+      {
+        isMobile.value ? (
+          <>
+            {dropState.value ? (
+              <div className="DAT_ProjectDataDrop">
+                <div className="DAT_ProjectDataDrop_Dashboard"
+                  id="dashboard"
+                  onClick={(e) => handleView(e)}
+                >
+                  <AiOutlineDashboard size={20} color="white" />
+                </div>
+                <div className="DAT_ProjectDataDrop_Device"
+                  id="device"
+                  onClick={(e) => handleView(e)}
+                >
+                  <BsMenuButtonWide size={20} color="white" />
+                </div>
+                <div className="DAT_ProjectDataDrop_Alert"
+                  id="alert"
+                  onClick={(e) => handleView(e)}
+                >
+                  <GoAlertFill size={20} color="white" />
+                </div>
               </div>
-              <div className="DAT_ProjectDataDrop_Device"
-                id="device"
-                onClick={(e) => handleView(e)}
-              >
-                <BsMenuButtonWide size={20} color="white" />
-              </div>
-              <div className="DAT_ProjectDataDrop_Alert"
-                id="alert"
-                onClick={(e) => handleView(e)}
-              >
-                <GoAlertFill size={20} color="white" />
-              </div>
-            </div>
-          ) : (
-            <></>
-          )}
-        </>
-      ) : (
-        <>
-          {dropState.value ? (
-            <div className="DAT_ProjectDataDrop">
-              <div className="DAT_ProjectDataDrop_Item"
-                id="dashboard"
-                style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                onClick={(e) => handleView(e)}
-              >
-                Giám sát
-              </div>
-              <div className="DAT_ProjectDataDrop_Item"
-                id="device"
-                style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                onClick={(e) => handleView(e)}
-              >
-                Thiết bị
-              </div>
-              {/* <div className="DAT_ProjectDataDrop_Item"
+            ) : (
+              <></>
+            )}
+          </>
+        ) : (
+          <>
+            {dropState.value ? (
+              <div className="DAT_ProjectDataDrop">
+                <div className="DAT_ProjectDataDrop_Item"
+                  id="dashboard"
+                  style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                  onClick={(e) => handleView(e)}
+                >
+                  Giám sát
+                </div>
+                <div className="DAT_ProjectDataDrop_Item"
+                  id="device"
+                  style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                  onClick={(e) => handleView(e)}
+                >
+                  Thiết bị
+                </div>
+                {/* <div className="DAT_ProjectDataDrop_Item"
                 id="alert"
                 onClick={() => handleWarn()}
               >
                 Cảnh báo
               </div> */}
-            </div>
-          ) : (
-            <></>
-          )}
-        </>
-      )}
+              </div>
+            ) : (
+              <></>
+            )}
+          </>
+        )
+      }
     </>
   );
 }
@@ -2144,6 +2205,7 @@ const Production = (props) => {
   const [totalproduction, setTotalproduction] = useState(0);
   const result = getDaysInCurrentMonth();
 
+
   useEffect(() => {
     setProduction(0);
     props.data.map((item) => {
@@ -2269,6 +2331,7 @@ const Production = (props) => {
 
           let view32bit = convertToDoublewordAndFloat(e, "int");
           setTotalproduction((old) => parseFloat(old + view32bit).toFixed(2));
+
           break;
         default:
           num = parseFloat(data[item.sn][item.data.pro_3.register]) * parseFloat(item.data.pro_3.cal);
