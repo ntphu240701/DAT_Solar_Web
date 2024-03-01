@@ -344,7 +344,6 @@ function Device(props) {
   };
 
   const handleEdit = (e) => {
-    console.log(plantid, snlogger);
 
   };
 
@@ -355,8 +354,10 @@ function Device(props) {
     const id = e.currentTarget.id;
     const idArr = id.split("_");
     console.log(idArr);
-    setPlantid(idArr[0]);
-    setSnlogger(idArr[1]);
+    setPlantid(idArr[1]);
+    setSnlogger(idArr[0]);
+    // console.log(plantid, snlogger);
+
     // switch (idArr[1]) {
     //   case "inverter":
     //     info.value = dataInverter.find((item) => item.id == idArr[0]);
@@ -552,7 +553,7 @@ function Device(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup />
+          <Popup plantid={plantid} sn={snlogger} />
         </div>
       ) : (
         <></>

@@ -1,10 +1,13 @@
 import React from "react";
 import "./Device.scss"
-import { popupState } from "./Device";
+import { loggerList, popupState } from "./Device";
 import { IoClose } from "react-icons/io5";
 import { hasIn } from "lodash";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
+import { alertDispatch } from "../Alert/Alert";
 
-export default function Popup() {
+export default function Popup(props) {
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
@@ -18,7 +21,21 @@ export default function Popup() {
     popup.style.color = popup_state[state].color;
   }
 
-
+  const handleDelete = (e) => {
+    const dropLogger = async (plantid, sn) => {
+      let d = await callApi('post', host.DATA + '/dropLogger', { plantid: plantid, sn: sn });
+      if (d.status === true) {
+        loggerList.value = loggerList.value.filter((item) => item.psn != props.sn);
+        alertDispatch("Đã xóa thành công thiết bị")
+        popupState.value = false;
+      } else if (d.number == 0) {
+        alertDispatch("Không thể xóa thiết bị, lỗi định dạng")
+      } else if (d.number == 1) {
+        alertDispatch("Không thể xóa thiết bị, lỗi hệ thống")
+      }
+    }
+    dropLogger(props.plantid, props.sn);
+  }
 
   return (
     <div className="DAT_Popup_Box">
@@ -54,7 +71,9 @@ export default function Popup() {
         >
           Hủy
         </button>
-        <button style={{ backgroundColor: "#048FFF", color: "white" }}>
+        <button style={{ backgroundColor: "#048FFF", color: "white" }}
+          onClick={(e) => handleDelete(e)}
+        >
           Xác nhận
         </button>
       </div>

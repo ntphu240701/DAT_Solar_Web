@@ -11,6 +11,7 @@ import moment from "moment-timezone";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
+import { userInfor } from "../../App";
 
 const BasicInfo = (props) => {
   const [state, setState] = useState(true);
@@ -505,8 +506,6 @@ function EditProject(props) {
     if (check !== 0) {
       alertDispatch("vui long nhap day du thong tin");
     } else {
-
-
       const editProject = async (
         plantid,
         usrname,
@@ -527,6 +526,8 @@ function EditProject(props) {
         price,
         production,
         power,
+        partnerid,
+        usrtype
       ) => {
         let d = await callApi('post', host.DATA + '/editPlant', {
           plantid: plantid,
@@ -548,6 +549,8 @@ function EditProject(props) {
           price: price,
           production: production,
           power: power,
+          partnerid: partnerid,
+          usrtype: usrtype
         })
         if (d.status === true) {
           alertDispatch("Dự án đã được cập nhật");
@@ -574,10 +577,9 @@ function EditProject(props) {
         projectData.value.price,
         projectData.value.production,
         projectData.value.power,
+        userInfor.value.partnerid,
+        userInfor.value.type
       );
-
-
-
     }
   };
 
