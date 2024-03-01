@@ -534,7 +534,6 @@ function AddProject(props) {
     if (check !== 0) {
       alertDispatch("Vui lòng nhập đầy đủ thông tin");
     } else {
-      // alertDispatch("Tạo dự án thành công");
       const addProject = async (
         usrname,
         plantname,
@@ -577,11 +576,9 @@ function AddProject(props) {
           power: power,
           partnerid: partnerid
         })
-        //console.log(d);
         if (d.status === true) {
           alertDispatch("Dự án đã được thêm");
           dataproject.value = [...dataproject.value, d.data];
-          //console.log(dataproject.value);
           plantState.value = "default";
           plantData.value = {
             addr: "",
