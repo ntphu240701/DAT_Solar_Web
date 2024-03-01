@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.scss";
 import {
   BarChart,
@@ -20,6 +20,11 @@ import { Empty } from "../Project/Project";
 import DataTable from "react-data-table-component";
 import { MdPermDataSetting } from "react-icons/md";
 import { RiMoneyCnyCircleFill } from "react-icons/ri";
+import { callApi } from "../Api/Api";
+import { Await } from "react-router-dom";
+import { partnerInfor, userInfor } from "../../App";
+import { useSelector } from "react-redux";
+import { host } from "../Lang/Contant";
 
 function Home(props) {
   const v = "Sản lượng tháng";
@@ -173,6 +178,30 @@ function Home(props) {
     );
   };
 
+  const user = useSelector((state) => state.admin.usr);
+  const [length, setLength] = useState();
+  const [onl,setOnl] = useState(0);
+  const [off,setOff] = useState();
+  const [warn,setWarn] = useState();
+  useEffect(() => {
+    const checkApi = async (user, partnerid, type) => {
+      let data = await callApi("post", host.DATA + "/getPlant", {
+        usr: user,
+        partnerid: partnerid,
+        type: type,
+      });
+      console.log(data);
+      setLength(data.data.length);
+      const t = data.data.map((item) => {
+        if(item.state === 0){
+          setOnl(onl+1);
+        }
+      })
+    };
+    checkApi(user, partnerInfor.value.partnerid, userInfor.value.type)
+
+  },[]);
+
   return (
     <>
       <div className="DAT_HomeHeader">
@@ -195,11 +224,26 @@ function Home(props) {
           <div className="DAT_Home_Overview-Main">
             <div className="DAT_Home_Overview-Main-Percent">
               <div className="DAT_Home_Overview-Main-Percent-Item">
-                <span style={{ height: "40px", display: "flex", alignItems: "flex-end" }}>
+                <span
+                  style={{
+                    height: "40px",
+                    display: "flex",
+                    alignItems: "flex-end",
+                  }}
+                >
                   0
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "18px", color: "grey", height: "40px", display: "flex", alignItems: "flex-end", paddingBottom: "3px" }}>
+                <span
+                  style={{
+                    fontSize: "18px",
+                    color: "grey",
+                    height: "40px",
+                    display: "flex",
+                    alignItems: "flex-end",
+                    paddingBottom: "3px",
+                  }}
+                >
                   %
                 </span>
               </div>
@@ -210,7 +254,16 @@ function Home(props) {
                   Tổng công suất tức thời
                 </div>
                 <div>
-                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                  <span
+                    style={{
+                      color: "black",
+                      fontSize: "20px",
+                      fontWeight: "650",
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    0
+                  </span>
                   &nbsp;
                   <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
                 </div>
@@ -220,7 +273,16 @@ function Home(props) {
                   Công suất lắp đặt
                 </div>
                 <div>
-                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                  <span
+                    style={{
+                      color: "black",
+                      fontSize: "20px",
+                      fontWeight: "650",
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    0
+                  </span>
                   &nbsp;
                   <span style={{ color: "gray", fontSize: "13px" }}>kWp</span>
                 </div>
@@ -237,7 +299,16 @@ function Home(props) {
                 Sản lượng điện ngày
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                <span
+                  style={{
+                    color: "black",
+                    fontSize: "20px",
+                    fontWeight: "650",
+                    fontFamily: "sans-serif",
+                  }}
+                >
+                  0
+                </span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwp</span>
               </div>
@@ -250,7 +321,16 @@ function Home(props) {
                 Sản lượng điện tháng
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                <span
+                  style={{
+                    color: "black",
+                    fontSize: "20px",
+                    fontWeight: "650",
+                    fontFamily: "sans-serif",
+                  }}
+                >
+                  0
+                </span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwp</span>
               </div>
@@ -263,7 +343,16 @@ function Home(props) {
                 Sản lượng điện năm
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                <span
+                  style={{
+                    color: "black",
+                    fontSize: "20px",
+                    fontWeight: "650",
+                    fontFamily: "sans-serif",
+                  }}
+                >
+                  0
+                </span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwp</span>
               </div>
@@ -276,7 +365,16 @@ function Home(props) {
                 Tổng sản lượng điện
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                <span
+                  style={{
+                    color: "black",
+                    fontSize: "20px",
+                    fontWeight: "650",
+                    fontFamily: "sans-serif",
+                  }}
+                >
+                  0
+                </span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwp</span>
               </div>
@@ -355,7 +453,16 @@ function Home(props) {
             <span style={{ color: "gray", fontSize: "13px" }}>
               Tổng số dự án:
             </span>
-            <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>2</span>
+            <span
+              style={{
+                color: "black",
+                fontSize: "20px",
+                fontWeight: "650",
+                fontFamily: "sans-serif",
+              }}
+            >
+              {length}
+            </span>
           </div>
           <div className="DAT_Home_State-Content">
             <div className="DAT_Home_State-Content-Item">
@@ -363,7 +470,16 @@ function Home(props) {
                 Trực tuyến
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>1</span>
+                <span
+                  style={{
+                    color: "black",
+                    fontSize: "20px",
+                    fontWeight: "650",
+                    fontFamily: "sans-serif",
+                  }}
+                >
+                  
+                </span>
               </div>
             </div>
             <div className="DAT_Home_State-Content-Item">
@@ -371,7 +487,16 @@ function Home(props) {
                 Ngoại tuyến
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>1</span>
+                <span
+                  style={{
+                    color: "black",
+                    fontSize: "20px",
+                    fontWeight: "650",
+                    fontFamily: "sans-serif",
+                  }}
+                >
+                  1
+                </span>
               </div>
             </div>
           </div>
@@ -379,7 +504,16 @@ function Home(props) {
             <div className="DAT_Home_State-Content-Item">
               <div className="DAT_Home_State-Content-Item-Title">Chạy thử</div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                <span
+                  style={{
+                    color: "black",
+                    fontSize: "20px",
+                    fontWeight: "650",
+                    fontFamily: "sans-serif",
+                  }}
+                >
+                  0
+                </span>
               </div>
             </div>
             <div className="DAT_Home_State-Content-Item">
@@ -387,7 +521,16 @@ function Home(props) {
                 Dự án có cảnh báo
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                <span
+                  style={{
+                    color: "black",
+                    fontSize: "20px",
+                    fontWeight: "650",
+                    fontFamily: "sans-serif",
+                  }}
+                >
+                  0
+                </span>
               </div>
             </div>
           </div>
@@ -400,7 +543,7 @@ function Home(props) {
               apiKey={process.env.REACT_APP_GGKEY}
               defaultCenter={defaultProps.center}
               defaultZoom={defaultProps.zoom}
-            //onGoogleApiLoaded={onGoogleApiLoaded}
+              //onGoogleApiLoaded={onGoogleApiLoaded}
             ></GoogleMap>
           </div>
         </div>
