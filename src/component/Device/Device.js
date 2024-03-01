@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Device.scss";
 import DataTable from "react-data-table-component";
 import { FaCheckCircle } from "react-icons/fa";
@@ -13,6 +13,11 @@ import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import Info from "./Info";
 import Config from "./Config";
 import Popup from "./Popup";
+import { useSelector } from "react-redux";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
+import { set } from "lodash";
+import { userInfor } from "../../App";
 
 export const tab = signal("inverter");
 const tabLable = signal("");
@@ -22,15 +27,20 @@ export const infoState = signal(false);
 export const info = signal({});
 export const configState = signal(false);
 export const popupState = signal(false);
-
 export const displayState = signal("default");
 
+export const projectList = signal([]);
+export const loggerList = signal([]);
+
 function Device(props) {
+  const user = useSelector(state => state.admin.usr);
+
   const listTab = [
     { id: "inverter", name: "Inverter" },
-    { id: "meter", name: "Meter" },
+    // { id: "meter", name: "Meter" },
     { id: "logger", name: "Logger" },
   ];
+
   const color = { cur: "#6495ed", pre: "gray" };
 
   const paginationComponentOptions = {
@@ -41,36 +51,36 @@ function Device(props) {
   };
 
   const dataInverter = [
-    {
-      id: 1,
-      SN: "I0000145",
-      name: "Inverter 01",
-      plant: "Năng lượng DAT 01",
-      status: true,
-      production: "16",
-      dailyproduction: "123.4",
-      updated: "12/30/2023 12:07:12",
-    },
-    {
-      id: 2,
-      SN: "I0000012",
-      name: "Inverter 02",
-      plant: "Năng lượng DAT 01",
-      status: true,
-      production: "18",
-      dailyproduction: "238.4",
-      updated: "12/30/2023 12:07:12",
-    },
-    {
-      id: 3,
-      SN: "I0000001",
-      name: "Inverter 03",
-      plant: "Năng lượng DAT 01",
-      status: true,
-      production: "562",
-      dailyproduction: "897.4",
-      updated: "12/30/2023 12:07:12",
-    },
+    // {
+    //   id: 1,
+    //   SN: "I0000145",
+    //   name: "Inverter 01",
+    //   plant: "Năng lượng DAT 01",
+    //   status: true,
+    //   production: "16",
+    //   dailyproduction: "123.4",
+    //   updated: "12/30/2023 12:07:12",
+    // },
+    // {
+    //   id: 2,
+    //   SN: "I0000012",
+    //   name: "Inverter 02",
+    //   plant: "Năng lượng DAT 01",
+    //   status: true,
+    //   production: "18",
+    //   dailyproduction: "238.4",
+    //   updated: "12/30/2023 12:07:12",
+    // },
+    // {
+    //   id: 3,
+    //   SN: "I0000001",
+    //   name: "Inverter 03",
+    //   plant: "Năng lượng DAT 01",
+    //   status: true,
+    //   production: "562",
+    //   dailyproduction: "897.4",
+    //   updated: "12/30/2023 12:07:12",
+    // },
   ];
 
   const dataMeter = [
@@ -230,6 +240,92 @@ function Device(props) {
     },
   ];
 
+  const columnRemote = [
+    {
+      name: "Tên",
+      selector: (row) => (
+        <div className="DAT_Table">
+          <div
+            className="DAT_Table_Infor"
+            id={row.id + "_" + tab.value}
+            style={{ cursor: "pointer" }}
+            onClick={(e) => handleShowInfo(e)}
+          >
+            <div className="DAT_Table_Infor_Name">{row.pname}</div>
+            <div className="DAT_Table_Infor_Addr">{row.psn}</div>
+          </div>
+        </div>
+      ),
+      sortable: true,
+      minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Trạng thái",
+      selector: (row) => (
+        <>
+          {row.state === 1 ? (
+            <FaCheckCircle size={20} color="green" />
+          ) : (
+            <MdOutlineError size={22} color="red" />
+          )}
+        </>
+      ),
+      width: "110px",
+    },
+    {
+      name: "Dự án",
+      selector: (row) => row.pplantname,
+      sortable: true,
+      minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    // {
+    //   name: "Cập nhật",
+    //   selector: (row) => row.updated,
+    //   sortable: true,
+    //   width: "180px",
+    // },
+    {
+      name: "Tùy chỉnh",
+      selector: (row) => (
+        <>
+          <div className="DAT_TableEdit">
+            <span
+              id={row.psn + "_MORE"}
+              onMouseEnter={(e) => handleModify(e, "block")}
+            >
+              ...
+            </span>
+          </div>
+
+          <div className="DAT_ModifyBox"
+            id={row.psn + "_Modify"}
+            style={{ display: "none" }}
+            onMouseLeave={(e) => handleModify(e, "none")}
+          >
+            <div className="DAT_ModifyBox_Fix"
+              onClick={(e) => handleEdit(e)}
+            >
+              Chỉnh sửa
+            </div>
+            <div className="DAT_ModifyBox_Remove"
+              id={row.psn + "_" + row.pplantid}
+              onClick={(e) => handleRemove(e)}
+            >
+              Gỡ
+            </div>
+          </div>
+        </>
+      ),
+      width: "100px",
+    },
+  ];
+
   const handleShowInfo = (e) => {
     infoState.value = true;
     const id = e.currentTarget.id;
@@ -247,10 +343,20 @@ function Device(props) {
     }
   };
 
+  const handleEdit = (e) => {
+    console.log(plantid, snlogger);
+
+  };
+
+  const [plantid, setPlantid] = useState("");
+  const [snlogger, setSnlogger] = useState("");
   const handleRemove = (e) => {
     popupState.value = true;
     const id = e.currentTarget.id;
     const idArr = id.split("_");
+    console.log(idArr);
+    setPlantid(idArr[0]);
+    setSnlogger(idArr[1]);
     // switch (idArr[1]) {
     //   case "inverter":
     //     info.value = dataInverter.find((item) => item.id == idArr[0]);
@@ -263,89 +369,6 @@ function Device(props) {
     //     break;
     // }
   };
-
-  const columnRemote = [
-    {
-      name: "Tên",
-      selector: (row) => (
-        <div className="DAT_Table">
-          <div
-            className="DAT_Table_Infor"
-            id={row.id + "_" + tab.value}
-            onClick={(e) => handleShowInfo(e)}
-          >
-            <div className="DAT_Table_Infor_Name">{row.name}</div>
-            <div className="DAT_Table_Infor_Addr">{row.SN}</div>
-          </div>
-        </div>
-      ),
-      sortable: true,
-      minWidth: "350px",
-      style: {
-        justifyContent: "left",
-      },
-    },
-    {
-      name: "Trạng thái",
-      selector: (row) => (
-        <>
-          {row.status ? (
-            <FaCheckCircle size={20} color="green" />
-          ) : (
-            <MdOutlineError size={22} color="red" />
-          )}
-        </>
-      ),
-      width: "110px",
-    },
-    {
-      name: "Dự án",
-      selector: (row) => row.plant,
-      sortable: true,
-      minWidth: "350px",
-      style: {
-        justifyContent: "left",
-      },
-    },
-    {
-      name: "Cập nhật",
-      selector: (row) => row.updated,
-      sortable: true,
-      width: "180px",
-    },
-    {
-      name: "Tùy chỉnh",
-      selector: (row) => (
-        <>
-          <div className="DAT_TableEdit">
-            <span
-              id={row.id + "_MORE"}
-              onMouseEnter={(e) => handleModify(e, "block")}
-            >
-              ...
-            </span>
-          </div>
-
-          <div
-            className="DAT_ModifyBox"
-            id={row.id + "_Modify"}
-            style={{ display: "none" }}
-            onMouseLeave={(e) => handleModify(e, "none")}
-          >
-            <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div>
-            <div
-              className="DAT_ModifyBox_Remove"
-              id={row.id + "_" + tab.value}
-              onClick={(e) => handleRemove(e)}
-            >
-              Gỡ
-            </div>
-          </div>
-        </>
-      ),
-      width: "100px",
-    },
-  ];
 
   const handleModify = (e, type) => {
     const id = e.currentTarget.id;
@@ -361,10 +384,6 @@ function Device(props) {
     tabLable.value = newLabel.name;
   };
 
-  useEffect(() => {
-    tabLable.value = listTab[0].name;
-  }, []);
-
   const handleShowConfig = () => {
     if (configState.value) {
       configState.value = false;
@@ -372,6 +391,21 @@ function Device(props) {
       configState.value = true;
     }
   };
+
+  useEffect(() => {
+    tabLable.value = listTab[0].name;
+
+    // get logger
+    const getAllLogger = async (usrname, partnerid, type) => {
+      let d = await callApi('post', host.DATA + '/getallLogger', { usr: usrname, partnerid: partnerid, type: type });
+      console.log(d);
+      if (d.status === true) {
+        loggerList.value = d.data;
+      }
+    };
+    getAllLogger(user, userInfor.value.partnerid, userInfor.value.type);
+
+  }, []);
 
   return (
     <>
@@ -486,7 +520,7 @@ function Device(props) {
                   <DataTable
                     className="DAT_Table_Container"
                     columns={columnRemote}
-                    data={dataLogger}
+                    data={loggerList.value}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     fixedHeader={true}
@@ -501,15 +535,13 @@ function Device(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_DeviceInfor"
+      <div className="DAT_DeviceInfor"
         style={{ height: infoState.value ? "100%" : "0px", transition: "0.5s" }}
       >
         {infoState.value ? <Info /> : <></>}
       </div>
 
-      <div
-        className="DAT_DeviceConfig"
+      <div className="DAT_DeviceConfig"
         style={{
           height: configState.value ? "100vh" : "0px",
           transition: "0.5s",
@@ -520,7 +552,7 @@ function Device(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup></Popup>
+          <Popup />
         </div>
       ) : (
         <></>

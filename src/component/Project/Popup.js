@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Project.scss";
 import { dataproject, popupState, projectData } from "./Project";
 import { IoClose } from "react-icons/io5";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { alertDispatch } from "../Alert/Alert";
+import { temp } from "./ProjectData";
+import { userInfor } from "../../App";
 
 export default function Popup(props) {
   const popup_state = {
@@ -19,28 +22,46 @@ export default function Popup(props) {
   };
 
   const handleDelete = (e) => {
-    const dropProject = async (
-      plantid, usr
-    ) => {
-      let d = await callApi('post', host.DATA + '/dropPlant', {
-        plantid: plantid,
-        usr: usr,
-      })
-      console.log(d)
-    };
-    dropProject(e.currentTarget.id, props.usr)
+    switch (props.type) {
+      case "plant":
+        const dropProject = async (plantid, usr, partnerid, type) => {
+          let d = await callApi('post', host.DATA + '/dropPlant', { plantid: plantid, usr: usr, partnerid: partnerid, type: type })
+          if (d.status === true) {
+            alertDispatch("Dự án đã được xóa");
 
-    popupState.value = false;
-    dataproject.value = dataproject.value.filter(
-      (item) => item.plantid !== parseInt(e.currentTarget.id)
-    );
+            dataproject.value = dataproject.value.filter(
+              (item) => item.plantid != props.plantid
+            );
+            popupState.value = false;
+          }
+        };
+        dropProject(props.plantid, props.usr, userInfor.value.partnerid, userInfor.value.type)
+        break;
+      case "logger":
+        const dropLogger = async (plantid, sn) => {
+          let d = await callApi('post', host.DATA + '/dropLogger', { plantid: plantid, sn: sn });
+          if (d.status === true) {
+            temp.value = temp.value.filter((item) => item.sn != props.sn);
+            alertDispatch("Đã xóa thành công thiết bị")
+            popupState.value = false;
+          } else if (d.number == 0) {
+            alertDispatch("Không thể xóa thiết bị, lỗi định dạng")
+          } else if (d.number == 1) {
+            alertDispatch("Không thể xóa thiết bị, lỗi hệ thống")
+          }
+        }
+        dropLogger(props.plantid, props.sn);
+        break;
+      default:
+        break;
+    }
   };
 
   return (
     <div className="DAT_Popup_Box">
       <div className="DAT_Popup_Box_Head">
         <div className="DAT_Popup_Box_Head_Left">
-          <p>Xóa dự án</p>
+          <p>Xóa </p>
         </div>
         <div className="DAT_Popup_Box_Head_Right">
           <div
@@ -60,7 +81,7 @@ export default function Popup(props) {
           lịch sử của
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {projectData.value.plantname}
+            {props.type === "plant" ? projectData.value.plantname : props.sn}
           </span>
           &nbsp;
           sẽ bị xóa.
@@ -78,7 +99,7 @@ export default function Popup(props) {
           Hủy
         </button>
         <button
-          id={projectData.value.plantid}
+          // id={projectData.value.plantid}
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={(e) => handleDelete(e)}
         >

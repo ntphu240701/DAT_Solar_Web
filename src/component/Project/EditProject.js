@@ -10,6 +10,7 @@ import { isMobile } from "../Navigation/Navigation";
 import moment from "moment-timezone";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { alertDispatch } from "../Alert/Alert";
 
 const BasicInfo = (props) => {
   const [state, setState] = useState(true);
@@ -502,9 +503,9 @@ function EditProject(props) {
     });
 
     if (check !== 0) {
-      console.log("vui long nhap day du thong tin");
+      alertDispatch("vui long nhap day du thong tin");
     } else {
-      console.log("cap nhat thanh cong");
+
 
       const editProject = async (
         plantid,
@@ -548,6 +549,10 @@ function EditProject(props) {
           production: production,
           power: power,
         })
+        if (d.status === true) {
+          alertDispatch("Dự án đã được cập nhật");
+          plantState.value = "default";
+        }
       };
       editProject(
         projectData.value.plantid,
@@ -571,7 +576,7 @@ function EditProject(props) {
         projectData.value.power,
       );
 
-      plantState.value = "default";
+
 
     }
   };

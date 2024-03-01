@@ -12,12 +12,14 @@ import { popupAddGateway, temp } from "./ProjectData";
 import { signal } from "@preact/signals-react";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { alertDispatch } from "../Alert/Alert";
 import RaiseBox from "./RaiseBox";
 
 export const raiseBoxState = signal({
   state: false,
   text: "",
 });
+
 export default function AddGateway(props) {
   const sn = useRef();
   const name = useRef();
@@ -41,15 +43,8 @@ export default function AddGateway(props) {
   };
 
   const handleSave = async (e) => {
-    if (
-      sn.current.value === "" ||
-      name.current.value === "" ||
-      type.current.value === ""
-    ) {
-      raiseBoxState.value = {
-        status: true,
-        text: "Không được để trống thông tin",
-      };
+    if (sn.current.value === "" || name.current.value === "" || type.current.value === "") {
+      alertDispatch("Không được để trống thông tin");
     } else {
       const d = await callApi("post", host.DATA + "/addLogger", {
         plantid: projectData.value.plantid,
@@ -57,44 +52,24 @@ export default function AddGateway(props) {
         name: name.current.value,
         type: type.current.value,
       });
-      //console.log(d);
       if (d.status) {
         temp.value = [...temp.value, d.data];
+        popupAddGateway.value = false;
       }
-      popupAddGateway.value = false;
       if (d.status === true) {
-        raiseBoxState.value = {
-          status: true,
-          text: "Thiết bị được thêm thành công",
-        };
+        alertDispatch("Thiết bị được thêm thành công");
       } else if (d.number === 0) {
-        raiseBoxState.value = {
-          status: true,
-          text: "Lỗi định dạng",
-        };
+        alertDispatch("Lỗi định dạng");
       } else if (d.number === 1) {
-        raiseBoxState.value = {
-          status: true,
-          text: "Không tìm thấy thiết bị",
-        };
+        alertDispatch("Không tìm thấy thiết bị");
       } else if (d.number === 2) {
-        raiseBoxState.value = {
-          status: true,
-          text: "Thiết bị đã tồn tại",
-        };
+        alertDispatch("Thiết bị đã tồn tại");
       } else if (d.number === 3) {
-        raiseBoxState.value = {
-          status: true,
-          text: "Không tìm thấy thiết bị",
-        };
+        alertDispatch("Không tìm thấy thiết bị");
       } else if (d.number === 4) {
-        raiseBoxState.value = {
-          status: true,
-          text: "Hệ thống lỗi",
-        };
+        alertDispatch("Hệ thống lỗi");
       }
     }
-    //raiseBoxState.value = true;
   };
 
   return (

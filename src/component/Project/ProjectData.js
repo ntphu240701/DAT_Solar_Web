@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Project.scss";
 import AddGateway, { crudtype, raiseBoxState } from "./AddGateway";
-import { Empty, plantState, projectData, deviceData, Logger, Inverter } from "./Project";
+import { Empty, plantState, projectData, deviceData, Logger, Inverter, popupState } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from "recharts";
 
@@ -31,11 +31,14 @@ import { set } from "lodash";
 import RaiseBox from "./RaiseBox";
 import { Token } from "../../App";
 import axios from "axios";
+import { alertDispatch } from "../Alert/Alert";
+import Popup from "./Popup";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
 export const popupAddSubsystem = signal(false);
 export const temp = signal([]);
+
 
 const tabMobile = signal(false);
 const tabLable = signal("");
@@ -346,7 +349,7 @@ function ProjectData(props) {
   };
 
   const listDeviceTab = [
-    // { id: "inverter", name: "Inverter" },
+    { id: "inverter", name: "Inverter" },
     // { id: "meter", name: "Meter" },
     { id: "logger", name: "Logger" },
   ];
@@ -595,14 +598,12 @@ function ProjectData(props) {
   ];
 
   const invtCloud = async (data, token) => {
-
     var reqData = {
       "data": data,
       "token": token
     };
 
     try {
-
       const response = await axios({
         url: host.CLOUD,
         method: "post",
@@ -613,14 +614,9 @@ function ProjectData(props) {
       });
 
       return response.data
-
-    }
-
-    catch (e) {
+    } catch (e) {
       return ({ ret: 1, msg: "cloud err" })
     }
-
-
   }
 
   const handleWarn = () => {
@@ -641,6 +637,9 @@ function ProjectData(props) {
   const handleView = (e) => {
     var id = e.currentTarget.id;
     setView(id);
+    if (id === "dashboard") {
+      setNav("graph");
+    }
     dropState.value = !dropState.value
   };
 
@@ -727,31 +726,11 @@ function ProjectData(props) {
 
   const handleEdit = (e) => { console.log("sua") };
 
-  const [state, setState] = useState();
-  const handleDelete = async (e) => {
-    const id = e.currentTarget.id;
-    const d = await callApi('post', host.DATA + '/dropLogger', { plantid: projectData.value.plantid, sn: id });
-    // console.log(e.currentTarget.id);
-    if (d.status === true) {
-      temp.value = temp.value.filter((item) => item.sn != id);
-      raiseBoxState.value = {
-        status: true,
-        text: "Đã xóa thành công thiết bị",
-      };
-    } else if (d.number == 0) {
-      raiseBoxState.value = {
-        status: true,
-        text: "Không thể xóa thiết bị, lỗi định dạng",
-      };
-      setState("Không thể xóa thiết bị, lỗi định dạng");
-    } else if (d.number == 1) {
-      raiseBoxState.value = {
-        status: true,
-        text: "Không thể xóa thiết bị, lỗi hệ thống",
-      };
-    }
-      
-    
+  const [snlogger, setSnlogger] = useState("");
+
+  const handleDelete = (e) => {
+    popupState.value = true;
+    setSnlogger(e.currentTarget.id);
   };
 
   useEffect(() => {
@@ -780,21 +759,25 @@ function ProjectData(props) {
 
     //data Month
     const newDataMonth = dbMonth.find((item) => item.month === moment(new Date()).format("MM/YYYY"));
-    let vMonth = newDataMonth.name;
-    setDataMonth([]);
-    newDataMonth.data.map((item) => {
-      setDataMonth((old) => [...old, { time: item.time, [vMonth]: item.val }]);
-    });
-    setVMonth(newDataMonth.name);
+    if (newDataMonth) {
+      let vMonth = newDataMonth.name;
+      setDataMonth([]);
+      newDataMonth.data.map((item) => {
+        setDataMonth((old) => [...old, { time: item.time, [vMonth]: item.val }]);
+      });
+      setVMonth(newDataMonth.name);
+    }
 
     //data Year
     const newData = dbYear.find((item) => item.year === moment(new Date()).format("YYYY"));
-    let vYear = newData.name;
-    setDataYear([]);
-    newData.data.map((item) => {
-      setDataYear((old) => [...old, { time: item.time, [vYear]: item.val }]);
-    });
-    setVYear(newData.name);
+    if (newData) {
+      let vYear = newData.name;
+      setDataYear([]);
+      newData.data.map((item) => {
+        setDataYear((old) => [...old, { time: item.time, [vYear]: item.val }]);
+      });
+      setVYear(newData.name);
+    }
 
     //data Total
     dbTotal.map((item) => {
@@ -813,19 +796,19 @@ function ProjectData(props) {
       temp.value = d;
       console.log(d)
       let _invt = {}
-      d.map(async(item) => {
+      d.map(async (item) => {
 
         const res = await invtCloud('{"deviceCode":"' + item.sn + '"}', Token.value.token);
-            console.log(res)
-            if (res.ret === 0) {
-                //console.log(res.data)
-                setInvt(pre => ({ ...pre, [item.sn]: res.data }))
-              
-            } else {
-                setInvt(pre => ({ ...pre, [item.sn]: {} }))
-      }
+        console.log(res)
+        if (res.ret === 0) {
+          //console.log(res.data)
+          setInvt(pre => ({ ...pre, [item.sn]: res.data }))
 
-      // console.log(invt)
+        } else {
+          setInvt(pre => ({ ...pre, [item.sn]: {} }))
+        }
+
+        // console.log(invt)
 
         // _invt[item.sn] = {
         //   '14494-1': '10',
@@ -875,11 +858,6 @@ function ProjectData(props) {
 
     // eslint-disable-next-line
   }, []);
-
-
-  useEffect(() => {
-      console.log(invt)
-  },[invt])
 
   return (
     <>
@@ -966,6 +944,14 @@ function ProjectData(props) {
             })()}
 
             <div className="DAT_ProjectData_Header_Right">
+              <div className="DAT_ProjectData_Header_Right_Add" style={{ display: view === "device" ? "block" : "none" }}>
+                <button
+                  id="add"
+                  onClick={() => popupAddGateway.value = true}
+                >
+                  Thêm
+                </button>
+              </div>
               <div className="DAT_ProjectData_Header_Right_More">
                 <BsThreeDotsVertical
                   size={20}
@@ -1433,7 +1419,7 @@ function ProjectData(props) {
               return (
                 <div className="DAT_ProjectData_Device">
                   <div className="DAT_ProjectData_Device_Analysis">
-                    <div className="DAT_ProjectData_Device_Analysis_Func">
+                    {/* <div className="DAT_ProjectData_Device_Analysis_Func">
                       <div className="DAT_ProjectData_Device_Analysis_Func_Select">
                         <select>
                           <option hidden>Trạng thái</option>
@@ -1456,7 +1442,7 @@ function ProjectData(props) {
                       >
                         Thêm
                       </button>
-                    </div>
+                    </div> */}
 
                     <div className="DAT_ProjectData_Device_Analysis_Table">
                       {isMobile.value ? (
@@ -1698,8 +1684,6 @@ function ProjectData(props) {
         })()}
       </div>
 
-
-
       {popupAddGateway.value ? (
         <div className="DAT_AddGatewayPopup">
           <AddGateway data={temp.value} />
@@ -1708,13 +1692,19 @@ function ProjectData(props) {
         <></>
       )}
 
-{raiseBoxState.value.status ? (
+      {popupState.value ? (
+        <div className="DAT_DevicePopup">
+          <Popup plantid={projectData.value.plantid} type="logger" sn={snlogger} data={temp.value} />
+        </div>
+      ) : (<> </>)}
+
+      {/* {raiseBoxState.value.status ? (
         <div className="DAT_RaiseBoxPopup">
           <RaiseBox state={raiseBoxState.value.text} />
         </div>
       ) : (
         <></>
-      )}
+      )} */}
 
       {isMobile.value ? (
         <>
@@ -1761,12 +1751,12 @@ function ProjectData(props) {
               >
                 Thiết bị
               </div>
-              <div className="DAT_ProjectDataDrop_Item"
+              {/* <div className="DAT_ProjectDataDrop_Item"
                 id="alert"
                 onClick={() => handleWarn()}
               >
                 Cảnh báo
-              </div>
+              </div> */}
             </div>
           ) : (
             <></>
@@ -2151,6 +2141,7 @@ const Production = (props) => {
   const [data, setData] = useState(props.invt);
   const [production, setProduction] = useState(0);
   const [dailyproduction, setDailyproduction] = useState(0);
+  const [totalproduction, setTotalproduction] = useState(0);
   const result = getDaysInCurrentMonth();
 
   useEffect(() => {
@@ -2164,14 +2155,14 @@ const Production = (props) => {
         case "sum":
           Object.entries(item.data.pro_1.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]]  || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
             return accumulator + currentValue
           }, 0);
 
-          setProduction((old) => old + sum);
+          setProduction((old) => parseFloat(old + sum / 1000).toFixed(2));
           break;
         case "word":
           let d = JSON.parse(item.data.pro_1.register);
@@ -2208,7 +2199,7 @@ const Production = (props) => {
         case "sum":
           Object.entries(item.data.pro_2.register).map(([key, value]) => {
             let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]]||0) * parseFloat(cal[1]);
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
 
           var sum = num.reduce((accumulator, currentValue) => {
@@ -2237,10 +2228,55 @@ const Production = (props) => {
           break;
         default:
           num = parseFloat(data[item.sn]?.[item.data.pro_2.register] || 0) * parseFloat(item.data.pro_2.cal);
-          setDailyproduction((old) => old + num);
+          setDailyproduction((old) => parseFloat(old + num).toFixed(2));
           break;
       }
     });
+
+    setTotalproduction(0);
+    props.data.map((item) => {
+      const type = (item.data.pro_3.type);
+      const cal = JSON.parse(item.data.pro_3.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.data.pro_3.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
+          });
+
+          var sum = num.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue
+          }, 0);
+
+          setTotalproduction((old) => parseFloat(old + sum / 1000).toFixed(2));
+          break;
+        case "word":
+          let d = JSON.parse(item.data.pro_3.register);
+          let e = [data[item.sn]?.[d[0]] || 0, data[item.sn]?.[d[1]] || 0];
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? parseFloat(doubleword * cal).toFixed(2) : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          let view32bit = convertToDoublewordAndFloat(e, "int");
+          setTotalproduction((old) => parseFloat(old + view32bit).toFixed(2));
+          break;
+        default:
+          num = parseFloat(data[item.sn][item.data.pro_3.register]) * parseFloat(item.data.pro_3.cal);
+          setTotalproduction((old) => old + num);
+          break;
+      }
+    });
+
   }, [props.data]);
 
   return (
@@ -2250,11 +2286,12 @@ const Production = (props) => {
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data"
             style={{ fontSize: "28px" }}
           >
-            <span style={{ height: "40px", display: "flex", alignItems: "flex-end" }}>
-              {parseFloat((production / projectData.value.capacity) * 100).toFixed(2)}
-            </span>
-            &nbsp;
-            <span style={{ fontSize: "18px", color: "grey", height: "40px", display: "flex", alignItems: "flex-end", paddingBottom: "3px" }}>%</span>
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_num">
+                {parseFloat((production / projectData.value.capacity) * 100).toFixed(2)}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_unit">%</div>
+            </div>
           </div>
         </div>
 
@@ -2300,7 +2337,7 @@ const Production = (props) => {
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
-              kW
+              kWh
             </span>
           </div>
         </div>
@@ -2313,11 +2350,11 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {parseFloat(dailyproduction * result).toFixed(2)}
+              {/* {parseFloat(dailyproduction * result).toFixed(2)} */}?
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
-              kW
+              kWh
             </span>
           </div>
         </div>
@@ -2330,11 +2367,11 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {parseFloat((dailyproduction * result) * 12).toFixed(2)}
+              {/* {parseFloat((dailyproduction * result) * 12).toFixed(2)} */}?
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
-              kW
+              kWh
             </span>
           </div>
         </div>
@@ -2347,11 +2384,11 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              ?
+              {totalproduction}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
-              kW
+              kWh
             </span>
           </div>
         </div>

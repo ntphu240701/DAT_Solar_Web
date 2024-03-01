@@ -12,6 +12,8 @@ import { RxCross2 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { alertDispatch } from "../Alert/Alert";
+import { userInfor } from "../../App";
 
 export const plantData = signal({
   addr: "",
@@ -530,10 +532,9 @@ function AddProject(props) {
     });
 
     if (check !== 0) {
-      console.log("vui long nhap day du thong tin");
+      alertDispatch("Vui lòng nhập đầy đủ thông tin");
     } else {
-      console.log("tao du an thanh cong");
-
+      // alertDispatch("Tạo dự án thành công");
       const addProject = async (
         usrname,
         plantname,
@@ -553,6 +554,7 @@ function AddProject(props) {
         price,
         production,
         power,
+        partnerid
       ) => {
         let d = await callApi('post', host.DATA + '/addPlant', {
           usr: usrname,
@@ -573,8 +575,40 @@ function AddProject(props) {
           price: price,
           production: production,
           power: power,
+          partnerid: partnerid
         })
+        //console.log(d);
+        if (d.status === true) {
+          alertDispatch("Dự án đã được thêm");
+          dataproject.value = [...dataproject.value, d.data];
+          //console.log(dataproject.value);
+          plantState.value = "default";
+          plantData.value = {
+            addr: "",
+            angle: "",
+            business: "",
+            capacity: "",
+            company: "",
+            contact: "",
+            createdate: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),
+            currency: "vnd",
+            griddate: "",
+            lastupdate: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),
+            lat: "",
+            long: "",
+            phone: "",
+            plantmode: "grid",
+            plantname: "",
+            planttype: "residential",
+            power: "0",
+            price: "",
+            production: "0",
+            state: 0,
+            warn: 0,
+          };
+        }
       };
+
       addProject(
         props.usr,
         plantData.value.plantname,
@@ -594,33 +628,8 @@ function AddProject(props) {
         plantData.value.price,
         plantData.value.production,
         plantData.value.power,
-      )
-
-      dataproject.value = [...dataproject.value, plantData.value];
-      plantState.value = "default";
-      plantData.value = {
-        addr: "",
-        angle: "",
-        business: "",
-        capacity: "",
-        company: "",
-        contact: "",
-        createdate: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),
-        currency: "vnd",
-        griddate: "",
-        lastupdate: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),
-        lat: "",
-        long: "",
-        phone: "",
-        plantmode: "grid",
-        plantname: "",
-        planttype: "residential",
-        power: "0",
-        price: "",
-        production: "0",
-        state: 0,
-        warn: 0,
-      };
+        userInfor.value.partnerid
+      );
     }
   };
 

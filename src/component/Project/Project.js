@@ -19,6 +19,7 @@ import { callApi } from '../Api/Api';
 import { host } from "../Lang/Contant";
 import { useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
+import { userInfor } from "../../App";
 
 const tab = signal("total");
 const tabLable = signal("");
@@ -197,36 +198,36 @@ export const InverterbyLogger = signal([
 ]);
 
 export const Inverter = signal([
-  {
-    id: 1,
-    SN: "I0000145",
-    name: "Inverter 01",
-    plant: "Năng lượng DAT 01",
-    status: true,
-    production: "16",
-    dailyproduction: "123.4",
-    updated: "12/30/2023 12:07:12",
-  },
-  {
-    id: 2,
-    SN: "I0000012",
-    name: "Inverter 02",
-    plant: "Năng lượng DAT 01",
-    status: false,
-    production: "18",
-    dailyproduction: "238.4",
-    updated: "12/30/2023 12:07:12",
-  },
-  {
-    id: 3,
-    SN: "I0000333",
-    name: "Inverter 03",
-    plant: "Năng lượng DAT 02",
-    status: false,
-    production: "116",
-    dailyproduction: "123.4",
-    updated: "12/30/2023 12:07:12",
-  },
+  // {
+  //   id: 1,
+  //   SN: "I0000145",
+  //   name: "Inverter 01",
+  //   plant: "Năng lượng DAT 01",
+  //   status: true,
+  //   production: "16",
+  //   dailyproduction: "123.4",
+  //   updated: "12/30/2023 12:07:12",
+  // },
+  // {
+  //   id: 2,
+  //   SN: "I0000012",
+  //   name: "Inverter 02",
+  //   plant: "Năng lượng DAT 01",
+  //   status: false,
+  //   production: "18",
+  //   dailyproduction: "238.4",
+  //   updated: "12/30/2023 12:07:12",
+  // },
+  // {
+  //   id: 3,
+  //   SN: "I0000333",
+  //   name: "Inverter 03",
+  //   plant: "Năng lượng DAT 02",
+  //   status: false,
+  //   production: "116",
+  //   dailyproduction: "123.4",
+  //   updated: "12/30/2023 12:07:12",
+  // },
 ]);
 
 function Project(props) {
@@ -495,10 +496,10 @@ function Project(props) {
     );
     projectData.value = newPlant;
 
-    const newDevicePlant = devicePlant.value.filter(
-      (item) => item.plantId == e.currentTarget.id
-    );
-    deviceData.value = newDevicePlant;
+    // const newDevicePlant = devicePlant.value.filter(
+    //   (item) => item.plantId == e.currentTarget.id
+    // );
+    // deviceData.value = newDevicePlant;
   };
 
   const handleEdit = (e) => {
@@ -578,13 +579,13 @@ function Project(props) {
   }, [dataproject.value]);
 
   useEffect(() => {
-    const getPlant = async (usrname) => {
-      let d = await callApi('post', host.DATA + '/getPlant', { usr: usrname });
+    const getPlant = async (usrname, partnerid, type) => {
+      let d = await callApi('post', host.DATA + '/getPlant', { usr: usrname, partnerid: partnerid, type: type });
       if (d.status === true) {
         dataproject.value = d.data;
       }
     }
-    getPlant(user);
+    getPlant(user, userInfor.value.partnerid, userInfor.value.type);
   }, []);
 
   return (
@@ -782,7 +783,7 @@ function Project(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup usr={user} />
+          <Popup plantid={projectData.value.plantid} type="plant" usr={user} />
         </div>
       ) : (
         <></>
