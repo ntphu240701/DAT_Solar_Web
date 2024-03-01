@@ -349,7 +349,7 @@ function ProjectData(props) {
   };
 
   const listDeviceTab = [
-    // { id: "inverter", name: "Inverter" },
+    { id: "inverter", name: "Inverter" },
     // { id: "meter", name: "Meter" },
     { id: "logger", name: "Logger" },
   ];
@@ -731,16 +731,6 @@ function ProjectData(props) {
   const handleDelete = (e) => {
     popupState.value = true;
     setSnlogger(e.currentTarget.id);
-    // const id = e.currentTarget.id;
-    // const d = await callApi('post', host.DATA + '/dropLogger', { plantid: projectData.value.plantid, sn: id });
-    // if (d.status === true) {
-    //   temp.value = temp.value.filter((item) => item.sn != id);
-    //   alertDispatch("Đã xóa thành công thiết bị")
-    // } else if (d.number == 0) {
-    //   alertDispatch("Không thể xóa thiết bị, lỗi định dạng")
-    // } else if (d.number == 1) {
-    //   alertDispatch("Không thể xóa thiết bị, lỗi hệ thống")
-    // }
   };
 
   useEffect(() => {
@@ -769,21 +759,25 @@ function ProjectData(props) {
 
     //data Month
     const newDataMonth = dbMonth.find((item) => item.month === moment(new Date()).format("MM/YYYY"));
-    let vMonth = newDataMonth.name;
-    setDataMonth([]);
-    newDataMonth.data.map((item) => {
-      setDataMonth((old) => [...old, { time: item.time, [vMonth]: item.val }]);
-    });
-    setVMonth(newDataMonth.name);
+    if (newDataMonth) {
+      let vMonth = newDataMonth.name;
+      setDataMonth([]);
+      newDataMonth.data.map((item) => {
+        setDataMonth((old) => [...old, { time: item.time, [vMonth]: item.val }]);
+      });
+      setVMonth(newDataMonth.name);
+    }
 
     //data Year
     const newData = dbYear.find((item) => item.year === moment(new Date()).format("YYYY"));
-    let vYear = newData.name;
-    setDataYear([]);
-    newData.data.map((item) => {
-      setDataYear((old) => [...old, { time: item.time, [vYear]: item.val }]);
-    });
-    setVYear(newData.name);
+    if (newData) {
+      let vYear = newData.name;
+      setDataYear([]);
+      newData.data.map((item) => {
+        setDataYear((old) => [...old, { time: item.time, [vYear]: item.val }]);
+      });
+      setVYear(newData.name);
+    }
 
     //data Total
     dbTotal.map((item) => {
@@ -2270,11 +2264,11 @@ const Production = (props) => {
             intView[0] = doubleword;
             var float_value = floatView[0];
 
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+            return type === "int" ? parseFloat(doubleword * cal).toFixed(2) : parseFloat(float_value * cal).toFixed(2) || 0;
           }
 
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setTotalproduction((old) => parseFloat(old) + parseFloat(view32bit));
+          let view32bit = convertToDoublewordAndFloat(e, "int");
+          setTotalproduction((old) => parseFloat(old + view32bit).toFixed(2));
           break;
         default:
           num = parseFloat(data[item.sn][item.data.pro_3.register]) * parseFloat(item.data.pro_3.cal);

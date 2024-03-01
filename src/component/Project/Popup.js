@@ -6,6 +6,7 @@ import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
 import { temp } from "./ProjectData";
+import { userInfor } from "../../App";
 
 export default function Popup(props) {
   const popup_state = {
@@ -21,12 +22,10 @@ export default function Popup(props) {
   };
 
   const handleDelete = (e) => {
-    // const id = e.currentTarget.id
-    //console.log(id)
     switch (props.type) {
       case "plant":
-        const dropProject = async (plantid, usr) => {
-          let d = await callApi('post', host.DATA + '/dropPlant', { plantid: plantid, usr: usr, })
+        const dropProject = async (plantid, usr, partnerid, type) => {
+          let d = await callApi('post', host.DATA + '/dropPlant', { plantid: plantid, usr: usr, partnerid: partnerid, type: type })
           if (d.status === true) {
             alertDispatch("Dự án đã được xóa");
 
@@ -34,11 +33,9 @@ export default function Popup(props) {
               (item) => item.plantid != props.plantid
             );
             popupState.value = false;
-
-            //console.log(dataproject.value);
           }
         };
-        dropProject(props.plantid, props.usr)
+        dropProject(props.plantid, props.usr, userInfor.value.partnerid, userInfor.value.type)
         break;
       case "logger":
         const dropLogger = async (plantid, sn) => {
@@ -84,8 +81,7 @@ export default function Popup(props) {
           lịch sử của
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {/* {projectData.value.plantname} */}
-            {props.sn}
+            {props.type === "plant" ? projectData.value.plantname : props.sn}
           </span>
           &nbsp;
           sẽ bị xóa.

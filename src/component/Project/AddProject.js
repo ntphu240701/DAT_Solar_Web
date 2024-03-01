@@ -13,6 +13,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
+import { userInfor } from "../../App";
 
 export const plantData = signal({
   addr: "",
@@ -553,6 +554,7 @@ function AddProject(props) {
         price,
         production,
         power,
+        partnerid
       ) => {
         let d = await callApi('post', host.DATA + '/addPlant', {
           usr: usrname,
@@ -573,6 +575,7 @@ function AddProject(props) {
           price: price,
           production: production,
           power: power,
+          partnerid: partnerid
         })
         //console.log(d);
         if (d.status === true) {
@@ -625,9 +628,8 @@ function AddProject(props) {
         plantData.value.price,
         plantData.value.production,
         plantData.value.power,
-      )
-
-
+        userInfor.value.partnerid
+      );
     }
   };
 

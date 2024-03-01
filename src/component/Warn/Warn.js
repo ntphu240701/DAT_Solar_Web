@@ -131,32 +131,32 @@ function Warn(props) {
       sortable: true,
       width: "200px",
     },
-    // {
-    //   name: "Tùy chỉnh",
-    //   selector: (row) => (
-    //     <>
-    //       <div className="DAT_TableEdit">
-    //         <span
-    //           id={row.id + "_MORE"}
-    //           onMouseEnter={(e) => handleModify(e, "block")}
-    //         >
-    //           ...
-    //         </span>
-    //       </div>
+    {
+      name: "Tùy chỉnh",
+      selector: (row) => (
+        <>
+          <div className="DAT_TableEdit">
+            <span
+              id={row.id + "_MORE"}
+              onMouseEnter={(e) => handleModify(e, "block")}
+            >
+              ...
+            </span>
+          </div>
 
-    //       <div
-    //         className="DAT_ModifyBox"
-    //         id={row.id + "_Modify"}
-    //         style={{ display: "none" }}
-    //         onMouseLeave={(e) => handleModify(e, "none")}
-    //       >
-    //         <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div>
-    //         <div className="DAT_ModifyBox_Remove">Gỡ</div>
-    //       </div>
-    //     </>
-    //   ),
-    //   width: "100px",
-    // },
+          <div
+            className="DAT_ModifyBox"
+            id={row.id + "_Modify"}
+            style={{ display: "none" }}
+            onMouseLeave={(e) => handleModify(e, "none")}
+          >
+            <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div>
+            <div className="DAT_ModifyBox_Remove">Gỡ</div>
+          </div>
+        </>
+      ),
+      width: "100px",
+    },
   ];
   const handleSetting = (e) => {
     warnState.value = "setting";
