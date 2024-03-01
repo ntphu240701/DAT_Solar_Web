@@ -130,7 +130,7 @@ function App() {
             ruleid: inf.data.ruleid,
             partnerid: inf.data.partnerid,
             package: inf.data.package,
-            type: inf.data.type
+            type: inf.data.type,
           }
           setLoading(false)
         } else {

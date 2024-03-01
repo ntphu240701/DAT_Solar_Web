@@ -206,7 +206,7 @@ export default function Create() {
                     num={String(key)}
                     tab={"inf_content"}
                     status={editData.value.inf[key].status}
-                    id={editData.value.inf[key].lang}
+                    id={editData.value.inf[key].id}
                     width={widthCheckBox}
                   />
                 ))}
@@ -225,11 +225,11 @@ export default function Create() {
                 <div className="DAT_EditReport_Body_Item_Option_Check_Head">
                   <CheckBox
                     tab={"subinf_tit"}
-                    id={editData.value.subinf.lang}
+                    id={editData.value.subinf.id}
                     status={editData.value.subinf.status}
                     width="fit-content"
                   />
-                  {/* editData.value.subinf.option[key].lang */}
+                  {/* editData.value.subinf.option[key].id */}
                 </div>
                 {editData.value.subinf.status ? (
                   <>
@@ -240,7 +240,7 @@ export default function Create() {
                           num={String(key)}
                           tab={"subinf_option"}
                           status={editData.value.subinf.option[key].status}
-                          id={editData.value.subinf.option[key].lang}
+                          id={editData.value.subinf.option[key].id}
                           width={widthCheckBox}
                         />
                       )
@@ -266,7 +266,7 @@ export default function Create() {
                 <div className="DAT_EditReport_Body_Item_Option_Check_Head">
                   <CheckBox
                     tab={"deviceinfo_tit"}
-                    id={editData.value.deviceinfo.lang}
+                    id={editData.value.deviceinfo.id}
                     status={editData.value.deviceinfo.status}
                     width="fit-content"
                   />
@@ -280,7 +280,7 @@ export default function Create() {
                           num={String(key)}
                           tab={"deviceinfo_option"}
                           status={editData.value.deviceinfo.option[key].status}
-                          id={editData.value.deviceinfo.option[key].lang}
+                          id={editData.value.deviceinfo.option[key].id}
                           width={widthCheckBox}
                         />
                       )
@@ -304,7 +304,7 @@ export default function Create() {
                       num={String(key)}
                       tab={"customdata_content"}
                       status={editData.value.customdata[key].status}
-                      id={editData.value.customdata[key].lang}
+                      id={editData.value.customdata[key].id}
                       width={widthCheckBox}
                     />
                   )

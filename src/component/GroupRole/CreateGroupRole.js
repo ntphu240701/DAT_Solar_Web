@@ -4,6 +4,7 @@ import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import "./GroupRole.scss";
 import { signal } from "@preact/signals-react";
+import { alertDispatch } from "../Alert/Alert";
 
 const idplus = signal(2);
 const newdb = signal({
@@ -83,6 +84,9 @@ export default function CreateGroupRole() {
       newdb.value = temp.value;
       // console.log(group.value);
       createState.value = false;
+      alertDispatch("Tạo nhóm người dùng thành công.")
+    } else {
+      alertDispatch("Vui lòng nhập thông tin nhóm.")
     }
   };
   return (

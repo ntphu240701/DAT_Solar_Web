@@ -22,16 +22,17 @@ export const messages = {
         addr: 'Address',
         join: 'Join Code',
         alert_0: "Username or password is incorrect!",
-        alert_1: "Đổi mật khẩu thành công!",
-        alert_2: "Link đã hết hiệu lực, bạn vui lòng thực hiện lại!",
-        alert_3: "Email không đúng!",
-        alert_4: "Mật khẩu này đã được sử dụng!",
-        alert_5: "Mật khẩu không khớp!",
-        alert_6: "Thiết lập thành công!",
-        alert_7: "Thiết lập không thành công!",
-        alert_8: "Bạn vui lòng truy cập vào Email của bạn và xác nhận!",
-
-
+        alert_1: "Password changed successfully",
+        alert_2: "Your link has expired, please try again!",
+        alert_3: "You may have entered the wrong Email, please try again!",
+        alert_4: "This password has been used, try using a different password!",
+        alert_5: "Your password do not match!",
+        alert_6: "Setup successfully!",
+        alert_7: "Setup unsuccessful!",
+        alert_8: "Please access your Email for confirmation!!",
+        alert_9: "Sign up successfully!",
+        alert_10: "This username has been used, please try using a different username!",
+        alert_11: "This email has been used, please try using a different email!",
     },
     vi: {
         username: "Tên tài khoản",
@@ -51,17 +52,14 @@ export const messages = {
         alert_0: "Tài khoản hoặc mật khẩu không đúng!",
         alert_1: "Đổi mật khẩu thành công!",
         alert_2: "Link đã hết hiệu lực, bạn vui lòng thực hiện lại!",
-        alert_3: "Email không đúng!",
-        alert_4: "Mật khẩu này đã được sử dụng!",
+        alert_3: "Email không đúng, bạn vui lòng thực hiện lại!",
+        alert_4: "Mật khẩu này đã được sử dụng, bạn vui lòng thực hiện lại!",
         alert_5: "Mật khẩu không khớp!",
         alert_6: "Thiết lập thành công!",
         alert_7: "Thiết lập không thành công!",
         alert_8: "Bạn vui lòng truy cập vào Email của bạn và xác nhận!",
         alert_9: "Dăng ký thành công!",
         alert_10: "Tài khoản này đã tồn tại!",
-        alert_11: "Mail này đã tồn tại!",
-
-
-
+        alert_11: "Email này đã tồn tại!",
     }
 }

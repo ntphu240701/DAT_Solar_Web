@@ -343,7 +343,7 @@ export default function Create() {
                     num={String(key)}
                     tab="inf_content"
                     status={newdata.value.inf[key].status}
-                    id={newdata.value.inf[key].lang}
+                    id={newdata.value.inf[key].id}
                     width={widthCheckBox}
                   />
                 ))}
@@ -362,7 +362,7 @@ export default function Create() {
                 <div className="DAT_Create_Body_Item_Option_Check_Head">
                   <CheckBox
                     tab="subinf_tit"
-                    id={newdata.value.subinf.lang}
+                    id={newdata.value.subinf.id}
                     status={newdata.value.subinf.status}
                     width="fit-content"
                   />
@@ -376,7 +376,7 @@ export default function Create() {
                           num={String(key)}
                           tab="subinf_option"
                           status={newdata.value.subinf.option[key].status}
-                          id={newdata.value.subinf.option[key].lang}
+                          id={newdata.value.subinf.option[key].id}
                           width={widthCheckBox}
                         />
                       )
@@ -400,7 +400,7 @@ export default function Create() {
                 <div className="DAT_Create_Body_Item_Option_Check_Head">
                   <CheckBox
                     tab="deviceinfo_tit"
-                    id={newdata.value.deviceinfo.lang}
+                    id={newdata.value.deviceinfo.id}
                     status={newdata.value.deviceinfo.status}
                     width="fit-content"
                   />
@@ -414,7 +414,7 @@ export default function Create() {
                           num={String(key)}
                           tab="deviceinfo_option"
                           status={newdata.value.deviceinfo.option[key].status}
-                          id={newdata.value.deviceinfo.option[key].lang}
+                          id={newdata.value.deviceinfo.option[key].id}
                           width={widthCheckBox}
                         />
                       )
@@ -438,7 +438,7 @@ export default function Create() {
                       num={String(key)}
                       tab="customdata_content"
                       status={newdata.value.customdata[key].status}
-                      id={newdata.value.customdata[key].lang}
+                      id={newdata.value.customdata[key].id}
                       width={widthCheckBox}
                     />
                   )
