@@ -23,27 +23,27 @@ export const notifNav = signal(false)
 const langNav = signal(false)
 const langStateNav = signal([false, false])
 const messageNav = signal(false)
-const message = signal([
+export const message = signal([
     {
         messid: 1,
         name: 'Điện áp thấp mức 1',
         list: [
             {
-                id: 1,
+                warnid: 1,
                 device: 'I0000129',
                 plant: 'Năng lượng DAT 01',
                 level: 'warning',
                 time: '12/15/2023 08:12:12'
             },
             {
-                id: 2,
+                warnid: 2,
                 device: 'I0000145',
                 plant: 'Năng lượng DAT 02',
                 level: 'warning',
                 time: '12/30/2023 12:07:33'
             },
             {
-                id: 3,
+                warnid: 3,
                 device: 'I0000001',
                 plant: 'Năng lượng DAT 03',
                 level: 'warning',
@@ -56,14 +56,14 @@ const message = signal([
         name: 'Meter không kết nối',
         list: [
             {
-                id: 1,
+                warnid: 1,
                 device: 'M00000789',
                 plant: 'Năng lượng DAT 03',
                 level: 'warning',
                 time: '01/15/2023 08:12:12'
             },
             {
-                id: 2,
+                warnid: 2,
                 device: 'I0000369',
                 plant: 'Năng lượng DAT 03',
                 level: 'warning',
@@ -313,7 +313,7 @@ function Navigation(props) {
                                         {messageNav.value
                                             ? <>
                                                 {messageContent.value[0].list.map((item, index) => (
-                                                    <div className='DAT_NavNotif-content-main-group' key={item.id}>
+                                                    <div className='DAT_NavNotif-content-main-group' key={item.warnid}>
                                                         <div className='DAT_NavNotif-content-main-group-datetime'>{item.time}</div>
                                                         <div className='DAT_NavNotif-content-main-group-content'>
                                                             <div className='DAT_NavNotif-content-main-group-content-tit'>Có một {messageContent.value[0].name} tại {item.plant}</div>
@@ -349,7 +349,7 @@ function Navigation(props) {
                                             {messageNav.value
                                                 ? <>
                                                     {messageContent.value[0].list.map((item, index) => (
-                                                        <div className='DAT_NavNotif-content-main-group' key={item.id}>
+                                                        <div className='DAT_NavNotif-content-main-group' key={item.warnid}>
                                                             <div className='DAT_NavNotif-content-main-group-datetime'>{item.time}</div>
                                                             <div className='DAT_NavNotif-content-main-group-content'>
                                                                 <div className='DAT_NavNotif-content-main-group-content-tit'>Có một {messageContent.value[0].name} tại {item.plant}</div>

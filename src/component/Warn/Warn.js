@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Warn.scss";
 import DataTable from "react-data-table-component";
 import { FaCheckCircle } from "react-icons/fa";
@@ -7,15 +7,19 @@ import { signal } from "@preact/signals-react";
 import { CiSearch } from "react-icons/ci";
 import { Empty } from "../Project/Project";
 import { LuMailWarning } from "react-icons/lu";
-import { isMobile } from "../Navigation/Navigation";
+import { isMobile, message } from "../Navigation/Navigation";
 import { IoIosArrowDown, IoIosArrowRoundForward } from "react-icons/io";
 import SettingWarn from "./SettingWarn";
+import RaiseBox from "./RaiseBox";
 const tab = signal("all");
 const tabLable = signal("");
 const tabMobile = signal(false);
 const open = signal([]);
 const closed = signal([]);
 export const warnState = signal("default");
+export const temp = signal([]);
+export const deletewarnState = signal(false);
+export const idDel = signal();
 
 function Warn(props) {
   const listTab = [
@@ -66,31 +70,91 @@ function Warn(props) {
     },
   ];
 
+  useEffect(() => {
+    console.log("hello");
+    temp.value = [];
+    message.value.map((item) => {
+      item.list.map((dv, index) => {
+        temp.value = [
+          ...temp.value,
+          { ...dv, name: item.name, messid: item.messid },
+        ];
+      });
+    });
+    console.log(temp.value);
+  }, [message.value]);
+
   const columnWarn = [
+    {
+      name: "STT",
+      selector: (row, index) => index + 1,
+      width: "80px",
+    },
     {
       name: "Tên cảnh báo",
       selector: (row) => row.name,
       sortable: true,
-      minWidth: "350px",
+      // width: "200px",
       style: {
         justifyContent: "left",
       },
     },
     {
-      name: "Trạng thái",
-      selector: (row) => (
-        <>
-          {row.status === "open" ? (
-            <MdOutlineError size={22} color="red" />
-          ) : (
-            <FaCheckCircle size={20} color="green" />
-          )}
-        </>
-      ),
-      width: "110px",
+      name: "Thiết bị",
+      selector: (row) => row.device,
+      sortable: true,
+      width: "140px",
+      style: {
+        justifyContent: "left",
+      },
     },
     {
-      name: "Mức độ",
+      name: "Dự án",
+      selector: (row) => row.plant,
+      sortable: true,
+      style: {
+        justifyContent: "left",
+      },
+    },
+    // {
+    //   name: "Trạng thái",
+    //   selector: (row) => (
+    //     <>
+    //       {row.status === "open" ? (
+    //         <MdOutlineError size={22} color="red" />
+    //       ) : (
+    //         <FaCheckCircle size={20} color="green" />
+    //       )}
+    //     </>
+    //   ),
+    //   width: "110px",
+    // },
+    // {
+    //   name: "Mức độ",
+    //   selector: (row) => (
+    //     <>
+    //       {row.level === "warning" ? (
+    //         <div className="DAT_TableWarning">Cảnh báo</div>
+    //       ) : (
+    //         <div className="DAT_TableNotice">Chú ý</div>
+    //       )}
+    //     </>
+    //   ),
+    //   sortable: true,
+    //   minWidth: "120px",
+    // },
+    // {
+    //   name: "Thiết bị",
+    //   selector: (row) => row.plant,
+    //   sortable: true,
+    //   minWidth: "350px",
+    //   style: {
+    //     justifyContent: "left",
+    //   },
+    // },
+
+    {
+      name: "Mức độ cảnh báo",
       selector: (row) => (
         <>
           {row.level === "warning" ? (
@@ -101,33 +165,11 @@ function Warn(props) {
         </>
       ),
       sortable: true,
-      minWidth: "120px",
-    },
-    {
-      name: "Dự án",
-      selector: (row) => row.plant,
-      sortable: true,
-      minWidth: "350px",
-      style: {
-        justifyContent: "left",
-      },
-    },
-
-    {
-      name: "Thiết bị",
-      selector: (row) => row.device,
-      sortable: true,
       width: "140px",
     },
     {
-      name: "Thời gian mở cảnh báo",
-      selector: (row) => row.opentime,
-      sortable: true,
-      width: "200px",
-    },
-    {
-      name: "Thời gian đóng cảnh báo",
-      selector: (row) => row.closedtime,
+      name: "Thời gian cảnh báo",
+      selector: (row) => row.time,
       sortable: true,
       width: "200px",
     },
@@ -137,7 +179,7 @@ function Warn(props) {
         <>
           <div className="DAT_TableEdit">
             <span
-              id={row.id + "_MORE"}
+              id={row.messid + "" + row.warnid + "_MORE"}
               onMouseEnter={(e) => handleModify(e, "block")}
             >
               ...
@@ -146,18 +188,31 @@ function Warn(props) {
 
           <div
             className="DAT_ModifyBox"
-            id={row.id + "_Modify"}
+            id={row.messid + "" + row.warnid + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div>
-            <div className="DAT_ModifyBox_Remove">Gỡ</div>
+            {/* <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div> */}
+            <div
+              className="DAT_ModifyBox_Remove"
+              id={row.messid + "_" + row.warnid}
+              onClick={(e) => handleDeleteWarn(e)}
+            >
+              Gỡ
+            </div>
           </div>
         </>
       ),
       width: "100px",
     },
   ];
+
+  const handleDeleteWarn = (e) => {
+    deletewarnState.value = true;
+    idDel.value = e.currentTarget.id;
+    console.log(idDel.value);
+  };
+
   const handleSetting = (e) => {
     warnState.value = "setting";
   };
@@ -275,7 +330,7 @@ function Warn(props) {
                   <DataTable
                     className="DAT_Table_Container"
                     columns={columnWarn}
-                    data={dataWarn}
+                    data={temp.value}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     fixedHeader={true}
@@ -331,6 +386,14 @@ function Warn(props) {
           }
         })()}
       </div>
+
+      {deletewarnState.value ? (
+        <div className="DAT_ReportPopup">
+          <RaiseBox></RaiseBox>
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 }
