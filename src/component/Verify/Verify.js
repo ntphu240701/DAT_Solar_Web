@@ -37,19 +37,19 @@ function Verify(props) {
                     setNotif(dataLang.formatMessage({ id: 'alert_9' }))
                 } else {
                     if (res.number === 1) {
-                        setNotif(dataLang.formatMessage({ id: 'alert_2' }))
-                    }  else if(res.number === 2){
+                        setNotif(dataLang.formatMessage({ id: 'alert_16' }))
+                    } else if (res.number === 0) {
                         setNotif(dataLang.formatMessage({ id: 'alert_10' }))
-                    } else if(res.number === 3){
-                        setNotif(dataLang.formatMessage({ id: 'alert_11' }))
-                    } else{
+                    } else if (res.number === 3) {
+                        setNotif(dataLang.formatMessage({ id: "alert_2" }))
+                    } else {
                         setNotif(dataLang.formatMessage({ id: 'alert_7' }))
                     }
                 }
             }
-            if(props.path === '/Verify'){
+            if (props.path === '/Verify') {
                 Verify();
-            }else{
+            } else {
                 VerifyRegister();
             }
         }

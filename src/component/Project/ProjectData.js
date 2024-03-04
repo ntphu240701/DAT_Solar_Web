@@ -484,7 +484,7 @@ function ProjectData(props) {
       name: "Trạng thái",
       selector: (row) => (
         <>
-          {row.status === 1 ? (
+          {row.state === 1 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
             <MdOutlineError size={22} color="red" />
@@ -813,48 +813,6 @@ function ProjectData(props) {
           setInvt(pre => ({ ...pre, [item.sn]: {} }))
         }
 
-        // console.log(invt)
-
-        // _invt[item.sn] = {
-        //   '14494-1': '10',
-        //   '14491-1': '20',
-        //   '14651-1': '30',
-        //   '14600-1': '40',
-        //   '14490-1': '18442',
-        //   '14489-1': '39466',
-        //   '14485-1': '70',
-        //   '14487-1': '18442',
-        //   '14486-1': '39466',
-        //   '14488-1': '10',
-        //   '14365-1': '20',
-        //   '14482-1': '30',
-        //   '14364-1': '40',
-        //   '14384-1': '50',
-        //   '14390-1': '60',
-        //   '14391-1': '70',
-        //   '14392-1': '80',
-        //   '14393-1': '90',
-        //   '14394-1': '10',
-        //   '14395-1': '20',
-        //   '14396-1': '30',
-        //   '14397-1': '40',
-        //   '14398-1': '50',
-        //   '14399-1': '60',
-        //   '14400-1': '70',
-        //   '14401-1': '80',
-        //   '14402-1': '90',
-        //   '14403-1': '10',
-        //   '14404-1': '20',
-        //   '14405-1': '30',
-        //   '14406-1': '40',
-        //   '14407-1': '50',
-        //   '14408-1': '60',
-        //   '14409-1': '70',
-        //   '14410-1': '80',
-        //   '14411-1': '90',
-        //   '14412-1': '10',
-        //   '14413-1': '20',
-        // }
       })
       //setInvt(_invt)
     };
@@ -867,6 +825,7 @@ function ProjectData(props) {
 
 
   useEffect(() => {
+    console.log("Invt", invt)
     coalsave.value.value = 0;
     temp.value.map(async (item) => {
       const type = (item.data.pro_3.type);
@@ -889,8 +848,12 @@ function ProjectData(props) {
       }
 
       let view32bit = convertToDoublewordAndFloat(e, "int");
-      //setTotalproduction((old) => parseFloat(old + view32bit).toFixed(2));
-      coalsave.value.value = parseFloat(Number(coalsave.value.value) + Number(view32bit)).toFixed(2);
+      //let result = parseFloat(Number(coalsave.value.value) + Number(view32bit)).toFixed(2)
+      coalsave.value  ={ 
+        ...coalsave.value,
+        value: parseFloat(Number(coalsave.value.value) + Number(view32bit)).toFixed(2)
+      }
+      
 
     })
   }, [invt]);
@@ -1054,7 +1017,7 @@ function ProjectData(props) {
                           style={{ marginBottom: "16px" }}
                         >
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
-                            Loại Dự Án
+                            Loại dự án
                           </div>
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
                             style={{ textAlign: "right" }}
@@ -1084,7 +1047,7 @@ function ProjectData(props) {
 
                         <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr">
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
-                            Số Điện Thoại
+                            Số điện thoại
                           </div>
                           <div
                             className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"

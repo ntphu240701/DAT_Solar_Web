@@ -12,20 +12,51 @@ import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
 import { userInfor } from "../../App";
+import { setKey, geocode, RequestType } from "react-geocode";
+import { useIntl } from "react-intl";
 
 const BasicInfo = (props) => {
+  const dataLang = useIntl();
   const [state, setState] = useState(true);
   const defaultProps = {
     center: {
-      lat: 16.054083398111068,
-      lng: 108.20361013247235,
+      lat: 10.8356853,
+      lng: 106.6271617,
     },
     zoom: 7.0,
   };
 
   const handleBasic = (e) => {
     projectData.value[e.currentTarget.id] = e.currentTarget.value;
+
   };
+
+  const handleMap = (e) => {
+    const addr = document.getElementById("addr")
+    console.log(addr.value)
+    setKey(process.env.REACT_APP_GGKEY);
+    geocode(RequestType.ADDRESS, addr.value)
+      .then((response) => {
+        console.log(response.results[0].geometry.location);
+
+        var long_ = document.getElementById("long")
+        var lat_ = document.getElementById("lat")
+        lat_.value = response.results[0].geometry.location.lat
+        long_.value = response.results[0].geometry.location.lng
+        projectData.value = {
+          ...projectData.value,
+          lat: response.results[0].geometry.location.lat,
+          long: response.results[0].geometry.location.lng,
+        }
+
+
+      })
+      .catch((error) => {
+        alertDispatch(dataLang.formatMessage({ id: "alert_19" }))
+        
+      });
+  }
+
 
   return (
     <div className="DAT_EditProject_BasicInfo">
@@ -97,6 +128,7 @@ const BasicInfo = (props) => {
                       type="text"
                       defaultValue={projectData.value.long}
                       onChange={(e) => handleBasic(e)}
+                      onClick={(e) => handleMap(e)}
                     />
                   </div>
                   <div className="DAT_EditProject_BasicInfo_Body_Left_Item_Posi_Content">
@@ -108,6 +140,7 @@ const BasicInfo = (props) => {
                       type="text"
                       defaultValue={projectData.value.lat}
                       onChange={(e) => handleBasic(e)}
+                      onClick={(e) => handleMap(e)}
                     />
                   </div>
                 </div>

@@ -15,6 +15,7 @@ import { host } from './component/Lang/Contant';
 import adminslice from "./component/Redux/adminslice";
 import { callApi } from './component/Api/Api';
 import { signal } from '@preact/signals-react';
+import { type } from '@testing-library/user-event/dist/type';
 
 const Home = React.lazy(() => import('./component/Home/Home'));
 const Project = React.lazy(() => import('./component/Project/Project'));
@@ -29,7 +30,6 @@ const Log = React.lazy(() => import('./component/Log/Log'));
 const Language = React.lazy(() => import('./component/Language/Language'));
 const Contact = React.lazy(() => import('./component/Contact/Contact'));
 const Rule = React.lazy(() => import('./component/Rule/Rule'));
-const Notif = React.lazy(() => import('./component/Notif/Notif'));
 
 export const Token = signal({
   token: '',
@@ -44,7 +44,8 @@ export const userInfor = signal({
   ruleid: '2',
   partnerid: '1',
   package: 'Limited',
-  type: 'user'
+  type: 'user',
+  avatar:''
 });
 
 export const ruleInfor = signal({
@@ -56,6 +57,7 @@ export const ruleInfor = signal({
 
 export const partnerInfor = signal({
   partnerid: '',
+  code: '',
   name: '',
   phone: '',
   mail: '',
@@ -63,6 +65,7 @@ export const partnerInfor = signal({
   businessmodel: '',
   businesstype: '',
   area: '',
+  logo:''
 });
 
 
@@ -71,46 +74,10 @@ function App() {
   const status = useSelector((state) => state.admin.status)
   const dataLang = useIntl();
   const rootDispatch = useDispatch()
-  const [data, setData] = useState({
-    I0622B066940: {
-      '14390-1': '50',
-      '14391-1': '10',
-      '14392-1': '50',
-      '14393-1': '10',
-      '14394-1': '50',
-      '14395-1': '10',
-      '14396-1': '50',
-      '14397-1': '10',
-      '14398-1': '50',
-      '14399-1': '10',
-      '14400-1': '50',
-      '14401-1': '10',
-      '14402-1': '50',
-      '14403-1': '10',
-      '14404-1': '50',
-      '14405-1': '10',
-      '14406-1': '50',
-      '14407-1': '10',
-      '14408-1': '50',
-      '14409-1': '10',
-      '14410-1': '50',
-      '14411-1': '10',
-      '14412-1': '50',
-      '14413-1': '10',
-    }
-  })
 
 
   useEffect(() => {
-    const generateOTP = () => {
-      let digits =
-        '0123456789abcdefghijklmnopqrstuvwxyz';
-      let OTP = '';
-      for (let i = 0; i < 6; i++) {
-        OTP += digits[Math.floor(Math.random() * 10)];
-      }
-      return OTP;
-    }
+    
     const checkAuth = async () => {
 
       if (window.location.pathname !== '/Verify' && window.location.pathname !== '/VerifyRegister') {
@@ -131,6 +98,7 @@ function App() {
             partnerid: inf.data.partnerid,
             package: inf.data.package,
             type: inf.data.type,
+            avatar: inf.data.avatar
           }
           setLoading(false)
         } else {
@@ -159,6 +127,7 @@ function App() {
         console.log("Partner", data.data)
         partnerInfor.value = {
           partnerid: data.data.partnerid,
+          code: data.data.code,
           name: data.data.name,
           phone: data.data.phone,
           mail: data.data.mail,
@@ -166,6 +135,7 @@ function App() {
           businessmodel: data.data.businessmodel,
           businesstype: data.data.businesstype,
           area: data.data.area,
+          logo: data.data.logo
         }
 
       }
@@ -184,15 +154,15 @@ function App() {
     }
 
     const checkApi = async () => {
-      // const d = await callApi('post', host.DATA + '/addLogger', {plantid:'3', sn:'T0623A000169', name:'LOGGER 02', type:'L01'})
+      //const d = await callApi('post', host.DATA + '/getallLogger', {usr: 'solar_master'})
       //const d = await callApi('post', host.DATA + '/namePlant', { id: '3', name: 'SOLAR 001' })
       // const d = await callApi('post', host.AUTH + '/getInf', { usr: 'solar_master' })
-      //let data = await callApi('post', host.DATA + '/getPlant', { usr: 'solar_master' })
+      //let d = await callApi('post', host.DATA + '/getPlant', { usr: 'solar_master', partnerid: '1', type: 'master' })
       //let d = await callApi('post', host.DATA + '/getLogger', { plantid: '3' })
       //let data = await callApi('post', host.DATA + '/addPlant', { usr: 'solar_master', name: 'solar 03', company:'DAT', addr: '123, đường 1, phường 2, quận 3', long: '10.123', lat: '106.123', contact: 'hoang', phone: '0928382825', business: 'DAT Group', type: 'industry', mode: 'solar', griddate: '02/20/2024', capacity:'123', angle: '123', currency: '123', price: '123', production: '123', power: '123'})
       //let data = await callApi('post', host.DATA + '/dropPlant', {plantid: '4', usr: 'solar_master' })
       //let data = await callApi('post', host.DATA + '/editPlant', {plantid: '3', usr: 'solar_master', name: 'solar 03', company:'Công ty Cổ Phần Tập Đoàn DAT', addr: '12 Đường Đông Hưng Thuận 10, Phường Đông Hưng Thuận, Quận 12, TP.HCM	', long: '10.8357066', lat: '106.6271617', contact: 'hoang', phone: '0928382825', business: 'DAT Group', type: 'industry', mode: 'solar', griddate: '02/20/2024', capacity:'500', angle: '0', currency: 'vnd', price: '1000', production: '500', power: '50'})
-      // console.log(d)
+      //console.log(d)
       //console.log(eval(d[0].data.pro_1))
     }
     checkAuth();
@@ -232,7 +202,6 @@ function App() {
                       <Route path='/Language' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Language /></Suspense>} />
                       <Route path='/Contact' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Contact /></Suspense>} />
                       <Route path='/Rule' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Rule /></Suspense>} />
-                      <Route path='/Notif' element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color='#007bff' size={50} loading={loading} /></div>}><Notif /></Suspense>} />
                       <Route path='/Login' element={<Navigate to="/" />} />
                       <Route path='/Logout' element={<Navigate to="/Login" />} />
                     </Routes>

@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Contact.scss";
 import { IoClose } from "react-icons/io5";
 import { popupStateContact } from "./Contact";
+import { partnerInfor } from "../../App";
+import Resizer from "react-image-file-resizer";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
+import { alertDispatch } from "../Alert/Alert";
+import { useIntl } from "react-intl";
 
 function PopupAva(props) {
+  const dataLang = useIntl();
+  const [ava, setAva] = useState(partnerInfor.value.logo ? partnerInfor.value.logo : "/dat_icon/logo_DAT.png");
+  const resizeFile = (file) =>
+  new Promise((resolve) => {
+      Resizer.imageFileResizer(
+          file,
+          150,
+          150,
+          "PNG",
+          100,
+          0,
+          (uri) => {
+              resolve(uri);
+          },
+          "file"
+      );
+  });
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -16,11 +39,43 @@ function PopupAva(props) {
     popup.style.color = popup_state[state].color;
   };
 
-  const [ava, setAva] = React.useState();
-  const handleChooseAvatar = (e) => {
-    setAva(URL.createObjectURL(e.target.files[0]));
-    console.log(e.target.files[0].name);
+
+
+  const handleChooseAvatar = async(e) => {
+    var reader = new FileReader();
+    console.log("old size", e.target.files[0].size)
+
+    if (e.target.files[0].size > 100000) {
+        const image = await resizeFile(e.target.files[0]);
+        reader.readAsDataURL(image);
+        reader.onload = () => {
+            setAva(reader.result);
+           
+        };
+    } else {
+        reader.readAsDataURL(e.target.files[0]);
+        console.log(e.target.files[0].size)
+        reader.onload = () => {
+          setAva(reader.result);
+        };
+    }
   };
+
+  const handleSave = async(e) => {
+    console.log(partnerInfor.value.code)
+      const d = await callApi('post', host.DATA + '/updatePartner', {code: partnerInfor.value.code, type: 'logo', data: ava})
+      console.log(d)
+      if (d.status) {
+        alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+        partnerInfor.value = {
+          ...partnerInfor.value,
+          logo: ava
+        }
+        popupStateContact.value = false;
+      } else {
+        alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+      }
+  }
 
   return (
     <div className="DAT_PopupAva">
@@ -51,6 +106,7 @@ function PopupAva(props) {
           <input
             type="file"
             id="file"
+            
             accept="image/png, image/gif, image/jpeg"
             onChange={(e) => handleChooseAvatar(e)}
           />
@@ -73,7 +129,7 @@ function PopupAva(props) {
         >
           Hủy
         </button>
-        <button style={{ backgroundColor: "#048FFF", color: "white" }}>
+        <button style={{ backgroundColor: "#048FFF", color: "white" }} onClick={() => {handleSave()}}>
           Xác nhận
         </button>
       </div>

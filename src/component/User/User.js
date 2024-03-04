@@ -4,17 +4,15 @@ import { FaRegUser } from "react-icons/fa";
 import Popup from "./Popup";
 import { signal } from "@preact/signals-react";
 import { partnerInfor, userInfor } from "../../App";
-import { useSelector } from "react-redux";
+
 
 export const popupStateUser = signal(false);
 export const editType = signal();
 
 function User(props) {
-  const mail = useSelector((state) => state.admin.mail);
 
-  React.useEffect(() => {
-    console.log(popupStateUser.value);
-  }, [popupStateUser.value]);
+
+     
 
   return (
     <>
@@ -27,7 +25,7 @@ function User(props) {
         <div className="DAT_Usr_Item">
           <div className="DAT_Usr_Item_Content">
             <div className="DAT_Usr_Item_Content_Title">Ảnh đại diện</div>
-            <img src={"/dat_icon/user_manager.png"} alt="" />
+            <img src={userInfor.value.avatar ?  userInfor.value.avatar : "/dat_icon/user_manager.png"} alt="" />
           </div>
           <span
             id="avatar"
@@ -49,12 +47,21 @@ function User(props) {
 
         <div className="DAT_Usr_Item">
           <div className="DAT_Usr_Item_Content">
-            <div className="DAT_Usr_Item_Content_Title">E-mail</div>
+            <div className="DAT_Usr_Item_Content_Title">Số điện thoại</div>
             <div className="DAT_Usr_Item_Content_Label">
-              {mail}
+              {userInfor.value.phone}
             </div>
           </div>
-          <span onClick={() => (popupStateUser.value = true, editType.value = "email")}>Chỉnh sửa</span>
+          <span onClick={() => (popupStateUser.value = true, editType.value = "phone")}>Chỉnh sửa</span>
+        </div>
+        <div className="DAT_Usr_Item">
+          <div className="DAT_Usr_Item_Content">
+            <div className="DAT_Usr_Item_Content_Title">Địa chỉ</div>
+            <div className="DAT_Usr_Item_Content_Label">
+              {userInfor.value.addr}
+            </div>
+          </div>
+          <span onClick={() => (popupStateUser.value = true, editType.value = "addr")}>Chỉnh sửa</span>
         </div>
 
         <div className="DAT_Usr_Item">

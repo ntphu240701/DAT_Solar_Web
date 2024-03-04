@@ -9,8 +9,13 @@ import { MdOutlineLanguage } from "react-icons/md";
 import { signal } from '@preact/signals-react';
 import { FaRegMessage } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
-import  { userInfor } from "../../App";
-import { useSelector } from 'react-redux';
+import  { partnerInfor, userInfor } from "../../App";
+import { useDispatch, useSelector } from 'react-redux';
+import { callApi } from '../Api/Api';
+import { host } from '../Lang/Contant';
+import { alertDispatch } from '../Alert/Alert';
+import { useIntl } from 'react-intl';
+import adminslice from '../Redux/adminslice';
 
 export const isMobile = signal(false)
 const userNav = signal(false)
@@ -71,14 +76,16 @@ const messageContent = signal([])
 const messageOption = signal('default')
 
 function Navigation(props) {
-
+    const dataLang = useIntl();
     const navigate = useNavigate();
     const user_icon = useRef()
     const user_box = useRef()
     const notif_icon = useRef()
     const notif_box = useRef()
     const mail = useSelector((state) => state.admin.mail);
-
+    const lang = useSelector((state) => state.admin.lang);
+    const usr = useSelector((state) => state.admin.usr);
+    const rootDispatch = useDispatch()
 
     const handleWindowResize = () => {
         if (window.innerWidth >= 900) {
@@ -173,6 +180,16 @@ function Navigation(props) {
 
     }
 
+    const handleLang = async(lang_) => {
+        let d = await callApi('post', host.DATA + '/updateUser', { usr:usr, type:'lang', data:lang_ }) 
+        if (d.status) {
+            alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+            rootDispatch(adminslice.actions.setlang(lang_))
+
+          } else {
+            alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+          }
+    }
 
 
 
@@ -187,7 +204,7 @@ function Navigation(props) {
                 <div className='DAT_Navigation_left'>
                     <Link to="/" style={{ textDecoration: 'none' }}>
                         <div className="DAT_Navigation_left-logo" >
-                            <img src={"/dat_icon/logo_DAT.png"} alt="" style={{ height: "30px" }} />
+                            <img src={partnerInfor.value.logo ? partnerInfor.value.logo : "/dat_icon/logo_DAT.png"} alt="" style={{ height: "30px" }} />
                         </div>
                     </Link>
                 </div>
@@ -224,7 +241,7 @@ function Navigation(props) {
                         onMouseLeave={() => handleOutsideLang()}
                     >
                         <MdOutlineLanguage color='white' size={22} />
-                        <span>Vi</span>
+                        <span>{lang === "vi" ? "Vi" : "En"}</span>
                     </button >
 
 
@@ -235,7 +252,7 @@ function Navigation(props) {
                         onClick={() => userNav.value = !userNav.value}
                         ref={user_icon}
                     >
-                        <img src={"/dat_icon/user_manager.png"} alt="" />
+                        <img src={userInfor.value.avatar ?  userInfor.value.avatar : "/dat_icon/user_manager.png"} alt="" />
                     </button>
                 </div>
             </div>
@@ -243,7 +260,7 @@ function Navigation(props) {
             <div className='DAT_NavUser' style={{ display: userNav.value ? "block" : "none" }} ref={user_box} >
                 <div className='DAT_NavUser-inf'>
                     <div className='DAT_NavUser-inf-img'>
-                        <img src={"/dat_icon/user_manager.png"} alt="" />
+                        <img src={userInfor.value.avatar ?  userInfor.value.avatar : "/dat_icon/user_manager.png"} alt="" />
                     </div>
                     <div className='DAT_NavUser-inf-content'>
                         <div className='DAT_NavUser-inf-content-name'>{userInfor.value.name}</div>
@@ -362,11 +379,11 @@ function Navigation(props) {
             </div>
 
             <div className='DAT_NavLang' style={{ display: langNav.value ? "block" : "none" }} onMouseEnter={() => { langStateNav.value = [true, true]; }} onMouseLeave={() => { langNav.value = false; langStateNav.value = [false, false] }} >
-                <div className='DAT_NavLang-item' style={{ backgroundColor: "rgba(41, 95, 255)", color: "white" }} >
-                    <span >Tiếng Việt</span>
+                <div className='DAT_NavLang-item' style={{ backgroundColor: lang === "vi" ? "rgba(41, 95, 255)" : "white", color: lang === "vi" ? "white": "black" }} >
+                    <span onClick={() => { handleLang("vi") }}>Tiếng Việt</span>
                 </div>
-                <div className="DAT_NavLang-item">
-                    <span>English</span>
+                <div className="DAT_NavLang-item" style={{ backgroundColor: lang === "en" ? "rgba(41, 95, 255)" : "white", color: lang === "en" ? "white": "black" }} >
+                    <span onClick={() => { handleLang("en") }}>English</span>
                 </div>
             </div>
 

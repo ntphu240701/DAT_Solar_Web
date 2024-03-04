@@ -1,9 +1,9 @@
 import React from "react";
 import "./Role.scss";
-import { popupState, roleData } from "./Role";
+import { popupState, roleState } from "./Role";
 import { IoClose } from "react-icons/io5";
 
-export default function EditRole() {
+export default function Delete() {
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -17,14 +17,14 @@ export default function EditRole() {
   };
 
   return (
-    <div className="DAT_EditRole">
-      <div className="DAT_EditRole_Head">
-        <div className="DAT_EditRole_Head_Left">
-          <p>Chỉnh sửa</p>
+    <div className="DAT_Delete">
+      <div className="DAT_Delete_Head">
+        <div className="DAT_Delete_Head_Left">
+          <p>Xóa người dùng</p>
         </div>
-        <div className="DAT_EditRole_Head_Right">
+        <div className="DAT_Delete_Head_Right">
           <div
-            className="DAT_EditRole_Head_Right_Icon"
+            className="DAT_Delete_Head_Right_Icon"
             onClick={() => (popupState.value = "default")}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -34,24 +34,13 @@ export default function EditRole() {
           </div>
         </div>
       </div>
-
-      <div className="DAT_EditRole_Body">
-        <div className="DAT_EditRole_Body_Row">
-          Tên người dùng: &nbsp;
-          {roleData.value.name_}
-        </div>
-
-        <div className="DAT_EditRole_Body_Row">
-          <span style={{ color: "red" }}>* </span>
-          <span style={{ color: "grey" }}>Chọn quyền: &nbsp;</span>
-          <select>
-            <option>User</option>
-            <option>Admin</option>
-          </select>
-        </div>
+      <div className="DAT_Delete_Body">
+        <p>
+          Bạn có chắc chắn muốn xóa vĩnh viễn người dùng này không? Tất cả dữ
+          liệu lịch sử của XXX sẽ bị mất.
+        </p>
       </div>
-
-      <div className="DAT_EditRole_Foot">
+      <div className="DAT_Delete_Foot">
         <button
           style={{
             border: "1px solid #505050",

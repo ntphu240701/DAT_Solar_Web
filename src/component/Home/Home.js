@@ -20,13 +20,37 @@ import { Empty } from "../Project/Project";
 import DataTable from "react-data-table-component";
 import { MdPermDataSetting } from "react-icons/md";
 import { RiMoneyCnyCircleFill } from "react-icons/ri";
-import { callApi } from "../Api/Api";
-import { Await } from "react-router-dom";
-import { partnerInfor, userInfor } from "../../App";
 import { useSelector } from "react-redux";
+import { Token, partnerInfor, userInfor } from "../../App";
 import { host } from "../Lang/Contant";
+import { callApi } from "../Api/Api";
+import { signal } from "@preact/signals-react";
+import { get } from "lodash";
+import axios from "axios";
+
+const plant = signal([])
+const logger = signal([])
+
+const AnyReactComponent = ({ text }) => {
+  return (
+    <div className="DAT_marker" >
+      <div className="DAT_marker-bg" ></div>
+      <div className="DAT_marker-lb" >{text}</div>
+
+    </div>
+  )
+}
+
 
 function Home(props) {
+  const usr = useSelector((state) => state.admin.usr)
+  const [total,setTotal] = useState(0)
+  const [online,setOnline] = useState(0)
+  const [offline,setOffline] = useState(0)
+  const [trial,setTrial] = useState(0)
+  const [warn,setWarn] = useState(0)
+  const [invt,setInvt] = useState(0)
+
   const v = "Sản lượng tháng";
 
   const data = [
@@ -87,49 +111,10 @@ function Home(props) {
     selectAllRowsItemText: "tất cả",
   };
 
-  const dataHome = [
-    {
-      id: 1,
-      name: "Năng lượng DAT 01",
-      addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-      status: true,
-      warn: true,
-      capacity: "110",
-      production: "16",
-      power: "14.54",
-      lastupdate: "12/30/2023 12:07:12",
-      createdate: "05/01/2022 14:03:36",
-    },
-    {
-      id: 2,
-      name: "Năng lượng DAT 02",
-      addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-      status: false,
-      warn: false,
-      capacity: "222",
-      production: "230",
-      power: "0",
-      lastupdate: "10/30/2023 08:01:22",
-      createdate: "05/01/2022 14:08:36",
-    },
-    {
-      id: 3,
-      name: "Năng lượng DAT 03",
-      addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-      status: false,
-      warn: false,
-      capacity: "333",
-      production: "116",
-      power: "0",
-      lastupdate: "10/30/2023 08:01:22",
-      createdate: "05/01/2022 14:08:36",
-    },
-  ];
-
   const columnHome = [
     {
       name: "Tên",
-      selector: (row) => row.name,
+      selector: (row) => row.plantname,
       sortable: true,
       minWidth: "150px",
       style: {
@@ -155,11 +140,33 @@ function Home(props) {
 
   const defaultProps = {
     center: {
-      lat: 16.054083398111068,
-      lng: 108.20361013247235,
+      lat: 10.8356853,
+      lng: 106.6271617,
     },
     zoom: 7.0,
   };
+
+  const invtCloud = async (data, token) => {
+    var reqData = {
+      "data": data,
+      "token": token
+    };
+
+    try {
+      const response = await axios({
+        url: host.CLOUD,
+        method: "post",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data: Object.keys(reqData).map(function (key) { return encodeURIComponent(key) + '=' + encodeURIComponent(reqData[key]) }).join('&'),
+      });
+
+      return response.data
+    } catch (e) {
+      return ({ ret: 1, msg: "cloud err" })
+    }
+  }
 
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
@@ -178,29 +185,52 @@ function Home(props) {
     );
   };
 
-  const user = useSelector((state) => state.admin.usr);
-  const [length, setLength] = useState();
-  const [onl,setOnl] = useState(0);
-  const [off,setOff] = useState();
-  const [warn,setWarn] = useState();
   useEffect(() => {
-    const checkApi = async (user, partnerid, type) => {
-      let data = await callApi("post", host.DATA + "/getPlant", {
-        usr: user,
-        partnerid: partnerid,
-        type: type,
-      });
-      console.log(data);
-      setLength(data.data.length);
-      const t = data.data.map((item) => {
-        if(item.state === 0){
-          setOnl(onl+1);
-        }
-      })
-    };
-    checkApi(user, partnerInfor.value.partnerid, userInfor.value.type)
 
-  },[]);
+    const getPlant = async () => {
+      let d = await callApi('post', host.DATA + '/getPlant', {
+        usr: usr,
+        partnerid: partnerInfor.value.partnerid,
+        type: userInfor.value.type,
+      })
+      //console.log(d)
+      if (d.status === true) {
+        plant.value = d.data
+        setTotal(d.data.length)
+        setOnline(d.data.filter(data => data.state == 1).length)
+        setOffline(d.data.filter(data => data.state == 0).length)
+        setWarn(d.data.filter(data => data.warn == 0).length)
+      }
+    }
+
+    const getLogger = async () => {
+      let d = await callApi('post', host.DATA + '/getallLogger', {
+        usr: usr,
+        partnerid: partnerInfor.value.partnerid,
+        type: userInfor.value.type,
+      })
+      console.log(d)
+      if(d.status){
+        d.data.map(async (item) => {
+
+          const res = await invtCloud('{"deviceCode":"' + item.psn + '"}', Token.value.token);
+          console.log(res)
+          if (res.ret === 0) {
+            //console.log(res.data)
+            setInvt(pre => ({ ...pre, [item.sn]: res.data }))
+  
+          } else {
+            setInvt(pre => ({ ...pre, [item.sn]: {} }))
+          }
+  
+        })
+      }
+    }
+
+    getPlant();
+    getLogger();
+
+  }, [])
 
   return (
     <>
@@ -216,34 +246,19 @@ function Home(props) {
             <div className="DAT_Home_Overview-Head-Title">
               Tổng quan dữ liệu phát điện
             </div>
-            <div className="DAT_Home_Overview-Head-Date">
+            {/* <div className="DAT_Home_Overview-Head-Date">
               Đã cập nhật: {moment().format("DD/MM/YYYY HH:mm:ss")}
-            </div>
+            </div> */}
           </div>
 
           <div className="DAT_Home_Overview-Main">
             <div className="DAT_Home_Overview-Main-Percent">
               <div className="DAT_Home_Overview-Main-Percent-Item">
-                <span
-                  style={{
-                    height: "40px",
-                    display: "flex",
-                    alignItems: "flex-end",
-                  }}
-                >
+                <span style={{ height: "40px", display: "flex", alignItems: "flex-end" }}>
                   0
                 </span>
                 &nbsp;
-                <span
-                  style={{
-                    fontSize: "18px",
-                    color: "grey",
-                    height: "40px",
-                    display: "flex",
-                    alignItems: "flex-end",
-                    paddingBottom: "3px",
-                  }}
-                >
+                <span style={{ fontSize: "18px", color: "grey", height: "40px", display: "flex", alignItems: "flex-end", paddingBottom: "3px" }}>
                   %
                 </span>
               </div>
@@ -254,16 +269,7 @@ function Home(props) {
                   Tổng công suất tức thời
                 </div>
                 <div>
-                  <span
-                    style={{
-                      color: "black",
-                      fontSize: "20px",
-                      fontWeight: "650",
-                      fontFamily: "sans-serif",
-                    }}
-                  >
-                    0
-                  </span>
+                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
                   &nbsp;
                   <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
                 </div>
@@ -273,16 +279,7 @@ function Home(props) {
                   Công suất lắp đặt
                 </div>
                 <div>
-                  <span
-                    style={{
-                      color: "black",
-                      fontSize: "20px",
-                      fontWeight: "650",
-                      fontFamily: "sans-serif",
-                    }}
-                  >
-                    0
-                  </span>
+                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
                   &nbsp;
                   <span style={{ color: "gray", fontSize: "13px" }}>kWp</span>
                 </div>
@@ -299,18 +296,9 @@ function Home(props) {
                 Sản lượng điện ngày
               </div>
               <div>
-                <span
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    fontWeight: "650",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  0
-                </span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
                 &nbsp;
-                <span style={{ color: "gray", fontSize: "13px" }}>kwp</span>
+                <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
             </div>
             <div
@@ -321,18 +309,9 @@ function Home(props) {
                 Sản lượng điện tháng
               </div>
               <div>
-                <span
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    fontWeight: "650",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  0
-                </span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
                 &nbsp;
-                <span style={{ color: "gray", fontSize: "13px" }}>kwp</span>
+                <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
             </div>
             <div
@@ -343,18 +322,9 @@ function Home(props) {
                 Sản lượng điện năm
               </div>
               <div>
-                <span
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    fontWeight: "650",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  0
-                </span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
                 &nbsp;
-                <span style={{ color: "gray", fontSize: "13px" }}>kwp</span>
+                <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
             </div>
             <div
@@ -365,18 +335,9 @@ function Home(props) {
                 Tổng sản lượng điện
               </div>
               <div>
-                <span
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    fontWeight: "650",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  0
-                </span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
                 &nbsp;
-                <span style={{ color: "gray", fontSize: "13px" }}>kwp</span>
+                <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
             </div>
           </div>
@@ -453,16 +414,7 @@ function Home(props) {
             <span style={{ color: "gray", fontSize: "13px" }}>
               Tổng số dự án:
             </span>
-            <span
-              style={{
-                color: "black",
-                fontSize: "20px",
-                fontWeight: "650",
-                fontFamily: "sans-serif",
-              }}
-            >
-              {length}
-            </span>
+            <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{total}</span>
           </div>
           <div className="DAT_Home_State-Content">
             <div className="DAT_Home_State-Content-Item">
@@ -470,16 +422,7 @@ function Home(props) {
                 Trực tuyến
               </div>
               <div>
-                <span
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    fontWeight: "650",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  
-                </span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{online}</span>
               </div>
             </div>
             <div className="DAT_Home_State-Content-Item">
@@ -487,16 +430,7 @@ function Home(props) {
                 Ngoại tuyến
               </div>
               <div>
-                <span
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    fontWeight: "650",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  1
-                </span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{offline}</span>
               </div>
             </div>
           </div>
@@ -504,16 +438,7 @@ function Home(props) {
             <div className="DAT_Home_State-Content-Item">
               <div className="DAT_Home_State-Content-Item-Title">Chạy thử</div>
               <div>
-                <span
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    fontWeight: "650",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  0
-                </span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{trial}</span>
               </div>
             </div>
             <div className="DAT_Home_State-Content-Item">
@@ -521,16 +446,7 @@ function Home(props) {
                 Dự án có cảnh báo
               </div>
               <div>
-                <span
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    fontWeight: "650",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  0
-                </span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{warn}</span>
               </div>
             </div>
           </div>
@@ -543,8 +459,22 @@ function Home(props) {
               apiKey={process.env.REACT_APP_GGKEY}
               defaultCenter={defaultProps.center}
               defaultZoom={defaultProps.zoom}
-              //onGoogleApiLoaded={onGoogleApiLoaded}
-            ></GoogleMap>
+            //onGoogleApiLoaded={onGoogleApiLoaded}
+
+            >
+              {plant.value.map((item, index) => {
+                return(
+                  <AnyReactComponent
+                    key={item.plantid}
+                    lat={parseFloat(item.lat)}
+                    lng={parseFloat(item.long)}
+                    text={item.plantname}
+                    markerId={item.plantid}
+  
+                  />
+                )
+              })}
+            </GoogleMap>
           </div>
         </div>
 
@@ -562,7 +492,7 @@ function Home(props) {
             <DataTable
               className="DAT_Table_Home"
               columns={columnHome}
-              data={dataHome}
+              data={plant.value}
               pagination
               paginationComponentOptions={paginationComponentOptions}
               fixedHeader={true}

@@ -49,12 +49,18 @@ function Sidenar(props) {
     Setting: {
       icon: <RiSettingsLine />,
       link: "none",
-      li: [
+      li:userInfor.value.type === "user"  ? [
+        { link: "/GroupRole", name: "Nhóm người dùng" },
+        { link: "/User", name: "Tài khoản" },
+        { link: "/Contact", name: "Liên hệ" },
+      ] : [
         { link: "/Role", name: "Người dùng" },
         { link: "/GroupRole", name: "Nhóm người dùng" },
         { link: "/User", name: "Tài khoản" },
         { link: "/Contact", name: "Liên hệ" },
         { link: "/Rule", name: "Phân quyền"},
+       
+        
       ],
     },
   };
@@ -183,7 +189,7 @@ function Sidenar(props) {
           {tab.value === "Monitor" ? <>{MenuLi("Monitor")}</> : <></>}
           {Menu("Analytics", "Vận hành & bảo trì")}
           {tab.value === "Analytics" ? <>{MenuLi("Analytics")}</> : <></>}
-          {Menu("Notif", "Thông báo")}
+          {/* {Menu("Notif", "Thông báo")} */}
           {Menu("Setting", "Quản lý")}
           {tab.value === "Setting" ? <>{MenuLi("Setting")}</> : <></>}
         </div>

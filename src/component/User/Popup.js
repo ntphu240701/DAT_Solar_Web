@@ -6,22 +6,49 @@ import "./User.scss";
 import { LiaEyeSolid } from "react-icons/lia";
 import { LiaEyeSlashSolid } from "react-icons/lia";
 import { alertDispatch } from "../Alert/Alert";
+import Resizer from "react-image-file-resizer";
+import { userInfor } from "../../App";
+import { callApi } from "../Api/Api";
+import { useSelector } from "react-redux";
+import { host } from "../Lang/Contant";
+import { useIntl } from "react-intl";
+
 
 export default function Popup() {
+  const dataLang = useIntl();
+  const user = useSelector((state) => state.admin.usr);
   const [oldpass, setOldpass] = useState(true);
   const [newpass, setNewpass] = useState(true);
-  const [ava, setAva] = useState("/dat_icon/user_manager.png");
+  const [ava, setAva] = useState(userInfor.value.avatar ? userInfor.value.avatar : "/dat_icon/user_manager.png");
   const [confirmpass, setConfirmpass] = useState(true);
   const oldpassRef = useRef();
   const newpassRef = useRef();
   const confirmpassRef = useRef();
-  const renameRef = useRef();
-  const newemailRef = useRef();
+  const renameRef = useRef(userInfor.value.name);
+  const phoneRef = useRef(userInfor.value.phone);
+  const addrRef = useRef(userInfor.value.addr);
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
   };
+
+  const resizeFilAvatar = (file) =>
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        180,
+        180,
+        "PNG",
+        100,
+        0,
+        (uri) => {
+          resolve(uri);
+        },
+        "file"
+      );
+    });
+
 
   const handlePopup = (state) => {
     const popup = document.getElementById("Popup");
@@ -30,58 +57,118 @@ export default function Popup() {
     popup.style.color = popup_state[state].color;
   };
 
-  useEffect(() => {
-    console.log(editType.value);
-  });
 
-  const handleChooseAvatar = (e) => {
-    setAva(URL.createObjectURL(e.target.files[0]));
-    console.log(e.target.files[0]);
-    const data = new FileReader();
-    data.addEventListener("load", () => {
-      setAva(data.result);
-    });
-    data.readAsDataURL(e.target.files[0]);
+  const handleChooseAvatar = async (e) => {
+
+    var reader = new FileReader();
+    console.log("old size", e.target.files[0].size)
+    if (e.target.files[0].size > 50000) {
+      const image = await resizeFilAvatar(e.target.files[0]);
+      reader.readAsDataURL(image);
+      reader.onload = () => {
+        setAva(reader.result);
+      }
+    } else {
+      reader.readAsDataURL(e.target.files[0]);
+      console.log(e.target.files[0].size)
+      reader.onload = () => {
+        setAva(reader.result);
+      };
+    }
+
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     switch (editType.value) {
       case "avatar":
-        console.log(ava);
+        let d = await callApi("post", host.DATA + "/updateUser", { usr: user, type: "avatar", data: ava });
+        if (d.status) {
+          alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+          userInfor.value = {
+            ...userInfor.value,
+            avatar: ava
+          }
+        } else {
+          alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+        }
         popupStateUser.value = false;
         break;
       case "password":
-        if (oldpassRef.current.value === "abc123") {
+        if (oldpassRef.current.value !== "" && newpassRef.current.value !== "" && confirmpassRef.current.value !== "") {
           if (newpassRef.current.value === confirmpassRef.current.value) {
-            console.log(newpassRef.current.value, oldpassRef.current.value);
-            popupStateUser.value = false;
-            alertDispatch("Đổi mật khẩu thành công");
+            let d = await callApi("post", host.AUTH + "/ChangePassword", { usr: user, type: "password", oldpass: oldpassRef.current.value, newpass: confirmpassRef.current.value });
+            console.log(d)
+            if (d.status) {
+              alertDispatch(dataLang.formatMessage({ id: "alert_1" }));
+              popupStateUser.value = false;
+            } else {
+              if (d.number) {
+                alertDispatch(dataLang.formatMessage({ id: "alert_5" }));
+              } else if (d.number == 0) {
+                alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+              }
+            }
           } else {
-            alertDispatch(
-              "Mật khẩu mới không trùng nhau, vui lòng kiểm tra lại"
-            );
+            alertDispatch(dataLang.formatMessage({ id: "alert_18" }));
           }
         } else {
-          alertDispatch("Mật khẩu cũ không đúng!");
+          alertDispatch(dataLang.formatMessage({ id: "alert_17" }));
         }
         break;
       case "name":
         if (renameRef.current.value !== "") {
-          console.log(renameRef.current.value);
+
+          let d = await callApi("post", host.DATA + "/updateUser", { usr: user, type: "name", data: renameRef.current.value });
+          if (d.status) {
+            alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+            userInfor.value = {
+              ...userInfor.value,
+              name: renameRef.current.value
+            }
+
+          } else {
+            alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+          }
           popupStateUser.value = false;
-          alertDispatch("Đổi tên người dùng thành công");
         } else {
-          alertDispatch("Vui lòng điền đầy đủ tên người dùng");
+          alertDispatch(dataLang.formatMessage({ id: "alert_17" }));
         }
         break;
-      case "email":
-        if (newemailRef.current.value !== "") {
-          console.log(newemailRef.current.value);
+      case "phone":
+        if (phoneRef.current.value !== "") {
+          let d = await callApi("post", host.DATA + "/updateUser", { usr: user, type: "phone", data: phoneRef.current.value });
+          if (d.status) {
+            alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+            userInfor.value = {
+              ...userInfor.value,
+              phone: phoneRef.current.value
+            }
+
+          } else {
+            alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+          }
           popupStateUser.value = false;
-          alertDispatch("Đổi email thành công");
         } else {
-          alertDispatch("Vui lòng điền đầy đủ email");
-        } break;
+          alertDispatch(dataLang.formatMessage({ id: "alert_17" }));
+        }
+        break;
+      case "addr":
+        if (addrRef.current.value !== "") {
+          let d = await callApi("post", host.DATA + "/updateUser", { usr: user, type: "addr", data: addrRef.current.value });
+          if (d.status) {
+            alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+            userInfor.value = {
+              ...userInfor.value,
+              addr: addrRef.current.value
+            }
+
+          } else {
+            alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+          }
+          popupStateUser.value = false;
+        } else {
+          alertDispatch(dataLang.formatMessage({ id: "alert_17" }));
+        }
     }
   };
 
@@ -126,13 +213,13 @@ export default function Popup() {
             case "password":
               return (
                 <div className="DAT_PopupUser_Box_Body_Info">
-                  <label>Nhập mật khẩu: </label>
+                  <label>Mật khẩu hiện tại: </label>
                   <div className="DAT_PopupUser_Box_Body_Info_Input">
                     <div className="DAT_PopupUser_Box_Body_Info_Input_Pack">
                       <input
                         type={oldpass === true ? "password" : "text"}
                         ref={oldpassRef}
-                        placeholder="Password"
+
                       ></input>
                       <label onClick={() => setOldpass(!oldpass)}>
                         {oldpass === false ? (
@@ -149,7 +236,7 @@ export default function Popup() {
                       <input
                         type={newpass === true ? "password" : "text"}
                         ref={newpassRef}
-                        placeholder="New password"
+
                       ></input>
                       <label>
                         {newpass === false ? (
@@ -172,7 +259,7 @@ export default function Popup() {
                       <input
                         type={confirmpass === true ? "password" : "text"}
                         ref={confirmpassRef}
-                        placeholder="Confirm password"
+
                       ></input>
                       <label onClick={() => setConfirmpass(!confirmpass)}>
                         {confirmpass === false ? (
@@ -188,13 +275,19 @@ export default function Popup() {
             case "name":
               return (
                 <div className="DAT_PopupUser_Box_Body_Info">
-                  <input placeholder="Name" ref={renameRef}></input>
+                  <input type="text" placeholder="Tên" defaultValue={userInfor.value.name} ref={renameRef}></input>
                 </div>
               );
-            case "email":
+            case "phone":
               return (
                 <div className="DAT_PopupUser_Box_Body_Info">
-                  <input placeholder="Email" ref={newemailRef}></input>
+                  <input type="number" placeholder="Điện thoại" defaultValue={userInfor.value.phone} ref={phoneRef}></input>
+                </div>
+              );
+            case "addr":
+              return (
+                <div className="DAT_PopupUser_Box_Body_Info">
+                  <input type="text" placeholder="Địa chỉ" defaultValue={userInfor.value.addr} ref={addrRef}></input>
                 </div>
               );
           }

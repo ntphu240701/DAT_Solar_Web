@@ -5,13 +5,20 @@ import PopupAvatar from "./PopupAva";
 import { MdOutlineContactPhone } from "react-icons/md";
 import { signal } from "@preact/signals-react";
 import EditContactInfo from "./EditContactInfo";
-import { partnerInfor } from "../../App";
+import { partnerInfor, userInfor } from "../../App";
 
 export const popupStateContact = signal(false);
 export const contactState = signal("default");
 
 
 function Contact(props) {
+
+  const Type = {
+    OnM: "Nhà cung cấp O&M",
+    Investor: "Đầu tư",
+    Distributor: "Nhà phân phối",
+    Manufacturer: "Nhà sản xuất",
+  }
   return (
     <>
       <div className="DAT_ContactHeader">
@@ -25,9 +32,13 @@ function Contact(props) {
           <div className="DAT_Contact_Item_Registation">
             <div className="DAT_Contact_Item_Registation_Tit">
               <div>Thông tin đăng ký</div>
-              <div onClick={() => (contactState.value = "editInfo")}>
-                Chỉnh sửa
-              </div>
+              {userInfor.value.type === "user"
+                ? <></>
+                : <div onClick={() => (contactState.value = "editRegisterInf")}>
+                  Chỉnh sửa
+                </div>
+              }
+
             </div>
             <div className="DAT_Contact_Item_Registation_Content">
               <div>Mô hình kinh doanh</div>
@@ -43,7 +54,7 @@ function Contact(props) {
             </div>
             <div className="DAT_Contact_Item_Registation_Content">
               <div>Loại</div>
-              <div>{partnerInfor.value.businesstype}</div>
+              <div>{Type[partnerInfor.value.businesstype]}</div>
             </div>
           </div>
 
@@ -56,7 +67,12 @@ function Contact(props) {
           <div className="DAT_Contact_Item_Contact">
             <div className="DAT_Contact_Item_Contact_Tit">
               <div>Thông tin liên hệ</div>
-              {/* <div>Chỉnh sửa</div> */}
+              {userInfor.value.type === "user"
+                ? <></>
+                : <div onClick={() => (contactState.value = "editContactInf")}>
+                  Chỉnh sửa
+                </div>
+              }
             </div>
             <div className="DAT_Contact_Item_Contact_Content">
               <div>Tên</div>
@@ -76,12 +92,15 @@ function Contact(props) {
           <div className="DAT_Contact_Item_Logo">
             <div className="DAT_Contact_Item_Logo_Tit">
               <div>Logo</div>
-              <div onClick={() => (popupStateContact.value = true)}>
-                Chỉnh sửa
-              </div>
+              {userInfor.value.type === "user"
+                ? <></>
+                : <div onClick={() => (popupStateContact.value = true)}>
+                  Chỉnh sửa
+                </div>
+              }
             </div>
             <div className="DAT_Contact_Item_Logo_Content">
-              <img src="/dat_icon/logo_DAT.png" alt="" />
+              <img src={partnerInfor.value.logo ? partnerInfor.value.logo : "/dat_icon/logo_DAT.png"} alt="" />
             </div>
           </div>
         </div>
@@ -95,8 +114,10 @@ function Contact(props) {
       >
         {(() => {
           switch (contactState.value) {
-            case "editInfo":
-              return <EditContactInfo />;
+            case "editRegisterInf":
+              return <EditContactInfo mode="RegisterInf" />;
+            case "editContactInf":
+              return <EditContactInfo mode="ContactInf" />;
             default:
               return <></>;
           }

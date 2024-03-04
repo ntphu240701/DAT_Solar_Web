@@ -35,11 +35,23 @@ function Login(props) {
     const rootDispatch = useDispatch()
     const [showpass, setShowpass] = useState(false);
     const [showpass2, setShowpass2] = useState(false);
+    const [OTP, setOTP] = useState('');
+    const [joinOTP, setJoinOTP] = useState('');
     //const status = useSelector((state) => state.admin.status)
 
     useEffect(function () {
+        setOTP(generateOTP());
         rootDispatch(adminslice.actions.setlang('vi'))
     }, []);
+    const generateOTP = () => {
+        let digits =
+            '0123456789abcdefghijklmnopqrstuvwxyz';
+        let OTP_ = '';
+        for (let i = 0; i < 6; i++) {
+            OTP_ += digits[Math.floor(Math.random() * 10)];
+        }
+        return OTP_;
+    }
 
     const handleLogin = function (e) {
         e.preventDefault();
@@ -65,15 +77,55 @@ function Login(props) {
         auth();
     }
 
+    const handleOTP = function (e) {
+        //e.preventDefault();
+
+        let sendOTP = async () => {
+            let OTP_ = generateOTP();
+            setOTP(OTP_)
+            let res = await callApi('post', host.AUTH + '/SendOTP', { mail: mail, otp: OTP_, host: window.location.host })
+            console.log(res)
+            if (res.status) {
+                alertDispatch(dataLang.formatMessage({ id: "alert_13" }))
+            } else {
+                alertDispatch(dataLang.formatMessage({ id: "alert_14" }))
+            }
+        }
+        if (mail) {
+
+            sendOTP();
+        } else {
+            alertDispatch(dataLang.formatMessage({ id: "alert_15" }))
+        }
+
+
+
+
+    }
+
+    const handleAuth = function (e) {
+        e.preventDefault();
+        if (joinOTP === OTP) {
+            tab.value = 'pwd';
+
+        } else {
+            alertDispatch(dataLang.formatMessage({ id: "alert_12" }))
+
+        }
+    }
+
     const handlePwd = function (e) {
         e.preventDefault();
         let resetpwd = async () => {
-            let res = await callApi('post', host.AUTH + '/ResetPassword', { mail: mail, password: newpwd, host: window.location.host })
+            let res = await callApi('post', host.AUTH + '/ResetPassword', { mail: mail, password: newpwd })
             console.log(res)
             if (res.status) {
-                tab.value = 'note';
+                tab.value = 'otp';
+                setJoinOTP('')
+                setOTP(generateOTP())
+                alertDispatch(dataLang.formatMessage({ id: "alert_1" }))
             } else {
-                if (res.number === 3) {
+                if (res.number) {
                     alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
                 } else {
 
@@ -94,18 +146,23 @@ function Login(props) {
     const handleRegister = function (e) {
         e.preventDefault();
         let register = async () => {
-            let res = await callApi('post', host.AUTH + '/Register', {usr:user, mail: mail, pwd: newpwd, name: name, phone: phone, addr: addr, code: join? joinCode : 'S001', host: window.location.host })
-            console.log(res)
+            let res = await callApi('post', host.AUTH + '/CheckUser', { usr: user, mail: mail, code: join ? joinCode : 'S01' })
+            //console.log(res)
             if (res.status) {
-                tab.value = 'note';
-            } else {
-                if (res.number === 2) {
-                    alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
-                } else if(res.number === 1){
 
-                    alertDispatch(dataLang.formatMessage({ id: "alert_11" }))
-                }else{
+                let res = await callApi('post', host.AUTH + '/Register', { usr: user, mail: mail, pwd: newpwd, name: name, phone: phone, addr: addr, type: "user", code: join ? joinCode : 'S01', host: window.location.host })
+                if (res.status) {
+                    tab.value = 'note';
+                } else {
+                    alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
+                }
+            } else {
+                if (res.number === 1) {
+                    alertDispatch(dataLang.formatMessage({ id: "alert_16" }))
+                } else if (res.number === 0) {
                     alertDispatch(dataLang.formatMessage({ id: "alert_10" }))
+                } else {
+                    alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
                 }
             }
         }
@@ -125,7 +182,7 @@ function Login(props) {
                     case "register":
                         return (
                             <form className="DAT_Login_Form" onSubmit={handleRegister}>
-                                <p>DAT GROUP</p>
+                                <p>{dataLang.formatMessage({ id: 'register' })}</p>
                                 <div className="DAT_Login_Form-input">
                                     <CiUser color='gray' size={24} />
                                     <input type="text" placeholder={dataLang.formatMessage({ id: 'username' })} minLength={4} required value={user} onChange={(e) => { setUser(e.target.value.trim().toLocaleLowerCase()) }} autoComplete="on" />
@@ -180,7 +237,45 @@ function Login(props) {
                                     : <></>
                                 }
 
-                                <button>{dataLang.formatMessage({ id: 'register' })}</button>
+                                <button>{dataLang.formatMessage({ id: 'update' })}</button>
+
+                                <div className="DAT_Login_Form-footer">
+                                    <span></span>
+                                    <span onClick={() => tab.value = 'login'}>{dataLang.formatMessage({ id: 'login' })}</span>
+                                </div>
+                            </form>
+                        )
+                    case "otp":
+                        return (
+                            <form className="DAT_Login_Form" onSubmit={handleAuth}>
+                                <p>{dataLang.formatMessage({ id: 'confirm' })}</p>
+                                <div className="DAT_Login_Form-input">
+                                    <CiMail color='gray' size={24} />
+                                    <input type="email" placeholder={dataLang.formatMessage({ id: 'email' })} required value={mail} onChange={(e) => { setMail(e.target.value) }} autoComplete="on" />
+                                </div>
+                                <div className="DAT_Login_Form-input">
+                                    <CiBarcode color='gray' size={24} />
+                                    <input type="text" placeholder={"Mã OTP"} minLength={4} required value={joinOTP} onChange={(e) => { setJoinOTP(e.target.value.trim()) }} autoComplete="on" />
+                                </div>
+                                {/* <div className="DAT_Login_Form-input">
+                                    <MdPassword color='gray' size={24} />
+                                    <input type={(showpass) ? "text" : "password"} placeholder={dataLang.formatMessage({ id: 'new_pwd' })} required minLength="6" value={pass} onChange={(e) => { setPass(e.target.value.trim()) }} autoComplete="on" />
+                                    {(showpass) ? <FaRegEye color='gray' size={24} onClick={() => setShowpass(!showpass)} /> : <FaRegEyeSlash color='gray' size={24} onClick={() => setShowpass(!showpass)} />}
+                                </div>
+                                <div className="DAT_Login_Form-input">
+                                    <TbPasswordFingerprint color='gray' size={24} />
+                                    <input type={(showpass2) ? "text" : "password"} placeholder={dataLang.formatMessage({ id: 'auth_pwd' })} required minLength="6" value={newpwd} onChange={(e) => { setNewpwd(e.target.value.trim()) }} autoComplete="on" />
+                                    {(showpass2) ? <FaRegEye color='gray' size={24} onClick={() => setShowpass2(!showpass2)} /> : <FaRegEyeSlash color='gray' size={24} onClick={() => setShowpass2(!showpass2)} />}
+                                </div> */}
+
+                                <div className="DAT_Login_Form-box">
+                                    <span style={{ cursor: 'pointer', color: '#6495ed' }} onClick={(e) => handleOTP(e)} >Gửi mã OTP</span>
+                                </div>
+
+
+
+                                <button>{dataLang.formatMessage({ id: 'next' })}</button>
+
 
                                 <div className="DAT_Login_Form-footer">
                                     <span></span>
@@ -191,11 +286,8 @@ function Login(props) {
                     case "pwd":
                         return (
                             <form className="DAT_Login_Form" onSubmit={handlePwd}>
-                                <p>DAT GROUP</p>
-                                <div className="DAT_Login_Form-input">
-                                    <CiMail color='gray' size={24} />
-                                    <input type="email" placeholder={dataLang.formatMessage({ id: 'email' })} required value={mail} onChange={(e) => { setMail(e.target.value) }} autoComplete="on" />
-                                </div>
+                                <p>{dataLang.formatMessage({ id: 'pwd' })}</p>
+
                                 <div className="DAT_Login_Form-input">
                                     <MdPassword color='gray' size={24} />
                                     <input type={(showpass) ? "text" : "password"} placeholder={dataLang.formatMessage({ id: 'new_pwd' })} required minLength="6" value={pass} onChange={(e) => { setPass(e.target.value.trim()) }} autoComplete="on" />
@@ -207,9 +299,7 @@ function Login(props) {
                                     {(showpass2) ? <FaRegEye color='gray' size={24} onClick={() => setShowpass2(!showpass2)} /> : <FaRegEyeSlash color='gray' size={24} onClick={() => setShowpass2(!showpass2)} />}
                                 </div>
 
-
-
-                                <button>{dataLang.formatMessage({ id: 'pwd' })}</button>
+                                <button>{dataLang.formatMessage({ id: 'update' })}</button>
 
 
                                 <div className="DAT_Login_Form-footer">
@@ -247,7 +337,7 @@ function Login(props) {
 
                                 <div className="DAT_Login_Form-footer">
                                     <span onClick={() => tab.value = 'register'} >{dataLang.formatMessage({ id: 'register' })}</span>
-                                    <span onClick={() => tab.value = 'pwd'} >{dataLang.formatMessage({ id: 'forgot_pwd' })}</span>
+                                    <span onClick={() => tab.value = 'otp'} >{dataLang.formatMessage({ id: 'forgot_pwd' })}</span>
                                 </div>
 
                             </form>
@@ -255,15 +345,15 @@ function Login(props) {
                     default:
                         return (
                             <form className="DAT_Login_Form" onSubmit={handleLogin}>
-                            <p>DAT GROUP</p>
-                            <div className="DAT_Login_Form-note" style={{textAlign:'justify'}} >{dataLang.formatMessage({ id: 'alert_8' })}</div>
+                                <p>DAT GROUP</p>
+                                <div className="DAT_Login_Form-note" style={{ textAlign: 'justify' }} >{dataLang.formatMessage({ id: 'alert_8' })}</div>
 
-                            <div className="DAT_Login_Form-footer">
-                                <span ></span>
-                                <span onClick={() => tab.value = 'login'} >{dataLang.formatMessage({ id: 'login' })}</span>
-                            </div>
+                                <div className="DAT_Login_Form-footer">
+                                    <span ></span>
+                                    <span onClick={() => tab.value = 'login'} >{dataLang.formatMessage({ id: 'login' })}</span>
+                                </div>
 
-                        </form>              
+                            </form>
                         )
 
                 }

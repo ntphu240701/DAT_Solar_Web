@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Role.scss";
 import DataTable from "react-data-table-component";
 import { FaUsers } from "react-icons/fa";
@@ -8,10 +8,17 @@ import { signal } from "@preact/signals-react";
 import CreateRole from "./CreateRole";
 import DeleteRole from "./DeleteRole";
 import EditRole from "./EditRole";
+import { host } from "../Lang/Contant";
+import { callApi } from "../Api/Api";
+import { partnerInfor, userInfor } from "../../App";
+
 
 export const roleData = signal({});
 export const roleState = signal("default");
 export const popupState = signal("default");
+
+const Usr_ = signal([]);
+
 
 function Role(props) {
   const paginationComponentOptions = {
@@ -21,66 +28,50 @@ function Role(props) {
     selectAllRowsItemText: "tất cả",
   };
 
-  const datarole = [
-    {
-      id: 1,
-      name: "Trí Trần",
-      email: "tritran@datgroup.com.vn",
-      phone: "--",
-      role: "View only",
-      createdate: "05/01/2022 14:03:36",
-    },
-    {
-      id: 2,
-      name: "Tiến Đỗ",
-      email: "tiendo@datgroup.com.vn",
-      phone: "--",
-      role: "Edit",
-      createdate: "12/25/2023 14:08:36",
-    },
-    {
-      id: 3,
-      name: "Hiệp Solar",
-      email: "hiepsolar@datgroup.com.vn",
-      phone: "--",
-      role: "Full",
-      createdate: "01/17/2024 14:08:36",
-    },
-  ];
+
 
   const columnrole = [
     {
-      name: "Tên",
-      selector: (row) => row.name,
+      name: "STT",
+      selector: (row) => row.id,
       sortable: true,
-      minWidth: "350px",
+      minWidth: "80px",
+    },
+    {
+      name: "Tên",
+      selector: (row) => row.name_,
+      sortable: true,
+      minWidth: "200px",
       style: {
         justifyContent: "left",
       }
     },
     {
       name: "phone",
-      selector: (row) => row.phone,
-      width: "100px",
+      selector: (row) => row.phone_,
+      minWidth: "250px",
+      style: {
+        justifyContent: "left",
+      }
     },
     {
       name: "E-mail",
-      selector: (row) => row.email,
-      width: "210px",
+      selector: (row) => row.mail_,
+      width: "250px",
       style: {
         justifyContent: "left",
       }
     },
     {
       name: "Phân quyền",
-      selector: (row) => row.role,
+      selector: (row) => row.rulename_,
       sortable: true,
       width: "160px",
     },
 
     {
-      name: "Ngày tạo",
-      selector: (row) => row.createdate,
+      name: "Tài khoản",
+      selector: (row) => row.type_,
       sortable: true,
       width: "180px",
     },
@@ -88,24 +79,29 @@ function Role(props) {
       name: "Tùy chỉnh",
       selector: (row) => (
         <>
-          <div className="DAT_TableEdit">
-            <span
-              id={row.id + "_MORE"}
-              onMouseEnter={(e) => handleModify(e, "block")}
-            >
-              ...
-            </span>
-          </div>
+
+          {row.type_ === "user"
+            ? <div className="DAT_TableEdit">
+              <span
+                id={row.id_ + "_MORE"}
+                onMouseEnter={(e) => handleModify(e, "block")}
+              >
+                ...
+              </span>
+            </div>
+            : <></>
+          }
+
 
           <div
             className="DAT_ModifyBox"
-            id={row.id + "_Modify"}
+            id={row.id_ + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             <div
               className="DAT_ModifyBox_Fix"
-              id={row.id}
+              id={row.id_}
               onClick={(e) => handleEdit(e)}
             >
               Chỉnh sửa
@@ -126,16 +122,30 @@ function Role(props) {
   const handleEdit = (e) => {
     popupState.value = "edit";
     const id = e.currentTarget.id;
-    const newRole = datarole.find((item) => item.id == id);
-    roleData.value = newRole;
+    roleData.value = Usr_.value.find((item) => item.id_ == id);
   };
 
   const handleModify = (e, type) => {
     const id = e.currentTarget.id;
     var arr = id.split("_");
+
     const mod = document.getElementById(arr[0] + "_Modify");
     mod.style.display = type;
   };
+
+  useEffect(() => {
+    const fetchUsr = async () => {
+      const d = await callApi('post', host.DATA + '/getallUser', { partnerid: partnerInfor.value.partnerid });
+      console.log(d)
+      if (d.status === true) {
+        Usr_.value = d.data
+        Usr_.value.map((item, i) => item.id = i + 1);
+      }
+
+    }
+    fetchUsr()
+  }, [])
+
 
   return (
     <>
@@ -151,7 +161,7 @@ function Role(props) {
           className="DAT_RoleHeader_New"
           onClick={() => (roleState.value = "create")}
         >
-          Tạo tài khoản mới
+          Tạo tài khoản
         </button>
       </div>
 
@@ -164,7 +174,7 @@ function Role(props) {
           <DataTable
             className="DAT_Table_Container"
             columns={columnrole}
-            data={datarole}
+            data={Usr_.value}
             pagination
             paginationComponentOptions={paginationComponentOptions}
             fixedHeader={true}

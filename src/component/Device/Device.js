@@ -247,7 +247,7 @@ function Device(props) {
         <div className="DAT_Table">
           <div
             className="DAT_Table_Infor"
-            id={row.id + "_" + tab.value}
+            id={row.pid + "_" + tab.value}
             style={{ cursor: "pointer" }}
             onClick={(e) => handleShowInfo(e)}
           >
@@ -266,7 +266,7 @@ function Device(props) {
       name: "Trạng thái",
       selector: (row) => (
         <>
-          {row.state === 1 ? (
+          {row.pstate === 1 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
             <MdOutlineError size={22} color="red" />
