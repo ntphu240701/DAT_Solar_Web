@@ -25,11 +25,13 @@ import { Token, partnerInfor, userInfor } from "../../App";
 import { host } from "../Lang/Contant";
 import { callApi } from "../Api/Api";
 import { signal } from "@preact/signals-react";
-import { get } from "lodash";
+import { get, set } from "lodash";
 import axios from "axios";
+import { coalsave } from "../Project/ProjectData";
 
 const plant = signal([])
 const logger = signal([])
+const usd = signal(24700);
 
 const AnyReactComponent = ({ text }) => {
   return (
@@ -44,12 +46,17 @@ const AnyReactComponent = ({ text }) => {
 
 function Home(props) {
   const usr = useSelector((state) => state.admin.usr)
-  const [total,setTotal] = useState(0)
-  const [online,setOnline] = useState(0)
-  const [offline,setOffline] = useState(0)
-  const [trial,setTrial] = useState(0)
-  const [warn,setWarn] = useState(0)
-  const [invt,setInvt] = useState(0)
+  const [total, setTotal] = useState(0)
+  const [online, setOnline] = useState(0)
+  const [offline, setOffline] = useState(0)
+  const [trial, setTrial] = useState(0)
+  const [warn, setWarn] = useState(0)
+  const [invt, setInvt] = useState(0)
+  const [capacity, setCapacity] = useState(0)
+  const [price, setPrice] = useState(0)
+  const [production, setProduction] = useState(0)
+  const [dailyproduction, setDailyProduction] = useState(0)
+  const [totalproduction, setTotalProduction] = useState(0)
 
   const v = "Sản lượng tháng";
 
@@ -209,28 +216,305 @@ function Home(props) {
         partnerid: partnerInfor.value.partnerid,
         type: userInfor.value.type,
       })
-      console.log(d)
-      if(d.status){
+      //console.log(d)
+      if (d.status) {
+        logger.value = d.data
         d.data.map(async (item) => {
 
           const res = await invtCloud('{"deviceCode":"' + item.psn + '"}', Token.value.token);
-          console.log(res)
+          //console.log(res)
           if (res.ret === 0) {
             //console.log(res.data)
-            setInvt(pre => ({ ...pre, [item.sn]: res.data }))
-  
+            setInvt(pre => ({ ...pre, [item.psn]: res.data }))
+
           } else {
-            setInvt(pre => ({ ...pre, [item.sn]: {} }))
+            setInvt(pre => ({ ...pre, [item.psn]: {} }))
           }
-  
+
         })
       }
     }
 
     getPlant();
     getLogger();
-
   }, [])
+
+  useEffect(() => {
+
+    setCapacity(0)
+    plant.value.map((item) => {
+      setCapacity((old) => old + parseFloat(item.capacity))
+    })
+
+    setPrice(0)
+    var sum_4 = [];
+    plant.value.map((itemplant, index) => {
+      var sum_logger = [];
+      let logger_ = logger.value.filter(data => data.pplantid == itemplant.plantid)
+      //console.log(logger_)
+      logger_.map((item, i) => {
+        const type = (item.pdata.pro_3.type);
+        const cal = JSON.parse(item.pdata.pro_3.cal);
+        //let num = [];
+
+        switch (type) {
+          case "sum":
+            break;
+          case "word":
+            let d = JSON.parse(item.pdata.pro_3.register);
+            let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]]] || 0;
+
+            const convertToDoublewordAndFloat = (word, type) => {
+              var doubleword = ((word[1]) << 16) | (word[0]);
+              var buffer = new ArrayBuffer(4);
+              var intView = new Int32Array(buffer);
+              var floatView = new Float32Array(buffer);
+              intView[0] = doubleword;
+              var float_value = floatView[0];
+
+              return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+            }
+
+            sum_logger[i] = convertToDoublewordAndFloat(e, "int");
+            let total = sum_logger.reduce((accumulator, currentValue) => {
+              return Number(accumulator) + Number(currentValue)
+            }, 0);
+
+            if (i == logger_.length - 1) {
+              if (itemplant.currency == 'vnd') {
+                sum_4[index] = total * itemplant.price;
+              } else {
+                sum_4[index] = total * itemplant.price * usd.value;
+              }
+            }
+            break;
+          default:
+            break;
+        }
+      })
+
+      let total = sum_4.reduce((accumulator, currentValue) => {
+        return Number(accumulator) + Number(currentValue)
+      }, 0);
+
+      if (index == plant.value.length - 1) {
+        setPrice(parseFloat(total).toFixed(2));
+      }
+    })
+
+    setProduction(0)
+    var sum = [];
+    logger.value.map((item, i) => {
+      const type = (item.pdata.pro_1.type);
+      const cal = JSON.parse(item.pdata.pro_1.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.pdata.pro_1.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(invt[item.psn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(invt[item.psn]?.[n[1]] || 0) * parseFloat(cal[1]);
+          });
+
+          sum[i] = num.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0)
+
+          let total_sum = sum.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0) / 1000;
+
+          if (i == logger.value.length - 1) {
+            setProduction(parseFloat(total_sum).toFixed(2));
+          }
+          break;
+        case "word":
+          let d = JSON.parse(item.pdata.pro_1.register);
+          let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]]] || 0;
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          // let view32bit = convertToDoublewordAndFloat(e, "float");
+          // setProduction((old) => parseFloat(old) + parseFloat(view32bit));
+          sum[i] = convertToDoublewordAndFloat(e, "int");
+          let total_word = sum.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0);
+
+          if (i == logger.value.length - 1) {
+            setProduction(parseFloat(total_word).toFixed(2));
+          }
+          break;
+        default:
+          // num = parseFloat(invt[item.psn][item.pdata.pro_1.register]) * parseFloat(item.pdata.pro_1.cal);
+          // setProduction((old) => old + num);
+          sum[i] = parseFloat(invt[item.psn]?.[item.pdata.pro_1.register] || 0) * parseFloat(item.pdata.pro_1.cal);
+
+          let total_real = sum.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0);
+
+          if (i == logger.value.length - 1) {
+            setProduction(parseFloat(total_real).toFixed(2));
+          }
+          break;
+      }
+    })
+
+    setDailyProduction(0)
+    var sum_2 = [];
+    logger.value.map((item, i) => {
+      const type = (item.pdata.pro_2.type);
+      const cal = JSON.parse(item.pdata.pro_2.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.pdata.pro_2.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(invt[item.psn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(invt[item.psn]?.[n[1]] || 0) * parseFloat(cal[1]);
+          })
+
+          sum_2[i] = num.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0)
+
+          let total_sum = sum_2.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0) / 1000;
+
+          if (i == logger.value.length - 1) {
+            setDailyProduction(parseFloat(total_sum).toFixed(2));
+          }
+          break;
+        case "word":
+          let d = JSON.parse(item.pdata.pro_2.register);
+          let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]]] || 0;
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          sum_2[i] = convertToDoublewordAndFloat(e, "int");
+          let total_word = sum_2.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0);
+
+          if (i == logger.value.length - 1) {
+            setDailyProduction(parseFloat(total_word).toFixed(2));
+          }
+          break;
+        default:
+          sum_2[i] = parseFloat(invt[item.psn]?.[item.pdata.pro_2.register] || 0) * parseFloat(item.pdata.pro_2.cal);
+
+          let total = sum_2.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0);
+
+          if (i == logger.value.length - 1) {
+            setDailyProduction(parseFloat(total).toFixed(2));
+          }
+          break
+      }
+    });
+
+    setTotalProduction(0)
+    var sum_3 = [];
+    logger.value.map((item, i) => {
+      const type = (item.pdata.pro_3.type);
+      const cal = JSON.parse(item.pdata.pro_3.cal);
+      let num = [];
+
+      switch (type) {
+        case "sum":
+          Object.entries(item.pdata.pro_3.register).map(([key, value]) => {
+            let n = JSON.parse(value)
+            num[key] = parseFloat(invt[item.psn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(invt[item.psn]?.[n[1]] || 0) * parseFloat(cal[1]);
+          })
+
+          sum_3[i] = num.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0)
+
+          let total_sum = sum_3.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0) / 1000;
+
+          if (i == logger.value.length - 1) {
+            setTotalProduction(parseFloat(total_sum).toFixed(2));
+          }
+          break;
+        case "word":
+          let d = JSON.parse(item.pdata.pro_3.register);
+          let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]]] || 0;
+
+          const convertToDoublewordAndFloat = (word, type) => {
+            var doubleword = ((word[1]) << 16) | (word[0]);
+            var buffer = new ArrayBuffer(4);
+            var intView = new Int32Array(buffer);
+            var floatView = new Float32Array(buffer);
+            intView[0] = doubleword;
+            var float_value = floatView[0];
+
+            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+          }
+
+          sum_3[i] = convertToDoublewordAndFloat(e, "int");
+          let total_word = sum_3.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0);
+
+          if (i == logger.value.length - 1) {
+            setTotalProduction(parseFloat(total_word).toFixed(2));
+          }
+          break;
+        default:
+          break;
+      }
+    });
+
+    coalsave.value.value = 0;
+    logger.value.map((item, i) => {
+      const cal = JSON.parse(item.pdata.pro_3.cal);
+
+      let d = JSON.parse(item.pdata.pro_3.register);
+      let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]]] || 0;
+
+      const convertToDoublewordAndFloat = (word, type) => {
+        var doubleword = ((word[1]) << 16) | (word[0]);
+        var buffer = new ArrayBuffer(4);
+        var intView = new Int32Array(buffer);
+        var floatView = new Float32Array(buffer);
+        intView[0] = doubleword;
+        var float_value = floatView[0];
+
+        return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+      }
+
+      let view32bit = convertToDoublewordAndFloat(e, "int");
+      coalsave.value = {
+        ...coalsave.value,
+        value: parseFloat(Number(coalsave.value.value) + Number(view32bit)).toFixed(2)
+      }
+    });
+
+  }, [invt, totalproduction, price])
 
   return (
     <>
@@ -253,14 +537,23 @@ function Home(props) {
 
           <div className="DAT_Home_Overview-Main">
             <div className="DAT_Home_Overview-Main-Percent">
-              <div className="DAT_Home_Overview-Main-Percent-Item">
+              {/* <div className="DAT_Home_Overview-Main-Percent-Item">
                 <span style={{ height: "40px", display: "flex", alignItems: "flex-end" }}>
-                  0
+                  {parseFloat(production / capacity * 100).toFixed(2)}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "18px", color: "grey", height: "40px", display: "flex", alignItems: "flex-end", paddingBottom: "3px" }}>
                   %
                 </span>
+              </div> */}
+              <div className="DAT_Home_Overview-Main-Percent-Item">
+                <div className="DAT_Home_Overview-Main-Percent-Item-value">
+                  <div className="DAT_Home_Overview-Main-Percent-Item-value_num">
+                    {parseFloat((production / capacity) * 100).toFixed(2)}
+                  </div>
+                  <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">%</div>
+
+                </div>
               </div>
             </div>
             <div className="DAT_Home_Overview-Main-Value">
@@ -269,7 +562,7 @@ function Home(props) {
                   Tổng công suất tức thời
                 </div>
                 <div>
-                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{production}</span>
                   &nbsp;
                   <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
                 </div>
@@ -279,7 +572,7 @@ function Home(props) {
                   Công suất lắp đặt
                 </div>
                 <div>
-                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{capacity}</span>
                   &nbsp;
                   <span style={{ color: "gray", fontSize: "13px" }}>kWp</span>
                 </div>
@@ -288,21 +581,19 @@ function Home(props) {
           </div>
 
           <div className="DAT_Home_Overview-Sub">
-            <div
-              className="DAT_Home_Overview-Sub-Item"
+            <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
                 Sản lượng điện ngày
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{dailyproduction}</span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
             </div>
-            <div
-              className="DAT_Home_Overview-Sub-Item"
+            <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
@@ -314,8 +605,7 @@ function Home(props) {
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
             </div>
-            <div
-              className="DAT_Home_Overview-Sub-Item"
+            <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
@@ -327,15 +617,14 @@ function Home(props) {
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
             </div>
-            <div
-              className="DAT_Home_Overview-Sub-Item"
+            <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
                 Tổng sản lượng điện
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{totalproduction}</span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
@@ -463,14 +752,14 @@ function Home(props) {
 
             >
               {plant.value.map((item, index) => {
-                return(
+                return (
                   <AnyReactComponent
                     key={item.plantid}
                     lat={parseFloat(item.lat)}
                     lng={parseFloat(item.long)}
                     text={item.plantname}
                     markerId={item.plantid}
-  
+
                   />
                 )
               })}
@@ -517,7 +806,13 @@ function Home(props) {
                 <div style={{ fontSize: "14px", color: "grey" }}>
                   Lượng than tiết kiệm
                 </div>
-                <div>--</div>
+                <div>
+                  {parseFloat(coalsave.value.value * coalsave.value.ef).toFixed(2)}
+                  &nbsp;
+                  <span style={{ color: "grey", fontSize: "12px" }}>
+                    t
+                  </span>
+                </div>
               </div>
             </div>
             <div className="DAT_Home_Benefit_Content_Item">
@@ -528,7 +823,13 @@ function Home(props) {
                 <div style={{ fontSize: "14px", color: "grey" }}>
                   Sản lượng cây trồng
                 </div>
-                <div>--</div>
+                <div>
+                  {parseFloat(coalsave.value.value * coalsave.value.tree).toFixed(2)}
+                  &nbsp;
+                  <span style={{ color: "grey", fontSize: "12px" }}>
+                    Cây
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -542,7 +843,13 @@ function Home(props) {
                 <div style={{ fontSize: "14px", color: "grey" }}>
                   Lượng CO₂ tiết giảm
                 </div>
-                <div>--</div>
+                <div>
+                  {parseFloat(coalsave.value.value * coalsave.value.avr).toFixed(2)}
+                  &nbsp;
+                  <span style={{ color: "grey", fontSize: "12px" }}>
+                    t
+                  </span>
+                </div>
               </div>
             </div>
             <div className="DAT_Home_Benefit_Content_Item">
@@ -553,7 +860,13 @@ function Home(props) {
                 <div style={{ fontSize: "14px", color: "grey" }}>
                   Tổng doanh thu
                 </div>
-                <div>--</div>
+                <div>
+                  {parseFloat((price) / 1000).toFixed(2)}
+                  &nbsp;
+                  <span style={{ color: "grey", fontSize: "12px" }}>
+                    k{plant.value.currency}
+                  </span>
+                </div>
               </div>
             </div>
           </div>

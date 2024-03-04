@@ -216,18 +216,21 @@ function Warn(props) {
   const handleSetting = (e) => {
     warnState.value = "setting";
   };
+
   const handleModify = (e, type) => {
     const id = e.currentTarget.id;
     var arr = id.split("_");
     const mod = document.getElementById(arr[0] + "_Modify");
     mod.style.display = type;
   };
+
   const handleTabMobile = (e) => {
     const id = e.currentTarget.id;
     tab.value = id;
     const newLabel = listTab.find((item) => item.id == id);
     tabLable.value = newLabel.name;
   };
+
   useEffect(() => {
     open.value = dataWarn.filter((item) => item.status == "open");
     closed.value = dataWarn.filter((item) => item.status == "closed");
@@ -252,6 +255,7 @@ function Warn(props) {
           Cài đặt
         </button>
       </div>
+
       <div className="DAT_Warn">
         {/* <div className='DAT_Warn_Nav'>
                     <span id='all' style={{ color: tab.value === "all" ? color.cur : color.pre }} onClick={() => { tab.value = "all" }} >Tất cả</span>
@@ -369,8 +373,7 @@ function Warn(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_WarnInfor"
+      <div className="DAT_WarnInfor"
         style={{
           height: warnState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",
@@ -380,7 +383,6 @@ function Warn(props) {
           switch (warnState.value) {
             case "setting":
               return <SettingWarn />;
-
             default:
               return <></>;
           }
