@@ -241,7 +241,7 @@ function Project(props) {
     { id: "online", name: "Trực tuyến" },
     { id: "offline", name: "Ngoại tuyến" },
     { id: "warn", name: "Cảnh báo" },
-    { id: "demo", name: "Chạy thử" },
+    // { id: "demo", name: "Chạy thử" },
   ];
 
   // const color = { cur: "#6495ed", pre: "gray" };
@@ -428,15 +428,15 @@ function Project(props) {
       sortable: true,
       // width: "140px",
     },
-    {
-      name: "Tag",
-      selector: (row) => (
-        <div className="DAT_TableEdit">
-          <MdEditDocument color="gray" size={20} />
-        </div>
-      ),
-      width: "100px",
-    },
+    // {
+    //   name: "Tag",
+    //   selector: (row) => (
+    //     <div className="DAT_TableEdit">
+    //       <MdEditDocument color="gray" size={20} />
+    //     </div>
+    //   ),
+    //   width: "100px",
+    // },
     {
       name: "Cập nhật lần cuối",
       selector: (row) => row.lastupdate,

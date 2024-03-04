@@ -650,7 +650,7 @@ function EditProject(props) {
         projectData.value.power,
         userInfor.value.partnerid,
         userInfor.value.type,
-        projectData.value.img
+        projectData.value.img ? projectData.value.img : "/dat_picture/solar_panel.png"
       );
     }
   };
