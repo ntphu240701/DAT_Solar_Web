@@ -3,8 +3,11 @@ import "./GroupRole.scss";
 import { dataUsers, group, groupEdit, groupID, groupUser, popupState } from "./GroupRole";
 import { IoClose } from "react-icons/io5";
 import { groupDelState } from "./GroupRole";
+import { useIntl } from "react-intl";
 
 export default function ConfirmDeleteGroup() {
+  const dataLang = useIntl();
+
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -18,6 +21,7 @@ export default function ConfirmDeleteGroup() {
   };
 
   const handleDelete = (e) => {
+
     groupDelState.value = false;
     console.log(groupID.value);
     group.value = group.value.filter(
@@ -34,7 +38,7 @@ export default function ConfirmDeleteGroup() {
     <div className="DAT_DeleteGroupPopup_Box">
       <div className="DAT_DeleteGroupPopup_Box_Head">
         <div className="DAT_DeleteGroupPopup_Box_Head_Left">
-          <p>Xóa nhóm người dùng</p>
+          <p>{dataLang.formatMessage({ id: 'delGroupRole' })}</p>
         </div>
         <div className="DAT_DeleteGroupPopup_Box_Head_Right">
           <div
@@ -50,7 +54,7 @@ export default function ConfirmDeleteGroup() {
       </div>
       <div className="DAT_DeleteGroupPopup_Box_Body">
         <p>
-          Nhóm người dùng này sẽ bị xóa vĩnh viễn, bạn có chắc chứ ?
+          {dataLang.formatMessage({ id: 'delgroupmess' })}
         </p>
       </div>
       <div className="DAT_DeleteGroupPopup_Box_Foot">
@@ -62,7 +66,7 @@ export default function ConfirmDeleteGroup() {
           }}
           onClick={() => (groupDelState.value = false)}
         >
-          Hủy
+          {dataLang.formatMessage({ id: 'cancel' })}
         </button>
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
@@ -70,7 +74,7 @@ export default function ConfirmDeleteGroup() {
             handleDelete();
           }}
         >
-          Xác nhận
+          {dataLang.formatMessage({ id: 'confirm' })}
         </button>
       </div>
     </div>

@@ -6,11 +6,13 @@ import { isMobile } from "../Navigation/Navigation";
 import { createruleState, datarule, editRuleState, ruleID } from "./Rule";
 import { ruletitle } from "./CreateRule";
 import { alertDispatch } from "../Alert/Alert";
+import { useIntl } from "react-intl";
 
 
 export const editruledata = signal();
 
 export const CheckBox = (props) => {
+  const dataLang = useIntl()
   const handleShow = (e) => {
     let arr = props.html.split("_");
     console.log(arr[0]);
@@ -123,6 +125,7 @@ export const CheckBox = (props) => {
           },
         };
         break;
+      default: break;
     }
     console.log(editruledata.value);
   };
@@ -158,6 +161,7 @@ export const CheckBox = (props) => {
 
 
 export default function EditRule() {
+  const dataLang = useIntl()
   const [widthCheckBox, setWidwidthCheckBox] = React.useState("");
   const rulenameRef = useRef(editruledata.value.name);
 
@@ -186,6 +190,7 @@ export default function EditRule() {
   };
 
   const handleSave = () => {
+
     if (rulenameRef.current !== "") {
       editruledata.value = {
         ...editruledata.value,
@@ -204,7 +209,7 @@ export default function EditRule() {
     } else {
       alertDispatch("Vui lòng nhập tên phân quyền !");
     }
-    
+
   };
 
   useEffect(() => {
@@ -254,7 +259,7 @@ export default function EditRule() {
                   className="DAT_CreateRule_Body_Item_Option_Check"
                 >
                   <p style={{ color: "grey" }}>
-                    {editruledata.value.setting[item].lang}
+                    {dataLang.formatMessage({ id: editruledata.value.setting[item].lang })}
                   </p>
                   {Object.entries(editruledata.value.setting[item].option).map(
                     ([key, value]) => (

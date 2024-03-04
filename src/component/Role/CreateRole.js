@@ -10,7 +10,6 @@ import { partnerInfor } from "../../App";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 
-
 function CreateRole(props) {
   const datalang = useIntl();
   const username = useRef();
@@ -20,6 +19,7 @@ function CreateRole(props) {
   const name = useRef();
   const phone = useRef();
   const role = useRef();
+  const dataLang = useIntl();
 
   // const validateEmail = (email) => {
   //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -63,12 +63,12 @@ function CreateRole(props) {
   return (
     <form className="DAT_CreateRole" onSubmit={handleSave}>
       <div className="DAT_CreateRole_Header" >
-        <div className="DAT_CreateRole_Header_Left">Thêm người dùng</div>
+        <div className="DAT_CreateRole_Header_Left">{dataLang.formatMessage({ id: 'createAccount' })}</div>
 
         <div className="DAT_CreateRole_Header_Right">
           <button className="DAT_CreateRole_Header_Right_Save" >
             <FaSave size={20} color="white" />
-            <span>Lưu</span>
+            <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </button>
           <div className="DAT_CreateRole_Header_Right_Close">
             <RxCross2
@@ -117,7 +117,7 @@ function CreateRole(props) {
             <div className="DAT_CreateRole_Body_Row2_Left_Content">
               <div className="DAT_CreateRole_Body_Row2_Left_Content_Tit">
                 <span style={{ color: "red" }}>* </span>
-                <span style={{ color: "grey" }}>Tài khoản:</span>
+                <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'account' })}:</span>
               </div>
               <input type="text" ref={username} minLength="6" onChange={(e) => username.current.value = e.target.value.trim().toLocaleLowerCase()} required />
             </div>
@@ -139,7 +139,7 @@ function CreateRole(props) {
             <div className="DAT_CreateRole_Body_Row2_Left_Content">
               <div className="DAT_CreateRole_Body_Row2_Left_Content_Tit">
                 <span style={{ color: "red" }}>* </span>
-                <span style={{ color: "grey" }}>Tên:</span>
+                <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'name' })}:</span>
               </div>
               <input type="text" ref={name} required minLength="6" />
             </div>
@@ -149,7 +149,7 @@ function CreateRole(props) {
             <div className="DAT_CreateRole_Body_Row2_Right_Content">
               <div className="DAT_CreateRole_Body_Row2_Right_Content_Tit">
                 <span style={{ color: "red" }}>* </span>
-                <span style={{ color: "grey" }}>Số điện thoại:</span>
+                <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'phone' })}:</span>
               </div>
               <input type="number" ref={phone} required minLength="10" />
             </div>
@@ -161,7 +161,7 @@ function CreateRole(props) {
             <div className="DAT_CreateRole_Body_Row2_Left_Content">
               <div className="DAT_CreateRole_Body_Row2_Left_Content_Tit">
                 <span style={{ color: "red" }}>* </span>
-                <span style={{ color: "grey" }}>Mật khẩu:</span>
+                <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'password' })}:</span>
               </div>
               <input type="password" ref={pwd} required minLength="6" />
             </div>
@@ -171,7 +171,7 @@ function CreateRole(props) {
             <div className="DAT_CreateRole_Body_Row2_Right_Content">
               <div className="DAT_CreateRole_Body_Row2_Right_Content_Tit">
                 <span style={{ color: "red" }}>* </span>
-                <span style={{ color: "grey" }}>Xác nhận mật khẩu:</span>
+                <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'auth_pwd' })}:</span>
               </div>
               <input type="password" ref={authpwd} required minLength="6" />
             </div>
@@ -183,7 +183,7 @@ function CreateRole(props) {
             <div className="DAT_CreateRole_Body_Row2_Left_Content">
               <div className="DAT_CreateRole_Body_Row2_Left_Content_Tit">
                 <span style={{ color: "red" }}>* </span>
-                <span style={{ color: "grey" }}>Phân quyền:</span>
+                <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'rule' })}:</span>
               </div>
               <select ref={role}>
                 <option value="user" >User</option>

@@ -9,6 +9,7 @@ import { list } from "./Report";
 import { Checkbox } from "@mui/material";
 import { useSelector } from "react-redux";
 import moment from "moment-timezone";
+import { useIntl } from "react-intl";
 
 const newdata = signal({
   id: 1,
@@ -135,6 +136,7 @@ export default function Create() {
   const usr = useSelector((state) => state.admin.usr);
 
   const TypeReport = (props) => {
+    const dataLang = useIntl()
     const handerChangeReportName = (e) => {
       reportnameRef.current = e.target.value;
       //document.getElementById("reportname").value = e.target.value
@@ -149,12 +151,10 @@ export default function Create() {
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
-                      Daily Data Report
+                      {dataLang.formatMessage({ id: 'dailyReport' })}
                     </label>
                     <p style={{ color: "grey", margin: "0" }}>
-                      View the data of the selected plants in the selected daily
-                      range, including plant power generation, subsystem power
-                      generation, inverter power generation under plant, etc.
+                      {dataLang.formatMessage({ id: 'dailyReportDesc' })}
                     </p>
                   </>
                 );
@@ -162,13 +162,10 @@ export default function Create() {
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
-                      Monthly Data Report
+                      {dataLang.formatMessage({ id: 'monthlyReport' })}
                     </label>
                     <p style={{ color: "grey", margin: "0" }}>
-                      View the data of the selected plants in the selected
-                      monthly range, including plant power generation, subsystem
-                      power generation, inverter power generation under plant,
-                      etc.
+                      {dataLang.formatMessage({ id: 'monthlyReportDesc' })}
                     </p>
                   </>
                 );
@@ -176,13 +173,10 @@ export default function Create() {
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
-                      Yearly Data Report
+                      {dataLang.formatMessage({ id: 'yearlyReport' })}
                     </label>
                     <p style={{ color: "grey", margin: "0" }}>
-                      View the data of the selected plants in the selected
-                      Yearly range, including plant power generation, subsystem
-                      power generation, inverter power generation under plant,
-                      etc.
+                      {dataLang.formatMessage({ id: 'yearlyReportDesc' })}
                     </p>
                   </>
                 );
@@ -190,13 +184,10 @@ export default function Create() {
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
-                      Yearly Data Report
+                      {dataLang.formatMessage({ id: 'totalReport' })}
                     </label>
                     <p style={{ color: "grey", margin: "0" }}>
-                      View the data of the selected plants in the selected
-                      Yearly range, including plant power generation, subsystem
-                      power generation, inverter power generation under plant,
-                      etc.
+                      {dataLang.formatMessage({ id: 'yearlyReportDesc' })}
                     </p>
                   </>
                 );
@@ -204,12 +195,10 @@ export default function Create() {
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
-                      Daily Data Report
+                      {dataLang.formatMessage({ id: 'dailyReport' })}
                     </label>
                     <p style={{ color: "grey", margin: "0" }}>
-                      View the data of the selected plants in the selected daily
-                      range, including plant power generation, subsystem power
-                      generation, inverter power generation under plant, etc.
+                      {dataLang.formatMessage({ id: 'dailyReportDesc' })}
                     </p>
                   </>
                 );
@@ -217,10 +206,10 @@ export default function Create() {
           })()}
 
           <div className="DAT_Create_Body_Item_Data_Name">
-            <label>Tên báo cáo: </label>
+            <label>{dataLang.formatMessage({ id: 'reportName' })}: </label>
             <input
               type="text"
-              placeholder="Required Field"
+              placeholder={dataLang.formatMessage({ id: 'required' })}
               required
               //ref={reportnameRef}
               id="reportname"
@@ -269,6 +258,7 @@ export default function Create() {
     setReportType(e.currentTarget.value);
   };
 
+  const dataLang = useIntl()
   useEffect(() => {
     if (isMobile.value) {
       setWidwidthCheckBox("50%");
@@ -283,7 +273,7 @@ export default function Create() {
       <div className="DAT_Create">
         <div className="DAT_Create_Header">
           <div className="DAT_Create_Header_Left">
-            <p style={{ fontSize: "20px" }}>Tạo mẫu báo cáo</p>
+            <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'createReport' })}</p>
           </div>
           <div className="DAT_Create_Header_Right">
             <div
@@ -291,7 +281,7 @@ export default function Create() {
               onClick={() => handleCreate()}
             >
               <FaSave size={20} color="white" />
-              <span>Lưu</span>
+              <span>{dataLang.formatMessage({ id: 'save' })}</span>
             </div>
             <div className="DAT_Create_Header_Right_Close">
               <RxCross2
@@ -306,7 +296,7 @@ export default function Create() {
         <div className="DAT_Create_Body">
           <div className="DAT_Create_Body_Item">
             <div className="DAT_Create_Body_Item_Type">
-              <h4>Loại báo cáo</h4>
+              <h4>{dataLang.formatMessage({ id: 'reportType' })}</h4>
               <select
                 className="form-select form-select-sm mt-3"
                 defaultValue={"Daily Data Report"}
@@ -315,16 +305,16 @@ export default function Create() {
                 }}
               >
                 <option value={"Daily Data Report"}>
-                  Báo cáo dữ liệu hàng ngày
+                  {dataLang.formatMessage({ id: 'dailyReport' })}
                 </option>
                 <option value={"Monthly Data Report"}>
-                  Báo cáo dữ liệu hàng tháng
+                  {dataLang.formatMessage({ id: 'monthlyReport' })}
                 </option>
                 <option value={"Yearly Data Report"}>
-                  Báo cáo dữ liệu hàng năm
+                  {dataLang.formatMessage({ id: 'yearlyReport' })}
                 </option>
                 <option value={"Total Data Report"}>
-                  Báo cáo dữ liệu tổng
+                  {dataLang.formatMessage({ id: 'totalReport' })}
                 </option>
               </select>
             </div>
@@ -334,9 +324,9 @@ export default function Create() {
 
           <div className="DAT_Create_Body_Item">
             <div className="DAT_Create_Body_Item_Option">
-              <label style={{ margin: "0" }}>Tùy chọn thông tin</label>
+              <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: 'customOpt' })}</label>
               <div className="DAT_Create_Body_Item_Option_Check">
-                <p style={{ color: "grey" }}>Thông tin dự án</p>
+                <p style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'projectInfo' })}</p>
                 {Object.entries(newdata.value.inf).map(([key, value]) => (
                   <CheckBox
                     key={key}
@@ -428,9 +418,9 @@ export default function Create() {
           </div>
           <div className="DAT_Create_Body_Item">
             <div className="DAT_Create_Body_Item_Option">
-              <label style={{ margin: "0" }}>Tùy chọn dữ liệu</label>
+              <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: 'dataPref' })}</label>
               <div className="DAT_Create_Body_Item_Option_Check">
-                <p style={{ color: "grey" }}>Dữ liệu dự án</p>
+                <p style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'projData' })}</p>
                 {Object.entries(newdata.value.customdata).map(
                   ([key, value]) => (
                     <CheckBox

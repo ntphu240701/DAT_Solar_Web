@@ -10,12 +10,16 @@ import { RiSettingsLine } from "react-icons/ri";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { VscDashboard } from "react-icons/vsc";
 import { userInfor } from "../../App";
+import { useIntl } from "react-intl";
 export const sidenar = signal(true);
 
 const tab = signal("Dashboard");
 const tabli = signal("none");
 
 function Sidenar(props) {
+  //Datalang
+  const dataLang = useIntl();
+
   useEffect(function () {
     isMobile.value ? (sidenar.value = false) : (sidenar.value = true);
   }, []);
@@ -31,36 +35,36 @@ function Sidenar(props) {
       icon: <SiDatabricks />,
       link: "none",
       li: [
-        { link: "/Project", name: "Dự án" },
-        { link: "/Device", name: "Thiết bị" },
-        { link: "/Warn", name: "Cảnh báo" },
+        { link: "/Project", name: dataLang.formatMessage({ id: 'project' }) },
+        { link: "/Device", name: dataLang.formatMessage({ id: 'device' }) },
+        { link: "/Warn", name: dataLang.formatMessage({ id: 'warn' }) },
       ],
     },
     Analytics: {
       icon: <TbReportAnalytics />,
       link: "none",
       li: [
-        { link: "/Report", name: "Báo cáo" },
-        { link: "/Analytics", name: "Phân tích" },
+        { link: "/Report", name: dataLang.formatMessage({ id: 'report' }) },
+        { link: "/Analytics", name: dataLang.formatMessage({ id: 'analytic' }) },
         ,
-        { link: "/Log", name: "Nhật ký" },
+        { link: "/Log", name: dataLang.formatMessage({ id: 'log' }) },
       ],
     },
     Setting: {
       icon: <RiSettingsLine />,
       link: "none",
-      li:userInfor.value.type === "user"  ? [
-        { link: "/GroupRole", name: "Nhóm người dùng" },
-        { link: "/User", name: "Tài khoản" },
-        { link: "/Contact", name: "Liên hệ" },
+      li: userInfor.value.type === "user" ? [
+        { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+        { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
+        { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
       ] : [
-        { link: "/Role", name: "Người dùng" },
-        { link: "/GroupRole", name: "Nhóm người dùng" },
-        { link: "/User", name: "Tài khoản" },
-        { link: "/Contact", name: "Liên hệ" },
-        { link: "/Rule", name: "Phân quyền"},
-       
-        
+        { link: "/Role", name: dataLang.formatMessage({ id: 'role' }) },
+        { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+        { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
+        { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
+        { link: "/Rule", name: dataLang.formatMessage({ id: 'rule' }) },
+
+
       ],
     },
   };
@@ -183,14 +187,14 @@ function Sidenar(props) {
         style={sidenar.value ? { width: "200px" } : { width: "0px" }}
       >
         <div style={sidenar.value ? { display: "block" } : { display: "none" }}>
-          {Menu("Dashboard", "Bảng điểu khiển")}
+          {Menu("Dashboard", dataLang.formatMessage({ id: 'dashboard' }))}
 
-          {Menu("Monitor", "Giám sát")}
+          {Menu("Monitor", dataLang.formatMessage({ id: 'monitor' }))}
           {tab.value === "Monitor" ? <>{MenuLi("Monitor")}</> : <></>}
-          {Menu("Analytics", "Vận hành & bảo trì")}
+          {Menu("Analytics", dataLang.formatMessage({ id: 'analytics' }))}
           {tab.value === "Analytics" ? <>{MenuLi("Analytics")}</> : <></>}
           {/* {Menu("Notif", "Thông báo")} */}
-          {Menu("Setting", "Quản lý")}
+          {Menu("Setting", dataLang.formatMessage({ id: 'setting' }))}
           {tab.value === "Setting" ? <>{MenuLi("Setting")}</> : <></>}
         </div>
       </div>
@@ -202,7 +206,7 @@ function Sidenar(props) {
           className="DAT_User-group"
           style={sidenar.value ? { display: "block" } : { display: "none" }}
         >
-          <div className="DAT_User-group-Tit">Đăng nhập bởi:</div>
+          <div className="DAT_User-group-Tit">{dataLang.formatMessage({ id: 'loginWith' })}</div>
           <div className="DAT_User-group-ID">{userInfor.value.name}</div>
         </div>
       </div>

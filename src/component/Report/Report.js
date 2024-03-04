@@ -8,6 +8,7 @@ import Create from "./Create";
 import ReportEdit from "./ReportEdit";
 import Popup from "./Popup";
 import { useSelector } from "react-redux";
+import { useIntl } from "react-intl";
 
 export const createState = signal(false);
 export const editState = signal(false);
@@ -15,6 +16,7 @@ export const popupStateReport = signal(false);
 export const editData = signal({});
 export const idReport = signal(0);
 export const lastID = signal(2);
+
 
 export const ReportData = signal([
   {
@@ -86,7 +88,7 @@ export const ReportData = signal([
         2: { id: "report_16", status: true },
         3: { id: "report_17", status: false },
         4: { id: "report_18", status: false },
-       
+
       },
     },
     customdata: {
@@ -103,6 +105,8 @@ export const ReportData = signal([
 ]);
 
 function Report(props) {
+  //DataLang
+  const dataLang = useIntl();
 
   //DAT_MASTER
   const usr = useSelector((state) => state.admin.usr);
@@ -125,13 +129,13 @@ function Report(props) {
       <div className="DAT_ReportHeader">
         <div className="DAT_ReportHeader_Title">
           <HiOutlineDocumentReport color="gray" size={25} />{" "}
-          <span>Báo cáo</span>
+          <span>{dataLang.formatMessage({ id: 'report' })}</span>
         </div>
         <button
           className="DAT_ReportHeader_New"
           onClick={() => (createState.value = true)}
         >
-          Tạo mẫu báo cáo
+          {dataLang.formatMessage({ id: 'createReport' })}
         </button>
       </div>
       <div className="DAT_Report">
@@ -141,13 +145,13 @@ function Report(props) {
               <div className="DAT_Report_List_Form" key={i}>
                 <div className="DAT_Report_List_Form_Title">{item.name}</div>
                 <div className="DAT_Report_List_Form_Type">
-                  Loại: {item.type}
+                  {dataLang.formatMessage({ id: 'type' })}: {item.type}
                 </div>
                 <div className="DAT_Report_List_Form_Create">
-                  Tạo bởi: {item.create}
+                  {dataLang.formatMessage({ id: 'createBy' })}: {item.create}
                 </div>
                 <div className="DAT_Report_List_Form_Date">
-                  Ngày tạo: {item.date}
+                  {dataLang.formatMessage({ id: 'createDate' })}: {item.date}
                 </div>
                 <div className="DAT_Report_List_Form_Custom">
                   <div

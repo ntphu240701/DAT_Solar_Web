@@ -176,7 +176,7 @@ export default function Popup() {
     <div className="DAT_PopupUser_Box">
       <div className="DAT_PopupUser_Box_Head">
         <div className="DAT_PopupUser_Box_Head_Left">
-          <p>Chỉnh sửa</p>
+          <p>{dataLang.formatMessage({ id: 'edit' })}</p>
         </div>
         <div className="DAT_PopupUser_Box_Head_Right">
           <div
@@ -206,14 +206,14 @@ export default function Popup() {
                     onChange={(e) => handleChooseAvatar(e)}
                   ></input>
                   <label htmlFor="file" style={{ cursor: "pointer" }}>
-                    Chọn ảnh đại diện
+                    {dataLang.formatMessage({ id: 'chooseImg' })}
                   </label>
                 </div>
               );
             case "password":
               return (
                 <div className="DAT_PopupUser_Box_Body_Info">
-                  <label>Mật khẩu hiện tại: </label>
+                  <label>{dataLang.formatMessage({ id: 'curr_pwd' })} </label>
                   <div className="DAT_PopupUser_Box_Body_Info_Input">
                     <div className="DAT_PopupUser_Box_Body_Info_Input_Pack">
                       <input
@@ -230,7 +230,7 @@ export default function Popup() {
                       </label>
                     </div>
                   </div>
-                  <label>Mật khẩu mới: </label>
+                  <label>{dataLang.formatMessage({ id: 'new_pwd' })} </label>
                   <div className="DAT_PopupUser_Box_Body_Info_Input">
                     <div className="DAT_PopupUser_Box_Body_Info_Input_Pack">
                       <input
@@ -253,7 +253,7 @@ export default function Popup() {
                       </label>
                     </div>
                   </div>
-                  <label>Xác nhận mật khẩu mới: </label>
+                  <label>{dataLang.formatMessage({ id: 'auth_pwd' })}: </label>
                   <div className="DAT_PopupUser_Box_Body_Info_Input">
                     <div className="DAT_PopupUser_Box_Body_Info_Input_Pack">
                       <input
@@ -275,19 +275,19 @@ export default function Popup() {
             case "name":
               return (
                 <div className="DAT_PopupUser_Box_Body_Info">
-                  <input type="text" placeholder="Tên" defaultValue={userInfor.value.name} ref={renameRef}></input>
+                  <input type="text" placeholder={dataLang.formatMessage({ id: 'name' })} defaultValue={userInfor.value.name} ref={renameRef}></input>
                 </div>
               );
             case "phone":
               return (
                 <div className="DAT_PopupUser_Box_Body_Info">
-                  <input type="number" placeholder="Điện thoại" defaultValue={userInfor.value.phone} ref={phoneRef}></input>
+                  <input type="number" placeholder={dataLang.formatMessage({ id: 'phone' })} defaultValue={userInfor.value.phone} ref={phoneRef}></input>
                 </div>
               );
             case "addr":
               return (
                 <div className="DAT_PopupUser_Box_Body_Info">
-                  <input type="text" placeholder="Địa chỉ" defaultValue={userInfor.value.addr} ref={addrRef}></input>
+                  <input type="text" placeholder={dataLang.formatMessage({ id: 'address' })} defaultValue={userInfor.value.addr} ref={addrRef}></input>
                 </div>
               );
           }
@@ -304,13 +304,13 @@ export default function Popup() {
             popupStateUser.value = false;
           }}
         >
-          Hủy
+          {dataLang.formatMessage({ id: 'cancel' })}
         </button>
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={() => handleSave()}
         >
-          Xác nhận
+          {dataLang.formatMessage({ id: 'save' })}
         </button>
       </div>
     </div>

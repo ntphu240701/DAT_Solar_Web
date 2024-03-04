@@ -58,7 +58,7 @@ export default function RaiseBox(props) {
         </div>
       </div>
       <div className="DAT_PopupReport_Box_Body">
-        <p>Bạn có chắc chắn muốn xóa cảnh báo này?</p>
+        <p>Bạn có chắc chắn muốn xóa cảnh báo này ?</p>
       </div>
       <div className="DAT_PopupReport_Box_Foot">
         <button

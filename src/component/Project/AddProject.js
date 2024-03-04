@@ -6,8 +6,6 @@ import { isMobile } from "../Navigation/Navigation";
 import { signal } from "@preact/signals-react";
 import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
-import { setKey, geocode, RequestType } from "react-geocode";
-
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
@@ -54,33 +52,6 @@ const BasicInfo = (props) => {
     zoom: 7.0,
   };
 
-  const handleMap = (e) => {
-    const addr = document.getElementById("addr")
-    console.log(addr.value)
-    setKey(process.env.REACT_APP_GGKEY);
-    geocode(RequestType.ADDRESS, addr.value)
-      .then((response) => {
-        console.log(response.results[0].geometry.location);
-
-        var long_ = document.getElementById("long")
-        var lat_ = document.getElementById("lat")
-        lat_.value = response.results[0].geometry.location.lat
-        long_.value = response.results[0].geometry.location.lng
-        plantData.value = {
-          ...plantData.value,
-          lat: response.results[0].geometry.location.lat,
-          long: response.results[0].geometry.location.lng,
-        }
-
-
-      })
-      .catch((error) => {
-        alertDispatch(dataLang.formatMessage({ id: "alert_19" }))
-
-      });
-  }
-
-
   // const name = useRef();
   // const address = useRef();
   // const long = useRef();
@@ -88,8 +59,6 @@ const BasicInfo = (props) => {
   const handleBasic = (e) => {
     plantData.value[e.currentTarget.id] = e.currentTarget.value;
   };
-
-
 
   return (
     <div className="DAT_AddProject_BasicInfo">
@@ -123,7 +92,7 @@ const BasicInfo = (props) => {
               <div className="DAT_AddProject_BasicInfo_Body_Left_Item">
                 <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Tên dự án:</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'projname' })}</span>
                 </div>
                 <input
                   id="plantname"
@@ -136,7 +105,7 @@ const BasicInfo = (props) => {
               <div className="DAT_AddProject_BasicInfo_Body_Left_Item">
                 <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Địa chỉ:</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'address' })}:</span>
                 </div>
                 <input
                   id="addr"
@@ -149,32 +118,30 @@ const BasicInfo = (props) => {
               <div className="DAT_AddProject_BasicInfo_Body_Left_Item">
                 <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Tọa độ:</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'coord' })}</span>
                 </div>
                 <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Posi">
                   <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Posi_Content">
                     <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Posi_Content_Tit">
-                      Kinh độ
+                      {dataLang.formatMessage({ id: 'longitude' })}
                     </div>
                     <input
                       id="long"
                       type="text"
                       // ref={long}
                       onChange={(e) => handleBasic(e)}
-                      onClick={(e) => handleMap(e)}
                       required
                     />
                   </div>
                   <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Posi_Content">
                     <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Posi_Content_Tit">
-                      Vĩ độ
+                      {dataLang.formatMessage({ id: 'latitude' })}
                     </div>
                     <input
                       id="lat"
                       type="text"
                       // ref={lat}
                       onChange={(e) => handleBasic(e)}
-                      onClick={(e) => handleMap(e)}
                       required
                     />
                   </div>
@@ -186,7 +153,7 @@ const BasicInfo = (props) => {
               <div className="DAT_AddProject_BasicInfo_Body_Right_Item">
                 <div className="DAT_AddProject_BasicInfo_Body_Right_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Vị trí:</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'location' })}</span>
                 </div>
                 <div className="DAT_AddProject_BasicInfo_Body_Right_Item_Content">
                   <GoogleMap
@@ -208,6 +175,7 @@ const BasicInfo = (props) => {
 };
 
 const SystemInfo = (props) => {
+  const dataLang = useIntl();
   const [state, setState] = useState(true);
 
   const handleSystem = (e) => {
@@ -256,32 +224,32 @@ const SystemInfo = (props) => {
               <div className="DAT_AddProject_SystemInfo_Body_Left_Item">
                 <div className="DAT_AddProject_SystemInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Loại dự án:</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'projType' })}</span>
                 </div>
                 <select
                   id="planttype"
                   defaultValue={plantData.value["planttype"]}
                   onChange={(e) => handleSystem(e)}
                 >
-                  <option value="residential">Hộ dân</option>
-                  <option value="industrial">Nhà máy</option>
+                  <option value="residential">{dataLang.formatMessage({ id: 'household' })}</option>
+                  <option value="industrial">{dataLang.formatMessage({ id: 'factory' })}</option>
                 </select>
               </div>
 
               <div className="DAT_AddProject_SystemInfo_Body_Left_Item">
                 <div className="DAT_AddProject_SystemInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Loại hệ thống điện:</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'electricType' })}</span>
                 </div>
                 <select
                   id="plantmode"
                   defaultValue={plantData.value["plantmode"]}
                   onChange={(e) => handleSystem(e)}
                 >
-                  <option value="grid">Hệ thống hòa lưới</option>
-                  <option value="consumption">Hệ thống hòa lưới bám tải</option>
-                  <option value="hybrid">Hệ thống lưu trữ hybrid</option>
-                  <option value="ESS">Hệ thống lưu trữ năng lượng ESS</option>
+                  <option value="grid">{dataLang.formatMessage({ id: 'gridType' })}</option>
+                  <option value="consumption">{dataLang.formatMessage({ id: 'consumptionType' })}</option>
+                  <option value="hybrid">{dataLang.formatMessage({ id: 'hybridType' })}</option>
+                  <option value="ESS">{dataLang.formatMessage({ id: 'ESS' })}</option>
                   {/* <option value="pump">Hệ thống solar pump</option> */}
                 </select>
               </div>
@@ -291,7 +259,7 @@ const SystemInfo = (props) => {
               <div className="DAT_AddProject_SystemInfo_Body_Center_Item">
                 <div className="DAT_AddProject_SystemInfo_Body_Center_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Dung lượng(kWp):</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'capacity' })} (kWp):</span>
                 </div>
                 <input
                   id="capacity"
@@ -304,7 +272,7 @@ const SystemInfo = (props) => {
               <div className="DAT_AddProject_SystemInfo_Body_Center_Item">
                 <div className="DAT_AddProject_SystemInfo_Body_Center_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Dữ liệu trên lưới:</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'gridData' })}:</span>
                 </div>
                 <input
                   id="griddate"
@@ -319,7 +287,7 @@ const SystemInfo = (props) => {
               <div className="DAT_AddProject_SystemInfo_Body_Right_Item">
                 <div className="DAT_AddProject_SystemInfo_Body_Right_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Góc nghiêng:</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'tiltAngle' })}:</span>
                 </div>
                 <input
                   id="angle"
@@ -339,6 +307,7 @@ const SystemInfo = (props) => {
 };
 
 const YieldInfo = (props) => {
+  const dataLang = useIntl()
   const [state, setState] = useState(true);
 
   const handleYield = (e) => {
@@ -377,7 +346,7 @@ const YieldInfo = (props) => {
               <div className="DAT_AddProject_YieldInfo_Body_Left_Item">
                 <div className="DAT_AddProject_YieldInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Tiền tệ:</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'currency' })}:</span>
                 </div>
                 <select
                   id="currency"
@@ -394,7 +363,7 @@ const YieldInfo = (props) => {
               <div className="DAT_AddProject_YieldInfo_Body_Center_Item">
                 <div className="DAT_AddProject_YieldInfo_Body_Center_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Đơn giá(VND/kWh):</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'unitPrice' })} (VND/kWh):</span>
                 </div>
                 <input
                   id="price"
@@ -415,6 +384,7 @@ const YieldInfo = (props) => {
 };
 
 const OwnerInfo = (props) => {
+  const dataLang = useIntl()
   const [state, setState] = useState(true);
 
   const handleOwner = (e) => {
@@ -453,7 +423,7 @@ const OwnerInfo = (props) => {
               <div className="DAT_AddProject_OwnerInfo_Body_Left_Item">
                 <div className="DAT_AddProject_OwnerInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Người liên hệ:</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'contactName' })}:</span>
                 </div>
                 <input
                   id="contact"
@@ -467,7 +437,7 @@ const OwnerInfo = (props) => {
               <div className="DAT_AddProject_OwnerInfo_Body_Center_Item">
                 <div className="DAT_AddProject_OwnerInfo_Body_Center_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Số điện thoại:</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'phone' })}:</span>
                 </div>
                 <input
                   id="phone"
@@ -481,7 +451,7 @@ const OwnerInfo = (props) => {
               <div className="DAT_AddProject_OwnerInfo_Body_Right_Item">
                 <div className="DAT_AddProject_OwnerInfo_Body_Right_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>Tên doanh nghiệp:</span>
+                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'companyName' })}:</span>
                 </div>
                 <input
                   id="business"
@@ -500,6 +470,7 @@ const OwnerInfo = (props) => {
 };
 
 const ImgInfo = (props) => {
+  const dataLang = useIntl()
   const [state, setState] = useState(true);
   const [ava, setAva] = React.useState();
   const handleChooseAvatar = (e) => {
@@ -545,7 +516,7 @@ const ImgInfo = (props) => {
                 onChange={(e) => handleChooseAvatar(e)}
               />
               <label htmlFor="file" style={{ cursor: "pointer" }}>
-                Chọn ảnh
+                {dataLang.formatMessage({ id: 'chooseImg' })}
               </label>
             </div>
           </div>
@@ -558,6 +529,7 @@ const ImgInfo = (props) => {
 }
 
 function AddProject(props) {
+  const dataLang = useIntl();
   const handleSaveBasic = () => {
     var check = 0;
     Object.entries(plantData.value).map(([key, value]) => {
@@ -668,7 +640,9 @@ function AddProject(props) {
   return (
     <div className="DAT_AddProject">
       <div className="DAT_AddProject_Header">
-        <div className="DAT_AddProject_Header_Left">Thêm dự án</div>
+        <div className="DAT_AddProject_Header_Left">
+          {dataLang.formatMessage({ id: 'addProj' })}
+        </div>
 
         <div className="DAT_AddProject_Header_Right">
           <div
@@ -676,7 +650,7 @@ function AddProject(props) {
             onClick={() => handleSaveBasic()}
           >
             <FaSave size={20} color="white" />
-            <span>Lưu</span>
+            <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
           <div className="DAT_AddProject_Header_Right_Close">
             <RxCross2
@@ -689,29 +663,29 @@ function AddProject(props) {
       </div>
 
       <BasicInfo
-        tit={"Thông tin cơ bản"}
+        tit={dataLang.formatMessage({ id: 'basicInfo' })}
         height={isMobile.value ? "700px" : "300px"}
       />
 
       <SystemInfo
-        tit={"Thông tin hệ thống"}
+        tit={dataLang.formatMessage({ id: 'systemInfo' })}
         height={isMobile.value ? "530px" : "190px"}
       />
 
       <YieldInfo
-        tit={"Thông tin sản lượng"}
+        tit={dataLang.formatMessage({ id: 'yieldInfo' })}
         height={isMobile.value ? "220px" : "100px"}
       />
 
       <OwnerInfo
-        tit={"Thông tin người sở hữu"}
+        tit={dataLang.formatMessage({ id: 'ownerInfo' })}
         height={isMobile.value ? "320px" : "100px"}
       />
 
-      {/* <ImgInfo
-        tit={"Ảnh đại diện"}
+      <ImgInfo
+        tit={dataLang.formatMessage({ id: 'imgInfo' })}
         height={isMobile.value ? "320px" : "260px"}
-      /> */}
+      />
     </div>
   );
 }

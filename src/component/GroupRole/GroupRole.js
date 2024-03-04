@@ -18,6 +18,7 @@ import { Empty } from "../Project/Project";
 import { IoMdPersonAdd } from "react-icons/io";
 import { data } from "jquery";
 import { IoMdMore } from "react-icons/io";
+import { useIntl } from "react-intl";
 
 //DATA TEMP
 export const group = signal([
@@ -125,22 +126,23 @@ const dataGroup = signal([]);
 const dataGroupUser = signal([]);
 
 const GroupUsers = () => {
+  const dataLang = useIntl();
   const paginationComponentOptions = {
-    rowsPerPageText: "Số hàng",
-    rangeSeparatorText: "đến",
+    rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
+    rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
     selectAllRowsItem: true,
-    selectAllRowsItemText: "tất cả",
+    selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
 
   const columnGroupRole = [
     {
-      name: "STT",
+      name: dataLang.formatMessage({ id: 'ordinalNumber' }),
       selector: (row, index) => index + 1,
       sortable: true,
       width: "80px",
     },
     {
-      name: "Tài khoản",
+      name: dataLang.formatMessage({ id: 'account' }),
       selector: (user) => user.username,
       sortable: true,
       width: "200px",
@@ -149,7 +151,7 @@ const GroupUsers = () => {
       },
     },
     {
-      name: "Tên",
+      name: dataLang.formatMessage({ id: 'name' }),
       selector: (user) => user.name,
       sortable: true,
       width: "200px",
@@ -167,7 +169,7 @@ const GroupUsers = () => {
       },
     },
     {
-      name: "Chỉnh sửa",
+      name: dataLang.formatMessage({ id: 'setting' }),
       selector: (user) => (
         <div
           className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Delete"
@@ -221,7 +223,7 @@ const GroupUsers = () => {
     <div className="DAT_GR_Content_DevideTable">
       <div className="DAT_GR_Content_DevideTable_Left">
         <div className="DAT_GR_Content_DevideTable_Left_Head">
-          Nhóm người dùng
+          {dataLang.formatMessage({ id: 'grouprole' })}
         </div>
         <div className="DAT_GR_Content_DevideTable_Left_ItemList">
           {dataGroup.value.map((item) => (
@@ -291,7 +293,7 @@ const GroupUsers = () => {
 
       <div className="DAT_GR_Content_DevideTable_Right">
         <div className="DAT_GR_Content_DevideTable_Right_Head">
-          Danh sách người dùng
+          {dataLang.formatMessage({ id: 'roleList' })}
         </div>
         <div className="DAT_GR_Content_DevideTable_Right_ItemList">
           {groupID.value === 0 ? (
@@ -339,6 +341,7 @@ function GroupRole(props) {
     }
   };
 
+  const dataLang = useIntl()
   useEffect(() => {
     dataGroup.value = group.value;
     dataGroupUser.value = groupUser.value;
@@ -350,12 +353,12 @@ function GroupRole(props) {
     <>
       <div className="DAT_GRHeader">
         <div className="DAT_GRHeader_Title">
-          <IoMdAnalytics color="gray" size={25} /> <span>Nhóm người dùng</span>
+          <IoMdAnalytics color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'roleList' })}</span>
         </div>
         <div className="DAT_GRHeader_Filter">
           <input
             type="text"
-            placeholder="Nhập thông tin"
+            placeholder={dataLang.formatMessage({ id: 'enterInfo' })}
             value={filter.value}
             onChange={(e) => handleFilter(e)}
           />
@@ -366,7 +369,7 @@ function GroupRole(props) {
           className="DAT_GRHeader_New"
           onClick={() => (createState.value = true)}
         >
-          Tạo nhóm mới
+          {dataLang.formatMessage({ id: 'createNewGroup' })}
         </button>
       </div>
       <div className="DAT_GR">
@@ -380,7 +383,7 @@ function GroupRole(props) {
               "0 2px 2px 0 rgba(198, 197, 197, 0.3), 0 6px 20px 0 rgba(198, 197, 197, 0.3)",
           }}
         >
-          Danh sách nhóm người dùng
+          {dataLang.formatMessage({ id: 'grouproleList' })}
         </div>
         <div className="DAT_GR_Content">
           <GroupUsers />

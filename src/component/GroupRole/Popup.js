@@ -3,8 +3,11 @@ import "./GroupRole.scss";
 import { dataUsers, groupID, groupUser, popupState } from "./GroupRole";
 import { IoClose } from "react-icons/io5";
 import { userDel } from "./GroupRole";
+import { useIntl } from "react-intl";
 
 export default function Popup() {
+  const dataLang = useIntl();
+
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -33,7 +36,7 @@ export default function Popup() {
     <div className="DAT_Popup_Box">
       <div className="DAT_Popup_Box_Head">
         <div className="DAT_Popup_Box_Head_Left">
-          <p>Xóa người dùng</p>
+          <p>{dataLang.formatMessage({ id: 'delAccount' })}</p>
         </div>
         <div className="DAT_Popup_Box_Head_Right">
           <div
@@ -49,8 +52,7 @@ export default function Popup() {
       </div>
       <div className="DAT_Popup_Box_Body">
         <p>
-          Bạn có muốn xóa người dùng này ra khỏi nhóm không? Các chức
-          năng của dự án sẽ bị vô hiệu hóa đối với tài khoản này.
+          {dataLang.formatMessage({ id: 'delaccountmess' })}
         </p>
       </div>
       <div className="DAT_Popup_Box_Foot">
@@ -62,7 +64,7 @@ export default function Popup() {
           }}
           onClick={() => (popupState.value = false)}
         >
-          Hủy
+          {dataLang.formatMessage({ id: 'cancel' })}
         </button>
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
@@ -70,7 +72,7 @@ export default function Popup() {
             handleDelete();
           }}
         >
-          Xác nhận
+          {dataLang.formatMessage({ id: 'confirm' })}
         </button>
       </div>
     </div>

@@ -5,14 +5,15 @@ import { CiSearch } from 'react-icons/ci';
 import { TbSettingsCode } from 'react-icons/tb';
 import { MdOutlineManageHistory } from "react-icons/md";
 import { Empty } from '../Project/Project';
+import { useIntl } from 'react-intl';
 
 function Log(props) {
-
+    const dataLang = useIntl()
     const paginationComponentOptions = {
-        rowsPerPageText: "Số hàng",
-        rangeSeparatorText: "đến",
+        rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
+        rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
         selectAllRowsItem: true,
-        selectAllRowsItemText: "tất cả",
+        selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
     };
 
     const dataLog = [
@@ -49,52 +50,52 @@ function Log(props) {
     ];
     const columnLog = [
         {
-            name: "Thiết bị",
+            name: dataLang.formatMessage({ id: 'device' }),
             selector: (row) => row.SN,
             sortable: true,
             minWidth: "150px",
             style: {
                 justifyContent: "left",
-              }
+            }
         },
         {
-            name: "Loại",
+            name: dataLang.formatMessage({ id: 'type' }),
             selector: (row) => row.type,
             width: "110px",
         },
         {
-            name: "Cấu hình",
+            name: dataLang.formatMessage({ id: 'config' }),
             selector: (row) => row.config,
             sortable: true,
             minWidth: "110px",
         },
 
         {
-            name: "Tình trạng",
+            name: dataLang.formatMessage({ id: 'status' }),
             selector: (row) => {
                 if (row.state) {
-                    return "Thành công"
+                    return dataLang.formatMessage({ id: 'success' })
                 } else {
-                    return "Thất bại"
+                    return dataLang.formatMessage({ id: 'fail' })
                 }
             },
             sortable: true,
             width: "140px",
         },
         {
-            name: "Người vận hành",
+            name: dataLang.formatMessage({ id: 'operator' }),
             selector: (row) => row.operator,
             sortable: true,
             width: "150px",
         },
         {
-            name: "Thời gian hoạt động",
+            name: dataLang.formatMessage({ id: 'runtime' }),
             selector: (row) => row.runtime,
             sortable: true,
             width: "180px",
         },
         {
-            name: "Thời gian phản hồi",
+            name: dataLang.formatMessage({ id: 'responseTime' }),
             selector: (row) => row.response,
             width: "180px",
         },
@@ -109,10 +110,10 @@ function Log(props) {
         <>
             <div className="DAT_LogHeader">
                 <div className="DAT_LogHeader_Title">
-                    <MdOutlineManageHistory color="gray" size={25} /> <span>Nhật ký</span>
+                    <MdOutlineManageHistory color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'log' })}</span>
                 </div>
                 <div className="DAT_LogHeader_Filter">
-                    <input type="text" placeholder="Nhập tên thiết bị" />
+                    <input type="text" placeholder={dataLang.formatMessage({ id: 'enterDev' })} />
                     <CiSearch color="gray" size={20} />
                 </div>
                 {/* <button className="DAT_LogHeader_New" onClick={handleShowConfig}>
@@ -120,8 +121,8 @@ function Log(props) {
                 </button> */}
             </div>
             <div className='DAT_Log'>
-                <div className='DAT_Log_Header' style={{padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)"}}>
-                        Danh sách nhật ký
+                <div className='DAT_Log_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>
+                    {dataLang.formatMessage({ id: 'logList' })}
                 </div>
 
                 <div className="DAT_Log_Content">

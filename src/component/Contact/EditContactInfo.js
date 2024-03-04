@@ -13,10 +13,10 @@ import { alertDispatch } from "../Alert/Alert";
 
 const Type = signal({
 
-  OnM: { name: "Nhà cung cấp O&M", checked: false },
-  Investor: { name: "Đầu tư", checked: false },
-  Distributor: { name: "Nhà phân phối", checked: false },
-  Manufacturer: { name: "Nhà sản xuất", checked: false },
+  OnM: { name: "onm", checked: false },
+  Investor: { name: "investor", checked: false },
+  Distributor: { name: "distributor", checked: false },
+  Manufacturer: { name: "manufacturer", checked: false },
 
 })
 
@@ -73,7 +73,7 @@ function EditContactInfo(props) {
   return (
     <div className="DAT_EditContactInfo">
       <div className="DAT_EditContactInfo_Header">
-        <div className="DAT_EditContactInfo_Header_Left">Chỉnh sửa</div>
+        <div className="DAT_EditContactInfo_Header_Left">{dataLang.formatMessage({ id: 'edit' })}</div>
         <div className="DAT_EditContactInfo_Header_Right">
           {/* <div className="DAT_EditContactInfo_Header_Right_Save">
             <FaSave size={20} color="white" />
@@ -96,43 +96,48 @@ function EditContactInfo(props) {
 
               <div className="DAT_EditContactInfo_Body_Row2_Item">
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
-                  Mô hình kinh doanh
+                  {dataLang.formatMessage({ id: 'businessModel' })}
                 </div>
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
                   <input type="text" id="businessmodel_input" defaultValue={partnerInfor.value.businessmodel} />
-                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id='businessmodel' onClick={(e) => handeUpdate(e)} >Lưu</span>
+                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id='businessmodel' onClick={(e) => handeUpdate(e)} >
+                    {dataLang.formatMessage({ id: 'save' })}
+                  </span>
                 </div>
               </div>
 
               <div className="DAT_EditContactInfo_Body_Row2_Item">
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
-                  Tên kinh doanh
+                  {dataLang.formatMessage({ id: 'businessname' })}
                 </div>
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
                   <input type="text" id="businessname_input" defaultValue={partnerInfor.value.businessname} />
-                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id="businessname" onClick={(e) => handeUpdate(e)}>Lưu</span>
+                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id="businessname" onClick={(e) => handeUpdate(e)}>
+                    {dataLang.formatMessage({ id: 'save' })}</span>
                 </div>
               </div>
 
               <div className="DAT_EditContactInfo_Body_Row2_Item">
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
-                  Khu vực
+                  {dataLang.formatMessage({ id: 'area' })}
                 </div>
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
                   <input type="text" id="area_input" defaultValue={partnerInfor.value.area} />
-                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id="area" onClick={(e) => handeUpdate(e)}>Lưu</span>
+                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id="area" onClick={(e) => handeUpdate(e)}>
+                    {dataLang.formatMessage({ id: 'save' })}
+                  </span>
                 </div>
               </div>
             </div>
 
             <div className="DAT_EditContactInfo_Body_Row1">
-              <div className="DAT_EditContactInfo_Body_Row1_Tit">Loại</div>
+              <div className="DAT_EditContactInfo_Body_Row1_Tit">{dataLang.formatMessage({ id: 'businesstype' })}</div>
               <div className="DAT_EditContactInfo_Body_Row1_Content">
                 {Object.keys(Type.value).map((key) => {
                   return (
                     <div className="DAT_EditContactInfo_Body_Row1_Content_Item" key={key}>
                       <input type="radio" id={key} checked={Type.value[key].checked} onChange={(e) => handeTypeChange(e)} />
-                      <span>{Type.value[key].name}</span>
+                      <span>{dataLang.formatMessage({ id: Type.value[key].name })}</span>
                     </div>
                   );
                 })}
@@ -144,31 +149,31 @@ function EditContactInfo(props) {
 
               <div className="DAT_EditContactInfo_Body_Row2_Item">
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
-                  Tên
+                  {dataLang.formatMessage({ id: 'name' })}
                 </div>
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
                   <input type="text" id="name_input" defaultValue={partnerInfor.value.name} />
-                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id='name' onClick={(e) => handeUpdate(e)} >Lưu</span>
+                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id='name' onClick={(e) => handeUpdate(e)} >{dataLang.formatMessage({ id: 'save' })}</span>
                 </div>
               </div>
 
               <div className="DAT_EditContactInfo_Body_Row2_Item">
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
-                  Số điện thoại
+                  {dataLang.formatMessage({ id: 'phone' })}
                 </div>
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
                   <input type="number" id="phone_input" defaultValue={partnerInfor.value.phone} />
-                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id="phone" onClick={(e) => handeUpdate(e)}>Lưu</span>
+                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id="phone" onClick={(e) => handeUpdate(e)}>{dataLang.formatMessage({ id: 'save' })}</span>
                 </div>
               </div>
 
               <div className="DAT_EditContactInfo_Body_Row2_Item">
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
-                  Khu vực
+                  {dataLang.formatMessage({ id: 'area' })}
                 </div>
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
                   <input type="mail" id="mail_input" defaultValue={partnerInfor.value.mail} />
-                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id="mail" onClick={(e) => handeUpdate(e)}>Lưu</span>
+                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id="mail" onClick={(e) => handeUpdate(e)}>{dataLang.formatMessage({ id: 'save' })}</span>
                 </div>
               </div>
             </div>

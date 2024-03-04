@@ -5,6 +5,8 @@ import { editState, editData, ReportData } from "./Report";
 import { signal } from "@preact/signals-react";
 // import { CheckBox } from "../Device/Config";
 import { isMobile } from "../Navigation/Navigation";
+import { useIntl } from "react-intl";
+import { Hidden } from "@mui/material";
 
 const reportname = signal();
 
@@ -85,6 +87,7 @@ export const CheckBox = (props) => {
 };
 
 const DataReport = (props) => {
+  const dataLang = useIntl()
   const [nameReport, setNameReport] = useState(editData.value.name);
   useEffect(() => {
     reportname.value = editData.value.name;
@@ -109,17 +112,15 @@ const DataReport = (props) => {
     <div className="DAT_EditReport_Body_Item">
       <div className="DAT_EditReport_Body_Item_Data">
         <label style={{ fontWeight: "700", margin: "0" }}>
-          Daily Data Report
+          {dataLang.formatMessage({ id: 'dailyReport' })}
         </label>
         <p style={{ color: "grey", margin: "0" }}>
-          View the data of the selected plants in the selected daily range,
-          including plant power generation, subsystem power generation, inverter
-          power generation under plant, etc.
+          {dataLang.formatMessage({ id: 'dailyReportDesc' })}
         </p>
         <div className="DAT_EditReport_Body_Item_Data_Name">
-          <label>Tên báo cáo: </label>
+          <label>{dataLang.formatMessage({ id: 'reportName' })}: </label>
           <input
-            placeholder="Required Field"
+            placeholder={dataLang.formatMessage({ id: 'required' })}
             value={nameReport}
             required
             onChange={(e) => handlePushName(e)}
@@ -131,6 +132,8 @@ const DataReport = (props) => {
 };
 
 export default function Create() {
+  const dataLang = useIntl()
+
   const [widthCheckBox, setWidwidthCheckBox] = React.useState("");
 
   const handleSaveData = () => {
@@ -164,7 +167,7 @@ export default function Create() {
       <div className="DAT_EditReport">
         <div className="DAT_EditReport_Header">
           <div className="DAT_EditReport_Header_Left">
-            <p style={{ fontSize: "20px" }}>Chỉnh sửa</p>
+            <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'edit' })}</p>
           </div>
           <div className="DAT_EditReport_Header_Right">
             <div
@@ -172,7 +175,7 @@ export default function Create() {
               onClick={() => handleSaveData()}
             >
               <FaSave size={20} color="white" />
-              <span>Lưu</span>
+              <span>{dataLang.formatMessage({ id: 'save' })}</span>
             </div>
             <div className="DAT_EditReport_Header_Right_Close">
               <RxCross2 size={20} color="white" onClick={handleCloseCreate} />
@@ -197,9 +200,9 @@ export default function Create() {
 
           <div className="DAT_EditReport_Body_Item">
             <div className="DAT_EditReport_Body_Item_Option">
-              <label style={{ margin: "0" }}>Tùy chọn thông tin</label>
+              <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: 'customOpt' })}</label>
               <div className="DAT_EditReport_Body_Item_Option_Check">
-                <p style={{ color: "grey" }}>Thông tin dự án</p>
+                <p style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'projectInfo' })}</p>
                 {Object.entries(editData.value.inf).map(([key, value]) => (
                   <CheckBox
                     key={key}
@@ -294,9 +297,9 @@ export default function Create() {
           </div>
           <div className="DAT_EditReport_Body_Item">
             <div className="DAT_EditReport_Body_Item_Option">
-              <label style={{ margin: "0" }}>Tùy chọn dữ liệu</label>
+              <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: 'dataPref' })}</label>
               <div className="DAT_EditReport_Body_Item_Option_Check">
-                <p style={{ color: "grey" }}>Dữ liệu dự án</p>
+                <p style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'projData' })}</p>
                 {Object.entries(editData.value.customdata).map(
                   ([key, value]) => (
                     <CheckBox

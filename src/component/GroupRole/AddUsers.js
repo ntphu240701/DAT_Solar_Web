@@ -4,6 +4,7 @@ import { IoClose } from "react-icons/io5";
 import { addState, groupID, groupUser } from "./GroupRole";
 import DataTable from "react-data-table-component";
 import { signal } from "@preact/signals-react";
+import { useIntl } from "react-intl";
 
 const infouser = signal([
   {
@@ -77,11 +78,12 @@ export default function AddUsers() {
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
   };
 
+  const dataLang = useIntl();
   const paginationComponentOptions = {
-    rowsPerPageText: "Số hàng",
-    rangeSeparatorText: "đến",
+    rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
+    rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
     selectAllRowsItem: true,
-    selectAllRowsItemText: "tất cả",
+    selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
 
   const handlePopup = (state) => {
@@ -124,13 +126,13 @@ export default function AddUsers() {
             color: "#505050",
           }}
         >
-          Hủy
+          {dataLang.formatMessage({ id: 'cancel' })}
         </button>
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={() => handleAddUser()}
         >
-          Xác nhận
+          {dataLang.formatMessage({ id: 'confirm' })}
         </button>
       </div>
     );
@@ -140,7 +142,7 @@ export default function AddUsers() {
     <div className="DAT_AddUserPopup_Box">
       <div className="DAT_AddUserPopup_Box_Head">
         <div className="DAT_AddUserPopup_Box_Head_Left">
-          <p>Thêm nhân viên</p>
+          <p>{dataLang.formatMessage({ id: 'createUser' })}</p>
         </div>
         <div className="DAT_AddUserPopup_Box_Head_Right">
           <div
@@ -167,7 +169,7 @@ export default function AddUsers() {
               default:
                 return (
                   <>
-                    <span>Tên tài khoản:</span>
+                    <span>{dataLang.formatMessage({ id: 'username' })}:</span>
                     <input
                       type="text"
                       required

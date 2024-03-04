@@ -11,6 +11,7 @@ import EditRole from "./EditRole";
 import { host } from "../Lang/Contant";
 import { callApi } from "../Api/Api";
 import { partnerInfor, userInfor } from "../../App";
+import { useIntl } from "react-intl";
 
 
 export const roleData = signal({});
@@ -21,24 +22,24 @@ const Usr_ = signal([]);
 
 
 function Role(props) {
+  const dataLang = useIntl();
+
   const paginationComponentOptions = {
-    rowsPerPageText: "Số hàng",
-    rangeSeparatorText: "đến",
+    rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
+    rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
     selectAllRowsItem: true,
-    selectAllRowsItemText: "tất cả",
+    selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
-
-
 
   const columnrole = [
     {
-      name: "STT",
+      name: dataLang.formatMessage({ id: 'ordinalNumber' }),
       selector: (row) => row.id,
       sortable: true,
       minWidth: "80px",
     },
     {
-      name: "Tên",
+      name: dataLang.formatMessage({ id: 'name' }),
       selector: (row) => row.name_,
       sortable: true,
       minWidth: "200px",
@@ -47,7 +48,7 @@ function Role(props) {
       }
     },
     {
-      name: "phone",
+      name: dataLang.formatMessage({ id: 'phone' }),
       selector: (row) => row.phone_,
       minWidth: "250px",
       style: {
@@ -63,20 +64,26 @@ function Role(props) {
       }
     },
     {
-      name: "Phân quyền",
+      name: dataLang.formatMessage({ id: 'rule' }),
       selector: (row) => row.rulename_,
       sortable: true,
       width: "160px",
+      style: {
+        justifyContent: "left",
+      }
     },
 
     {
-      name: "Tài khoản",
+      name: dataLang.formatMessage({ id: 'account' }),
       selector: (row) => row.type_,
       sortable: true,
       width: "180px",
+      style: {
+        justifyContent: "left",
+      }
     },
     {
-      name: "Tùy chỉnh",
+      name: dataLang.formatMessage({ id: 'setting' }),
       selector: (row) => (
         <>
 
@@ -104,18 +111,18 @@ function Role(props) {
               id={row.id_}
               onClick={(e) => handleEdit(e)}
             >
-              Chỉnh sửa
+              {dataLang.formatMessage({ id: 'edit' })}
             </div>
             <div
               className="DAT_ModifyBox_Remove"
               onClick={() => (popupState.value = "delete")}
             >
-              Gỡ
+              {dataLang.formatMessage({ id: 'remove' })}
             </div>
           </div>
         </>
       ),
-      width: "100px",
+      width: "103px",
     },
   ];
 
@@ -151,23 +158,25 @@ function Role(props) {
     <>
       <div className="DAT_RoleHeader">
         <div className="DAT_RoleHeader_Title">
-          <FaUsers color="gray" size={25} /> <span>Người dùng</span>
+          <FaUsers color="gray" size={25} /> <span>
+            {dataLang.formatMessage({ id: 'role' })}
+          </span>
         </div>
         <div className="DAT_RoleHeader_Filter">
-          <input type="text" placeholder="Nhập tên tài khoản" />
+          <input type="text" placeholder={dataLang.formatMessage({ id: 'enterName' })} />
           <CiSearch color="gray" size={20} />
         </div>
         <button
           className="DAT_RoleHeader_New"
           onClick={() => (roleState.value = "create")}
         >
-          Tạo tài khoản
+          {dataLang.formatMessage({ id: 'createAccount' })}
         </button>
       </div>
 
       <div className="DAT_Role">
         <div className='DAT_Role_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>
-          Danh sách người dùng
+          {dataLang.formatMessage({ id: 'roleList' })}
         </div>
         <div className="DAT_Role_Content">
 

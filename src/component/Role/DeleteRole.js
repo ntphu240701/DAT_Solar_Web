@@ -2,8 +2,11 @@ import React from "react";
 import "./Role.scss";
 import { popupState, roleState } from "./Role";
 import { IoClose } from "react-icons/io5";
+import { useIntl } from "react-intl";
 
 export default function DeleteRole() {
+  const dataLang = useIntl();
+
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -20,7 +23,7 @@ export default function DeleteRole() {
     <div className="DAT_DeleteRole">
       <div className="DAT_DeleteRole_Head">
         <div className="DAT_DeleteRole_Head_Left">
-          <p>Xóa người dùng</p>
+          <p>{dataLang.formatMessage({ id: 'delAccount' })}</p>
         </div>
         <div className="DAT_DeleteRole_Head_Right">
           <div
@@ -36,8 +39,7 @@ export default function DeleteRole() {
       </div>
       <div className="DAT_DeleteRole_Body">
         <p>
-          Bạn có chắc chắn muốn xóa vĩnh viễn người dùng này không? Tất cả dữ
-          liệu lịch sử của XXX sẽ bị mất.
+          {dataLang.formatMessage({ id: 'delaccountmess' })}
         </p>
       </div>
       <div className="DAT_DeleteRole_Foot">
@@ -49,10 +51,12 @@ export default function DeleteRole() {
           }}
           onClick={() => (popupState.value = "default")}
         >
-          Hủy
+          {dataLang.formatMessage({ id: 'cancel' })}
         </button>
-        <button style={{ backgroundColor: "#048FFF", color: "white" }}>
-          Xác nhận
+        <button
+          style={{ backgroundColor: "#048FFF", color: "white" }}
+        >
+          {dataLang.formatMessage({ id: 'confirm' })}
         </button>
       </div>
     </div>

@@ -18,8 +18,9 @@ import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { set } from "lodash";
 import { userInfor } from "../../App";
+import { useIntl } from "react-intl";
 
-export const tab = signal("logger");
+export const tab = signal("inverter");
 const tabLable = signal("");
 const tabMobile = signal(false);
 
@@ -33,21 +34,22 @@ export const projectList = signal([]);
 export const loggerList = signal([]);
 
 function Device(props) {
+  const datalang = useIntl();
   const user = useSelector(state => state.admin.usr);
 
   const listTab = [
-    { id: "logger", name: "Logger" },
     { id: "inverter", name: "Inverter" },
     // { id: "meter", name: "Meter" },
+    { id: "logger", name: "Logger" },
   ];
 
   const color = { cur: "#6495ed", pre: "gray" };
 
   const paginationComponentOptions = {
-    rowsPerPageText: "Số hàng",
-    rangeSeparatorText: "đến",
+    rowsPerPageText: datalang.formatMessage({ id: 'row' }),
+    rangeSeparatorText: datalang.formatMessage({ id: 'to' }),
     selectAllRowsItem: true,
-    selectAllRowsItemText: "tất cả",
+    selectAllRowsItemText: datalang.formatMessage({ id: 'showAll' }),
   };
 
   const dataInverter = [
@@ -145,7 +147,7 @@ function Device(props) {
 
   const columnDevice = [
     {
-      name: "Tên",
+      name: datalang.formatMessage({ id: 'name' }),
       selector: (row) => (
         <div className="DAT_Table">
           <div
@@ -166,7 +168,7 @@ function Device(props) {
       },
     },
     {
-      name: "Trạng thái",
+      name: datalang.formatMessage({ id: 'status' }),
       selector: (row) => (
         <>
           {row.status ? (
@@ -179,7 +181,7 @@ function Device(props) {
       width: "110px",
     },
     {
-      name: "Dự án",
+      name: datalang.formatMessage({ id: 'project' }),
       selector: (row) => row.plant,
       sortable: true,
       minWidth: "350px",
@@ -189,25 +191,25 @@ function Device(props) {
     },
 
     {
-      name: "Sản lượng phát điện",
+      name: datalang.formatMessage({ id: 'electricGen' }),
       selector: (row) => row.production + " kW",
       sortable: true,
       width: "170px",
     },
     {
-      name: "Sản lượng điện hàng ngày",
+      name: datalang.formatMessage({ id: 'dailyE' }),
       selector: (row) => row.dailyproduction + " kWh",
       sortable: true,
       width: "210px",
     },
     {
-      name: "Cập nhật",
+      name: datalang.formatMessage({ id: 'update' }),
       selector: (row) => row.updated,
       sortable: true,
       width: "180px",
     },
     {
-      name: "Tùy chỉnh",
+      name: datalang.formatMessage({ id: 'setting' }),
       selector: (row) => (
         <>
           <div className="DAT_TableEdit">
@@ -242,7 +244,7 @@ function Device(props) {
 
   const columnRemote = [
     {
-      name: "Tên",
+      name: datalang.formatMessage({ id: 'name' }),
       selector: (row) => (
         <div className="DAT_Table">
           <div
@@ -263,7 +265,7 @@ function Device(props) {
       },
     },
     {
-      name: "Trạng thái",
+      name: datalang.formatMessage({ id: 'status' }),
       selector: (row) => (
         <>
           {row.pstate === 1 ? (
@@ -276,12 +278,12 @@ function Device(props) {
       width: "110px",
     },
     {
-      name: "Dự án",
+      name: datalang.formatMessage({ id: 'project' }),
       selector: (row) => row.pplantname,
       sortable: true,
       minWidth: "350px",
       style: {
-        justifyContent: "left",
+        justifyContent: "center",
       },
     },
     // {
@@ -291,7 +293,7 @@ function Device(props) {
     //   width: "180px",
     // },
     {
-      name: "Tùy chỉnh",
+      name: datalang.formatMessage({ id: 'setting' }),
       selector: (row) => (
         <>
           <div className="DAT_TableEdit">
@@ -311,18 +313,18 @@ function Device(props) {
             <div className="DAT_ModifyBox_Fix"
               onClick={(e) => handleEdit(e)}
             >
-              Chỉnh sửa
+              {datalang.formatMessage({ id: 'edit' })}
             </div>
             <div className="DAT_ModifyBox_Remove"
               id={row.psn + "_" + row.pplantid}
               onClick={(e) => handleRemove(e)}
             >
-              Gỡ
+              {datalang.formatMessage({ id: 'remove' })}
             </div>
           </div>
         </>
       ),
-      width: "100px",
+      width: "103px",
     },
   ];
 
@@ -335,13 +337,10 @@ function Device(props) {
         info.value = dataInverter.find((item) => item.id == idArr[0]);
         break;
       case "logger":
-        info.value = loggerList.value.find((item) => item.pid == idArr[0]);
-        console.log(info.value);
+        info.value = dataLogger.find((item) => item.id == idArr[0]);
         break;
       case "meter":
         info.value = dataMeter.find((item) => item.id == idArr[0]);
-        break;
-      default:
         break;
     }
   };
@@ -402,7 +401,7 @@ function Device(props) {
     // get logger
     const getAllLogger = async (usrname, partnerid, type) => {
       let d = await callApi('post', host.DATA + '/getallLogger', { usr: usrname, partnerid: partnerid, type: type });
-      // console.log(d);
+      console.log(d);
       if (d.status === true) {
         loggerList.value = d.data;
       }
@@ -415,14 +414,14 @@ function Device(props) {
     <>
       <div className="DAT_DeviceHeader">
         <div className="DAT_DeviceHeader_Title">
-          <TbSettingsCode color="gray" size={25} /> <span>Thiết bị</span>
+          <TbSettingsCode color="gray" size={25} /> <span>{datalang.formatMessage({ id: 'device' })}</span>
         </div>
         <div className="DAT_DeviceHeader_Filter">
-          <input type="text" placeholder="Nhập tên thiết bị" />
+          <input type="text" placeholder={datalang.formatMessage({ id: 'enterDev' })} />
           <CiSearch color="gray" size={20} />
         </div>
         <button className="DAT_DeviceHeader_New" onClick={handleShowConfig}>
-          Cấu hình
+          {datalang.formatMessage({ id: 'config' })}
         </button>
       </div>
 

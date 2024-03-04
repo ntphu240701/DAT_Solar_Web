@@ -5,28 +5,30 @@ import { IoMdAnalytics } from "react-icons/io";
 import { Empty } from "../Project/Project";
 import { signal } from "@preact/signals-react";
 import AnaCreate from "./AnaCreate";
+import { useIntl } from "react-intl";
 
 export const anaState = signal("default");
 
 function Analytics(props) {
+  const dataLang = useIntl();
   const paginationComponentOptions = {
-    rowsPerPageText: "Số hàng",
-    rangeSeparatorText: "đến",
+    rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
+    rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
     selectAllRowsItem: true,
-    selectAllRowsItemText: "tất cả",
+    selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
 
   const dataAna = [];
 
   const columnAna = [
     {
-      name: "Tên",
+      name: dataLang.formatMessage({ id: 'name' }),
       selector: (row) => row.name,
       sortable: true,
       minWidth: "350px",
     },
     {
-      name: "Tùy chỉnh",
+      name: dataLang.formatMessage({ id: 'setting' }),
       selector: (row) => (
         <>
           <div className="DAT_TableEdit">
@@ -44,8 +46,12 @@ function Analytics(props) {
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div>
-            <div className="DAT_ModifyBox_Remove">Gỡ</div>
+            <div className="DAT_ModifyBox_Fix">
+              {dataLang.formatMessage({ id: 'edit' })}
+            </div>
+            <div className="DAT_ModifyBox_Remove">
+              {dataLang.formatMessage({ id: 'remove' })}
+            </div>
           </div>
         </>
       ),
@@ -63,31 +69,33 @@ function Analytics(props) {
     <>
       <div className="DAT_AnaHeader">
         <div className="DAT_AnaHeader_Title">
-          <IoMdAnalytics color="gray" size={25} /> <span>Phân tích</span>
+          <IoMdAnalytics color="gray" size={25} /> <span>
+            {dataLang.formatMessage({ id: 'analytics' })}
+          </span>
         </div>
         <button
           className="DAT_AnaHeader_New"
           onClick={() => (anaState.value = "create")}
         >
-          Tạo mẫu phân tích
+          {dataLang.formatMessage({ id: 'createAnal' })}
         </button>
       </div>
 
       <div className="DAT_Ana">
         <div className='DAT_Ana_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>
-          Danh sách mẫu phân tích
+          {dataLang.formatMessage({ id: 'analyticsList' })}
         </div>
         <div className="DAT_Ana_Content">
 
-        <DataTable
-          className="DAT_Table_Container"
-          columns={columnAna}
-          data={dataAna}
-          pagination
-          paginationComponentOptions={paginationComponentOptions}
-          fixedHeader={true}
-          noDataComponent={<Empty />}
-        />
+          <DataTable
+            className="DAT_Table_Container"
+            columns={columnAna}
+            data={dataAna}
+            pagination
+            paginationComponentOptions={paginationComponentOptions}
+            fixedHeader={true}
+            noDataComponent={<Empty />}
+          />
         </div>
       </div>
 

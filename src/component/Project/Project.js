@@ -20,6 +20,8 @@ import { host } from "../Lang/Contant";
 import { useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
 import { userInfor } from "../../App";
+import { useIntl } from "react-intl";
+import { data } from "jquery";
 
 const tab = signal("total");
 const tabLable = signal("");
@@ -37,13 +39,14 @@ export const inverterData = signal([]);
 export const dataproject = signal([]);
 
 export const Empty = () => {
+  const dataLang = useIntl();
   return (
     <div className="DAT_TableEmpty" style={{ backgroundColor: "#FEFEFE" }}>
       <div className="DAT_TableEmpty_Group">
         <div className="DAT_TableEmpty_Group_Icon">
           <FaRegFileAlt size={50} color="gray" />
         </div>
-        <div className="DAT_TableEmpty_Group_Text">Danh sách trống</div>
+        <div className="DAT_TableEmpty_Group_Text">{dataLang.formatMessage({ id: 'empty' })}</div>
       </div>
     </div>
   );
@@ -231,26 +234,27 @@ export const Inverter = signal([
 ]);
 
 function Project(props) {
+  const dataLang = useIntl();
   const user = useSelector(state => state.admin.usr);
   const [datafilter, setDatafilter] = useState([]);
   const [type, setType] = useState("name");
   // const [filter, setFilter] = useState("");
 
   const listTab = [
-    { id: "total", name: "Tổng" },
-    { id: "online", name: "Trực tuyến" },
-    { id: "offline", name: "Ngoại tuyến" },
-    { id: "warn", name: "Cảnh báo" },
-    // { id: "demo", name: "Chạy thử" },
+    { id: "total", name: dataLang.formatMessage({ id: 'total' }) },
+    { id: "online", name: dataLang.formatMessage({ id: 'online' }) },
+    { id: "offline", name: dataLang.formatMessage({ id: 'offline' }) },
+    { id: "warn", name: dataLang.formatMessage({ id: 'warn' }) },
+    { id: "demo", name: dataLang.formatMessage({ id: 'demo' }) },
   ];
 
   // const color = { cur: "#6495ed", pre: "gray" };
 
   const paginationComponentOptions = {
-    rowsPerPageText: "Số hàng",
-    rangeSeparatorText: "đến",
+    rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
+    rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
     selectAllRowsItem: true,
-    selectAllRowsItemText: "tất cả",
+    selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
 
   // const dataproject = [
@@ -367,10 +371,10 @@ function Project(props) {
 
   const columnproject = [
     {
-      name: "Tên",
+      name: dataLang.formatMessage({ id: 'name' }),
       selector: (row) => (
         <div className="DAT_Table" id={row.plantid} onClick={(e) => handlePlant(e)}>
-          <img src={row.img ? row.img : "/dat_picture/solar_panel.png"} alt="" />
+          <img src="/dat_picture/solar_panel.png" alt="" />
 
           <div className="DAT_Table_Infor">
             <div className="DAT_Table_Infor_Name">{row.plantname}</div>
@@ -385,7 +389,7 @@ function Project(props) {
       },
     },
     {
-      name: "Kết nối",
+      name: dataLang.formatMessage({ id: 'connect' }),
       selector: (row) => (
         <>
           {row.state === 1 ? (
@@ -398,7 +402,7 @@ function Project(props) {
       width: "110px",
     },
     {
-      name: "Cảnh báo",
+      name: dataLang.formatMessage({ id: 'warn' }),
       selector: (row) => (
         <div>
           {row.warn === 1 ? (
@@ -411,46 +415,46 @@ function Project(props) {
       width: "100px",
     },
     {
-      name: "Công suất lắp đặt",
+      name: dataLang.formatMessage({ id: 'inCapacity' }),
       selector: (row) => row.capacity + " kWp",
       sortable: true,
       width: "160px",
     },
     {
-      name: "Sản lượng điện phát",
+      name: dataLang.formatMessage({ id: 'electricGen' }),
       selector: (row) => row.production + " kWh",
       sortable: true,
       width: "180px",
     },
     {
-      name: "Nguồn cấp",
+      name: dataLang.formatMessage({ id: 'power' }),
       selector: (row) => row.power + " %",
       sortable: true,
       // width: "140px",
     },
-    // {
-    //   name: "Tag",
-    //   selector: (row) => (
-    //     <div className="DAT_TableEdit">
-    //       <MdEditDocument color="gray" size={20} />
-    //     </div>
-    //   ),
-    //   width: "100px",
-    // },
     {
-      name: "Cập nhật lần cuối",
+      name: "Tag",
+      selector: (row) => (
+        <div className="DAT_TableEdit">
+          <MdEditDocument color="gray" size={20} />
+        </div>
+      ),
+      width: "100px",
+    },
+    {
+      name: dataLang.formatMessage({ id: 'lastUpdate' }),
       selector: (row) => row.lastupdate,
       sortable: true,
       width: "180px",
     },
     {
-      name: "Ngày tạo",
+      name: dataLang.formatMessage({ id: 'createDate' }),
       selector: (row) => row.createdate,
       sortable: true,
       width: "180px",
     },
     {
-      name: "Tùy chỉnh",
+      name: dataLang.formatMessage({ id: 'edit' }),
       selector: (row) => (
         <>
           <div className="DAT_TableEdit">
@@ -581,7 +585,6 @@ function Project(props) {
   useEffect(() => {
     const getPlant = async (usrname, partnerid, type) => {
       let d = await callApi('post', host.DATA + '/getPlant', { usr: usrname, partnerid: partnerid, type: type });
-      console.log(d);
       if (d.status === true) {
         dataproject.value = d.data;
       }
@@ -593,23 +596,23 @@ function Project(props) {
     <>
       <div className="DAT_ProjectHeader">
         <div className="DAT_ProjectHeader_Title">
-          <GoProject color="gray" size={25} /> <span>Dự án</span>
+          <GoProject color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'project' })}</span>
         </div>
 
         <div className="DAT_ProjectHeader_Filter">
           <select onChange={(e) => pickTypeFilter(e)}>
-            <option value={"name"}>Tên</option>
-            <option value={"connect"}>Kết nối</option>
-            <option value={"status"}>Trạng thái</option>
-            <option value={"capacity"}>Dung lượng</option>
-            <option value={"production"}>Sản xuất</option>
-            <option value={"power"}>Nguồn cấp</option>
-            <option value={"lastupdate"}>Lần cập nhật cuối</option>
-            <option value={"createdate"}>Ngày tạo</option>
+            <option value={"name"}>{dataLang.formatMessage({ id: 'name' })}</option>
+            <option value={"connect"}>{dataLang.formatMessage({ id: 'connect' })}</option>
+            <option value={"status"}>{dataLang.formatMessage({ id: 'status' })}</option>
+            <option value={"capacity"}>{dataLang.formatMessage({ id: 'capacity' })}</option>
+            <option value={"production"}>{dataLang.formatMessage({ id: 'production' })}</option>
+            <option value={"power"}>{dataLang.formatMessage({ id: 'power' })}</option>
+            <option value={"lastupdate"}>{dataLang.formatMessage({ id: 'lastUpdate' })}</option>
+            <option value={"createdate"}>{dataLang.formatMessage({ id: 'createDate' })}</option>
           </select>
           <input
             type="text"
-            placeholder="Nhập tên dự án"
+            placeholder={dataLang.formatMessage({ id: 'enterPr' })}
             onChange={(e) => handleSearch(e)}
           />
           <CiSearch color="gray" size={20} />
@@ -619,7 +622,7 @@ function Project(props) {
           className="DAT_ProjectHeader_New"
           onClick={() => (plantState.value = "add")}
         >
-          Tạo mới
+          <option value={"createdate"}>{dataLang.formatMessage({ id: 'createNew' })}</option>
         </button>
       </div>
 

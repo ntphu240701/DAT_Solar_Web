@@ -6,24 +6,26 @@ import { MdOutlineContactPhone } from "react-icons/md";
 import { signal } from "@preact/signals-react";
 import EditContactInfo from "./EditContactInfo";
 import { partnerInfor, userInfor } from "../../App";
+import { useIntl } from "react-intl";
 
 export const popupStateContact = signal(false);
 export const contactState = signal("default");
 
 
 function Contact(props) {
+  const dataLang = useIntl();
 
   const Type = {
-    OnM: "Nhà cung cấp O&M",
-    Investor: "Đầu tư",
-    Distributor: "Nhà phân phối",
-    Manufacturer: "Nhà sản xuất",
+    OnM: "onm",
+    Investor: "investor",
+    Distributor: "distributor",
+    Manufacturer: "manufacturer",
   }
   return (
     <>
       <div className="DAT_ContactHeader">
         <div className="DAT_ContactHeader_Title">
-          <MdOutlineContactPhone color="gray" size={25} /> <span>Liên hệ</span>
+          <MdOutlineContactPhone color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'contact' })}</span>
         </div>
       </div>
 
@@ -31,30 +33,30 @@ function Contact(props) {
         <div className="DAT_Contact_Item">
           <div className="DAT_Contact_Item_Registation">
             <div className="DAT_Contact_Item_Registation_Tit">
-              <div>Thông tin đăng ký</div>
+              <div>{dataLang.formatMessage({ id: 'registerInfo' })}</div>
               {userInfor.value.type === "user"
                 ? <></>
                 : <div onClick={() => (contactState.value = "editRegisterInf")}>
-                  Chỉnh sửa
+                  {dataLang.formatMessage({ id: 'edit' })}
                 </div>
               }
 
             </div>
             <div className="DAT_Contact_Item_Registation_Content">
-              <div>Mô hình kinh doanh</div>
+              <div>{dataLang.formatMessage({ id: 'businessModel' })}</div>
               <div>{partnerInfor.value.businessmodel}</div>
             </div>
             <div className="DAT_Contact_Item_Registation_Content">
-              <div>Tên kinh doanh</div>
+              <div>{dataLang.formatMessage({ id: 'businessname' })}</div>
               <div>{partnerInfor.value.businessname}</div>
             </div>
             <div className="DAT_Contact_Item_Registation_Content">
-              <div>Khu vực</div>
+              <div>{dataLang.formatMessage({ id: 'area' })}</div>
               <div>{partnerInfor.value.area}</div>
             </div>
             <div className="DAT_Contact_Item_Registation_Content">
-              <div>Loại</div>
-              <div>{Type[partnerInfor.value.businesstype]}</div>
+              <div>{dataLang.formatMessage({ id: 'businesstype' })}</div>
+              <div>{dataLang.formatMessage({ id: Type[partnerInfor.value.businesstype] })}</div>
             </div>
           </div>
 
@@ -66,20 +68,20 @@ function Contact(props) {
         <div className="DAT_Contact_Item">
           <div className="DAT_Contact_Item_Contact">
             <div className="DAT_Contact_Item_Contact_Tit">
-              <div>Thông tin liên hệ</div>
+              <div>{dataLang.formatMessage({ id: 'contact' })}</div>
               {userInfor.value.type === "user"
                 ? <></>
                 : <div onClick={() => (contactState.value = "editContactInf")}>
-                  Chỉnh sửa
+                  {dataLang.formatMessage({ id: 'edit' })}
                 </div>
               }
             </div>
             <div className="DAT_Contact_Item_Contact_Content">
-              <div>Tên</div>
+              <div>{dataLang.formatMessage({ id: 'name' })}</div>
               <div>{partnerInfor.value.name}</div>
             </div>
             <div className="DAT_Contact_Item_Contact_Content">
-              <div>Điện thoại</div>
+              <div>{dataLang.formatMessage({ id: 'phone' })}</div>
               <div>{partnerInfor.value.phone}</div>
             </div>
 
@@ -95,7 +97,7 @@ function Contact(props) {
               {userInfor.value.type === "user"
                 ? <></>
                 : <div onClick={() => (popupStateContact.value = true)}>
-                  Chỉnh sửa
+                  {dataLang.formatMessage({ id: 'edit' })}
                 </div>
               }
             </div>

@@ -9,7 +9,7 @@ import { MdOutlineLanguage } from "react-icons/md";
 import { signal } from '@preact/signals-react';
 import { FaRegMessage } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
-import  { partnerInfor, userInfor } from "../../App";
+import { partnerInfor, userInfor } from "../../App";
 import { useDispatch, useSelector } from 'react-redux';
 import { callApi } from '../Api/Api';
 import { host } from '../Lang/Contant';
@@ -180,15 +180,15 @@ function Navigation(props) {
 
     }
 
-    const handleLang = async(lang_) => {
-        let d = await callApi('post', host.DATA + '/updateUser', { usr:usr, type:'lang', data:lang_ }) 
+    const handleLang = async (lang_) => {
+        let d = await callApi('post', host.DATA + '/updateUser', { usr: usr, type: 'lang', data: lang_ })
         if (d.status) {
             alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
             rootDispatch(adminslice.actions.setlang(lang_))
 
-          } else {
+        } else {
             alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
-          }
+        }
     }
 
 
@@ -252,7 +252,7 @@ function Navigation(props) {
                         onClick={() => userNav.value = !userNav.value}
                         ref={user_icon}
                     >
-                        <img src={userInfor.value.avatar ?  userInfor.value.avatar : "/dat_icon/user_manager.png"} alt="" />
+                        <img src={userInfor.value.avatar ? userInfor.value.avatar : "/dat_icon/user_manager.png"} alt="" />
                     </button>
                 </div>
             </div>
@@ -260,18 +260,18 @@ function Navigation(props) {
             <div className='DAT_NavUser' style={{ display: userNav.value ? "block" : "none" }} ref={user_box} >
                 <div className='DAT_NavUser-inf'>
                     <div className='DAT_NavUser-inf-img'>
-                        <img src={userInfor.value.avatar ?  userInfor.value.avatar : "/dat_icon/user_manager.png"} alt="" />
+                        <img src={userInfor.value.avatar ? userInfor.value.avatar : "/dat_icon/user_manager.png"} alt="" />
                     </div>
                     <div className='DAT_NavUser-inf-content'>
                         <div className='DAT_NavUser-inf-content-name'>{userInfor.value.name}</div>
                         <div className='DAT_NavUser-inf-content-email'>{mail}</div>
                     </div>
                 </div>
-                <div className='DAT_NavUser-item' style={{ cursor: "pointer", borderBottom: "1px solid gray" }}  onClick={() => navigate('/User')}>
-                    <span >Tài khoản</span>
+                <div className='DAT_NavUser-item' style={{ cursor: "pointer", borderBottom: "1px solid gray" }} onClick={() => navigate('/User')}>
+                    <span >{dataLang.formatMessage({ id: 'account' })}</span>
                 </div>
-                <div className="DAT_NavUser-item" onClick={()=>logout()}>
-                    <span >Đăng xuất</span>
+                <div className="DAT_NavUser-item" onClick={() => logout()}>
+                    <span >{dataLang.formatMessage({ id: 'logout' })}</span>
                 </div>
 
             </div>
@@ -280,13 +280,13 @@ function Navigation(props) {
 
 
                 <div className='DAT_NavNotif-title'>
-                    <span>Thông báo</span>
+                    <span>{dataLang.formatMessage({ id: 'notification' })}</span>
 
                     {isMobile.value && messageOption.value === 'content'
-                    ?<div className='DAT_NavNotif-title-close' onClick={() => messageOption.value = 'mess'} >
-                        <IoMdClose size={15} color='white'/>
-                    </div>
-                    :<></>
+                        ? <div className='DAT_NavNotif-title-close' onClick={() => messageOption.value = 'mess'} >
+                            <IoMdClose size={15} color='white' />
+                        </div>
+                        : <></>
                     }
                 </div>
 
@@ -349,7 +349,7 @@ function Navigation(props) {
                                             {messageNav.value
                                                 ? <>
                                                     {messageContent.value[0].list.map((item, index) => (
-                                                        <div className='DAT_NavNotif-content-main-group' key={item.warnid}>
+                                                        <div className='DAT_NavNotif-content-main-group' key={item.id}>
                                                             <div className='DAT_NavNotif-content-main-group-datetime'>{item.time}</div>
                                                             <div className='DAT_NavNotif-content-main-group-content'>
                                                                 <div className='DAT_NavNotif-content-main-group-content-tit'>Có một {messageContent.value[0].name} tại {item.plant}</div>
@@ -379,11 +379,11 @@ function Navigation(props) {
             </div>
 
             <div className='DAT_NavLang' style={{ display: langNav.value ? "block" : "none" }} onMouseEnter={() => { langStateNav.value = [true, true]; }} onMouseLeave={() => { langNav.value = false; langStateNav.value = [false, false] }} >
-                <div className='DAT_NavLang-item' style={{ backgroundColor: lang === "vi" ? "rgba(41, 95, 255)" : "white", color: lang === "vi" ? "white": "black" }} >
-                    <span onClick={() => { handleLang("vi") }}>Tiếng Việt</span>
+                <div className='DAT_NavLang-item' style={{ backgroundColor: lang === "vi" ? "rgba(41, 95, 255)" : "white", color: lang === "vi" ? "white" : "black" }} onClick={() => { handleLang("vi") }}>
+                    <span>Tiếng Việt</span>
                 </div>
-                <div className="DAT_NavLang-item" style={{ backgroundColor: lang === "en" ? "rgba(41, 95, 255)" : "white", color: lang === "en" ? "white": "black" }} >
-                    <span onClick={() => { handleLang("en") }}>English</span>
+                <div className="DAT_NavLang-item" style={{ backgroundColor: lang === "en" ? "rgba(41, 95, 255)" : "white", color: lang === "en" ? "white" : "black" }} onClick={() => { handleLang("en") }}>
+                    <span >English</span>
                 </div>
             </div>
 

@@ -107,16 +107,16 @@ const BasicInformation = (props) => {
         {display ? (
           <div className="DAT_Info_Databox_Content">
             <div className="DAT_Info_Databox_Content_Column">
-              <p>SN: {info.value.psn}</p>
-              {/* <p>Sản lượng hàng ngày: {info.value.dailyproduction}</p> */}
+              <p>SN: {info.value.SN}</p>
+              <p>Sản lượng hàng ngày: {info.value.dailyproduction}</p>
             </div>
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Tên: {info.value.pname}</p>
+              <p>Tên: {info.value.name}</p>
+              <p>Dự án: {info.value.plant}</p>
             </div>
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Dự án: {info.value.pplantname}</p>
-              {/* <p>Sản lượng: {info.value.production}</p> */}
-              {/* <p>Cập nhật mới nhất: {info.value.updated}</p> */}
+              <p>Sản lượng: {info.value.production}</p>
+              <p>Cập nhật mới nhất: {info.value.updated}</p>
             </div>
           </div>
         ) : (
@@ -154,7 +154,7 @@ const VersionInformation = (props) => {
         {display ? (
           <div className="DAT_Info_Databox_Content">
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Số phiên bản chứng nhận: {info.value.pversion}</p>
+              <p>Số phiên bản chứng nhận:V1.0</p>
             </div>
             <div className="DAT_Info_Databox_Content_Column">
               <p>Số phiên bản phần mềm nội bộ: 103-103-101-1004</p>
@@ -747,10 +747,10 @@ export default function Info() {
     <div className="DAT_Info">
       <div className="DAT_Info_Header">
         <div className="DAT_Info_Header_Left">
-          <p style={{ fontWeight: "bold" }}>{info.value.pname}: {info.value.psn}</p>
+          <p style={{ fontWeight: "bold" }}>{info.value.name}: {info.value.SN}</p>
           <a style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-
-            {info.value.pstate == 1 ? (
+            
+            {info.value.status ? (
               <FaCheckCircle size={20} color="green" />
             ) : (
               <MdOutlineError size={20} color="red" />
@@ -807,8 +807,6 @@ export default function Info() {
                 <OperationInformation name={"Thông tin dữ liệu"} />
               </>
             );
-          default:
-            return <></>;
         }
       })()}
     </div>

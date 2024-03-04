@@ -2,8 +2,11 @@ import React, { useEffect } from "react";
 import { popupStateReport } from "./Report";
 import { IoClose } from "react-icons/io5";
 import { list, idReport, ReportData } from "./Report";
+import { useIntl } from "react-intl";
 
 export default function Popup() {
+  const dataLang = useIntl();
+
   const handleDeleteReport = (e) => {
     popupStateReport.value = false;
     const newDB = ReportData.value.filter(
@@ -33,7 +36,7 @@ export default function Popup() {
     <div className="DAT_PopupReport_Box">
       <div className="DAT_PopupReport_Box_Head">
         <div className="DAT_PopupReport_Box_Head_Left">
-          <p>Xóa thiết bị</p>
+          <p>{dataLang.formatMessage({ id: 'delDevice' })}</p>
         </div>
         <div className="DAT_PopupReport_Box_Head_Right">
           <div
@@ -49,8 +52,7 @@ export default function Popup() {
       </div>
       <div className="DAT_PopupReport_Box_Body">
         <p>
-          Bạn có chắc chắn muốn xóa vĩnh viễn thiết bị này không? Tất cả dữ liệu
-          lịch sử của XXX sẽ bị mất.
+          {dataLang.formatMessage({ id: 'delreportmess' })}
         </p>
       </div>
       <div className="DAT_PopupReport_Box_Foot">
@@ -62,13 +64,13 @@ export default function Popup() {
           }}
           onClick={() => (popupStateReport.value = false)}
         >
-          Hủy
+          {dataLang.formatMessage({ id: 'cancel' })}
         </button>
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={(e) => handleDeleteReport(e)}
         >
-          Xác nhận
+          {dataLang.formatMessage({ id: 'confirm' })}
         </button>
       </div>
     </div>

@@ -14,7 +14,6 @@ import { alertDispatch } from "../Alert/Alert";
 import { userInfor } from "../../App";
 import { setKey, geocode, RequestType } from "react-geocode";
 import { useIntl } from "react-intl";
-import Resizer from "react-image-file-resizer";
 
 const BasicInfo = (props) => {
   const dataLang = useIntl();
@@ -54,7 +53,7 @@ const BasicInfo = (props) => {
       })
       .catch((error) => {
         alertDispatch(dataLang.formatMessage({ id: "alert_19" }))
-
+        
       });
   }
 
@@ -472,45 +471,10 @@ const OwnerInfo = (props) => {
 
 const ImgInfo = (props) => {
   const [state, setState] = useState(true);
-  const [ava, setAva] = useState(projectData.value.img ? projectData.value.img : "/dat_picture/solar_panel.png");
-  const resizeFilAvatar = (file) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        180,
-        180,
-        "PNG",
-        100,
-        0,
-        (uri) => {
-          resolve(uri);
-        },
-        "file"
-      );
-    });
-
-
-  const handleChooseAvatar = async (e) => {
-    // setAva(URL.createObjectURL(e.target.files[0]));
-    // console.log(e.target.files[0].name);
-    // projectData.value[e.currentTarget.id] = e.current
-    var reader = new FileReader();
-    console.log("old size", e.target.files[0].size)
-    if (e.target.files[0].size > 50000) {
-      const image = await resizeFilAvatar(e.target.files[0]);
-      reader.readAsDataURL(image);
-      reader.onload = () => {
-        setAva(reader.result);
-        projectData.value.img = reader.result;
-      }
-    } else {
-      reader.readAsDataURL(e.target.files[0]);
-      console.log(e.target.files[0].size)
-      reader.onload = () => {
-        setAva(reader.result);
-        projectData.value.img = reader.result;
-      };
-    }
+  const [ava, setAva] = React.useState();
+  const handleChooseAvatar = (e) => {
+    setAva(URL.createObjectURL(e.target.files[0]));
+    console.log(e.target.files[0].name);
   };
 
   return (
@@ -596,8 +560,7 @@ function EditProject(props) {
         production,
         power,
         partnerid,
-        usrtype,
-        img
+        usrtype
       ) => {
         let d = await callApi('post', host.DATA + '/editPlant', {
           plantid: plantid,
@@ -620,8 +583,7 @@ function EditProject(props) {
           production: production,
           power: power,
           partnerid: partnerid,
-          usrtype: usrtype,
-          img: img
+          usrtype: usrtype
         })
         if (d.status === true) {
           alertDispatch("Dự án đã được cập nhật");
@@ -649,8 +611,7 @@ function EditProject(props) {
         projectData.value.production,
         projectData.value.power,
         userInfor.value.partnerid,
-        userInfor.value.type,
-        projectData.value.img ? projectData.value.img : "/dat_picture/solar_panel.png"
+        userInfor.value.type
       );
     }
   };

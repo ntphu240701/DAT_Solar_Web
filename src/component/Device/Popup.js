@@ -6,8 +6,10 @@ import { hasIn } from "lodash";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
+import { useIntl } from "react-intl";
 
 export default function Popup(props) {
+  const dataLang = useIntl();
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
@@ -41,7 +43,7 @@ export default function Popup(props) {
     <div className="DAT_Popup_Box">
       <div className="DAT_Popup_Box_Head">
         <div className="DAT_Popup_Box_Head_Left">
-          <p>Xóa thiết bị</p>
+          <p>{dataLang.formatMessage({ id: 'delDevice' })}</p>
         </div>
         <div className="DAT_Popup_Box_Head_Right">
           <div
@@ -57,8 +59,9 @@ export default function Popup(props) {
       </div>
       <div className="DAT_Popup_Box_Body">
         <p>
-          Bạn có chắc chắn muốn xóa vĩnh viễn thiết bị này không? Tất cả dữ liệu
-          lịch sử của XXX sẽ bị mất.
+          <p>
+            {dataLang.formatMessage({ id: 'delDevicemess' })}
+          </p>
         </p>
       </div>
       <div className="DAT_Popup_Box_Foot">
@@ -69,12 +72,12 @@ export default function Popup(props) {
           }}
           onClick={() => (popupState.value = false)}
         >
-          Hủy
+          {dataLang.formatMessage({ id: 'cancel' })}
         </button>
         <button style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={(e) => handleDelete(e)}
         >
-          Xác nhận
+          {dataLang.formatMessage({ id: 'confirm' })}
         </button>
       </div>
     </div>

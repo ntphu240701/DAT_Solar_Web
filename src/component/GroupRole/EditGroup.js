@@ -4,6 +4,7 @@ import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import "./GroupRole.scss";
 import { signal } from "@preact/signals-react";
+import { useIntl } from "react-intl";
 
 const CheckBox = (props) => {
   const handleCheck = (e) => {
@@ -42,6 +43,7 @@ const CheckBox = (props) => {
 };
 
 export default function CreateGroupRole() {
+  const dataLang = useIntl();
   const [name, setName] = useState(groupEdit.value.name);
   const [subinfo, setSubinfo] = useState(groupEdit.value.subinfo);
 
@@ -71,7 +73,7 @@ export default function CreateGroupRole() {
       <div className="DAT_CreateGroupRole">
         <div className="DAT_CreateGroupRole_Header">
           <div className="DAT_CreateGroupRole_Header_Left">
-            <p style={{ fontSize: "20px" }}>Chỉnh sửa nhóm</p>
+            <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'editGroup' })}</p>
           </div>
           <div className="DAT_CreateGroupRole_Header_Right">
             <div
@@ -79,7 +81,7 @@ export default function CreateGroupRole() {
               onClick={() => handleSave()}
             >
               <FaSave size={20} color="white" />
-              <span>Lưu</span>
+              <span>{dataLang.formatMessage({ id: 'save' })}</span>
             </div>
             <div className="DAT_CreateGroupRole_Header_Right_Close">
               <RxCross2
@@ -93,9 +95,9 @@ export default function CreateGroupRole() {
 
         <div className="DAT_CreateGroupRole_Body">
           <div className="DAT_CreateGroupRole_Body_Item">
-            <h4>Nhập thông tin nhóm mới và các chức năng trong nhóm</h4>
+            <h4>{dataLang.formatMessage({ id: 'grouproleInfo' })}</h4>
             <div className="DAT_CreateGroupRole_Body_Item_Input">
-              <span>Tên nhóm:</span>
+              <span>{dataLang.formatMessage({ id: 'groupName' })}:</span>
               <input
                 type="text"
                 value={name}
@@ -103,7 +105,7 @@ export default function CreateGroupRole() {
               />
             </div>
             <div className="DAT_CreateGroupRole_Body_Item_Input">
-              <span>Thông tin nhóm:</span>
+              <span>{dataLang.formatMessage({ id: 'groupInfo' })}:</span>
               <input
                 type="text"
                 value={subinfo}

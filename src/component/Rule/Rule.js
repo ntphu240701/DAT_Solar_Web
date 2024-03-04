@@ -9,6 +9,7 @@ import CreateRule from "./CreateRule";
 import ConfirmDeleteRule from "./ConfirmDeleteRule";
 import EditRule, { editruledata } from "./EditRule";
 import { alertDispatch } from "../Alert/Alert";
+import { useIntl } from "react-intl";
 
 export const ruleID = signal();
 export const editRuleState = signal(false);
@@ -20,10 +21,10 @@ export const datarule = signal([
     name: "Master",
     setting: {
       alert: {
-        lang: "Thông báo",
+        lang: 'notification',
         option: {
-          1: { lang: "Chỉnh sửa", status: true },
-          2: { lang: "Xóa", status: true },
+          1: { lang: "edit", status: true },
+          2: { lang: "remove", status: true },
         },
       },
       device: {
@@ -72,7 +73,7 @@ export const datarule = signal([
     name: "Admin",
     setting: {
       alert: {
-        lang: "Thông báo",
+        lang: "notification",
         option: {
           1: { lang: "Chỉnh sửa", status: true },
           2: { lang: "Xóa", status: true },
@@ -174,22 +175,23 @@ export const datarule = signal([
 ]);
 
 export default function Rule() {
+  const dataLang = useIntl();
   const paginationComponentOptions = {
-    rowsPerPageText: "Số hàng",
-    rangeSeparatorText: "đến",
+    rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
+    rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
     selectAllRowsItem: true,
-    selectAllRowsItemText: "tất cả",
+    selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
 
   const columnrule = [
     {
-      name: "STT",
+      name: dataLang.formatMessage({ id: 'ordinalNumber' }),
       selector: (row, index) => index + 1,
       sortable: true,
       width: "100px",
     },
     {
-      name: "Tên quyền",
+      name: dataLang.formatMessage({ id: 'name' }),
       selector: (row) => row.name,
       sortable: true,
       minWidth: "200px",
@@ -204,7 +206,7 @@ export default function Rule() {
       width: "100px",
     },
     {
-      name: "Tùy chỉnh",
+      name: dataLang.formatMessage({ id: 'edit' }),
       selector: (row) => (
         <>
           <div className="DAT_TableEdit">
@@ -227,18 +229,18 @@ export default function Rule() {
               id={row.id}
               onClick={(e) => handleEdit(e)}
             >
-              Chỉnh sửa
+              {dataLang.formatMessage({ id: 'edit' })}
             </div>
             <div
               className="DAT_ModifyBox_Remove"
               onClick={() => (confirmDeleteState.value = "delete")}
             >
-              Gỡ
+              {dataLang.formatMessage({ id: 'remove' })}
             </div>
           </div>
         </>
       ),
-      width: "100px",
+      width: "103px",
     },
   ];
 
@@ -265,17 +267,17 @@ export default function Rule() {
     <>
       <div className="DAT_RuleHeader">
         <div className="DAT_RuleHeader_Title">
-          <FaUsers color="gray" size={25} /> <span>Phân quyền người dùng</span>
+          <FaUsers color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'rule' })}</span>
         </div>
         <div className="DAT_RuleHeader_Filter">
-          <input type="text" placeholder="Nhập tên tài khoản" />
+          <input type="text" placeholder={dataLang.formatMessage({ id: 'enterName' })} />
           <CiSearch color="gray" size={20} />
         </div>
         <button
           className="DAT_RuleHeader_New"
           onClick={() => (createruleState.value = true)}
         >
-          Tạo quyền mới
+          {dataLang.formatMessage({ id: 'newRule' })}
         </button>
       </div>
 
@@ -287,7 +289,7 @@ export default function Rule() {
             backgroundColor: "rgba(233, 233, 233, 0.5)",
           }}
         >
-          Danh sách phân quyền
+          {dataLang.formatMessage({ id: 'ruleList' })}
         </div>
         <div className="DAT_Rule_Content">
           <DataTable

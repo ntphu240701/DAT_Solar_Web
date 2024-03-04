@@ -5,6 +5,7 @@ import { RxCross2 } from "react-icons/rx";
 import "./GroupRole.scss";
 import { signal } from "@preact/signals-react";
 import { alertDispatch } from "../Alert/Alert";
+import { useIntl } from "react-intl";
 
 const idplus = signal(2);
 const newdb = signal({
@@ -22,6 +23,7 @@ const newdb = signal({
 const temp = signal(newdb.value);
 
 const CheckBox = (props) => {
+  const dataLang = useIntl();
   const handleCheck = (e) => {
     // props.status = e.target.checked;
     newdb.value = {
@@ -63,6 +65,7 @@ export default function CreateGroupRole() {
   // React.useEffect(() => {
   //   console.log(createState.value);
   // });
+  const dataLang = useIntl();
 
   const [name, setName] = useState("");
   const [subinfo, setSubinfo] = useState("");
@@ -94,7 +97,7 @@ export default function CreateGroupRole() {
       <div className="DAT_CreateGroupRole">
         <div className="DAT_CreateGroupRole_Header">
           <div className="DAT_CreateGroupRole_Header_Left">
-            <p style={{ fontSize: "20px" }}>Tạo nhóm mới</p>
+            <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'createNewGroup' })}</p>
           </div>
           <div className="DAT_CreateGroupRole_Header_Right">
             <div
@@ -102,7 +105,7 @@ export default function CreateGroupRole() {
               onClick={() => handleCreate()}
             >
               <FaSave size={20} color="white" />
-              <span>Lưu</span>
+              <span>{dataLang.formatMessage({ id: 'save' })}</span>
             </div>
             <div className="DAT_CreateGroupRole_Header_Right_Close">
               <RxCross2
@@ -116,13 +119,13 @@ export default function CreateGroupRole() {
 
         <div className="DAT_CreateGroupRole_Body">
           <div className="DAT_CreateGroupRole_Body_Item">
-            <h4>Nhập thông tin nhóm mới và các chức năng trong nhóm</h4>
+            <h4>{dataLang.formatMessage({ id: 'grouproleInfo' })}</h4>
             <div className="DAT_CreateGroupRole_Body_Item_Input">
-              <span>Tên nhóm:</span>
+              <span>{dataLang.formatMessage({ id: 'groupName' })}:</span>
               <input type="text" onChange={(e) => setName(e.target.value)} />
             </div>
             <div className="DAT_CreateGroupRole_Body_Item_Input">
-              <span>Thông tin nhóm:</span>
+              <span>{dataLang.formatMessage({ id: 'groupInfo' })}:</span>
               <input type="text" onChange={(e) => setSubinfo(e.target.value)} />
             </div>
             <div className="DAT_CreateGroupRole_Body_Item_Checkbox">
