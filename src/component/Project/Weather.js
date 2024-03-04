@@ -13,6 +13,7 @@ import {
   YAxis,
 } from "recharts";
 import { PacmanLoader } from "react-spinners";
+import { projectData } from "./Project";
 
 const temp = [
   {
@@ -65,8 +66,8 @@ export default function Weather() {
 
   const v = "Nhiệt độ";
 
-  const lat = "10.8230989";
-  const lon = "106.6296638";
+  const lat = projectData.value.lat;
+  const lon = projectData.value.long;
   const q = lat + "," + lon;
   const APIkey = "d5e7a9e22d9b4bf997e73539240202";
   const url =

@@ -3,33 +3,24 @@ import { IoClose } from "react-icons/io5";
 import "./Warn.scss";
 import { deletewarnState, idDel, temp } from "./Warn";
 import { message } from "../Navigation/Navigation";
+import { alertDispatch } from "../Alert/Alert";
 // import { raiseBoxState } from "./AddGateway";
 
 export default function RaiseBox(props) {
   const handleDeleteReport = (e) => {
-    // deletewarnState.value = false;
+    deletewarnState.value = false;
     const messid = idDel.value.split("_")[0];
     const messindex = message.value.findIndex((item) => item.messid == messid);
     const warnid = idDel.value.split("_")[1];
     const warnindex = message.value[messindex].list.findIndex(
       (item) => item.warnid == warnid
     );
-
-    
     message.value[messindex].list.splice(warnindex, 1);
-
     let x = temp.value.filter((item) => item.warnid != warnid || item.messid != messid)
     console.log(x);
     temp.value = [...x]
-
-
-    //message.value[messindex].list.splice(warnindex, 1);
-    //delete message.value[messindex].list[warnindex];
-    // message.value = [
-    //   ...message.value,
-    //   message
-    // ]
     console.log(message.value);
+    alertDispatch("Xóa thành công cảnh báo");
   };
 
   const popup_state = {
