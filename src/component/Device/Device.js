@@ -19,7 +19,7 @@ import { host } from "../Lang/Contant";
 import { set } from "lodash";
 import { userInfor } from "../../App";
 
-export const tab = signal("inverter");
+export const tab = signal("logger");
 const tabLable = signal("");
 const tabMobile = signal(false);
 
@@ -36,9 +36,9 @@ function Device(props) {
   const user = useSelector(state => state.admin.usr);
 
   const listTab = [
+    { id: "logger", name: "Logger" },
     { id: "inverter", name: "Inverter" },
     // { id: "meter", name: "Meter" },
-    { id: "logger", name: "Logger" },
   ];
 
   const color = { cur: "#6495ed", pre: "gray" };
@@ -335,10 +335,13 @@ function Device(props) {
         info.value = dataInverter.find((item) => item.id == idArr[0]);
         break;
       case "logger":
-        info.value = dataLogger.find((item) => item.id == idArr[0]);
+        info.value = loggerList.value.find((item) => item.pid == idArr[0]);
+        console.log(info.value);
         break;
       case "meter":
         info.value = dataMeter.find((item) => item.id == idArr[0]);
+        break;
+      default:
         break;
     }
   };
@@ -399,7 +402,7 @@ function Device(props) {
     // get logger
     const getAllLogger = async (usrname, partnerid, type) => {
       let d = await callApi('post', host.DATA + '/getallLogger', { usr: usrname, partnerid: partnerid, type: type });
-      console.log(d);
+      // console.log(d);
       if (d.status === true) {
         loggerList.value = d.data;
       }

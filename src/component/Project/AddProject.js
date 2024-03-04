@@ -6,6 +6,8 @@ import { isMobile } from "../Navigation/Navigation";
 import { signal } from "@preact/signals-react";
 import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
+import { setKey, geocode, RequestType } from "react-geocode";
+
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
@@ -14,6 +16,7 @@ import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
 import { userInfor } from "../../App";
+import { useIntl } from "react-intl";
 
 export const plantData = signal({
   addr: "",
@@ -40,6 +43,7 @@ export const plantData = signal({
 });
 
 const BasicInfo = (props) => {
+  const dataLang = useIntl();
   const [state, setState] = useState(true);
 
   const defaultProps = {
@@ -50,6 +54,33 @@ const BasicInfo = (props) => {
     zoom: 7.0,
   };
 
+  const handleMap = (e) => {
+    const addr = document.getElementById("addr")
+    console.log(addr.value)
+    setKey(process.env.REACT_APP_GGKEY);
+    geocode(RequestType.ADDRESS, addr.value)
+      .then((response) => {
+        console.log(response.results[0].geometry.location);
+
+        var long_ = document.getElementById("long")
+        var lat_ = document.getElementById("lat")
+        lat_.value = response.results[0].geometry.location.lat
+        long_.value = response.results[0].geometry.location.lng
+        plantData.value = {
+          ...plantData.value,
+          lat: response.results[0].geometry.location.lat,
+          long: response.results[0].geometry.location.lng,
+        }
+
+
+      })
+      .catch((error) => {
+        alertDispatch(dataLang.formatMessage({ id: "alert_19" }))
+
+      });
+  }
+
+
   // const name = useRef();
   // const address = useRef();
   // const long = useRef();
@@ -57,6 +88,8 @@ const BasicInfo = (props) => {
   const handleBasic = (e) => {
     plantData.value[e.currentTarget.id] = e.currentTarget.value;
   };
+
+
 
   return (
     <div className="DAT_AddProject_BasicInfo">
@@ -128,6 +161,7 @@ const BasicInfo = (props) => {
                       type="text"
                       // ref={long}
                       onChange={(e) => handleBasic(e)}
+                      onClick={(e) => handleMap(e)}
                       required
                     />
                   </div>
@@ -140,6 +174,7 @@ const BasicInfo = (props) => {
                       type="text"
                       // ref={lat}
                       onChange={(e) => handleBasic(e)}
+                      onClick={(e) => handleMap(e)}
                       required
                     />
                   </div>
@@ -673,10 +708,10 @@ function AddProject(props) {
         height={isMobile.value ? "320px" : "100px"}
       />
 
-      <ImgInfo
+      {/* <ImgInfo
         tit={"Ảnh đại diện"}
         height={isMobile.value ? "320px" : "260px"}
-      />
+      /> */}
     </div>
   );
 }

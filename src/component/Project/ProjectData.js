@@ -27,7 +27,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { set } from "lodash";
+import { drop, set } from "lodash";
 import RaiseBox from "./RaiseBox";
 import { Token } from "../../App";
 import axios from "axios";
@@ -799,12 +799,12 @@ function ProjectData(props) {
       let d = await callApi('post', host.DATA + '/getLogger', { plantid: plantid })
       // setTemp(d)
       temp.value = d;
-      console.log(d)
+      // console.log(d)
       let _invt = {}
       d.map(async (item) => {
 
         const res = await invtCloud('{"deviceCode":"' + item.sn + '"}', Token.value.token);
-        console.log(res)
+        // console.log(res)
         if (res.ret === 0) {
           //console.log(res.data)
           setInvt(pre => ({ ...pre, [item.sn]: res.data }))
@@ -825,7 +825,7 @@ function ProjectData(props) {
 
 
   useEffect(() => {
-    console.log("Invt", invt)
+    // console.log("Invt", invt)
     coalsave.value.value = 0;
     temp.value.map(async (item) => {
       const type = (item.data.pro_3.type);
@@ -849,11 +849,11 @@ function ProjectData(props) {
 
       let view32bit = convertToDoublewordAndFloat(e, "int");
       //let result = parseFloat(Number(coalsave.value.value) + Number(view32bit)).toFixed(2)
-      coalsave.value  ={ 
+      coalsave.value = {
         ...coalsave.value,
         value: parseFloat(Number(coalsave.value.value) + Number(view32bit)).toFixed(2)
       }
-      
+
 
     })
   }, [invt]);
@@ -977,7 +977,7 @@ function ProjectData(props) {
                   <div className="DAT_ProjectData_Dashboard_Data">
                     <div className="DAT_ProjectData_Dashboard_Data_Left">
                       <div className="DAT_ProjectData_Dashboard_Data_Left_Img">
-                        <img src="/dat_picture/solar_panel.png" alt="" />
+                        <img src={projectData.value.img ? projectData.value.img : "/dat_picture/solar_panel.png"} alt="" />
                       </div>
 
                       <div className="DAT_ProjectData_Dashboard_Data_Left_Info">
@@ -2171,7 +2171,9 @@ const Production = (props) => {
 
   useEffect(() => {
     setProduction(0);
-    props.data.map((item) => {
+
+    var sum = [];
+    props.data.map((item, i) => {
       const type = (item.data.pro_1.type);
       const cal = JSON.parse(item.data.pro_1.cal);
       let num = [];
@@ -2182,12 +2184,21 @@ const Production = (props) => {
             let n = JSON.parse(value)
             num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
           });
+          //console.log(num);
+          sum[i] = num.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0)
 
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
+          //console.log("Sum", sum)
 
-          setProduction((old) => parseFloat(old + sum / 1000).toFixed(2));
+          let total = sum.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0) / 1000;
+
+          if (i == props.data.length - 1) {
+            //console.log("Total", total)
+            setProduction(parseFloat(total).toFixed(2));
+          }
           break;
         case "word":
           let d = JSON.parse(item.data.pro_1.register);
@@ -2215,7 +2226,8 @@ const Production = (props) => {
     });
 
     setDailyproduction(0);
-    props.data.map((item) => {
+    var sum_2 = [];
+    props.data.map((item, i) => {
       const type = (item.data.pro_2.type);
       const cal = JSON.parse(item.data.pro_2.cal);
       let num = [];
@@ -2252,14 +2264,25 @@ const Production = (props) => {
           setDailyproduction((old) => parseFloat(old) + parseFloat(view32bit));
           break;
         default:
-          num = parseFloat(data[item.sn]?.[item.data.pro_2.register] || 0) * parseFloat(item.data.pro_2.cal);
-          setDailyproduction((old) => parseFloat(old + num).toFixed(2));
+          sum_2[i] = parseFloat(data[item.sn]?.[item.data.pro_2.register] || 0) * parseFloat(item.data.pro_2.cal);
+          //console.log("Num", sum_2);
+          let total = sum_2.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0);
+
+          if (i == props.data.length - 1) {
+            //console.log("Total", total)
+            setDailyproduction(parseFloat(total).toFixed(2));
+          }
+
+          //console.log("Sum", sum)
           break;
       }
     });
 
     setTotalproduction(0);
-    props.data.map((item) => {
+    var sum_3 = [];
+    props.data.map((item, i) => {
       const type = (item.data.pro_3.type);
       const cal = JSON.parse(item.data.pro_3.cal);
       let num = [];
@@ -2292,8 +2315,20 @@ const Production = (props) => {
             return type === "int" ? parseFloat(doubleword * cal).toFixed(2) : parseFloat(float_value * cal).toFixed(2) || 0;
           }
 
-          let view32bit = convertToDoublewordAndFloat(e, "int");
-          setTotalproduction((old) => parseFloat(old + view32bit).toFixed(2));
+          //console.log("Num", convertToDoublewordAndFloat(e, "int"));
+
+          sum_3[i] = convertToDoublewordAndFloat(e, "int");
+          // console.log("Num", sum_3);
+          let total = sum_3.reduce((accumulator, currentValue) => {
+            return Number(accumulator) + Number(currentValue)
+          }, 0);
+
+          if (i == props.data.length - 1) {
+            //console.log("Total", total)
+            setTotalproduction(parseFloat(total).toFixed(2));
+          }
+
+
 
           break;
         default:
