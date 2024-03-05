@@ -6,6 +6,7 @@ import { MdOutlineError } from "react-icons/md";
 import { infoState, info, tab } from "./Device";
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
+import { useIntl } from "react-intl";
 
 const dataAC = [
   {
@@ -80,12 +81,13 @@ const dataTemp = [
 ];
 
 const BasicInformation = (props) => {
+  const dataLang = useIntl();
   const [display, setDisplay] = React.useState(true);
 
   return (
     <div className="DAT_Info_Databox" id="Basic Information">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Thông tin cơ bản</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'basicInfo' })}</div>
         <div
           className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
@@ -111,10 +113,10 @@ const BasicInformation = (props) => {
               {/* <p>Sản lượng hàng ngày: {info.value.dailyproduction}</p> */}
             </div>
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Tên: {info.value.pname}</p>
+              <p>{dataLang.formatMessage({ id: 'name' })}: {info.value.pname}</p>
             </div>
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Dự án: {info.value.pplantname}</p>
+              <p>{dataLang.formatMessage({ id: 'project' })}: {info.value.pplantname}</p>
               {/* <p>Sản lượng: {info.value.production}</p> */}
               {/* <p>Cập nhật mới nhất: {info.value.updated}</p> */}
             </div>
@@ -128,11 +130,14 @@ const BasicInformation = (props) => {
 };
 
 const VersionInformation = (props) => {
+  const dataLang = useIntl()
   const [display, setDisplay] = React.useState(true);
   return (
     <div className="DAT_Info_Databox" id="Version Information">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Thông tin phiên bản</div>
+        <div className="DAT_Info_Databox_Title_Left">
+          {dataLang.formatMessage({ id: 'versionInfo' })}
+        </div>
         <div
           className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
@@ -154,13 +159,9 @@ const VersionInformation = (props) => {
         {display ? (
           <div className="DAT_Info_Databox_Content">
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Số phiên bản chứng nhận:V1.0</p>
-            </div>
-            <div className="DAT_Info_Databox_Content_Column">
-              <p>Số phiên bản phần mềm nội bộ: 103-103-101-1004</p>
-            </div>
-            <div className="DAT_Info_Databox_Content_Column">
-              <p>Upgrade Flag Bit：0</p>
+              <p>
+                {dataLang.formatMessage({ id: 'moduleVersion' })}: V1.0
+              </p>
             </div>
           </div>
         ) : (
@@ -172,11 +173,15 @@ const VersionInformation = (props) => {
 };
 
 const OperationInformation = (props) => {
+  const dataLang = useIntl()
+
   const [display, setDisplay] = React.useState(true);
   return (
     <div className="DAT_Info_Databox" id="Version Information">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">{props.name}</div>
+        <div className="DAT_Info_Databox_Title_Left">
+          {dataLang.formatMessage({ id: 'operationInfo' })}
+        </div>
         <div
           className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
@@ -198,15 +203,15 @@ const OperationInformation = (props) => {
         {display ? (
           <div className="DAT_Info_Databox_Content">
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Thời gian tải lên dữ liệu: 5 phút</p>
-              <p>Cường độ tín hiệu: 74</p>
+              <p>{dataLang.formatMessage({ id: 'dataUpload' })}: 5m</p>
+              <p>{dataLang.formatMessage({ id: 'signalStrength' })}: 74</p>
             </div>
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Chu kỳ thu thập dữ liệu: 60 giây</p>
-              <p>Địa chỉ MAC của mô-đun: F0FE6B2D42F6</p>
+              <p>{dataLang.formatMessage({ id: 'dataAcquisition' })}: 60s</p>
+              <p>{dataLang.formatMessage({ id: 'moduleMac' })}: F0FE6B2D42F6</p>
             </div>
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Số lượng thiết bị kết nối tối đa: 1</p>
+              <p>{dataLang.formatMessage({ id: 'maxDevices' })}: 1 </p>
             </div>
           </div>
         ) : (
@@ -741,6 +746,7 @@ const HistoricalData = (props) => {
 };
 
 export default function Info() {
+  const dataLang = useIntl();
   const [display, setDisplay] = React.useState(true);
 
   return (
@@ -760,7 +766,7 @@ export default function Info() {
         <div className="DAT_Info_Header_Right">
           <div className="DAT_Info_Header_Right_Save">
             <FaSave size={20} color="white" />
-            <span>Lưu</span>
+            <span>{dataLang.formatMessage({ id: 'save' })} </span>
           </div>
           <div className="DAT_Info_Header_Right_Close">
             <RxCross2
@@ -804,7 +810,7 @@ export default function Info() {
               <>
                 <BasicInformation />
                 <VersionInformation />
-                <OperationInformation name={"Thông tin dữ liệu"} />
+                <OperationInformation />
               </>
             );
         }

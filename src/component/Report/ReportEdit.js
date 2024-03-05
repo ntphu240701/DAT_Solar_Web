@@ -167,7 +167,7 @@ export default function Create() {
       <div className="DAT_EditReport">
         <div className="DAT_EditReport_Header">
           <div className="DAT_EditReport_Header_Left">
-            <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'edit' })}</p>
+            <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'edits' })}</p>
           </div>
           <div className="DAT_EditReport_Header_Right">
             <div

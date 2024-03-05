@@ -11,6 +11,7 @@ import { isMobile, message } from "../Navigation/Navigation";
 import { IoIosArrowDown, IoIosArrowRoundForward } from "react-icons/io";
 import SettingWarn from "./SettingWarn";
 import RaiseBox from "./RaiseBox";
+import { useIntl } from "react-intl";
 const tab = signal("all");
 const tabLable = signal("");
 const tabMobile = signal(false);
@@ -22,19 +23,20 @@ export const deletewarnState = signal(false);
 export const idDel = signal();
 
 function Warn(props) {
+  const dataLang = useIntl();
   const listTab = [
-    { id: "all", name: "Tất cả" },
-    { id: "open", name: "Đang lỗi" },
-    { id: "closed", name: "Đã khắc phục" },
+    { id: "all", name: dataLang.formatMessage({ id: 'total' }) },
+    { id: "open", name: dataLang.formatMessage({ id: 'warn' }) },
+    { id: "closed", name: dataLang.formatMessage({ id: 'resolve' }) },
   ];
 
   const color = { cur: "#6495ed", pre: "gray" };
 
   const paginationComponentOptions = {
-    rowsPerPageText: "Số hàng",
-    rangeSeparatorText: "đến",
+    rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
+    rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
     selectAllRowsItem: true,
-    selectAllRowsItemText: "tất cả",
+    selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
 
   const dataWarn = [
@@ -66,7 +68,7 @@ function Warn(props) {
       status: "open",
       opentime: "01/16/2023 21:07:12",
       closedtime: "--",
-      level: "warning",
+      level: "notice",
     },
   ];
 
@@ -84,97 +86,53 @@ function Warn(props) {
     console.log(temp.value);
   }, [message.value]);
 
+
   const columnWarn = [
     {
-      name: "STT",
+      name: dataLang.formatMessage({ id: 'ordinalNumber' }),
       selector: (row, index) => index + 1,
       width: "80px",
     },
     {
-      name: "Tên cảnh báo",
-      selector: (row) => row.name,
-      sortable: true,
-      // width: "200px",
-      style: {
-        justifyContent: "left",
-      },
-    },
-    {
-      name: "Thiết bị",
-      selector: (row) => row.device,
-      sortable: true,
-      width: "140px",
-      style: {
-        justifyContent: "left",
-      },
-    },
-    {
-      name: "Dự án",
+      name: dataLang.formatMessage({ id: 'project' }),
       selector: (row) => row.plant,
       sortable: true,
+      minWidth: "350px",
       style: {
         justifyContent: "left",
       },
     },
-    // {
-    //   name: "Trạng thái",
-    //   selector: (row) => (
-    //     <>
-    //       {row.status === "open" ? (
-    //         <MdOutlineError size={22} color="red" />
-    //       ) : (
-    //         <FaCheckCircle size={20} color="green" />
-    //       )}
-    //     </>
-    //   ),
-    //   width: "110px",
-    // },
-    // {
-    //   name: "Mức độ",
-    //   selector: (row) => (
-    //     <>
-    //       {row.level === "warning" ? (
-    //         <div className="DAT_TableWarning">Cảnh báo</div>
-    //       ) : (
-    //         <div className="DAT_TableNotice">Chú ý</div>
-    //       )}
-    //     </>
-    //   ),
-    //   sortable: true,
-    //   minWidth: "120px",
-    // },
-    // {
-    //   name: "Thiết bị",
-    //   selector: (row) => row.plant,
-    //   sortable: true,
-    //   minWidth: "350px",
-    //   style: {
-    //     justifyContent: "left",
-    //   },
-    // },
-
     {
-      name: "Mức độ cảnh báo",
+      name: dataLang.formatMessage({ id: 'name' }),
+      selector: (row) => row.name,
+      sortable: true,
+      minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: dataLang.formatMessage({ id: 'level' }),
       selector: (row) => (
         <>
           {row.level === "warning" ? (
-            <div className="DAT_TableWarning">Cảnh báo</div>
+            <div className="DAT_TableWarning">{dataLang.formatMessage({ id: 'warn' })}</div>
           ) : (
-            <div className="DAT_TableNotice">Chú ý</div>
+            <div className="DAT_TableNotice">{dataLang.formatMessage({ id: 'notice' })}</div>
           )}
         </>
       ),
       sortable: true,
-      width: "140px",
+      minWidth: "120px",
     },
     {
-      name: "Thời gian cảnh báo",
+      name: dataLang.formatMessage({ id: 'warnTime' }),
       selector: (row) => row.time,
       sortable: true,
       width: "200px",
     },
     {
-      name: "Tùy chỉnh",
+      name: dataLang.formatMessage({ id: 'setting' }),
       selector: (row) => (
         <>
           <div className="DAT_TableEdit">
@@ -198,7 +156,7 @@ function Warn(props) {
               id={row.messid + "_" + row.warnid}
               onClick={(e) => handleDeleteWarn(e)}
             >
-              Gỡ
+              {dataLang.formatMessage({ id: 'delete' })}
             </div>
           </div>
         </>
@@ -242,17 +200,17 @@ function Warn(props) {
       <div className="DAT_WarnHeader">
         <div className="DAT_WarnHeader_Title">
           <LuMailWarning color="gray" size={25} />
-          <span>Cảnh báo</span>
+          <span>{dataLang.formatMessage({ id: 'warn' })}</span>
         </div>
         <div className="DAT_WarnHeader_Filter">
-          <input type="text" placeholder="Nhập tên lỗi" />
+          <input type="text" placeholder={dataLang.formatMessage({ id: 'enterWarn' })} />
           <CiSearch color="gray" size={20} />
         </div>
         <button
           className="DAT_WarnHeader_New"
           onClick={(e) => handleSetting(e)}
         >
-          Cài đặt
+          {dataLang.formatMessage({ id: 'setting' })}
         </button>
       </div>
 

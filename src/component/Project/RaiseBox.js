@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import './Project.scss';
 import { raiseBoxState } from "./AddGateway";
+import { useIntl } from "react-intl";
 
 export default function RaiseBox(props) {
-
+  const dataLang = useIntl();
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -25,7 +26,9 @@ export default function RaiseBox(props) {
     <div className="DAT_RaiseBox_Box">
       <div className="DAT_RaiseBox_Box_Head">
         <div className="DAT_RaiseBox_Box_Head_Left">
-          <p>Thông báo</p>
+          <p>
+            {dataLang.formatMessage({ id: 'notification' })}
+          </p>
         </div>
         <div className="DAT_RaiseBox_Box_Head_Right">
           <div
@@ -53,7 +56,7 @@ export default function RaiseBox(props) {
           }}
           onClick={() => (raiseBoxState.value = false)}
         >
-          Hủy
+          {dataLang.formatMessage({ id: 'cancel' })}
         </button>
       </div>
     </div>

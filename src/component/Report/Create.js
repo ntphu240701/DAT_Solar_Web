@@ -97,6 +97,8 @@ export const CheckBox = (props) => {
           },
         };
         break;
+      default:
+        break;
     }
     // console.log(newdata.value);
   };

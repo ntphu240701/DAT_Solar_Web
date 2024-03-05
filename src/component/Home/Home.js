@@ -828,7 +828,7 @@ function Home(props) {
                   {parseFloat(coalsave.value.value * coalsave.value.tree).toFixed(2)}
                   &nbsp;
                   <span style={{ color: "grey", fontSize: "12px" }}>
-                    Cây
+                    {dataLang.formatMessage({ id: 'tree' })}
                   </span>
                 </div>
               </div>

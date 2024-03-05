@@ -4,9 +4,11 @@ import "./Warn.scss";
 import { deletewarnState, idDel, temp } from "./Warn";
 import { message } from "../Navigation/Navigation";
 import { alertDispatch } from "../Alert/Alert";
+import { useIntl } from "react-intl";
 // import { raiseBoxState } from "./AddGateway";
 
 export default function RaiseBox(props) {
+  const dataLang = useIntl();
   const handleDeleteReport = (e) => {
     deletewarnState.value = false;
     const messid = idDel.value.split("_")[0];
@@ -20,7 +22,7 @@ export default function RaiseBox(props) {
     console.log(x);
     temp.value = [...x]
     console.log(message.value);
-    alertDispatch("Xóa thành công cảnh báo");
+    alertDispatch(dataLang.formatMessage({ id: 'alert_28' }))
   };
 
   const popup_state = {
@@ -43,7 +45,9 @@ export default function RaiseBox(props) {
     <div className="DAT_PopupReport_Box">
       <div className="DAT_PopupReport_Box_Head">
         <div className="DAT_PopupReport_Box_Head_Left">
-          <p>Xóa cảnh báo</p>
+          <p>
+            {dataLang.formatMessage({ id: 'delWarn' })}
+          </p>
         </div>
         <div className="DAT_PopupReport_Box_Head_Right">
           <div
@@ -58,7 +62,9 @@ export default function RaiseBox(props) {
         </div>
       </div>
       <div className="DAT_PopupReport_Box_Body">
-        <p>Bạn có chắc chắn muốn xóa cảnh báo này ?</p>
+        <p>
+          {dataLang.formatMessage({ id: 'delreportmess' })}
+        </p>
       </div>
       <div className="DAT_PopupReport_Box_Foot">
         <button
@@ -69,13 +75,13 @@ export default function RaiseBox(props) {
           }}
           onClick={() => (deletewarnState.value = false)}
         >
-          Hủy
+          {dataLang.formatMessage({ id: 'Cancel' })}
         </button>
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={(e) => handleDeleteReport(e)}
         >
-          Xác nhận
+          {dataLang.formatMessage({ id: 'confirm' })}
         </button>
       </div>
     </div>
