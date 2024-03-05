@@ -191,8 +191,6 @@ function Navigation(props) {
         }
     }
 
-
-
     return (
         <>
             <div className='DAT_Navigation' >
