@@ -8,7 +8,6 @@ import { ruletitle } from "./CreateRule";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 
-
 export const editruledata = signal();
 
 export const CheckBox = (props) => {
@@ -130,6 +129,11 @@ export const CheckBox = (props) => {
     console.log(editruledata.value);
   };
 
+
+  useEffect(() => {
+    console.log(editruledata.value)// lay tu datarule amin
+  }, [])
+
   return (
     <div
       className="DAT_CreateRule_Body_Item_Option_Check_SingleCheck"
@@ -174,10 +178,10 @@ export default function EditRule() {
       <div className="DAT_CreateRule_Body_Item">
         <div className="DAT_CreateRule_Body_Item_Data">
           <div className="DAT_CreateRule_Body_Item_Data_Name">
-            <label>Tên phân quyền: </label>
+            <label>{dataLang.formatMessage({ id: 'ruleName' })}: </label>
             <input
               type="text"
-              placeholder="Required Field"
+              placeholder={dataLang.formatMessage({ id: 'required' })}
               required
               id="reportname"
               defaultValue={rulenameRef.current}
@@ -205,9 +209,9 @@ export default function EditRule() {
         ...datarule.value.slice(i + 1),
       ]
       editRuleState.value = false;
-      alertDispatch("Cập nhật thành công phân quyền !")
+      alertDispatch(dataLang.formatMessage({ id: 'alert_21' }))
     } else {
-      alertDispatch("Vui lòng nhập tên phân quyền !");
+      alertDispatch(dataLang.formatMessage({ id: 'alert_22' }));
     }
 
   };
@@ -226,7 +230,7 @@ export default function EditRule() {
       <div className="DAT_CreateRule">
         <div className="DAT_CreateRule_Header">
           <div className="DAT_CreateRule_Header_Left">
-            <p style={{ fontSize: "20px" }}>Chỉnh sửa phân quyền</p>
+            <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'edits' })}</p>
           </div>
           <div className="DAT_CreateRule_Header_Right">
             <div
@@ -234,7 +238,7 @@ export default function EditRule() {
               onClick={() => handleSave()}
             >
               <FaSave size={20} color="white" />
-              <span>Lưu</span>
+              <span>{dataLang.formatMessage({ id: 'save' })}</span>
             </div>
             <div className="DAT_CreateRule_Header_Right_Close">
               <RxCross2
@@ -252,7 +256,7 @@ export default function EditRule() {
 
           <div className="DAT_CreateRule_Body_Item">
             <div className="DAT_CreateRule_Body_Item_Option">
-              <label style={{ margin: "0" }}>Tùy chọn các quyền</label>
+              <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: 'ruleOptions' })}</label>
               {ruletitle.value.map((item, key) => (
                 <div
                   key={key}
@@ -268,7 +272,7 @@ export default function EditRule() {
                         num={String(key)}
                         tab={item + "_content"}
                         status={value.status}
-                        id={value.lang}
+                        id={dataLang.formatMessage({ id: value.lang })}
                         html={item + "_" + key}
                         width={widthCheckBox}
                       />

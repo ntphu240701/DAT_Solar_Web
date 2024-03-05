@@ -7,8 +7,11 @@ import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
 import { temp } from "./ProjectData";
 import { userInfor } from "../../App";
+import { useIntl } from "react-intl";
+import { data } from "jquery";
 
 export default function Popup(props) {
+  const dataLang = useIntl();
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -27,7 +30,7 @@ export default function Popup(props) {
         const dropProject = async (plantid, usr, partnerid, type) => {
           let d = await callApi('post', host.DATA + '/dropPlant', { plantid: plantid, usr: usr, partnerid: partnerid, type: type })
           if (d.status === true) {
-            alertDispatch("Dự án đã được xóa");
+            alertDispatch(dataLang.formatMessage({ id: 'alert_24' }));
 
             dataproject.value = dataproject.value.filter(
               (item) => item.plantid != props.plantid
@@ -42,12 +45,12 @@ export default function Popup(props) {
           let d = await callApi('post', host.DATA + '/dropLogger', { plantid: plantid, sn: sn });
           if (d.status === true) {
             temp.value = temp.value.filter((item) => item.sn != props.sn);
-            alertDispatch("Đã xóa thành công thiết bị")
+            alertDispatch(dataLang.formatMessage({ id: 'alert_25' }))
             popupState.value = false;
           } else if (d.number == 0) {
-            alertDispatch("Không thể xóa thiết bị, lỗi định dạng")
+            alertDispatch(dataLang.formatMessage({ id: 'alert_26' }))
           } else if (d.number == 1) {
-            alertDispatch("Không thể xóa thiết bị, lỗi hệ thống")
+            alertDispatch(dataLang.formatMessage({ id: 'alert_27' }))
           }
         }
         dropLogger(props.plantid, props.sn);
@@ -61,7 +64,7 @@ export default function Popup(props) {
     <div className="DAT_Popup_Box">
       <div className="DAT_Popup_Box_Head">
         <div className="DAT_Popup_Box_Head_Left">
-          <p>Xóa </p>
+          <p>{dataLang.formatMessage({ id: 'delete' })} </p>
         </div>
         <div className="DAT_Popup_Box_Head_Right">
           <div
@@ -77,14 +80,12 @@ export default function Popup(props) {
       </div>
       <div className="DAT_Popup_Box_Body">
         <span>
-          Bạn có chắc chắn muốn xóa vĩnh viễn dự án này không? Tất cả dữ liệu
-          lịch sử của
+          {dataLang.formatMessage({ id: 'delPlant' })}
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
             {props.type === "plant" ? projectData.value.plantname : props.sn}
           </span>
           &nbsp;
-          sẽ bị xóa.
         </span>
       </div>
       <div className="DAT_Popup_Box_Foot">
@@ -96,14 +97,14 @@ export default function Popup(props) {
           }}
           onClick={() => (popupState.value = false)}
         >
-          Hủy
+          {dataLang.formatMessage({ id: 'cancel' })}
         </button>
         <button
           // id={projectData.value.plantid}
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={(e) => handleDelete(e)}
         >
-          Xác nhận
+          {dataLang.formatMessage({ id: 'confirm' })}
         </button>
       </div>
     </div>

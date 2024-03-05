@@ -432,15 +432,15 @@ function Project(props) {
       sortable: true,
       // width: "140px",
     },
-    {
-      name: "Tag",
-      selector: (row) => (
-        <div className="DAT_TableEdit">
-          <MdEditDocument color="gray" size={20} />
-        </div>
-      ),
-      width: "100px",
-    },
+    // {
+    //   name: "Tag",
+    //   selector: (row) => (
+    //     <div className="DAT_TableEdit">
+    //       <MdEditDocument color="gray" size={20} />
+    //     </div>
+    //   ),
+    //   width: "100px",
+    // },
     {
       name: dataLang.formatMessage({ id: 'lastUpdate' }),
       selector: (row) => row.lastupdate,
@@ -477,14 +477,14 @@ function Project(props) {
               id={row.plantid}
               onClick={(e) => handleEdit(e)}
             >
-              Chỉnh sửa
+              {dataLang.formatMessage({ id: 'edits' })}
             </div>
             <div
               className="DAT_ModifyBox_Remove"
               id={row.plantid}
               onClick={(e) => handleDelete(e)}
             >
-              Gỡ
+              {dataLang.formatMessage({ id: 'delete' })}
             </div>
           </div>
         </>

@@ -39,7 +39,7 @@ export const message = signal([
                 warnid: 2,
                 device: 'I0000145',
                 plant: 'Năng lượng DAT 02',
-                level: 'warning',
+                level: 'notice',
                 time: '12/30/2023 12:07:33'
             },
             {
@@ -66,7 +66,7 @@ export const message = signal([
                 warnid: 2,
                 device: 'I0000369',
                 plant: 'Năng lượng DAT 03',
-                level: 'warning',
+                level: 'notice',
                 time: '01/17/2023 12:07:33'
             },
         ]

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { confirmDeleteState, datarule, ruleID } from "./Rule";
 import { alertDispatch } from "../Alert/Alert";
+import { useIntl } from "react-intl";
 
 export default function ConfirmDeleteRule() {
+  const dataLang = useIntl();
   const [del, setDel] = useState(true);
   const handleDeleteReport = (e) => {
     console.log(ruleID.value);
@@ -14,7 +16,7 @@ export default function ConfirmDeleteRule() {
         (item) => item.ruleid !== ruleID.value
       );
       confirmDeleteState.value = false;
-      alertDispatch("Xóa phân quyền thành công.")
+      alertDispatch(dataLang.formatMessage({ id: 'alert_23' }))
     }
   };
 
@@ -38,7 +40,7 @@ export default function ConfirmDeleteRule() {
     <div className="DAT_ConfirmPopup_Box">
       <div className="DAT_ConfirmPopup_Box_Head">
         <div className="DAT_ConfirmPopup_Box_Head_Left">
-          <p>Xóa phân quyền</p>
+          <p>{dataLang.formatMessage({ id: 'delRule' })}</p>
         </div>
         <div className="DAT_ConfirmPopup_Box_Head_Right">
           <div
@@ -54,9 +56,9 @@ export default function ConfirmDeleteRule() {
       </div>
       <div className="DAT_ConfirmPopup_Box_Body">
         {del ? (
-          <p>Bạn có chắc chắn muốn xóa phân quyền này không?</p>
+          <p>{dataLang.formatMessage({ id: 'delrulemess' })}</p>
         ) : (
-          <p>Không thể xóa phân quyền này.</p>
+          <p>{dataLang.formatMessage({ id: 'deleteDenied' })}</p>
         )}
       </div>
       <div className="DAT_ConfirmPopup_Box_Foot">
@@ -70,13 +72,13 @@ export default function ConfirmDeleteRule() {
               }}
               onClick={() => (confirmDeleteState.value = false)}
             >
-              Hủy
+              {dataLang.formatMessage({ id: 'cancel' })}
             </button>
             <button
               style={{ backgroundColor: "#048FFF", color: "white" }}
               onClick={(e) => handleDeleteReport(e)}
             >
-              Xác nhận
+              {dataLang.formatMessage({ id: 'confirm' })}
             </button>
           </>
         ) : (
@@ -88,7 +90,7 @@ export default function ConfirmDeleteRule() {
             }}
             onClick={() => (confirmDeleteState.value = false)}
           >
-            Thoát
+            {dataLang.formatMessage({ id: 'quit' })}
           </button>
         )}
       </div>

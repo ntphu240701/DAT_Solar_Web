@@ -477,7 +477,7 @@
 
  .DAT_TableWarning {
    // border: solid 1px rgb(205, 205, 205);
-   background-color: rgb(253, 193, 39, 0.9);
+   background-color: rgba(254, 9, 9, 0.8);
    padding: 7px;
    width: 70px;
    display: flex;
@@ -486,11 +486,11 @@
    color: #ffffff;
    font-size: 13px;
    border-radius: 5px;
- }
-
- .DAT_TableNotice {
-   // border: solid 1px rgb(205, 205, 205);
-   background-color: rgba(254, 9, 9, 0.8);
+  }
+  
+  .DAT_TableNotice {
+    // border: solid 1px rgb(205, 205, 205);
+    background-color: rgba(251, 203, 80, 0.9);
    padding: 7px;
    width: 70px;
    display: flex;
