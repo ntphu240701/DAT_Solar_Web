@@ -682,27 +682,27 @@ function EditProject(props) {
       </div>
 
       <BasicInfo
-        tit={"Thông tin cơ bản"}
+        tit={dataLang.formatMessage({ id: 'basicInfo' })}
         height={isMobile.value ? "580px" : "300px"}
       />
 
       <SystemInfo
-        tit={"Thông tin hệ thống"}
+        tit={dataLang.formatMessage({ id: 'systemInfo' })}
         height={isMobile.value ? "440px" : "190px"}
       />
 
       <YieldInfo
-        tit={"Thông tin sản lượng"}
+        tit={dataLang.formatMessage({ id: 'yieldInfo' })}
         height={isMobile.value ? "180px" : "100px"}
       />
 
       <OwnerInfo
-        tit={"Thông tin người sở hữu"}
+        tit={dataLang.formatMessage({ id: 'ownerInfo' })}
         height={isMobile.value ? "270px" : "100px"}
       />
 
       <ImgInfo
-        tit={"Ảnh đại diện"}
+        tit={dataLang.formatMessage({ id: 'imgInfo' })}
         height={isMobile.value ? "260px" : "260px"}
       />
     </div>

@@ -906,7 +906,8 @@ function ProjectData(props) {
                       </div>
 
                       <div style={{ color: "grey", fontSize: 14 }}>
-                        Cập nhật lần cuối {projectData.value.lastupdate}
+                        {dataLang.formatMessage({ id: 'lastUpdate' })}
+                        {projectData.value.lastupdate}
                       </div>
                     </div>
                   );
@@ -933,7 +934,7 @@ function ProjectData(props) {
                   id="add"
                   onClick={() => popupAddGateway.value = true}
                 >
-                  Thêm
+                  {dataLang.formatMessage({ id: 'ADD' })}
                 </button>
               </div>
               <div className="DAT_ProjectData_Header_Right_More">
@@ -1798,14 +1799,14 @@ function ProjectData(props) {
                   style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
                   onClick={(e) => handleView(e)}
                 >
-                  Giám sát
+                  {dataLang.formatMessage({ id: 'monitor' })}
                 </div>
                 <div className="DAT_ProjectDataDrop_Item"
                   id="device"
                   style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
                   onClick={(e) => handleView(e)}
                 >
-                  Thiết bị
+                  {dataLang.formatMessage({ id: 'device' })}
                 </div>
                 {/* <div className="DAT_ProjectDataDrop_Item"
               id="alert"
