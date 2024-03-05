@@ -6,6 +6,8 @@ import { isMobile } from "../Navigation/Navigation";
 import { signal } from "@preact/signals-react";
 import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
+import { setKey, geocode, RequestType } from "react-geocode";
+
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
@@ -51,6 +53,32 @@ const BasicInfo = (props) => {
     },
     zoom: 7.0,
   };
+
+  const handleMap = (e) => {
+    const addr = document.getElementById("addr")
+    console.log(addr.value)
+    setKey(process.env.REACT_APP_GGKEY);
+    geocode(RequestType.ADDRESS, addr.value)
+      .then((response) => {
+        console.log(response.results[0].geometry.location);
+
+        var long_ = document.getElementById("long")
+        var lat_ = document.getElementById("lat")
+        lat_.value = response.results[0].geometry.location.lat
+        long_.value = response.results[0].geometry.location.lng
+        plantData.value = {
+          ...plantData.value,
+          lat: response.results[0].geometry.location.lat,
+          long: response.results[0].geometry.location.lng,
+        }
+
+
+      })
+      .catch((error) => {
+        alertDispatch(dataLang.formatMessage({ id: "alert_19" }))
+
+      });
+  }
 
   // const name = useRef();
   // const address = useRef();
@@ -130,6 +158,7 @@ const BasicInfo = (props) => {
                       type="text"
                       // ref={long}
                       onChange={(e) => handleBasic(e)}
+                      onClick={(e) => handleMap(e)}
                       required
                     />
                   </div>
@@ -142,6 +171,7 @@ const BasicInfo = (props) => {
                       type="text"
                       // ref={lat}
                       onChange={(e) => handleBasic(e)}
+                      onClick={(e) => handleMap(e)}
                       required
                     />
                   </div>
@@ -682,10 +712,10 @@ function AddProject(props) {
         height={isMobile.value ? "320px" : "100px"}
       />
 
-      <ImgInfo
+      {/* <ImgInfo
         tit={dataLang.formatMessage({ id: 'imgInfo' })}
         height={isMobile.value ? "320px" : "260px"}
-      />
+      /> */}
     </div>
   );
 }

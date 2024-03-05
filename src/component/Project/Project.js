@@ -245,7 +245,7 @@ function Project(props) {
     { id: "online", name: dataLang.formatMessage({ id: 'online' }) },
     { id: "offline", name: dataLang.formatMessage({ id: 'offline' }) },
     { id: "warn", name: dataLang.formatMessage({ id: 'warn' }) },
-    { id: "demo", name: dataLang.formatMessage({ id: 'demo' }) },
+    // { id: "demo", name: dataLang.formatMessage({ id: 'demo' }) },
   ];
 
   // const color = { cur: "#6495ed", pre: "gray" };
@@ -374,7 +374,7 @@ function Project(props) {
       name: dataLang.formatMessage({ id: 'name' }),
       selector: (row) => (
         <div className="DAT_Table" id={row.plantid} onClick={(e) => handlePlant(e)}>
-          <img src="/dat_picture/solar_panel.png" alt="" />
+          <img src={row.img ? row.img : "/dat_picture/solar_panel.png"} alt="" />
 
           <div className="DAT_Table_Infor">
             <div className="DAT_Table_Infor_Name">{row.plantname}</div>

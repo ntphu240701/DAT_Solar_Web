@@ -107,16 +107,16 @@ const BasicInformation = (props) => {
         {display ? (
           <div className="DAT_Info_Databox_Content">
             <div className="DAT_Info_Databox_Content_Column">
-              <p>SN: {info.value.SN}</p>
-              <p>Sản lượng hàng ngày: {info.value.dailyproduction}</p>
+              <p>SN: {info.value.psn}</p>
+              {/* <p>Sản lượng hàng ngày: {info.value.dailyproduction}</p> */}
             </div>
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Tên: {info.value.name}</p>
-              <p>Dự án: {info.value.plant}</p>
+              <p>Tên: {info.value.pname}</p>
             </div>
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Sản lượng: {info.value.production}</p>
-              <p>Cập nhật mới nhất: {info.value.updated}</p>
+              <p>Dự án: {info.value.pplantname}</p>
+              {/* <p>Sản lượng: {info.value.production}</p> */}
+              {/* <p>Cập nhật mới nhất: {info.value.updated}</p> */}
             </div>
           </div>
         ) : (
@@ -747,10 +747,10 @@ export default function Info() {
     <div className="DAT_Info">
       <div className="DAT_Info_Header">
         <div className="DAT_Info_Header_Left">
-          <p style={{ fontWeight: "bold" }}>{info.value.name}: {info.value.SN}</p>
+          <p style={{ fontWeight: "bold" }}>{info.value.pname}: {info.value.psn}</p>
           <a style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            
-            {info.value.status ? (
+
+            {info.value.pstate == 1 ? (
               <FaCheckCircle size={20} color="green" />
             ) : (
               <MdOutlineError size={20} color="red" />
