@@ -926,10 +926,20 @@ function ProjectData(props) {
             })()}
 
             <div className="DAT_ProjectData_Header_Right">
-              <div className="DAT_ProjectData_Header_Right_More"
-                onClick={() => (dropState.value = !dropState.value)}
-              >
-                <IoMenu size={20} color="white" />
+              <div className="DAT_ProjectData_Header_Right_Add" style={{ display: view === "device" ? "block" : "none" }}>
+                <button
+                  id="add"
+                  onClick={() => popupAddGateway.value = true}
+                >
+                  Thêm
+                </button>
+              </div>
+              <div className="DAT_ProjectData_Header_Right_More">
+                <BsThreeDotsVertical
+                  size={20}
+                  color="#9e9e9e"
+                  onClick={() => (dropState.value = !dropState.value)}
+                />
               </div>
               <div className="DAT_ProjectData_Header_Right_Close">
                 <RxCross2
@@ -1396,15 +1406,17 @@ function ProjectData(props) {
                             <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item_Icon">
                               <MdPermDataSetting size={24} color="#6495ed" />
                             </div>
-                            <div>
+                            <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item_Tit">
                               <div style={{ fontSize: "14px", color: "grey" }}>
                                 Lượng than tiết kiệm
                               </div>
-                              <div>{parseFloat(coalsave.value.value * coalsave.value.ef).toFixed(2)}
+                              <div>
+                                {parseFloat(coalsave.value.value * coalsave.value.ef).toFixed(2)}
                                 &nbsp;
                                 <span style={{ color: "grey", fontSize: "12px" }}>
                                   t
-                                </span></div>
+                                </span>
+                              </div>
                             </div>
                           </div>
                           <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item">
@@ -1764,24 +1776,26 @@ function ProjectData(props) {
           <>
             {dropState.value ? (
               <div className="DAT_ProjectDataDrop">
-                <div className="DAT_ProjectDataDrop_Dashboard"
+                <div className="DAT_ProjectDataDrop_Item"
                   id="dashboard"
+                  style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
                   onClick={(e) => handleView(e)}
                 >
-                  <AiOutlineDashboard size={20} color="white" />
+                  Giám sát
                 </div>
-                <div className="DAT_ProjectDataDrop_Device"
+                <div className="DAT_ProjectDataDrop_Item"
                   id="device"
+                  style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
                   onClick={(e) => handleView(e)}
                 >
-                  <BsMenuButtonWide size={20} color="white" />
+                  Thiết bị
                 </div>
-                <div className="DAT_ProjectDataDrop_Alert"
-                  id="alert"
-                  onClick={(e) => handleView(e)}
-                >
-                  <GoAlertFill size={20} color="white" />
-                </div>
+                {/* <div className="DAT_ProjectDataDrop_Item"
+              id="alert"
+              onClick={() => handleWarn()}
+            >
+              Cảnh báo
+            </div> */}
               </div>
             ) : (
               <></>

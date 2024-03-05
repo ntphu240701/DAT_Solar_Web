@@ -694,22 +694,22 @@ function AddProject(props) {
 
       <BasicInfo
         tit={dataLang.formatMessage({ id: 'basicInfo' })}
-        height={isMobile.value ? "700px" : "300px"}
+        height={isMobile.value ? "580px" : "300px"}
       />
 
       <SystemInfo
         tit={dataLang.formatMessage({ id: 'systemInfo' })}
-        height={isMobile.value ? "530px" : "190px"}
+        height={isMobile.value ? "440px" : "190px"}
       />
 
       <YieldInfo
         tit={dataLang.formatMessage({ id: 'yieldInfo' })}
-        height={isMobile.value ? "220px" : "100px"}
+        height={isMobile.value ? "180px" : "100px"}
       />
 
       <OwnerInfo
         tit={dataLang.formatMessage({ id: 'ownerInfo' })}
-        height={isMobile.value ? "320px" : "100px"}
+        height={isMobile.value ? "270px" : "100px"}
       />
 
       {/* <ImgInfo

@@ -590,6 +590,10 @@ function Project(props) {
       }
     }
     getPlant(user, userInfor.value.partnerid, userInfor.value.type);
+
+    return () => {
+      plantState.value = "default";
+    }
   }, []);
 
   return (
@@ -622,7 +626,7 @@ function Project(props) {
           className="DAT_ProjectHeader_New"
           onClick={() => (plantState.value = "add")}
         >
-          <option value={"createdate"}>{dataLang.formatMessage({ id: 'createNew' })}</option>
+          <span value={"createdate"}>{dataLang.formatMessage({ id: 'createNew' })}</span>
         </button>
       </div>
 
@@ -763,13 +767,14 @@ function Project(props) {
             }
           })()}
         </div>
-      </div>
+      </div >
 
-      <div className="DAT_ProjectInfor"
+      <div div className="DAT_ProjectInfor"
         style={{
           height: plantState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",
-        }}
+        }
+        }
       >
         {(() => {
           switch (plantState.value) {
@@ -783,15 +788,17 @@ function Project(props) {
               return <></>;
           }
         })()}
-      </div>
+      </div >
 
-      {popupState.value ? (
-        <div className="DAT_DevicePopup">
-          <Popup plantid={projectData.value.plantid} type="plant" usr={user} />
-        </div>
-      ) : (
-        <></>
-      )}
+      {
+        popupState.value ? (
+          <div className="DAT_DevicePopup">
+            <Popup plantid={projectData.value.plantid} type="plant" usr={user} />
+          </div>
+        ) : (
+          <></>
+        )
+      }
     </>
   );
 }

@@ -38,6 +38,7 @@
         & select {
             border: none;
             outline: none;
+            background-color: white;
         }
     }
 
@@ -918,7 +919,7 @@
 
                 &_Left {
                     flex: 1;
-                    min-width: 50px;
+                    min-width: 80px;
                 }
 
                 &_Right {
@@ -933,6 +934,7 @@
                         height: 25px;
                         display: flex;
                         flex-wrap: wrap;
+                        overflow: hidden;
                         border: solid 1px rgb(199, 199, 199);
                         border-radius: 5px;
 
@@ -1161,25 +1163,17 @@
                 padding: 16px;
 
                 &_Content {
-                    padding: 16px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 150px;
-
                     &_Col {
+                        padding: 16px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 10px;
+
                         &_Item {
                             padding: 16px;
-                            display: flex;
-                            flex-wrap: wrap;
-                            overflow: hidden;
-                            align-items: center;
-
-                            &_Icon {
-                                display: flex;
-                                align-items: center;
-                                margin-right: 16px;
-                            }
+                            flex: 1;
+                            text-align: center;
+                            min-width: 150px;
                         }
                     }
                 }
@@ -1668,6 +1662,7 @@
                         border-radius: 5px;
                         border: solid 1px rgb(199, 199, 199);
                         padding: 4px;
+                        background-color: white;
                     }
                 }
             }
@@ -1696,6 +1691,7 @@
                         box-sizing: border-box;
                         -webkit-box-sizing: border-box;
                         -moz-box-sizing: border-box;
+                        background-color: white;
                     }
                 }
             }
@@ -1724,6 +1720,7 @@
                         box-sizing: border-box;
                         -webkit-box-sizing: border-box;
                         -moz-box-sizing: border-box;
+                        background-color: white;
                     }
                 }
             }
@@ -1782,6 +1779,7 @@
                         border-radius: 5px;
                         border: solid 1px rgb(199, 199, 199);
                         padding: 4px;
+                        background-color: white;
                     }
                 }
             }
@@ -2257,6 +2255,7 @@
                         border-radius: 5px;
                         border: solid 1px rgb(199, 199, 199);
                         padding: 4px;
+                        background-color: white;
                     }
                 }
             }
@@ -2285,6 +2284,7 @@
                         box-sizing: border-box;
                         -webkit-box-sizing: border-box;
                         -moz-box-sizing: border-box;
+                        background-color: white;
                     }
                 }
             }
@@ -2371,6 +2371,7 @@
                         border-radius: 5px;
                         border: solid 1px rgb(199, 199, 199);
                         padding: 4px;
+                        background-color: white;
                     }
                 }
             }
@@ -2957,7 +2958,7 @@
 
 .DAT_CustomPicker {
     height: 40px;
-    width: 120px;
+    min-width: 120px;
     border: solid 1px rgb(199, 199, 199);
     margin-right: 0px;
     display: flex;
@@ -3039,6 +3040,23 @@
 }
 
 @media (max-width: 900px) {
+    .DAT_ProjectHeader {
+        &_Title {
+            margin-bottom: 10px;
+        }
+
+        &_Filter {
+            min-width: 95%;
+            margin: auto;
+            margin-bottom: 10px;
+        }
+
+        &_New {
+            color: white !important;
+            min-width: 100px;
+        }
+    }
+
     .DAT_Project {
         width: 98%;
 
@@ -3051,9 +3069,9 @@
 
     .DAT_ProjectData {
         &_Header {
-            &_Left {
+            &_LeftDashboard {
                 flex: 5;
-                min-width: 200px;
+                min-width: 100px;
                 padding: 16px;
             }
 
@@ -3063,7 +3081,7 @@
         }
 
         &_Dashboard {
-            margin-top: 180px;
+            margin-top: 16px;
             margin-bottom: 100px;
 
             &_Data {
@@ -3099,6 +3117,10 @@
                     margin-bottom: 16px;
                 }
             }
+
+            &_History {}
+
+            &_More {}
         }
 
         &_Device {
@@ -3108,7 +3130,8 @@
     }
 
     .DAT_ProjectDataDrop {
-        top: 140px;
+        top: 160px;
+        right: 60px;
     }
 
     .DAT_ProjectDataDrop2 {
@@ -3252,6 +3275,31 @@
         }
 
         &_OwnerInfo {
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            overflow-y: scroll;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            // margin-bottom: 100px;
+
+            &::-webkit-scrollbar {
+                display: none;
+                /* Safari and Chrome */
+            }
+
+            &_Tit {
+                &_Left {
+                    min-width: 300px;
+                }
+            }
+
+            &_Body {
+                display: contents;
+            }
+        }
+
+        &_ImgInfo {
             box-sizing: border-box;
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;

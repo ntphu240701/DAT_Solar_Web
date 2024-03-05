@@ -680,27 +680,27 @@ function EditProject(props) {
 
       <BasicInfo
         tit={"Thông tin cơ bản"}
-        height={isMobile.value ? "700px" : "300px"}
+        height={isMobile.value ? "580px" : "300px"}
       />
 
       <SystemInfo
         tit={"Thông tin hệ thống"}
-        height={isMobile.value ? "530px" : "190px"}
+        height={isMobile.value ? "440px" : "190px"}
       />
 
       <YieldInfo
         tit={"Thông tin sản lượng"}
-        height={isMobile.value ? "220px" : "100px"}
+        height={isMobile.value ? "180px" : "100px"}
       />
 
       <OwnerInfo
         tit={"Thông tin người sở hữu"}
-        height={isMobile.value ? "320px" : "100px"}
+        height={isMobile.value ? "270px" : "100px"}
       />
 
       <ImgInfo
         tit={"Ảnh đại diện"}
-        height={isMobile.value ? "320px" : "260px"}
+        height={isMobile.value ? "260px" : "260px"}
       />
     </div>
   );
