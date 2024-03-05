@@ -682,7 +682,6 @@ function EditProject(props) {
       </div>
 
       <BasicInfo
-<<<<<<< HEAD
         tit={"Thông tin cơ bản"}
         height={isMobile.value ? "580px" : "300px"}
       />
@@ -705,30 +704,6 @@ function EditProject(props) {
       <ImgInfo
         tit={"Ảnh đại diện"}
         height={isMobile.value ? "260px" : "260px"}
-=======
-        tit={dataLang.formatMessage({ id: 'basicInfo' })}
-        height={isMobile.value ? "700px" : "300px"}
-      />
-
-      <SystemInfo
-        tit={dataLang.formatMessage({ id: 'systemInfo' })}
-        height={isMobile.value ? "530px" : "190px"}
-      />
-
-      <YieldInfo
-        tit={dataLang.formatMessage({ id: 'yieldInfo' })}
-        height={isMobile.value ? "220px" : "100px"}
-      />
-
-      <OwnerInfo
-        tit={dataLang.formatMessage({ id: 'ownerInfo' })}
-        height={isMobile.value ? "320px" : "100px"}
-      />
-
-      <ImgInfo
-        tit={dataLang.formatMessage({ id: 'imgInfo' })}
-        height={isMobile.value ? "320px" : "260px"}
->>>>>>> f30709dc36b90f5bacf19c77d57690e29b9f9413
       />
     </div>
   );

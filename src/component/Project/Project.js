@@ -22,6 +22,8 @@ import { signal } from "@preact/signals-react";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
 import { data } from "jquery";
+import { IoAddOutline } from "react-icons/io5";
+import { RxCross2 } from "react-icons/rx";
 
 const tab = signal("total");
 const tabLable = signal("");
@@ -238,7 +240,7 @@ function Project(props) {
   const user = useSelector(state => state.admin.usr);
   const [datafilter, setDatafilter] = useState([]);
   const [type, setType] = useState("name");
-  // const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState("");
 
   const listTab = [
     { id: "total", name: dataLang.formatMessage({ id: 'total' }) },
@@ -601,45 +603,77 @@ function Project(props) {
       <div className="DAT_ProjectHeader">
         <div className="DAT_ProjectHeader_Title">
           <GoProject color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'project' })}</span>
+
         </div>
 
-        <div className="DAT_ProjectHeader_Filter">
-          <select onChange={(e) => pickTypeFilter(e)}>
-            <option value={"name"}>{dataLang.formatMessage({ id: 'name' })}</option>
-            <option value={"connect"}>{dataLang.formatMessage({ id: 'connect' })}</option>
-            <option value={"status"}>{dataLang.formatMessage({ id: 'status' })}</option>
-            <option value={"capacity"}>{dataLang.formatMessage({ id: 'capacity' })}</option>
-            <option value={"production"}>{dataLang.formatMessage({ id: 'production' })}</option>
-            <option value={"power"}>{dataLang.formatMessage({ id: 'power' })}</option>
-            <option value={"lastupdate"}>{dataLang.formatMessage({ id: 'lastUpdate' })}</option>
-            <option value={"createdate"}>{dataLang.formatMessage({ id: 'createDate' })}</option>
-          </select>
-          <input
-            type="text"
-            placeholder={dataLang.formatMessage({ id: 'enterPr' })}
-            onChange={(e) => handleSearch(e)}
-          />
-          <CiSearch color="gray" size={20} />
-        </div>
+        {isMobile.value
+          ? <>
+            <div className="DAT_Modify">
+              <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
+              <div className="DAT_Modify_Item" onClick={() => (plantState.value = "add")}><IoAddOutline color="white" size={20} /></div>
+            </div>
 
-        <button
-          className="DAT_ProjectHeader_New"
-          onClick={() => (plantState.value = "add")}
-        >
-          <span value={"createdate"}>{dataLang.formatMessage({ id: 'createNew' })}</span>
-        </button>
+            {filter ?
+
+              <div className="DAT_Modify_Filter">
+                <select onChange={(e) => pickTypeFilter(e)}>
+                  <option value={"name"}>{dataLang.formatMessage({ id: 'name' })}</option>
+                  <option value={"connect"}>{dataLang.formatMessage({ id: 'connect' })}</option>
+                  <option value={"status"}>{dataLang.formatMessage({ id: 'status' })}</option>
+                  <option value={"capacity"}>{dataLang.formatMessage({ id: 'capacity' })}</option>
+                  <option value={"production"}>{dataLang.formatMessage({ id: 'production' })}</option>
+                  <option value={"power"}>{dataLang.formatMessage({ id: 'power' })}</option>
+                  <option value={"lastupdate"}>{dataLang.formatMessage({ id: 'lastUpdate' })}</option>
+                  <option value={"createdate"}>{dataLang.formatMessage({ id: 'createDate' })}</option>
+                </select>
+                <input
+                  type="text"
+                  placeholder={dataLang.formatMessage({ id: 'enterPr' })}
+                  onChange={(e) => handleSearch(e)}
+                />
+                {/* <CiSearch color="gray" size={20} /> */}
+                <span onClick={() => setFilter(!filter)}
+                  style={{ cursor: "pointer" }}
+                >
+
+                  <RxCross2 size={20} color="grey" />
+                </span>
+              </div>
+              : <></>}
+          </> :
+          <>
+            <div className="DAT_ProjectHeader_Filter">
+              <select onChange={(e) => pickTypeFilter(e)}>
+                <option value={"name"}>{dataLang.formatMessage({ id: 'name' })}</option>
+                <option value={"connect"}>{dataLang.formatMessage({ id: 'connect' })}</option>
+                <option value={"status"}>{dataLang.formatMessage({ id: 'status' })}</option>
+                <option value={"capacity"}>{dataLang.formatMessage({ id: 'capacity' })}</option>
+                <option value={"production"}>{dataLang.formatMessage({ id: 'production' })}</option>
+                <option value={"power"}>{dataLang.formatMessage({ id: 'power' })}</option>
+                <option value={"lastupdate"}>{dataLang.formatMessage({ id: 'lastUpdate' })}</option>
+                <option value={"createdate"}>{dataLang.formatMessage({ id: 'createDate' })}</option>
+              </select>
+              <input
+                type="text"
+                placeholder={dataLang.formatMessage({ id: 'enterPr' })}
+                onChange={(e) => handleSearch(e)}
+              />
+              <CiSearch color="gray" size={20} />
+            </div>
+
+            <button className="DAT_ProjectHeader_New"
+              onClick={() => (plantState.value = "add")}
+            >
+              <span value={"createdate"}>{dataLang.formatMessage({ id: 'createNew' })}</span>
+            </button>
+
+          </>
+        }
+
       </div>
 
-      <div className="DAT_Project">
-        {/* <div className='DAT_Project_Nav'>
-                    <span id='total' style={{ color: tab.value === "total" ? color.cur : color.pre }} onClick={() => { tab.value = "total" }} >Tổng({dataproject.length})</span>
-                    <span id='online' style={{ color: tab.value === "online" ? color.cur : color.pre }} onClick={() => { tab.value = "online" }} >Online({online.value.length})</span>
-                    <span id='offline' style={{ color: tab.value === "offline" ? color.cur : color.pre }} onClick={() => { tab.value = "offline" }} >Offline({offline.value.length})</span>
-                    <span id='demo' style={{ color: tab.value === "demo" ? color.cur : color.pre }} onClick={(e) => { tab.value = "demo" }} >Chạy thử({demo.value.length})</span>
-                    <span id='warn' style={{ color: tab.value === "warn" ? color.cur : color.pre }} onClick={() => { tab.value = "warn" }} >Cảnh báo({warn.value.length})</span>
-                </div> */}
-
-        {isMobile.value ? (
+      {isMobile.value
+        ? <div className="DAT_ProjectMobile">
           <div className="DAT_Toollist_Tab_Mobile">
             <button
               className="DAT_Toollist_Tab_Mobile_content"
@@ -648,23 +682,202 @@ function Project(props) {
               <span> {tabLable.value}</span>
               {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}
             </button>
-            <div className="DAT_Toollist_Tab_Mobile_list">
-              {listTab.map((item, i) => {
-                return (
-                  <div
-                    className="DAT_Toollist_Tab_Mobile_list_item"
-                    style={{ display: tabMobile.value ? "block" : "none" }}
-                    key={"tabmobile_" + i}
-                    id={item.id}
-                    onClick={(e) => handleTabMobile(e)}
-                  >
-                    {i + 1}: {item.name}
-                  </div>
-                );
-              })}
-            </div>
+            {tabMobile.value
+              ? <div className="DAT_Toollist_Tab_Mobile_list">
+                {listTab.map((item, i) => {
+                  return (
+                    <div
+                      className="DAT_Toollist_Tab_Mobile_list_item"
+                      // style={{ display: tabMobile.value ? "block" : "none" }}
+                      key={"tabmobile_" + i}
+                      id={item.id}
+                      onClick={(e) => handleTabMobile(e)}
+                    >
+                      {i + 1}: {item.name}
+                    </div>
+                  );
+                })}
+              </div>
+              : <></>
+            }
+
           </div>
-        ) : (
+
+          {/* {dataproject.value[0].plantname} */}
+
+
+
+          {(() => {
+            switch (tab.value) {
+              case "total":
+                return (<>
+                  {dataproject.value?.map((item, i) => {
+                    return <div key={i} className="DAT_ProjectMobile_Content" >
+                      <div className="DAT_ProjectMobile_Content_Top" id={item.plantid} onClick={(e) => handlePlant(e)}>
+                        <div className="DAT_ProjectMobile_Content_Top_Avatar">
+                          <img src={item.img ? item.img : "/dat_picture/solar_panel.png"} alt="" />
+                        </div>
+
+                        <div className="DAT_ProjectMobile_Content_Top_Info">
+                          <div className="DAT_ProjectMobile_Content_Top_Info">
+                            <div className="DAT_ProjectMobile_Content_Top_Info_Name">{item.plantname}</div>
+                            <div className="DAT_ProjectMobile_Content_Top_Info_State">
+                              <div> {item.state ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'online' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'offline' })}</span></>}</div>
+                              <div> {item.warn ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'noAlert' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'alert' })}</span></>}  </div>
+                            </div>
+                            <div className="DAT_ProjectMobile_Content_Top_Info_Data">
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'power' })}</div> <div>{item.power}<span>%</span></div> </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'capacity' })}</div> <div>{item.capacity}<span>kWp</span></div> </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'production' })}</div> <div>{item.production}<span>kWh</span></div> </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="DAT_ProjectMobile_Content_Bottom">
+                        <span>{dataLang.formatMessage({ id: 'lastUpdate' })}</span>&nbsp; <span>{item.lastupdate}</span>
+                      </div>
+
+                    </div>
+                  })}
+                </>);
+              case "online":
+                return (<>
+                  {online.value?.map((item, i) => {
+                    return <div key={i} className="DAT_ProjectMobile_Content" >
+                      <div className="DAT_ProjectMobile_Content_Top" id={item.plantid} onClick={(e) => handlePlant(e)}>
+                        <div className="DAT_ProjectMobile_Content_Top_Avatar">
+                          <img src={item.img ? item.img : "/dat_picture/solar_panel.png"} alt="" />
+                        </div>
+
+                        <div className="DAT_ProjectMobile_Content_Top_Info">
+                          <div className="DAT_ProjectMobile_Content_Top_Info">
+                            <div className="DAT_ProjectMobile_Content_Top_Info_Name">{item.plantname}</div>
+                            <div className="DAT_ProjectMobile_Content_Top_Info_State">
+                              <div> {item.state ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'online' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'offline' })}</span></>}</div>
+                              <div> {item.warn ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'noAlert' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'alert' })}</span></>}  </div>
+                            </div>
+                            <div className="DAT_ProjectMobile_Content_Top_Info_Data">
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'power' })}</div> <div>{item.power}<span>%</span></div> </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'capacity' })}</div> <div>{item.capacity}<span>kWp</span></div> </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'production' })}</div> <div>{item.production}<span>kWh</span></div> </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="DAT_ProjectMobile_Content_Bottom">
+                        <span>{dataLang.formatMessage({ id: 'lastUpdate' })}</span>&nbsp; <span>{item.lastupdate}</span>
+                      </div>
+
+                    </div>
+                  })}
+                </>);
+              case "offline":
+                return (<>
+                  {offline.value?.map((item, i) => {
+                    return <div key={i} className="DAT_ProjectMobile_Content" >
+                      <div className="DAT_ProjectMobile_Content_Top" id={item.plantid} onClick={(e) => handlePlant(e)}>
+                        <div className="DAT_ProjectMobile_Content_Top_Avatar">
+                          <img src={item.img ? item.img : "/dat_picture/solar_panel.png"} alt="" />
+                        </div>
+
+                        <div className="DAT_ProjectMobile_Content_Top_Info">
+                          <div className="DAT_ProjectMobile_Content_Top_Info">
+                            <div className="DAT_ProjectMobile_Content_Top_Info_Name">{item.plantname}</div>
+                            <div className="DAT_ProjectMobile_Content_Top_Info_State">
+                              <div> {item.state ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'online' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'offline' })}</span></>}</div>
+                              <div> {item.warn ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'noAlert' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'alert' })}</span></>}  </div>
+                            </div>
+                            <div className="DAT_ProjectMobile_Content_Top_Info_Data">
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'power' })}</div> <div>{item.power}<span>%</span></div> </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'capacity' })}</div> <div>{item.capacity}<span>kWp</span></div> </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'production' })}</div> <div>{item.production}<span>kWh</span></div> </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="DAT_ProjectMobile_Content_Bottom">
+                        <span>{dataLang.formatMessage({ id: 'lastUpdate' })}</span>&nbsp; <span>{item.lastupdate}</span>
+                      </div>
+
+                    </div>
+                  })}
+                </>);
+              case "demo":
+                return (<>
+                  {demo.value?.map((item, i) => {
+                    return <div key={i} className="DAT_ProjectMobile_Content" >
+                      <div className="DAT_ProjectMobile_Content_Top" id={item.plantid} onClick={(e) => handlePlant(e)}>
+                        <div className="DAT_ProjectMobile_Content_Top_Avatar">
+                          <img src={item.img ? item.img : "/dat_picture/solar_panel.png"} alt="" />
+                        </div>
+
+                        <div className="DAT_ProjectMobile_Content_Top_Info">
+                          <div className="DAT_ProjectMobile_Content_Top_Info">
+                            <div className="DAT_ProjectMobile_Content_Top_Info_Name">{item.plantname}</div>
+                            <div className="DAT_ProjectMobile_Content_Top_Info_State">
+                              <div> {item.state ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'online' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'offline' })}</span></>}</div>
+                              <div> {item.warn ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'noAlert' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'alert' })}</span></>}  </div>
+                            </div>
+                            <div className="DAT_ProjectMobile_Content_Top_Info_Data">
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'power' })}</div> <div>{item.power}<span>%</span></div> </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'capacity' })}</div> <div>{item.capacity}<span>kWp</span></div> </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'production' })}</div> <div>{item.production}<span>kWh</span></div> </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="DAT_ProjectMobile_Content_Bottom">
+                        <span>{dataLang.formatMessage({ id: 'lastUpdate' })}</span>&nbsp; <span>{item.lastupdate}</span>
+                      </div>
+
+                    </div>
+                  })}
+                </>);
+              case "warn":
+                return (<>
+                  {warn.value?.map((item, i) => {
+                    return <div key={i} className="DAT_ProjectMobile_Content" >
+                      <div className="DAT_ProjectMobile_Content_Top" id={item.plantid} onClick={(e) => handlePlant(e)}>
+                        <div className="DAT_ProjectMobile_Content_Top_Avatar">
+                          <img src={item.img ? item.img : "/dat_picture/solar_panel.png"} alt="" />
+                        </div>
+
+                        <div className="DAT_ProjectMobile_Content_Top_Info">
+                          <div className="DAT_ProjectMobile_Content_Top_Info">
+                            <div className="DAT_ProjectMobile_Content_Top_Info_Name">{item.plantname}</div>
+                            <div className="DAT_ProjectMobile_Content_Top_Info_State">
+                              <div> {item.state ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'online' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'offline' })}</span></>}</div>
+                              <div> {item.warn ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'noAlert' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'alert' })}</span></>}  </div>
+                            </div>
+                            <div className="DAT_ProjectMobile_Content_Top_Info_Data">
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'power' })}</div> <div>{item.power}<span>%</span></div> </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'capacity' })}</div> <div>{item.capacity}<span>kWp</span></div> </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'production' })}</div> <div>{item.production}<span>kWh</span></div> </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="DAT_ProjectMobile_Content_Bottom">
+                        <span>{dataLang.formatMessage({ id: 'lastUpdate' })}</span>&nbsp; <span>{item.lastupdate}</span>
+                      </div>
+
+                    </div>
+                  })}
+                </>);
+              default:
+                return <></>;
+            }
+          })()}
+
+
+        </div>
+        : <div className="DAT_Project">
+
           <div className="DAT_Toollist_Tab">
             {listTab.map((item, i) => {
               return tab.value === item.id ? (
@@ -697,78 +910,78 @@ function Project(props) {
               );
             })}
           </div>
-        )}
 
-        <div className="DAT_Project_Content">
-          {(() => {
-            switch (tab.value) {
-              case "total":
-                return (
-                  <DataTable
-                    className="DAT_Table_Container"
-                    columns={columnproject}
-                    data={datafilter}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
-                    noDataComponent={<Empty />}
-                  />
-                );
-              case "online":
-                return (
-                  <DataTable
-                    className="DAT_Table_Container"
-                    columns={columnproject}
-                    data={online.value}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
-                    noDataComponent={<Empty />}
-                  />
-                );
-              case "offline":
-                return (
-                  <DataTable
-                    className="DAT_Table_Container"
-                    columns={columnproject}
-                    data={offline.value}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
-                    noDataComponent={<Empty />}
-                  />
-                );
-              case "demo":
-                return (
-                  <DataTable
-                    className="DAT_Table_Container"
-                    columns={columnproject}
-                    data={demo.value}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
-                    noDataComponent={<Empty />}
-                  />
-                );
-              case "warn":
-                return (
-                  <DataTable
-                    className="DAT_Table_Container"
-                    columns={columnproject}
-                    data={warn.value}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
-                    noDataComponent={<Empty />}
-                  />
-                );
-              default:
-                return <></>;
-            }
-          })()}
+
+          <div className="DAT_Project_Content">
+            {(() => {
+              switch (tab.value) {
+                case "total":
+                  return (
+                    <DataTable
+                      className="DAT_Table_Container"
+                      columns={columnproject}
+                      data={datafilter}
+                      pagination
+                      paginationComponentOptions={paginationComponentOptions}
+                      fixedHeader={true}
+                      noDataComponent={<Empty />}
+                    />
+                  );
+                case "online":
+                  return (
+                    <DataTable
+                      className="DAT_Table_Container"
+                      columns={columnproject}
+                      data={online.value}
+                      pagination
+                      paginationComponentOptions={paginationComponentOptions}
+                      fixedHeader={true}
+                      noDataComponent={<Empty />}
+                    />
+                  );
+                case "offline":
+                  return (
+                    <DataTable
+                      className="DAT_Table_Container"
+                      columns={columnproject}
+                      data={offline.value}
+                      pagination
+                      paginationComponentOptions={paginationComponentOptions}
+                      fixedHeader={true}
+                      noDataComponent={<Empty />}
+                    />
+                  );
+                case "demo":
+                  return (
+                    <DataTable
+                      className="DAT_Table_Container"
+                      columns={columnproject}
+                      data={demo.value}
+                      pagination
+                      paginationComponentOptions={paginationComponentOptions}
+                      fixedHeader={true}
+                      noDataComponent={<Empty />}
+                    />
+                  );
+                case "warn":
+                  return (
+                    <DataTable
+                      className="DAT_Table_Container"
+                      columns={columnproject}
+                      data={warn.value}
+                      pagination
+                      paginationComponentOptions={paginationComponentOptions}
+                      fixedHeader={true}
+                      noDataComponent={<Empty />}
+                    />
+                  );
+                default:
+                  return <></>;
+              }
+            })()}
+          </div>
         </div>
-      </div >
-
+      }
       <div div className="DAT_ProjectInfor"
         style={{
           height: plantState.value === "default" ? "0px" : "100vh",

@@ -1108,6 +1108,7 @@ function ProjectData(props) {
                           id="graph"
                           style={{
                             color: nav === "graph" ? color.cur : color.pre,
+                            // width: nav === "graph" ? "150px" : "60px",
                           }}
                           onClick={(e) => handleNav(e)}
                         >
@@ -1117,6 +1118,7 @@ function ProjectData(props) {
                           id="production"
                           style={{
                             color: nav === "production" ? color.cur : color.pre,
+                            // width: nav === "production" ? "300px" : "60px",
                           }}
                           onClick={(e) => handleNav(e)}
                         >

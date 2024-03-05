@@ -546,7 +546,6 @@ function Home(props) {
                     {parseFloat((production / capacity) * 100).toFixed(2)}
                   </div>
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">%</div>
-
                 </div>
               </div>
             </div>
@@ -575,8 +574,7 @@ function Home(props) {
           </div>
 
           <div className="DAT_Home_Overview-Sub">
-            <div
-              className="DAT_Home_Overview-Sub-Item"
+            <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
@@ -588,8 +586,7 @@ function Home(props) {
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
             </div>
-            <div
-              className="DAT_Home_Overview-Sub-Item"
+            <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
@@ -601,8 +598,7 @@ function Home(props) {
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
             </div>
-            <div
-              className="DAT_Home_Overview-Sub-Item"
+            <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
@@ -614,8 +610,7 @@ function Home(props) {
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
             </div>
-            <div
-              className="DAT_Home_Overview-Sub-Item"
+            <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
