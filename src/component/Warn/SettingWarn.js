@@ -4,17 +4,20 @@ import "./Warn.scss";
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { warnState } from "./Warn";
+import { useIntl } from "react-intl";
 
 function SettingWarn(props) {
+  const dataLang = useIntl();
+
   return (
     <div className="DAT_SettingWarn">
       <div className="DAT_SettingWarn_Header">
-        <div className="DAT_SettingWarn_Header_Left">Cài đặt cảnh báo</div>
+        <div className="DAT_SettingWarn_Header_Left">{dataLang.formatMessage({ id: 'configwarn' })}</div>
 
         <div className="DAT_SettingWarn_Header_Right">
           <div className="DAT_SettingWarn_Header_Right_Save">
             <FaSave size={20} color="white" />
-            <span>Lưu</span>
+            <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
           <div className="DAT_SettingWarn_Header_Right_Close">
             <RxCross2
@@ -29,12 +32,12 @@ function SettingWarn(props) {
       <div className="DAT_SettingWarn_Body">
         <div className="DAT_SettingWarn_Body_Row1">
           <div className="DAT_SettingWarn_Body_Row1_Item">
-            <input type="radio" />
-            Cho phép thông báo
+            <input type="radio" name="radAnswer" />
+            {dataLang.formatMessage({ id: 'allowNoti' })}
           </div>
           <div className="DAT_SettingWarn_Body_Row1_Item">
-            <input type="radio" />
-            Tắt thông báo
+            <input type="radio" name="radAnswer" />
+            {dataLang.formatMessage({ id: 'offNoti' })}
           </div>
         </div>
 
@@ -43,53 +46,55 @@ function SettingWarn(props) {
         <div className="DAT_SettingWarn_Body_Row2">
           <div className="DAT_SettingWarn_Body_Row2_Left">
             <div className="DAT_SettingWarn_Body_Row2_Left_Tit">
-              Mức cảnh báo:
+              {dataLang.formatMessage({ id: 'warnLevel' })}
             </div>
 
             <div className="DAT_SettingWarn_Body_Row2_Left_Content">
               <div>
                 <input type="checkbox" />
-                Thông báo
+                {dataLang.formatMessage({ id: 'notice' })}
               </div>
               <div>
                 <input type="checkbox" />
-                Cảnh báo
+                {dataLang.formatMessage({ id: 'warn' })}
               </div>
               <div>
                 <input type="checkbox" />
-                Thất bại
+                {dataLang.formatMessage({ id: 'fail' })}
               </div>
             </div>
           </div>
 
           <div className="DAT_SettingWarn_Body_Row2_Right">
-            <div className="DAT_SettingWarn_Body_Row2_Right_Tit">Tần suất:</div>
+            <div className="DAT_SettingWarn_Body_Row2_Right_Tit">{
+              dataLang.formatMessage({ id: 'frequency' })}
+            </div>
             <div className="DAT_SettingWarn_Body_Row2_Right_Content">
               <button className="DAT_SettingWarn_Body_Row2_Right_Content_Item">
                 <div className="DAT_SettingWarn_Body_Row2_Right_Content_Item_Tit">
-                  Thấp
+                  {dataLang.formatMessage({ id: 'low' })}
                 </div>
                 <div className="DAT_SettingWarn_Body_Row2_Right_Content_Item_Content">
-                  Thông báo 60 phút sau khi xảy ra lỗi
+                  {dataLang.formatMessage({ id: 'lowMess' })}
                 </div>
               </button>
               <button className="DAT_SettingWarn_Body_Row2_Right_Content_Item">
                 <div>
                   <div className="DAT_SettingWarn_Body_Row2_Right_Content_Item_Tit">
-                    Vừa
+                    {dataLang.formatMessage({ id: 'medium' })}
                   </div>
                   <div className="DAT_SettingWarn_Body_Row2_Right_Content_Item_Content">
-                    Thông báo 15 phút sau khi xảy ra lỗi
+                    {dataLang.formatMessage({ id: 'medMess' })}
                   </div>
                 </div>
               </button>
               <button className="DAT_SettingWarn_Body_Row2_Right_Content_Item">
                 <div>
                   <div className="DAT_SettingWarn_Body_Row2_Right_Content_Item_Tit">
-                    Cao
+                    {dataLang.formatMessage({ id: 'high' })}
                   </div>
                   <div className="DAT_SettingWarn_Body_Row2_Right_Content_Item_Content">
-                    Thông báo ngay lập tức khi xảy ra lỗi
+                    {dataLang.formatMessage({ id: 'highMess' })}
                   </div>
                 </div>
               </button>
@@ -97,17 +102,18 @@ function SettingWarn(props) {
           </div>
         </div>
 
+
         <div className="DAT_SettingWarn_Body_Line" />
 
         <div className="DAT_SettingWarn_Body_Row4">
           <div className="DAT_SettingWarn_Body_Row4_Left">
             <div className="DAT_SettingWarn_Body_Row4_Left_Tit">
-              Phương thức:
+              {dataLang.formatMessage({ id: 'method' })}
             </div>
             <div className="DAT_SettingWarn_Body_Row4_Left_Content">
               <div>
-                <input type="checkbox" />
-                Tại trang
+                <input type="checkbox" value='web' />
+                Website
               </div>
               <div>
                 <input type="checkbox" />
@@ -115,14 +121,14 @@ function SettingWarn(props) {
               </div>
               <div>
                 <input type="checkbox" />
-                Qua App
+                App
               </div>
             </div>
           </div>
 
           <div className="DAT_SettingWarn_Body_Row4_Right">
             <div className="DAT_SettingWarn_Body_Row4_Right_Tit">
-              Giới hạn ngày:
+              {dataLang.formatMessage({ id: 'limitdate' })}
             </div>
             <div className="DAT_SettingWarn_Body_Row4_Right_Content">
               <button className="DAT_SettingWarn_Body_Row4_Right_Content_Item">
@@ -144,7 +150,9 @@ function SettingWarn(props) {
         <div className="DAT_SettingWarn_Body_Line" />
 
         <div className="DAT_SettingWarn_Body_Row6">
-          <div className="DAT_SettingWarn_Body_Row6_Tit">Người nhận:</div>
+          <div className="DAT_SettingWarn_Body_Row6_Tit">
+            {dataLang.formatMessage({ id: 'receiveBy' })}
+          </div>
           <div className="DAT_SettingWarn_Body_Row6_Content">
             <div className="DAT_SettingWarn_Body_Row6_Content_Tag">
               <div className="DAT_SettingWarn_Body_Row6_Content_Tag_Left">
@@ -164,8 +172,8 @@ function SettingWarn(props) {
               </div>
             </div>
 
-            <div className="DAT_SettingWarn_Body_Row6_Content_Add">+Thêm</div>
-
+            <div className="DAT_SettingWarn_Body_Row6_Content_Add">
+              {dataLang.formatMessage({ id: 'add' })}</div>
             <div className="DAT_SettingWarn_Body_Row6_Content_Delete">
               <div className="DAT_SettingWarn_Body_Row6_Content_Delete_Close">
                 <RxCross2 />

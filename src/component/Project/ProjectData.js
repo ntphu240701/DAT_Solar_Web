@@ -33,6 +33,7 @@ import { Token } from "../../App";
 import axios from "axios";
 import { alertDispatch } from "../Alert/Alert";
 import Popup from "./Popup";
+import { useIntl } from "react-intl";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -305,11 +306,12 @@ const dbTotal = [
 ]
 
 function ProjectData(props) {
+  const dataLang = useIntl();
   const [nav, setNav] = useState("graph");
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
 
-  const [configname, setConfigname] = useState("Chọn thông số");
+  const [configname, setConfigname] = useState(dataLang.formatMessage({ id: 'choosePara' }));
   const [dropConfig, setDropConfig] = useState(false);
 
   // const [temp, setTemp] = useState([]);
@@ -342,15 +344,15 @@ function ProjectData(props) {
 
   const tit = {
     dashboard: projectData.value.plantname,
-    device: "Thiết bị",
+    device: dataLang.formatMessage({ id: 'device' }),
     alert: "Cảnh báo",
   };
 
   const paginationComponentOptions = {
-    rowsPerPageText: "Số hàng",
-    rangeSeparatorText: "đến",
+    rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
+    rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
     selectAllRowsItem: true,
-    selectAllRowsItemText: "tất cả",
+    selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
 
   const listDeviceTab = [
@@ -361,7 +363,7 @@ function ProjectData(props) {
 
   const columnInverter = [
     {
-      name: "Tên",
+      name: dataLang.formatMessage({ id: 'name' }),
       selector: (row) => (
         <div>
           <div>{row.name}</div>
@@ -375,7 +377,7 @@ function ProjectData(props) {
       },
     },
     {
-      name: "Trạng thái",
+      name: dataLang.formatMessage({ id: 'status' }),
       selector: (row) => (
         <>
           {row.status ? (
@@ -467,7 +469,7 @@ function ProjectData(props) {
 
   const columnLogger = [
     {
-      name: "Tên",
+      name: dataLang.formatMessage({ id: 'name' }),
       selector: (row) => (
         <div>
           <div>{row.name}</div>
@@ -481,7 +483,7 @@ function ProjectData(props) {
       },
     },
     {
-      name: "Trạng thái",
+      name: dataLang.formatMessage({ id: 'status' }),
       selector: (row) => (
         <>
           {row.state === 1 ? (
@@ -494,13 +496,13 @@ function ProjectData(props) {
       // width: "110px",
     },
     {
-      name: "Loại logger",
+      name: dataLang.formatMessage({ id: 'type' }),
       selector: (row) => row.type,
       sortable: true,
       // width: "180px",
     },
     {
-      name: "Tùy chỉnh",
+      name: dataLang.formatMessage({ id: 'setting' }),
       selector: (row) => (
         <>
           <div className="DAT_TableEdit">
@@ -523,14 +525,14 @@ function ProjectData(props) {
               id={row.sn}
               onClick={(e) => handleEdit(e)}
             >
-              Chỉnh sửa
+              {dataLang.formatMessage({ id: 'edit' })}
             </div>
             <div
               className="DAT_ModifyBox_Remove"
               id={row.sn}
               onClick={(e) => handleDelete(e)}
             >
-              Gỡ
+              {dataLang.formatMessage({ id: 'remove' })}
             </div>
           </div>
         </>
@@ -649,10 +651,10 @@ function ProjectData(props) {
   };
 
   const handleShowConfig = (e) => {
-    if (configname === "Chọn thông số") {
-      setConfigname("Thu gọn");
-    } else if (configname === "Thu gọn") {
-      setConfigname("Chọn thông số");
+    if (configname === dataLang.formatMessage({ id: 'choosePara' })) {
+      setConfigname(dataLang.formatMessage({ id: 'minimize' }));
+    } else if (configname === dataLang.formatMessage({ id: 'minimize' })) {
+      setConfigname(dataLang.formatMessage({ id: 'choosePara' }));
     }
   };
 
@@ -952,7 +954,7 @@ function ProjectData(props) {
                       </div>
 
                       <div style={{ color: "grey", fontSize: 14 }}>
-                        Cập nhật lần cuối {projectData.value.lastupdate}
+                        {dataLang.formatMessage({ id: 'lastUpdate' })} {projectData.value.lastupdate}
                       </div>
                     </div>
                   );
@@ -979,7 +981,7 @@ function ProjectData(props) {
                   id="add"
                   onClick={() => popupAddGateway.value = true}
                 >
-                  Thêm
+                  {dataLang.formatMessage({ id: 'save' })}
                 </button>
               </div>
               <div className="DAT_ProjectData_Header_Right_More">
@@ -1016,7 +1018,7 @@ function ProjectData(props) {
                           style={{ marginBottom: "16px" }}
                         >
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
-                            Địa chỉ
+                            {dataLang.formatMessage({ id: 'address' })}
                           </div>
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content">
                             {projectData.value.addr}
@@ -1027,7 +1029,7 @@ function ProjectData(props) {
                           style={{ marginBottom: "16px" }}
                         >
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
-                            Trạng thái
+                            {dataLang.formatMessage({ id: 'status' })}
                           </div>
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
                             style={{ textAlign: "right" }}
@@ -1048,15 +1050,15 @@ function ProjectData(props) {
                           style={{ marginBottom: "16px" }}
                         >
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
-                            Loại dự án
+                            {dataLang.formatMessage({ id: 'projType' })}
                           </div>
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
                             style={{ textAlign: "right" }}
                           >
                             {projectData.value.planttype === "industry" ? (
-                              <>Nhà máy</>
+                              <>{dataLang.formatMessage({ id: 'factory' })}</>
                             ) : (
-                              <>Hộ dân</>
+                              <>{dataLang.formatMessage({ id: 'household' })}</>
                             )}
                           </div>
                         </div>
@@ -1078,7 +1080,7 @@ function ProjectData(props) {
 
                         <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr">
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
-                            Số điện thoại
+                            {dataLang.formatMessage({ id: 'phone' })}
                           </div>
                           <div
                             className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
@@ -1099,7 +1101,7 @@ function ProjectData(props) {
                           }}
                           onClick={(e) => handleNav(e)}
                         >
-                          Đồ thị
+                          {dataLang.formatMessage({ id: 'graph' })}
                         </div>
                         <div className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
                           id="production"
@@ -1108,7 +1110,7 @@ function ProjectData(props) {
                           }}
                           onClick={(e) => handleNav(e)}
                         >
-                          Sản lượng phát điện
+                          {dataLang.formatMessage({ id: 'productionData' })}
                         </div>
                         <div className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
                           id="consumption"
@@ -1122,7 +1124,7 @@ function ProjectData(props) {
                           }}
                           onClick={(e) => handleNav(e)}
                         >
-                          Điện năng tiêu thụ
+                          {dataLang.formatMessage({ id: 'consumptionData' })}
                         </div>
                         <div className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
                           id="grid"
@@ -1135,7 +1137,7 @@ function ProjectData(props) {
                           }}
                           onClick={(e) => handleNav(e)}
                         >
-                          Lưới điện
+                          {dataLang.formatMessage({ id: 'grid' })}
                         </div>
                         <div className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
                           id="battery"
@@ -1149,7 +1151,7 @@ function ProjectData(props) {
                           }}
                           onClick={(e) => handleNav(e)}
                         >
-                          Ắc quy
+                          {dataLang.formatMessage({ id: 'batteryData' })}
                         </div>
                       </div>
 
@@ -1181,7 +1183,7 @@ function ProjectData(props) {
                   <div className="DAT_ProjectData_Dashboard_History">
                     <div className="DAT_ProjectData_Dashboard_History_Tit">
                       <div className="DAT_ProjectData_Dashboard_History_Tit_Left">
-                        Lịch sử phát điện
+                        {dataLang.formatMessage({ id: 'history' })}
                       </div>
 
                       <div className="DAT_ProjectData_Dashboard_History_Tit_Right">
@@ -1195,7 +1197,7 @@ function ProjectData(props) {
                             }}
                             onClick={(e) => handleDate(e)}
                           >
-                            Ngày
+                            {dataLang.formatMessage({ id: 'day' })}
                           </div>
                           <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
                             id="month"
@@ -1206,7 +1208,8 @@ function ProjectData(props) {
                             }}
                             onClick={(e) => handleDate(e)}
                           >
-                            Tháng
+                            {dataLang.formatMessage({ id: 'month' })}
+
                           </div>
                           <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
                             id="year"
@@ -1217,7 +1220,8 @@ function ProjectData(props) {
                             }}
                             onClick={(e) => handleDate(e)}
                           >
-                            Năm
+                            {dataLang.formatMessage({ id: 'year' })}
+
                           </div>
                           <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Date_Item"
                             id="total"
@@ -1227,7 +1231,7 @@ function ProjectData(props) {
                             }}
                             onClick={(e) => handleDate(e)}
                           >
-                            Tổng
+                            {dataLang.formatMessage({ id: 'total' })}
                           </div>
                         </div>
 
@@ -1243,7 +1247,9 @@ function ProjectData(props) {
                         </div>
 
                         <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Export">
-                          <button>Xuất Báo Cáo</button>
+                          <button>
+                            {dataLang.formatMessage({ id: 'export' })}
+                          </button>
                         </div>
 
                         <DatePicker
@@ -1298,7 +1304,7 @@ function ProjectData(props) {
                           <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
                             <input
                               type="text"
-                              placeholder="Search by parameter name"
+                              placeholder={dataLang.formatMessage({ id: 'enterPara' })}
                             />
                             <CiSearch size={20} />
                           </div>
@@ -1307,7 +1313,7 @@ function ProjectData(props) {
                               <tbody>
                                 <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                   <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                    Production
+                                    {dataLang.formatMessage({ id: 'production' })}
                                   </th>
                                   <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                     <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
@@ -1320,17 +1326,19 @@ function ProjectData(props) {
                                 </tr>
                                 <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                   <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                    Environment
+                                    {dataLang.formatMessage({ id: 'envi' })}
                                   </th>
                                   <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                     <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                       <input id="Weather" type="checkbox" />
-                                      <label htmlFor="Weather">Weather</label>
+                                      <label htmlFor="Weather">
+                                        {dataLang.formatMessage({ id: 'weather' })}
+                                      </label>
                                     </div>
                                     <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                       <input id="Temperature" type="checkbox" />
                                       <label htmlFor="Temperature">
-                                        Temperature
+                                        {dataLang.formatMessage({ id: 'temperature' })}
                                       </label>
                                     </div>
                                   </td>
@@ -1348,7 +1356,9 @@ function ProjectData(props) {
                   <div className="DAT_ProjectData_Dashboard_More">
                     <div className="DAT_ProjectData_Dashboard_More_Left">
                       <div className="DAT_ProjectData_Dashboard_More_Left_Tit">
-                        <span>Trình tự công việc</span>
+                        <span>
+                          {dataLang.formatMessage({ id: 'taskSeq' })}
+                        </span>
                         <div className="DAT_ProjectData_Dashboard_More_Left_Tit_Button">
                           <IoArrowForward />
                         </div>
@@ -1365,7 +1375,7 @@ function ProjectData(props) {
                           <div className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
                             style={{ textAlign: "center", fontSize: "14px", color: "grey", marginTop: "8px" }}
                           >
-                            Đang Thực Hiện
+                            {dataLang.formatMessage({ id: 'inProgress' })}
                           </div>
                         </div>
 
@@ -1379,7 +1389,7 @@ function ProjectData(props) {
                           <div className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
                             style={{ textAlign: "center", fontSize: "14px", color: "grey", marginTop: "8px" }}
                           >
-                            Hoàn Tất
+                            {dataLang.formatMessage({ id: 'complete' })}
                           </div>
                         </div>
                       </div>
@@ -1387,7 +1397,7 @@ function ProjectData(props) {
 
                     <div className="DAT_ProjectData_Dashboard_More_Right">
                       <div className="DAT_ProjectData_Dashboard_More_Right_Tit">
-                        Môi trường và lợi ích kinh tế
+                        {dataLang.formatMessage({ id: 'environment' })}
                       </div>
 
                       <div className="DAT_ProjectData_Dashboard_More_Right_Content">
@@ -1398,7 +1408,8 @@ function ProjectData(props) {
                             </div>
                             <div>
                               <div style={{ fontSize: "14px", color: "grey" }}>
-                                Lượng than tiết kiệm
+                                {dataLang.formatMessage({ id: 'coalSave' })}
+
                               </div>
                               <div>{parseFloat(coalsave.value.value * coalsave.value.ef).toFixed(2)}
                                 &nbsp;
@@ -1413,12 +1424,14 @@ function ProjectData(props) {
                             </div>
                             <div>
                               <div style={{ fontSize: "14px", color: "grey" }}>
-                                Sản lượng cây trồng
+                                {dataLang.formatMessage({ id: 'cropYield' })}
+
                               </div>
                               <div>{parseFloat(coalsave.value.value * coalsave.value.tree).toFixed(2)}
                                 &nbsp;
                                 <span style={{ color: "grey", fontSize: "12px" }}>
-                                  Cây
+                                  {dataLang.formatMessage({ id: 'tree' })}
+
                                 </span>
                               </div>
                             </div>
@@ -1432,7 +1445,8 @@ function ProjectData(props) {
                             </div>
                             <div>
                               <div style={{ fontSize: "14px", color: "grey" }}>
-                                Lượng CO₂ tiết giảm
+                                {dataLang.formatMessage({ id: 'C02' })}
+
                               </div>
                               <div>{parseFloat(coalsave.value.value * coalsave.value.avr).toFixed(2)}
                                 &nbsp;
@@ -1448,7 +1462,8 @@ function ProjectData(props) {
                             </div>
                             <div>
                               <div style={{ fontSize: "14px", color: "grey" }}>
-                                Tổng doanh thu
+                                {dataLang.formatMessage({ id: 'totalRevenue' })}
+
                               </div>
                               <div>{parseFloat((coalsave.value.value * projectData.value.price) / 1000).toFixed(2)}
                                 &nbsp;
@@ -1796,14 +1811,14 @@ function ProjectData(props) {
                   style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
                   onClick={(e) => handleView(e)}
                 >
-                  Giám sát
+                  {dataLang.formatMessage({ id: 'monitor' })}
                 </div>
                 <div className="DAT_ProjectDataDrop_Item"
                   id="device"
                   style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
                   onClick={(e) => handleView(e)}
                 >
-                  Thiết bị
+                  {dataLang.formatMessage({ id: 'device' })}
                 </div>
                 {/* <div className="DAT_ProjectDataDrop_Item"
                 id="alert"
@@ -2497,6 +2512,7 @@ const Graph = (props) => {
 };
 
 const Production = (props) => {
+  const dataLang = useIntl();
   const [data, setData] = useState(props.invt);
   const [production, setProduction] = useState(0);
   const [dailyproduction, setDailyproduction] = useState(0);
@@ -2693,7 +2709,7 @@ const Production = (props) => {
 
         <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Detail">
           <div style={{ marginBottom: "8px", color: "grey" }}>
-            Công suất tức thời
+            {dataLang.formatMessage({ id: 'production' })}
           </div>
           <div style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2706,7 +2722,8 @@ const Production = (props) => {
           </div>
           <div style={{ borderBottom: "solid 1px rgb(199, 199, 199)", width: "50%", marginBottom: "8px" }} />
           <div style={{ marginBottom: "8px", color: "grey" }}>
-            Công suất lắp đặt
+            {dataLang.formatMessage({ id: 'capacity' })}
+
           </div>
           <div>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2725,7 +2742,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            Sản lượng ngày
+            {dataLang.formatMessage({ id: 'electricOutputDay' })}
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2742,7 +2759,8 @@ const Production = (props) => {
           style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            Sản lượng tháng
+            {dataLang.formatMessage({ id: 'electricOutputMonth' })}
+
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2759,7 +2777,8 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            Sản lượng năm
+            {dataLang.formatMessage({ id: 'electricOutputYear' })}
+
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2776,7 +2795,8 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            Tổng sản lượng
+            {dataLang.formatMessage({ id: 'totalElectricOutput' })}
+
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2794,6 +2814,7 @@ const Production = (props) => {
 };
 
 const Consumption = (props) => {
+  const dataLang = useIntl()
   const [data, setData] = useState(props.invt);
   const [consumption, setConsumption] = useState(0);
   const [dailyconsumption, setDailyconsumption] = useState(0);
@@ -2897,7 +2918,7 @@ const Consumption = (props) => {
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data_Data">
           <span>
-            Tiêu thụ
+            {dataLang.formatMessage({ id: 'consumption' })}
           </span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{consumption}</span>
@@ -2914,7 +2935,7 @@ const Consumption = (props) => {
             style={{ backgroundColor: "rgb(245, 251, 255)" }}
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
-              Tiêu thụ ngày
+              {dataLang.formatMessage({ id: 'dailyConsumption' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2931,7 +2952,7 @@ const Consumption = (props) => {
             style={{ backgroundColor: "rgb(246, 245, 255)" }}
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
-              Tiêu thụ năm
+              {dataLang.formatMessage({ id: 'yearlyConsumption' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2950,7 +2971,7 @@ const Consumption = (props) => {
             style={{ backgroundColor: "rgb(255, 248, 247)" }}
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
-              Tiêu thụ tháng
+              {dataLang.formatMessage({ id: 'monthlyConsumption' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2967,7 +2988,8 @@ const Consumption = (props) => {
             style={{ backgroundColor: "rgb(245, 250, 246)" }}
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
-              Tổng tiêu thụ
+              {dataLang.formatMessage({ id: 'totalConsumption' })}
+
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2986,6 +3008,7 @@ const Consumption = (props) => {
 };
 
 const Grid = (props) => {
+  const dataLang = useIntl();
   const [data, setData] = useState(props.invt);
   const [grid, setGrid] = useState(0);
   const [feedindailygrid, setFeedindailygrid] = useState(0);
@@ -3224,7 +3247,7 @@ const Grid = (props) => {
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Data">
           <span>
-            Lưới
+            {dataLang.formatMessage({ id: 'grid' })}
           </span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3242,12 +3265,12 @@ const Grid = (props) => {
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit">
-            Nạp vào
+            {dataLang.formatMessage({ id: 'gridfeed' })}
           </div>
           <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              Hôm nay
+              {dataLang.formatMessage({ id: 'today' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3261,7 +3284,7 @@ const Grid = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              Tháng
+              {dataLang.formatMessage({ id: 'month' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3275,7 +3298,7 @@ const Grid = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              Năm
+              {dataLang.formatMessage({ id: 'year' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3289,7 +3312,7 @@ const Grid = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              Tổng
+              {dataLang.formatMessage({ id: 'total' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3307,12 +3330,13 @@ const Grid = (props) => {
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit">
-            Bán ra
+            {dataLang.formatMessage({ id: 'purchaseE' })}
+
           </div>
           <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              Hôm nay
+              {dataLang.formatMessage({ id: 'purchaseE' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3326,7 +3350,7 @@ const Grid = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              Tháng
+              {dataLang.formatMessage({ id: 'month' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3340,7 +3364,7 @@ const Grid = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              Năm
+              {dataLang.formatMessage({ id: 'year' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3354,7 +3378,7 @@ const Grid = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              Tổng
+              {dataLang.formatMessage({ id: 'total' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3373,6 +3397,7 @@ const Grid = (props) => {
 };
 
 const Battery = (props) => {
+  const dataLang = useIntl();
   const [data, setData] = useState(props.invt);
   const [battery, setBattery] = useState(0);
   const [percent, setPercent] = useState(0);
@@ -3567,7 +3592,7 @@ const Battery = (props) => {
         <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Status">
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "center", gap: "4px" }}>
             <span>
-              Sạc
+              {dataLang.formatMessage({ id: 'charge' })}
             </span>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
               {percent}
@@ -3580,7 +3605,7 @@ const Battery = (props) => {
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Data">
           <span>
-            Pin
+            {dataLang.formatMessage({ id: 'batteryData' })}
           </span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{battery}</span>
@@ -3596,12 +3621,12 @@ const Battery = (props) => {
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit">
-            Sạc điện
+            {dataLang.formatMessage({ id: 'charge' })}
           </div>
           <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
-              Hôm nay
+              {dataLang.formatMessage({ id: 'today' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3615,7 +3640,7 @@ const Battery = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
-              Tháng
+              {dataLang.formatMessage({ id: 'today' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3629,7 +3654,7 @@ const Battery = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
-              Năm
+              {dataLang.formatMessage({ id: 'year' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3643,7 +3668,7 @@ const Battery = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
-              Tổng
+              {dataLang.formatMessage({ id: 'total' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3661,12 +3686,14 @@ const Battery = (props) => {
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit">
-            Phóng điện
+            {dataLang.formatMessage({ id: 'discharge' })}
+
           </div>
           <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
-              Hôm nay
+              {dataLang.formatMessage({ id: 'today' })}
+
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3680,7 +3707,8 @@ const Battery = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
-              Tháng
+              {dataLang.formatMessage({ id: 'month' })}
+
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3694,7 +3722,8 @@ const Battery = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
-              Năm
+              {dataLang.formatMessage({ id: 'year' })}
+
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3708,7 +3737,8 @@ const Battery = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
-              Tổng
+              {dataLang.formatMessage({ id: 'total' })}
+
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>

@@ -5,57 +5,64 @@ import { signal } from "@preact/signals-react";
 // import { CheckBox } from "../Device/Config";
 import { isMobile } from "../Navigation/Navigation";
 import { createruleState, datarule } from "./Rule";
+import { useIntl } from "react-intl";
 
 export const lastruleID = signal(3);
+const key = {
+  edit: 'edits',
+  delete: 'delete',
+  create: 'createNew',
+  status: 'status'
+}
 
 const newruledata = signal({
   ruleid: 1,
   name: "",
   setting: {
     alert: {
-      lang: "Thông báo",
+      lang: "notification",
       option: {
-        1: { lang: "Chỉnh sửa", status: false },
-        2: { lang: "Xóa", status: false },
+        1: { lang: key.edit, status: true },
+        2: { lang: key.delete, status: true },
       },
     },
     device: {
-      lang: "Thiết bị",
+      lang: "device",
       option: {
-        1: { lang: "Chỉnh sửa", status: false },
-        2: { lang: "Xóa", status: false },
-        3: { lang: "Tạo mới", status: false },
+        1: { lang: key.edit, status: true },
+        2: { lang: key.delete, status: true },
+        3: { lang: key.create, status: true },
       },
     },
     partner: {
-      lang: "Đối tác",
+      lang: "partner",
       option: {
-        1: { lang: "Chỉnh sửa", status: false },
+        1: { lang: key.edit, status: true },
       },
     },
     plant: {
-      lang: "Dự án",
+      lang: "project",
       option: {
-        1: { lang: "Chỉnh sửa", status: false },
-        2: { lang: "Xóa", status: false },
-        3: { lang: "Tạo mới", status: false },
+        1: { lang: key.edit, status: true },
+        2: { lang: key.delete, status: true },
+        3: { lang: key.create, status: true },
       },
     },
     report: {
-      lang: "Báo cáo",
+      lang: "report",
       option: {
-        1: { lang: "Chỉnh sửa", status: false },
-        2: { lang: "Xóa", status: false },
-        3: { lang: "Tạo mới", status: false },
+        1: { lang: key.edit, status: true },
+        2: { lang: key.delete, status: true },
+        3: { lang: key.create, status: true },
       },
     },
     rule: {
-      lang: "Phân quyền",
+      lang: "rule",
       option: {
-        1: { lang: "Chỉnh sửa", status: false },
-        2: { lang: "Xóa", status: false },
-        3: { lang: "Thêm", status: false },
-        4: { lang: "Trạng thái", status: false },
+        1: { lang: key.edit, status: true },
+        2: { lang: key.delete, status: true },
+        3: { lang: key.create, status: true },
+        4: { lang: key.status, status: true },
       },
     },
   },
@@ -253,6 +260,8 @@ export const CheckBox = (props) => {
           },
         };
         break;
+      default:
+        break;
     }
     console.log(newruledata.value);
   };
@@ -285,6 +294,7 @@ export const CheckBox = (props) => {
 };
 
 export default function CreateRule() {
+  const dataLang = useIntl();
   const [widthCheckBox, setWidwidthCheckBox] = React.useState("");
   const rulenameRef = useRef("");
 
@@ -298,7 +308,7 @@ export default function CreateRule() {
       <div className="DAT_CreateRule_Body_Item">
         <div className="DAT_CreateRule_Body_Item_Data">
           <div className="DAT_CreateRule_Body_Item_Data_Name">
-            <label>Tên phân quyền: </label>
+            <label>{dataLang.formatMessage({ id: 'ruleName' })}: </label>
             <input
               type="text"
               placeholder="Required Field"
@@ -344,7 +354,7 @@ export default function CreateRule() {
       <div className="DAT_CreateRule">
         <div className="DAT_CreateRule_Header">
           <div className="DAT_CreateRule_Header_Left">
-            <p style={{ fontSize: "20px" }}>Tạo phân quyền mới</p>
+            <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'newRule' })}</p>
           </div>
           <div className="DAT_CreateRule_Header_Right">
             <div
@@ -352,7 +362,7 @@ export default function CreateRule() {
               onClick={() => handleCreate()}
             >
               <FaSave size={20} color="white" />
-              <span>Lưu</span>
+              <span>{dataLang.formatMessage({ id: 'save' })}</span>
             </div>
             <div className="DAT_CreateRule_Header_Right_Close">
               <RxCross2
@@ -395,14 +405,15 @@ export default function CreateRule() {
 
           <div className="DAT_CreateRule_Body_Item">
             <div className="DAT_CreateRule_Body_Item_Option">
-              <label style={{ margin: "0" }}>Tùy chọn các quyền</label>
+              <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: 'ruleOptions' })}</label>
+
               {ruletitle.value.map((item, key) => (
                 <div
                   key={key}
                   className="DAT_CreateRule_Body_Item_Option_Check"
                 >
                   <p style={{ color: "grey" }}>
-                    {newruledata.value.setting[item].lang}
+                    {dataLang.formatMessage({ id: newruledata.value.setting[item].lang })}
                   </p>
                   {Object.entries(newruledata.value.setting[item].option).map(
                     ([key, value]) => (
@@ -411,7 +422,7 @@ export default function CreateRule() {
                         num={String(key)}
                         tab={item + "_content"}
                         status={value.status}
-                        id={value.lang}
+                        id={dataLang.formatMessage({ id: value.lang })}
                         html={item + "_" + key}
                         width={widthCheckBox}
                       />

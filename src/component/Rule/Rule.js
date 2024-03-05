@@ -11,6 +11,13 @@ import EditRule, { editruledata } from "./EditRule";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 
+const key = {
+  edit: 'edits',
+  delete: 'delete',
+  create: 'createNew',
+  status: 'status'
+}
+
 export const ruleID = signal();
 export const editRuleState = signal(false);
 export const confirmDeleteState = signal(false);
@@ -28,7 +35,7 @@ export const datarule = signal([
         },
       },
       device: {
-        lang: "Thiết bị",
+        lang: "device",
         option: {
           1: { lang: "Chỉnh sửa", status: true },
           2: { lang: "Xóa", status: true },
@@ -36,13 +43,13 @@ export const datarule = signal([
         },
       },
       partner: {
-        lang: "Đối tác",
+        lang: "partner",
         option: {
           1: { lang: "Chỉnh sửa", status: true },
         },
       },
       plant: {
-        lang: "Dự án",
+        lang: "plant",
         option: {
           1: { lang: "Chỉnh sửa", status: true },
           2: { lang: "Xóa", status: true },
@@ -50,7 +57,7 @@ export const datarule = signal([
         },
       },
       report: {
-        lang: "Báo cáo",
+        lang: "report",
         option: {
           1: { lang: "Chỉnh sửa", status: true },
           2: { lang: "Xóa", status: true },
@@ -58,7 +65,7 @@ export const datarule = signal([
         },
       },
       rule: {
-        lang: "Phân quyền",
+        lang: "rule",
         option: {
           1: { lang: "Chỉnh sửa", status: true },
           2: { lang: "Xóa", status: true },
@@ -75,47 +82,47 @@ export const datarule = signal([
       alert: {
         lang: "notification",
         option: {
-          1: { lang: "Chỉnh sửa", status: true },
-          2: { lang: "Xóa", status: true },
+          1: { lang: key.edit, status: true },
+          2: { lang: key.delete, status: true },
         },
       },
       device: {
-        lang: "Thiết bị",
+        lang: "device",
         option: {
-          1: { lang: "Chỉnh sửa", status: true },
-          2: { lang: "Xóa", status: true },
-          3: { lang: "Tạo mới", status: true },
+          1: { lang: key.edit, status: true },
+          2: { lang: key.delete, status: true },
+          3: { lang: key.create, status: true },
         },
       },
       partner: {
-        lang: "Đối tác",
+        lang: "partner",
         option: {
-          1: { lang: "Chỉnh sửa", status: true },
+          1: { lang: key.edit, status: true },
         },
       },
       plant: {
-        lang: "Dự án",
+        lang: "project",
         option: {
-          1: { lang: "Chỉnh sửa", status: true },
-          2: { lang: "Xóa", status: true },
-          3: { lang: "Tạo mới", status: true },
+          1: { lang: key.edit, status: true },
+          2: { lang: key.delete, status: true },
+          3: { lang: key.create, status: true },
         },
       },
       report: {
-        lang: "Báo cáo",
+        lang: "report",
         option: {
-          1: { lang: "Chỉnh sửa", status: true },
-          2: { lang: "Xóa", status: true },
-          3: { lang: "Tạo mới", status: true },
+          1: { lang: key.edit, status: true },
+          2: { lang: key.delete, status: true },
+          3: { lang: key.create, status: true },
         },
       },
       rule: {
-        lang: "Phân quyền",
+        lang: "rule",
         option: {
-          1: { lang: "Chỉnh sửa", status: true },
-          2: { lang: "Xóa", status: true },
-          3: { lang: "Thêm", status: true },
-          4: { lang: "Trạng thái", status: true },
+          1: { lang: key.edit, status: true },
+          2: { lang: key.delete, status: true },
+          3: { lang: key.create, status: true },
+          4: { lang: key.status, status: true },
         },
       },
     },
@@ -246,7 +253,7 @@ export default function Rule() {
 
   const handleEdit = (e) => {
     if (ruleID.value === 1) {
-      alertDispatch("Không thể thay đổi phân quyền này !");
+      alertDispatch(dataLang.formatMessage({ id: 'alert_20' }));
     } else {
       editRuleState.value = true;
       editruledata.value = datarule.value.find(

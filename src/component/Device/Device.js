@@ -233,7 +233,7 @@ function Device(props) {
               id={row.id + "_" + tab.value}
               onClick={(e) => handleRemove(e)}
             >
-              Gỡ
+              {datalang.formatMessage({ id: 'remove' })}
             </div>
           </div>
         </>
@@ -313,13 +313,13 @@ function Device(props) {
             <div className="DAT_ModifyBox_Fix"
               onClick={(e) => handleEdit(e)}
             >
-              {datalang.formatMessage({ id: 'edit' })}
+              {datalang.formatMessage({ id: 'edits' })}
             </div>
             <div className="DAT_ModifyBox_Remove"
               id={row.psn + "_" + row.pplantid}
               onClick={(e) => handleRemove(e)}
             >
-              {datalang.formatMessage({ id: 'remove' })}
+              {datalang.formatMessage({ id: 'delete' })}
             </div>
           </div>
         </>
