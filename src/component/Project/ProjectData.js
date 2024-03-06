@@ -115,7 +115,7 @@ const dataAlert = [
 const dbDay = [
   {
     date: "19/02/2024",
-    name: "Sản lượng ngày",
+    name: 'electricOutputDay',
     data: [
       { time: "00:00", val: 1.234 },
       { time: "01:00", val: 2.345 },
@@ -1996,7 +1996,7 @@ const Graph = (props) => {
                     </div>
                   </div>
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine_Grid">
-                    <img src="/dat_picture/grid.png"></img>
+                    <img src="/dat_picture/grid.png" alt=""></img>
                   </div>
                 </div>
               </>
@@ -3156,6 +3156,7 @@ const Battery = (props) => {
 
 // Thẻ Chart
 const Day = (props) => {
+  const dataLang = useIntl();
   const [data, setData] = useState([]);
   const [v, setV] = useState("--");
 
@@ -3171,7 +3172,7 @@ const Day = (props) => {
           kWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          Sản lượng ngày: 24.3 kWh
+          {dataLang.formatMessage({ id: 'electricOutputDay' })}: 24.3 kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
@@ -3196,6 +3197,7 @@ const Day = (props) => {
 };
 
 const Month = (props) => {
+  const dataLang = useIntl();
   const [data, setData] = useState([]);
   const [v, setV] = useState("--");
 
@@ -3219,7 +3221,7 @@ const Month = (props) => {
           kWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          Sản lượng tháng: 775.327 kWh
+          {dataLang.formatMessage({ id: 'electricOutputMonth' })}: 775.327 kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
@@ -3239,6 +3241,7 @@ const Month = (props) => {
 };
 
 const Year = (props) => {
+  const dataLang = useIntl();
   const [data, setData] = useState([]);
   const [v, setV] = useState("--");
 
@@ -3262,7 +3265,7 @@ const Year = (props) => {
           MWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          Sản lượng năm: 1.69 MWh
+          {dataLang.formatMessage({ id: 'electricOutputYear' })}: 1.69 MWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
@@ -3282,6 +3285,7 @@ const Year = (props) => {
 };
 
 const Total = (props) => {
+  const dataLang = useIntl();
   const [data, setData] = useState([]);
   const [v, setV] = useState("--");
 
@@ -3305,7 +3309,7 @@ const Total = (props) => {
           MWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          Sản lượng tổng: 13.69 MWh
+          {dataLang.formatMessage({ id: 'totalElectricOutput' })}: 13.69 MWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">

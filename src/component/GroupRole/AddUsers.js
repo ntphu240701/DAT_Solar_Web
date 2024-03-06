@@ -161,11 +161,11 @@ export default function AddUsers() {
           {(() => {
             switch (addUserState) {
               case "AddSuccess":
-                return <p>Người dùng được thêm thành công !</p>;
+                return <p>{dataLang.formatMessage({ id: 'alert_37' })} !</p>;
               case "UserNotFound":
-                return <p>Không tìm thấy người dùng, vui lòng kiểm tra lại.</p>;
+                return <p>{dataLang.formatMessage({ id: 'alert_38' })}</p>;
               case "UserAlreadyInGroup":
-                return <p>Người dùng này đã tồn tại trong nhóm.</p>;
+                return <p>{dataLang.formatMessage({ id: 'alert_39' })}</p>;
               default:
                 return (
                   <>
