@@ -364,11 +364,10 @@ export default function CreateRule() {
               <FaSave size={20} color="white" />
               <span>{dataLang.formatMessage({ id: 'save' })}</span>
             </div>
-            <div className="DAT_CreateRule_Header_Right_Close">
+            <div className="DAT_CreateRule_Header_Right_Close" onClick={() => (createruleState.value = false)}>
               <RxCross2
                 size={20}
                 color="white"
-                onClick={() => (createruleState.value = false)}
               />
             </div>
           </div>

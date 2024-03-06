@@ -70,11 +70,10 @@ function CreateRole(props) {
             <FaSave size={20} color="white" />
             <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </button>
-          <div className="DAT_CreateRole_Header_Right_Close">
+          <div className="DAT_CreateRole_Header_Right_Close" onClick={() => (roleState.value = "default")}>
             <RxCross2
               size={20}
               color="white"
-              onClick={() => (roleState.value = "default")}
             />
           </div>
         </div>

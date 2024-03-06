@@ -107,11 +107,10 @@ export default function CreateGroupRole() {
               <FaSave size={20} color="white" />
               <span>{dataLang.formatMessage({ id: 'save' })}</span>
             </div>
-            <div className="DAT_CreateGroupRole_Header_Right_Close">
+            <div className="DAT_CreateGroupRole_Header_Right_Close" onClick={() => (createState.value = false)}>
               <RxCross2
                 size={20}
                 color="white"
-                onClick={() => (createState.value = false)}
               />
             </div>
           </div>
