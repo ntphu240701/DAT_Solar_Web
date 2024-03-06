@@ -60,7 +60,7 @@ function Home(props) {
   const [totalproduction, setTotalProduction] = useState(0)
   const dataLang = useIntl()
 
-  const v = dataLang.formatMessage({ id: 'monthOutput' });
+  const v = dataLang.formatMessage({ id: 'monthOutputSmall' });
 
   const data = [
     {
@@ -549,7 +549,7 @@ function Home(props) {
             <div className="DAT_Home_History-Chart-label">
               <div className="DAT_Home_History-Chart-label-Unit">MWh</div>
               <div className="DAT_Home_History-Chart-label-Label">
-                {dataLang.formatMessage({ id: 'yearOutput' })}: 1.69 MWh
+                {dataLang.formatMessage({ id: 'yearOutputSmall' })}: 1.69 MWh
               </div>
             </div>
             <div className="DAT_Home_History-Chart-Content">

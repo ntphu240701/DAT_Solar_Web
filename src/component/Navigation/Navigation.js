@@ -37,7 +37,7 @@ export const message = signal([
   {
     boxid: "E03",
     total: 0,
-  }
+  },
 ]);
 const messageContent = signal([]);
 const messageOption = signal("default");
@@ -133,6 +133,20 @@ function Navigation(props) {
     }
   };
 
+  // useEffect(() => {
+  //   tabLable.value = listTab[0].name;
+
+  //   // get logger
+  //   const getAllLogger = async (usrname, partnerid, type) => {
+  //     let d = await callApi('post', host.DATA + '/getallLogger', { usr: usrname, partnerid: partnerid, type: type });
+  //     if (d.status === true) {
+  //       loggerList.value = d.data;
+  //     }
+  //   };
+  //   getAllLogger(user, userInfor.value.partnerid, userInfor.value.type);
+
+  // }, []);
+
   useEffect(function () {
     if (window.innerWidth >= 900) {
       isMobile.value = false;
@@ -181,7 +195,6 @@ function Navigation(props) {
     message.value.map((item) => {
       let data = dataWarn.value.filter((item_) => item_.boxid == item.boxid);
       item.total = data.filter((item) => item.state == false).length;
-
     });
   }, [dataWarn.value]);
 
@@ -226,7 +239,7 @@ function Navigation(props) {
           <button
             className="DAT_Navigation_right-item"
             id="notif"
-            style={{ display: isMobile.value ? "none" : "block" }}
+            // style={{ display: isMobile.value ? "none" : "block" }}
             onClick={() => (notifNav.value = !notifNav.value)}
             ref={notif_icon}
           >
@@ -347,12 +360,11 @@ function Navigation(props) {
                       >
                         <div className="DAT_NavNotif-content-message-group-tit">
                           <span>{item.boxid}</span>
-                          {/* <span>{item.list.length}</span> */}
+                          {item.total === 0 ? <></> : <span>{item.total}</span>}
                         </div>
                         {/* <div className="DAT_NavNotif-content-message-group-inf">
-                          Có một {item.name} tại{" "}
-                          {item.list[item.list.length - 1].plant}
-                        </div> */}
+                            Có một {item.boxid} tại {""} {item.detail}
+                          </div> */}
                       </div>
                     ))}
                   </div>
@@ -362,18 +374,17 @@ function Navigation(props) {
                   <div className="DAT_NavNotif-content-main">
                     {messageNav.value ? (
                       <>
-                        {/* {messageContent.value[0].list.map((item, index) => (
+                        {messageContent.value.map((item, index) => (
                           <div
                             className="DAT_NavNotif-content-main-group"
                             key={index}
                           >
                             <div className="DAT_NavNotif-content-main-group-datetime">
-                              {item.time}
+                              {item.opentime}
                             </div>
                             <div className="DAT_NavNotif-content-main-group-content">
                               <div className="DAT_NavNotif-content-main-group-content-tit">
-                                Có một {messageContent.value[0].name} tại{" "}
-                                {item.plant}
+                                Có một {item.boxid} tại {item.plant}
                               </div>
                               <div className="DAT_NavNotif-content-main-group-content-device">
                                 Thiết bị:{" "}
@@ -392,7 +403,7 @@ function Navigation(props) {
                               </div>
                             </div>
                           </div>
-                        ))} */}
+                        ))}
                       </>
                     ) : (
                       <div className="DAT_NavNotif-content-main-empty">
@@ -439,8 +450,7 @@ function Navigation(props) {
                               </div>
                               <div className="DAT_NavNotif-content-main-group-content">
                                 <div className="DAT_NavNotif-content-main-group-content-tit">
-                                  Có một {item.boxid} tại{" "}
-                                  {item.plant}
+                                  Có một {item.boxid} tại {item.plant}
                                 </div>
                                 <div className="DAT_NavNotif-content-main-group-content-device">
                                   Thiết bị:{" "}
