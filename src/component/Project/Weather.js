@@ -13,6 +13,7 @@ import {
   YAxis,
 } from "recharts";
 import { PacmanLoader } from "react-spinners";
+import { projectData } from "./Project";
 
 const temp = [
   {

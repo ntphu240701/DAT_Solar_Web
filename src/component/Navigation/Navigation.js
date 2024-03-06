@@ -16,6 +16,7 @@ import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 import adminslice from "../Redux/adminslice";
+import { dataWarn } from "../Warn/Warn";
 
 export const isMobile = signal(false);
 const userNav = signal(false);
@@ -23,54 +24,20 @@ export const notifNav = signal(false);
 const langNav = signal(false);
 const langStateNav = signal([false, false]);
 const messageNav = signal(false);
+
 export const message = signal([
   {
-    messid: 1,
-    name: "Điện áp thấp mức 1",
-    list: [
-      {
-        warnid: 1,
-        device: "I0000129",
-        plant: "Năng lượng DAT 01",
-        level: "warning",
-        time: "12/15/2023 08:12:12",
-      },
-      {
-        warnid: 2,
-        device: "I0000145",
-        plant: "Năng lượng DAT 02",
-        level: "notice",
-        time: "12/30/2023 12:07:33",
-      },
-      {
-        warnid: 3,
-        device: "I0000001",
-        plant: "Năng lượng DAT 03",
-        level: "warning",
-        time: "01/17/2023 09:00:59",
-      },
-    ],
+    boxid: "E01",
+    total: 0,
   },
   {
-    messid: 2,
-    name: "Meter không kết nối",
-    list: [
-      {
-        warnid: 1,
-        device: "M00000789",
-        plant: "Năng lượng DAT 03",
-        level: "warning",
-        time: "01/15/2023 08:12:12",
-      },
-      {
-        warnid: 2,
-        device: "I0000369",
-        plant: "Năng lượng DAT 03",
-        level: "notice",
-        time: "01/17/2023 12:07:33",
-      },
-    ],
+    boxid: "E02",
+    total: 0,
   },
+  {
+    boxid: "E03",
+    total: 0,
+  }
 ]);
 const messageContent = signal([]);
 const messageOption = signal("default");
@@ -129,10 +96,37 @@ function Navigation(props) {
   };
 
   const handleMessage = (e) => {
-    messageContent.value = message.value.filter(
-      (item) => item.messid == e.currentTarget.id
-    );
-    console.log(messageContent.value[0].list);
+    let warnid = [];
+    messageContent.value = dataWarn.value.filter((item, i) => {
+      if (item.boxid == e.currentTarget.id) {
+        warnid.push(item.warnid);
+        return item;
+      }
+    });
+    warnid.map((item_) => {
+      let index = dataWarn.value.findIndex((item, i) => item.warnid == item_);
+      dataWarn.value[index] = {
+        ...dataWarn.value[index],
+        state: true,
+      };
+    });
+
+    message.value.map((item) => {
+      let data = dataWarn.value.filter((item_) => item_.boxid == item.boxid);
+      item.total = data.filter((item) => item.state == false).length;
+    });
+
+    warnid = [];
+    // dataWarn.value.map((item)=>{
+
+    //   if(item.boxid == e.currentTarget.id){
+
+    //   }
+
+    // })
+    console.log(dataWarn.value);
+
+    console.log(messageContent.value);
     messageNav.value = true;
     if (isMobile.value) {
       messageOption.value = "content";
@@ -166,7 +160,6 @@ function Navigation(props) {
       navigate("/Logout");
       window.location.reload();
     };
-
     setDefault();
   };
 
@@ -185,8 +178,12 @@ function Navigation(props) {
   };
 
   useEffect(() => {
-    console.log(message.value);
-  }, [message.value]);
+    message.value.map((item) => {
+      let data = dataWarn.value.filter((item_) => item_.boxid == item.boxid);
+      item.total = data.filter((item) => item.state == false).length;
+
+    });
+  }, [dataWarn.value]);
 
   return (
     <>
@@ -234,7 +231,15 @@ function Navigation(props) {
             ref={notif_icon}
           >
             <IoIosNotificationsOutline color="white" size={22} />
-            <span>5</span>
+
+            {dataWarn.value.filter((item) => item.state == false).length ===
+            0 ? (
+              <></>
+            ) : (
+              <span>
+                {dataWarn.value.filter((item) => item.state == false).length}
+              </span>
+            )}
           </button>
 
           <button
@@ -336,18 +341,18 @@ function Navigation(props) {
                     {message.value.map((item, index) => (
                       <div
                         className="DAT_NavNotif-content-message-group"
-                        id={item.messid}
-                        key={item.messid}
+                        id={item.boxid}
+                        key={item.boxid}
                         onClick={(e) => handleMessage(e)}
                       >
                         <div className="DAT_NavNotif-content-message-group-tit">
-                          <span>{item.name}</span>
-                          <span>{item.list.length}</span>
+                          <span>{item.boxid}</span>
+                          {/* <span>{item.list.length}</span> */}
                         </div>
-                        <div className="DAT_NavNotif-content-message-group-inf">
+                        {/* <div className="DAT_NavNotif-content-message-group-inf">
                           Có một {item.name} tại{" "}
                           {item.list[item.list.length - 1].plant}
-                        </div>
+                        </div> */}
                       </div>
                     ))}
                   </div>
@@ -357,7 +362,7 @@ function Navigation(props) {
                   <div className="DAT_NavNotif-content-main">
                     {messageNav.value ? (
                       <>
-                        {messageContent.value[0].list.map((item, index) => (
+                        {/* {messageContent.value[0].list.map((item, index) => (
                           <div
                             className="DAT_NavNotif-content-main-group"
                             key={index}
@@ -387,7 +392,7 @@ function Navigation(props) {
                               </div>
                             </div>
                           </div>
-                        ))}
+                        ))} */}
                       </>
                     ) : (
                       <div className="DAT_NavNotif-content-main-empty">
@@ -403,35 +408,38 @@ function Navigation(props) {
                       {message.value.map((item, index) => (
                         <div
                           className="DAT_NavNotif-content-message-group"
-                          id={item.messid}
-                          key={item.messid}
+                          id={item.boxid}
+                          key={item.boxid}
                           onClick={(e) => handleMessage(e)}
                         >
                           <div className="DAT_NavNotif-content-message-group-tit">
-                            <span>{item.name}</span>
-                            <span>{item.list.length}</span>
+                            <span>{item.boxid}</span>
+                            {item.total === 0 ? (
+                              <></>
+                            ) : (
+                              <span>{item.total}</span>
+                            )}
                           </div>
-                          <div className="DAT_NavNotif-content-message-group-inf">
-                            Có một {item.name} tại{" "}
-                            {item.list[item.list.length - 1].plant}
-                          </div>
+                          {/* <div className="DAT_NavNotif-content-message-group-inf">
+                            Có một {item.boxid} tại {""} {item.detail}
+                          </div> */}
                         </div>
                       ))}
                     </div>
                     <div className="DAT_NavNotif-content-main">
                       {messageNav.value ? (
                         <>
-                          {messageContent.value[0].list.map((item, index) => (
+                          {messageContent.value.map((item, index) => (
                             <div
                               className="DAT_NavNotif-content-main-group"
                               key={index}
                             >
                               <div className="DAT_NavNotif-content-main-group-datetime">
-                                {item.time}
+                                {item.opentime}
                               </div>
                               <div className="DAT_NavNotif-content-main-group-content">
                                 <div className="DAT_NavNotif-content-main-group-content-tit">
-                                  Có một {messageContent.value[0].name} tại{" "}
+                                  Có một {item.boxid} tại{" "}
                                   {item.plant}
                                 </div>
                                 <div className="DAT_NavNotif-content-main-group-content-device">
