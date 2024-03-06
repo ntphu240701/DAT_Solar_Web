@@ -2632,7 +2632,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: 'electricOutputDay' })}
+            {dataLang.formatMessage({ id: 'dailyOutputSmall' })}
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2649,7 +2649,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: 'electricOutputMonth' })}
+            {dataLang.formatMessage({ id: 'monthOutputSmall' })}
 
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
@@ -2667,7 +2667,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: 'electricOutputYear' })}
+            {dataLang.formatMessage({ id: 'yearOutputSmall' })}
 
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
@@ -2685,7 +2685,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: 'totalElectricOutput' })}
+            {dataLang.formatMessage({ id: 'totalOutputSmall' })}
 
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
