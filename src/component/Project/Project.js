@@ -21,7 +21,6 @@ import { useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
-import { data } from "jquery";
 import { IoAddOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 
@@ -81,166 +80,18 @@ export const devicePlant = signal([
   },
 ]);
 
-export const Logger = signal([
-  // {
-  //   id: 1,
-  //   SN: "T0623A000162",
-  //   name: "Logger 01",
-  //   state: 0,
-  //   type: "L01",
-  //   version: "0.1",
-  //   data: {
-  //     pro_1: 16,
-  //     // pro_2: 110,
-  //     pro_2: 0.5,
-  //     con_1: 7.68,
-  //     con_2: 0.25,
-  //     grid_1: 4.56,
-  //     grid_in_1: 0.15,
-  //     grid_in_2: 54,
-  //     grid_out_1: 0.1,
-  //     grid_out_2: 36,
-  //     bat_1: 3.12,
-  //     bat_2: 74.1,
-  //     bat_in_1: 0.1,
-  //     bat_out_1: 0.05,
-  //   },
-  //   setting: {},
-  //   plantid: 1,
-  // },
-  // {
-  //   id: 2,
-  //   SN: "T0623A000166",
-  //   name: "Logger 02",
-  //   state: 1,
-  //   type: "L01",
-  //   version: "0.1",
-  //   data: {
-  //     pro_1: 222,
-  //     // pro_2: 230,
-  //     pro_2: 7.5,
-  //     con_1: 100,
-  //     con_2: 3.3,
-  //     grid_1: 130,
-  //     grid_in_1: 4.3,
-  //     grid_out_1: 3,
-  //     grid_out_2: 1080,
-  //     bat_1: 70,
-  //     bat_2: 70,
-  //     bat_in_1: 2.3,
-  //     bat_out_1: 1.5,
-  //   },
-  //   setting: {},
-  //   plantid: 1,
-  // },
-  // {
-  //   id: 3,
-  //   SN: "T0623A000177",
-  //   name: "Logger 03",
-  //   state: 0,
-  //   type: "L01",
-  //   version: "0.1",
-  //   data: {
-  //     pro_1: 116,
-  //     // pro_2: 333,
-  //     pro_2: 3.8,
-  //     con_1: 50,
-  //     con_2: 1.6,
-  //     grid_1: 66,
-  //     grid_in_1: 2.2,
-  //     grid_in_2: 792,
-  //     grid_out_1: 1.5,
-  //     grid_out_2: 540,
-  //     bat_1: 33,
-  //     bat_2: 69,
-  //     bat_in_1: 1.1,
-  //     bat_out_1: 0.7,
-  //   },
-  //   setting: {},
-  //   plantid: 2,
-  // },
-  // {
-  //   id: 4,
-  //   SN: "T0623A000188",
-  //   name: "Logger 04",
-  //   state: 0,
-  //   type: "L01",
-  //   version: "0.1",
-  //   data: {
-  //     pro_1: 7.89,
-  //     // pro_2: 11.6,
-  //     pro_2: 8.8,
-  //     con_1: 90,
-  //     con_2: 16,
-  //     grid_1: 6.6,
-  //     grid_in_1: 22.2,
-  //     grid_in_2: 79.2,
-  //     grid_out_1: 15.5,
-  //     grid_out_2: 54,
-  //     bat_1: 3.3,
-  //     bat_2: 6.9,
-  //     bat_in_1: 81.1,
-  //     bat_out_1: 60.7,
-  //   },
-  //   setting: {},
-  //   plantid: 3,
-  // },
-]);
+export const Logger = signal([]);
 
-export const InverterbyLogger = signal([
-  {
-    loggerSN: "L0000102",
-    inverterSN: "I0000145",
-  },
-  {
-    loggerSN: "L0000101",
-    inverterSN: "I0000012",
-  },
-  {
-    loggerSN: "L0000103",
-    inverterSN: "I0000333",
-  },
-]);
+export const InverterbyLogger = signal([]);
 
-export const Inverter = signal([
-  // {
-  //   id: 1,
-  //   SN: "I0000145",
-  //   name: "Inverter 01",
-  //   plant: "Năng lượng DAT 01",
-  //   status: true,
-  //   production: "16",
-  //   dailyproduction: "123.4",
-  //   updated: "12/30/2023 12:07:12",
-  // },
-  // {
-  //   id: 2,
-  //   SN: "I0000012",
-  //   name: "Inverter 02",
-  //   plant: "Năng lượng DAT 01",
-  //   status: false,
-  //   production: "18",
-  //   dailyproduction: "238.4",
-  //   updated: "12/30/2023 12:07:12",
-  // },
-  // {
-  //   id: 3,
-  //   SN: "I0000333",
-  //   name: "Inverter 03",
-  //   plant: "Năng lượng DAT 02",
-  //   status: false,
-  //   production: "116",
-  //   dailyproduction: "123.4",
-  //   updated: "12/30/2023 12:07:12",
-  // },
-]);
+export const Inverter = signal([]);
 
 function Project(props) {
   const dataLang = useIntl();
   const user = useSelector(state => state.admin.usr);
   const [datafilter, setDatafilter] = useState([]);
   const [type, setType] = useState("name");
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState(false);
 
   const listTab = [
     { id: "total", name: dataLang.formatMessage({ id: 'total' }) },
@@ -258,118 +109,6 @@ function Project(props) {
     selectAllRowsItem: true,
     selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
-
-  // const dataproject = [
-  //   {
-  //     id: 1,
-  //     name: "Năng lượng DAT 01",
-  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-  //     status: true,
-  //     warn: true,
-  //     capacity: "110",
-  //     production: "16",
-  //     power: "14.54",
-  //     lastupdate: "12/30/2023 12:07:12",
-  //     createdate: "05/01/2022 14:03:36",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Năng lượng DAT 02",
-  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-  //     status: false,
-  //     warn: false,
-  //     capacity: "222",
-  //     production: "230",
-  //     power: "0",
-  //     lastupdate: "10/30/2023 08:01:22",
-  //     createdate: "05/01/2022 14:08:36",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Năng lượng DAT 03",
-  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-  //     status: false,
-  //     warn: false,
-  //     capacity: "333",
-  //     production: "116",
-  //     power: "0",
-  //     lastupdate: "10/30/2023 08:01:22",
-  //     createdate: "05/01/2022 14:08:36",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Năng lượng DAT 04",
-  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-  //     status: false,
-  //     warn: false,
-  //     capacity: "120",
-  //     production: "16",
-  //     power: "0",
-  //     lastupdate: "10/30/2023 08:01:22",
-  //     createdate: "05/01/2022 14:08:36",
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Năng lượng DAT 05",
-  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-  //     status: false,
-  //     warn: false,
-  //     capacity: "120",
-  //     production: "123",
-  //     power: "0",
-  //     lastupdate: "10/30/2023 08:01:22",
-  //     createdate: "05/01/2022 14:08:36",
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Năng lượng DAT 06",
-  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-  //     status: false,
-  //     warn: false,
-  //     capacity: "90",
-  //     production: "168",
-  //     power: "0",
-  //     lastupdate: "10/30/2023 08:01:22",
-  //     createdate: "05/01/2022 14:08:36",
-  //   },
-  //   {
-  //     id: 7,
-  //     name: "Năng lượng DAT 07",
-  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-  //     status: false,
-  //     warn: false,
-  //     capacity: "150",
-  //     production: "160",
-  //     power: "0",
-  //     lastupdate: "10/30/2023 08:01:22",
-  //     createdate: "05/01/2022 14:08:36",
-  //   },
-
-  //   {
-  //     id: 8,
-  //     name: "Năng lượng DAT 08",
-  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-  //     status: false,
-  //     warn: false,
-  //     capacity: "100",
-  //     production: "18",
-  //     power: "0",
-  //     lastupdate: "10/30/2023 08:01:22",
-  //     createdate: "05/01/2022 14:08:36",
-  //   },
-  //   {
-  //     id: 9,
-  //     name: "Năng lượng DAT 09",
-  //     addr: " 716/6 Nguyễn Văn Quá, P. Đông Hưng Thuận, Q12, Tp.HCM",
-  //     status: false,
-  //     warn: false,
-  //     capacity: "110",
-  //     production: "6",
-  //     power: "0",
-  //     lastupdate: "10/30/2023 08:01:22",
-  //     createdate: "05/01/2022 14:08:36",
-  //   },
-  // ];
 
   const columnproject = [
     {
@@ -434,15 +173,15 @@ function Project(props) {
       sortable: true,
       // width: "140px",
     },
-    // {
-    //   name: "Tag",
-    //   selector: (row) => (
-    //     <div className="DAT_TableEdit">
-    //       <MdEditDocument color="gray" size={20} />
-    //     </div>
-    //   ),
-    //   width: "100px",
-    // },
+    {
+      name: "Tag",
+      selector: (row) => (
+        <div className="DAT_TableEdit">
+          <MdEditDocument color="gray" size={20} />
+        </div>
+      ),
+      width: "100px",
+    },
     {
       name: dataLang.formatMessage({ id: 'lastUpdate' }),
       selector: (row) => row.lastupdate,
@@ -479,14 +218,14 @@ function Project(props) {
               id={row.plantid}
               onClick={(e) => handleEdit(e)}
             >
-              {dataLang.formatMessage({ id: 'edits' })}
+              Chỉnh sửa
             </div>
             <div
               className="DAT_ModifyBox_Remove"
               id={row.plantid}
               onClick={(e) => handleDelete(e)}
             >
-              {dataLang.formatMessage({ id: 'delete' })}
+              Gỡ
             </div>
           </div>
         </>
@@ -574,10 +313,6 @@ function Project(props) {
   };
 
   useEffect(() => {
-    setDatafilter(dataproject.value);
-  }, [dataproject.value]);
-
-  useEffect(() => {
     online.value = dataproject.value.filter((item) => item.state == 1);
     offline.value = dataproject.value.filter((item) => item.state == 0);
     warn.value = dataproject.value.filter((item) => item.warn == 0);
@@ -588,14 +323,12 @@ function Project(props) {
     const getPlant = async (usrname, partnerid, type) => {
       let d = await callApi('post', host.DATA + '/getPlant', { usr: usrname, partnerid: partnerid, type: type });
       if (d.status === true) {
+        // console.log(d.data)
         dataproject.value = d.data;
+        setDatafilter(d.data);
       }
     }
     getPlant(user, userInfor.value.partnerid, userInfor.value.type);
-
-    return () => {
-      plantState.value = "default";
-    }
   }, []);
 
   return (
@@ -603,18 +336,16 @@ function Project(props) {
       <div className="DAT_ProjectHeader">
         <div className="DAT_ProjectHeader_Title">
           <GoProject color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'project' })}</span>
-
         </div>
 
-        {isMobile.value
-          ? <>
+        {isMobile.value ?
+          <>
             <div className="DAT_Modify">
               <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
               <div className="DAT_Modify_Item" onClick={() => (plantState.value = "add")}><IoAddOutline color="white" size={20} /></div>
             </div>
 
             {filter ?
-
               <div className="DAT_Modify_Filter">
                 <select onChange={(e) => pickTypeFilter(e)}>
                   <option value={"name"}>{dataLang.formatMessage({ id: 'name' })}</option>
@@ -631,17 +362,14 @@ function Project(props) {
                   placeholder={dataLang.formatMessage({ id: 'enterPr' })}
                   onChange={(e) => handleSearch(e)}
                 />
-                {/* <CiSearch color="gray" size={20} /> */}
-                <span onClick={() => setFilter(!filter)}
-                  style={{ cursor: "pointer" }}
-                >
-
-                  <RxCross2 size={20} color="grey" />
-                </span>
+                <div className="DAT_Modify_Filter_Close" onClick={() => setFilter(!filter)}>
+                  <RxCross2 size={20} color="white" />
+                </div>
               </div>
-              : <></>}
-          </> :
-          <>
+              : <></>
+            }
+          </>
+          : <>
             <div className="DAT_ProjectHeader_Filter">
               <select onChange={(e) => pickTypeFilter(e)}>
                 <option value={"name"}>{dataLang.formatMessage({ id: 'name' })}</option>
@@ -666,28 +394,24 @@ function Project(props) {
             >
               <span value={"createdate"}>{dataLang.formatMessage({ id: 'createNew' })}</span>
             </button>
-
           </>
         }
-
       </div>
 
-      {isMobile.value
-        ? <div className="DAT_ProjectMobile">
+      {isMobile.value ? (
+        <div className="DAT_ProjectMobile">
           <div className="DAT_Toollist_Tab_Mobile">
-            <button
-              className="DAT_Toollist_Tab_Mobile_content"
+            <button className="DAT_Toollist_Tab_Mobile_content"
               onClick={() => (tabMobile.value = !tabMobile.value)}
             >
-              <span> {tabLable.value}</span>
+              <span>{tabLable.value}</span>
               {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}
             </button>
-            {tabMobile.value
-              ? <div className="DAT_Toollist_Tab_Mobile_list">
+            {tabMobile.value ?
+              <div className="DAT_Toollist_Tab_Mobile_list">
                 {listTab.map((item, i) => {
                   return (
-                    <div
-                      className="DAT_Toollist_Tab_Mobile_list_item"
+                    <div className="DAT_Toollist_Tab_Mobile_list_item"
                       // style={{ display: tabMobile.value ? "block" : "none" }}
                       key={"tabmobile_" + i}
                       id={item.id}
@@ -700,47 +424,79 @@ function Project(props) {
               </div>
               : <></>
             }
-
           </div>
-
           {/* {dataproject.value[0].plantname} */}
-
-
 
           {(() => {
             switch (tab.value) {
               case "total":
-                return (<>
-                  {dataproject.value?.map((item, i) => {
-                    return <div key={i} className="DAT_ProjectMobile_Content" >
-                      <div className="DAT_ProjectMobile_Content_Top" id={item.plantid} onClick={(e) => handlePlant(e)}>
-                        <div className="DAT_ProjectMobile_Content_Top_Avatar">
-                          <img src={item.img ? item.img : "/dat_picture/solar_panel.png"} alt="" />
-                        </div>
+                return (
+                  <>
+                    {dataproject.value?.map((item, i) => {
+                      return <div key={i} className="DAT_ProjectMobile_Content" >
+                        <div className="DAT_ProjectMobile_Content_Top" id={item.plantid} onClick={(e) => handlePlant(e)}>
+                          <div className="DAT_ProjectMobile_Content_Top_Avatar">
+                            <img src={item.img ? item.img : "/dat_picture/solar_panel.png"} alt="" />
+                          </div>
 
-                        <div className="DAT_ProjectMobile_Content_Top_Info">
                           <div className="DAT_ProjectMobile_Content_Top_Info">
                             <div className="DAT_ProjectMobile_Content_Top_Info_Name">{item.plantname}</div>
+
                             <div className="DAT_ProjectMobile_Content_Top_Info_State">
-                              <div> {item.state ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'online' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'offline' })}</span></>}</div>
-                              <div> {item.warn ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'noAlert' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'alert' })}</span></>}  </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_State_Item">
+                                {item.state ?
+                                  <>
+                                    <FaCheckCircle size={20} color="green" />
+                                    <span>{dataLang.formatMessage({ id: 'online' })}</span>
+                                  </>
+                                  :
+                                  <>
+                                    <MdOutlineError size={22} color="red" />
+                                    <span>{dataLang.formatMessage({ id: 'offline' })}</span>
+                                  </>
+                                }
+                              </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_State_Item">
+                                {item.warn ?
+                                  <>
+                                    <FaCheckCircle size={20} color="green" />
+                                    <span>{dataLang.formatMessage({ id: 'noAlert' })}</span>
+                                  </>
+                                  :
+                                  <>
+                                    <MdOutlineError size={22} color="red" />
+                                    <span>{dataLang.formatMessage({ id: 'alert' })}</span>
+                                  </>
+                                }
+                              </div>
                             </div>
+
                             <div className="DAT_ProjectMobile_Content_Top_Info_Data">
-                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'power' })}</div> <div>{item.power}<span>%</span></div> </div>
-                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'capacity' })}</div> <div>{item.capacity}<span>kWp</span></div> </div>
-                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'production' })}</div> <div>{item.production}<span>kWh</span></div> </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
+                                <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'power' })}</div>
+                                <div>{item.power}<span>%</span></div>
+                              </div>
+
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
+                                <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'capacity' })}</div>
+                                <div>{item.capacity}<span>kWp</span></div>
+                              </div>
+
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
+                                <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'production' })}</div>
+                                <div>{item.production}<span>kWh</span></div>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="DAT_ProjectMobile_Content_Bottom">
-                        <span>{dataLang.formatMessage({ id: 'lastUpdate' })}</span>&nbsp; <span>{item.lastupdate}</span>
+                        <div className="DAT_ProjectMobile_Content_Bottom">
+                          <span>{dataLang.formatMessage({ id: 'lastUpdate' })}</span> &nbsp; <span>{item.lastupdate}</span>
+                        </div>
                       </div>
-
-                    </div>
-                  })}
-                </>);
+                    })}
+                  </>
+                );
               case "online":
                 return (<>
                   {online.value?.map((item, i) => {
@@ -873,11 +629,9 @@ function Project(props) {
                 return <></>;
             }
           })()}
-
-
         </div>
-        : <div className="DAT_Project">
-
+      ) : (
+        <div className="DAT_Project">
           <div className="DAT_Toollist_Tab">
             {listTab.map((item, i) => {
               return tab.value === item.id ? (
@@ -910,7 +664,6 @@ function Project(props) {
               );
             })}
           </div>
-
 
           <div className="DAT_Project_Content">
             {(() => {
@@ -981,13 +734,13 @@ function Project(props) {
             })()}
           </div>
         </div>
-      }
-      <div div className="DAT_ProjectInfor"
+      )}
+
+      <div className="DAT_ProjectInfor"
         style={{
           height: plantState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",
-        }
-        }
+        }}
       >
         {(() => {
           switch (plantState.value) {
@@ -1001,17 +754,15 @@ function Project(props) {
               return <></>;
           }
         })()}
-      </div >
+      </div>
 
-      {
-        popupState.value ? (
-          <div className="DAT_DevicePopup">
-            <Popup plantid={projectData.value.plantid} type="plant" usr={user} />
-          </div>
-        ) : (
-          <></>
-        )
-      }
+      {popupState.value ? (
+        <div className="DAT_DevicePopup">
+          <Popup plantid={projectData.value.plantid} type="plant" usr={user} />
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

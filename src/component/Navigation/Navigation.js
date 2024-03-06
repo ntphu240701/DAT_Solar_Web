@@ -347,7 +347,7 @@ function Navigation(props) {
                                             {messageNav.value
                                                 ? <>
                                                     {messageContent.value[0].list.map((item, index) => (
-                                                        <div className='DAT_NavNotif-content-main-group' key={item.id}>
+                                                        <div className='DAT_NavNotif-content-main-group' key={index}>
                                                             <div className='DAT_NavNotif-content-main-group-datetime'>{item.time}</div>
                                                             <div className='DAT_NavNotif-content-main-group-content'>
                                                                 <div className='DAT_NavNotif-content-main-group-content-tit'>Có một {messageContent.value[0].name} tại {item.plant}</div>

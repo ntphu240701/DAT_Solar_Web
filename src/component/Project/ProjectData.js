@@ -54,6 +54,7 @@ const tabLableAlert = signal("");
 const tabAlert = signal("all");
 const open = signal([]);
 const close = signal([]);
+const cal = signal({});
 
 const dataMeter = [
   // {
@@ -325,6 +326,7 @@ function ProjectData(props) {
   const [vYear, setVYear] = useState("--");
   const [dataTotal, setDataTotal] = useState([]);
   const [vTotal, setVTotal] = useState("--");
+  const [snlogger, setSnlogger] = useState("");
 
   const [d, setD] = useState({
     date: moment(new Date()).format("YYYY-MM-DD"),
@@ -689,10 +691,10 @@ function ProjectData(props) {
       //   setVDay("--");
       // }
       const getDaily = async () => {
-        const d = await callApi('post', host.DATA + '/getChart', { plantid: projectData.value.plantid, date: moment(new Date()).format("MM/DD/YYYY") });
+        const d = await callApi('post', host.DATA + '/getChart', { plantid: projectData.value.plantid, date: moment(date).format("MM/DD/YYYY") });
         setDataDay([]);
         if (d.status) {
-          //console.log(d.data)
+          // console.log(d.data)
           let vDay = d.data.name;
           d.data.data.map((item) => {
             setDataDay((old) => [...old, { time: item.time, [vDay]: item.value }]);
@@ -749,8 +751,6 @@ function ProjectData(props) {
   };
 
   const handleEdit = (e) => { console.log("sua") };
-
-  const [snlogger, setSnlogger] = useState("");
 
   const handleDelete = (e) => {
     popupState.value = true;
@@ -856,39 +856,93 @@ function ProjectData(props) {
     // eslint-disable-next-line
   }, []);
 
-
   useEffect(() => {
-    // console.log("Invt", invt)
-    coalsave.value.value = 0;
-    temp.value.map(async (item) => {
-      const type = (item.data.pro_3.type);
-      const cal = JSON.parse(item.data.pro_3.cal);
-      let num = [];
+    var num_ = {
+      bat_1: [],
+      bat_2: [],
+      bat_in_1: [],
+      bat_out_1: [],
+      con_1: [],
+      con_2: [],
+      grid_1: [],
+      grid_in_1: [],
+      grid_in_2: [],
+      grid_out_1: [],
+      grid_out_2: [],
+      pro_1: [],
+      pro_2: [],
+      pro_3: []
+    }
+    //console.log("data", temp.value)
+    temp.value.map(async (item, i) => {
 
+      Object.entries(item.data).map(([key, value]) => {
+        switch (value.type) {
+          case "sum":
+            let inum = [];
+            let cal_ = JSON.parse(value.cal);
+            Object.entries(value.register).map(([key, value]) => {
+              let n = JSON.parse(value)
+              inum[key] = parseFloat(invt[item.sn]?.[n[0]] || 0) * parseFloat(cal_[0]) * parseFloat(invt[item.sn]?.[n[1]] || 0) * parseFloat(cal_[1]);
+            });
 
-      let d = JSON.parse(item.data.pro_3.register);
-      let e = [invt[item.sn]?.[d[0]] || 0, invt[item.sn]?.[d[1]] || 0];
+            num_[key][i] = inum.reduce((accumulator, currentValue) => {
+              return Number(accumulator) + Number(currentValue)
+            }, 0)
+            if (i == temp.value.length - 1) {
+              //console.log("Total", total)
+              if (invt[item.sn]?.enabled == 1) {
+                cal.value[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
+                  return Number(accumulator) + Number(currentValue)
+                }, 0) / 1000).toFixed(2);
+              } else {
+                cal.value[key] = 0
+              }
 
-      const convertToDoublewordAndFloat = (word, type) => {
-        var doubleword = ((word[1]) << 16) | (word[0]);
-        var buffer = new ArrayBuffer(4);
-        var intView = new Int32Array(buffer);
-        var floatView = new Float32Array(buffer);
-        intView[0] = doubleword;
-        var float_value = floatView[0];
+            }
+            break;
+          case "word":
+            let d = JSON.parse(value.register);
+            let e = [invt[item.sn]?.[d[0]] || 0, invt[item.sn]?.[d[1]] || 0];
 
-        return type === "int" ? parseFloat(doubleword * cal).toFixed(2) : parseFloat(float_value * cal).toFixed(2) || 0;
-      }
+            const convertToDoublewordAndFloat = (word, type) => {
+              var doubleword = ((word[1]) << 16) | (word[0]);
+              var buffer = new ArrayBuffer(4);
+              var intView = new Int32Array(buffer);
+              var floatView = new Float32Array(buffer);
+              intView[0] = doubleword;
+              var float_value = floatView[0];
+              return type === "int" ? parseFloat(doubleword).toFixed(2) : parseFloat(float_value).toFixed(2) || 0;
+            }
+            num_[key][i] = convertToDoublewordAndFloat(e, "int");
 
-      let view32bit = convertToDoublewordAndFloat(e, "int");
-      //let result = parseFloat(Number(coalsave.value.value) + Number(view32bit)).toFixed(2)
-      coalsave.value = {
-        ...coalsave.value,
-        value: parseFloat(Number(coalsave.value.value) + Number(view32bit)).toFixed(2)
-      }
+            if (i == temp.value.length - 1) {
+              //console.log(num_)
+              cal.value[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
+                return Number(accumulator) + Number(currentValue)
+              }, 0) * parseFloat(value.cal)).toFixed(2);
 
+            }
 
+            break;
+          default:
+            num_[key][i] = parseFloat(invt[item.sn]?.[value.register] || 0) * parseFloat(value.cal);
+            if (i == temp.value.length - 1) {
+              //console.log(num_)
+              cal.value[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
+                return accumulator + currentValue
+              })).toFixed(2)
+            }
+            break;
+        }
+      })
     })
+
+    console.log(cal.value)
+    coalsave.value = {
+      ...coalsave.value,
+      value: cal.value.pro_3
+    }
   }, [invt]);
 
   return (
@@ -907,6 +961,7 @@ function ProjectData(props) {
 
                       <div style={{ color: "grey", fontSize: 14 }}>
                         {dataLang.formatMessage({ id: 'lastUpdate' })}
+                        &nbsp;
                         {projectData.value.lastupdate}
                       </div>
                     </div>
@@ -1173,13 +1228,13 @@ function ProjectData(props) {
                           case "graph":
                             return <Graph type={projectData.value.plantmode} />;
                           case "production":
-                            return <Production data={temp.value} invt={invt} />;
+                            return <Production cal={cal.value} />;
                           case "consumption":
-                            return <Consumption data={temp.value} invt={invt} />;
+                            return <Consumption cal={cal.value} />;
                           case "grid":
-                            return <Grid data={temp.value} invt={invt} />;
+                            return <Grid cal={cal.value} />;
                           case "battery":
-                            return <Battery data={temp.value} invt={invt} />;
+                            return <Battery cal={cal.value} />;
                           default:
                             <></>;
                         }
@@ -1763,23 +1818,21 @@ function ProjectData(props) {
         })()}
       </div >
 
-      {
-        popupAddGateway.value ? (
-          <div className="DAT_AddGatewayPopup">
-            <AddGateway data={temp.value} />
-          </div>
-        ) : (
-          <></>
-        )
-      }
+      {popupAddGateway.value ? (
+        <div className="DAT_AddGatewayPopup">
+          <AddGateway data={temp.value} />
+        </div>
+      ) : (
+        <></>
+      )}
 
-      {
-        popupState.value ? (
-          <div className="DAT_DevicePopup">
-            <Popup plantid={projectData.value.plantid} type="logger" sn={snlogger} data={temp.value} />
-          </div>
-        ) : (<> </>)
-      }
+      {popupState.value ? (
+        <div className="DAT_DevicePopup">
+          <Popup plantid={projectData.value.plantid} type="logger" sn={snlogger} data={temp.value} />
+        </div>
+      ) : (
+        <> </>
+      )}
 
       {/* {raiseBoxState.value.status ? (
         <div className="DAT_RaiseBoxPopup">
@@ -1789,67 +1842,65 @@ function ProjectData(props) {
         <></>
       )} */}
 
-      {
-        isMobile.value ? (
-          <>
-            {dropState.value ? (
-              <div className="DAT_ProjectDataDrop">
-                <div className="DAT_ProjectDataDrop_Item"
-                  id="dashboard"
-                  style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                  onClick={(e) => handleView(e)}
-                >
-                  {dataLang.formatMessage({ id: 'monitor' })}
-                </div>
-                <div className="DAT_ProjectDataDrop_Item"
-                  id="device"
-                  style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                  onClick={(e) => handleView(e)}
-                >
-                  {dataLang.formatMessage({ id: 'device' })}
-                </div>
-                {/* <div className="DAT_ProjectDataDrop_Item"
+      {isMobile.value ? (
+        <>
+          {dropState.value ? (
+            <div className="DAT_ProjectDataDrop">
+              <div className="DAT_ProjectDataDrop_Item"
+                id="dashboard"
+                style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                onClick={(e) => handleView(e)}
+              >
+                {dataLang.formatMessage({ id: 'monitor' })}
+              </div>
+              <div className="DAT_ProjectDataDrop_Item"
+                id="device"
+                style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                onClick={(e) => handleView(e)}
+              >
+                {dataLang.formatMessage({ id: 'device' })}
+              </div>
+              {/* <div className="DAT_ProjectDataDrop_Item"
               id="alert"
               onClick={() => handleWarn()}
             >
               Cảnh báo
             </div> */}
+            </div>
+          ) : (
+            <></>
+          )}
+        </>
+      ) : (
+        <>
+          {dropState.value ? (
+            <div className="DAT_ProjectDataDrop">
+              <div className="DAT_ProjectDataDrop_Item"
+                id="dashboard"
+                style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                onClick={(e) => handleView(e)}
+              >
+                {dataLang.formatMessage({ id: 'monitor' })}
               </div>
-            ) : (
-              <></>
-            )}
-          </>
-        ) : (
-          <>
-            {dropState.value ? (
-              <div className="DAT_ProjectDataDrop">
-                <div className="DAT_ProjectDataDrop_Item"
-                  id="dashboard"
-                  style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                  onClick={(e) => handleView(e)}
-                >
-                  {dataLang.formatMessage({ id: 'monitor' })}
-                </div>
-                <div className="DAT_ProjectDataDrop_Item"
-                  id="device"
-                  style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                  onClick={(e) => handleView(e)}
-                >
-                  {dataLang.formatMessage({ id: 'device' })}
-                </div>
-                {/* <div className="DAT_ProjectDataDrop_Item"
+              <div className="DAT_ProjectDataDrop_Item"
+                id="device"
+                style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                onClick={(e) => handleView(e)}
+              >
+                {dataLang.formatMessage({ id: 'device' })}
+              </div>
+              {/* <div className="DAT_ProjectDataDrop_Item"
                 id="alert"
                 onClick={() => handleWarn()}
               >
                 Cảnh báo
               </div> */}
-              </div>
-            ) : (
-              <></>
-            )}
-          </>
-        )
-      }
+            </div>
+          ) : (
+            <></>
+          )}
+        </>
+      )}
     </>
   );
 }
@@ -2530,183 +2581,6 @@ const Graph = (props) => {
 
 const Production = (props) => {
   const dataLang = useIntl();
-  const [data, setData] = useState(props.invt);
-  const [production, setProduction] = useState(0);
-  const [dailyproduction, setDailyproduction] = useState(0);
-  const [totalproduction, setTotalproduction] = useState(0);
-  const result = getDaysInCurrentMonth();
-
-
-  useEffect(() => {
-    setProduction(0);
-
-    var sum = [];
-    props.data.map((item, i) => {
-      const type = (item.data.pro_1.type);
-      const cal = JSON.parse(item.data.pro_1.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.pro_1.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-          //console.log(num);
-          sum[i] = num.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0)
-
-          //console.log("Sum", sum)
-
-          let total = sum.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0) / 1000;
-
-          if (i == props.data.length - 1) {
-            //console.log("Total", total)
-            setProduction(parseFloat(total).toFixed(2));
-          }
-          break;
-        case "word":
-          let d = JSON.parse(item.data.pro_1.register);
-          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setProduction((old) => parseFloat(old) + parseFloat(view32bit));
-          break;
-        default:
-          num = parseFloat(data[item.sn][item.data.pro_1.register]) * parseFloat(item.data.pro_1.cal);
-          setProduction((old) => old + num);
-          break;
-      }
-    });
-
-    setDailyproduction(0);
-    var sum_2 = [];
-    props.data.map((item, i) => {
-      const type = (item.data.pro_2.type);
-      const cal = JSON.parse(item.data.pro_2.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.pro_2.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
-
-          setDailyproduction((old) => old + sum);
-          break;
-        case "word":
-          let d = JSON.parse(item.data.pro_2.register);
-          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setDailyproduction((old) => parseFloat(old) + parseFloat(view32bit));
-          break;
-        default:
-          sum_2[i] = parseFloat(data[item.sn]?.[item.data.pro_2.register] || 0) * parseFloat(item.data.pro_2.cal);
-          //console.log("Num", sum_2);
-          let total = sum_2.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0);
-
-          if (i == props.data.length - 1) {
-            //console.log("Total", total)
-            setDailyproduction(parseFloat(total).toFixed(2));
-          }
-
-          //console.log("Sum", sum)
-          break;
-      }
-    });
-
-    setTotalproduction(0);
-    var sum_3 = [];
-    props.data.map((item, i) => {
-      const type = (item.data.pro_3.type);
-      const cal = JSON.parse(item.data.pro_3.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.pro_3.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
-
-          setTotalproduction((old) => parseFloat(old + sum / 1000).toFixed(2));
-          break;
-        case "word":
-          let d = JSON.parse(item.data.pro_3.register);
-          let e = [data[item.sn]?.[d[0]] || 0, data[item.sn]?.[d[1]] || 0];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? parseFloat(doubleword * cal).toFixed(2) : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          //console.log("Num", convertToDoublewordAndFloat(e, "int"));
-
-          sum_3[i] = convertToDoublewordAndFloat(e, "int");
-          // console.log("Num", sum_3);
-          let total = sum_3.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0);
-
-          if (i == props.data.length - 1) {
-            //console.log("Total", total)
-            setTotalproduction(parseFloat(total).toFixed(2));
-          }
-
-
-
-          break;
-        default:
-          num = parseFloat(data[item.sn][item.data.pro_3.register]) * parseFloat(item.data.pro_3.cal);
-          setTotalproduction((old) => old + num);
-          break;
-      }
-    });
-
-  }, [props.data]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Production">
@@ -2717,7 +2591,7 @@ const Production = (props) => {
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value">
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_num">
-                {parseFloat((production / projectData.value.capacity) * 100).toFixed(2)}
+                {parseFloat((props.cal.pro_1 / projectData.value.capacity) * 100).toFixed(2)}
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_unit">%</div>
             </div>
@@ -2730,7 +2604,7 @@ const Production = (props) => {
           </div>
           <div style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {production}
+              {props.cal.pro_1}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2763,7 +2637,7 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {dailyproduction}
+              {props.cal.pro_2}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2781,7 +2655,7 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {/* {parseFloat(dailyproduction * result).toFixed(2)} */}?
+              {/* {parseFloat(dailyproduction * result).toFixed(2)} */}0
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2799,7 +2673,7 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {/* {parseFloat((dailyproduction * result) * 12).toFixed(2)} */}?
+              {/* {parseFloat((dailyproduction * result) * 12).toFixed(2)} */}0
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2817,7 +2691,7 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {totalproduction}
+              {props.cal.pro_3}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2832,100 +2706,6 @@ const Production = (props) => {
 
 const Consumption = (props) => {
   const dataLang = useIntl()
-  const [data, setData] = useState(props.invt);
-  const [consumption, setConsumption] = useState(0);
-  const [dailyconsumption, setDailyconsumption] = useState(0);
-  const result = getDaysInCurrentMonth();
-
-  useEffect(() => {
-    setConsumption(0);
-    props.data.map((item) => {
-      const type = (item.data.con_1.type);
-      const cal = JSON.parse(item.data.con_1.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.con_1.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
-
-          setConsumption((old) => old + sum);
-          break;
-        case "word":
-          let d = JSON.parse(item.data.con_1.register);
-          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setConsumption((old) => parseFloat(old) + parseFloat(view32bit));
-          break;
-        default:
-          num = parseFloat(data[item.sn]?.[item.data.con_1.register] || 0) * parseFloat(item.data.con_1.cal);
-          setConsumption((old) => old + num);
-          break;
-      }
-    });
-
-    setDailyconsumption(0);
-    props.data.map((item) => {
-      const type = (item.data.con_2.type);
-      const cal = JSON.parse(item.data.con_2.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.con_2.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
-
-          setDailyconsumption((old) => old + sum);
-          break;
-        case "word":
-          let d = JSON.parse(item.data.con_2.register);
-          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setDailyconsumption((old) => parseFloat(old) + parseFloat(view32bit));
-          break;
-        default:
-          num = parseFloat(data[item.sn]?.[item.data.con_2.register] || 0) * parseFloat(item.data.con_2.cal);
-          setDailyconsumption((old) => old + num);
-          break;
-      }
-    });
-  }, [props.data]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption">
@@ -2938,7 +2718,7 @@ const Consumption = (props) => {
             {dataLang.formatMessage({ id: 'consumption' })}
           </span>
           &nbsp;
-          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{consumption}</span>
+          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{props.cal.con_1}</span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
             kW
@@ -2956,7 +2736,7 @@ const Consumption = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {dailyconsumption}
+                {props.cal.con_2}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2973,7 +2753,7 @@ const Consumption = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {parseFloat((dailyconsumption * result) * 12).toFixed(2)}
+                {/* {parseFloat((dailyconsumption * result) * 12).toFixed(2)} */} 0
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2992,7 +2772,7 @@ const Consumption = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {parseFloat(dailyconsumption * result).toFixed(2)}
+                {/* {parseFloat(dailyconsumption * result).toFixed(2)} */} 0
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3010,7 +2790,7 @@ const Consumption = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                ?
+                0
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3026,235 +2806,6 @@ const Consumption = (props) => {
 
 const Grid = (props) => {
   const dataLang = useIntl();
-  const [data, setData] = useState(props.invt);
-  const [grid, setGrid] = useState(0);
-  const [feedindailygrid, setFeedindailygrid] = useState(0);
-  const [feedintotalgrid, setFeedintotalgrid] = useState(0);
-  const [purchaseddailygrid, setPurchaseddailygrid] = useState(0);
-  const [purchasedtotalgrid, setPurchasedtotalgrid] = useState(0);
-  const result = getDaysInCurrentMonth();
-
-  useEffect(() => {
-    setGrid(0);
-    props.data.map((item) => {
-      const type = (item.data.grid_1.type);
-      const cal = JSON.parse(item.data.grid_1.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.grid_1.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
-
-          setGrid((old) => old + sum);
-          break;
-        case "word":
-          let d = JSON.parse(item.data.grid_1.register);
-          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setGrid((old) => parseFloat(old) + parseFloat(view32bit));
-          break;
-        default:
-          num = parseFloat(data[item.sn]?.[item.data.grid_1.register] || 0) * parseFloat(item.data.grid_1.cal);
-          setGrid((old) => old + num);
-          break;
-      }
-    });
-
-    setFeedindailygrid(0);
-    props.data.map((item) => {
-      const type = (item.data.grid_in_1.type);
-      const cal = JSON.parse(item.data.grid_in_1.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.grid_in_1.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
-
-          setFeedindailygrid((old) => old + sum);
-          break;
-        case "word":
-          let d = JSON.parse(item.data.grid_in_1.register);
-          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setFeedindailygrid((old) => parseFloat(old) + parseFloat(view32bit));
-          break;
-        default:
-          num = parseFloat(data[item.sn]?.[item.data.grid_in_1.register] || 0) * parseFloat(item.data.grid_in_1.cal);
-          setFeedindailygrid((old) => old + num);
-          break;
-      }
-    });
-
-    setFeedintotalgrid(0);
-    props.data.map((item) => {
-      const type = (item.data.grid_in_2.type);
-      const cal = JSON.parse(item.data.grid_in_2.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.grid_in_2.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
-
-          setFeedintotalgrid((old) => old + sum);
-          break;
-        case "word":
-          let d = JSON.parse(item.data.grid_in_2.register);
-          let e = [data[item.sn]?.[d[0]] || 0, data[item.sn]?.[d[1]] || 0];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setFeedintotalgrid((old) => parseFloat(old) + parseFloat(view32bit));
-          break;
-        default:
-          num = parseFloat(data[item.sn]?.[item.data.grid_in_2.register] || 0) * parseFloat(item.data.grid_in_2.cal);
-          setFeedintotalgrid((old) => old + num);
-          break;
-      }
-    });
-
-    setPurchaseddailygrid(0);
-    props.data.map((item) => {
-      const type = (item.data.grid_out_1.type);
-      const cal = JSON.parse(item.data.grid_out_1.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.grid_out_1.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
-
-          setPurchaseddailygrid((old) => old + sum);
-          break;
-        case "word":
-          let d = JSON.parse(item.data.grid_out_1.register);
-          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setPurchaseddailygrid((old) => parseFloat(old) + parseFloat(view32bit));
-          break;
-        default:
-          num = parseFloat(data[item.sn]?.[item.data.grid_out_1.register] || 0) * parseFloat(item.data.grid_out_1.cal);
-          setPurchaseddailygrid((old) => old + num);
-          break;
-      }
-    });
-
-    setPurchasedtotalgrid(0);
-    props.data.map((item) => {
-      const type = (item.data.grid_out_2.type);
-      const cal = JSON.parse(item.data.grid_out_2.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.grid_out_2.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
-
-          setPurchasedtotalgrid((old) => old + sum);
-          break;
-        case "word":
-          let d = JSON.parse(item.data.grid_out_2.register);
-          let e = [data[item.sn]?.[d[0]] || 0, data[item.sn]?.[d[1]] || 0];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setPurchasedtotalgrid((old) => parseFloat(old) + parseFloat(view32bit));
-          break;
-        default:
-          num = parseFloat(data[item.sn]?.[item.data.grid_out_2.register] || 0) * parseFloat(item.data.grid_out_2.cal);
-          setPurchasedtotalgrid((old) => old + num);
-          break;
-      }
-    });
-  }, [props.data]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Grid">
@@ -3268,7 +2819,7 @@ const Grid = (props) => {
           </span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {grid}
+            {props.cal.grid_1}
           </span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3284,14 +2835,18 @@ const Grid = (props) => {
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit">
             {dataLang.formatMessage({ id: 'gridfeed' })}
           </div>
-          <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
+          {isMobile.value ? (
+            <div style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }} />
+          ) : (
+            <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
+          )}
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
               {dataLang.formatMessage({ id: 'today' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {feedindailygrid}
+                {props.cal.grid_in_1}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3305,7 +2860,7 @@ const Grid = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {parseFloat(feedindailygrid * result).toFixed(2)}
+                {/* {parseFloat(feedindailygrid * result).toFixed(2)} */} 0
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3319,7 +2874,7 @@ const Grid = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {parseFloat((feedindailygrid * result) * 12).toFixed(2)}
+                {/* {parseFloat((feedindailygrid * result) * 12).toFixed(2)} */} 0
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3333,7 +2888,7 @@ const Grid = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {feedintotalgrid}
+                {props.cal.grid_in_2}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3348,16 +2903,19 @@ const Grid = (props) => {
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit">
             {dataLang.formatMessage({ id: 'purchaseE' })}
-
           </div>
-          <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
+          {isMobile.value ? (
+            <div style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }} />
+          ) : (
+            <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
+          )}
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
               {dataLang.formatMessage({ id: 'purchaseE' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {purchaseddailygrid}
+                {props.cal.grid_out_1}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3371,7 +2929,7 @@ const Grid = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {parseFloat(purchaseddailygrid * result).toFixed(2)}
+                {/* {parseFloat(purchaseddailygrid * result).toFixed(2)} */} 0
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3385,7 +2943,7 @@ const Grid = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {parseFloat((purchaseddailygrid * result) * 12).toFixed(2)}
+                {/* {parseFloat((purchaseddailygrid * result) * 12).toFixed(2)} */} 0
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3399,7 +2957,7 @@ const Grid = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {purchasedtotalgrid}
+                {props.cal.grid_out_2}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3415,190 +2973,6 @@ const Grid = (props) => {
 
 const Battery = (props) => {
   const dataLang = useIntl();
-  const [data, setData] = useState(props.invt);
-  const [battery, setBattery] = useState(0);
-  const [percent, setPercent] = useState(0);
-  const [chargedailybattery, setChargedailybattery] = useState(0);
-  const [dischargedailybattery, setDischargedailybattery] = useState(0);
-  const result = getDaysInCurrentMonth();
-
-  useEffect(() => {
-    setBattery(0);
-    props.data.map((item) => {
-      const type = (item.data.bat_1.type);
-      const cal = JSON.parse(item.data.bat_1.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.bat_1.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
-
-          setBattery((old) => old + sum);
-          break;
-        case "word":
-          let d = JSON.parse(item.data.bat_1.register);
-          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setBattery((old) => parseFloat(old) + parseFloat(view32bit));
-          break;
-        default:
-          num = parseFloat(data[item.sn]?.[item.data.bat_1.register] || 0) * parseFloat(item.data.bat_1.cal);
-          setBattery((old) => old + num);
-          break;
-      }
-    });
-
-    setPercent(0);
-    props.data.map((item) => {
-      const type = (item.data.bat_2.type);
-      const cal = JSON.parse(item.data.bat_2.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.bat_2.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
-
-          setPercent((old) => old + sum);
-          break;
-        case "word":
-          let d = JSON.parse(item.data.bat_2.register);
-          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setPercent((old) => parseFloat(old) + parseFloat(view32bit));
-          break;
-        default:
-          num = parseFloat(data[item.sn]?.[item.data.bat_2.register] || 0) * parseFloat(item.data.bat_2.cal);
-          setPercent((old) => old + num);
-          break;
-      }
-    });
-
-    setChargedailybattery(0);
-    props.data.map((item) => {
-      const type = (item.data.bat_in_1.type);
-      const cal = JSON.parse(item.data.bat_in_1.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.bat_in_1.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
-
-          setChargedailybattery((old) => old + sum);
-          break;
-        case "word":
-          let d = JSON.parse(item.data.bat_in_1.register);
-          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setChargedailybattery((old) => parseFloat(old) + parseFloat(view32bit));
-          break;
-        default:
-          num = parseFloat(data[item.sn]?.[item.data.bat_in_1.register] || 0) * parseFloat(item.data.bat_in_1.cal);
-          setChargedailybattery((old) => old + num);
-          break;
-      }
-    });
-
-    setDischargedailybattery(0);
-    props.data.map((item) => {
-      const type = (item.data.bat_out_1.type);
-      const cal = JSON.parse(item.data.bat_out_1.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.data.bat_out_1.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(data[item.sn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(data[item.sn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
-
-          var sum = num.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue
-          }, 0);
-
-          setDischargedailybattery((old) => old + sum);
-          break;
-        case "word":
-          let d = JSON.parse(item.data.bat_out_1.register);
-          let e = [data[item.sn][d[0]], data[item.sn][d[1]]];
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          let view32bit = convertToDoublewordAndFloat(e, "float");
-          setDischargedailybattery((old) => parseFloat(old) + parseFloat(view32bit));
-          break;
-        default:
-          num = parseFloat(data[item.sn]?.[item.data.bat_out_1.register] || 0) * parseFloat(item.data.bat_out_1.cal);
-          setDischargedailybattery((old) => old + num);
-          break;
-      }
-    });
-  }, [props.data]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Battery">
@@ -3612,7 +2986,7 @@ const Battery = (props) => {
               {dataLang.formatMessage({ id: 'charge' })}
             </span>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {percent}
+              {props.cal.bat_2}
             </span>
             <span style={{ fontSize: "12px", color: "grey" }}>
               %
@@ -3625,7 +2999,7 @@ const Battery = (props) => {
             {dataLang.formatMessage({ id: 'batteryData' })}
           </span>
           &nbsp;
-          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{battery}</span>
+          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{props.cal.bat_1}</span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
             W
@@ -3640,14 +3014,18 @@ const Battery = (props) => {
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit">
             {dataLang.formatMessage({ id: 'charge' })}
           </div>
-          <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
+          {isMobile.value ? (
+            <div style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }} />
+          ) : (
+            <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
+          )}
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
               {dataLang.formatMessage({ id: 'today' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {chargedailybattery}
+                {props.cal.bat_in_1}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3661,7 +3039,7 @@ const Battery = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {parseFloat(chargedailybattery * result).toFixed(2)}
+                {/* {parseFloat(chargedailybattery * result).toFixed(2)} */} 0
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3675,7 +3053,7 @@ const Battery = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {parseFloat((chargedailybattery * result) * 12).toFixed(2)}
+                {/* {parseFloat((chargedailybattery * result) * 12).toFixed(2)} */} 0
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3689,7 +3067,7 @@ const Battery = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                ?
+                0
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3704,9 +3082,12 @@ const Battery = (props) => {
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit">
             {dataLang.formatMessage({ id: 'discharge' })}
-
           </div>
-          <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
+          {isMobile.value ? (
+            <div style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }} />
+          ) : (
+            <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
+          )}
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
               {dataLang.formatMessage({ id: 'today' })}
@@ -3714,7 +3095,7 @@ const Battery = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {dischargedailybattery}
+                {props.cal.bat_out_1}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3729,7 +3110,7 @@ const Battery = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {parseFloat(dischargedailybattery * result).toFixed(2)}
+                {/* {parseFloat(dischargedailybattery * result).toFixed(2)} */} 0
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3744,7 +3125,7 @@ const Battery = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {parseFloat((dischargedailybattery * result) * 12).toFixed(2)}
+                {/* {parseFloat((dischargedailybattery * result) * 12).toFixed(2)} */} 0
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3759,7 +3140,7 @@ const Battery = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                ?
+                0
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>

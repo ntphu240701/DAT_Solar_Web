@@ -19,6 +19,9 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { data } from "jquery";
 import { IoMdMore } from "react-icons/io";
 import { useIntl } from "react-intl";
+import { isMobile } from "../Navigation/Navigation";
+import { IoAddOutline } from "react-icons/io5";
+import { RxCross2 } from "react-icons/rx";
 
 //DATA TEMP
 export const group = signal([
@@ -127,6 +130,7 @@ const dataGroupUser = signal([]);
 
 const GroupUsers = () => {
   const dataLang = useIntl();
+
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
     rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
@@ -320,6 +324,9 @@ const GroupUsers = () => {
 };
 
 function GroupRole(props) {
+  const dataLang = useIntl()
+  const [filter, setFilter] = useState(false);
+
   const handleFilter = (e) => {
     filter.value = e.target.value;
     if (filter.value !== "") {
@@ -341,7 +348,6 @@ function GroupRole(props) {
     }
   };
 
-  const dataLang = useIntl()
   useEffect(() => {
     dataGroup.value = group.value;
     dataGroupUser.value = groupUser.value;
@@ -355,26 +361,53 @@ function GroupRole(props) {
         <div className="DAT_GRHeader_Title">
           <IoMdAnalytics color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'roleList' })}</span>
         </div>
-        <div className="DAT_GRHeader_Filter">
-          <input
-            type="text"
-            placeholder={dataLang.formatMessage({ id: 'enterInfo' })}
-            value={filter.value}
-            onChange={(e) => handleFilter(e)}
-          />
-          <CiSearch color="gray" size={20} />
-        </div>
-        <div></div>
-        <button
-          className="DAT_GRHeader_New"
-          onClick={() => (createState.value = true)}
-        >
-          {dataLang.formatMessage({ id: 'createNewGroup' })}
-        </button>
+
+        {isMobile.value ? (
+          <>
+            <div className="DAT_Modify">
+              <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
+              <div className="DAT_Modify_Item" onClick={() => (createState.value = true)}><IoAddOutline color="white" size={20} /></div>
+            </div>
+
+            {filter ? (
+              <div className="DAT_Modify_Filter">
+                <input
+                  type="text"
+                  placeholder={dataLang.formatMessage({ id: 'enterInfo' })}
+                  value={filter.value}
+                  onChange={(e) => handleFilter(e)}
+                />
+                <div className="DAT_Modify_Filter_Close" onClick={() => setFilter(!filter)}>
+                  <RxCross2 size={20} color="white" />
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
+          </>
+        ) : (
+          <>
+            <div className="DAT_GRHeader_Filter">
+              <input
+                type="text"
+                placeholder={dataLang.formatMessage({ id: 'enterInfo' })}
+                value={filter.value}
+                onChange={(e) => handleFilter(e)}
+              />
+              <CiSearch color="gray" size={20} />
+            </div>
+            <button
+              className="DAT_GRHeader_New"
+              onClick={() => (createState.value = true)}
+            >
+              {dataLang.formatMessage({ id: 'createNewGroup' })}
+            </button>
+          </>
+        )}
       </div>
+
       <div className="DAT_GR">
-        <div
-          className="DAT_GR_Header"
+        <div className="DAT_GR_Header"
           style={{
             padding: "15px",
             backgroundColor: "rgba(233, 233, 233, 0.5)",
@@ -389,8 +422,8 @@ function GroupRole(props) {
           <GroupUsers />
         </div>
       </div>
-      <div
-        className="DAT_GroupCreate"
+
+      <div className="DAT_GroupCreate"
         style={{
           height: createState.value ? "100vh" : "0px",
           transition: "0.5s",
@@ -398,6 +431,7 @@ function GroupRole(props) {
       >
         {createState.value ? <CreateGroupRole /> : <></>}
       </div>
+
       {popupState.value ? (
         <div className="DAT_EraseUserPopup">
           <Popup />
@@ -405,6 +439,7 @@ function GroupRole(props) {
       ) : (
         <></>
       )}
+
       {addState.value ? (
         <div className="DAT_AddUserPopup">
           <AddUsers />
@@ -412,6 +447,7 @@ function GroupRole(props) {
       ) : (
         <></>
       )}
+
       {groupDelState.value ? (
         <div className="DAT_DeleteGroupPopup">
           <ConfirmDeleteGroup />
@@ -419,6 +455,7 @@ function GroupRole(props) {
       ) : (
         <></>
       )}
+
       {editState.value ? (
         <div className="DAT_EditGroup">
           <EditGroup />
