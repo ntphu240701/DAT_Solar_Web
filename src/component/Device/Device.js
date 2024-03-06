@@ -202,7 +202,7 @@ function Device(props) {
       width: "170px",
     },
     {
-      name: datalang.formatMessage({ id: 'electricOutputDay' }),
+      name: datalang.formatMessage({ id: 'dailyOutputSmall' }),
       selector: (row) => row.dailyproduction + " kWh",
       sortable: true,
       width: "210px",

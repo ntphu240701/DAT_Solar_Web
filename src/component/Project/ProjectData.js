@@ -319,14 +319,14 @@ function ProjectData(props) {
   const [tempInverter, setTempInverter] = useState({});
 
   const [dataDay, setDataDay] = useState([]);
-  const [vDay, setVDay] = useState("--");
+  const [vDay, setVDay] = useState(dataLang.formatMessage({ id: 'unknown' }));
   const [dataMonth, setDataMonth] = useState([]);
-  const [vMonth, setVMonth] = useState("--");
+  const [vMonth, setVMonth] = useState(dataLang.formatMessage({ id: 'unknown' }));
   const [dataYear, setDataYear] = useState([]);
-  const [vYear, setVYear] = useState("--");
+  const [vYear, setVYear] = useState(dataLang.formatMessage({ id: 'unknown' }));
   const [dataTotal, setDataTotal] = useState([]);
-  const [vTotal, setVTotal] = useState("--");
-  const [snlogger, setSnlogger] = useState("");
+  const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: 'unknown' }));
+  const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: 'unknown' }));
 
   const [d, setD] = useState({
     date: moment(new Date()).format("YYYY-MM-DD"),
@@ -691,7 +691,7 @@ function ProjectData(props) {
           setVDay(d.data.name);
         } else {
           setDataDay([]);
-          setVDay("--");
+          setVDay(dataLang.formatMessage({ id: 'unknown' }));
         }
       }
 
@@ -716,7 +716,7 @@ function ProjectData(props) {
           setVMonth(d.data.name);
         } else {
           setDataMonth([]);
-          setVMonth("--");
+          setVMonth(dataLang.formatMessage({ id: 'unknown' }));
         }
       }
       getMonth();
@@ -740,7 +740,7 @@ function ProjectData(props) {
           setVYear(d.data.name);
         } else {
           setDataYear([]);
-          setVYear("--");
+          setVYear(dataLang.formatMessage({ id: 'unknown' }));
         }
       }
       getYear();
@@ -789,11 +789,11 @@ function ProjectData(props) {
       setDataDay([]);
       if (d.status) {
         //console.log(d.data)
-        let vDay = d.data.name;
+        let vDay = dataLang.formatMessage({ id: d.data.name });
         d.data.data.map((item) => {
           setDataDay((old) => [...old, { time: item.time, [vDay]: item.value }]);
         });
-        setVDay(d.data.name);
+        setVDay(dataLang.formatMessage({ id: d.data.name }));
       }
     }
 
@@ -814,7 +814,7 @@ function ProjectData(props) {
       setDataMonth([]);
       if (d.status) {
         //console.log(d.data)
-        let vMonth = d.data.name;
+        let vMonth = dataLang.formatMessage({ id: d.data.name });
         let sum_month = []
         d.data.data.map((item, i) => {
           setDataMonth((old) => [...old, { date: item.date, [vMonth]: item.value }]);
@@ -823,7 +823,7 @@ function ProjectData(props) {
             cal.value['pro_month'] = parseFloat(sum_month.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
           }
         });
-        setVMonth(d.data.name);
+        setVMonth(dataLang.formatMessage({ id: d.data.name }));
       }
     }
     getMonth();
@@ -844,7 +844,7 @@ function ProjectData(props) {
       //console.log(d)
       if (d.status) {
         //console.log(d.data)
-        let vYear = d.data.name;
+        let vYear = dataLang.formatMessage({ id: d.data.name });
         let sum_year = []
         d.data.data.map((item, i) => {
           setDataYear((old) => [...old, { month: item.month, [vYear]: item.value }]);
@@ -853,7 +853,7 @@ function ProjectData(props) {
             cal.value['pro_year'] = parseFloat(sum_year.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
           }
         });
-        setVYear(d.data.name);
+        setVYear(dataLang.formatMessage({ id: d.data.name }));
       }
     }
     getYear();
@@ -873,7 +873,7 @@ function ProjectData(props) {
       console.log(d)
       if (d.status) {
         //console.log(d.data)
-        let vTotal = d.data.name;
+        let vTotal = dataLang.formatMessage({ id: d.data.name });
         let sum_total = []
         d.data.data.map((item, i) => {
           setDataTotal((old) => [...old, { year: item.year, [vTotal]: item.value }]);
@@ -882,7 +882,7 @@ function ProjectData(props) {
             cal.value['pro_total'] = parseFloat(sum_total.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
           }
         });
-        setVTotal(d.data.name);
+        setVTotal(dataLang.formatMessage({ id: d.data.name }));
       }
     }
     getTotal();
@@ -3218,7 +3218,7 @@ const Battery = (props) => {
 
 // Thẻ Chart
 const Day = (props) => {
-  // const dataLang = useIntl();
+  const dataLang = useIntl();
   // const [data, setData] = useState([]);
   // const [v, setV] = useState("--");
 
@@ -3234,7 +3234,7 @@ const Day = (props) => {
           kWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {/* {dataLang.formatMessage({ id: 'electricOutputDay' })}: 24.3 kWh */}
+          {/* {dataLang.formatMessage({ id: props.v })}: {cal.value.pro_2}kWh */}
           {props.v}: {cal.value.pro_2} kWh
         </div>
       </div>
@@ -3260,7 +3260,7 @@ const Day = (props) => {
 };
 
 const Month = (props) => {
-  // const dataLang = useIntl();
+  const dataLang = useIntl();
   // const [data, setData] = useState([]);
   // const [v, setV] = useState("--");
 
@@ -3284,6 +3284,7 @@ const Month = (props) => {
           kWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
+          {/* {dataLang.formatMessage({ id: props.v })}: {cal.value.pro_monthly}kWh */}
           {props.v}: {cal.value.pro_month} kWh
         </div>
       </div>
@@ -3304,7 +3305,7 @@ const Month = (props) => {
 };
 
 const Year = (props) => {
-  // const dataLang = useIntl();
+  const dataLang = useIntl();
   // const [data, setData] = useState([]);
   // const [v, setV] = useState("--");
 
@@ -3329,6 +3330,7 @@ const Year = (props) => {
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           {props.v}: {cal.value.pro_year} kWh
+          {/* {dataLang.formatMessage({ id: props.v })}: {cal.value.pro_year}kWh */}
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
@@ -3348,7 +3350,7 @@ const Year = (props) => {
 };
 
 const Total = (props) => {
-  // const dataLang = useIntl();
+  const dataLang = useIntl();
   // const [data, setData] = useState([]);
   // const [v, setV] = useState("--");
 
@@ -3373,6 +3375,7 @@ const Total = (props) => {
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           {/* Sản lượng tổng: 13.69 MWh */}
+          {/* {dataLang.formatMessage({ id: props.v })}: {cal.value.pro_total}kWh */}
           {props.v}: {cal.value.pro_total} kWh
         </div>
       </div>

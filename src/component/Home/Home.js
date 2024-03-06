@@ -60,7 +60,7 @@ function Home(props) {
   const [totalproduction, setTotalProduction] = useState(0)
   const dataLang = useIntl()
 
-  const v = dataLang.formatMessage({ id: 'monthOutput' });
+  const v = dataLang.formatMessage({ id: 'monthOutputSmall' });
 
   const data = [
     {
@@ -467,7 +467,7 @@ function Home(props) {
               style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: 'electricOutputDay' })}
+                {dataLang.formatMessage({ id: 'dailyOutputSmall' })}
               </div>
               <div>
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{dailyproduction}</span>
@@ -479,7 +479,7 @@ function Home(props) {
               style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: 'electricOutputMonth' })}
+                {dataLang.formatMessage({ id: 'monthOutputSmall' })}
               </div>
               <div>
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
@@ -491,7 +491,7 @@ function Home(props) {
               style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: 'electricOutputYear' })}
+                {dataLang.formatMessage({ id: 'yearOutputSmall' })}
               </div>
               <div>
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
@@ -503,7 +503,7 @@ function Home(props) {
               style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: 'totalElectricOutput' })}
+                {dataLang.formatMessage({ id: 'totalPower' })}
               </div>
               <div>
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{totalproduction}</span>
@@ -549,7 +549,7 @@ function Home(props) {
             <div className="DAT_Home_History-Chart-label">
               <div className="DAT_Home_History-Chart-label-Unit">MWh</div>
               <div className="DAT_Home_History-Chart-label-Label">
-                {dataLang.formatMessage({ id: 'yearOutput' })}: 1.69 MWh
+                {dataLang.formatMessage({ id: 'yearOutputSmall' })}: 1.69 MWh
               </div>
             </div>
             <div className="DAT_Home_History-Chart-Content">

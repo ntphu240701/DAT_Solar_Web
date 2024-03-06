@@ -233,7 +233,7 @@ function Navigation(props) {
             <IoIosNotificationsOutline color="white" size={22} />
 
             {dataWarn.value.filter((item) => item.state == false).length ===
-            0 ? (
+              0 ? (
               <></>
             ) : (
               <span>
@@ -413,7 +413,7 @@ function Navigation(props) {
                           onClick={(e) => handleMessage(e)}
                         >
                           <div className="DAT_NavNotif-content-message-group-tit">
-                            <span>{item.boxid}</span>
+                            <span>{dataLang.formatMessage({ id: item.boxid })}</span>
                             {item.total === 0 ? (
                               <></>
                             ) : (
@@ -439,23 +439,23 @@ function Navigation(props) {
                               </div>
                               <div className="DAT_NavNotif-content-main-group-content">
                                 <div className="DAT_NavNotif-content-main-group-content-tit">
-                                  Có một {item.boxid} tại{" "}
+                                  {dataLang.formatMessage({ id: item.boxid })} {dataLang.formatMessage({ id: 'at' })}{" "}
                                   {item.plant}
                                 </div>
                                 <div className="DAT_NavNotif-content-main-group-content-device">
-                                  Thiết bị:{" "}
+                                  {dataLang.formatMessage({ id: 'device' })}:{" "}
                                   <span style={{ color: "black" }}>
                                     {item.device}
                                   </span>
                                 </div>
                                 <div className="DAT_NavNotif-content-main-group-content-level">
-                                  Mức độ:{" "}
+                                  {dataLang.formatMessage({ id: 'level' })}:{" "}
                                   <span style={{ color: "black" }}>
                                     {item.level}
                                   </span>
                                 </div>
                                 <div className="DAT_NavNotif-content-main-group-content-status">
-                                  Vui lòng kiểm tra!
+                                  {dataLang.formatMessage({ id: 'remindAlert' })}
                                 </div>
                               </div>
                             </div>
@@ -474,8 +474,8 @@ function Navigation(props) {
         </div>
 
         {/* <div className='DAT_NavNotif-footer'>
-                            Chỉ hiển thị thông báo trong 6 tháng
-                    </div> */}
+          Chỉ hiển thị thông báo trong 6 tháng
+         </div> */}
       </div>
 
       <div
