@@ -29,7 +29,7 @@ export const dataWarn = signal([
     boxid: "E01",
     warnid: 1,
     plant: "Năng lượng DAT 01",
-    device: "Inverter 01",
+    device: "T0623A000169",
     status: "closed",
     opentime: "12/30/2023 12:07:12",
     closedtime: "12/30/2023 15:00:58",
@@ -40,7 +40,7 @@ export const dataWarn = signal([
     boxid: "E01",
     warnid: 2,
     plant: "Năng lượng DAT 01",
-    device: "Inverter 01",
+    device: "T0623A000162",
     status: "open",
     opentime: "01/16/2023 19:30:12",
     closedtime: "--",
@@ -51,18 +51,18 @@ export const dataWarn = signal([
     boxid: "E02",
     warnid: 3,
     plant: "Năng lượng DAT 01",
-    device: "Inverter 01",
+    device: "T0623A000179",
     status: "open",
     opentime: "01/16/2023 21:07:12",
     closedtime: "--",
-    level: "notice",
+    level: "warning",
     state: false,
   },
   {
     boxid: "E03",
     warnid: 4,
     plant: "Năng lượng DAT 01",
-    device: "Inverter 01",
+    device: "T0623A000179",
     status: "open",
     opentime: "02/16/2023 13:18:21",
     closedtime: "--",
@@ -91,23 +91,6 @@ function Warn(props) {
     selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
 
-
-
-
-  // useEffect(() => {
-  //   // console.log("hello");
-  //   temp.value = [];
-  //   message.value.map((item) => {
-  //     item.list.map((dv, index) => {
-  //       temp.value = [
-  //         ...temp.value,
-  //         { ...dv, name: item.name, messid: item.messid },
-  //       ];
-  //     });
-  //   });
-    // console.log(temp.value);
-    // console.log(message.value);
-  // }, [message.value]);
 
   const columnWarn = [
     {

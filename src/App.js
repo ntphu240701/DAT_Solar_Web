@@ -109,7 +109,7 @@ function App() {
     }
     const checkRule = async (id) => {
       const data = await callApi('post', host.AUTH + '/Rule', { ruleid: id })
-
+      console.log(data)
       if (data.status) {
         console.log("Rule", data.data)
         ruleInfor.value = {
