@@ -24,6 +24,54 @@ export const temp = signal([]);
 export const deletewarnState = signal(false);
 export const idDel = signal();
 
+export const dataWarn = signal([
+  {
+    boxid: "E01",
+    warnid: 1,
+    plant: "Năng lượng DAT 01",
+    device: "Inverter 01",
+    status: "closed",
+    opentime: "12/30/2023 12:07:12",
+    closedtime: "12/30/2023 15:00:58",
+    level: "notice",
+    state: false,
+  },
+  {
+    boxid: "E01",
+    warnid: 2,
+    plant: "Năng lượng DAT 01",
+    device: "Inverter 01",
+    status: "open",
+    opentime: "01/16/2023 19:30:12",
+    closedtime: "--",
+    level: "warning",
+    state: false,
+  },
+  {
+    boxid: "E02",
+    warnid: 3,
+    plant: "Năng lượng DAT 01",
+    device: "Inverter 01",
+    status: "open",
+    opentime: "01/16/2023 21:07:12",
+    closedtime: "--",
+    level: "notice",
+    state: false,
+  },
+  {
+    boxid: "E03",
+    warnid: 4,
+    plant: "Năng lượng DAT 01",
+    device: "Inverter 01",
+    status: "open",
+    opentime: "02/16/2023 13:18:21",
+    closedtime: "--",
+    level: "notice",
+    state: false,
+  },
+]);
+
+
 function Warn(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
@@ -43,52 +91,23 @@ function Warn(props) {
     selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
 
-  const dataWarn = [
-    {
-      id: 1,
-      name: "Nhiệt độ ấm",
-      plant: "Năng lượng DAT 01",
-      device: "Inverter 01",
-      status: "closed",
-      opentime: "12/30/2023 12:07:12",
-      closedtime: "12/30/2023 15:00:58",
-      level: "notice",
-    },
-    {
-      id: 2,
-      name: "Quá dòng",
-      plant: "Năng lượng DAT 01",
-      device: "Inverter 01",
-      status: "open",
-      opentime: "01/16/2023 19:30:12",
-      closedtime: "--",
-      level: "warning",
-    },
-    {
-      id: 3,
-      name: "Rò điện",
-      plant: "Năng lượng DAT 01",
-      device: "Inverter 01",
-      status: "open",
-      opentime: "01/16/2023 21:07:12",
-      closedtime: "--",
-      level: "notice",
-    },
-  ];
 
-  useEffect(() => {
-    console.log("hello");
-    temp.value = [];
-    message.value.map((item) => {
-      item.list.map((dv, index) => {
-        temp.value = [
-          ...temp.value,
-          { ...dv, name: item.name, messid: item.messid },
-        ];
-      });
-    });
-    console.log(temp.value);
-  }, [message.value]);
+
+
+  // useEffect(() => {
+  //   // console.log("hello");
+  //   temp.value = [];
+  //   message.value.map((item) => {
+  //     item.list.map((dv, index) => {
+  //       temp.value = [
+  //         ...temp.value,
+  //         { ...dv, name: item.name, messid: item.messid },
+  //       ];
+  //     });
+  //   });
+    // console.log(temp.value);
+    // console.log(message.value);
+  // }, [message.value]);
 
   const columnWarn = [
     {
@@ -107,9 +126,18 @@ function Warn(props) {
     },
     {
       name: dataLang.formatMessage({ id: 'name' }),
-      selector: (row) => row.name,
+      selector: (row) => row.boxid,
       sortable: true,
-      minWidth: "350px",
+      minWidth: "200px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: dataLang.formatMessage({ id: 'device' }),
+      selector: (row) => row.device,
+      sortable: true,
+      minWidth: "200px",
       style: {
         justifyContent: "left",
       },
@@ -129,8 +157,14 @@ function Warn(props) {
       minWidth: "120px",
     },
     {
-      name: dataLang.formatMessage({ id: 'warnTime' }),
-      selector: (row) => row.time,
+      name: "Thời gian hiện cảnh báo",
+      selector: (row) => row.opentime,
+      sortable: true,
+      width: "200px",
+    },
+    {
+      name: "Thời gian đóng cảnh báo",
+      selector: (row) => row.closedtime,
       sortable: true,
       width: "200px",
     },
@@ -140,7 +174,7 @@ function Warn(props) {
         <>
           <div className="DAT_TableEdit">
             <span
-              id={row.messid + "" + row.warnid + "_MORE"}
+              id={row.boxid + "" + row.warnid + "_MORE"}
               onMouseEnter={(e) => handleModify(e, "block")}
             >
               ...
@@ -149,14 +183,14 @@ function Warn(props) {
 
           <div
             className="DAT_ModifyBox"
-            id={row.messid + "" + row.warnid + "_Modify"}
+            id={row.boxid + "" + row.warnid + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             {/* <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div> */}
             <div
               className="DAT_ModifyBox_Remove"
-              id={row.messid + "_" + row.warnid}
+              id={row.boxid + "_" + row.warnid}
               onClick={(e) => handleDeleteWarn(e)}
             >
               {dataLang.formatMessage({ id: 'delete' })}
@@ -193,8 +227,8 @@ function Warn(props) {
   };
 
   useEffect(() => {
-    open.value = dataWarn.filter((item) => item.status == "open");
-    closed.value = dataWarn.filter((item) => item.status == "closed");
+    open.value = dataWarn.value.filter((item) => item.status == "open");
+    closed.value = dataWarn.value.filter((item) => item.status == "closed");
     tabLable.value = listTab[0].name;
   }, []);
 
@@ -320,7 +354,7 @@ function Warn(props) {
                   <DataTable
                     className="DAT_Table_Container"
                     columns={columnWarn}
-                    data={temp.value}
+                    data={dataWarn.value}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
                     fixedHeader={true}

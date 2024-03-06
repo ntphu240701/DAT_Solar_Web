@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import "./Warn.scss";
-import { deletewarnState, idDel, temp } from "./Warn";
+import { dataWarn, deletewarnState, idDel, temp } from "./Warn";
 import { message } from "../Navigation/Navigation";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
@@ -11,18 +11,27 @@ export default function RaiseBox(props) {
   const dataLang = useIntl();
   const handleDeleteReport = (e) => {
     deletewarnState.value = false;
-    const messid = idDel.value.split("_")[0];
-    const messindex = message.value.findIndex((item) => item.messid == messid);
-    const warnid = idDel.value.split("_")[1];
-    const warnindex = message.value[messindex].list.findIndex(
-      (item) => item.warnid == warnid
-    );
-    message.value[messindex].list.splice(warnindex, 1);
-    let x = temp.value.filter((item) => item.warnid != warnid || item.messid != messid)
-    console.log(x);
-    temp.value = [...x]
-    console.log(message.value);
+    const arr = idDel.value.split("_"); //['E01', '1']
+    dataWarn.value = dataWarn.value.filter(
+      (item) => item.warnid != arr[1]
+    )
     alertDispatch(dataLang.formatMessage({ id: 'alert_28' }))
+    console.log(dataWarn.value)
+
+    // const messid = idDel.value.split("_")[0];
+    // const messindex = message.value.findIndex((item) => item.messid == messid);
+    // const warnid = idDel.value.split("_")[1];
+    // const warnindex = message.value[messindex].list.findIndex(
+    //   (item) => item.warnid == warnid
+    // );
+    // message.value[messindex].list.splice(warnindex, 1);
+    // let x = temp.value.filter((item) => item.warnid != warnid || item.messid != messid)
+    // console.log(x);
+    // temp.value = [...x]
+    // console.log(message.value);
+    // alertDispatch(dataLang.formatMessage({ id: 'alert_28' }))
+    
+
   };
 
   const popup_state = {
@@ -75,7 +84,7 @@ export default function RaiseBox(props) {
           }}
           onClick={() => (deletewarnState.value = false)}
         >
-          {dataLang.formatMessage({ id: 'Cancel' })}
+          {dataLang.formatMessage({ id: 'cancel' })}
         </button>
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
