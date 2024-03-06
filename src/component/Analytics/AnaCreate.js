@@ -18,11 +18,10 @@ function AnaCreate(props) {
             <FaSave size={20} color="white" />
             <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
-          <div className="DAT_AnaCreate_Header_Right_Close">
+          <div className="DAT_AnaCreate_Header_Right_Close" onClick={() => (anaState.value = "default")}>
             <RxCross2
               size={20}
               color="white"
-              onClick={() => (anaState.value = "default")}
             />
           </div>
         </div>
