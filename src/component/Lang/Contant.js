@@ -233,7 +233,7 @@ export const messages = {
         success: 'Success',
         fail: 'Fail',
         showAll: 'Show All',
-        loginWith: 'Login by:',
+        loginWith: 'Login as:',
         receiveBy: 'Recevied by :',
         chooseDevice: "Please select a device to display",
         delPlant: "Are you sure want to delete this project :",

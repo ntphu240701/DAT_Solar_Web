@@ -48,11 +48,11 @@ export default function Config() {
             <FaSave size={20} color="white" />
             <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
-          <div className="DAT_Config_Header_Right_Close">
+          <div className="DAT_Config_Header_Right_Close" onClick={handleCloseConfig}>
             <RxCross2
               size={20}
               color="white"
-              onClick={handleCloseConfig}
+
             />
           </div>
         </div>

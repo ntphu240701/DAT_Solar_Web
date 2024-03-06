@@ -682,11 +682,10 @@ function AddProject(props) {
             <FaSave size={20} color="white" />
             <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
-          <div className="DAT_AddProject_Header_Right_Close">
+          <div className="DAT_AddProject_Header_Right_Close" onClick={() => (plantState.value = "default")}>
             <RxCross2
               size={20}
               color="white"
-              onClick={() => (plantState.value = "default")}
             />
           </div>
         </div>
