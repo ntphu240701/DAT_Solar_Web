@@ -73,7 +73,7 @@ function Warn(props) {
   ];
 
   useEffect(() => {
-    console.log("hello");
+    // console.log("hello");
     temp.value = [];
     message.value.map((item) => {
       item.list.map((dv, index) => {
@@ -83,7 +83,8 @@ function Warn(props) {
         ];
       });
     });
-    console.log(temp.value);
+    // console.log(temp.value);
+    // console.log(message.value);
   }, [message.value]);
 
 

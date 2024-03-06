@@ -75,7 +75,7 @@ export default function RaiseBox(props) {
           }}
           onClick={() => (deletewarnState.value = false)}
         >
-          {dataLang.formatMessage({ id: 'Cancel' })}
+          {dataLang.formatMessage({ id: 'cancel' })}
         </button>
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
