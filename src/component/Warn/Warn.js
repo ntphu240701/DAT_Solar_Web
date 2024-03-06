@@ -8,10 +8,12 @@ import { CiSearch } from "react-icons/ci";
 import { Empty } from "../Project/Project";
 import { LuMailWarning } from "react-icons/lu";
 import { isMobile, message } from "../Navigation/Navigation";
-import { IoIosArrowDown, IoIosArrowRoundForward } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward, IoIosArrowRoundForward } from "react-icons/io";
 import SettingWarn from "./SettingWarn";
 import RaiseBox from "./RaiseBox";
 import { useIntl } from "react-intl";
+import { TbSettingsCode } from "react-icons/tb";
+import { RxCross2 } from "react-icons/rx";
 const tab = signal("all");
 const tabLable = signal("");
 const tabMobile = signal(false);
@@ -24,6 +26,8 @@ export const idDel = signal();
 
 function Warn(props) {
   const dataLang = useIntl();
+  const [filter, setFilter] = useState(false);
+
   const listTab = [
     { id: "all", name: dataLang.formatMessage({ id: 'total' }) },
     { id: "open", name: dataLang.formatMessage({ id: 'warn' }) },
@@ -86,7 +90,6 @@ function Warn(props) {
     // console.log(temp.value);
     // console.log(message.value);
   }, [message.value]);
-
 
   const columnWarn = [
     {
@@ -203,16 +206,38 @@ function Warn(props) {
           <LuMailWarning color="gray" size={25} />
           <span>{dataLang.formatMessage({ id: 'warn' })}</span>
         </div>
-        <div className="DAT_WarnHeader_Filter">
-          <input type="text" placeholder={dataLang.formatMessage({ id: 'enterWarn' })} />
-          <CiSearch color="gray" size={20} />
-        </div>
-        <button
-          className="DAT_WarnHeader_New"
-          onClick={(e) => handleSetting(e)}
-        >
-          {dataLang.formatMessage({ id: 'setting' })}
-        </button>
+
+        {isMobile.value ? (
+          <>
+            <div className="DAT_Modify">
+              <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
+              <div className="DAT_Modify_Item" onClick={(e) => handleSetting(e)}><TbSettingsCode color="white" size={20} /></div>
+            </div>
+
+            {filter ? (
+              <div className="DAT_Modify_Filter">
+                <input type="text" placeholder={dataLang.formatMessage({ id: 'enterWarn' })} />
+                <div className="DAT_Modify_Filter_Close" onClick={() => setFilter(!filter)}>
+                  <RxCross2 size={20} color="white" />
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
+          </>
+        ) : (
+          <>
+            <div className="DAT_WarnHeader_Filter">
+              <input type="text" placeholder={dataLang.formatMessage({ id: 'enterWarn' })} />
+              <CiSearch color="gray" size={20} />
+            </div>
+            <button className="DAT_WarnHeader_New"
+              onClick={(e) => handleSetting(e)}
+            >
+              {dataLang.formatMessage({ id: 'setting' })}
+            </button>
+          </>
+        )}
       </div>
 
       <div className="DAT_Warn">
@@ -227,29 +252,32 @@ function Warn(props) {
               className="DAT_Toollist_Tab_Mobile_content"
               onClick={() => (tabMobile.value = !tabMobile.value)}
             >
-              {" "}
-              <span> {tabLable.value}</span>{" "}
+              <span> {tabLable.value}</span>
               {tabMobile.value ? (
                 <IoIosArrowDown />
               ) : (
-                <IoIosArrowRoundForward />
-              )}{" "}
+                <IoIosArrowForward />
+              )}
             </button>
-            <div className="DAT_Toollist_Tab_Mobile_list">
-              {listTab.map((item, i) => {
-                return (
-                  <div
-                    className="DAT_Toollist_Tab_Mobile_list_item"
-                    style={{ display: tabMobile.value ? "block" : "none" }}
-                    key={i}
-                    id={item.id}
-                    onClick={(e) => handleTabMobile(e)}
-                  >
-                    {i + 1}: {item.name}
-                  </div>
-                );
-              })}
-            </div>
+            {tabMobile.value ? (
+              <div className="DAT_Toollist_Tab_Mobile_list">
+                {listTab.map((item, i) => {
+                  return (
+                    <div
+                      className="DAT_Toollist_Tab_Mobile_list_item"
+                      // style={{ display: tabMobile.value ? "block" : "none" }}
+                      key={i}
+                      id={item.id}
+                      onClick={(e) => handleTabMobile(e)}
+                    >
+                      {i + 1}: {item.name}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         ) : (
           <div className="DAT_Toollist_Tab">

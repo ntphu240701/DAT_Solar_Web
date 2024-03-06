@@ -28,12 +28,12 @@ export default function Popup(props) {
       let d = await callApi('post', host.DATA + '/dropLogger', { plantid: plantid, sn: sn });
       if (d.status === true) {
         loggerList.value = loggerList.value.filter((item) => item.psn != props.sn);
-        alertDispatch("Đã xóa thành công thiết bị")
+        alertDispatch(dataLang.formatMessage({ id: "alert_25" }))
         popupState.value = false;
       } else if (d.number == 0) {
-        alertDispatch("Không thể xóa thiết bị, lỗi định dạng")
+        alertDispatch(dataLang.formatMessage({ id: "alert_26" }))
       } else if (d.number == 1) {
-        alertDispatch("Không thể xóa thiết bị, lỗi hệ thống")
+        alertDispatch(dataLang.formatMessage({ id: "alert_27" }))
       }
     }
     dropLogger(props.plantid, props.sn);

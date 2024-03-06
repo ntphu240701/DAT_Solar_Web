@@ -576,7 +576,7 @@ function EditProject(props) {
     });
 
     if (check !== 0) {
-      alertDispatch("vui long nhap day du thong tin");
+      alertDispatch(dataLang.formatMessage({ id: "alert_22" }))
     } else {
       const editProject = async (
         plantid,
@@ -627,7 +627,7 @@ function EditProject(props) {
           img: img
         })
         if (d.status === true) {
-          alertDispatch("Dự án đã được cập nhật");
+          alertDispatch(dataLang.formatMessage({ id: "alert_30" }))
           plantState.value = "default";
         }
       };

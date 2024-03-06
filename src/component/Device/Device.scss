@@ -35,6 +35,7 @@
             font-size: 13px;
         }
     }
+
     &_New {
         cursor: pointer;
         height: 30px;
@@ -61,6 +62,7 @@
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
+
     &::-webkit-scrollbar {
         display: none;
     }
@@ -77,6 +79,7 @@
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
+
     &::-webkit-scrollbar {
         display: none;
     }
@@ -151,6 +154,71 @@
     }
 }
 
+.DAT_Modify {
+    gap: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &_Item {
+        width: 35px;
+        height: 35px;
+        background-color: rgb(190, 190, 190);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgb(202, 202, 202);
+        }
+    }
+
+    &_Filter {
+        position: fixed;
+        z-index: 20;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        box-shadow: 3px 3px 5px rgba(198, 197, 197, 0.4);
+
+        & input {
+            border: none;
+            outline: none;
+            font-size: 13px;
+        }
+
+        & select {
+            border: none;
+            outline: none;
+            background-color: white;
+        }
+
+        &_Close {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+
+            background-color: #f44336;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgb(252, 122, 122);
+            }
+        }
+    }
+}
+
 // 19/01/2024 by Tai
 .DAT_Info {
     position: relative;
@@ -161,6 +229,7 @@
     margin-bottom: 30px;
     border-radius: 5px;
     box-shadow: 3px 3px 10px rgba(193, 193, 193, 0.5);
+
     &::-webkit-scrollbar {
         display: none;
     }
@@ -171,11 +240,13 @@
         left: 0px;
         align-items: center;
         padding: 20px;
+
         &_Left {
             flex: 5;
             display: flex;
             flex-direction: column;
             justify-content: center;
+
             & p {
                 padding-bottom: 10px;
                 margin: 0;
@@ -275,6 +346,7 @@
                 &_Head {
                     display: flex;
                     gap: 1px;
+
                     & p {
                         display: flex;
                         flex: 2.5;
@@ -286,6 +358,7 @@
                 &_Body {
                     display: flex;
                     gap: 1px;
+
                     & p {
                         display: flex;
                         flex: 2.5;
@@ -331,8 +404,7 @@
                     }
                 }
 
-                &_Data {
-                }
+                &_Data {}
             }
         }
 
@@ -369,6 +441,7 @@
                 }
 
                 &_DatePicker {
+
                     // border: 1px solid grey;
                     & input {
                         border: 1px solid grey;
@@ -403,6 +476,7 @@
         left: 0px;
         align-items: center;
         padding: 20px;
+
         &_Left {
             flex: 5;
 
@@ -410,6 +484,7 @@
                 margin: 0;
             }
         }
+
         &_Right {
             flex: 5;
             display: flex;
@@ -453,6 +528,7 @@
     &_Body {
         &_Item {
             background-color: white;
+
             // width: 100%;
             &_Tit {
                 background-color: rgb(230, 230, 230);
@@ -475,6 +551,7 @@
                         gap: 10px;
                     }
                 }
+
                 & div:last-child {
                     border-bottom: none;
                 }
@@ -511,6 +588,7 @@
             display: flex;
             justify-content: flex-end;
             flex: 5;
+
             &_Icon {
                 display: flex;
                 align-items: center;
@@ -544,6 +622,7 @@
 @media (max-width: 900px) {
     .DAT_Device {
         width: 98%;
+
         //height: 68vh;
         // overflow: hidden;
         &_Content {

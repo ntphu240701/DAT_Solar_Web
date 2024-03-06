@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Rule.scss";
 import { FaUsers } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
@@ -10,6 +10,9 @@ import ConfirmDeleteRule from "./ConfirmDeleteRule";
 import EditRule, { editruledata } from "./EditRule";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
+import { isMobile } from "../Navigation/Navigation";
+import { IoAddOutline } from "react-icons/io5";
+import { RxCross2 } from "react-icons/rx";
 
 const key = {
   edit: 'edits',
@@ -183,6 +186,8 @@ export const datarule = signal([
 
 export default function Rule() {
   const dataLang = useIntl();
+  const [filter, setFilter] = useState(false);
+
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
     rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
@@ -276,16 +281,40 @@ export default function Rule() {
         <div className="DAT_RuleHeader_Title">
           <FaUsers color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'rule' })}</span>
         </div>
-        <div className="DAT_RuleHeader_Filter">
-          <input type="text" placeholder={dataLang.formatMessage({ id: 'enterName' })} />
-          <CiSearch color="gray" size={20} />
-        </div>
-        <button
-          className="DAT_RuleHeader_New"
-          onClick={() => (createruleState.value = true)}
-        >
-          {dataLang.formatMessage({ id: 'newRule' })}
-        </button>
+
+        {isMobile.value ? (
+          <>
+            <div className="DAT_Modify">
+              <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
+              <div className="DAT_Modify_Item" onClick={() => (createruleState.value = true)}><IoAddOutline color="white" size={20} /></div>
+            </div>
+
+            {filter ? (
+              <div className="DAT_Modify_Filter">
+                <input type="text" placeholder={dataLang.formatMessage({ id: 'enterName' })} />
+                <div className="DAT_Modify_Filter_Close" onClick={() => setFilter(!filter)}>
+                  <RxCross2 size={20} color="white" />
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
+          </>
+        ) : (
+          <>
+            <div className="DAT_RuleHeader_Filter">
+              <input type="text" placeholder={dataLang.formatMessage({ id: 'enterName' })} />
+              <CiSearch color="gray" size={20} />
+            </div>
+            <button
+              className="DAT_RuleHeader_New"
+              onClick={() => (createruleState.value = true)}
+            >
+              {dataLang.formatMessage({ id: 'newRule' })}
+            </button>
+          </>
+        )}
+
       </div>
 
       <div className="DAT_Rule">
@@ -311,8 +340,7 @@ export default function Rule() {
         </div>
       </div>
 
-      <div
-        className="DAT_RuleCreate"
+      <div className="DAT_RuleCreate"
         style={{
           height: editRuleState.value ? "100vh" : "0px",
           transition: "0.5s",
@@ -321,8 +349,7 @@ export default function Rule() {
         {editRuleState.value ? <EditRule /> : <></>}
       </div>
 
-      <div
-        className="DAT_RuleCreate"
+      <div className="DAT_RuleCreate"
         style={{
           height: createruleState.value ? "100vh" : "0px",
           transition: "0.5s",

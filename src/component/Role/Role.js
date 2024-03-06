@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Role.scss";
 import DataTable from "react-data-table-component";
 import { FaUsers } from "react-icons/fa";
@@ -12,7 +12,9 @@ import { host } from "../Lang/Contant";
 import { callApi } from "../Api/Api";
 import { partnerInfor, userInfor } from "../../App";
 import { useIntl } from "react-intl";
-
+import { isMobile } from "../Navigation/Navigation";
+import { IoAddOutline } from "react-icons/io5";
+import { RxCross2 } from "react-icons/rx";
 
 export const roleData = signal({});
 export const roleState = signal("default");
@@ -20,9 +22,9 @@ export const popupState = signal("default");
 
 const Usr_ = signal([]);
 
-
 function Role(props) {
   const dataLang = useIntl();
+  const [filter, setFilter] = useState(false);
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
@@ -153,7 +155,6 @@ function Role(props) {
     fetchUsr()
   }, [])
 
-
   return (
     <>
       <div className="DAT_RoleHeader">
@@ -162,16 +163,39 @@ function Role(props) {
             {dataLang.formatMessage({ id: 'role' })}
           </span>
         </div>
-        <div className="DAT_RoleHeader_Filter">
-          <input type="text" placeholder={dataLang.formatMessage({ id: 'enterName' })} />
-          <CiSearch color="gray" size={20} />
-        </div>
-        <button
-          className="DAT_RoleHeader_New"
-          onClick={() => (roleState.value = "create")}
-        >
-          {dataLang.formatMessage({ id: 'createAccount' })}
-        </button>
+
+        {isMobile.value ? (
+          <>
+            <div className="DAT_Modify">
+              <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
+              <div className="DAT_Modify_Item" onClick={() => (roleState.value = "create")}><IoAddOutline color="white" size={20} /></div>
+            </div>
+
+            {filter ? (
+              <div className="DAT_Modify_Filter">
+                <input type="text" placeholder={dataLang.formatMessage({ id: 'enterName' })} />
+                <div className="DAT_Modify_Filter_Close" onClick={() => setFilter(!filter)}>
+                  <RxCross2 size={20} color="white" />
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
+          </>
+        ) : (
+          <>
+            <div className="DAT_RoleHeader_Filter">
+              <input type="text" placeholder={dataLang.formatMessage({ id: 'enterName' })} />
+              <CiSearch color="gray" size={20} />
+            </div>
+            <button
+              className="DAT_RoleHeader_New"
+              onClick={() => (roleState.value = "create")}
+            >
+              {dataLang.formatMessage({ id: 'createAccount' })}
+            </button>
+          </>
+        )}
       </div>
 
       <div className="DAT_Role">

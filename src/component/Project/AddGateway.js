@@ -14,6 +14,7 @@ import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
 import RaiseBox from "./RaiseBox";
+import { useIntl } from "react-intl";
 
 export const raiseBoxState = signal({
   state: false,
@@ -21,6 +22,7 @@ export const raiseBoxState = signal({
 });
 
 export default function AddGateway(props) {
+  const dataLang = useIntl();
   const sn = useRef();
   const name = useRef();
   const type = useRef();
@@ -38,13 +40,14 @@ export default function AddGateway(props) {
     popup.style.color = popup_state[state].color;
   };
 
+
   const handleClose = () => {
     popupAddGateway.value = false;
   };
 
   const handleSave = async (e) => {
     if (sn.current.value === "" || name.current.value === "" || type.current.value === "") {
-      alertDispatch("Không được để trống thông tin");
+      alertDispatch(dataLang.formatMessage({ id: "alert_22" }))
     } else {
       const d = await callApi("post", host.DATA + "/addLogger", {
         plantid: projectData.value.plantid,
@@ -57,17 +60,17 @@ export default function AddGateway(props) {
         popupAddGateway.value = false;
       }
       if (d.status === true) {
-        alertDispatch("Thiết bị được thêm thành công");
+        alertDispatch(dataLang.formatMessage({ id: "alert_32" }))
       } else if (d.number === 0) {
-        alertDispatch("Lỗi định dạng");
+        alertDispatch(dataLang.formatMessage({ id: "alert_33" }))
       } else if (d.number === 1) {
-        alertDispatch("Không tìm thấy thiết bị");
+        alertDispatch(dataLang.formatMessage({ id: "alert_34" }))
       } else if (d.number === 2) {
-        alertDispatch("Thiết bị đã tồn tại");
+        alertDispatch(dataLang.formatMessage({ id: "alert_35" }))
       } else if (d.number === 3) {
-        alertDispatch("Không tìm thấy thiết bị");
+        alertDispatch(dataLang.formatMessage({ id: "alert_34" }))
       } else if (d.number === 4) {
-        alertDispatch("Hệ thống lỗi");
+        alertDispatch(dataLang.formatMessage({ id: "alert_36" }))
       }
     }
   };
@@ -76,7 +79,7 @@ export default function AddGateway(props) {
     <div className="DAT_AddGateway">
       <div className="DAT_AddGateway_Head">
         <div className="DAT_AddGateway_Head_Left">
-          <p>Thêm Gateway/Logger</p>
+          <p>{dataLang.formatMessage({ id: 'ADD' })} Gateway/Logger</p>
         </div>
         <div className="DAT_AddGateway_Head_Right">
           <div
@@ -94,15 +97,15 @@ export default function AddGateway(props) {
       <div className="DAT_AddGateway_Body">
         <div className="DAT_AddGateway_Body_Input">
           <span>SN:</span>
-          <input id="sn" type="text" placeholder="Nhập mã" ref={sn} />
+          <input id="sn" type="text" placeholder={dataLang.formatMessage({ id: 'enterCode' })} ref={sn} />
         </div>
         <div className="DAT_AddGateway_Body_Input">
-          <span>Tên:</span>
-          <input id="name" type="text" placeholder="Nhập tên" ref={name} />
+          <span>{dataLang.formatMessage({ id: 'name' })}:</span>
+          <input id="name" type="text" placeholder={dataLang.formatMessage({ id: 'enterDev' })} ref={name} />
         </div>
         <div className="DAT_AddGateway_Body_Input">
-          <span>Kiểu:</span>
-          <input id="type" type="text" placeholder="Nhập kiểu" ref={type} />
+          <span>{dataLang.formatMessage({ id: 'type' })}:</span>
+          <input id="type" type="text" placeholder={dataLang.formatMessage({ id: 'enterType' })} ref={type} />
         </div>
       </div>
 
@@ -115,14 +118,14 @@ export default function AddGateway(props) {
           }}
           onClick={() => handleClose()}
         >
-          Hủy
+          {dataLang.formatMessage({ id: 'cancel' })}
         </button>
         <button
           //   id={projectData.value.id}
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={(e) => handleSave(e)}
         >
-          Xác nhận
+          {dataLang.formatMessage({ id: 'confirm' })}
         </button>
       </div>
 

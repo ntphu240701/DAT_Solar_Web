@@ -19,6 +19,8 @@ import { host } from "../Lang/Contant";
 import { set } from "lodash";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
+import { IoAddOutline } from "react-icons/io5";
+import { RxCross2 } from "react-icons/rx";
 
 export const tab = signal("logger");
 const tabLable = signal("");
@@ -36,6 +38,9 @@ export const loggerList = signal([]);
 function Device(props) {
   const datalang = useIntl();
   const user = useSelector(state => state.admin.usr);
+  const [filter, setFilter] = useState(false);
+  const [plantid, setPlantid] = useState("");
+  const [snlogger, setSnlogger] = useState("");
 
   const listTab = [
     { id: "logger", name: "Logger" },
@@ -348,20 +353,14 @@ function Device(props) {
     }
   };
 
-  const handleEdit = (e) => {
+  const handleEdit = (e) => { };
 
-  };
-
-  const [plantid, setPlantid] = useState("");
-  const [snlogger, setSnlogger] = useState("");
   const handleRemove = (e) => {
     popupState.value = true;
     const id = e.currentTarget.id;
     const idArr = id.split("_");
-    // console.log(idArr);
     setPlantid(idArr[1]);
     setSnlogger(idArr[0]);
-    // console.log(plantid, snlogger);
 
     // switch (idArr[1]) {
     //   case "inverter":
@@ -404,7 +403,6 @@ function Device(props) {
     // get logger
     const getAllLogger = async (usrname, partnerid, type) => {
       let d = await callApi('post', host.DATA + '/getallLogger', { usr: usrname, partnerid: partnerid, type: type });
-      // console.log(d);
       if (d.status === true) {
         loggerList.value = d.data;
       }
@@ -419,13 +417,36 @@ function Device(props) {
         <div className="DAT_DeviceHeader_Title">
           <TbSettingsCode color="gray" size={25} /> <span>{datalang.formatMessage({ id: 'device' })}</span>
         </div>
-        <div className="DAT_DeviceHeader_Filter">
-          <input type="text" placeholder={datalang.formatMessage({ id: 'enterDev' })} />
-          <CiSearch color="gray" size={20} />
-        </div>
-        <button className="DAT_DeviceHeader_New" onClick={handleShowConfig}>
-          {datalang.formatMessage({ id: 'config' })}
-        </button>
+
+        {isMobile.value ? (
+          <>
+            <div className="DAT_Modify">
+              <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
+              <div className="DAT_Modify_Item" onClick={handleShowConfig}><TbSettingsCode color="white" size={20} /></div>
+            </div>
+
+            {filter ? (
+              <div className="DAT_Modify_Filter">
+                <input type="text" placeholder={datalang.formatMessage({ id: 'enterDev' })} />
+                <div className="DAT_Modify_Filter_Close" onClick={() => setFilter(!filter)}>
+                  <RxCross2 size={20} color="white" />
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
+          </>
+        ) : (
+          <>
+            <div className="DAT_DeviceHeader_Filter">
+              <input type="text" placeholder={datalang.formatMessage({ id: 'enterDev' })} />
+              <CiSearch color="gray" size={20} />
+            </div>
+            <button className="DAT_DeviceHeader_New" onClick={handleShowConfig}>
+              {datalang.formatMessage({ id: 'config' })}
+            </button>
+          </>
+        )}
       </div>
 
       <div className="DAT_Device">
@@ -440,25 +461,28 @@ function Device(props) {
               className="DAT_Toollist_Tab_Mobile_content"
               onClick={() => (tabMobile.value = !tabMobile.value)}
             >
-              {" "}
-              <span> {tabLable.value}</span>{" "}
-              {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}{" "}
+              <span> {tabLable.value}</span>
+              {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}
             </button>
-            <div className="DAT_Toollist_Tab_Mobile_list">
-              {listTab.map((item, i) => {
-                return (
-                  <div
-                    className="DAT_Toollist_Tab_Mobile_list_item"
-                    style={{ display: tabMobile.value ? "block" : "none" }}
-                    key={i}
-                    id={item.id}
-                    onClick={(e) => handleTabMobile(e)}
-                  >
-                    {i + 1}: {item.name}
-                  </div>
-                );
-              })}
-            </div>
+            {tabMobile.value ? (
+              <div className="DAT_Toollist_Tab_Mobile_list">
+                {listTab.map((item, i) => {
+                  return (
+                    <div
+                      className="DAT_Toollist_Tab_Mobile_list_item"
+                      // style={{ display: tabMobile.value ? "block" : "none" }}
+                      key={i}
+                      id={item.id}
+                      onClick={(e) => handleTabMobile(e)}
+                    >
+                      {i + 1}: {item.name}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         ) : (
           <div className="DAT_Toollist_Tab">
