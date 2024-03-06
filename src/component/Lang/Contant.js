@@ -356,7 +356,7 @@ export const messages = {
         type: 'Loại',
         projType: 'Loại dự án:',
         reportType: 'Loại báo cáo',
-        household: 'Hộ dân',
+        household: 'Dân dụng',
         factory: 'Nhà máy',
         electricType: 'Loại hệ thống điện:',
         gridType: 'Hệ thống hòa lưới',
