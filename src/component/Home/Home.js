@@ -395,9 +395,9 @@ function Home(props) {
       })
     })
     console.log(num_)
-    setProduction(cal.pro_1)
-    setDailyProduction(cal.pro_2)
-    setTotalProduction(cal.pro_3)
+    setProduction(cal?.pro_1 || 0)
+    setDailyProduction(cal?.pro_2 || 0)
+    setTotalProduction(cal?.pro_3 || 0)
 
     coalsave.value = {
       ...coalsave.value,

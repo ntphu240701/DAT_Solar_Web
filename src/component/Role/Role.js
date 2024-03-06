@@ -38,7 +38,7 @@ function Role(props) {
       name: dataLang.formatMessage({ id: 'ordinalNumber' }),
       selector: (row) => row.id,
       sortable: true,
-      minWidth: "80px",
+      width: "80px",
     },
     {
       name: dataLang.formatMessage({ id: 'name' }),
