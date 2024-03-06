@@ -114,6 +114,7 @@
         background-color: white;
         margin-bottom: 10px;
         border-radius: 5px;
+        box-shadow: 3px 3px 5px rgba(198, 197, 197, 0.4);
 
         &_Top {
             display: flex;
@@ -142,13 +143,24 @@
                     color: black;
                     font-size: 16px;
                     margin-bottom: 5px;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: #6495ed;
+                    }
                 }
 
                 &_State {
                     display: flex;
-                    align-items: center;
                     gap: 20px;
                     margin-bottom: 5px;
+
+                    &_Item {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 5px;
+                    }
                 }
 
                 &_Data {
@@ -221,6 +233,22 @@
             border: none;
             outline: none;
             background-color: white;
+        }
+
+        &_Close {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+
+            background-color: #f44336;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgb(252, 122, 122);
+            }
         }
     }
 }
@@ -3190,7 +3218,7 @@
         &_Header {
             &_LeftDashboard {
                 flex: 5;
-                min-width: 100px;
+                // min-width: 180px;
                 padding: 16px;
             }
 
@@ -3219,13 +3247,75 @@
                     margin: auto;
                     margin-bottom: 16px;
 
-                    &_Total {
-                        display: contents;
+                    &_Production {
+                        &_Total {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 10px;
+                            padding: 10px;
+                            -webkit-box-sizing: border-box;
+                            /* Safari/Chrome, other WebKit */
+                            -moz-box-sizing: border-box;
+                            /* Firefox, other Gecko */
+                            box-sizing: border-box;
+                            overflow: hidden;
 
-                        &_Item {
-                            width: 90%;
-                            margin: auto;
-                            margin-bottom: 5px;
+                            &_Item {
+                                width: 100%;
+                                padding: 16px;
+                                border-radius: 5px;
+                                -webkit-box-sizing: border-box;
+                                /* Safari/Chrome, other WebKit */
+                                -moz-box-sizing: border-box;
+                                /* Firefox, other Gecko */
+                                box-sizing: border-box;
+
+                                &_Tit {
+                                    font-size: 14px;
+                                    color: gray;
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                }
+
+                                &_Data {
+                                    margin: 4px 0px 0px 0px;
+                                }
+                            }
+                        }
+
+                    }
+
+                    &_Consumption {
+                        &_Total {
+                            display: flex;
+                            flex-direction: column;
+                        }
+                    }
+
+                    &_Grid {
+                        &_Row {
+                            &_Left {
+                                display: flex;
+                                flex-direction: column;
+
+                                &_Tit {
+                                    width: 200px;
+                                }
+                            }
+                        }
+                    }
+
+                    &_Battery {
+                        &_Row {
+                            &_Left {
+                                display: flex;
+                                flex-direction: column;
+
+                                &_Tit {
+                                    width: 200px;
+                                }
+                            }
                         }
                     }
                 }

@@ -24,7 +24,6 @@ import { useIntl } from "react-intl";
 import { IoAddOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 
-
 const tab = signal("total");
 const tabLable = signal("");
 const tabMobile = signal(false);
@@ -81,17 +80,11 @@ export const devicePlant = signal([
   },
 ]);
 
-export const Logger = signal([
+export const Logger = signal([]);
 
-]);
+export const InverterbyLogger = signal([]);
 
-export const InverterbyLogger = signal([
-
-]);
-
-export const Inverter = signal([
-
-]);
+export const Inverter = signal([]);
 
 function Project(props) {
   const dataLang = useIntl();
@@ -116,8 +109,6 @@ function Project(props) {
     selectAllRowsItem: true,
     selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
-
-
 
   const columnproject = [
     {
@@ -321,7 +312,6 @@ function Project(props) {
     }
   };
 
-
   useEffect(() => {
     online.value = dataproject.value.filter((item) => item.state == 1);
     offline.value = dataproject.value.filter((item) => item.state == 0);
@@ -333,7 +323,7 @@ function Project(props) {
     const getPlant = async (usrname, partnerid, type) => {
       let d = await callApi('post', host.DATA + '/getPlant', { usr: usrname, partnerid: partnerid, type: type });
       if (d.status === true) {
-        console.log(d.data)
+        // console.log(d.data)
         dataproject.value = d.data;
         setDatafilter(d.data);
       }
@@ -348,15 +338,14 @@ function Project(props) {
           <GoProject color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'project' })}</span>
         </div>
 
-        {isMobile.value
-          ? <>
+        {isMobile.value ?
+          <>
             <div className="DAT_Modify">
               <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
               <div className="DAT_Modify_Item" onClick={() => (plantState.value = "add")}><IoAddOutline color="white" size={20} /></div>
             </div>
 
             {filter ?
-
               <div className="DAT_Modify_Filter">
                 <select onChange={(e) => pickTypeFilter(e)}>
                   <option value={"name"}>{dataLang.formatMessage({ id: 'name' })}</option>
@@ -373,17 +362,14 @@ function Project(props) {
                   placeholder={dataLang.formatMessage({ id: 'enterPr' })}
                   onChange={(e) => handleSearch(e)}
                 />
-                {/* <CiSearch color="gray" size={20} /> */}
-                <span onClick={() => setFilter(!filter)}
-                  style={{ cursor: "pointer" }}
-                >
-
-                  <RxCross2 size={20} color="grey" />
-                </span>
+                <div className="DAT_Modify_Filter_Close" onClick={() => setFilter(!filter)}>
+                  <RxCross2 size={20} color="white" />
+                </div>
               </div>
-              : <></>}
-          </> :
-          <>
+              : <></>
+            }
+          </>
+          : <>
             <div className="DAT_ProjectHeader_Filter">
               <select onChange={(e) => pickTypeFilter(e)}>
                 <option value={"name"}>{dataLang.formatMessage({ id: 'name' })}</option>
@@ -408,26 +394,24 @@ function Project(props) {
             >
               <span value={"createdate"}>{dataLang.formatMessage({ id: 'createNew' })}</span>
             </button>
-
           </>
         }
       </div>
-      {isMobile.value
-        ? <div className="DAT_ProjectMobile">
+
+      {isMobile.value ? (
+        <div className="DAT_ProjectMobile">
           <div className="DAT_Toollist_Tab_Mobile">
-            <button
-              className="DAT_Toollist_Tab_Mobile_content"
+            <button className="DAT_Toollist_Tab_Mobile_content"
               onClick={() => (tabMobile.value = !tabMobile.value)}
             >
-              <span> {tabLable.value}</span>
+              <span>{tabLable.value}</span>
               {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}
             </button>
-            {tabMobile.value
-              ? <div className="DAT_Toollist_Tab_Mobile_list">
+            {tabMobile.value ?
+              <div className="DAT_Toollist_Tab_Mobile_list">
                 {listTab.map((item, i) => {
                   return (
-                    <div
-                      className="DAT_Toollist_Tab_Mobile_list_item"
+                    <div className="DAT_Toollist_Tab_Mobile_list_item"
                       // style={{ display: tabMobile.value ? "block" : "none" }}
                       key={"tabmobile_" + i}
                       id={item.id}
@@ -440,47 +424,79 @@ function Project(props) {
               </div>
               : <></>
             }
-
           </div>
-
           {/* {dataproject.value[0].plantname} */}
-
-
 
           {(() => {
             switch (tab.value) {
               case "total":
-                return (<>
-                  {dataproject.value?.map((item, i) => {
-                    return <div key={i} className="DAT_ProjectMobile_Content" >
-                      <div className="DAT_ProjectMobile_Content_Top" id={item.plantid} onClick={(e) => handlePlant(e)}>
-                        <div className="DAT_ProjectMobile_Content_Top_Avatar">
-                          <img src={item.img ? item.img : "/dat_picture/solar_panel.png"} alt="" />
-                        </div>
+                return (
+                  <>
+                    {dataproject.value?.map((item, i) => {
+                      return <div key={i} className="DAT_ProjectMobile_Content" >
+                        <div className="DAT_ProjectMobile_Content_Top" id={item.plantid} onClick={(e) => handlePlant(e)}>
+                          <div className="DAT_ProjectMobile_Content_Top_Avatar">
+                            <img src={item.img ? item.img : "/dat_picture/solar_panel.png"} alt="" />
+                          </div>
 
-                        <div className="DAT_ProjectMobile_Content_Top_Info">
                           <div className="DAT_ProjectMobile_Content_Top_Info">
                             <div className="DAT_ProjectMobile_Content_Top_Info_Name">{item.plantname}</div>
+
                             <div className="DAT_ProjectMobile_Content_Top_Info_State">
-                              <div> {item.state ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'online' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'offline' })}</span></>}</div>
-                              <div> {item.warn ? <><FaCheckCircle size={20} color="green" /> <span>{dataLang.formatMessage({ id: 'noAlert' })}</span></> : <> <MdOutlineError size={22} color="red" /> <span>{dataLang.formatMessage({ id: 'alert' })}</span></>}  </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_State_Item">
+                                {item.state ?
+                                  <>
+                                    <FaCheckCircle size={20} color="green" />
+                                    <span>{dataLang.formatMessage({ id: 'online' })}</span>
+                                  </>
+                                  :
+                                  <>
+                                    <MdOutlineError size={22} color="red" />
+                                    <span>{dataLang.formatMessage({ id: 'offline' })}</span>
+                                  </>
+                                }
+                              </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_State_Item">
+                                {item.warn ?
+                                  <>
+                                    <FaCheckCircle size={20} color="green" />
+                                    <span>{dataLang.formatMessage({ id: 'noAlert' })}</span>
+                                  </>
+                                  :
+                                  <>
+                                    <MdOutlineError size={22} color="red" />
+                                    <span>{dataLang.formatMessage({ id: 'alert' })}</span>
+                                  </>
+                                }
+                              </div>
                             </div>
+
                             <div className="DAT_ProjectMobile_Content_Top_Info_Data">
-                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'power' })}</div> <div>{item.power}<span>%</span></div> </div>
-                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'capacity' })}</div> <div>{item.capacity}<span>kWp</span></div> </div>
-                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item"> <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'production' })}</div> <div>{item.production}<span>kWh</span></div> </div>
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
+                                <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'power' })}</div>
+                                <div>{item.power}<span>%</span></div>
+                              </div>
+
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
+                                <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'capacity' })}</div>
+                                <div>{item.capacity}<span>kWp</span></div>
+                              </div>
+
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
+                                <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">{dataLang.formatMessage({ id: 'production' })}</div>
+                                <div>{item.production}<span>kWh</span></div>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="DAT_ProjectMobile_Content_Bottom">
-                        <span>{dataLang.formatMessage({ id: 'lastUpdate' })}</span>&nbsp; <span>{item.lastupdate}</span>
+                        <div className="DAT_ProjectMobile_Content_Bottom">
+                          <span>{dataLang.formatMessage({ id: 'lastUpdate' })}</span> &nbsp; <span>{item.lastupdate}</span>
+                        </div>
                       </div>
-
-                    </div>
-                  })}
-                </>);
+                    })}
+                  </>
+                );
               case "online":
                 return (<>
                   {online.value?.map((item, i) => {
@@ -613,11 +629,9 @@ function Project(props) {
                 return <></>;
             }
           })()}
-
-
         </div>
-        : <div className="DAT_Project">
-
+      ) : (
+        <div className="DAT_Project">
           <div className="DAT_Toollist_Tab">
             {listTab.map((item, i) => {
               return tab.value === item.id ? (
@@ -650,7 +664,6 @@ function Project(props) {
               );
             })}
           </div>
-
 
           <div className="DAT_Project_Content">
             {(() => {
@@ -721,7 +734,8 @@ function Project(props) {
             })()}
           </div>
         </div>
-      }
+      )}
+
       <div className="DAT_ProjectInfor"
         style={{
           height: plantState.value === "default" ? "0px" : "100vh",
