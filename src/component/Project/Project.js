@@ -317,6 +317,7 @@ function Project(props) {
     offline.value = dataproject.value.filter((item) => item.state == 0);
     warn.value = dataproject.value.filter((item) => item.warn == 0);
     tabLable.value = listTab[0].name;
+    setDatafilter(dataproject.value);
   }, [dataproject.value]);
 
   useEffect(() => {
@@ -325,7 +326,6 @@ function Project(props) {
       if (d.status === true) {
         // console.log(d.data)
         dataproject.value = d.data;
-        setDatafilter(d.data);
       }
     }
     getPlant(user, userInfor.value.partnerid, userInfor.value.type);

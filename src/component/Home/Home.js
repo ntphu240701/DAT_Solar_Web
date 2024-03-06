@@ -244,13 +244,19 @@ function Home(props) {
 
   useEffect(() => {
 
-    setCapacity(0)
-    plant.value.map((item) => {
-      setCapacity((old) => old + parseFloat(item.capacity))
+
+    let cap = []
+    plant.value.map((item, i) => {
+      cap[i] = item.capacity
+      if (i == plant.value.length - 1) {
+        console.log(cap)
+        let total = parseFloat(cap.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
+        setCapacity(total)
+      }
+
     })
 
-    setPrice(0)
-    var sum_4 = [];
+    var price = [];
     plant.value.map((itemplant, index) => {
       var sum_logger = [];
       let logger_ = logger.value.filter(data => data.pplantid == itemplant.plantid)
@@ -258,7 +264,6 @@ function Home(props) {
       logger_.map((item, i) => {
         const type = (item.pdata.pro_3.type);
         const cal = JSON.parse(item.pdata.pro_3.cal);
-        //let num = [];
 
         switch (type) {
           case "sum":
@@ -275,19 +280,20 @@ function Home(props) {
               intView[0] = doubleword;
               var float_value = floatView[0];
 
-              return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
+              return type === "int" ? parseFloat(doubleword).toFixed(2) : parseFloat(float_value).toFixed(2) || 0;
             }
 
             sum_logger[i] = convertToDoublewordAndFloat(e, "int");
-            let total = sum_logger.reduce((accumulator, currentValue) => {
-              return Number(accumulator) + Number(currentValue)
-            }, 0);
 
             if (i == logger_.length - 1) {
+              let total = parseFloat(sum_logger.reduce((accumulator, currentValue) => {
+                return Number(accumulator) + Number(currentValue)
+              }, 0) * parseFloat(cal)).toFixed(2);
+
               if (itemplant.currency == 'vnd') {
-                sum_4[index] = total * itemplant.price;
+                price[index] = total * itemplant.price;
               } else {
-                sum_4[index] = total * itemplant.price * usd.value;
+                price[index] = total * itemplant.price * usd.value;
               }
             }
             break;
@@ -296,226 +302,109 @@ function Home(props) {
         }
       })
 
-      let total = sum_4.reduce((accumulator, currentValue) => {
-        return Number(accumulator) + Number(currentValue)
-      }, 0);
+
 
       if (index == plant.value.length - 1) {
-        setPrice(parseFloat(total).toFixed(2));
+        let total = parseFloat(price.reduce((accumulator, currentValue) => {
+          return Number(accumulator) + Number(currentValue)
+        }, 0)).toFixed(2);
+        setPrice(total);
       }
     })
 
-    setProduction(0)
-    var sum = [];
+
+    var cal = {}
+    var num_ = {
+      bat_1: [],
+      bat_2: [],
+      bat_in_1: [],
+      bat_out_1: [],
+      con_1: [],
+      con_2: [],
+      grid_1: [],
+      grid_in_1: [],
+      grid_in_2: [],
+      grid_out_1: [],
+      grid_out_2: [],
+      pro_1: [],
+      pro_2: [],
+      pro_3: []
+    }
     logger.value.map((item, i) => {
-      const type = (item.pdata.pro_1.type);
-      const cal = JSON.parse(item.pdata.pro_1.cal);
-      let num = [];
+      Object.entries(item.pdata).map(([key, value]) => {
+        switch (value.type) {
+          case "sum":
+            let inum = [];
+            let cal_ = JSON.parse(value.cal);
+            Object.entries(value.register).map(([key, value]) => {
+              let n = JSON.parse(value)
+              inum[key] = parseFloat(invt[item.psn]?.[n[0]] || 0) * parseFloat(cal_[0]) * parseFloat(invt[item.psn]?.[n[1]] || 0) * parseFloat(cal_[1]);
+            });
 
-      switch (type) {
-        case "sum":
-          Object.entries(item.pdata.pro_1.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(invt[item.psn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(invt[item.psn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          });
+            num_[key][i] = inum.reduce((accumulator, currentValue) => {
+              return Number(accumulator) + Number(currentValue)
+            }, 0)
+            if (i == logger.value.length - 1) {
 
-          sum[i] = num.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0)
+              if (invt[item.psn]?.enabled == 1) {
+                cal[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
+                  return Number(accumulator) + Number(currentValue)
+                }, 0) / 1000).toFixed(2);
+              } else {
+                cal[key] = 0
+              }
 
-          let total_sum = sum.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0) / 1000;
+            }
+            break;
+          case "word":
+            //console.log(key, value)
+            let d = JSON.parse(value.register);
+            let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]] || 0];
 
-          if (i == logger.value.length - 1) {
-            setProduction(parseFloat(total_sum).toFixed(2));
-          }
-          break;
-        case "word":
-          let d = JSON.parse(item.pdata.pro_1.register);
-          let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]]] || 0;
+            const convertToDoublewordAndFloat = (word, type) => {
+              var doubleword = ((word[1]) << 16) | (word[0]);
+              var buffer = new ArrayBuffer(4);
+              var intView = new Int32Array(buffer);
+              var floatView = new Float32Array(buffer);
+              intView[0] = doubleword;
+              var float_value = floatView[0];
+              return type === "int" ? parseFloat(doubleword).toFixed(2) : parseFloat(float_value).toFixed(2) || 0;
+            }
+            num_[key][i] = convertToDoublewordAndFloat(e, "int");
 
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
+            if (i == logger.value.length - 1) {
+              console.log(num_)
+              cal[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
+                return Number(accumulator) + Number(currentValue)
+              }, 0) * parseFloat(value.cal)).toFixed(2);
 
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
 
-          // let view32bit = convertToDoublewordAndFloat(e, "float");
-          // setProduction((old) => parseFloat(old) + parseFloat(view32bit));
-          sum[i] = convertToDoublewordAndFloat(e, "int");
-          let total_word = sum.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0);
+            }
 
-          if (i == logger.value.length - 1) {
-            setProduction(parseFloat(total_word).toFixed(2));
-          }
-          break;
-        default:
-          // num = parseFloat(invt[item.psn][item.pdata.pro_1.register]) * parseFloat(item.pdata.pro_1.cal);
-          // setProduction((old) => old + num);
-          sum[i] = parseFloat(invt[item.psn]?.[item.pdata.pro_1.register] || 0) * parseFloat(item.pdata.pro_1.cal);
-
-          let total_real = sum.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0);
-
-          if (i == logger.value.length - 1) {
-            setProduction(parseFloat(total_real).toFixed(2));
-          }
-          break;
-      }
+            break;
+          default:
+            num_[key][i] = parseFloat(invt[item.psn]?.[value.register] || 0) * parseFloat(value.cal);
+            if (i == logger.value.length - 1) {
+              //console.log(num_)
+              cal[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
+                return accumulator + currentValue
+              })).toFixed(2)
+            }
+            break;
+        }
+      })
     })
+    console.log(num_)
+    setProduction(cal.pro_1)
+    setDailyProduction(cal.pro_2)
+    setTotalProduction(cal.pro_3)
 
-    setDailyProduction(0)
-    var sum_2 = [];
-    logger.value.map((item, i) => {
-      const type = (item.pdata.pro_2.type);
-      const cal = JSON.parse(item.pdata.pro_2.cal);
-      let num = [];
+    coalsave.value = {
+      ...coalsave.value,
+      value: cal.pro_3
+    }
 
-      switch (type) {
-        case "sum":
-          Object.entries(item.pdata.pro_2.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(invt[item.psn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(invt[item.psn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          })
 
-          sum_2[i] = num.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0)
-
-          let total_sum = sum_2.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0) / 1000;
-
-          if (i == logger.value.length - 1) {
-            setDailyProduction(parseFloat(total_sum).toFixed(2));
-          }
-          break;
-        case "word":
-          let d = JSON.parse(item.pdata.pro_2.register);
-          let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]]] || 0;
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          sum_2[i] = convertToDoublewordAndFloat(e, "int");
-          let total_word = sum_2.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0);
-
-          if (i == logger.value.length - 1) {
-            setDailyProduction(parseFloat(total_word).toFixed(2));
-          }
-          break;
-        default:
-          sum_2[i] = parseFloat(invt[item.psn]?.[item.pdata.pro_2.register] || 0) * parseFloat(item.pdata.pro_2.cal);
-
-          let total = sum_2.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0);
-
-          if (i == logger.value.length - 1) {
-            setDailyProduction(parseFloat(total).toFixed(2));
-          }
-          break
-      }
-    });
-
-    setTotalProduction(0)
-    var sum_3 = [];
-    logger.value.map((item, i) => {
-      const type = (item.pdata.pro_3.type);
-      const cal = JSON.parse(item.pdata.pro_3.cal);
-      let num = [];
-
-      switch (type) {
-        case "sum":
-          Object.entries(item.pdata.pro_3.register).map(([key, value]) => {
-            let n = JSON.parse(value)
-            num[key] = parseFloat(invt[item.psn]?.[n[0]] || 0) * parseFloat(cal[0]) * parseFloat(invt[item.psn]?.[n[1]] || 0) * parseFloat(cal[1]);
-          })
-
-          sum_3[i] = num.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0)
-
-          let total_sum = sum_3.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0) / 1000;
-
-          if (i == logger.value.length - 1) {
-            setTotalProduction(parseFloat(total_sum).toFixed(2));
-          }
-          break;
-        case "word":
-          let d = JSON.parse(item.pdata.pro_3.register);
-          let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]]] || 0;
-
-          const convertToDoublewordAndFloat = (word, type) => {
-            var doubleword = ((word[1]) << 16) | (word[0]);
-            var buffer = new ArrayBuffer(4);
-            var intView = new Int32Array(buffer);
-            var floatView = new Float32Array(buffer);
-            intView[0] = doubleword;
-            var float_value = floatView[0];
-
-            return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-          }
-
-          sum_3[i] = convertToDoublewordAndFloat(e, "int");
-          let total_word = sum_3.reduce((accumulator, currentValue) => {
-            return Number(accumulator) + Number(currentValue)
-          }, 0);
-
-          if (i == logger.value.length - 1) {
-            setTotalProduction(parseFloat(total_word).toFixed(2));
-          }
-          break;
-        default:
-          break;
-      }
-    });
-
-    coalsave.value.value = 0;
-    logger.value.map((item, i) => {
-      const cal = JSON.parse(item.pdata.pro_3.cal);
-
-      let d = JSON.parse(item.pdata.pro_3.register);
-      let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]]] || 0;
-
-      const convertToDoublewordAndFloat = (word, type) => {
-        var doubleword = ((word[1]) << 16) | (word[0]);
-        var buffer = new ArrayBuffer(4);
-        var intView = new Int32Array(buffer);
-        var floatView = new Float32Array(buffer);
-        intView[0] = doubleword;
-        var float_value = floatView[0];
-
-        return type === "int" ? doubleword * cal : parseFloat(float_value * cal).toFixed(2) || 0;
-      }
-
-      let view32bit = convertToDoublewordAndFloat(e, "int");
-      coalsave.value = {
-        ...coalsave.value,
-        value: parseFloat(Number(coalsave.value.value) + Number(view32bit)).toFixed(2)
-      }
-    });
 
   }, [invt, totalproduction, price])
 

@@ -112,199 +112,199 @@ const dataAlert = [
   },
 ];
 
-const dbDay = [
-  {
-    date: "19/02/2024",
-    name: 'electricOutputDay',
-    data: [
-      { time: "00:00", val: 1.234 },
-      { time: "01:00", val: 2.345 },
-      { time: "02:00", val: 3.456 },
-      { time: "03:00", val: 4.567 },
-      { time: "04:00", val: 5.678 },
-      { time: "05:00", val: 6.789 },
-      { time: "06:00", val: 7.89 },
-      { time: "07:00", val: 8.901 },
-      { time: "08:00", val: 9.012 },
-      { time: "09:00", val: 1.013 },
-      { time: "10:00", val: 1.124 },
-      { time: "11:00", val: 1.235 },
-      { time: "12:00", val: 1.346 },
-      { time: "13:00", val: 1.457 },
-      { time: "14:00", val: 1.568 },
-      { time: "15:00", val: 1.679 },
-      { time: "16:00", val: 1.78 },
-      { time: "17:00", val: 1.891 },
-      { time: "18:00", val: 1.902 },
-      { time: "19:00", val: 2.013 },
-      { time: "20:00", val: 2.124 },
-      { time: "21:00", val: 2.235 },
-      { time: "22:00", val: 2.346 },
-      { time: "23:00", val: 2.457 },
-    ],
-  },
-  {
-    date: "20/02/2024",
-    name: "Sản lượng ngày",
-    data: [
-      { time: "00:00", val: 9.234 },
-      { time: "01:00", val: 8.345 },
-      { time: "02:00", val: 7.456 },
-      { time: "03:00", val: 6.567 },
-      { time: "04:00", val: 5.678 },
-      { time: "05:00", val: 4.789 },
-      { time: "06:00", val: 3.89 },
-      { time: "07:00", val: 2.901 },
-      { time: "08:00", val: 1.012 },
-      { time: "09:00", val: 1.013 },
-      { time: "10:00", val: 3.124 },
-      { time: "11:00", val: 5.235 },
-      { time: "12:00", val: 7.346 },
-      { time: "13:00", val: 8.457 },
-      { time: "14:00", val: 1.568 },
-      { time: "15:00", val: 1.679 },
-      { time: "16:00", val: 2.78 },
-      { time: "17:00", val: 3.891 },
-      { time: "18:00", val: 4.902 },
-      { time: "19:00", val: 5.013 },
-      { time: "20:00", val: 6.124 },
-      { time: "21:00", val: 7.235 },
-      { time: "22:00", val: 8.346 },
-      { time: "23:00", val: 9.457 },
-    ],
-  },
-];
+// const dbDay = [
+//   {
+//     date: "19/02/2024",
+//     name: 'electricOutputDay',
+//     data: [
+//       { time: "00:00", val: 1.234 },
+//       { time: "01:00", val: 2.345 },
+//       { time: "02:00", val: 3.456 },
+//       { time: "03:00", val: 4.567 },
+//       { time: "04:00", val: 5.678 },
+//       { time: "05:00", val: 6.789 },
+//       { time: "06:00", val: 7.89 },
+//       { time: "07:00", val: 8.901 },
+//       { time: "08:00", val: 9.012 },
+//       { time: "09:00", val: 1.013 },
+//       { time: "10:00", val: 1.124 },
+//       { time: "11:00", val: 1.235 },
+//       { time: "12:00", val: 1.346 },
+//       { time: "13:00", val: 1.457 },
+//       { time: "14:00", val: 1.568 },
+//       { time: "15:00", val: 1.679 },
+//       { time: "16:00", val: 1.78 },
+//       { time: "17:00", val: 1.891 },
+//       { time: "18:00", val: 1.902 },
+//       { time: "19:00", val: 2.013 },
+//       { time: "20:00", val: 2.124 },
+//       { time: "21:00", val: 2.235 },
+//       { time: "22:00", val: 2.346 },
+//       { time: "23:00", val: 2.457 },
+//     ],
+//   },
+//   {
+//     date: "20/02/2024",
+//     name: "Sản lượng ngày",
+//     data: [
+//       { time: "00:00", val: 9.234 },
+//       { time: "01:00", val: 8.345 },
+//       { time: "02:00", val: 7.456 },
+//       { time: "03:00", val: 6.567 },
+//       { time: "04:00", val: 5.678 },
+//       { time: "05:00", val: 4.789 },
+//       { time: "06:00", val: 3.89 },
+//       { time: "07:00", val: 2.901 },
+//       { time: "08:00", val: 1.012 },
+//       { time: "09:00", val: 1.013 },
+//       { time: "10:00", val: 3.124 },
+//       { time: "11:00", val: 5.235 },
+//       { time: "12:00", val: 7.346 },
+//       { time: "13:00", val: 8.457 },
+//       { time: "14:00", val: 1.568 },
+//       { time: "15:00", val: 1.679 },
+//       { time: "16:00", val: 2.78 },
+//       { time: "17:00", val: 3.891 },
+//       { time: "18:00", val: 4.902 },
+//       { time: "19:00", val: 5.013 },
+//       { time: "20:00", val: 6.124 },
+//       { time: "21:00", val: 7.235 },
+//       { time: "22:00", val: 8.346 },
+//       { time: "23:00", val: 9.457 },
+//     ],
+//   },
+// ];
 
-const dbMonth = [
-  {
-    month: "01/2024",
-    name: "Sản lượng tháng",
-    data: [
-      { time: "1", val: 21.69 },
-      { time: "2", val: 22.31 },
-      { time: "3", val: 23.45 },
-      { time: "4", val: 24.56 },
-      { time: "5", val: 25.67 },
-      { time: "6", val: 26.78 },
-      { time: "7", val: 27.89 },
-      { time: "8", val: 28.9 },
-      { time: "9", val: 29.01 },
-      { time: "10", val: 22.12 },
-      { time: "11", val: 23.23 },
-      { time: "12", val: 22.34 },
-      { time: "13", val: 24.45 },
-      { time: "14", val: 23.56 },
-      { time: "15", val: 22.67 },
-      { time: "16", val: 24.78 },
-      { time: "17", val: 21.89 },
-      { time: "18", val: 21.9 },
-      { time: "19", val: 22.01 },
-      { time: "20", val: 20.12 },
-      { time: "21", val: 21.23 },
-      { time: "22", val: 22.34 },
-      { time: "23", val: 23.45 },
-      { time: "24", val: 24.56 },
-      { time: "25", val: 25.67 },
-      { time: "26", val: 24.78 },
-      { time: "27", val: 23.89 },
-      { time: "28", val: 22.9 },
-      { time: "29", val: 23.01 },
-      { time: "30", val: 21.12 },
-      { time: "31", val: 21.23 },
-    ],
-  },
-  {
-    month: "02/2024",
-    name: "Sản lượng tháng",
-    data: [
-      { time: "1", val: 24.78 },
-      { time: "2", val: 21.89 },
-      { time: "3", val: 22.9 },
-      { time: "4", val: 21.9 },
-      { time: "5", val: 22.01 },
-      { time: "6", val: 20.12 },
-      { time: "7", val: 27.89 },
-      { time: "8", val: 28.9 },
-      { time: "9", val: 29.01 },
-      { time: "10", val: 21.23 },
-      { time: "11", val: 23.23 },
-      { time: "12", val: 22.34 },
-      { time: "13", val: 24.45 },
-      { time: "14", val: 23.56 },
-      { time: "15", val: 22.67 },
-      { time: "16", val: 24.78 },
-      { time: "17", val: 21.89 },
-      { time: "18", val: 21.9 },
-      { time: "19", val: 22.01 },
-      { time: "20", val: 20.12 },
-      { time: "21", val: 21.23 },
-      { time: "22", val: 22.34 },
-      { time: "23", val: 23.45 },
-      { time: "24", val: 24.56 },
-      { time: "25", val: 25.67 },
-      { time: "26", val: 24.78 },
-      { time: "27", val: 23.89 },
-      { time: "28", val: 22.9 },
-      { time: "29", val: 23.01 },
-      { time: "30", val: 21.12 },
-      { time: "31", val: 21.23 },
-    ],
-  },
-];
+// const dbMonth = [
+//   {
+//     month: "01/2024",
+//     name: "Sản lượng tháng",
+//     data: [
+//       { time: "1", val: 21.69 },
+//       { time: "2", val: 22.31 },
+//       { time: "3", val: 23.45 },
+//       { time: "4", val: 24.56 },
+//       { time: "5", val: 25.67 },
+//       { time: "6", val: 26.78 },
+//       { time: "7", val: 27.89 },
+//       { time: "8", val: 28.9 },
+//       { time: "9", val: 29.01 },
+//       { time: "10", val: 22.12 },
+//       { time: "11", val: 23.23 },
+//       { time: "12", val: 22.34 },
+//       { time: "13", val: 24.45 },
+//       { time: "14", val: 23.56 },
+//       { time: "15", val: 22.67 },
+//       { time: "16", val: 24.78 },
+//       { time: "17", val: 21.89 },
+//       { time: "18", val: 21.9 },
+//       { time: "19", val: 22.01 },
+//       { time: "20", val: 20.12 },
+//       { time: "21", val: 21.23 },
+//       { time: "22", val: 22.34 },
+//       { time: "23", val: 23.45 },
+//       { time: "24", val: 24.56 },
+//       { time: "25", val: 25.67 },
+//       { time: "26", val: 24.78 },
+//       { time: "27", val: 23.89 },
+//       { time: "28", val: 22.9 },
+//       { time: "29", val: 23.01 },
+//       { time: "30", val: 21.12 },
+//       { time: "31", val: 21.23 },
+//     ],
+//   },
+//   {
+//     month: "02/2024",
+//     name: "Sản lượng tháng",
+//     data: [
+//       { time: "1", val: 24.78 },
+//       { time: "2", val: 21.89 },
+//       { time: "3", val: 22.9 },
+//       { time: "4", val: 21.9 },
+//       { time: "5", val: 22.01 },
+//       { time: "6", val: 20.12 },
+//       { time: "7", val: 27.89 },
+//       { time: "8", val: 28.9 },
+//       { time: "9", val: 29.01 },
+//       { time: "10", val: 21.23 },
+//       { time: "11", val: 23.23 },
+//       { time: "12", val: 22.34 },
+//       { time: "13", val: 24.45 },
+//       { time: "14", val: 23.56 },
+//       { time: "15", val: 22.67 },
+//       { time: "16", val: 24.78 },
+//       { time: "17", val: 21.89 },
+//       { time: "18", val: 21.9 },
+//       { time: "19", val: 22.01 },
+//       { time: "20", val: 20.12 },
+//       { time: "21", val: 21.23 },
+//       { time: "22", val: 22.34 },
+//       { time: "23", val: 23.45 },
+//       { time: "24", val: 24.56 },
+//       { time: "25", val: 25.67 },
+//       { time: "26", val: 24.78 },
+//       { time: "27", val: 23.89 },
+//       { time: "28", val: 22.9 },
+//       { time: "29", val: 23.01 },
+//       { time: "30", val: 21.12 },
+//       { time: "31", val: 21.23 },
+//     ],
+//   },
+// ];
 
-const dbYear = [
-  {
-    year: "2024",
-    name: "Sản lượng năm",
-    data: [
-      { time: "1", val: 21.69 },
-      { time: "2", val: 22.31 },
-      { time: "3", val: 23.45 },
-      { time: "4", val: 24.56 },
-      { time: "5", val: 25.67 },
-      { time: "6", val: 26.78 },
-      { time: "7", val: 27.89 },
-      { time: "8", val: 28.9 },
-      { time: "9", val: 29.01 },
-      { time: "10", val: 22.12 },
-      { time: "11", val: 23.23 },
-      { time: "12", val: 22.34 },
-    ],
-  },
-  {
-    year: "2023",
-    name: "Sản lượng năm",
-    data: [
-      { time: "1", val: 24.78 },
-      { time: "2", val: 21.89 },
-      { time: "3", val: 22.9 },
-      { time: "4", val: 24.56 },
-      { time: "5", val: 25.67 },
-      { time: "6", val: 26.78 },
-      { time: "7", val: 27.89 },
-      { time: "8", val: 28.9 },
-      { time: "9", val: 29.01 },
-      { time: "10", val: 22.12 },
-      { time: "11", val: 23.23 },
-      { time: "12", val: 22.34 },
-    ],
-  },
-];
+// const dbYear = [
+//   {
+//     year: "2024",
+//     name: "Sản lượng năm",
+//     data: [
+//       { time: "1", val: 21.69 },
+//       { time: "2", val: 22.31 },
+//       { time: "3", val: 23.45 },
+//       { time: "4", val: 24.56 },
+//       { time: "5", val: 25.67 },
+//       { time: "6", val: 26.78 },
+//       { time: "7", val: 27.89 },
+//       { time: "8", val: 28.9 },
+//       { time: "9", val: 29.01 },
+//       { time: "10", val: 22.12 },
+//       { time: "11", val: 23.23 },
+//       { time: "12", val: 22.34 },
+//     ],
+//   },
+//   {
+//     year: "2023",
+//     name: "Sản lượng năm",
+//     data: [
+//       { time: "1", val: 24.78 },
+//       { time: "2", val: 21.89 },
+//       { time: "3", val: 22.9 },
+//       { time: "4", val: 24.56 },
+//       { time: "5", val: 25.67 },
+//       { time: "6", val: 26.78 },
+//       { time: "7", val: 27.89 },
+//       { time: "8", val: 28.9 },
+//       { time: "9", val: 29.01 },
+//       { time: "10", val: 22.12 },
+//       { time: "11", val: 23.23 },
+//       { time: "12", val: 22.34 },
+//     ],
+//   },
+// ];
 
-const dbTotal = [
-  {
-    name: "Sản lượng năm",
-    data: [
-      { time: "2018", val: 21.69 },
-      { time: "2019", val: 22.31 },
-      { time: "2020", val: 23.45 },
-      { time: "2021", val: 24.56 },
-      { time: "2022", val: 25.67 },
-      { time: "2023", val: 26.78 },
-      { time: "2024", val: 27.89 },
-    ],
-  },
-]
+// const dbTotal = [
+//   {
+//     name: "Sản lượng năm",
+//     data: [
+//       { time: "2018", val: 21.69 },
+//       { time: "2019", val: 22.31 },
+//       { time: "2020", val: 23.45 },
+//       { time: "2021", val: 24.56 },
+//       { time: "2022", val: 25.67 },
+//       { time: "2023", val: 26.78 },
+//       { time: "2024", val: 27.89 },
+//     ],
+//   },
+// ]
 
 function ProjectData(props) {
   const dataLang = useIntl();
@@ -676,25 +676,14 @@ function ProjectData(props) {
 
   const handleChart = (date) => {
     if (dateType === "date") {
-      setD({ ...d, date: moment(date).format("DD/MM/YYYY") });
 
-      // const newData = dbDay.find((item) => item.date === moment(date).format("DD/MM/YYYY"));
-      // if (newData) {
-      //   let vDay = newData.name;
-      //   setDataDay([]);
-      //   newData.data.map((item) => {
-      //     setDataDay((old) => [...old, { time: item.time, [vDay]: item.val }]);
-      //   });
-      //   setVDay(newData.name);
-      // } else {
-      //   setDataDay([]);
-      //   setVDay("--");
-      // }
+      setD({ ...d, date: moment(date).format("DD/MM/YYYY") });
       const getDaily = async () => {
         const d = await callApi('post', host.DATA + '/getChart', { plantid: projectData.value.plantid, date: moment(date).format("MM/DD/YYYY") });
         setDataDay([]);
+        console.log(d)
         if (d.status) {
-          // console.log(d.data)
+          console.log(d.data)
           let vDay = d.data.name;
           d.data.data.map((item) => {
             setDataDay((old) => [...old, { time: item.time, [vDay]: item.value }]);
@@ -710,36 +699,51 @@ function ProjectData(props) {
     } else if (dateType === "month") {
       setD({ ...d, month: moment(date).format("MM/YYYY") });
 
-      const newData = dbMonth.find((item) => item.month === moment(date).format("MM/YYYY"));
-      if (newData) {
-        let vMonth = newData.name;
+      const getMonth = async () => {
+        const d = await callApi('post', host.DATA + '/getMonthChart', { plantid: projectData.value.plantid, month: moment(date).format("MM/YYYY") });
         setDataMonth([]);
-        newData.data.map((item) => {
-          setDataMonth((old) => [...old, { time: item.time, [vMonth]: item.val }]);
-        });
-        setVMonth(newData.name);
-      } else {
-        setDataMonth([]);
-        setVMonth("--");
+        if (d.status) {
+          //console.log(d.data)
+          let vMonth = d.data.name;
+          let sum_month = []
+          d.data.data.map((item, i) => {
+            setDataMonth((old) => [...old, { date: item.date, [vMonth]: item.value }]);
+            sum_month[i] = item.value
+            if (i == d.data.data.length - 1) {
+              cal.value['pro_month'] = parseFloat(sum_month.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
+            }
+          });
+          setVMonth(d.data.name);
+        } else {
+          setDataMonth([]);
+          setVMonth("--");
+        }
       }
+      getMonth();
     } else if (dateType === "year") {
       setD({ ...d, year: moment(date).format("YYYY") });
 
-      const year = moment(date).format("YYYY");
-      const year_ = year.split("-")[0];
-
-      const newData = dbYear.find((item) => item.year === year_);
-      if (newData) {
-        let vYear = newData.name;
+      const getYear = async () => {
+        const d = await callApi('post', host.DATA + '/getYearChart', { plantid: projectData.value.plantid, year: moment(date).format("YYYY") });
         setDataYear([]);
-        newData.data.map((item) => {
-          setDataYear((old) => [...old, { time: item.time, [vYear]: item.val }]);
-        });
-        setVYear(newData.name);
-      } else {
-        setDataYear([]);
-        setVYear("--");
+        if (d.status) {
+          //console.log(d.data)
+          let vYear = d.data.name;
+          let sum_year = []
+          d.data.data.map((item, i) => {
+            setDataYear((old) => [...old, { month: item.month, [vYear]: item.value }]);
+            sum_year[i] = item.value
+            if (i == d.data.data.length - 1) {
+              cal.value['pro_year'] = parseFloat(sum_year.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
+            }
+          });
+          setVYear(d.data.name);
+        } else {
+          setDataYear([]);
+          setVYear("--");
+        }
       }
+      getYear();
     }
   };
 
@@ -796,36 +800,92 @@ function ProjectData(props) {
     getDaily();
 
     //data Month
-    const newDataMonth = dbMonth.find((item) => item.month === moment(new Date()).format("MM/YYYY"));
-    if (newDataMonth) {
-      let vMonth = newDataMonth.name;
+    // const newDataMonth = dbMonth.find((item) => item.month === moment(new Date()).format("MM/YYYY"));
+    // if (newDataMonth) {
+    //   let vMonth = newDataMonth.name;
+    //   setDataMonth([]);
+    //   newDataMonth.data.map((item) => {
+    //     setDataMonth((old) => [...old, { time: item.time, [vMonth]: item.val }]);
+    //   });
+    //   setVMonth(newDataMonth.name);
+    // }
+    const getMonth = async () => {
+      const d = await callApi('post', host.DATA + '/getMonthChart', { plantid: projectData.value.plantid, month: moment(new Date()).format("MM/YYYY") });
       setDataMonth([]);
-      newDataMonth.data.map((item) => {
-        setDataMonth((old) => [...old, { time: item.time, [vMonth]: item.val }]);
-      });
-      setVMonth(newDataMonth.name);
+      if (d.status) {
+        //console.log(d.data)
+        let vMonth = d.data.name;
+        let sum_month = []
+        d.data.data.map((item, i) => {
+          setDataMonth((old) => [...old, { date: item.date, [vMonth]: item.value }]);
+          sum_month[i] = item.value
+          if (i == d.data.data.length - 1) {
+            cal.value['pro_month'] = parseFloat(sum_month.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
+          }
+        });
+        setVMonth(d.data.name);
+      }
     }
+    getMonth();
 
     //data Year
-    const newData = dbYear.find((item) => item.year === moment(new Date()).format("YYYY"));
-    if (newData) {
-      let vYear = newData.name;
+    // const newData = dbYear.find((item) => item.year === moment(new Date()).format("YYYY"));
+    // if (newData) {
+    //   let vYear = newData.name;
+    //   setDataYear([]);
+    //   newData.data.map((item) => {
+    //     setDataYear((old) => [...old, { time: item.time, [vYear]: item.val }]);
+    //   });
+    //   setVYear(newData.name);
+    // }
+    const getYear = async () => {
+      const d = await callApi('post', host.DATA + '/getYearChart', { plantid: projectData.value.plantid, year: moment(new Date()).format("YYYY") });
       setDataYear([]);
-      newData.data.map((item) => {
-        setDataYear((old) => [...old, { time: item.time, [vYear]: item.val }]);
-      });
-      setVYear(newData.name);
+      //console.log(d)
+      if (d.status) {
+        //console.log(d.data)
+        let vYear = d.data.name;
+        let sum_year = []
+        d.data.data.map((item, i) => {
+          setDataYear((old) => [...old, { month: item.month, [vYear]: item.value }]);
+          sum_year[i] = item.value
+          if (i == d.data.data.length - 1) {
+            cal.value['pro_year'] = parseFloat(sum_year.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
+          }
+        });
+        setVYear(d.data.name);
+      }
     }
+    getYear();
 
     //data Total
-    dbTotal.map((item) => {
-      let vTotal = item.name;
+    // dbTotal.map((item) => {
+    //   let vTotal = item.name;
+    //   setDataTotal([]);
+    //   item.data.map((item) => {
+    //     setDataTotal((old) => [...old, { time: item.time, [vTotal]: item.val }]);
+    //   });
+    //   setVTotal(item.name);
+    // });
+    const getTotal = async () => {
+      const d = await callApi('post', host.DATA + '/getTotalChart', { plantid: projectData.value.plantid });
       setDataTotal([]);
-      item.data.map((item) => {
-        setDataTotal((old) => [...old, { time: item.time, [vTotal]: item.val }]);
-      });
-      setVTotal(item.name);
-    });
+      console.log(d)
+      if (d.status) {
+        //console.log(d.data)
+        let vTotal = d.data.name;
+        let sum_total = []
+        d.data.data.map((item, i) => {
+          setDataTotal((old) => [...old, { year: item.year, [vTotal]: item.value }]);
+          sum_total[i] = item.value
+          if (i == d.data.data.length - 1) {
+            cal.value['pro_total'] = parseFloat(sum_total.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
+          }
+        });
+        setVTotal(d.data.name);
+      }
+    }
+    getTotal();
 
     //data Logger
     const getLogger = async (plantid) => {
@@ -852,6 +912,9 @@ function ProjectData(props) {
 
 
     getLogger(projectData.value.plantid);
+    return () => {
+      cal.value = {}
+    }
 
     // eslint-disable-next-line
   }, []);
@@ -2591,7 +2654,7 @@ const Production = (props) => {
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value">
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_num">
-                {parseFloat((props.cal.pro_1 / projectData.value.capacity) * 100).toFixed(2)}
+                {parseFloat(((props.cal?.pro_1 || 0) / projectData.value.capacity) * 100).toFixed(2)}
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_unit">%</div>
             </div>
@@ -2604,7 +2667,7 @@ const Production = (props) => {
           </div>
           <div style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {props.cal.pro_1}
+              {props.cal?.pro_1 || 0}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2637,7 +2700,7 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {props.cal.pro_2}
+              {props.cal?.pro_2 || 0}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2655,7 +2718,7 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {/* {parseFloat(dailyproduction * result).toFixed(2)} */}0
+              {/* {parseFloat(dailyproduction * result).toFixed(2)} */} {props.cal?.pro_month || 0}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2673,7 +2736,7 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {/* {parseFloat((dailyproduction * result) * 12).toFixed(2)} */}0
+              {/* {parseFloat((dailyproduction * result) * 12).toFixed(2)} */} {props.cal?.pro_year || 0}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2691,7 +2754,7 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {props.cal.pro_3}
+              {props.cal?.pro_3 || 0}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2718,7 +2781,7 @@ const Consumption = (props) => {
             {dataLang.formatMessage({ id: 'consumption' })}
           </span>
           &nbsp;
-          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{props.cal.con_1}</span>
+          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{props.cal?.con_1 || 0}</span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
             kW
@@ -2736,7 +2799,7 @@ const Consumption = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {props.cal.con_2}
+                {props.cal?.con_2 || 0}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2753,7 +2816,7 @@ const Consumption = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {/* {parseFloat((dailyconsumption * result) * 12).toFixed(2)} */} 0
+                {/* {parseFloat((dailyconsumption * result) * 12).toFixed(2)} */} {props.cal?.pro_year || 0}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2772,7 +2835,7 @@ const Consumption = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {/* {parseFloat(dailyconsumption * result).toFixed(2)} */} 0
+                {/* {parseFloat(dailyconsumption * result).toFixed(2)} */} {props.cal?.pro_month || 0}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2819,7 +2882,7 @@ const Grid = (props) => {
           </span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {props.cal.grid_1}
+            {props.cal?.grid_1 || 0}
           </span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2846,7 +2909,7 @@ const Grid = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {props.cal.grid_in_1}
+                {props.cal?.grid_in_1 || 0}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2888,7 +2951,7 @@ const Grid = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {props.cal.grid_in_2}
+                {props.cal?.grid_in_2 || 0}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2911,11 +2974,11 @@ const Grid = (props) => {
           )}
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              {dataLang.formatMessage({ id: 'purchaseE' })}
+              {dataLang.formatMessage({ id: 'today' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {props.cal.grid_out_1}
+                {props.cal?.grid_out_1 || 0}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2957,7 +3020,7 @@ const Grid = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {props.cal.grid_out_2}
+                {props.cal?.grid_out_2 || 0}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -2986,7 +3049,7 @@ const Battery = (props) => {
               {dataLang.formatMessage({ id: 'charge' })}
             </span>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {props.cal.bat_2}
+              {props.cal?.bat_2 || 0}
             </span>
             <span style={{ fontSize: "12px", color: "grey" }}>
               %
@@ -2999,7 +3062,7 @@ const Battery = (props) => {
             {dataLang.formatMessage({ id: 'batteryData' })}
           </span>
           &nbsp;
-          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{props.cal.bat_1}</span>
+          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{props.cal?.bat_1 || 0}</span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
             W
@@ -3025,7 +3088,7 @@ const Battery = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {props.cal.bat_in_1}
+                {props.cal?.bat_in_1 || 0}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3095,7 +3158,7 @@ const Battery = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {props.cal.bat_out_1}
+                {props.cal?.bat_out_1 || 0}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>
@@ -3156,14 +3219,14 @@ const Battery = (props) => {
 
 // Thẻ Chart
 const Day = (props) => {
-  const dataLang = useIntl();
-  const [data, setData] = useState([]);
-  const [v, setV] = useState("--");
+  // const dataLang = useIntl();
+  // const [data, setData] = useState([]);
+  // const [v, setV] = useState("--");
 
-  useEffect(() => {
-    setData(props.data);
-    setV(props.v);
-  }, [props.data, props.v]);
+  // useEffect(() => {
+  //   setData(props.data);
+  //   setV(props.v);
+  // }, [props.data, props.v]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_History_Day">
@@ -3172,12 +3235,13 @@ const Day = (props) => {
           kWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {dataLang.formatMessage({ id: 'electricOutputDay' })}: 24.3 kWh
+          {/* {dataLang.formatMessage({ id: 'electricOutputDay' })}: 24.3 kWh */}
+          {props.v}: {cal.value.pro_2} kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
         <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
-          <AreaChart width={100} height={300} data={data}>
+          <AreaChart width={100} height={300} data={props.data}>
             <defs>
               <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
@@ -3188,7 +3252,7 @@ const Day = (props) => {
             <YAxis axisLine={false} tickLine={false} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
-            <Area type="monotone" dataKey={v} stroke="#8884d8" fillOpacity={1} fill="url(#colorday)" />
+            <Area type="monotone" dataKey={props.v} stroke="#8884d8" fillOpacity={1} fill="url(#colorday)" />
           </AreaChart>
         </ResponsiveContainer>
       </div>
@@ -3197,14 +3261,14 @@ const Day = (props) => {
 };
 
 const Month = (props) => {
-  const dataLang = useIntl();
-  const [data, setData] = useState([]);
-  const [v, setV] = useState("--");
+  // const dataLang = useIntl();
+  // const [data, setData] = useState([]);
+  // const [v, setV] = useState("--");
 
-  useEffect(() => {
-    setData(props.data);
-    setV(props.v);
-  }, [props.data, props.v]);
+  // useEffect(() => {
+  //   setData(props.data);
+  //   setV(props.v);
+  // }, [props.data, props.v]);
 
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
@@ -3221,18 +3285,18 @@ const Month = (props) => {
           kWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {dataLang.formatMessage({ id: 'electricOutputMonth' })}: 775.327 kWh
+          {props.v}: {cal.value.pro_month} kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
         <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
-          <BarChart width={150} height={200} data={data}>
-            <XAxis dataKey="time" axisLine={false} tickLine={false} />
+          <BarChart width={150} height={200} data={props.data}>
+            <XAxis dataKey="date" axisLine={false} tickLine={false} />
             <YAxis axisLine={false} tickLine={false} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
-            <Bar shape={<TriangleBar />} dataKey={v} fill="#6495ed" barSize={15} legendType="circle" style={{ fill: "#6495ed" }} />
+            <Bar shape={<TriangleBar />} dataKey={props.v} fill="#6495ed" barSize={15} legendType="circle" style={{ fill: "#6495ed" }} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -3241,14 +3305,14 @@ const Month = (props) => {
 };
 
 const Year = (props) => {
-  const dataLang = useIntl();
-  const [data, setData] = useState([]);
-  const [v, setV] = useState("--");
+  // const dataLang = useIntl();
+  // const [data, setData] = useState([]);
+  // const [v, setV] = useState("--");
 
-  useEffect(() => {
-    setData(props.data);
-    setV(props.v);
-  }, [props.data, props.v]);
+  // useEffect(() => {
+  //   setData(props.data);
+  //   setV(props.v);
+  // }, [props.data, props.v]);
 
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
@@ -3262,21 +3326,21 @@ const Year = (props) => {
     <div className="DAT_ProjectData_Dashboard_History_Year">
       <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Unit">
-          MWh
+          kWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {dataLang.formatMessage({ id: 'electricOutputYear' })}: 1.69 MWh
+          {props.v}: {cal.value.pro_year} kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
         <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
-          <BarChart width={150} height={200} data={data}>
-            <XAxis dataKey="time" axisLine={false} tickLine={false} />
+          <BarChart width={150} height={200} data={props.data}>
+            <XAxis dataKey="month" axisLine={false} tickLine={false} />
             <YAxis axisLine={false} tickLine={false} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
-            <Bar shape={<TriangleBar />} dataKey={v} fill="#6495ed" barSize={15} legendType="circle" style={{ fill: "#6495ed" }} />
+            <Bar shape={<TriangleBar />} dataKey={props.v} fill="#6495ed" barSize={15} legendType="circle" style={{ fill: "#6495ed" }} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -3285,14 +3349,14 @@ const Year = (props) => {
 };
 
 const Total = (props) => {
-  const dataLang = useIntl();
-  const [data, setData] = useState([]);
-  const [v, setV] = useState("--");
+  // const dataLang = useIntl();
+  // const [data, setData] = useState([]);
+  // const [v, setV] = useState("--");
 
-  useEffect(() => {
-    setData(props.data);
-    setV(props.v);
-  }, [props.data, props.v]);
+  // useEffect(() => {
+  //   setData(props.data);
+  //   setV(props.v);
+  // }, [props.data, props.v]);
 
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
@@ -3309,18 +3373,19 @@ const Total = (props) => {
           MWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {dataLang.formatMessage({ id: 'totalElectricOutput' })}: 13.69 MWh
+          {/* Sản lượng tổng: 13.69 MWh */}
+          {props.v}: {cal.value.pro_total} kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
         <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
-          <BarChart width={150} height={200} data={data}>
-            <XAxis dataKey="time" axisLine={false} tickLine={false} />
+          <BarChart width={150} height={200} data={props.data}>
+            <XAxis dataKey="year" axisLine={false} tickLine={false} />
             <YAxis axisLine={false} tickLine={false} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
-            <Bar shape={<TriangleBar />} dataKey={v} fill="#6495ed" barSize={15} legendType="circle" />
+            <Bar shape={<TriangleBar />} dataKey={props.v} fill="#6495ed" barSize={15} legendType="circle" />
           </BarChart>
         </ResponsiveContainer>
       </div>
