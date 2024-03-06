@@ -269,7 +269,10 @@ export const messages = {
         alert_25: "Delete Device successfully!",
         alert_26: "Unable to delete the device, format error.",
         alert_27: "Unable to delete the device, system error.",
-        alert_28: "Delete Warning successfully!"
+        alert_28: "Delete Warning successfully!",
+        alert_29: "Add Project successfully!",
+        alert_30: "Your Project has been updated successfully!",
+        alert_31: "Create group role successfully!",
     },
     vi: {
         onm: 'Nhà cung cấp O&M',
@@ -535,6 +538,9 @@ export const messages = {
         alert_25: "Xóa thiết bị thành công!",
         alert_26: "Không thể xóa thiết bị, lỗi định dạng.",
         alert_27: "Không thể xóa thiết bị, lỗi hệ thống.",
-        alert_28: "Xóa mẫu cảnh báo thành công!"
+        alert_28: "Xóa mẫu cảnh báo thành công!",
+        alert_29: "Dự án đã được thêm thành công!",
+        alert_30: "Dự án đã được sửa thành công!",
+        alert_31: "Tạo nhóm người dùng thành công!",
     }
 }

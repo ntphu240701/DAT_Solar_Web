@@ -992,7 +992,7 @@ function ProjectData(props) {
                   id="add"
                   onClick={() => popupAddGateway.value = true}
                 >
-                  {dataLang.formatMessage({ id: 'save' })}
+                  {dataLang.formatMessage({ id: 'ADD' })}
                 </button>
               </div>
               <div className="DAT_ProjectData_Header_Right_More">

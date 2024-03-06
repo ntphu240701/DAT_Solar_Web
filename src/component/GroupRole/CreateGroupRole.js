@@ -87,9 +87,9 @@ export default function CreateGroupRole() {
       newdb.value = temp.value;
       // console.log(group.value);
       createState.value = false;
-      alertDispatch("Tạo nhóm người dùng thành công.")
+      alertDispatch(dataLang.formatMessage({ id: "alert_31" }))
     } else {
-      alertDispatch("Vui lòng nhập thông tin nhóm.")
+      alertDispatch(dataLang.formatMessage({ id: "alert_22" }))
     }
   };
   return (
@@ -122,11 +122,11 @@ export default function CreateGroupRole() {
             <h4>{dataLang.formatMessage({ id: 'grouproleInfo' })}</h4>
             <div className="DAT_CreateGroupRole_Body_Item_Input">
               <span>{dataLang.formatMessage({ id: 'groupName' })}:</span>
-              <input type="text" onChange={(e) => setName(e.target.value)} />
+              <input type="text" onChange={(e) => setName(e.target.value)} required />
             </div>
             <div className="DAT_CreateGroupRole_Body_Item_Input">
               <span>{dataLang.formatMessage({ id: 'groupInfo' })}:</span>
-              <input type="text" onChange={(e) => setSubinfo(e.target.value)} />
+              <input type="text" onChange={(e) => setSubinfo(e.target.value)} required />
             </div>
             <div className="DAT_CreateGroupRole_Body_Item_Checkbox">
               {Object.entries(newdb.value.role).map(([key, value]) => (

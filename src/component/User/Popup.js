@@ -169,6 +169,9 @@ export default function Popup() {
         } else {
           alertDispatch(dataLang.formatMessage({ id: "alert_17" }));
         }
+        break;
+      default:
+        break;
     }
   };
 
@@ -197,7 +200,7 @@ export default function Popup() {
               return (
                 <div className="DAT_PopupUser_Box_Body_Avatar">
                   <div className="DAT_PopupUser_Box_Body_Avatar_Cover">
-                    <img src={ava}></img>
+                    <img src={ava} alt=""></img>
                   </div>
                   <input
                     type="file"
@@ -290,6 +293,8 @@ export default function Popup() {
                   <input type="text" placeholder={dataLang.formatMessage({ id: 'address' })} defaultValue={userInfor.value.addr} ref={addrRef}></input>
                 </div>
               );
+            default:
+              break;
           }
         })()}
       </div>

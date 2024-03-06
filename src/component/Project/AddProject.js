@@ -569,7 +569,7 @@ function AddProject(props) {
     });
 
     if (check !== 0) {
-      alertDispatch("Vui lòng nhập đầy đủ thông tin");
+      alertDispatch(dataLang.formatMessage({ id: "alert_22" }))
     } else {
       const addProject = async (
         usrname,
@@ -614,7 +614,7 @@ function AddProject(props) {
           partnerid: partnerid
         })
         if (d.status === true) {
-          alertDispatch("Dự án đã được thêm");
+          alertDispatch(dataLang.formatMessage({ id: "alert_29" }))
           dataproject.value = [...dataproject.value, d.data];
           plantState.value = "default";
           plantData.value = {
