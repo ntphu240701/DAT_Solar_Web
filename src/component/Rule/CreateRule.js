@@ -311,7 +311,7 @@ export default function CreateRule() {
             <label>{dataLang.formatMessage({ id: 'ruleName' })}: </label>
             <input
               type="text"
-              placeholder="Required Field"
+              placeholder={dataLang.formatMessage({ id: 'required' })}
               required
               id="reportname"
               defaultValue={rulenameRef.current}
