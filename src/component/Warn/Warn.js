@@ -168,13 +168,14 @@ function Warn(props) {
           <div
             className="DAT_ModifyBox"
             id={row.boxid + "" + row.warnid + "_Modify"}
-            style={{ display: "none" }}
+            style={{ display: "none", marginTop: '12px', width: '90px', marginRight: '4px' }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             {/* <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div> */}
             <div
               className="DAT_ModifyBox_Remove"
               id={row.boxid + "_" + row.warnid}
+              style={{ display: "flex", justifyContent: 'flex-start', alignItems: 'center' }}
               onClick={(e) => handleDeleteWarn(e)}
             >
               <MdDelete size={20} />

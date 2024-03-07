@@ -108,7 +108,7 @@ function Role(props) {
           <div
             className="DAT_ModifyBox"
             id={row.id_ + "_Modify"}
-            style={{ display: "none" }}
+            style={{ display: "none", marginRight: '4px', marginTop: '2px' }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             <div
@@ -131,7 +131,7 @@ function Role(props) {
           </div>
         </>
       ),
-      width: "103px",
+      width: "110px",
     },
   ];
 

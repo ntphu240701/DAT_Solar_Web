@@ -210,12 +210,13 @@ function Project(props) {
           <div
             className="DAT_ModifyBox"
             id={row.plantid + "_Modify"}
-            style={{ display: "none" }}
+            style={{ display: "none", marginTop: '3px', marginRight: '3px' }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             <div
               className="DAT_ModifyBox_Fix"
               id={row.plantid}
+              style={{ display: "flex", justifyContent: 'flex-start', alignItems: 'center' }}
               onClick={(e) => handleEdit(e)}
             >
               <MdEdit size={20} color="#216990" />
@@ -225,6 +226,7 @@ function Project(props) {
             <div
               className="DAT_ModifyBox_Remove"
               id={row.plantid}
+              style={{ display: "flex", justifyContent: 'flex-start', alignItems: 'center' }}
               onClick={(e) => handleDelete(e)}
             >
               <MdDelete size={20} />
@@ -234,7 +236,7 @@ function Project(props) {
           </div>
         </>
       ),
-      width: "100px",
+      width: "110px",
     },
   ];
 
