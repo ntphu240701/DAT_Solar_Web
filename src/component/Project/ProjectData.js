@@ -5,9 +5,9 @@ import { Empty, plantState, projectData, deviceData, Logger, Inverter, popupStat
 import { isMobile } from "../Navigation/Navigation";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from "recharts";
 
-import { IoIosArrowDown, IoIosArrowForward, IoIosCloud } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward, IoIosCloud, IoMdMore } from "react-icons/io";
 import { IoArrowForward, IoCalendarOutline, IoMenu } from "react-icons/io5";
-import { MdOutlineError, MdPermDataSetting } from "react-icons/md";
+import { MdDelete, MdEdit, MdOutlineError, MdPermDataSetting } from "react-icons/md";
 import { FaCheckCircle, FaTree } from "react-icons/fa";
 import { RiMoneyCnyCircleFill } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
@@ -512,7 +512,7 @@ function ProjectData(props) {
               id={row.sn + "_MORE"}
               onMouseEnter={(e) => handleModify(e, "block")}
             >
-              ...
+              <IoMdMore size={20} />
             </span>
           </div>
 
@@ -527,6 +527,8 @@ function ProjectData(props) {
               id={row.sn}
               onClick={(e) => handleEdit(e)}
             >
+              <MdEdit size={20} color="#216990" />
+              &nbsp;
               {dataLang.formatMessage({ id: 'edit' })}
             </div>
             <div
@@ -534,6 +536,8 @@ function ProjectData(props) {
               id={row.sn}
               onClick={(e) => handleDelete(e)}
             >
+              <MdDelete size={20} />
+              &nbsp;
               {dataLang.formatMessage({ id: 'remove' })}
             </div>
           </div>

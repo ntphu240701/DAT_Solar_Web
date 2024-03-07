@@ -459,7 +459,7 @@ function Home(props) {
               <div className="DAT_Home_Overview-Main-Percent-Item">
                 <div className="DAT_Home_Overview-Main-Percent-Item-value">
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_num">
-                    {parseFloat((production / capacity) * 100).toFixed(2)}
+                    {parseFloat((production / capacity) * 100).toFixed(2) === "Nan" ? "--" : parseFloat((production / capacity) * 100).toFixed(2)}
                   </div>
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">%</div>
                 </div>
@@ -551,7 +551,7 @@ function Home(props) {
                   border: chart === "year" ? 'solid 1.5px rgb(6, 126, 255)' : "solid 1.5px gray",
                   color: chart === "year" ? "rgb(6, 126, 255)" : "gray",
                 }}
-              
+
                 onClick={() => {
                   setChart("year");
                 }}
@@ -564,7 +564,7 @@ function Home(props) {
                   border: chart === "month" ? 'solid 1.5px rgb(6, 126, 255)' : "solid 1.5px gray",
                   color: chart === "month" ? "rgb(6, 126, 255)" : "gray",
                 }}
-              
+
                 onClick={() => {
                   setChart("month");
                 }}
