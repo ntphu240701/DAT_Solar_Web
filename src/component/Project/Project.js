@@ -4,10 +4,10 @@ import DataTable from "react-data-table-component";
 import { isMobile } from "../Navigation/Navigation";
 
 import { FaCheckCircle, FaRegFileAlt } from "react-icons/fa";
-import { MdOutlineError, MdEditDocument, MdAddchart } from "react-icons/md";
+import { MdOutlineError, MdEditDocument, MdEdit, MdDelete, MdAddchart } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { GoProject } from "react-icons/go";
-import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
 
 import ProjectData from "./ProjectData";
 import EditProject from "./EditProject";
@@ -173,15 +173,15 @@ function Project(props) {
       sortable: true,
       // width: "140px",
     },
-    {
-      name: "Tag",
-      selector: (row) => (
-        <div className="DAT_TableEdit">
-          <MdEditDocument color="gray" size={20} />
-        </div>
-      ),
-      width: "100px",
-    },
+    // {
+    //   name: "Tag",
+    //   selector: (row) => (
+    //     <div className="DAT_TableEdit">
+    //       <MdEditDocument color="gray" size={20} />
+    //     </div>
+    //   ),
+    //   width: "100px",
+    // },
     {
       name: dataLang.formatMessage({ id: 'lastUpdate' }),
       selector: (row) => row.lastupdate,
@@ -203,7 +203,7 @@ function Project(props) {
               id={row.plantid + "_MORE"}
               onMouseEnter={(e) => handleModify(e, "block")}
             >
-              ...
+              <IoMdMore size={20} />
             </span>
           </div>
 
@@ -218,14 +218,18 @@ function Project(props) {
               id={row.plantid}
               onClick={(e) => handleEdit(e)}
             >
-              Chỉnh sửa
+              <MdEdit size={20} color="#216990" />
+              &nbsp;
+              {dataLang.formatMessage({ id: 'edits' })}
             </div>
             <div
               className="DAT_ModifyBox_Remove"
               id={row.plantid}
               onClick={(e) => handleDelete(e)}
             >
-              Gỡ
+              <MdDelete size={20} />
+              &nbsp;
+              {dataLang.formatMessage({ id: 'delete' })}
             </div>
           </div>
         </>
@@ -342,7 +346,7 @@ function Project(props) {
           <>
             <div className="DAT_Modify">
               <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
-              <div className="DAT_Modify_Item" onClick={() => (plantState.value = "add")}><IoAddOutline color="white" size={20} /></div>
+              <div className="DAT_Modify_Add" onClick={() => (plantState.value = "add")}><IoAddOutline color="white" size={20} /></div>
             </div>
 
             {filter ?

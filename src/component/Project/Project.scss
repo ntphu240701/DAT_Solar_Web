@@ -215,6 +215,21 @@
         }
     }
 
+    &_Add {
+        background-color: #6495ed;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgb(202, 202, 202);
+        }
+    }
+
     &_Filter {
         position: fixed;
         z-index: 20;
@@ -284,9 +299,9 @@
         }
 
         &_LeftDevice {
-            flex: 8;
+            flex: 5;
             padding: 16px;
-            min-width: 200px;
+            min-width: 20px;
             display: flex;
             gap: 20px;
 
@@ -321,7 +336,7 @@
         }
 
         &_Right {
-            flex: 2;
+            flex: 5;
             padding: 16px;
             display: flex;
             flex-wrap: wrap;
@@ -3223,13 +3238,19 @@
     .DAT_ProjectData {
         &_Header {
             &_LeftDashboard {
+                flex: 3;
+                // min-width: 180px;
+                // padding: 16px;
+            }
+
+            &_LeftDevice {
                 flex: 5;
                 // min-width: 180px;
                 padding: 16px;
             }
 
             &_Right {
-                flex: 5;
+                flex: 7;
             }
         }
 
@@ -3339,7 +3360,7 @@
         }
 
         &_Device {
-            margin-top: 134px;
+            margin-top: 16px;
             margin-bottom: 100px;
         }
     }

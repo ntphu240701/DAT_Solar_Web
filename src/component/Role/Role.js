@@ -15,6 +15,8 @@ import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 import { IoAddOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
+import { IoMdMore } from "react-icons/io";
+import { MdDelete, MdEdit } from "react-icons/md";
 import { LuUserSquare } from "react-icons/lu";
 
 export const roleData = signal({});
@@ -96,7 +98,7 @@ function Role(props) {
                 id={row.id_ + "_MORE"}
                 onMouseEnter={(e) => handleModify(e, "block")}
               >
-                ...
+                <IoMdMore size={20} />
               </span>
             </div>
             : <></>
@@ -114,12 +116,16 @@ function Role(props) {
               id={row.id_}
               onClick={(e) => handleEdit(e)}
             >
+              <MdEdit size={20} color="#216990" />
+              &nbsp;
               {dataLang.formatMessage({ id: 'edit' })}
             </div>
             <div
               className="DAT_ModifyBox_Remove"
               onClick={() => (popupState.value = "delete")}
             >
+              <MdDelete size={20} />
+              &nbsp;
               {dataLang.formatMessage({ id: 'remove' })}
             </div>
           </div>
@@ -169,7 +175,7 @@ function Role(props) {
           <>
             <div className="DAT_Modify">
               <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
-              <div className="DAT_Modify_Item" onClick={() => (roleState.value = "create")}><IoAddOutline color="white" size={20} /></div>
+              <div className="DAT_Modify_Add" onClick={() => (roleState.value = "create")}><IoAddOutline color="white" size={20} /></div>
             </div>
 
             {filter ? (

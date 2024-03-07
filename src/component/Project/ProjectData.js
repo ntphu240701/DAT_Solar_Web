@@ -1653,20 +1653,25 @@ function ProjectData(props) {
                               <IoIosArrowForward />
                             )}
                           </button>
-                          <div className="DAT_Toollist_Tab_Mobile_list">
-                            {listDeviceTab.map((item, i) => {
-                              return (
-                                <div className="DAT_Toollist_Tab_Mobile_list_item"
-                                  style={{ display: tabMobile.value ? "block" : "none" }}
-                                  key={"tabmobile_" + i}
-                                  id={item.id}
-                                  onClick={(e) => handleTabMobileDevice(e)}
-                                >
-                                  {i + 1}: {item.name}
-                                </div>
-                              );
-                            })}
-                          </div>
+                          {tabMobile.value ? (
+
+                            <div className="DAT_Toollist_Tab_Mobile_list">
+                              {listDeviceTab.map((item, i) => {
+                                return (
+                                  <div className="DAT_Toollist_Tab_Mobile_list_item"
+                                    // style={{ display: tabMobile.value ? "block" : "none" }}
+                                    key={"tabmobile_" + i}
+                                    id={item.id}
+                                    onClick={(e) => handleTabMobileDevice(e)}
+                                  >
+                                    {i + 1}: {item.name}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          ) : (
+                            <></>
+                          )}
                         </div>
                       ) : (
                         <div className="DAT_Toollist_Tab">
@@ -2006,25 +2011,15 @@ const Graph = (props) => {
           case "grid":
             return (
               <>
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine">
+                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine" style={{ scale: isMobile.value ? "0.8" : "1" }}>
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine_Solar">
-                    <img src="/dat_picture/solar.png"></img>
+                    <img src="/dat_picture/solar-panel.png"></img>
                   </div>
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine_G">
 
                     <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine_G_B">
-                      <svg width="220px" height="25px" verssion="1.1">
-                        <linearGradient
-                          id="style-1"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="100%"
-                          gradientUnits="userSpaceOnUse"
-                        >
-                          <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                          <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                        </linearGradient>
+                      <svg width="220px" height="25px" verssion="1.1" >
+
                         <path
                           className="path"
                           d="M 6 6 L 210 6"
@@ -2032,27 +2027,34 @@ const Graph = (props) => {
                             width: "100%",
                             height: "100%",
                             fill: "none",
-                            stroke: "url('#style-1')",
-                            strokeWidth: "3",
+                            stroke: "rgb(107, 107, 107,0.4)",
+                            strokeWidth: "5",
+                            strokeLinecap: "round",
+                            overflow: "hidden",
                           }}
                         ></path>
-                        <circle
-                          r={5}
-                          style={{
-                            fill: "none",
-                            stroke: "url('#style-1')",
-                            strokeWidth: "3",
-                            position: "absolute",
-                            top: "0",
-                            left: "0",
-                          }}
-                        >
-                          <animateMotion
-                            path="M 6 6 L 210 6"
-                            dur="2s"
-                            repeatCount="indefinite"
-                          ></animateMotion>
-                        </circle>
+                        {projectData.value.state
+                          ? <path
+                            d="M 0 0 L 20 0"
+                            style={{
+
+                              position: "absolute",
+                              zIndex: "20",
+                              top: "0",
+                              left: "0",
+                              stroke: "rgb(103, 179, 255)",
+                              strokeWidth: "5",
+                              strokeLinecap: "round",
+                            }}
+                          >
+                            <animateMotion
+                              path="M 6 6 L 190 6"
+                              dur="2s"
+                              repeatCount="indefinite"
+                            ></animateMotion>
+                          </path>
+                          : <></>
+                        }
                       </svg>
                       {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
                     </div>
@@ -2070,17 +2072,7 @@ const Graph = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop">
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P1">
                   <svg width="120px" height="160px" version="1.1">
-                    <linearGradient
-                      id="style-1"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                      <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                    </linearGradient>
+
                     <path
                       className="path"
                       d="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
@@ -2088,15 +2080,17 @@ const Graph = (props) => {
                         width: "100%",
                         height: "100%",
                         fill: "none",
-                        stroke: "url('#style-1')",
-                        strokeWidth: "3",
+                        stroke: "rgb(107, 107, 107,0.4)",
+                        strokeWidth: "5",
+                        strokeLinecap: "round",
+                        overflow: "hidden",
                       }}
                     ></path>
                     <circle
-                      r={5}
+                      r={4}
                       style={{
                         fill: "none",
-                        stroke: "url('#style-1')",
+                        stroke: "#3e80fb",
                         strokeWidth: "3",
                         position: "absolute",
                         top: "0",
@@ -2114,35 +2108,27 @@ const Graph = (props) => {
                 </div>
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2">
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Solar">
-                    <img src="/dat_picture/solar.png"></img>
+                    <img src="/dat_picture/solar-panel.png"></img>
                   </div>
                   <svg width="70px" height="40px" version="1.1">
-                    <linearGradient
-                      id="style-2"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                      <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                    </linearGradient>
+
                     <path
                       d="M 35 7 L 35 35"
                       style={{
                         width: "100%",
                         height: "100%",
                         fill: "none",
-                        stroke: "url('#style-2')",
-                        strokeWidth: "3",
+                        stroke: "rgb(107, 107, 107,0.4)",
+                        strokeWidth: "5",
+                        strokeLinecap: "round",
+                        overflow: "hidden",
                       }}
                     ></path>
                     <circle
-                      r={5}
+                      r={4}
                       style={{
                         fill: "none",
-                        stroke: "url('#style-2')",
+                        stroke: "#3e80fb",
                         strokeWidth: "3",
                         position: "absolute",
                         top: "0",
@@ -2162,32 +2148,24 @@ const Graph = (props) => {
                 </div>
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P3">
                   <svg width="120px" height="160px" version="1.1">
-                    <linearGradient
-                      id="style-2"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                      <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                    </linearGradient>
+
                     <path
                       d="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
                       style={{
                         width: "100%",
                         height: "100%",
                         fill: "none",
-                        stroke: "url('#style-2')",
-                        strokeWidth: "3",
+                        stroke: "rgb(107, 107, 107,0.4)",
+                        strokeWidth: "5",
+                        strokeLinecap: "round",
+                        overflow: "hidden",
                       }}
                     ></path>
                     <circle
-                      r={5}
+                      r={4}
                       style={{
                         fill: "none",
-                        stroke: "url('#style-2')",
+                        stroke: "#3e80fb",
                         strokeWidth: "3",
                         position: "absolute",
                         top: "0",
@@ -2212,17 +2190,7 @@ const Graph = (props) => {
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_T">
                     <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P1">
                       <svg width="120px" height="45px" version="1.1">
-                        <linearGradient
-                          id="style-1"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="100%"
-                          gradientUnits="userSpaceOnUse"
-                        >
-                          <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                          <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                        </linearGradient>
+
                         <path
                           className="path"
                           d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
@@ -2230,15 +2198,17 @@ const Graph = (props) => {
                             width: "100%",
                             height: "100%",
                             fill: "none",
-                            stroke: "url('#style-1')",
-                            strokeWidth: "3",
+                            stroke: "rgb(107, 107, 107,0.4)",
+                            strokeWidth: "5",
+                            strokeLinecap: "round",
+                            overflow: "hidden",
                           }}
                         ></path>
                         <circle
-                          r={5}
+                          r={4}
                           style={{
                             fill: "none",
-                            stroke: "url('#style-1')",
+                            stroke: "#3e80fb",
                             strokeWidth: "3",
                             position: "absolute",
                             top: "0",
@@ -2256,32 +2226,24 @@ const Graph = (props) => {
                     </div>
                     <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P2">
                       <svg width="110px" height="45px" version="1.1">
-                        <linearGradient
-                          id="style-2"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="100%"
-                          gradientUnits="userSpaceOnUse"
-                        >
-                          <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                          <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                        </linearGradient>
+
                         <path
                           d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
                           style={{
                             width: "100%",
                             height: "100%",
                             fill: "none",
-                            stroke: "url('#style-2')",
-                            strokeWidth: "3",
+                            stroke: "rgb(107, 107, 107,0.4)",
+                            strokeWidth: "5",
+                            strokeLinecap: "round",
+                            overflow: "hidden",
                           }}
                         ></path>
                         <circle
-                          r={5}
+                          r={4}
                           style={{
                             fill: "none",
-                            stroke: "url('#style-2')",
+                            stroke: "#3e80fb",
                             strokeWidth: "3",
                             position: "absolute",
                             top: "0",
@@ -2299,18 +2261,8 @@ const Graph = (props) => {
                     </div>
                   </div>
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineBottom_G_B">
-                    <svg width="220px" height="25px" verssion="1.1">
-                      <linearGradient
-                        id="style-1"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="100%"
-                        gradientUnits="userSpaceOnUse"
-                      >
-                        <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                        <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                      </linearGradient>
+                    <svg width="230px" height="25px" verssion="1.1">
+
                       <path
                         className="path"
                         d="M 220 7 L 14 7"
@@ -2318,15 +2270,17 @@ const Graph = (props) => {
                           width: "100%",
                           height: "100%",
                           fill: "none",
-                          stroke: "url('#style-1')",
-                          strokeWidth: "3",
+                          stroke: "rgb(107, 107, 107,0.4)",
+                          strokeWidth: "5",
+                          strokeLinecap: "round",
+                          overflow: "hidden",
                         }}
                       ></path>
                       <circle
-                        r={5}
+                        r={4}
                         style={{
                           fill: "none",
-                          stroke: "url('#style-1')",
+                          stroke: "#3e80fb",
                           strokeWidth: "3",
                           position: "absolute",
                           top: "0",
@@ -2353,17 +2307,7 @@ const Graph = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop">
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P1">
                   <svg width="120px" height="160px" version="1.1">
-                    <linearGradient
-                      id="style-1"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                      <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                    </linearGradient>
+
                     <path
                       className="path"
                       d="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
@@ -2371,15 +2315,17 @@ const Graph = (props) => {
                         width: "100%",
                         height: "100%",
                         fill: "none",
-                        stroke: "url('#style-1')",
-                        strokeWidth: "3",
+                        stroke: "rgb(107, 107, 107,0.4)",
+                        strokeWidth: "5",
+                        strokeLinecap: "round",
+                        overflow: "hidden",
                       }}
                     ></path>
                     <circle
-                      r={5}
+                      r={4}
                       style={{
                         fill: "none",
-                        stroke: "url('#style-1')",
+                        stroke: "#3e80fb",
                         strokeWidth: "3",
                         position: "absolute",
                         top: "0",
@@ -2397,35 +2343,27 @@ const Graph = (props) => {
                 </div>
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2">
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Solar">
-                    <img src="/dat_picture/solar.png"></img>
+                    <img src="/dat_picture/solar-panel.png"></img>
                   </div>
                   <svg width="70px" height="40px" version="1.1">
-                    <linearGradient
-                      id="style-2"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                      <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                    </linearGradient>
+
                     <path
                       d="M 35 7 L 35 35"
                       style={{
                         width: "100%",
                         height: "100%",
                         fill: "none",
-                        stroke: "url('#style-2')",
-                        strokeWidth: "3",
+                        stroke: "rgb(107, 107, 107,0.4)",
+                        strokeWidth: "5",
+                        strokeLinecap: "round",
+                        overflow: "hidden",
                       }}
                     ></path>
                     <circle
-                      r={5}
+                      r={4}
                       style={{
                         fill: "none",
-                        stroke: "url('#style-2')",
+                        stroke: "#3e80fb",
                         strokeWidth: "3",
                         position: "absolute",
                         top: "0",
@@ -2445,32 +2383,24 @@ const Graph = (props) => {
                 </div>
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P3">
                   <svg width="120px" height="160px" version="1.1">
-                    <linearGradient
-                      id="style-2"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%"
-                      gradientUnits="userSpaceOnUse"
-                    >
-                      <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                      <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                    </linearGradient>
+
                     <path
                       d="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
                       style={{
                         width: "100%",
                         height: "100%",
                         fill: "none",
-                        stroke: "url('#style-2')",
-                        strokeWidth: "3",
+                        stroke: "rgb(107, 107, 107,0.4)",
+                        strokeWidth: "5",
+                        strokeLinecap: "round",
+                        overflow: "hidden",
                       }}
                     ></path>
                     <circle
-                      r={5}
+                      r={4}
                       style={{
                         fill: "none",
-                        stroke: "url('#style-2')",
+                        stroke: "#3e80fb",
                         strokeWidth: "3",
                         position: "absolute",
                         top: "0",
@@ -2495,17 +2425,7 @@ const Graph = (props) => {
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_T">
                     <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P1">
                       <svg width="120px" height="45px" version="1.1">
-                        <linearGradient
-                          id="style-1"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="100%"
-                          gradientUnits="userSpaceOnUse"
-                        >
-                          <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                          <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                        </linearGradient>
+
                         <path
                           className="path"
                           d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
@@ -2513,15 +2433,17 @@ const Graph = (props) => {
                             width: "100%",
                             height: "100%",
                             fill: "none",
-                            stroke: "url('#style-1')",
-                            strokeWidth: "3",
+                            stroke: "rgb(107, 107, 107,0.4)",
+                            strokeWidth: "5",
+                            strokeLinecap: "round",
+                            overflow: "hidden",
                           }}
                         ></path>
                         <circle
-                          r={5}
+                          r={4}
                           style={{
                             fill: "none",
-                            stroke: "url('#style-1')",
+                            stroke: "#3e80fb",
                             strokeWidth: "3",
                             position: "absolute",
                             top: "0",
@@ -2539,32 +2461,24 @@ const Graph = (props) => {
                     </div>
                     <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P2">
                       <svg width="110px" height="45px" version="1.1">
-                        <linearGradient
-                          id="style-2"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="100%"
-                          gradientUnits="userSpaceOnUse"
-                        >
-                          <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                          <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                        </linearGradient>
+
                         <path
                           d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
                           style={{
                             width: "100%",
                             height: "100%",
                             fill: "none",
-                            stroke: "url('#style-2')",
-                            strokeWidth: "3",
+                            stroke: "rgb(107, 107, 107,0.4)",
+                            strokeWidth: "5",
+                            strokeLinecap: "round",
+                            overflow: "hidden",
                           }}
                         ></path>
                         <circle
-                          r={5}
+                          r={4}
                           style={{
                             fill: "none",
-                            stroke: "url('#style-2')",
+                            stroke: "#3e80fb",
                             strokeWidth: "3",
                             position: "absolute",
                             top: "0",
@@ -2582,18 +2496,8 @@ const Graph = (props) => {
                     </div>
                   </div>
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineBottom_G_B">
-                    <svg width="220px" height="25px" verssion="1.1">
-                      <linearGradient
-                        id="style-1"
-                        x1="0%"
-                        y1="0%"
-                        x2="100%"
-                        y2="100%"
-                        gradientUnits="userSpaceOnUse"
-                      >
-                        <stop offset="0%" stopColor="rgb(65, 109, 228)"></stop>
-                        <stop offset="100%" stopColor="rgb(247, 162, 25)"></stop>
-                      </linearGradient>
+                    <svg width="230px" height="25px" verssion="1.1">
+
                       <path
                         className="path"
                         d="M 220 7 L 14 7"
@@ -2601,15 +2505,17 @@ const Graph = (props) => {
                           width: "100%",
                           height: "100%",
                           fill: "none",
-                          stroke: "url('#style-1')",
-                          strokeWidth: "3",
+                          stroke: "rgb(107, 107, 107,0.4)",
+                          strokeWidth: "5",
+                          strokeLinecap: "round",
+                          overflow: "hidden",
                         }}
                       ></path>
                       <circle
-                        r={5}
+                        r={4}
                         style={{
                           fill: "none",
-                          stroke: "url('#style-1')",
+                          stroke: "#3e80fb",
                           strokeWidth: "3",
                           position: "absolute",
                           top: "0",
