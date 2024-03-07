@@ -507,11 +507,12 @@
    margin-bottom: 10px;
    position: relative;
    //background-color: #ececec;
-   padding: 5px;
+   //  padding: 5px;
    border-radius: 5px 5px 0 0;
    //  border-bottom: solid 1px gray;
    //height: 60px;
    display: flex;
+   //align-items: center;
    gap: 20px;
 
    &_content {
@@ -525,11 +526,15 @@
      width: 200px;
      height: 30px;
      border-radius: 5px;
+
      border: 1px solid #b4b4b4;
+     //  border: none;
      position: relative;
      overflow: hidden;
      transition: all 0.5s ease-in;
      z-index: 1;
+     background-color: white;
+     box-shadow: 0 0 3px 3px rgba(193, 193, 193, 0.5);
 
      &::before,
      &::after {

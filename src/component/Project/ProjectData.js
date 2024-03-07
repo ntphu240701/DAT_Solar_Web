@@ -1659,7 +1659,7 @@ function ProjectData(props) {
                         </button>
                         {tabMobile.value ? (
 
-                          <div className="DAT_Toollist_Tab_Mobile_list">
+                          <div className="DAT_Toollist_Tab_Mobile_list" onMouseLeave={() => tabMobile.value = false}>
                             {listDeviceTab.map((item, i) => {
                               return (
                                 <div className="DAT_Toollist_Tab_Mobile_list_item"

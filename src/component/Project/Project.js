@@ -421,7 +421,7 @@ function Project(props) {
               {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}
             </button>
             {tabMobile.value ?
-              <div className="DAT_Toollist_Tab_Mobile_list">
+              <div className="DAT_Toollist_Tab_Mobile_list" onMouseLeave={() => (tabMobile.value = false)}>
                 {listTab.map((item, i) => {
                   return (
                     <div className="DAT_Toollist_Tab_Mobile_list_item"
@@ -429,6 +429,7 @@ function Project(props) {
                       key={"tabmobile_" + i}
                       id={item.id}
                       onClick={(e) => handleTabMobile(e)}
+
                     >
                       {i + 1}: {item.name}
                     </div>

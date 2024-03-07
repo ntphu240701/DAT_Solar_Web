@@ -464,10 +464,11 @@ function Device(props) {
                     <span id='logger' style={{ color: tab.value === "logger" ? color.cur : color.pre }} onClick={() => { tab.value = "logger" }} >Logger</span>
                 </div> */}
         {isMobile.value ? (
-          <div className="DAT_Toollist_Tab_Mobile">
+          <div className="DAT_Toollist_Tab_Mobile" style={{ paddingLeft: "10px" }}>
             <button
               className="DAT_Toollist_Tab_Mobile_content"
               onClick={() => (tabMobile.value = !tabMobile.value)}
+
             >
               <span> {tabLable.value}</span>
               {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}

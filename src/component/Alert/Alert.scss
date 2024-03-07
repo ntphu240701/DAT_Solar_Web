@@ -4,13 +4,17 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(227, 207, 207, 0.1);
     z-index: 100;
+    display: flex;
+    justify-content: center;
+
     &_Content {
+
+
         position: relative;
         width: 94%;
         margin: auto;
-
         top: 70px;
         -webkit-animation: animatetop 0.5s;
         animation: animatetop 0.5s;
@@ -19,6 +23,7 @@
             color: white;
             width: 100%;
             padding: 8px;
+            box-sizing: border-box;
             font-size: 18px;
             border-radius: 5px;
             border: solid 1px gray;
@@ -31,13 +36,17 @@
     }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 900px) {
     .DAT_Alert {
         &_Content {
+            width: 600px;
+            margin: auto;
             display: flex;
             justify-content: center;
+
             & label {
                 width: 350px;
+                margin: auto;
             }
         }
     }
