@@ -237,7 +237,7 @@ export default function Rule() {
           <div
             className="DAT_ModifyBox"
             id={row.ruleid + "_Modify"}
-            style={{ display: "none" }}
+            style={{ display: "none", marginTop: '2px' }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             <div

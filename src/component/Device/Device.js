@@ -243,7 +243,7 @@ function Device(props) {
           </div>
         </>
       ),
-      width: "100px",
+      width: "110px",
     },
   ];
 
@@ -312,7 +312,7 @@ function Device(props) {
 
           <div className="DAT_ModifyBox"
             id={row.psn + "_Modify"}
-            style={{ display: "none" }}
+            style={{ display: "none", marginTop: '2px' }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             <div className="DAT_ModifyBox_Fix"
