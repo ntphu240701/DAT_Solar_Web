@@ -458,7 +458,7 @@ function Home(props) {
               <div className="DAT_Home_Overview-Main-Percent-Item">
                 <div className="DAT_Home_Overview-Main-Percent-Item-value">
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_num">
-                    {parseFloat((production / capacity) * 100).toFixed(2) === "Nan" ? "--" : parseFloat((production / capacity) * 100).toFixed(2)}
+                    {parseFloat((production / capacity) * 100).toFixed(2) === "NaN" ? "--" : parseFloat((production / capacity) * 100).toFixed(2)}
                   </div>
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">%</div>
                 </div>

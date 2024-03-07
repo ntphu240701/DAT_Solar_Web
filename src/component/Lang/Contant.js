@@ -290,6 +290,9 @@ export const messages = {
         E01: 'Error : Overheating level 1',
         E02: 'Error : Overheating level 2',
         E03: 'Error: Overload',
+        sologon: 'Energy solution platform',
+        version: 'Version',
+        previous: 'Back',
         unknown: '--',
     },
     vi: {
@@ -577,6 +580,9 @@ export const messages = {
         E01: 'Lỗi quá nhiệt mức 1',
         E02: 'Lỗi quá nhiệt mức 2',
         E03: 'Lỗi quá tải',
+        version: 'Phiên bản',
+        sologon: 'Nền tảng giải pháp năng lượng',
+        previous: 'Quay lại',
         unknown: '--',
     }
 }

@@ -19,15 +19,6 @@ const tabli = signal("none");
 function Sidenar(props) {
   //Datalang
   const dataLang = useIntl();
-
-  useEffect(function () {
-    isMobile.value ? (sidenar.value = false) : (sidenar.value = true);
-  }, []);
-
-  const dataColor = {
-    cur: { color: "#0061f2" },
-    pre: { color: "rgb(85, 85, 85)" },
-  };
   const data = {
     Dashboard: { icon: <VscDashboard />, link: "/", li: [] },
     Notif: { icon: <IoIosNotificationsOutline />, link: "/Notif", li: [] },
@@ -46,28 +37,97 @@ function Sidenar(props) {
       li: [
         { link: "/Report", name: dataLang.formatMessage({ id: 'report' }) },
         { link: "/Analytics", name: dataLang.formatMessage({ id: 'analytic' }) },
-        ,
         { link: "/Log", name: dataLang.formatMessage({ id: 'log' }) },
       ],
     },
     Setting: {
       icon: <RiSettingsLine />,
       link: "none",
-      li: userInfor.value.type === "user" ? [
-        { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
-        { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
-        { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
-      ] : [
+      li: userInfor.value.type === "master" ? [
         { link: "/Role", name: dataLang.formatMessage({ id: 'role' }) },
         { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
         { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
         { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
         { link: "/Rule", name: dataLang.formatMessage({ id: 'rule' }) },
-
-
+      ] : userInfor.value.type === "admin" ? [
+          { link: "/Role", name: dataLang.formatMessage({ id: 'role' }) },
+          // { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+          { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
+          { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
+          { link: "/Rule", name: dataLang.formatMessage({ id: 'rule' }) },
+      ] : [
+          // { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+          { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
+          { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
       ],
     },
+  }
+  const dataColor = {
+    cur: { color: "#0061f2" },
+    pre: { color: "rgb(85, 85, 85)" },
   };
+
+  useEffect(function () {
+    isMobile.value ? (sidenar.value = false) : (sidenar.value = true);
+    // let data_ = []
+    // switch (userInfor.value.type) {
+    //   case "master":
+    //     data_ =[
+    //       { link: "/Role", name: dataLang.formatMessage({ id: 'role' }) },
+    //       { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+    //       { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
+    //       { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
+    //       { link: "/Rule", name: dataLang.formatMessage({ id: 'rule' }) },
+    //     ]
+    //    break;
+    //   case "admin":
+    //     data_ = [
+    //       { link: "/Role", name: dataLang.formatMessage({ id: 'role' }) },
+    //       // { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+    //       { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
+    //       { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
+    //       { link: "/Rule", name: dataLang.formatMessage({ id: 'rule' }) },
+    //     ]
+    //     break;
+    //   default:
+    //     data_ = [
+    //       // { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+    //       { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
+    //       { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
+    //     ]
+    //     break;
+    // }
+
+    // data = {
+    //   ...data,
+    //   Setting: {
+    //     ...data.Setting,
+    //     li:data_
+    //   }
+    // }
+
+
+
+
+  }, []);
+
+
+
+
+  // userInfor.value.type === "user" ? [
+  //   { link: "/Role", name: dataLang.formatMessage({ id: 'role' }) },
+  //   { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+  //   { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
+  //   { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
+  //   { link: "/Rule", name: dataLang.formatMessage({ id: 'rule' }) },
+  // ] : [
+
+  //   { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+  //   { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
+  //   { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
+
+  // ],
+
   const handleMenu = (e) => {
     const ID = e.currentTarget.id;
     console.log(ID);

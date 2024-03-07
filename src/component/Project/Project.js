@@ -333,6 +333,11 @@ function Project(props) {
       }
     }
     getPlant(user, userInfor.value.partnerid, userInfor.value.type);
+
+    return () => {
+      plantState.value = "default"
+    }
+
   }, []);
 
   return (
