@@ -1459,7 +1459,7 @@
                         }
                     }
 
-                    &_Info {
+                    &_Left {
                         flex: 1;
 
                         &_Name {
@@ -1479,7 +1479,7 @@
                         &_Sn {
                             color: black;
                             font-size: 16px;
-                            margin-bottom: 5px;
+                            // margin-bottom: 5px;
                             display: flex;
                             align-items: center;
                             // justify-content: center;
@@ -1490,17 +1490,7 @@
                             }
                         }
 
-                        &_State {
-                            // display: flex;
-                            // gap: 10px;
-                            margin-bottom: 5px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            gap: 5px;
 
-                            &_Item {}
-                        }
 
                         // &_Data {
                         //     width: 100%;
@@ -1518,12 +1508,32 @@
                         // }
                     }
 
-
+                    &_Right {
+                        flex: 1;
+                        display: flex;
+                        justify-content: flex-end;
+                        gap: 5px;
+                    }
                 }
 
-                // &_Bottom {
-                //     padding: 10px;
-                // }
+                &_Bottom {
+                    padding: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    &_State {
+                        // display: flex;
+                        // gap: 10px;
+                        // margin-bottom: 5px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 5px;
+
+                        &_Item {}
+                    }
+                }
             }
         }
 

@@ -1709,32 +1709,46 @@ function ProjectData(props) {
                                   return (
                                     <div key={i} className="DAT_ProjectData_Device_TableMobile_Content">
                                       <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
-                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info">
-                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_Name">
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left">
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Name">
                                             Tên: {item.name}
                                           </div>
 
-                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_Sn">
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Sn">
                                             SN: {item.sn}
                                           </div>
+                                        </div>
 
-                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_State">
-                                            {item.state ?
-                                              <>
-                                                <FaCheckCircle size={20} color="green" />
-                                                <span>{dataLang.formatMessage({ id: 'online' })}</span>
-                                              </>
-                                              :
-                                              <>
-                                                <MdOutlineError size={22} color="red" />
-                                                <span>{dataLang.formatMessage({ id: 'offline' })}</span>
-                                              </>
-                                            }
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right">
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item" onClick={(e) => handleEdit(e)}>
+                                            <MdEdit size={20} color="#216990" />
                                           </div>
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
+                                            id={item.sn}
+                                            onClick={(e) => handleDelete(e)}
+                                          >
+                                            <MdDelete size={20} color="red" />
+                                          </div>
+                                        </div>
+                                      </div>
 
-                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_Type">
-                                            Loại: {item.type}
-                                          </div>
+                                      <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom">
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_State">
+                                          {item.state ?
+                                            <>
+                                              <FaCheckCircle size={20} color="green" />
+                                              <span>{dataLang.formatMessage({ id: 'online' })}</span>
+                                            </>
+                                            :
+                                            <>
+                                              <MdOutlineError size={22} color="red" />
+                                              <span>{dataLang.formatMessage({ id: 'offline' })}</span>
+                                            </>
+                                          }
+                                        </div>
+
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_Type">
+                                          Loại: {item.type}
                                         </div>
                                       </div>
                                     </div>
