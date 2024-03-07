@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Device.scss";
 import DataTable from "react-data-table-component";
 import { FaCheckCircle } from "react-icons/fa";
-import { MdOutlineError } from "react-icons/md";
+import { MdDevices, MdOutlineError } from "react-icons/md";
 import { MdEditDocument } from "react-icons/md";
 import { signal } from "@preact/signals-react";
 import { CiSearch } from "react-icons/ci";
@@ -21,6 +21,7 @@ import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
 import { IoAddOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
+import { FcSurvey } from "react-icons/fc";
 
 export const tab = signal("logger");
 const tabLable = signal("");
@@ -415,7 +416,7 @@ function Device(props) {
     <>
       <div className="DAT_DeviceHeader">
         <div className="DAT_DeviceHeader_Title">
-          <TbSettingsCode color="gray" size={25} /> <span>{datalang.formatMessage({ id: 'device' })}</span>
+          <MdDevices color="gray" size={25} /> <span>{datalang.formatMessage({ id: 'device' })}</span>
         </div>
 
         {isMobile.value ? (
@@ -443,7 +444,11 @@ function Device(props) {
               <CiSearch color="gray" size={20} />
             </div>
             <button className="DAT_DeviceHeader_New" onClick={handleShowConfig}>
-              {datalang.formatMessage({ id: 'config' })}
+              <span>
+                <TbSettingsCode color="white" size={20} />
+                &nbsp;
+                {datalang.formatMessage({ id: 'config' })}
+              </span>
             </button>
           </>
         )}

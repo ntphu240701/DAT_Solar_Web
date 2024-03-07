@@ -6,7 +6,7 @@ import { IoMdAnalytics } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { signal } from "@preact/signals-react";
 import CreateGroupRole from "./CreateGroupRole";
-import { FaUserPlus } from "react-icons/fa";
+import { FaUserPlus, FaUsers } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import Popup from "./Popup";
@@ -22,6 +22,8 @@ import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 import { IoAddOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
+import { FaUsersGear } from "react-icons/fa6";
+import { PiUsersFour } from "react-icons/pi";
 
 //DATA TEMP
 export const group = signal([
@@ -359,7 +361,7 @@ function GroupRole(props) {
     <>
       <div className="DAT_GRHeader">
         <div className="DAT_GRHeader_Title">
-          <IoMdAnalytics color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'roleList' })}</span>
+          <PiUsersFour color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'roleList' })}</span>
         </div>
 
         {isMobile.value ? (
@@ -400,7 +402,11 @@ function GroupRole(props) {
               className="DAT_GRHeader_New"
               onClick={() => (createState.value = true)}
             >
-              {dataLang.formatMessage({ id: 'createNewGroup' })}
+              <span>
+                <FaUsersGear color="white" size={20} />
+                &nbsp;
+                {dataLang.formatMessage({ id: 'createNewGroup' })}
+              </span>
             </button>
           </>
         )}

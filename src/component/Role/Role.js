@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Role.scss";
 import DataTable from "react-data-table-component";
-import { FaUsers } from "react-icons/fa";
+import { FaUserPlus, FaUsers } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { Empty } from "../Project/Project";
 import { signal } from "@preact/signals-react";
@@ -15,6 +15,7 @@ import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 import { IoAddOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
+import { LuUserSquare } from "react-icons/lu";
 
 export const roleData = signal({});
 export const roleState = signal("default");
@@ -159,7 +160,7 @@ function Role(props) {
     <>
       <div className="DAT_RoleHeader">
         <div className="DAT_RoleHeader_Title">
-          <FaUsers color="gray" size={25} /> <span>
+          <LuUserSquare color="gray" size={25} /> <span>
             {dataLang.formatMessage({ id: 'role' })}
           </span>
         </div>
@@ -192,7 +193,11 @@ function Role(props) {
               className="DAT_RoleHeader_New"
               onClick={() => (roleState.value = "create")}
             >
-              {dataLang.formatMessage({ id: 'createAccount' })}
+              <span>
+                <FaUserPlus color="white" size={20} />
+                &nbsp;
+                {dataLang.formatMessage({ id: 'createNew' })}
+              </span>
             </button>
           </>
         )}

@@ -4,7 +4,7 @@ import DataTable from "react-data-table-component";
 import { isMobile } from "../Navigation/Navigation";
 
 import { FaCheckCircle, FaRegFileAlt } from "react-icons/fa";
-import { MdOutlineError, MdEditDocument } from "react-icons/md";
+import { MdOutlineError, MdEditDocument, MdAddchart } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { GoProject } from "react-icons/go";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
@@ -392,7 +392,11 @@ function Project(props) {
             <button className="DAT_ProjectHeader_New"
               onClick={() => (plantState.value = "add")}
             >
-              <span value={"createdate"}>{dataLang.formatMessage({ id: 'createNew' })}</span>
+              <span value={"createdate"}>
+                <MdAddchart color="white" size={20} />
+                &nbsp;
+                {dataLang.formatMessage({ id: 'createNew' })}
+              </span>
             </button>
           </>
         }

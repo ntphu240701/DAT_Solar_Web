@@ -1,11 +1,13 @@
 import React from "react";
 import "./Analytics.scss";
 import DataTable from "react-data-table-component";
-import { IoMdAnalytics } from "react-icons/io";
+import { IoIosAnalytics, IoMdAnalytics } from "react-icons/io";
 import { Empty } from "../Project/Project";
 import { signal } from "@preact/signals-react";
 import AnaCreate from "./AnaCreate";
 import { useIntl } from "react-intl";
+import { FcParallelTasks } from "react-icons/fc";
+import { TbReport } from "react-icons/tb";
 
 export const anaState = signal("default");
 
@@ -69,7 +71,8 @@ function Analytics(props) {
     <>
       <div className="DAT_AnaHeader">
         <div className="DAT_AnaHeader_Title">
-          <IoMdAnalytics color="gray" size={25} /> <span>
+          <FcParallelTasks color="gray" size={25} />
+          <span>
             {dataLang.formatMessage({ id: 'analytics' })}
           </span>
         </div>
@@ -77,7 +80,11 @@ function Analytics(props) {
           className="DAT_AnaHeader_New"
           onClick={() => (anaState.value = "create")}
         >
-          {dataLang.formatMessage({ id: 'createAnal' })}
+          <span>
+            <TbReport color="white" size={20} />
+            &nbsp;
+            {dataLang.formatMessage({ id: 'createAnal' })}
+          </span>
         </button>
       </div>
 

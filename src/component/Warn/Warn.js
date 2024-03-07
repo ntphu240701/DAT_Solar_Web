@@ -14,6 +14,7 @@ import RaiseBox from "./RaiseBox";
 import { useIntl } from "react-intl";
 import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
+import { RiMailSettingsLine } from "react-icons/ri";
 const tab = signal("all");
 const tabLable = signal("");
 const tabMobile = signal(false);
@@ -250,7 +251,11 @@ function Warn(props) {
             <button className="DAT_WarnHeader_New"
               onClick={(e) => handleSetting(e)}
             >
-              {dataLang.formatMessage({ id: 'setting' })}
+              <span>
+                <RiMailSettingsLine color="white" size={20} />
+                &nbsp;
+                {dataLang.formatMessage({ id: 'setting' })}
+              </span>
             </button>
           </>
         )}

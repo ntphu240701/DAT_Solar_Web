@@ -13,6 +13,8 @@ import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 import { IoAddOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
+import { GrUserAdmin } from "react-icons/gr";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 const key = {
   edit: 'edits',
@@ -279,7 +281,8 @@ export default function Rule() {
     <>
       <div className="DAT_RuleHeader">
         <div className="DAT_RuleHeader_Title">
-          <FaUsers color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'rule' })}</span>
+          <MdOutlineAdminPanelSettings
+            color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'rule' })}</span>
         </div>
 
         {isMobile.value ? (
@@ -310,7 +313,11 @@ export default function Rule() {
               className="DAT_RuleHeader_New"
               onClick={() => (createruleState.value = true)}
             >
-              {dataLang.formatMessage({ id: 'newRule' })}
+              <span>
+                <GrUserAdmin color="white" size={20} />
+                &nbsp;
+                {dataLang.formatMessage({ id: 'newRule' })}
+              </span>
             </button>
           </>
         )}

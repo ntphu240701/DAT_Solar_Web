@@ -9,6 +9,7 @@ import ReportEdit from "./ReportEdit";
 import Popup from "./Popup";
 import { useSelector } from "react-redux";
 import { useIntl } from "react-intl";
+import { MdOutlinePostAdd } from "react-icons/md";
 
 export const createState = signal(false);
 export const editState = signal(false);
@@ -135,7 +136,11 @@ function Report(props) {
           className="DAT_ReportHeader_New"
           onClick={() => (createState.value = true)}
         >
-          {dataLang.formatMessage({ id: 'createReport' })}
+          <span>
+            <MdOutlinePostAdd color='white' size={20} />
+            &nbsp;
+            {dataLang.formatMessage({ id: 'createReport' })}
+          </span>
         </button>
       </div>
       <div className="DAT_Report">

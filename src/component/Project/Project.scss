@@ -44,14 +44,20 @@
 
     &_New {
         cursor: pointer;
-        height: 30px;
+        height: 35px;
+        // width: 35px;
         border: none;
         background-color: #6495ed;
         color: white;
-        border-radius: 2px;
+        border-radius: 5px;
 
         &:hover {
             background-color: #3e80fb;
+        }
+        & span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 }

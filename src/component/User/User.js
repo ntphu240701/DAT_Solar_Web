@@ -5,6 +5,7 @@ import Popup from "./Popup";
 import { signal } from "@preact/signals-react";
 import { partnerInfor, userInfor } from "../../App";
 import { useIntl } from "react-intl";
+import { VscAccount } from "react-icons/vsc";
 
 
 export const popupStateUser = signal(false);
@@ -16,7 +17,7 @@ function User(props) {
     <>
       <div className="DAT_UsrHeader">
         <div className="DAT_UsrHeader_Title">
-          <FaRegUser color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'account' })}</span>
+          <VscAccount color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'account' })}</span>
         </div>
       </div>
       <div className="DAT_Usr">
