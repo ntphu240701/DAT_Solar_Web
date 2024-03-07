@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./Warn.scss";
 import DataTable from "react-data-table-component";
 import { FaCheckCircle } from "react-icons/fa";
-import { MdOutlineError } from "react-icons/md";
+import { MdDelete, MdOutlineError } from "react-icons/md";
 import { signal } from "@preact/signals-react";
 import { CiSearch } from "react-icons/ci";
 import { Empty } from "../Project/Project";
 import { LuMailWarning } from "react-icons/lu";
 import { isMobile, message } from "../Navigation/Navigation";
-import { IoIosArrowDown, IoIosArrowForward, IoIosArrowRoundForward } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward, IoIosArrowRoundForward, IoMdMore } from "react-icons/io";
 import SettingWarn from "./SettingWarn";
 import RaiseBox from "./RaiseBox";
 import { useIntl } from "react-intl";
@@ -160,7 +160,7 @@ function Warn(props) {
               id={row.boxid + "" + row.warnid + "_MORE"}
               onMouseEnter={(e) => handleModify(e, "block")}
             >
-              ...
+              <IoMdMore size={20} />
             </span>
           </div>
 
@@ -176,6 +176,8 @@ function Warn(props) {
               id={row.boxid + "_" + row.warnid}
               onClick={(e) => handleDeleteWarn(e)}
             >
+              <MdDelete size={20} />
+              &nbsp;
               {dataLang.formatMessage({ id: 'delete' })}
             </div>
           </div>
@@ -227,7 +229,7 @@ function Warn(props) {
           <>
             <div className="DAT_Modify">
               <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
-              <div className="DAT_Modify_Item" onClick={(e) => handleSetting(e)}><TbSettingsCode color="white" size={20} /></div>
+              <div className="DAT_Modify_Add" onClick={(e) => handleSetting(e)}><TbSettingsCode color="white" size={20} /></div>
             </div>
 
             {filter ? (

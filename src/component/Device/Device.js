@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import "./Device.scss";
 import DataTable from "react-data-table-component";
 import { FaCheckCircle } from "react-icons/fa";
-import { MdOutlineError } from "react-icons/md";
+import { MdDelete, MdEdit, MdOutlineError } from "react-icons/md";
 import { MdEditDocument } from "react-icons/md";
 import { signal } from "@preact/signals-react";
 import { CiSearch } from "react-icons/ci";
 import { Empty } from "../Project/Project";
 import { isMobile } from "../Navigation/Navigation";
 import { TbSettingsCode } from "react-icons/tb";
-import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
 import Info from "./Info";
 import Config from "./Config";
 import Popup from "./Popup";
@@ -36,7 +36,7 @@ export const projectList = signal([]);
 export const loggerList = signal([]);
 
 function Device(props) {
-  const datalang = useIntl();
+  const dataLang = useIntl();
   const user = useSelector(state => state.admin.usr);
   const [filter, setFilter] = useState(false);
   const [plantid, setPlantid] = useState("");
@@ -51,10 +51,10 @@ function Device(props) {
   const color = { cur: "#6495ed", pre: "gray" };
 
   const paginationComponentOptions = {
-    rowsPerPageText: datalang.formatMessage({ id: 'row' }),
-    rangeSeparatorText: datalang.formatMessage({ id: 'to' }),
+    rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
+    rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
     selectAllRowsItem: true,
-    selectAllRowsItemText: datalang.formatMessage({ id: 'showAll' }),
+    selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
 
   const dataInverter = [
@@ -152,7 +152,7 @@ function Device(props) {
 
   const columnDevice = [
     {
-      name: datalang.formatMessage({ id: 'name' }),
+      name: dataLang.formatMessage({ id: 'name' }),
       selector: (row) => (
         <div className="DAT_Table">
           <div
@@ -173,7 +173,7 @@ function Device(props) {
       },
     },
     {
-      name: datalang.formatMessage({ id: 'status' }),
+      name: dataLang.formatMessage({ id: 'status' }),
       selector: (row) => (
         <>
           {row.status ? (
@@ -186,7 +186,7 @@ function Device(props) {
       width: "110px",
     },
     {
-      name: datalang.formatMessage({ id: 'project' }),
+      name: dataLang.formatMessage({ id: 'project' }),
       selector: (row) => row.plant,
       sortable: true,
       minWidth: "350px",
@@ -196,25 +196,25 @@ function Device(props) {
     },
 
     {
-      name: datalang.formatMessage({ id: 'electricGen' }),
+      name: dataLang.formatMessage({ id: 'electricGen' }),
       selector: (row) => row.production + " kW",
       sortable: true,
       width: "170px",
     },
     {
-      name: datalang.formatMessage({ id: 'dailyOutputSmall' }),
+      name: dataLang.formatMessage({ id: 'dailyOutputSmall' }),
       selector: (row) => row.dailyproduction + " kWh",
       sortable: true,
       width: "210px",
     },
     {
-      name: datalang.formatMessage({ id: 'update' }),
+      name: dataLang.formatMessage({ id: 'update' }),
       selector: (row) => row.updated,
       sortable: true,
       width: "180px",
     },
     {
-      name: datalang.formatMessage({ id: 'setting' }),
+      name: dataLang.formatMessage({ id: 'setting' }),
       selector: (row) => (
         <>
           <div className="DAT_TableEdit">
@@ -222,7 +222,7 @@ function Device(props) {
               id={row.id + "_MORE"}
               onMouseEnter={(e) => handleModify(e, "block")}
             >
-              ...
+              <IoMdMore size={20} />
             </span>
           </div>
 
@@ -238,7 +238,9 @@ function Device(props) {
               id={row.id + "_" + tab.value}
               onClick={(e) => handleRemove(e)}
             >
-              {datalang.formatMessage({ id: 'remove' })}
+              <MdDelete size={20} />
+              &nbsp;
+              {dataLang.formatMessage({ id: 'remove' })}
             </div>
           </div>
         </>
@@ -249,7 +251,7 @@ function Device(props) {
 
   const columnRemote = [
     {
-      name: datalang.formatMessage({ id: 'name' }),
+      name: dataLang.formatMessage({ id: 'name' }),
       selector: (row) => (
         <div className="DAT_Table">
           <div
@@ -270,7 +272,7 @@ function Device(props) {
       },
     },
     {
-      name: datalang.formatMessage({ id: 'status' }),
+      name: dataLang.formatMessage({ id: 'status' }),
       selector: (row) => (
         <>
           {row.pstate === 1 ? (
@@ -283,7 +285,7 @@ function Device(props) {
       width: "110px",
     },
     {
-      name: datalang.formatMessage({ id: 'project' }),
+      name: dataLang.formatMessage({ id: 'project' }),
       selector: (row) => row.pplantname,
       sortable: true,
       minWidth: "350px",
@@ -298,7 +300,7 @@ function Device(props) {
     //   width: "180px",
     // },
     {
-      name: datalang.formatMessage({ id: 'setting' }),
+      name: dataLang.formatMessage({ id: 'setting' }),
       selector: (row) => (
         <>
           <div className="DAT_TableEdit">
@@ -306,7 +308,7 @@ function Device(props) {
               id={row.psn + "_MORE"}
               onMouseEnter={(e) => handleModify(e, "block")}
             >
-              ...
+              <IoMdMore size={20} />
             </span>
           </div>
 
@@ -318,13 +320,17 @@ function Device(props) {
             <div className="DAT_ModifyBox_Fix"
               onClick={(e) => handleEdit(e)}
             >
-              {datalang.formatMessage({ id: 'edits' })}
+              <MdEdit size={20} color="#216990" />
+              &nbsp;
+              {dataLang.formatMessage({ id: 'edits' })}
             </div>
             <div className="DAT_ModifyBox_Remove"
               id={row.psn + "_" + row.pplantid}
               onClick={(e) => handleRemove(e)}
             >
-              {datalang.formatMessage({ id: 'delete' })}
+              <MdDelete size={20} />
+              &nbsp;
+              {dataLang.formatMessage({ id: 'delete' })}
             </div>
           </div>
         </>
@@ -415,19 +421,19 @@ function Device(props) {
     <>
       <div className="DAT_DeviceHeader">
         <div className="DAT_DeviceHeader_Title">
-          <TbSettingsCode color="gray" size={25} /> <span>{datalang.formatMessage({ id: 'device' })}</span>
+          <TbSettingsCode color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'device' })}</span>
         </div>
 
         {isMobile.value ? (
           <>
             <div className="DAT_Modify">
               <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
-              <div className="DAT_Modify_Item" onClick={handleShowConfig}><TbSettingsCode color="white" size={20} /></div>
+              <div className="DAT_Modify_Add" onClick={handleShowConfig}><TbSettingsCode color="white" size={20} /></div>
             </div>
 
             {filter ? (
               <div className="DAT_Modify_Filter">
-                <input type="text" placeholder={datalang.formatMessage({ id: 'enterDev' })} />
+                <input type="text" placeholder={dataLang.formatMessage({ id: 'enterDev' })} />
                 <div className="DAT_Modify_Filter_Close" onClick={() => setFilter(!filter)}>
                   <RxCross2 size={20} color="white" />
                 </div>
@@ -439,11 +445,11 @@ function Device(props) {
         ) : (
           <>
             <div className="DAT_DeviceHeader_Filter">
-              <input type="text" placeholder={datalang.formatMessage({ id: 'enterDev' })} />
+              <input type="text" placeholder={dataLang.formatMessage({ id: 'enterDev' })} />
               <CiSearch color="gray" size={20} />
             </div>
             <button className="DAT_DeviceHeader_New" onClick={handleShowConfig}>
-              {datalang.formatMessage({ id: 'config' })}
+              {dataLang.formatMessage({ id: 'config' })}
             </button>
           </>
         )}

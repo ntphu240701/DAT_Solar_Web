@@ -429,22 +429,22 @@
    &_Fix {
      cursor: pointer;
      padding-left: 5px;
+     display: flex;
 
      &:hover {
        background-color: #adadad;
      }
-
    }
 
    &_Remove {
      color: red;
      cursor: pointer;
      padding-left: 5px;
+     display: flex;
 
      &:hover {
        background-color: #adadad;
      }
-
    }
  }
 

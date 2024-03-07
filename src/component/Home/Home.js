@@ -57,61 +57,16 @@ function Home(props) {
   const [price, setPrice] = useState(0)
   const [production, setProduction] = useState(0)
   const [dailyproduction, setDailyProduction] = useState(0)
+  const [monthlyproduction, setMonthlyProduction] = useState(0)
+  const [yearlyproduction, setYearlyProduction] = useState(0)
   const [totalproduction, setTotalProduction] = useState(0)
   const dataLang = useIntl()
+  const [chart, setChart] = useState('year')
+  const [vmonth, setVmonth] = useState(dataLang.formatMessage({ id: 'monthOutputSmall' }));
+  const [datamonth, setDatamonth] = useState([])
+  const [vyear, setVyear] = useState(dataLang.formatMessage({ id: 'yearOutputSmall' }));
+  const [datayear, setDatayear] = useState([])
 
-  const v = dataLang.formatMessage({ id: 'monthOutputSmall' });
-
-  const data = [
-    {
-      name: "1",
-      [v]: 1.69,
-    },
-    {
-      name: "2",
-      [v]: 0,
-    },
-    {
-      name: "3",
-      [v]: 0,
-    },
-    {
-      name: "4",
-      [v]: 0,
-    },
-    {
-      name: "5",
-      [v]: 0,
-    },
-    {
-      name: "6",
-      [v]: 0,
-    },
-    {
-      name: "7",
-      [v]: 0,
-    },
-    {
-      name: "8",
-      [v]: 0,
-    },
-    {
-      name: "9",
-      [v]: 0,
-    },
-    {
-      name: "10",
-      [v]: 0,
-    },
-    {
-      name: "11",
-      [v]: 0,
-    },
-    {
-      name: "12",
-      [v]: 0,
-    },
-  ];
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
@@ -242,14 +197,86 @@ function Home(props) {
 
   }, [])
 
+  const handleChart = (e) => {
+    console.log(e.target.id)
+  }
+
   useEffect(() => {
 
 
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;  // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
+    const currentYear = currentDate.getFullYear();
+    const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+    //console.log(daysInMonth);
+    let datamonth_ = []
+    for (let i = 1; i <= daysInMonth; i++) {
+      datamonth_ = [
+        ...datamonth_,
+        { date: i < 10 ? `0${i}` : `${i}`, [vmonth]: 0 }]
+    }
+
+    let datayear_ = []
+    for (let i = 1; i <= 12; i++) {
+      datayear_ = [
+        ...datayear_,
+        { month: i < 10 ? `0${i}` : `${i}`, [vyear]: 0 }]
+    }
+
+
+
+
     let cap = []
-    plant.value.map((item, i) => {
+    let sum_month = []
+    let sum_year = []
+    plant.value.map(async (item, i) => {
+
+      let chart = await callApi('post', host.DATA + '/getMonthChart', {
+        plantid: item.plantid,
+        month: moment(new Date()).format("MM/YYYY"),
+      })
+      if (chart.status) {
+        sum_month[i] = chart.data.data.map(item => item.value).reduce((a, b) => Number(a) + Number(b), 0)
+        chart.data.data.map((item, j) => {
+          let index = datamonth_.findIndex((d) => d.date == item.date)
+          datamonth_[index][vmonth] = parseFloat(Number(datamonth_[index][vmonth]) + Number(item.value)).toFixed(2)
+        })
+
+      } else {
+        sum_month[i] = 0
+      }
+
+      let chartY = await callApi('post', host.DATA + '/getYearChart', {
+        plantid: item.plantid,
+        year: moment(new Date()).format("YYYY"),
+      })
+      if (chartY.status) {
+        sum_year[i] = chartY.data.data.map(item => item.value).reduce((a, b) => Number(a) + Number(b), 0)
+        chartY.data.data.map((item, j) => {
+          let index = datayear_.findIndex((d) => d.month == item.month)
+          datayear_[index][vyear] = parseFloat(Number(datayear_[index][vyear]) + Number(item.value)).toFixed(2)
+        })
+
+      } else {
+        sum_year[i] = 0
+      }
+
+
       cap[i] = item.capacity
       if (i == plant.value.length - 1) {
-        console.log(cap)
+        console.log(datamonth_, datayear_)
+        setDatamonth(datamonth_)
+        setDatayear(datayear_)
+
+
+
+        let total_month = parseFloat(sum_month.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
+        setMonthlyProduction(total_month)
+
+        let total_year = parseFloat(sum_year.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
+        setYearlyProduction(total_year)
+
         let total = parseFloat(cap.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
         setCapacity(total)
       }
@@ -373,7 +400,7 @@ function Home(props) {
             num_[key][i] = convertToDoublewordAndFloat(e, "int");
 
             if (i == logger.value.length - 1) {
-              console.log(num_)
+              //console.log(num_)
               cal[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
                 return Number(accumulator) + Number(currentValue)
               }, 0) * parseFloat(value.cal)).toFixed(2);
@@ -394,7 +421,7 @@ function Home(props) {
         }
       })
     })
-    console.log(num_)
+    //console.log(num_)
     setProduction(cal?.pro_1 || 0)
     setDailyProduction(cal?.pro_2 || 0)
     setTotalProduction(cal?.pro_3 || 0)
@@ -406,7 +433,7 @@ function Home(props) {
 
 
 
-  }, [invt, totalproduction, price])
+  }, [invt])
 
   return (
     <>
@@ -482,7 +509,7 @@ function Home(props) {
                 {dataLang.formatMessage({ id: 'monthOutputSmall' })}
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{monthlyproduction}</span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
@@ -494,7 +521,7 @@ function Home(props) {
                 {dataLang.formatMessage({ id: 'yearOutputSmall' })}
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{yearlyproduction}</span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
@@ -520,28 +547,37 @@ function Home(props) {
             <div className="DAT_Home_History-Head-Option">
               <span
                 style={{
-                  backgroundColor: "white",
-                  border: "solid 1.5px gray",
-                  color: "gray",
+                  backgroundColor: chart === "year" ? "#8adeff" : "white",
+                  border: chart === "year" ? 'solid 1.5px rgb(6, 126, 255)' : "solid 1.5px gray",
+                  color: chart === "year" ? "rgb(6, 126, 255)" : "gray",
+                }}
+              
+                onClick={() => {
+                  setChart("year");
                 }}
               >
                 {dataLang.formatMessage({ id: 'year' })}
               </span>
               <span
                 style={{
-                  backgroundColor: "#8adeff",
-                  border: "solid 1.5px rgb(6, 126, 255)",
-                  color: "rgb(6, 126, 255)",
+                  backgroundColor: chart === "month" ? "#8adeff" : "white",
+                  border: chart === "month" ? 'solid 1.5px rgb(6, 126, 255)' : "solid 1.5px gray",
+                  color: chart === "month" ? "rgb(6, 126, 255)" : "gray",
+                }}
+              
+                onClick={() => {
+                  setChart("month");
                 }}
               >
                 {dataLang.formatMessage({ id: 'month' })}
               </span>
             </div>
             <div className="DAT_Home_History-Head-Datetime">
-              <input
+              {chart === "year" ? moment(new Date()).format("YYYY") : moment(new Date()).format("MM/YYYY")}
+              {/* <input
                 type="month"
                 defaultValue={moment(new Date()).format("YYYY-MM")}
-              ></input>
+              ></input> */}
             </div>
           </div>
 
@@ -549,29 +585,51 @@ function Home(props) {
             <div className="DAT_Home_History-Chart-label">
               <div className="DAT_Home_History-Chart-label-Unit">MWh</div>
               <div className="DAT_Home_History-Chart-label-Label">
-                {dataLang.formatMessage({ id: 'yearOutputSmall' })}: 1.69 MWh
+                {dataLang.formatMessage({ id: 'monthOutputSmall' })}: {chart === "year" ? yearlyproduction : monthlyproduction} kWh
               </div>
             </div>
             <div className="DAT_Home_History-Chart-Content">
-              <ResponsiveContainer
-                style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-              >
-                <BarChart width={150} height={200} data={data}>
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} />
-                  <YAxis axisLine={false} tickLine={false} />
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <Tooltip />
-                  <Legend />
-                  <Bar
-                    shape={<TriangleBar />}
-                    dataKey={v}
-                    fill="#6495ed"
-                    barSize={15}
-                    legendType="circle"
-                    style={{ fill: "#6495ed" }}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
+              {chart === "year" ?
+                <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <BarChart width={150} height={200} data={datayear}>
+                    <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                    <YAxis axisLine={false} tickLine={false} />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      shape={<TriangleBar />}
+                      dataKey={vyear}
+                      fill="#6495ed"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "#6495ed" }}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+                : <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <BarChart width={150} height={200} data={datamonth}>
+                    <XAxis dataKey="date" axisLine={false} tickLine={false} />
+                    <YAxis axisLine={false} tickLine={false} />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      shape={<TriangleBar />}
+                      dataKey={vmonth}
+                      fill="#6495ed"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "#6495ed" }}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              }
+
             </div>
           </div>
         </div>
@@ -656,10 +714,10 @@ function Home(props) {
               {dataLang.formatMessage({ id: 'rushhour' })}
             </div>
             <div className="DAT_Home_Rank-Head-Datetime">
-              <input
+              {/* <input
                 type="month"
                 defaultValue={moment(new Date()).format("YYYY-MM")}
-              ></input>
+              ></input> */}
             </div>
           </div>
           <div className="DAT_Home_Rank-Content">

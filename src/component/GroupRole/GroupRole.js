@@ -366,7 +366,7 @@ function GroupRole(props) {
           <>
             <div className="DAT_Modify">
               <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
-              <div className="DAT_Modify_Item" onClick={() => (createState.value = true)}><IoAddOutline color="white" size={20} /></div>
+              <div className="DAT_Modify_Add" onClick={() => (createState.value = true)}><IoAddOutline color="white" size={20} /></div>
             </div>
 
             {filter ? (

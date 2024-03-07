@@ -64,6 +64,7 @@ function Login(props) {
                 } else {
                     sessionStorage.setItem('token', JSON.stringify(res.accessToken))
                 }
+                window.location.reload();
                 rootDispatch(adminslice.actions.setstatus(res.status))
                 rootDispatch(adminslice.actions.setusr(res.user))
             } else {
