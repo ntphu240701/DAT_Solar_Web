@@ -1618,8 +1618,8 @@ function ProjectData(props) {
             case "device":
               return (
                 <div className="DAT_ProjectData_Device">
-                  <div className="DAT_ProjectData_Device_Analysis">
-                    {/* <div className="DAT_ProjectData_Device_Analysis_Func">
+                  {/* <div className="DAT_ProjectData_Device_Analysis"> */}
+                  {/* <div className="DAT_ProjectData_Device_Analysis_Func">
                       <div className="DAT_ProjectData_Device_Analysis_Func_Select">
                         <select>
                           <option hidden>Trạng thái</option>
@@ -1644,71 +1644,155 @@ function ProjectData(props) {
                       </button>
                     </div> */}
 
-                    <div className="DAT_ProjectData_Device_Analysis_Table">
-                      {isMobile.value ? (
-                        <div className="DAT_Toollist_Tab_Mobile">
-                          <button className="DAT_Toollist_Tab_Mobile_content"
-                            onClick={() => (tabMobile.value = !tabMobile.value)}
-                          >
-                            <span> {tabLable.value}</span>
-                            {tabMobile.value ? (
-                              <IoIosArrowDown />
-                            ) : (
-                              <IoIosArrowForward />
-                            )}
-                          </button>
+                  {isMobile.value ? (
+                    <div className="DAT_ProjectData_Device_TableMobile">
+                      <div className="DAT_Toollist_Tab_Mobile">
+                        <button className="DAT_Toollist_Tab_Mobile_content"
+                          onClick={() => (tabMobile.value = !tabMobile.value)}
+                        >
+                          <span> {tabLable.value}</span>
                           {tabMobile.value ? (
-
-                            <div className="DAT_Toollist_Tab_Mobile_list">
-                              {listDeviceTab.map((item, i) => {
-                                return (
-                                  <div className="DAT_Toollist_Tab_Mobile_list_item"
-                                    // style={{ display: tabMobile.value ? "block" : "none" }}
-                                    key={"tabmobile_" + i}
-                                    id={item.id}
-                                    onClick={(e) => handleTabMobileDevice(e)}
-                                  >
-                                    {i + 1}: {item.name}
-                                  </div>
-                                );
-                              })}
-                            </div>
+                            <IoIosArrowDown />
                           ) : (
-                            <></>
+                            <IoIosArrowForward />
                           )}
-                        </div>
-                      ) : (
-                        <div className="DAT_Toollist_Tab">
-                          {listDeviceTab.map((item, i) => {
-                            return tab.value === item.id ? (
-                              <div className="DAT_Toollist_Tab_main"
-                                key={"tab_" + i}
-                              >
-                                <p className="DAT_Toollist_Tab_main_left"></p>
-                                <span className="DAT_Toollist_Tab_main_content1"
+                        </button>
+                        {tabMobile.value ? (
+
+                          <div className="DAT_Toollist_Tab_Mobile_list">
+                            {listDeviceTab.map((item, i) => {
+                              return (
+                                <div className="DAT_Toollist_Tab_Mobile_list_item"
+                                  // style={{ display: tabMobile.value ? "block" : "none" }}
+                                  key={"tabmobile_" + i}
                                   id={item.id}
-                                  style={{ backgroundColor: "White", color: "black", borderRadius: "10px 10px 0 0" }}
-                                  onClick={(e) => (tab.value = item.id)}
+                                  onClick={(e) => handleTabMobileDevice(e)}
                                 >
-                                  {item.name}
-                                </span>
-                                <p className="DAT_Toollist_Tab_main_right"></p>
-                              </div>
-                            ) : (
-                              <span className="DAT_Toollist_Tab_main_content2"
-                                key={"tab_" + i}
+                                  {i + 1}: {item.name}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+
+                      {(() => {
+                        switch (tab.value) {
+                          case "inverter":
+                            return (
+                              <DataTable className="DAT_Table_Device"
+                                columns={columnInverter}
+                                data={tempInverter}
+                                pagination
+                                paginationComponentOptions={paginationComponentOptions}
+                                fixedHeader={true}
+                                noDataComponent={<Empty />}
+                              />
+                            );
+                          case "meter":
+                            return (
+                              <DataTable className="DAT_Table_Device"
+                                columns={columnMeter}
+                                data={dataMeter}
+                                pagination
+                                paginationComponentOptions={paginationComponentOptions}
+                                fixedHeader={true}
+                                noDataComponent={<Empty />}
+                              />
+                            );
+                          case "logger":
+                            return (
+                              <>
+                                {temp.value?.map((item, i) => {
+                                  return (
+                                    <div key={i} className="DAT_ProjectData_Device_TableMobile_Content">
+                                      <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left">
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Name">
+                                            Tên: {item.name}
+                                          </div>
+
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Sn">
+                                            SN: {item.sn}
+                                          </div>
+                                        </div>
+
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right">
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item" onClick={(e) => handleEdit(e)}>
+                                            <MdEdit size={20} color="#216990" />
+                                          </div>
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
+                                            id={item.sn}
+                                            onClick={(e) => handleDelete(e)}
+                                          >
+                                            <MdDelete size={20} color="red" />
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom">
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_State">
+                                          {item.state ?
+                                            <>
+                                              <FaCheckCircle size={20} color="green" />
+                                              <span>{dataLang.formatMessage({ id: 'online' })}</span>
+                                            </>
+                                            :
+                                            <>
+                                              <MdOutlineError size={22} color="red" />
+                                              <span>{dataLang.formatMessage({ id: 'offline' })}</span>
+                                            </>
+                                          }
+                                        </div>
+
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_Type">
+                                          Loại: {item.type}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )
+                                })}
+                              </>
+                            );
+                          default:
+                            return <></>;
+                        }
+                      })()}
+                    </div>
+                  ) : (
+                    <div className="DAT_ProjectData_Device_Table">
+                      <div className="DAT_Toollist_Tab">
+                        {listDeviceTab.map((item, i) => {
+                          return tab.value === item.id ? (
+                            <div className="DAT_Toollist_Tab_main"
+                              key={"tab_" + i}
+                            >
+                              <p className="DAT_Toollist_Tab_main_left"></p>
+                              <span className="DAT_Toollist_Tab_main_content1"
                                 id={item.id}
-                                style={{ backgroundColor: "#dadada" }}
+                                style={{ backgroundColor: "White", color: "black", borderRadius: "10px 10px 0 0" }}
                                 onClick={(e) => (tab.value = item.id)}
                               >
                                 {item.name}
                               </span>
-                            );
-                          })}
-                        </div>
-                      )}
+                              <p className="DAT_Toollist_Tab_main_right"></p>
+                            </div>
+                          ) : (
+                            <span className="DAT_Toollist_Tab_main_content2"
+                              key={"tab_" + i}
+                              id={item.id}
+                              style={{ backgroundColor: "#dadada" }}
+                              onClick={(e) => (tab.value = item.id)}
+                            >
+                              {item.name}
+                            </span>
+                          );
+                        })}
+                      </div>
 
-                      <div className="DAT_ProjectData_Device_Analysis_Table_Content">
+                      <div className="DAT_ProjectData_Device_Table_Content">
                         {(() => {
                           switch (tab.value) {
                             case "inverter":
@@ -1750,7 +1834,9 @@ function ProjectData(props) {
                         })()}
                       </div>
                     </div>
-                  </div>
+                  )}
+
+                  {/* </div> */}
                 </div>
               );
             case "alert":

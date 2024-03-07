@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import adminslice from "../Redux/adminslice";
 import './Login.scss'
 import { CiBarcode, CiMail, CiUser } from "react-icons/ci";
-import { MdPassword } from "react-icons/md";
+import { MdLanguage, MdPassword } from "react-icons/md";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { host } from '../Lang/Contant';
@@ -16,6 +16,7 @@ import { BsTelephoneInbound } from "react-icons/bs";
 import { HiOutlineMapPin } from "react-icons/hi2";
 import { signal } from '@preact/signals-react';
 import { callApi } from '../Api/Api';
+import { set } from 'lodash';
 
 const tab = signal('login');
 
@@ -37,11 +38,12 @@ function Login(props) {
     const [showpass2, setShowpass2] = useState(false);
     const [OTP, setOTP] = useState('');
     const [joinOTP, setJoinOTP] = useState('');
+    const [lang, setLang] = useState('vi');
     //const status = useSelector((state) => state.admin.status)
 
     useEffect(function () {
         setOTP(generateOTP());
-        rootDispatch(adminslice.actions.setlang('vi'))
+        rootDispatch(adminslice.actions.setlang(lang))
     }, []);
     const generateOTP = () => {
         let digits =
@@ -175,19 +177,38 @@ function Login(props) {
         }
     }
 
+    const handleLang = function () {
+        rootDispatch(adminslice.actions.setlang(lang === 'vi' ? 'en' : 'vi'));
+        setLang(lang === 'vi' ? 'en' : 'vi');
+    }
+
 
     return (
         <div className='DAT_Login' >
+            <div className="DAT_Login_Head" >
+                <div className="DAT_Login_Head_Logo">
+                    <img src={"/dat_icon/logo-dat.png"} />
+                </div>
+                <div className="DAT_Login_Head_Title">
+                    <div className="DAT_Login_Head_Title_Main" >EMBODY</div>
+                    <div className="DAT_Login_Head_Title_Sub">{dataLang.formatMessage({ id: 'sologon' })} </div>
+                </div>
+                <div className="DAT_Login_Head_Lang" onClick={(e) => { handleLang(e) }}>
+                    <span>{lang === 'vi' ? 'Vi' : 'En'}</span>
+                    <span><MdLanguage color='white' size={24} /></span>
+                </div>
+            </div>
+
             {(() => {
                 switch (tab.value) {
-                    case "register":
+                    case "register_2":
                         return (
                             <form className="DAT_Login_Form" onSubmit={handleRegister}>
                                 <p>{dataLang.formatMessage({ id: 'register' })}</p>
-                                <div className="DAT_Login_Form-input">
+                                {/* <div className="DAT_Login_Form-input">
                                     <CiUser color='gray' size={24} />
                                     <input type="text" placeholder={dataLang.formatMessage({ id: 'username' })} minLength={4} required value={user} onChange={(e) => { setUser(e.target.value.trim().toLocaleLowerCase()) }} autoComplete="on" />
-                                </div>
+                                </div> */}
                                 <div className="DAT_Login_Form-input">
                                     <CiMail color='gray' size={24} />
                                     <input type="email" placeholder={dataLang.formatMessage({ id: 'email' })} required value={mail} onChange={(e) => { setMail(e.target.value) }} autoComplete="on" />
@@ -202,6 +223,72 @@ function Login(props) {
                                     <input type={(showpass2) ? "text" : "password"} placeholder={dataLang.formatMessage({ id: 'auth_pwd' })} required minLength="6" value={newpwd} onChange={(e) => { setNewpwd(e.target.value.trim()) }} autoComplete="on" />
                                     {(showpass2) ? <FaRegEye color='gray' size={24} onClick={() => setShowpass2(!showpass2)} /> : <FaRegEyeSlash color='gray' size={24} onClick={() => setShowpass2(!showpass2)} />}
                                 </div>
+
+                                {/* <div className="DAT_Login_Form-input">
+                                    <LuUserCheck color='gray' size={24} />
+                                    <input type="text" placeholder={dataLang.formatMessage({ id: 'name' })} minLength={6} required value={name} onChange={(e) => { setName(e.target.value) }} autoComplete="on" />
+                                </div>
+
+                                <div className="DAT_Login_Form-input">
+                                    <BsTelephoneInbound color='gray' size={24} />
+                                    <input type="number" placeholder={dataLang.formatMessage({ id: 'phone' })} required value={phone} minLength={10} onChange={(e) => { setPhone(e.target.value) }} autoComplete="on" />
+                                </div>
+
+                                <div className="DAT_Login_Form-input">
+                                    <HiOutlineMapPin color='gray' size={24} />
+                                    <input type="text" placeholder={dataLang.formatMessage({ id: 'addr' })} minLength={6} required value={addr} onChange={(e) => { setAddr(e.target.value) }} autoComplete="on" />
+                                </div> */}
+
+
+                                <div className="DAT_Login_Form-box" style={{ marginBottom: join ? '10px' : '20px' }}>
+                                    <input
+                                        id="savepwd"
+                                        type="checkbox"
+                                        checked={join}
+                                        onChange={e => setJoin(e.target.checked)}
+                                    />
+                                    <label htmlFor="savepwd" />
+                                    {dataLang.formatMessage({ id: 'join' })}
+                                </div>
+
+                                {join
+                                    ? <div className="DAT_Login_Form-input">
+                                        <CiBarcode color='gray' size={24} />
+                                        <input type="text" placeholder={dataLang.formatMessage({ id: 'join' })} minLength={3} required={join} value={joinCode} onChange={(e) => { setJoinCode(e.target.value.trim()) }} autoComplete="on" />
+                                    </div>
+                                    : <></>
+                                }
+
+                                <button>{dataLang.formatMessage({ id: 'update' })}</button>
+
+                                <div className="DAT_Login_Form-footer">
+                                    <span onClick={() => tab.value = 'register_1'}>{dataLang.formatMessage({ id: 'previous' })}</span>
+                                    <span onClick={() => tab.value = 'login'}>{dataLang.formatMessage({ id: 'login' })}</span>
+                                </div>
+                            </form>
+                        )
+                    case "register_1":
+                        return (
+                            <form className="DAT_Login_Form" onSubmit={(e) => { e.preventDefault(); tab.value = 'register_2' }}>
+                                <p>{dataLang.formatMessage({ id: 'register' })}</p>
+                                <div className="DAT_Login_Form-input">
+                                    <CiUser color='gray' size={24} />
+                                    <input type="text" placeholder={dataLang.formatMessage({ id: 'username' })} minLength={4} required value={user} onChange={(e) => { setUser(e.target.value.trim().toLocaleLowerCase()) }} autoComplete="on" />
+                                </div>
+                                {/* <div className="DAT_Login_Form-input">
+                                    <CiMail color='gray' size={24} />
+                                    <input type="email" placeholder={dataLang.formatMessage({ id: 'email' })} required value={mail} onChange={(e) => { setMail(e.target.value) }} autoComplete="on" />
+                                </div>
+                                <div className="DAT_Login_Form-input">
+                                    <MdPassword color='gray' size={24} />
+                                    <input type={(showpass) ? "text" : "password"} placeholder={dataLang.formatMessage({ id: 'password' })} required minLength="6" value={pass} onChange={(e) => { setPass(e.target.value.trim()) }} autoComplete="on" />
+                                    {(showpass) ? <FaRegEye color='gray' size={24} onClick={() => setShowpass(!showpass)} /> : <FaRegEyeSlash color='gray' size={24} onClick={() => setShowpass(!showpass)} />}
+                                </div>
+                                <div className="DAT_Login_Form-input">
+                                    <TbPasswordFingerprint color='gray' size={24} />
+                                    <input type={(showpass2) ? "text" : "password"} placeholder={dataLang.formatMessage({ id: 'auth_pwd' })} required minLength="6" value={newpwd} onChange={(e) => { setNewpwd(e.target.value.trim()) }} autoComplete="on" />
+                                    {(showpass2) ? <FaRegEye color='gray' size={24} onClick={() => setShowpass2(!showpass2)} /> : <FaRegEyeSlash color='gray' size={24} onClick={() => setShowpass2(!showpass2)} />}
+                                </div> */}
 
                                 <div className="DAT_Login_Form-input">
                                     <LuUserCheck color='gray' size={24} />
@@ -219,7 +306,7 @@ function Login(props) {
                                 </div>
 
 
-                                <div className="DAT_Login_Form-box" style={{ marginBottom: join ? '10px' : '20px' }}>
+                                {/* <div className="DAT_Login_Form-box" style={{ marginBottom: join ? '10px' : '20px' }}>
                                     <input
                                         id="savepwd"
                                         type="checkbox"
@@ -228,17 +315,17 @@ function Login(props) {
                                     />
                                     <label htmlFor="savepwd" />
                                     {dataLang.formatMessage({ id: 'join' })}
-                                </div>
+                                </div> */}
 
-                                {join
+                                {/* {join
                                     ? <div className="DAT_Login_Form-input">
                                         <CiBarcode color='gray' size={24} />
                                         <input type="text" placeholder={dataLang.formatMessage({ id: 'join' })} minLength={4} required={join} value={joinCode} onChange={(e) => { setJoinCode(e.target.value.trim()) }} autoComplete="on" />
                                     </div>
                                     : <></>
-                                }
+                                } */}
 
-                                <button>{dataLang.formatMessage({ id: 'update' })}</button>
+                                <button>{dataLang.formatMessage({ id: 'next' })}</button>
 
                                 <div className="DAT_Login_Form-footer">
                                     <span></span>
@@ -279,7 +366,7 @@ function Login(props) {
 
 
                                 <div className="DAT_Login_Form-footer">
-                                    <span></span>
+
                                     <span onClick={() => tab.value = 'login'}>{dataLang.formatMessage({ id: 'login' })}</span>
                                 </div>
                             </form>
@@ -312,7 +399,7 @@ function Login(props) {
                     case "login":
                         return (
                             <form className="DAT_Login_Form" onSubmit={handleLogin}>
-                                <p>DAT GROUP</p>
+                                <p>{dataLang.formatMessage({ id: 'login' })}</p>
                                 <div className="DAT_Login_Form-input">
                                     <CiUser color='gray' size={24} />
                                     <input type="text" placeholder={dataLang.formatMessage({ id: 'username' })} required minLength="4" value={user} onChange={(e) => { setUser(e.target.value.trim().toLocaleLowerCase()) }} autoComplete="on" />
@@ -337,7 +424,7 @@ function Login(props) {
                                 <button>{dataLang.formatMessage({ id: 'login' })}</button>
 
                                 <div className="DAT_Login_Form-footer">
-                                    <span onClick={() => tab.value = 'register'} >{dataLang.formatMessage({ id: 'register' })}</span>
+                                    <span onClick={() => tab.value = 'register_1'} >{dataLang.formatMessage({ id: 'register' })}</span>
                                     <span onClick={() => tab.value = 'otp'} >{dataLang.formatMessage({ id: 'forgot_pwd' })}</span>
                                 </div>
 
@@ -359,6 +446,19 @@ function Login(props) {
 
                 }
             })()}
+
+            <div className="DAT_Login_Footer" >
+                <div className='DAT_Login_Footer_Info'>
+                    <span className="DAT_Login_Footer_Info_Version">
+                        {dataLang.formatMessage({ id: 'version' })}: 1.0
+                    </span>
+                    &nbsp;
+                    <span className="DAT_Login_Footer_Info_Title">
+                        Copyright © 2020 - 2024 DAT.
+                    </span>
+                </div>
+
+            </div>
         </div>
     );
 }
