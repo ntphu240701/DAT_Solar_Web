@@ -221,7 +221,7 @@ function Navigation(props) {
                     : "/dat_icon/logo_DAT.png"
                 }
                 alt=""
-                style={{ height: "30px" }}
+                style={{ height: "40px" }}
               />
             </div>
           </Link>

@@ -18,7 +18,7 @@ import { VscDashboard } from "react-icons/vsc";
 import { IoIosArrowForward, IoIosCloud } from "react-icons/io";
 import { Empty } from "../Project/Project";
 import DataTable from "react-data-table-component";
-import { MdPermDataSetting } from "react-icons/md";
+import { GiCoalWagon } from "react-icons/gi";
 import { useSelector } from "react-redux";
 import { Token, partnerInfor, userInfor } from "../../App";
 import { host } from "../Lang/Contant";
@@ -458,7 +458,7 @@ function Home(props) {
               <div className="DAT_Home_Overview-Main-Percent-Item">
                 <div className="DAT_Home_Overview-Main-Percent-Item-value">
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_num">
-                    {parseFloat((production / capacity) * 100).toFixed(2) === "Nan" ? "--" : parseFloat((production / capacity) * 100).toFixed(2)}
+                    {parseFloat((production / capacity) * 100).toFixed(2) === "NaN" ? "--" : parseFloat((production / capacity) * 100).toFixed(2)}
                   </div>
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">%</div>
                 </div>
@@ -742,7 +742,7 @@ function Home(props) {
           <div className="DAT_Home_Benefit_Content">
             <div className="DAT_Home_Benefit_Content_Item">
               <div className="DAT_Home_Benefit_Content_Item_Icon">
-                <MdPermDataSetting size={24} color="#6495ed" />
+                <GiCoalWagon size={24} color="#6495ed" />
               </div>
               <div className="DAT_Home_Benefit_Content_Item_Detail">
                 <div style={{ fontSize: "14px", color: "grey" }}>
