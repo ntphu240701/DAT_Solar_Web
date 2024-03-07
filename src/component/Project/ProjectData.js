@@ -1711,12 +1711,29 @@ function ProjectData(props) {
                                       <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
                                         <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info">
                                           <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_Name">
-                                            {item.name}
+                                            Tên: {item.name}
                                           </div>
 
-                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_Status">
-                                            {item.sn}
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_Sn">
+                                            SN: {item.sn}
+                                          </div>
 
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_State">
+                                            {item.state ?
+                                              <>
+                                                <FaCheckCircle size={20} color="green" />
+                                                <span>{dataLang.formatMessage({ id: 'online' })}</span>
+                                              </>
+                                              :
+                                              <>
+                                                <MdOutlineError size={22} color="red" />
+                                                <span>{dataLang.formatMessage({ id: 'offline' })}</span>
+                                              </>
+                                            }
+                                          </div>
+
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_Type">
+                                            Loại: {item.type}
                                           </div>
                                         </div>
                                       </div>

@@ -1466,6 +1466,23 @@
                             color: black;
                             font-size: 16px;
                             margin-bottom: 5px;
+                            display: flex;
+                            align-items: center;
+                            // justify-content: center;
+                            cursor: pointer;
+
+                            &:hover {
+                                color: #6495ed;
+                            }
+                        }
+
+                        &_Sn {
+                            color: black;
+                            font-size: 16px;
+                            margin-bottom: 5px;
+                            display: flex;
+                            align-items: center;
+                            // justify-content: center;
                             cursor: pointer;
 
                             &:hover {
@@ -1474,40 +1491,39 @@
                         }
 
                         &_State {
-                            display: flex;
-                            gap: 20px;
+                            // display: flex;
+                            // gap: 10px;
                             margin-bottom: 5px;
-
-                            &_Item {
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                gap: 5px;
-                            }
-                        }
-
-                        &_Data {
-                            width: 100%;
                             display: flex;
                             align-items: center;
-                            justify-content: space-between;
+                            justify-content: center;
+                            gap: 5px;
 
-                            &_Item {
-                                &_Name {
-                                    color: gray;
-                                    font-size: 15px;
-                                }
-
-                            }
+                            &_Item {}
                         }
+
+                        // &_Data {
+                        //     width: 100%;
+                        //     display: flex;
+                        //     align-items: center;
+                        //     justify-content: space-between;
+
+                        //     &_Item {
+                        //         &_Name {
+                        //             color: gray;
+                        //             font-size: 15px;
+                        //         }
+
+                        //     }
+                        // }
                     }
 
 
                 }
 
-                &_Bottom {
-                    padding: 10px;
-                }
+                // &_Bottom {
+                //     padding: 10px;
+                // }
             }
         }
 
