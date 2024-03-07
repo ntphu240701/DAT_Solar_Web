@@ -6,7 +6,6 @@ import { IoMdAnalytics } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { signal } from "@preact/signals-react";
 import CreateGroupRole from "./CreateGroupRole";
-import { FaUserPlus, FaUsers } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import Popup from "./Popup";

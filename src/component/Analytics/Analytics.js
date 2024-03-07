@@ -6,7 +6,7 @@ import { Empty } from "../Project/Project";
 import { signal } from "@preact/signals-react";
 import AnaCreate from "./AnaCreate";
 import { useIntl } from "react-intl";
-import { FcParallelTasks } from "react-icons/fc";
+import { TiFlowSwitch } from "react-icons/ti";
 import { TbReport } from "react-icons/tb";
 
 export const anaState = signal("default");
@@ -71,7 +71,7 @@ function Analytics(props) {
     <>
       <div className="DAT_AnaHeader">
         <div className="DAT_AnaHeader_Title">
-          <FcParallelTasks color="gray" size={25} />
+          <TiFlowSwitch color="gray" size={25} />
           <span>
             {dataLang.formatMessage({ id: 'analytics' })}
           </span>

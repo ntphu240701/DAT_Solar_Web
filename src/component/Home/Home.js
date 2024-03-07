@@ -19,7 +19,6 @@ import { IoIosArrowForward, IoIosCloud } from "react-icons/io";
 import { Empty } from "../Project/Project";
 import DataTable from "react-data-table-component";
 import { MdPermDataSetting } from "react-icons/md";
-import { RiMoneyCnyCircleFill } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { Token, partnerInfor, userInfor } from "../../App";
 import { host } from "../Lang/Contant";
@@ -29,6 +28,7 @@ import { get } from "lodash";
 import axios from "axios";
 import { useIntl } from "react-intl";
 import { coalsave } from "../Project/ProjectData";
+import { FaMoneyBill } from "react-icons/fa";
 
 const plant = signal([])
 const logger = signal([])
@@ -43,7 +43,6 @@ const AnyReactComponent = ({ text }) => {
     </div>
   )
 }
-
 
 function Home(props) {
   const usr = useSelector((state) => state.admin.usr)
@@ -797,7 +796,7 @@ function Home(props) {
             </div>
             <div className="DAT_Home_Benefit_Content_Item">
               <div className="DAT_Home_Benefit_Content_Item_Icon">
-                <RiMoneyCnyCircleFill size={24} color="#6495ed" />
+                <FaMoneyBill size={24} color="#6495ed" />
               </div>
               <div className="DAT_Home_Benefit_Content_Item_Detail">
                 <div style={{ fontSize: "14px", color: "grey" }}>

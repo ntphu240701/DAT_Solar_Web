@@ -3,7 +3,6 @@ import "./Device.scss";
 import DataTable from "react-data-table-component";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdDelete, MdEdit, MdDevices, MdOutlineError } from "react-icons/md";
-import { MdEditDocument } from "react-icons/md";
 import { signal } from "@preact/signals-react";
 import { CiSearch } from "react-icons/ci";
 import { Empty } from "../Project/Project";
@@ -19,9 +18,7 @@ import { host } from "../Lang/Contant";
 import { set } from "lodash";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
-import { IoAddOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-import { FcSurvey } from "react-icons/fc";
 
 export const tab = signal("logger");
 const tabLable = signal("");

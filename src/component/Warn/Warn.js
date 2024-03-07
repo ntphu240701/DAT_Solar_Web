@@ -141,13 +141,13 @@ function Warn(props) {
       minWidth: "120px",
     },
     {
-      name: "Thời gian hiện cảnh báo",
+      name: dataLang.formatMessage({ id: 'openWarnTime' }),
       selector: (row) => row.opentime,
       sortable: true,
       width: "200px",
     },
     {
-      name: "Thời gian đóng cảnh báo",
+      name: dataLang.formatMessage({ id: 'closeWarnTime' }),
       selector: (row) => row.closedtime,
       sortable: true,
       width: "200px",
