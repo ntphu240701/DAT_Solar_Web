@@ -11,7 +11,7 @@ const idplus = signal(2);
 const newdb = signal({
   id: 0,
   name: "",
-  subinfo: "",
+  code: "",
   role: {
     1: { lang: "role1", status: false },
     2: { lang: "role2", status: false },
@@ -68,15 +68,15 @@ export default function CreateGroupRole() {
   const dataLang = useIntl();
 
   const [name, setName] = useState("");
-  const [subinfo, setSubinfo] = useState("");
+  const [code, setCode] = useState("");
   const handleCreate = () => {
-    if (name !== "" || subinfo !== "") {
+    if (name !== "" || code !== "") {
       idplus.value += 1;
       newdb.value = {
         ...newdb.value,
         id: idplus.value,
         name: name,
-        subinfo: subinfo,
+        code: code,
       };
       const arr = {
         groupid: idplus.value,
@@ -125,7 +125,7 @@ export default function CreateGroupRole() {
             </div>
             <div className="DAT_CreateGroupRole_Body_Item_Input">
               <span>{dataLang.formatMessage({ id: 'groupInfo' })}:</span>
-              <input type="text" onChange={(e) => setSubinfo(e.target.value)} required />
+              <input type="text" onChange={(e) => setCode(e.target.value)} required />
             </div>
             <div className="DAT_CreateGroupRole_Body_Item_Checkbox">
               {Object.entries(newdb.value.role).map(([key, value]) => (

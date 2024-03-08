@@ -45,14 +45,14 @@ const CheckBox = (props) => {
 export default function CreateGroupRole() {
   const dataLang = useIntl();
   const [name, setName] = useState(groupEdit.value.name);
-  const [subinfo, setSubinfo] = useState(groupEdit.value.subinfo);
+  const [code, setCode] = useState(groupEdit.value.code);
 
   const handleSave = () => {
     const t = group.value.findIndex((item) => item.id == groupEdit.value.id);
     group.value[t] = {
       ...group.value[t],
       name: name,
-      subinfo: subinfo,
+      code: code,
       role: groupEdit.value.role,
     }
     editState.value = false;
@@ -64,8 +64,8 @@ export default function CreateGroupRole() {
     setName(e.currentTarget.value);
   };
 
-  const handleEditSubinfo = (e) => {
-    setSubinfo(e.currentTarget.value);
+  const handleEditCode = (e) => {
+    setCode(e.currentTarget.value);
   };
 
   return (
@@ -108,8 +108,8 @@ export default function CreateGroupRole() {
               <span>{dataLang.formatMessage({ id: 'groupInfo' })}:</span>
               <input
                 type="text"
-                value={subinfo}
-                onChange={(e) => handleEditSubinfo(e)}
+                value={code}
+                onChange={(e) => handleEditCode(e)}
               />
             </div>
             <div className="DAT_CreateGroupRole_Body_Item_Checkbox">

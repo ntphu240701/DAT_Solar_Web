@@ -531,7 +531,7 @@ function Device(props) {
                               id={item.pid + "_" + tab.value}
                               onClick={(e) => handleShowInfo(e)}
                             >
-                              <div className="DAT_DeviceMobile_Content_Top_Left_Name">Tên: {item.pname}</div>
+                              <div className="DAT_DeviceMobile_Content_Top_Left_Name">{dataLang.formatMessage({ id: 'name' })}: {item.pname}</div>
                               <div className="DAT_DeviceMobile_Content_Top_Left_Sn">SN: {item.psn}</div>
                             </div>
 
@@ -564,7 +564,7 @@ function Device(props) {
                             </div>
 
                             <div className="DAT_DeviceMobile_Content_Bottom_Type">
-                              Dự án: {item.pplantname}
+                              {dataLang.formatMessage({ id: 'project' })}: {item.pplantname}
                             </div>
                           </div>
                         </div>

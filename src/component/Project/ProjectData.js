@@ -6,7 +6,7 @@ import { isMobile } from "../Navigation/Navigation";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from "recharts";
 
 import { IoIosArrowDown, IoIosArrowForward, IoIosCloud, IoMdMore } from "react-icons/io";
-import { IoArrowForward, IoCalendarOutline, IoMenu } from "react-icons/io5";
+import { IoAdd, IoAddOutline, IoArrowForward, IoCalendarOutline, IoMenu } from "react-icons/io5";
 import { MdDelete, MdEdit, MdOutlineError, MdPermDataSetting } from "react-icons/md";
 import { FaCheckCircle, FaTree } from "react-icons/fa";
 import { RiMoneyCnyCircleFill } from "react-icons/ri";
@@ -705,19 +705,30 @@ function ProjectData(props) {
 
       const getMonth = async () => {
         const d = await callApi('post', host.DATA + '/getMonthChart', { plantid: projectData.value.plantid, month: moment(date).format("MM/YYYY") });
-        setDataMonth([]);
         if (d.status) {
           //console.log(d.data)
-          let vMonth = d.data.name;
+          let vMonth = dataLang.formatMessage({ id: d.data.name });
+          const currentDate = new Date(date);
+          const currentMonth = currentDate.getMonth() + 1;  // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
+          const currentYear = currentDate.getFullYear();
+          const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+          let datamonth_ = []
+          for (let i = 1; i <= daysInMonth; i++) {
+            datamonth_ = [
+              ...datamonth_,
+              { date: i < 10 ? `0${i}` : `${i}`, [vMonth]: 0 }]
+          }
           let sum_month = []
           d.data.data.map((item, i) => {
-            setDataMonth((old) => [...old, { date: item.date, [vMonth]: item.value }]);
+            let index = datamonth_.findIndex((d) => d.date == item.date)
+            datamonth_[index][vMonth] = item.value
             sum_month[i] = item.value
             if (i == d.data.data.length - 1) {
               cal.value['pro_month'] = parseFloat(sum_month.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
             }
           });
-          setVMonth(d.data.name);
+          setVMonth(vMonth);
+          setDataMonth(datamonth_);
         } else {
           setDataMonth([]);
           setVMonth(dataLang.formatMessage({ id: 'unknown' }));
@@ -729,19 +740,26 @@ function ProjectData(props) {
 
       const getYear = async () => {
         const d = await callApi('post', host.DATA + '/getYearChart', { plantid: projectData.value.plantid, year: moment(date).format("YYYY") });
-        setDataYear([]);
         if (d.status) {
           //console.log(d.data)
-          let vYear = d.data.name;
+          let vYear = dataLang.formatMessage({ id: d.data.name });
           let sum_year = []
+          let datayear_ = []
+          for (let i = 1; i <= 12; i++) {
+            datayear_ = [
+              ...datayear_,
+              { month: i < 10 ? `0${i}` : `${i}`, [vYear]: 0 }]
+          }
           d.data.data.map((item, i) => {
-            setDataYear((old) => [...old, { month: item.month, [vYear]: item.value }]);
+            let index = datayear_.findIndex((d) => d.month == item.month)
+            datayear_[index][vYear] = item.value
             sum_year[i] = item.value
             if (i == d.data.data.length - 1) {
               cal.value['pro_year'] = parseFloat(sum_year.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
             }
           });
-          setVYear(d.data.name);
+          setVYear(vYear);
+          setDataYear(datayear_);
         } else {
           setDataYear([]);
           setVYear(dataLang.formatMessage({ id: 'unknown' }));
@@ -815,19 +833,33 @@ function ProjectData(props) {
     // }
     const getMonth = async () => {
       const d = await callApi('post', host.DATA + '/getMonthChart', { plantid: projectData.value.plantid, month: moment(new Date()).format("MM/YYYY") });
-      setDataMonth([]);
       if (d.status) {
         //console.log(d.data)
         let vMonth = dataLang.formatMessage({ id: d.data.name });
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1;  // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
+        const currentYear = currentDate.getFullYear();
+        const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+        let datamonth_ = []
+        for (let i = 1; i <= daysInMonth; i++) {
+          datamonth_ = [
+            ...datamonth_,
+            { date: i < 10 ? `0${i}` : `${i}`, [vMonth]: 0 }]
+        }
         let sum_month = []
         d.data.data.map((item, i) => {
-          setDataMonth((old) => [...old, { date: item.date, [vMonth]: item.value }]);
+          let index = datamonth_.findIndex((d) => d.date == item.date)
+          datamonth_[index][vMonth] = item.value
           sum_month[i] = item.value
           if (i == d.data.data.length - 1) {
             cal.value['pro_month'] = parseFloat(sum_month.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
           }
         });
-        setVMonth(dataLang.formatMessage({ id: d.data.name }));
+        setVMonth(vMonth);
+        setDataMonth(datamonth_);
+      } else {
+        setDataMonth([]);
+        setVMonth(dataLang.formatMessage({ id: 'unknown' }));
       }
     }
     getMonth();
@@ -844,20 +876,31 @@ function ProjectData(props) {
     // }
     const getYear = async () => {
       const d = await callApi('post', host.DATA + '/getYearChart', { plantid: projectData.value.plantid, year: moment(new Date()).format("YYYY") });
-      setDataYear([]);
       //console.log(d)
       if (d.status) {
         //console.log(d.data)
         let vYear = dataLang.formatMessage({ id: d.data.name });
         let sum_year = []
+        let datayear_ = []
+        for (let i = 1; i <= 12; i++) {
+          datayear_ = [
+            ...datayear_,
+            { month: i < 10 ? `0${i}` : `${i}`, [vYear]: 0 }]
+        }
         d.data.data.map((item, i) => {
-          setDataYear((old) => [...old, { month: item.month, [vYear]: item.value }]);
+          let index = datayear_.findIndex((d) => d.month == item.month)
+          datayear_[index][vYear] = item.value
           sum_year[i] = item.value
           if (i == d.data.data.length - 1) {
             cal.value['pro_year'] = parseFloat(sum_year.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
           }
         });
-        setVYear(dataLang.formatMessage({ id: d.data.name }));
+        setVYear(vYear);
+        setDataYear(datayear_);
+      } else {
+        setDataYear([]);
+        setVYear(dataLang.formatMessage({ id: 'unknown' }));
+
       }
     }
     getYear();
@@ -1056,21 +1099,21 @@ function ProjectData(props) {
                   id="add"
                   onClick={() => popupAddGateway.value = true}
                 >
-                  {dataLang.formatMessage({ id: 'ADD' })}
+                  <IoAddOutline
+                    size={20}
+                    color="white" />
                 </button>
               </div>
-              <div className="DAT_ProjectData_Header_Right_More">
+              <div className="DAT_ProjectData_Header_Right_More" onClick={() => (dropState.value = !dropState.value)}>
                 <BsThreeDotsVertical
                   size={20}
                   color="#9e9e9e"
-                  onClick={() => (dropState.value = !dropState.value)}
                 />
               </div>
-              <div className="DAT_ProjectData_Header_Right_Close">
+              <div className="DAT_ProjectData_Header_Right_Close" onClick={() => (plantState.value = "default")}>
                 <RxCross2
                   size={20}
                   color="white"
-                  onClick={() => (plantState.value = "default")}
                 />
               </div>
             </div>
@@ -1711,7 +1754,7 @@ function ProjectData(props) {
                                       <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
                                         <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left">
                                           <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Name">
-                                            Tên: {item.name}
+                                            {dataLang.formatMessage({ id: 'name' })}: {item.name}
                                           </div>
 
                                           <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Sn">
@@ -1748,7 +1791,7 @@ function ProjectData(props) {
                                         </div>
 
                                         <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_Type">
-                                          Loại: {item.type}
+                                          {dataLang.formatMessage({ id: 'type' })}: {item.type}
                                         </div>
                                       </div>
                                     </div>
@@ -3244,7 +3287,7 @@ const Day = (props) => {
               </linearGradient>
             </defs>
             <XAxis dataKey="time" axisLine={false} tickLine={false} />
-            <YAxis axisLine={false} tickLine={false} />
+            <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...props.data.map(item => item[props.v])))]} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Area type="monotone" dataKey={props.v} stroke="#8884d8" fillOpacity={1} fill="url(#colorday)" />
@@ -3288,7 +3331,7 @@ const Month = (props) => {
         <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
           <BarChart width={150} height={200} data={props.data}>
             <XAxis dataKey="date" axisLine={false} tickLine={false} />
-            <YAxis axisLine={false} tickLine={false} />
+            <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...props.data.map(item => item[props.v])))]} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
@@ -3333,7 +3376,7 @@ const Year = (props) => {
         <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
           <BarChart width={150} height={200} data={props.data}>
             <XAxis dataKey="month" axisLine={false} tickLine={false} />
-            <YAxis axisLine={false} tickLine={false} />
+            <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...props.data.map(item => item[props.v])))]} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
@@ -3379,7 +3422,7 @@ const Total = (props) => {
         <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
           <BarChart width={150} height={200} data={props.data}>
             <XAxis dataKey="year" axisLine={false} tickLine={false} />
-            <YAxis axisLine={false} tickLine={false} />
+            <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...props.data.map(item => item[props.v])))]} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
