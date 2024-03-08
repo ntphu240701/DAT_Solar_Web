@@ -1,23 +1,23 @@
-import React from "react";
-import { IoMdExit } from "react-icons/io";
+import React, { useEffect } from "react";
+import "./Device.scss";
+
 import { configState } from "./Device";
+import { useIntl } from "react-intl";
+
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import { useIntl } from "react-intl";
 
 const CheckBox = (props) => {
   return (
     <div className="DAT_Config_Body_Item_CheckBox_Option">
       <div className="form-check">
-        <input
-          className="form-check-input"
+        <input className="form-check-input"
           type="checkbox"
           value=""
           id={props.info}
-        ></input>
-        <label
+        />
+        <label className="form-check-label"
           style={{ cursor: "pointer", fontSize: "15px", color: "grey" }}
-          className="form-check-label"
           htmlFor={props.info}
         >
           {props.info}
@@ -29,15 +29,16 @@ const CheckBox = (props) => {
 
 export default function Config() {
   const dataLang = useIntl();
-  React.useEffect(() => {
-    console.log(configState.value);
-  });
+
   const handleCloseConfig = () => {
     configState.value = false;
   };
 
-  return (
+  useEffect(() => {
+    console.log(configState.value);
+  });
 
+  return (
     <div className="DAT_Config">
       <div className="DAT_Config_Header">
         <div className="DAT_Config_Header_Left">
@@ -52,7 +53,6 @@ export default function Config() {
             <RxCross2
               size={20}
               color="white"
-
             />
           </div>
         </div>
@@ -82,6 +82,5 @@ export default function Config() {
         </div>
       </div>
     </div>
-
   );
 }

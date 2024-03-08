@@ -1,17 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Project.scss";
+
 import { dataproject, popupState, projectData } from "./Project";
-import { IoClose } from "react-icons/io5";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
 import { temp } from "./ProjectData";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
-import { data } from "jquery";
+
+import { IoClose } from "react-icons/io5";
 
 export default function Popup(props) {
   const dataLang = useIntl();
+
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -27,8 +29,13 @@ export default function Popup(props) {
   const handleDelete = (e) => {
     switch (props.type) {
       case "plant":
-        const dropProject = async (plantid, usr, partnerid, type) => {
-          let d = await callApi('post', host.DATA + '/dropPlant', { plantid: plantid, usr: usr, partnerid: partnerid, type: type })
+        const dropProject = async () => {
+          let d = await callApi('post', host.DATA + '/dropPlant', {
+            plantid: props.plantid,
+            usr: props.usr,
+            partnerid: userInfor.value.partnerid,
+            type: userInfor.value.type
+          })
           if (d.status === true) {
             alertDispatch(dataLang.formatMessage({ id: 'alert_24' }));
 
@@ -38,11 +45,13 @@ export default function Popup(props) {
             popupState.value = false;
           }
         };
-        dropProject(props.plantid, props.usr, userInfor.value.partnerid, userInfor.value.type)
+        dropProject()
         break;
       case "logger":
-        const dropLogger = async (plantid, sn) => {
-          let d = await callApi('post', host.DATA + '/dropLogger', { plantid: plantid, sn: sn });
+        const dropLogger = async () => {
+          let d = await callApi('post', host.DATA + '/dropLogger', {
+            plantid: props.plantid, sn: props.sn
+          });
           if (d.status === true) {
             temp.value = temp.value.filter((item) => item.sn != props.sn);
             alertDispatch(dataLang.formatMessage({ id: 'alert_25' }))
@@ -53,7 +62,7 @@ export default function Popup(props) {
             alertDispatch(dataLang.formatMessage({ id: 'alert_27' }))
           }
         }
-        dropLogger(props.plantid, props.sn);
+        dropLogger();
         break;
       default:
         break;
@@ -67,8 +76,7 @@ export default function Popup(props) {
           <p>{dataLang.formatMessage({ id: 'delete' })} </p>
         </div>
         <div className="DAT_Popup_Box_Head_Right">
-          <div
-            className="DAT_Popup_Box_Head_Right_Icon"
+          <div className="DAT_Popup_Box_Head_Right_Icon"
             onClick={() => (popupState.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -78,6 +86,7 @@ export default function Popup(props) {
           </div>
         </div>
       </div>
+
       <div className="DAT_Popup_Box_Body">
         <span>
           {dataLang.formatMessage({ id: 'delPlant' })}
@@ -88,6 +97,7 @@ export default function Popup(props) {
           &nbsp;
         </span>
       </div>
+
       <div className="DAT_Popup_Box_Foot">
         <button
           style={{

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import "./GroupRole.scss";
+
 import { createState, group, groupUser } from "./GroupRole";
+import { alertDispatch } from "../Alert/Alert";
+import { signal } from "@preact/signals-react";
+import { useIntl } from "react-intl";
+
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import "./GroupRole.scss";
-import { signal } from "@preact/signals-react";
-import { alertDispatch } from "../Alert/Alert";
-import { useIntl } from "react-intl";
 
 const idplus = signal(2);
 const newdb = signal({
@@ -19,13 +21,10 @@ const newdb = signal({
     4: { lang: "role4", status: false },
   },
 });
-
 const temp = signal(newdb.value);
 
 const CheckBox = (props) => {
-  const dataLang = useIntl();
   const handleCheck = (e) => {
-    // props.status = e.target.checked;
     newdb.value = {
       ...newdb.value,
       role: {
@@ -42,16 +41,13 @@ const CheckBox = (props) => {
   return (
     <div className="DAT_CreateGroupRole_Body_Item_Checkbox_Option">
       <div className="form-check">
-        <input
-          className="form-check-input"
+        <input className="form-check-input"
           type="checkbox"
-          // defaultChecked={props.status}
           id={props.info}
           onChange={(e) => handleCheck(e)}
-        ></input>
-        <label
+        />
+        <label className="form-check-label"
           style={{ cursor: "pointer", fontSize: "15px", color: "grey" }}
-          className="form-check-label"
           htmlFor={props.info}
         >
           {props.info}
@@ -62,11 +58,7 @@ const CheckBox = (props) => {
 };
 
 export default function CreateGroupRole() {
-  // React.useEffect(() => {
-  //   console.log(createState.value);
-  // });
   const dataLang = useIntl();
-
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
   const handleCreate = () => {
@@ -92,6 +84,7 @@ export default function CreateGroupRole() {
       alertDispatch(dataLang.formatMessage({ id: "alert_22" }))
     }
   };
+
   return (
     <>
       <div className="DAT_CreateGroupRole">
@@ -99,9 +92,9 @@ export default function CreateGroupRole() {
           <div className="DAT_CreateGroupRole_Header_Left">
             <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'createNewGroup' })}</p>
           </div>
+
           <div className="DAT_CreateGroupRole_Header_Right">
-            <div
-              className="DAT_CreateGroupRole_Header_Right_Save"
+            <div className="DAT_CreateGroupRole_Header_Right_Save"
               onClick={() => handleCreate()}
             >
               <FaSave size={20} color="white" />
@@ -123,10 +116,12 @@ export default function CreateGroupRole() {
               <span>{dataLang.formatMessage({ id: 'groupName' })}:</span>
               <input type="text" onChange={(e) => setName(e.target.value)} required />
             </div>
+
             <div className="DAT_CreateGroupRole_Body_Item_Input">
               <span>{dataLang.formatMessage({ id: 'groupInfo' })}:</span>
               <input type="text" onChange={(e) => setCode(e.target.value)} required />
             </div>
+
             <div className="DAT_CreateGroupRole_Body_Item_Checkbox">
               {Object.entries(newdb.value.role).map(([key, value]) => (
                 <CheckBox

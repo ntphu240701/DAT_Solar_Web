@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaSave } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
+import "./Report.scss";
+
 import { createState, ReportData, lastID } from "./Report";
 import { signal } from "@preact/signals-react";
-// import { CheckBox } from "../Device/Config";
 import { isMobile } from "../Navigation/Navigation";
-import { list } from "./Report";
-import { Checkbox } from "@mui/material";
 import { useSelector } from "react-redux";
 import moment from "moment-timezone";
 import { useIntl } from "react-intl";
+
+import { FaSave } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
 
 const newdata = signal({
   id: 1,
@@ -104,23 +104,20 @@ export const CheckBox = (props) => {
   };
 
   return (
-    <div
-      className="DAT_Create_Body_Item_Option_Check_SingleCheck"
+    <div className="DAT_Create_Body_Item_Option_Check_SingleCheck"
       style={{ width: props.width }}
     >
       <div className="form-check">
-        <input
-          className="form-check-input"
+        <input className="form-check-input"
           type="checkbox"
           value=""
           id={props.id}
           onChange={(e) => {
             handleShow(e);
           }}
-        ></input>
-        <label
+        />
+        <label className="form-check-label"
           style={{ cursor: "pointer", fontSize: "15px", color: "grey" }}
-          className="form-check-label"
           htmlFor={props.id}
         >
           {props.id}
@@ -131,14 +128,16 @@ export const CheckBox = (props) => {
 };
 
 export default function Create() {
-  const [widthCheckBox, setWidwidthCheckBox] = React.useState("");
-  const [reportType, setReportType] = React.useState("Daily Report");
+  const dataLang = useIntl()
+  const [widthCheckBox, setWidwidthCheckBox] = useState("");
+  const [reportType, setReportType] = useState("Daily Report");
   const reportnameRef = useRef("");
   //DAT_MASTER
   const usr = useSelector((state) => state.admin.usr);
 
   const TypeReport = (props) => {
     const dataLang = useIntl()
+
     const handerChangeReportName = (e) => {
       reportnameRef.current = e.target.value;
       //document.getElementById("reportname").value = e.target.value
@@ -218,7 +217,7 @@ export default function Create() {
               defaultValue={reportnameRef.current}
               // value={newdata.value.name}
               onChange={(e) => handerChangeReportName(e)}
-            ></input>
+            />
           </div>
         </div>
       </div>
@@ -260,7 +259,6 @@ export default function Create() {
     setReportType(e.currentTarget.value);
   };
 
-  const dataLang = useIntl()
   useEffect(() => {
     if (isMobile.value) {
       setWidwidthCheckBox("50%");
@@ -278,8 +276,7 @@ export default function Create() {
             <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'createReport' })}</p>
           </div>
           <div className="DAT_Create_Header_Right">
-            <div
-              className="DAT_Create_Header_Right_Save"
+            <div className="DAT_Create_Header_Right_Save"
               onClick={() => handleCreate()}
             >
               <FaSave size={20} color="white" />
@@ -298,8 +295,7 @@ export default function Create() {
           <div className="DAT_Create_Body_Item">
             <div className="DAT_Create_Body_Item_Type">
               <h4>{dataLang.formatMessage({ id: 'reportType' })}</h4>
-              <select
-                className="form-select form-select-sm mt-3"
+              <select className="form-select form-select-sm mt-3"
                 defaultValue={"Daily Data Report"}
                 onChange={(e) => {
                   handleDataType(e);
@@ -340,8 +336,7 @@ export default function Create() {
                 ))}
               </div>
 
-              <div
-                className="DAT_Create_Body_Item_Option_Check"
+              <div className="DAT_Create_Body_Item_Option_Check"
                 style={{
                   border: newdata.value.subinf.status
                     ? "1px solid grey"
@@ -378,8 +373,7 @@ export default function Create() {
                 )}
               </div>
 
-              <div
-                className="DAT_Create_Body_Item_Option_Check"
+              <div className="DAT_Create_Body_Item_Option_Check"
                 style={{
                   border: newdata.value.deviceinfo.status
                     ? "1px solid grey"

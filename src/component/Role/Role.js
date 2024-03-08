@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Role.scss";
+
 import DataTable from "react-data-table-component";
-import { FaUserPlus, FaUsers } from "react-icons/fa";
-import { CiSearch } from "react-icons/ci";
 import { Empty } from "../Project/Project";
 import { signal } from "@preact/signals-react";
 import CreateRole from "./CreateRole";
@@ -10,9 +9,12 @@ import DeleteRole from "./DeleteRole";
 import EditRole from "./EditRole";
 import { host } from "../Lang/Contant";
 import { callApi } from "../Api/Api";
-import { partnerInfor, userInfor } from "../../App";
+import { partnerInfor } from "../../App";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
+
+import { FaUserPlus } from "react-icons/fa";
+import { CiSearch } from "react-icons/ci";
 import { IoAddOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { IoMdMore } from "react-icons/io";
@@ -22,11 +24,11 @@ import { LuUserSquare } from "react-icons/lu";
 export const roleData = signal({});
 export const roleState = signal("default");
 export const popupState = signal("default");
-
 const Usr_ = signal([]);
 
-function Role(props) {
+export default function Role(props) {
   const dataLang = useIntl();
+
   const [filter, setFilter] = useState(false);
 
   const paginationComponentOptions = {
@@ -91,7 +93,6 @@ function Role(props) {
       name: dataLang.formatMessage({ id: 'setting' }),
       selector: (row) => (
         <>
-
           {row.type_ === "user"
             ? <div className="DAT_TableEdit">
               <span
@@ -103,8 +104,6 @@ function Role(props) {
             </div>
             : <></>
           }
-
-
           <div
             className="DAT_ModifyBox"
             id={row.id_ + "_Modify"}
@@ -157,7 +156,6 @@ function Role(props) {
         Usr_.value = d.data
         Usr_.value.map((item, i) => item.id = i + 1);
       }
-
     }
     fetchUsr()
   }, [])
@@ -209,23 +207,78 @@ function Role(props) {
         )}
       </div>
 
-      <div className="DAT_Role">
-        <div className='DAT_Role_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>
-          {dataLang.formatMessage({ id: 'roleList' })}
-        </div>
-        <div className="DAT_Role_Content">
+      {isMobile.value ? (
+        <>
+          <div className="DAT_RoleMobile">
+            <div className='DAT_RoleMobile_Header' style={{ padding: "15px" }}>
+              {dataLang.formatMessage({ id: 'roleList' })}
+            </div>
 
-          <DataTable
-            className="DAT_Table_Container"
-            columns={columnrole}
-            data={Usr_.value}
-            pagination
-            paginationComponentOptions={paginationComponentOptions}
-            fixedHeader={true}
-            noDataComponent={<Empty />}
-          />
-        </div>
-      </div>
+            {Usr_.value.map((item, i) => {
+              return (
+                <div key={i} className="DAT_RoleMobile_Content">
+                  <div className="DAT_RoleMobile_Content_Item">
+                    <div className="DAT_RoleMobile_Content_Item_Row">
+                      <div className="DAT_RoleMobile_Content_Item_Row_Name">
+                        {dataLang.formatMessage({ id: 'name' })}: {item.name_}
+                      </div>
+
+                      <div className="DAT_RoleMobile_Content_Item_Row_Right">
+                        <div className="DAT_RoleMobile_Content_Item_Row_Right_Item">
+                          <MdEdit size={20} color="#216990" />
+                        </div>
+                        <div className="DAT_RoleMobile_Content_Item_Row_Right_Item">
+                          <MdDelete size={20} color="red" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="DAT_RoleMobile_Content_Item_Row">
+                      <div className="DAT_RoleMobile_Content_Item_Row_Rule">
+                        {dataLang.formatMessage({ id: 'rule' })}: {item.rulename_}
+                      </div>
+
+                      <div className="DAT_RoleMobile_Content_Item_Row_Acc">
+                        {dataLang.formatMessage({ id: 'account' })}: {item.type_}
+                      </div>
+                    </div>
+
+                    <div className="DAT_RoleMobile_Content_Item_Row">
+                      <div className="DAT_RoleMobile_Content_Item_Row_Phone">
+                        {dataLang.formatMessage({ id: 'phone' })}: {item.phone_}
+                      </div>
+
+                      <div className="DAT_RoleMobile_Content_Item_Row_Email">
+                        Mail: {item.mail_}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="DAT_Role">
+            <div className='DAT_Role_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>
+              {dataLang.formatMessage({ id: 'roleList' })}
+            </div>
+
+            <div className="DAT_Role_Content">
+              <DataTable
+                className="DAT_Table_Container"
+                columns={columnrole}
+                data={Usr_.value}
+                pagination
+                paginationComponentOptions={paginationComponentOptions}
+                fixedHeader={true}
+                noDataComponent={<Empty />}
+              />
+            </div>
+          </div>
+        </>
+      )}
 
       <div className="DAT_RoleInfor"
         style={{
@@ -262,5 +315,3 @@ function Role(props) {
     </>
   );
 }
-
-export default Role;

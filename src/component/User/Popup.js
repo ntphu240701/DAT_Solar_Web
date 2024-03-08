@@ -1,10 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-// import { popupState } from "./Device";
-import { IoClose } from "react-icons/io5";
-import { popupStateUser, editType } from "./User";
+import React, { useRef, useState } from "react";
 import "./User.scss";
-import { LiaEyeSolid } from "react-icons/lia";
-import { LiaEyeSlashSolid } from "react-icons/lia";
+
+import { popupStateUser, editType } from "./User";
 import { alertDispatch } from "../Alert/Alert";
 import Resizer from "react-image-file-resizer";
 import { userInfor } from "../../App";
@@ -13,6 +10,9 @@ import { useSelector } from "react-redux";
 import { host } from "../Lang/Contant";
 import { useIntl } from "react-intl";
 
+import { IoClose } from "react-icons/io5";
+import { LiaEyeSolid } from "react-icons/lia";
+import { LiaEyeSlashSolid } from "react-icons/lia";
 
 export default function Popup() {
   const dataLang = useIntl();
@@ -49,7 +49,6 @@ export default function Popup() {
       );
     });
 
-
   const handlePopup = (state) => {
     const popup = document.getElementById("Popup");
     popup.style.transform = popup_state[state].transform;
@@ -57,9 +56,7 @@ export default function Popup() {
     popup.style.color = popup_state[state].color;
   };
 
-
   const handleChooseAvatar = async (e) => {
-
     var reader = new FileReader();
     console.log("old size", e.target.files[0].size)
     if (e.target.files[0].size > 50000) {
@@ -75,7 +72,6 @@ export default function Popup() {
         setAva(reader.result);
       };
     }
-
   };
 
   const handleSave = async () => {
@@ -117,7 +113,6 @@ export default function Popup() {
         break;
       case "name":
         if (renameRef.current.value !== "") {
-
           let d = await callApi("post", host.DATA + "/updateUser", { usr: user, type: "name", data: renameRef.current.value });
           if (d.status) {
             alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
@@ -125,7 +120,6 @@ export default function Popup() {
               ...userInfor.value,
               name: renameRef.current.value
             }
-
           } else {
             alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
           }
@@ -143,7 +137,6 @@ export default function Popup() {
               ...userInfor.value,
               phone: phoneRef.current.value
             }
-
           } else {
             alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
           }
@@ -161,7 +154,6 @@ export default function Popup() {
               ...userInfor.value,
               addr: addrRef.current.value
             }
-
           } else {
             alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
           }
@@ -182,8 +174,7 @@ export default function Popup() {
           <p>{dataLang.formatMessage({ id: 'edit' })}</p>
         </div>
         <div className="DAT_PopupUser_Box_Head_Right">
-          <div
-            className="DAT_PopupUser_Box_Head_Right_Icon"
+          <div className="DAT_PopupUser_Box_Head_Right_Icon"
             onClick={() => (popupStateUser.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -193,6 +184,7 @@ export default function Popup() {
           </div>
         </div>
       </div>
+
       <div className="DAT_PopupUser_Box_Body">
         {(() => {
           switch (editType.value) {
@@ -298,6 +290,7 @@ export default function Popup() {
           }
         })()}
       </div>
+
       <div className="DAT_PopupUser_Box_Foot">
         <button
           style={{

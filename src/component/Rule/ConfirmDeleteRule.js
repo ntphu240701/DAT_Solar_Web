@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { IoClose } from "react-icons/io5";
+import "./Rule.scss";
+
 import { confirmDeleteState, datarule, ruleID } from "./Rule";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 
+import { IoClose } from "react-icons/io5";
+
 export default function ConfirmDeleteRule() {
   const dataLang = useIntl();
   const [del, setDel] = useState(true);
+
   const handleDeleteReport = (e) => {
     console.log(ruleID.value);
     if (ruleID.value === 1) {
@@ -43,8 +47,7 @@ export default function ConfirmDeleteRule() {
           <p>{dataLang.formatMessage({ id: 'delRule' })}</p>
         </div>
         <div className="DAT_ConfirmPopup_Box_Head_Right">
-          <div
-            className="DAT_ConfirmPopup_Box_Head_Right_Icon"
+          <div className="DAT_ConfirmPopup_Box_Head_Right_Icon"
             onClick={() => (confirmDeleteState.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -54,6 +57,7 @@ export default function ConfirmDeleteRule() {
           </div>
         </div>
       </div>
+
       <div className="DAT_ConfirmPopup_Box_Body">
         {del ? (
           <p>{dataLang.formatMessage({ id: 'delrulemess' })}</p>
@@ -61,6 +65,7 @@ export default function ConfirmDeleteRule() {
           <p>{dataLang.formatMessage({ id: 'deleteDenied' })}</p>
         )}
       </div>
+
       <div className="DAT_ConfirmPopup_Box_Foot">
         {del ? (
           <>

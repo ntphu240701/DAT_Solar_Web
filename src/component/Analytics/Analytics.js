@@ -1,18 +1,20 @@
 import React from "react";
 import "./Analytics.scss";
+
 import DataTable from "react-data-table-component";
-import { IoIosAnalytics, IoMdAnalytics } from "react-icons/io";
 import { Empty } from "../Project/Project";
 import { signal } from "@preact/signals-react";
 import AnaCreate from "./AnaCreate";
 import { useIntl } from "react-intl";
+
 import { TiFlowSwitch } from "react-icons/ti";
 import { TbReport } from "react-icons/tb";
 
 export const anaState = signal("default");
 
-function Analytics(props) {
+export default function Analytics(props) {
   const dataLang = useIntl();
+
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
     rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
@@ -42,8 +44,7 @@ function Analytics(props) {
             </span>
           </div>
 
-          <div
-            className="DAT_ModifyBox"
+          <div className="DAT_ModifyBox"
             id={row.id + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
@@ -60,6 +61,7 @@ function Analytics(props) {
       width: "100px",
     },
   ];
+
   const handleModify = (e, type) => {
     const id = e.currentTarget.id;
     var arr = id.split("_");
@@ -73,11 +75,11 @@ function Analytics(props) {
         <div className="DAT_AnaHeader_Title">
           <TiFlowSwitch color="gray" size={25} />
           <span>
-            {dataLang.formatMessage({ id: 'analytics' })}
+            {dataLang.formatMessage({ id: 'analytic' })}
           </span>
         </div>
-        <button
-          className="DAT_AnaHeader_New"
+
+        <button className="DAT_AnaHeader_New"
           onClick={() => (anaState.value = "create")}
         >
           <span>
@@ -93,7 +95,6 @@ function Analytics(props) {
           {dataLang.formatMessage({ id: 'analyticsList' })}
         </div>
         <div className="DAT_Ana_Content">
-
           <DataTable
             className="DAT_Table_Container"
             columns={columnAna}
@@ -106,8 +107,7 @@ function Analytics(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_AnaInfor"
+      <div className="DAT_AnaInfor"
         style={{
           height: anaState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",
@@ -125,5 +125,3 @@ function Analytics(props) {
     </>
   );
 }
-
-export default Analytics;

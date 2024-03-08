@@ -1,32 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Empty,
-  plantState,
-  projectData,
-  deviceData,
-  Logger,
-  Inverter,
-} from "./Project";
-import { IoClose } from "react-icons/io5";
+import React, { useRef } from "react";
+import "./Project.scss";
+
+import { projectData, } from "./Project";
+import { useIntl } from "react-intl";
 import { popupAddGateway, temp } from "./ProjectData";
-import { signal } from "@preact/signals-react";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
-import RaiseBox from "./RaiseBox";
-import { useIntl } from "react-intl";
 
-export const raiseBoxState = signal({
-  state: false,
-  text: "",
-});
+import { IoClose } from "react-icons/io5";
 
 export default function AddGateway(props) {
   const dataLang = useIntl();
   const sn = useRef();
   const name = useRef();
   const type = useRef();
-  const [state, setState] = useState("");
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
@@ -39,7 +27,6 @@ export default function AddGateway(props) {
     popup.style.transition = popup_state[state].transition;
     popup.style.color = popup_state[state].color;
   };
-
 
   const handleClose = () => {
     popupAddGateway.value = false;
@@ -81,6 +68,7 @@ export default function AddGateway(props) {
         <div className="DAT_AddGateway_Head_Left">
           <p>{dataLang.formatMessage({ id: 'ADD' })} Gateway/Logger</p>
         </div>
+
         <div className="DAT_AddGateway_Head_Right">
           <div
             className="DAT_AddGateway_Head_Right_Icon"
@@ -99,10 +87,12 @@ export default function AddGateway(props) {
           <span>SN:</span>
           <input id="sn" type="text" placeholder={dataLang.formatMessage({ id: 'enterCode' })} ref={sn} />
         </div>
+
         <div className="DAT_AddGateway_Body_Input">
           <span>{dataLang.formatMessage({ id: 'name' })}:</span>
           <input id="name" type="text" placeholder={dataLang.formatMessage({ id: 'enterDev' })} ref={name} />
         </div>
+
         <div className="DAT_AddGateway_Body_Input">
           <span>{dataLang.formatMessage({ id: 'type' })}:</span>
           <input id="type" type="text" placeholder={dataLang.formatMessage({ id: 'enterType' })} ref={type} />
@@ -121,7 +111,6 @@ export default function AddGateway(props) {
           {dataLang.formatMessage({ id: 'cancel' })}
         </button>
         <button
-          //   id={projectData.value.id}
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={(e) => handleSave(e)}
         >
@@ -129,13 +118,13 @@ export default function AddGateway(props) {
         </button>
       </div>
 
-      {raiseBoxState.value.status ? (
+      {/* {raiseBoxState.value.status ? (
         <div className="DAT_RaiseBoxPopup">
           <RaiseBox state={raiseBoxState.value.text} />
         </div>
       ) : (
         <></>
-      )}
+      )} */}
     </div>
   );
 }

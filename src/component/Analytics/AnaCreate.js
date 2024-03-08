@@ -1,12 +1,13 @@
 import React from "react";
 import "./Analytics.scss";
 
-import { FaSave } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
 import { anaState } from "./Analytics";
 import { useIntl } from "react-intl";
 
-function AnaCreate(props) {
+import { FaSave } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
+
+export default function AnaCreate(props) {
   const dataLang = useIntl();
   return (
     <div className="DAT_AnaCreate">
@@ -26,10 +27,6 @@ function AnaCreate(props) {
           </div>
         </div>
       </div>
-
-      {/* <div className="DAT_AnaCreate_Body"></div> */}
     </div>
   );
 }
-
-export default AnaCreate;

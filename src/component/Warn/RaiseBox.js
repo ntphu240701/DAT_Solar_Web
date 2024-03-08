@@ -1,14 +1,20 @@
-import React, { useEffect } from "react";
-import { IoClose } from "react-icons/io5";
+import React from "react";
 import "./Warn.scss";
-import { dataWarn, deletewarnState, idDel, temp } from "./Warn";
-import { message } from "../Navigation/Navigation";
+
+import { dataWarn, deletewarnState, idDel } from "./Warn";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
-// import { raiseBoxState } from "./AddGateway";
+
+import { IoClose } from "react-icons/io5";
 
 export default function RaiseBox(props) {
   const dataLang = useIntl();
+
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
+  };
+
   const handleDeleteReport = (e) => {
     deletewarnState.value = false;
     const arr = idDel.value.split("_"); //['E01', '1']
@@ -17,26 +23,6 @@ export default function RaiseBox(props) {
     )
     alertDispatch(dataLang.formatMessage({ id: 'alert_28' }))
     console.log(dataWarn.value)
-
-    // const messid = idDel.value.split("_")[0];
-    // const messindex = message.value.findIndex((item) => item.messid == messid);
-    // const warnid = idDel.value.split("_")[1];
-    // const warnindex = message.value[messindex].list.findIndex(
-    //   (item) => item.warnid == warnid
-    // );
-    // message.value[messindex].list.splice(warnindex, 1);
-    // let x = temp.value.filter((item) => item.warnid != warnid || item.messid != messid)
-    // console.log(x);
-    // temp.value = [...x]
-    // console.log(message.value);
-    // alertDispatch(dataLang.formatMessage({ id: 'alert_28' }))
-    
-
-  };
-
-  const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
   };
 
   const handlePopup = (state) => {
@@ -59,8 +45,7 @@ export default function RaiseBox(props) {
           </p>
         </div>
         <div className="DAT_PopupReport_Box_Head_Right">
-          <div
-            className="DAT_PopupReport_Box_Head_Right_Icon"
+          <div className="DAT_PopupReport_Box_Head_Right_Icon"
             onClick={() => (deletewarnState.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -70,11 +55,13 @@ export default function RaiseBox(props) {
           </div>
         </div>
       </div>
+
       <div className="DAT_PopupReport_Box_Body">
         <p>
           {dataLang.formatMessage({ id: 'delreportmess' })}
         </p>
       </div>
+
       <div className="DAT_PopupReport_Box_Foot">
         <button
           style={{

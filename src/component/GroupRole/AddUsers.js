@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./GroupRole.scss";
-import { IoClose } from "react-icons/io5";
+
 import { addState, groupID, groupUser } from "./GroupRole";
-import DataTable from "react-data-table-component";
 import { signal } from "@preact/signals-react";
 import { useIntl } from "react-intl";
+
+import { IoClose } from "react-icons/io5";
 
 const infouser = signal([
   {
@@ -70,20 +71,13 @@ const infouser = signal([
 ]);
 
 export default function AddUsers() {
+  const dataLang = useIntl();
   const [username, setUsername] = useState("");
   const [addUserState, setAddUserState] = useState("none");
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
-  };
-
-  const dataLang = useIntl();
-  const paginationComponentOptions = {
-    rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
-    rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
-    selectAllRowsItem: true,
-    selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
   };
 
   const handlePopup = (state) => {
@@ -116,6 +110,7 @@ export default function AddUsers() {
       setAddUserState("UserAlreadyInGroup");
     }
   };
+
   const AddButton = () => {
     return (
       <div className="DAT_AddUserPopup_Box_Foot">
@@ -144,9 +139,9 @@ export default function AddUsers() {
         <div className="DAT_AddUserPopup_Box_Head_Left">
           <p>{dataLang.formatMessage({ id: 'createUser' })}</p>
         </div>
+
         <div className="DAT_AddUserPopup_Box_Head_Right">
-          <div
-            className="DAT_AddUserPopup_Box_Head_Right_Icon"
+          <div className="DAT_AddUserPopup_Box_Head_Right_Icon"
             onClick={() => (addState.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -156,6 +151,7 @@ export default function AddUsers() {
           </div>
         </div>
       </div>
+
       <div className="DAT_AddUserPopup_Box_Body">
         <div className="DAT_AddUserPopup_Box_Body_Input">
           {(() => {
@@ -181,6 +177,7 @@ export default function AddUsers() {
           })()}
         </div>
       </div>
+
       {(() => {
         switch (addUserState) {
           case "AddSuccess":

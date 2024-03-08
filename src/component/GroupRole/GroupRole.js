@@ -3,19 +3,19 @@ import "./GroupRole.scss";
 import { CiSearch } from "react-icons/ci";
 import { signal } from "@preact/signals-react";
 import CreateGroupRole from "./CreateGroupRole";
-import { MdDelete } from "react-icons/md";
-import { MdEdit } from "react-icons/md";
 import Popup from "./Popup";
 import AddUsers from "./AddUsers";
 import ConfirmDeleteGroup from "./ConfirmDeleteGroup";
 import EditGroup from "./EditGroup";
 import DataTable from "react-data-table-component";
 import { Empty } from "../Project/Project";
-import { IoMdPersonAdd } from "react-icons/io";
-import { data } from "jquery";
-import { IoMdMore } from "react-icons/io";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
+import { signal } from "@preact/signals-react";
+
+import { CiSearch } from "react-icons/ci";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { IoMdPersonAdd, IoMdMore } from "react-icons/io";
 import { IoAddOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { FaUsersGear } from "react-icons/fa6";
@@ -255,6 +255,7 @@ const GroupUsers = () => {
         <div className="DAT_GR_Content_DevideTable_Left_Head">
           {dataLang.formatMessage({ id: "grouprole" })}
         </div>
+
         <div className="DAT_GR_Content_DevideTable_Left_ItemList">
           {dataGroup.value.map((item, index) => (
             <div
@@ -267,14 +268,13 @@ const GroupUsers = () => {
               }}
               onClick={(e) => handleChangeGroup(e)}
             >
-              <div
-                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
+              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
                 style={{ fontSize: "15px" }}
               >
                 {item.name_}
               </div>
-              <div
-                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
+
+              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
                 style={{ fontSize: "13px", color: "grey", maxWidth: "100px" }}
               >
                 {item.code_}
@@ -313,8 +313,8 @@ const GroupUsers = () => {
                 >
                   <MdEdit size={20} color="#216990" />
                 </div>
-                <div
-                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
+
+                <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
                   onClick={() => (addState.value = true)}
                 >
                   <IoMdPersonAdd size={20} />
@@ -349,8 +349,8 @@ const GroupUsers = () => {
   );
 };
 
-function GroupRole(props) {
-  const dataLang = useIntl();
+export default function GroupRole(props) {
+  const dataLang = useIntl()
   const [filter, setFilter] = useState(false);
 
   const handleFilter = (e) => {
@@ -526,5 +526,3 @@ function GroupRole(props) {
     </>
   );
 }
-
-export default GroupRole;

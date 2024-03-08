@@ -6,7 +6,7 @@ import { RxCross2 } from "react-icons/rx";
 import { warnState } from "./Warn";
 import { useIntl } from "react-intl";
 
-function SettingWarn(props) {
+export default function SettingWarn(props) {
   const dataLang = useIntl();
 
   return (
@@ -184,5 +184,3 @@ function SettingWarn(props) {
     </div>
   );
 }
-
-export default SettingWarn;

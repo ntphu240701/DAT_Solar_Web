@@ -1,8 +1,10 @@
 import React from "react";
 import "./Role.scss";
+
 import { popupState, roleData } from "./Role";
-import { IoClose } from "react-icons/io5";
 import { useIntl } from "react-intl";
+
+import { IoClose } from "react-icons/io5";
 
 export default function EditRole() {
   const dataLang = useIntl();
@@ -25,9 +27,9 @@ export default function EditRole() {
         <div className="DAT_EditRole_Head_Left">
           <p>{dataLang.formatMessage({ id: 'edit' })}</p>
         </div>
+
         <div className="DAT_EditRole_Head_Right">
-          <div
-            className="DAT_EditRole_Head_Right_Icon"
+          <div className="DAT_EditRole_Head_Right_Icon"
             onClick={() => (popupState.value = "default")}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}

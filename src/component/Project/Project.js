@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./Project.scss";
+
 import DataTable from "react-data-table-component";
 import { isMobile } from "../Navigation/Navigation";
-
-import { FaCheckCircle, FaRegFileAlt } from "react-icons/fa";
-import { MdOutlineError, MdEditDocument, MdEdit, MdDelete, MdAddchart } from "react-icons/md";
-import { CiSearch } from "react-icons/ci";
-import { GoProject } from "react-icons/go";
-import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
-
 import ProjectData from "./ProjectData";
 import EditProject from "./EditProject";
 import AddProject from "./AddProject";
 import Popup from "./Popup";
-
 import { lowerCase } from "lodash";
 import { callApi } from '../Api/Api';
 import { host } from "../Lang/Contant";
@@ -21,6 +14,12 @@ import { useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
+
+import { FaCheckCircle, FaRegFileAlt } from "react-icons/fa";
+import { MdOutlineError, MdEdit, MdDelete, MdAddchart } from "react-icons/md";
+import { CiSearch } from "react-icons/ci";
+import { GoProject } from "react-icons/go";
+import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
 import { IoAddOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 
@@ -81,12 +80,10 @@ export const devicePlant = signal([
 ]);
 
 export const Logger = signal([]);
-
 export const InverterbyLogger = signal([]);
-
 export const Inverter = signal([]);
 
-function Project(props) {
+export default function Project(props) {
   const dataLang = useIntl();
   const user = useSelector(state => state.admin.usr);
   const [datafilter, setDatafilter] = useState([]);
@@ -100,8 +97,6 @@ function Project(props) {
     { id: "warn", name: dataLang.formatMessage({ id: 'warn' }) },
     // { id: "demo", name: dataLang.formatMessage({ id: 'demo' }) },
   ];
-
-  // const color = { cur: "#6495ed", pre: "gray" };
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
@@ -327,14 +322,18 @@ function Project(props) {
   }, [dataproject.value]);
 
   useEffect(() => {
-    const getPlant = async (usrname, partnerid, type) => {
-      let d = await callApi('post', host.DATA + '/getPlant', { usr: usrname, partnerid: partnerid, type: type });
+    const getPlant = async () => {
+      let d = await callApi('post', host.DATA + '/getPlant', {
+        usr: user,
+        partnerid: userInfor.value.partnerid,
+        type: userInfor.value.type
+      });
       if (d.status === true) {
         // console.log(d.data)
         dataproject.value = d.data;
       }
     }
-    getPlant(user, userInfor.value.partnerid, userInfor.value.type);
+    getPlant();
 
     return () => {
       plantState.value = "default"
@@ -427,11 +426,9 @@ function Project(props) {
                 {listTab.map((item, i) => {
                   return (
                     <div className="DAT_Toollist_Tab_Mobile_list_item"
-                      // style={{ display: tabMobile.value ? "block" : "none" }}
                       key={"tabmobile_" + i}
                       id={item.id}
                       onClick={(e) => handleTabMobile(e)}
-
                     >
                       {i + 1}: {item.name}
                     </div>
@@ -441,7 +438,6 @@ function Project(props) {
               : <></>
             }
           </div>
-          {/* {dataproject.value[0].plantname} */}
 
           {(() => {
             switch (tab.value) {
@@ -450,13 +446,35 @@ function Project(props) {
                   <>
                     {dataproject.value?.map((item, i) => {
                       return <div key={i} className="DAT_ProjectMobile_Content" >
-                        <div className="DAT_ProjectMobile_Content_Top" id={item.plantid} onClick={(e) => handlePlant(e)}>
+                        <div className="DAT_ProjectMobile_Content_Top" >
                           <div className="DAT_ProjectMobile_Content_Top_Avatar">
                             <img src={item.img ? item.img : "/dat_picture/solar_panel.png"} alt="" />
                           </div>
 
                           <div className="DAT_ProjectMobile_Content_Top_Info">
-                            <div className="DAT_ProjectMobile_Content_Top_Info_Name">{item.plantname}</div>
+                            <div className="DAT_ProjectMobile_Content_Top_Info_Name">
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
+                                id={item.plantid}
+                                onClick={(e) => handlePlant(e)}
+                              >
+                                {item.plantname}
+                              </div>
+
+                              <div className="DAT_ProjectMobile_Content_Top_Info_Name_Right">
+                                <div className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
+                                  id={item.plantid}
+                                  onClick={(e) => handleEdit(e)}
+                                >
+                                  <MdEdit size={20} color="#216990" />
+                                </div>
+                                <div className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
+                                  id={item.plantid}
+                                  onClick={(e) => handleDelete(e)}
+                                >
+                                  <MdDelete size={20} color="red" />
+                                </div>
+                              </div>
+                            </div>
 
                             <div className="DAT_ProjectMobile_Content_Top_Info_State">
                               <div className="DAT_ProjectMobile_Content_Top_Info_State_Item">
@@ -782,5 +800,3 @@ function Project(props) {
     </>
   );
 }
-
-export default Project;
