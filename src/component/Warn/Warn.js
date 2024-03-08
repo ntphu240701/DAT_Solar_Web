@@ -264,14 +264,14 @@ function Warn(props) {
         )}
       </div>
 
-      <div className="DAT_Warn">
-        {/* <div className='DAT_Warn_Nav'>
+      {/* <div className='DAT_Warn_Nav'>
                     <span id='all' style={{ color: tab.value === "all" ? color.cur : color.pre }} onClick={() => { tab.value = "all" }} >Tất cả</span>
                     <span id='open' style={{ color: tab.value === "open" ? color.cur : color.pre }} onClick={() => { tab.value = "open" }} >Đang lỗi</span>
                     <span id='closed' style={{ color: tab.value === "closed" ? color.cur : color.pre }} onClick={() => { tab.value = "closed" }} >Đã khắc phục</span>
                 </div> */}
-        {isMobile.value ? (
-          <div className="DAT_Toollist_Tab_Mobile" style={{ paddingLeft: "10px" }}>
+      {isMobile.value ? (
+        <div className="DAT_WarnMobile">
+          <div className="DAT_Toollist_Tab_Mobile">
             <button
               className="DAT_Toollist_Tab_Mobile_content"
               onClick={() => (tabMobile.value = !tabMobile.value)}
@@ -303,7 +303,10 @@ function Warn(props) {
               <></>
             )}
           </div>
-        ) : (
+
+        </div>
+      ) : (
+        <div className="DAT_Warn">
           <div className="DAT_Toollist_Tab">
             {listTab.map((item, i) => {
               return tab.value === item.id ? (
@@ -336,53 +339,54 @@ function Warn(props) {
               );
             })}
           </div>
-        )}
-        <div className="DAT_Warn_Content">
-          {(() => {
-            switch (tab.value) {
-              case "all":
-                return (
-                  <DataTable
-                    className="DAT_Table_Container"
-                    columns={columnWarn}
-                    data={dataWarn.value}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
-                    noDataComponent={<Empty />}
-                  />
-                );
-              case "open":
-                return (
-                  <DataTable
-                    className="DAT_Table_Container"
-                    columns={columnWarn}
-                    data={open.value}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
-                    noDataComponent={<Empty />}
-                  />
-                );
-              case "closed":
-                return (
-                  <DataTable
-                    className="DAT_Table_Container"
-                    columns={columnWarn}
-                    data={closed.value}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
-                    noDataComponent={<Empty />}
-                  />
-                );
 
-              default:
-                return <></>;
-            }
-          })()}
+          <div className="DAT_Warn_Content">
+            {(() => {
+              switch (tab.value) {
+                case "all":
+                  return (
+                    <DataTable
+                      className="DAT_Table_Container"
+                      columns={columnWarn}
+                      data={dataWarn.value}
+                      pagination
+                      paginationComponentOptions={paginationComponentOptions}
+                      fixedHeader={true}
+                      noDataComponent={<Empty />}
+                    />
+                  );
+                case "open":
+                  return (
+                    <DataTable
+                      className="DAT_Table_Container"
+                      columns={columnWarn}
+                      data={open.value}
+                      pagination
+                      paginationComponentOptions={paginationComponentOptions}
+                      fixedHeader={true}
+                      noDataComponent={<Empty />}
+                    />
+                  );
+                case "closed":
+                  return (
+                    <DataTable
+                      className="DAT_Table_Container"
+                      columns={columnWarn}
+                      data={closed.value}
+                      pagination
+                      paginationComponentOptions={paginationComponentOptions}
+                      fixedHeader={true}
+                      noDataComponent={<Empty />}
+                    />
+                  );
+
+                default:
+                  return <></>;
+              }
+            })()}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="DAT_WarnInfor"
         style={{
