@@ -15,7 +15,7 @@ import { FaSolarPanel, FaTree } from "react-icons/fa6";
 import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
 import { VscDashboard } from "react-icons/vsc";
-import { IoIosArrowForward, IoIosCloud } from "react-icons/io";
+import { IoIosCloud } from "react-icons/io";
 import { Empty } from "../Project/Project";
 import DataTable from "react-data-table-component";
 import { GiCoalWagon } from "react-icons/gi";
@@ -201,14 +201,11 @@ function Home(props) {
   }
 
   useEffect(() => {
-
-
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1;  // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
     const currentYear = currentDate.getFullYear();
     const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
-    //console.log(daysInMonth);
     let datamonth_ = []
     for (let i = 1; i <= daysInMonth; i++) {
       datamonth_ = [
@@ -222,10 +219,6 @@ function Home(props) {
         ...datayear_,
         { month: i < 10 ? `0${i}` : `${i}`, [vyear]: 0 }]
     }
-
-
-
-
     let cap = []
     let sum_month = []
     let sum_year = []
@@ -261,14 +254,11 @@ function Home(props) {
         sum_year[i] = 0
       }
 
-
       cap[i] = item.capacity
       if (i == plant.value.length - 1) {
         console.log(datamonth_, datayear_)
         setDatamonth(datamonth_)
         setDatayear(datayear_)
-
-
 
         let total_month = parseFloat(sum_month.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
         setMonthlyProduction(total_month)
@@ -279,7 +269,6 @@ function Home(props) {
         let total = parseFloat(cap.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
         setCapacity(total)
       }
-
     })
 
     var price = [];
