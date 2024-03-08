@@ -304,6 +304,57 @@ function Warn(props) {
             )}
           </div>
 
+          {(() => {
+            switch (tab.value) {
+              case "all":
+                return (
+                  <>
+                    {dataWarn.value?.map((item, i) => {
+                      return (
+                        <div key={i} className="DAT_WarnMobile_Content">
+                          <div className="DAT_WarnMobile_Content_Top">
+                            <div className="DAT_WarnMobile_Content_Top_Left">
+
+                            </div>
+
+                            <div className="DAT_WarnMobile_Content_Top_Right">
+
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </>
+                );
+              case "open":
+                return (
+                  <DataTable
+                    className="DAT_Table_Container"
+                    columns={columnWarn}
+                    data={open.value}
+                    pagination
+                    paginationComponentOptions={paginationComponentOptions}
+                    fixedHeader={true}
+                    noDataComponent={<Empty />}
+                  />
+                );
+              case "closed":
+                return (
+                  <DataTable
+                    className="DAT_Table_Container"
+                    columns={columnWarn}
+                    data={closed.value}
+                    pagination
+                    paginationComponentOptions={paginationComponentOptions}
+                    fixedHeader={true}
+                    noDataComponent={<Empty />}
+                  />
+                );
+
+              default:
+                return <></>;
+            }
+          })()}
         </div>
       ) : (
         <div className="DAT_Warn">
