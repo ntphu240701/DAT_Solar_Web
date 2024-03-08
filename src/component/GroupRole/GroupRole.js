@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./GroupRole.scss";
-import { CiSearch } from "react-icons/ci";
+
 import { signal } from "@preact/signals-react";
 import CreateGroupRole from "./CreateGroupRole";
 import Popup from "./Popup";
@@ -11,7 +11,6 @@ import DataTable from "react-data-table-component";
 import { Empty } from "../Project/Project";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
-import { signal } from "@preact/signals-react";
 
 import { CiSearch } from "react-icons/ci";
 import { MdDelete, MdEdit } from "react-icons/md";
