@@ -50,15 +50,15 @@ function Sidenar(props) {
         { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
         { link: "/Rule", name: dataLang.formatMessage({ id: 'rule' }) },
       ] : userInfor.value.type === "admin" ? [
-          { link: "/Role", name: dataLang.formatMessage({ id: 'role' }) },
-          // { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
-          { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
-          { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
-          { link: "/Rule", name: dataLang.formatMessage({ id: 'rule' }) },
+        { link: "/Role", name: dataLang.formatMessage({ id: 'role' }) },
+        // { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+        { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
+        { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
+        { link: "/Rule", name: dataLang.formatMessage({ id: 'rule' }) },
       ] : [
-          // { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
-          { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
-          { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
+        // { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+        { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
+        { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
       ],
     },
   }
@@ -251,7 +251,7 @@ function Sidenar(props) {
 
           {Menu("Monitor", dataLang.formatMessage({ id: 'monitor' }))}
           {tab.value === "Monitor" ? <>{MenuLi("Monitor")}</> : <></>}
-          {Menu("Analytics", dataLang.formatMessage({ id: 'analytics' }))}
+          {Menu("Analytics", dataLang.formatMessage({ id: 'maintain' }))}
           {tab.value === "Analytics" ? <>{MenuLi("Analytics")}</> : <></>}
           {/* {Menu("Notif", "Thông báo")} */}
           {Menu("Setting", dataLang.formatMessage({ id: 'setting' }))}
