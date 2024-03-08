@@ -1,16 +1,18 @@
 import React, { useEffect } from "react";
-import { FaSave } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
+import "./Report.scss";
+
 import { editState } from "./Report";
 import { signal } from "@preact/signals-react";
-// import { CheckBox } from "../Device/Config";
 import { isMobile } from "../Navigation/Navigation";
 
+import { FaSave } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
 
 export const checkbox = signal({
   tthtc: { status: false },
   tttb: { status: false },
 });
+
 const show = signal({ id: "none", status: false });
 
 export const CheckBox = (props) => {
@@ -72,10 +74,10 @@ const DataReport = (props) => {
 
 export default function Create() {
   const [widthCheckBox, setWidwidthCheckBox] = React.useState("");
+
   const handleCloseCreate = () => {
     editState.value = false;
   };
-
 
   useEffect(() => {
     if (
@@ -116,7 +118,7 @@ export default function Create() {
         </div>
 
         <div className="DAT_Edit_Body">
-          
+
           {/* <div className="DAT_Edit_Body_Item">
             <div className="DAT_Edit_Body_Item_Type">
               <h4>Loại báo cáo</h4>

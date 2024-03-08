@@ -1,8 +1,10 @@
 import React from "react";
 import "./Role.scss";
-import { popupState, roleState } from "./Role";
-import { IoClose } from "react-icons/io5";
+
+import { popupState } from "./Role";
 import { useIntl } from "react-intl";
+
+import { IoClose } from "react-icons/io5";
 
 export default function DeleteRole() {
   const dataLang = useIntl();
@@ -26,8 +28,7 @@ export default function DeleteRole() {
           <p>{dataLang.formatMessage({ id: 'delAccount' })}</p>
         </div>
         <div className="DAT_DeleteRole_Head_Right">
-          <div
-            className="DAT_DeleteRole_Head_Right_Icon"
+          <div className="DAT_DeleteRole_Head_Right_Icon"
             onClick={() => (popupState.value = "default")}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -37,11 +38,13 @@ export default function DeleteRole() {
           </div>
         </div>
       </div>
+
       <div className="DAT_DeleteRole_Body">
         <p>
           {dataLang.formatMessage({ id: 'delaccountmess' })}
         </p>
       </div>
+
       <div className="DAT_DeleteRole_Foot">
         <button
           style={{

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { editState, group, groupEdit, groupID, groupUser } from "./GroupRole";
+import React, { useState } from "react";
+import "./GroupRole.scss";
+
+import { editState, group, groupEdit } from "./GroupRole";
+import { useIntl } from "react-intl";
+
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import "./GroupRole.scss";
-import { signal } from "@preact/signals-react";
-import { useIntl } from "react-intl";
 
 const CheckBox = (props) => {
   const handleCheck = (e) => {
@@ -23,16 +24,14 @@ const CheckBox = (props) => {
   return (
     <div className="DAT_CreateGroupRole_Body_Item_Checkbox_Option">
       <div className="form-check">
-        <input
-          className="form-check-input"
+        <input className="form-check-input"
           type="checkbox"
           defaultChecked={props.status}
           id={props.info}
           onChange={(e) => handleCheck(e)}
-        ></input>
-        <label
+        />
+        <label className="form-check-label"
           style={{ cursor: "pointer", fontSize: "15px", color: "grey" }}
-          className="form-check-label"
           htmlFor={props.info}
         >
           {props.info}
@@ -59,7 +58,6 @@ export default function CreateGroupRole() {
     console.log(group.value);
   };
 
-
   const handleEditName = (e) => {
     setName(e.currentTarget.value);
   };
@@ -75,9 +73,9 @@ export default function CreateGroupRole() {
           <div className="DAT_CreateGroupRole_Header_Left">
             <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'editGroup' })}</p>
           </div>
+
           <div className="DAT_CreateGroupRole_Header_Right">
-            <div
-              className="DAT_CreateGroupRole_Header_Right_Save"
+            <div className="DAT_CreateGroupRole_Header_Right_Save"
               onClick={() => handleSave()}
             >
               <FaSave size={20} color="white" />
@@ -104,6 +102,7 @@ export default function CreateGroupRole() {
                 onChange={(e) => handleEditName(e)}
               />
             </div>
+
             <div className="DAT_CreateGroupRole_Body_Item_Input">
               <span>{dataLang.formatMessage({ id: 'groupInfo' })}:</span>
               <input
@@ -112,6 +111,7 @@ export default function CreateGroupRole() {
                 onChange={(e) => handleEditSubinfo(e)}
               />
             </div>
+
             <div className="DAT_CreateGroupRole_Body_Item_Checkbox">
               {Object.entries(groupEdit.value.role).map(([key, value]) => (
                 <CheckBox

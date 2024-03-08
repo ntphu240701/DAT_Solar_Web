@@ -1,14 +1,16 @@
 import React from 'react';
 import './Log.scss';
-import DataTable from "react-data-table-component";
-import { CiSearch } from 'react-icons/ci';
-import { TbSettingsCode } from 'react-icons/tb';
-import { MdOutlineManageHistory } from "react-icons/md";
+
 import { Empty } from '../Project/Project';
 import { useIntl } from 'react-intl';
+import DataTable from "react-data-table-component";
 
-function Log(props) {
+import { CiSearch } from 'react-icons/ci';
+import { MdOutlineManageHistory } from "react-icons/md";
+
+export default function Log(props) {
     const dataLang = useIntl()
+
     const paginationComponentOptions = {
         rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
         rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
@@ -48,6 +50,7 @@ function Log(props) {
             response: "12/30/2023 19:19:50",
         },
     ];
+
     const columnLog = [
         {
             name: dataLang.formatMessage({ id: 'device' }),
@@ -101,10 +104,7 @@ function Log(props) {
         },
     ];
 
-
-    const handleShowConfig = () => {
-
-    }
+    const handleShowConfig = () => { }
 
     return (
         <>
@@ -116,10 +116,8 @@ function Log(props) {
                     <input type="text" placeholder={dataLang.formatMessage({ id: 'enterDev' })} />
                     <CiSearch color="gray" size={20} />
                 </div>
-                {/* <button className="DAT_LogHeader_New" onClick={handleShowConfig}>
-                    Cấu hình
-                </button> */}
             </div>
+
             <div className='DAT_Log'>
                 <div className='DAT_Log_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>
                     {dataLang.formatMessage({ id: 'logList' })}
@@ -140,5 +138,3 @@ function Log(props) {
         </>
     );
 }
-
-export default Log;

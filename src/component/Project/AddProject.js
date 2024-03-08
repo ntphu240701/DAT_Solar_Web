@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "./Project.scss";
+
 import { dataproject, plantState } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
-
 import { signal } from "@preact/signals-react";
 import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
 import { setKey, geocode, RequestType } from "react-geocode";
-
-
-import { FaSave } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
-import { IoIosArrowDown } from "react-icons/io";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
+
+import { FaSave } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
+import { IoIosArrowDown } from "react-icons/io";
 
 export const plantData = signal({
   addr: "",
@@ -71,19 +70,12 @@ const BasicInfo = (props) => {
           lat: response.results[0].geometry.location.lat,
           long: response.results[0].geometry.location.lng,
         }
-
-
       })
       .catch((error) => {
         alertDispatch(dataLang.formatMessage({ id: "alert_19" }))
-
       });
   }
 
-  // const name = useRef();
-  // const address = useRef();
-  // const long = useRef();
-  // const lat = useRef();
   const handleBasic = (e) => {
     plantData.value[e.currentTarget.id] = e.currentTarget.value;
   };
@@ -93,8 +85,7 @@ const BasicInfo = (props) => {
       <div className="DAT_AddProject_BasicInfo_Tit">
         <div className="DAT_AddProject_BasicInfo_Tit_Left">{props.tit}</div>
 
-        <div
-          className="DAT_AddProject_BasicInfo_Tit_Right"
+        <div className="DAT_AddProject_BasicInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -125,7 +116,6 @@ const BasicInfo = (props) => {
                 <input
                   id="plantname"
                   type="text"
-                  // ref={name}
                   onChange={(e) => handleBasic(e)}
                 />
               </div>
@@ -138,7 +128,6 @@ const BasicInfo = (props) => {
                 <input
                   id="addr"
                   type="text"
-                  // ref={address}
                   onChange={(e) => handleBasic(e)}
                 />
               </div>
@@ -156,7 +145,6 @@ const BasicInfo = (props) => {
                     <input
                       id="long"
                       type="text"
-                      // ref={long}
                       onChange={(e) => handleBasic(e)}
                       onClick={(e) => handleMap(e)}
                       required
@@ -169,7 +157,6 @@ const BasicInfo = (props) => {
                     <input
                       id="lat"
                       type="text"
-                      // ref={lat}
                       onChange={(e) => handleBasic(e)}
                       onClick={(e) => handleMap(e)}
                       required
@@ -227,8 +214,7 @@ const SystemInfo = (props) => {
       <div className="DAT_AddProject_SystemInfo_Tit">
         <div className="DAT_AddProject_SystemInfo_Tit_Left">{props.tit}</div>
 
-        <div
-          className="DAT_AddProject_SystemInfo_Tit_Right"
+        <div className="DAT_AddProject_SystemInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -293,7 +279,7 @@ const SystemInfo = (props) => {
                 </div>
                 <input
                   id="capacity"
-                  type="text"
+                  type="number"
                   onChange={(e) => handleSystem(e)}
                   required
                 />
@@ -321,7 +307,7 @@ const SystemInfo = (props) => {
                 </div>
                 <input
                   id="angle"
-                  type="text"
+                  type="number"
                   placeholder="0~90"
                   onChange={(e) => handleSystem(e)}
                 />
@@ -349,8 +335,7 @@ const YieldInfo = (props) => {
       <div className="DAT_AddProject_YieldInfo_Tit">
         <div className="DAT_AddProject_YieldInfo_Tit_Left">{props.tit}</div>
 
-        <div
-          className="DAT_AddProject_YieldInfo_Tit_Right"
+        <div className="DAT_AddProject_YieldInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -397,7 +382,7 @@ const YieldInfo = (props) => {
                 </div>
                 <input
                   id="price"
-                  type="text"
+                  type="number"
                   onChange={(e) => handleYield(e)}
                 />
               </div>
@@ -426,8 +411,7 @@ const OwnerInfo = (props) => {
       <div className="DAT_AddProject_OwnerInfo_Tit">
         <div className="DAT_AddProject_OwnerInfo_Tit_Left">{props.tit}</div>
 
-        <div
-          className="DAT_AddProject_OwnerInfo_Tit_Right"
+        <div className="DAT_AddProject_OwnerInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -499,67 +483,69 @@ const OwnerInfo = (props) => {
   );
 };
 
-const ImgInfo = (props) => {
-  const dataLang = useIntl()
-  const [state, setState] = useState(true);
-  const [ava, setAva] = React.useState();
-  const handleChooseAvatar = (e) => {
-    setAva(URL.createObjectURL(e.target.files[0]));
-    console.log(e.target.files[0].name);
-  };
+// const ImgInfo = (props) => {
+//   const dataLang = useIntl()
+//   const [state, setState] = useState(true);
+//   const [ava, setAva] = useState();
 
-  return (
-    <div className="DAT_AddProject_ImgInfo">
-      <div className="DAT_AddProject_ImgInfo_Tit">
-        <div className="DAT_AddProject_ImgInfo_Tit_Left">{props.tit}</div>
+//   const handleChooseAvatar = (e) => {
+//     setAva(URL.createObjectURL(e.target.files[0]));
+//     console.log(e.target.files[0].name);
+//   };
 
-        <div className="DAT_AddProject_ImgInfo_Tit_Right"
-          onClick={() => setState(!state)}
-        >
-          <IoIosArrowDown
-            size={20}
-            style={{
-              transform: state ? "rotate(0deg)" : "rotate(180deg)",
-              transition: "0.5s",
-            }}
-          />
-        </div>
-      </div>
+//   return (
+//     <div className="DAT_AddProject_ImgInfo">
+//       <div className="DAT_AddProject_ImgInfo_Tit">
+//         <div className="DAT_AddProject_ImgInfo_Tit_Left">{props.tit}</div>
 
-      <div
-        style={{
-          height: state ? props.height : "0px",
-          transition: "0.5s",
-          overflow: "hidden",
-        }}
-      >
-        {state ? (
-          <div className="DAT_AddProject_ImgInfo_Body">
-            <div className="DAT_AddProject_ImgInfo_Body_Ava">
-              <div className="DAT_AddProject_ImgInfo_Body_Ava_Img">
-                <img src={ava} alt="" />
-              </div>
-              <input
-                type="file"
-                id="file"
-                accept="image/png, image/gif, image/jpeg"
-                onChange={(e) => handleChooseAvatar(e)}
-              />
-              <label htmlFor="file" style={{ cursor: "pointer" }}>
-                {dataLang.formatMessage({ id: 'chooseImg' })}
-              </label>
-            </div>
-          </div>
-        ) : (
-          <></>
-        )}
-      </div>
-    </div>
-  );
-}
+//         <div className="DAT_AddProject_ImgInfo_Tit_Right"
+//           onClick={() => setState(!state)}
+//         >
+//           <IoIosArrowDown
+//             size={20}
+//             style={{
+//               transform: state ? "rotate(0deg)" : "rotate(180deg)",
+//               transition: "0.5s",
+//             }}
+//           />
+//         </div>
+//       </div>
 
-function AddProject(props) {
+//       <div
+//         style={{
+//           height: state ? props.height : "0px",
+//           transition: "0.5s",
+//           overflow: "hidden",
+//         }}
+//       >
+//         {state ? (
+//           <div className="DAT_AddProject_ImgInfo_Body">
+//             <div className="DAT_AddProject_ImgInfo_Body_Ava">
+//               <div className="DAT_AddProject_ImgInfo_Body_Ava_Img">
+//                 <img src={ava} alt="" />
+//               </div>
+//               <input
+//                 type="file"
+//                 id="file"
+//                 accept="image/png, image/gif, image/jpeg"
+//                 onChange={(e) => handleChooseAvatar(e)}
+//               />
+//               <label htmlFor="file" style={{ cursor: "pointer" }}>
+//                 {dataLang.formatMessage({ id: 'chooseImg' })}
+//               </label>
+//             </div>
+//           </div>
+//         ) : (
+//           <></>
+//         )}
+//       </div>
+//     </div>
+//   );
+// }
+
+export default function AddProject(props) {
   const dataLang = useIntl();
+
   const handleSaveBasic = () => {
     var check = 0;
     Object.entries(plantData.value).map(([key, value]) => {
@@ -571,47 +557,27 @@ function AddProject(props) {
     if (check !== 0) {
       alertDispatch(dataLang.formatMessage({ id: "alert_22" }))
     } else {
-      const addProject = async (
-        usrname,
-        plantname,
-        company,
-        addr,
-        long,
-        lat,
-        contact,
-        phone,
-        business,
-        plantytype,
-        plantmode,
-        griddate,
-        capacity,
-        angle,
-        currency,
-        price,
-        production,
-        power,
-        partnerid
-      ) => {
+      const addProject = async () => {
         let d = await callApi('post', host.DATA + '/addPlant', {
-          usr: usrname,
-          name: plantname,
-          company: company,
-          addr: addr,
-          long: long,
-          lat: lat,
-          contact: contact,
-          phone: phone,
-          business: business,
-          type: plantytype,
-          mode: plantmode,
-          griddate: griddate,
-          capacity: capacity,
-          angle: angle,
-          currency: currency,
-          price: price,
-          production: production,
-          power: power,
-          partnerid: partnerid
+          usr: props.usr,
+          name: plantData.value.plantname,
+          company: plantData.value.company,
+          addr: plantData.value.addr,
+          long: plantData.value.long,
+          lat: plantData.value.lat,
+          contact: plantData.value.contact,
+          phone: plantData.value.phone,
+          business: plantData.value.business,
+          type: plantData.value.planttype,
+          mode: plantData.value.plantmode,
+          griddate: plantData.value.griddate,
+          capacity: plantData.value.capacity,
+          angle: plantData.value.angle,
+          currency: plantData.value.currency,
+          price: plantData.value.price,
+          production: plantData.value.production,
+          power: plantData.value.power,
+          partnerid: userInfor.value.partnerid
         })
         if (d.status === true) {
           alertDispatch(dataLang.formatMessage({ id: "alert_29" }))
@@ -643,27 +609,7 @@ function AddProject(props) {
         }
       };
 
-      addProject(
-        props.usr,
-        plantData.value.plantname,
-        plantData.value.company,
-        plantData.value.addr,
-        plantData.value.long,
-        plantData.value.lat,
-        plantData.value.contact,
-        plantData.value.phone,
-        plantData.value.business,
-        plantData.value.planttype,
-        plantData.value.plantmode,
-        plantData.value.griddate,
-        plantData.value.capacity,
-        plantData.value.angle,
-        plantData.value.currency,
-        plantData.value.price,
-        plantData.value.production,
-        plantData.value.power,
-        userInfor.value.partnerid
-      );
+      addProject();
     }
   };
 
@@ -675,8 +621,7 @@ function AddProject(props) {
         </div>
 
         <div className="DAT_AddProject_Header_Right">
-          <div
-            className="DAT_AddProject_Header_Right_Save"
+          <div className="DAT_AddProject_Header_Right_Save"
             onClick={() => handleSaveBasic()}
           >
             <FaSave size={20} color="white" />
@@ -718,5 +663,3 @@ function AddProject(props) {
     </div>
   );
 }
-
-export default AddProject;

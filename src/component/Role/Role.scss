@@ -47,6 +47,7 @@
         &:hover {
             background-color: #3e80fb;
         }
+
         & span {
             display: flex;
             justify-content: center;
@@ -81,6 +82,75 @@
         -moz-box-sizing: border-box;
         /* Firefox, other Gecko */
         box-sizing: border-box;
+    }
+}
+
+.DAT_RoleMobile {
+    &_Header {}
+
+    &_Content {
+        &_Item {
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: white;
+            width: 98%;
+            margin: auto;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow:
+                2px 2px 5px rgba(198, 197, 197, 0.4),
+                -2px -2px 5px rgba(198, 197, 197, 0.4);
+
+            &_Row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                &_Name {
+                    color: black;
+                    font-size: 16px;
+                    margin-bottom: 5px;
+
+                }
+
+                &_Right {
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 5px;
+                }
+
+                &_Phone {
+                    color: black;
+                    font-size: 16px;
+                    margin-bottom: 5px;
+                    display: flex;
+                    align-items: center;
+                }
+
+                &_Email {
+                    color: black;
+                    font-size: 16px;
+                    margin-bottom: 5px;
+                    display: flex;
+                    align-items: center;
+                }
+
+                &_Rule {
+                    color: black;
+                    font-size: 16px;
+                    margin-bottom: 5px;
+                    display: flex;
+                    align-items: center;
+                }
+
+                &_Acc {
+                    color: black;
+                    font-size: 16px;
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
     }
 }
 
@@ -419,16 +489,12 @@
 
 @media (max-width: 900px) {
     .DAT_Role {
-        width: 98%;
+        // width: 98%;
+        background-color: rgba(233, 233, 233, 0.5);
 
-        //height: 68vh;
-        // overflow: hidden;
         &_Content {
             height: calc(100vh - 300px);
         }
-
-
-
     }
 
     .DAT_Create {

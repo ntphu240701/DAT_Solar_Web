@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Contact.scss";
-import { IoClose } from "react-icons/io5";
+
 import { popupStateContact } from "./Contact";
 import { partnerInfor } from "../../App";
 import Resizer from "react-image-file-resizer";
@@ -9,9 +9,12 @@ import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 
-function PopupAva(props) {
+import { IoClose } from "react-icons/io5";
+
+export default function PopupAva(props) {
   const dataLang = useIntl();
   const [ava, setAva] = useState(partnerInfor.value.logo ? partnerInfor.value.logo : "/dat_icon/logo_DAT.png");
+
   const resizeFile = (file) =>
     new Promise((resolve) => {
       Resizer.imageFileResizer(
@@ -27,6 +30,7 @@ function PopupAva(props) {
         "file"
       );
     });
+
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -38,8 +42,6 @@ function PopupAva(props) {
     popup.style.transition = popup_state[state].transition;
     popup.style.color = popup_state[state].color;
   };
-
-
 
   const handleChooseAvatar = async (e) => {
     var reader = new FileReader();
@@ -83,9 +85,9 @@ function PopupAva(props) {
         <div className="DAT_PopupAva_Head_Left">
           <p>{dataLang.formatMessage({ id: 'edit' })}</p>
         </div>
+
         <div className="DAT_PopupAva_Head_Right">
-          <div
-            className="DAT_PopupAva_Head_Right_Icon"
+          <div className="DAT_PopupAva_Head_Right_Icon"
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
@@ -106,13 +108,11 @@ function PopupAva(props) {
           <input
             type="file"
             id="file"
-
             accept="image/png, image/gif, image/jpeg"
             onChange={(e) => handleChooseAvatar(e)}
           />
           <label htmlFor="file" style={{ cursor: "pointer" }}>
             {dataLang.formatMessage({ id: 'chooseImg' })}
-
           </label>
         </div>
       </div>
@@ -133,11 +133,8 @@ function PopupAva(props) {
         </button>
         <button style={{ backgroundColor: "#048FFF", color: "white" }} onClick={() => { handleSave() }}>
           {dataLang.formatMessage({ id: 'save' })}
-
         </button>
       </div>
     </div>
   );
 }
-
-export default PopupAva;

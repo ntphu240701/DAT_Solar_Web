@@ -1,13 +1,13 @@
-import React from "react";
-import { IoMdExit } from "react-icons/io";
+import React, { useEffect } from "react";
+import "./GroupRole.scss";
+
 import { createState } from "./GroupRole";
+
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import './GroupRole.scss';
-
 
 export default function Create() {
-  React.useEffect(() => {
+  useEffect(() => {
     console.log(createState.value);
   });
 
@@ -18,6 +18,7 @@ export default function Create() {
           <div className="DAT_Create_Header_Left">
             <p style={{ fontSize: "20px" }}>Cấu hình</p>
           </div>
+
           <div className="DAT_Create_Header_Right">
             <div className="DAT_Create_Header_Right_Save">
               <FaSave size={20} color="white" />
@@ -27,7 +28,7 @@ export default function Create() {
               <RxCross2
                 size={20}
                 color="white"
-                onClick={()=>createState.value = false}
+                onClick={() => createState.value = false}
               />
             </div>
           </div>
@@ -36,7 +37,6 @@ export default function Create() {
         <div className="DAT_Create_Body">
           <div className="DAT_Create_Body_Item">
             <h4>Vui lòng chọn loại thiết bị bạn cần hiển thị</h4>
-            
           </div>
         </div>
       </div>

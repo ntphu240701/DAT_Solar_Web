@@ -151,9 +151,13 @@
                     font-size: 16px;
                     margin-bottom: 5px;
                     cursor: pointer;
+                    display: flex;
+                    justify-content: space-between;
 
-                    &:hover {
-                        color: #6495ed;
+                    &_Right {
+                        display: flex;
+                        justify-content: flex-end;
+                        gap: 5px;
                     }
                 }
 
@@ -181,12 +185,9 @@
                             color: gray;
                             font-size: 15px;
                         }
-
                     }
                 }
             }
-
-
         }
 
         &_Bottom {
@@ -395,10 +396,10 @@
             &_Add {
                 & button {
                     width: 30px;
-                    height: 30px;  
+                    height: 30px;
                     display: flex;
                     align-items: center;
-                    justify-content: center; 
+                    justify-content: center;
                     background-color: #6495ed;
                     border: solid 1px rgb(199, 199, 199);
                     border-radius: 50%;
@@ -773,7 +774,7 @@
 
                         &_Img {
                             & img {
-                                width: 120px;
+                                width: 70px;
                                 height: 70px;
                             }
                         }

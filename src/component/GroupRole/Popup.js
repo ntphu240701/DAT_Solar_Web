@@ -1,9 +1,10 @@
 import React from "react";
 import "./GroupRole.scss";
-import { dataUsers, groupID, groupUser, popupState } from "./GroupRole";
-import { IoClose } from "react-icons/io5";
-import { userDel } from "./GroupRole";
+
+import { groupID, groupUser, popupState, userDel } from "./GroupRole";
 import { useIntl } from "react-intl";
+
+import { IoClose } from "react-icons/io5";
 
 export default function Popup() {
   const dataLang = useIntl();
@@ -38,9 +39,9 @@ export default function Popup() {
         <div className="DAT_Popup_Box_Head_Left">
           <p>{dataLang.formatMessage({ id: 'delAccount' })}</p>
         </div>
+
         <div className="DAT_Popup_Box_Head_Right">
-          <div
-            className="DAT_Popup_Box_Head_Right_Icon"
+          <div className="DAT_Popup_Box_Head_Right_Icon"
             onClick={() => (popupState.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -50,11 +51,13 @@ export default function Popup() {
           </div>
         </div>
       </div>
+
       <div className="DAT_Popup_Box_Body">
         <p>
           {dataLang.formatMessage({ id: 'delaccountmess' })}
         </p>
       </div>
+
       <div className="DAT_Popup_Box_Foot">
         <button
           style={{

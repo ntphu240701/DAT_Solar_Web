@@ -1,33 +1,24 @@
 import React, { useEffect, useState } from "react";
 import "./Home.scss";
-import {
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-import { FaSolarPanel, FaTree } from "react-icons/fa6";
+
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
-import { VscDashboard } from "react-icons/vsc";
-import { IoIosArrowForward, IoIosCloud } from "react-icons/io";
 import { Empty } from "../Project/Project";
 import DataTable from "react-data-table-component";
-import { GiCoalWagon } from "react-icons/gi";
 import { useSelector } from "react-redux";
 import { Token, partnerInfor, userInfor } from "../../App";
 import { host } from "../Lang/Contant";
 import { callApi } from "../Api/Api";
 import { signal } from "@preact/signals-react";
-import { get } from "lodash";
 import axios from "axios";
 import { useIntl } from "react-intl";
 import { coalsave } from "../Project/ProjectData";
+
+import { FaSolarPanel, FaTree } from "react-icons/fa6";
+import { VscDashboard } from "react-icons/vsc";
+import { IoIosCloud } from "react-icons/io";
+import { GiCoalWagon } from "react-icons/gi";
 import { FaMoneyBill } from "react-icons/fa";
 
 const plant = signal([])
@@ -39,12 +30,11 @@ const AnyReactComponent = ({ text }) => {
     <div className="DAT_marker" >
       <div className="DAT_marker-bg" ></div>
       <div className="DAT_marker-lb" >{text}</div>
-
     </div>
   )
 }
 
-function Home(props) {
+export default function Home(props) {
   const usr = useSelector((state) => state.admin.usr)
   const [total, setTotal] = useState(0)
   const [online, setOnline] = useState(0)
@@ -65,7 +55,6 @@ function Home(props) {
   const [datamonth, setDatamonth] = useState([])
   const [vyear, setVyear] = useState(dataLang.formatMessage({ id: 'yearOutputSmall' }));
   const [datayear, setDatayear] = useState([])
-
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
@@ -149,7 +138,6 @@ function Home(props) {
   };
 
   useEffect(() => {
-
     const getPlant = async () => {
       let d = await callApi('post', host.DATA + '/getPlant', {
         usr: usr,
@@ -176,17 +164,14 @@ function Home(props) {
       if (d.status) {
         logger.value = d.data
         d.data.map(async (item) => {
-
           const res = await invtCloud('{"deviceCode":"' + item.psn + '"}', Token.value.token);
           // console.log(res)
           if (res.ret === 0) {
             //console.log(res.data)
             setInvt(pre => ({ ...pre, [item.psn]: res.data }))
-
           } else {
             setInvt(pre => ({ ...pre, [item.psn]: {} }))
           }
-
         })
       }
     }
@@ -201,8 +186,6 @@ function Home(props) {
   }
 
   useEffect(() => {
-
-
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1;  // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
     const currentYear = currentDate.getFullYear();
@@ -223,14 +206,10 @@ function Home(props) {
         { month: i < 10 ? `0${i}` : `${i}`, [vyear]: 0 }]
     }
 
-
-
-
     let cap = []
     let sum_month = []
     let sum_year = []
     plant.value.map(async (item, i) => {
-
       let chart = await callApi('post', host.DATA + '/getMonthChart', {
         plantid: item.plantid,
         month: moment(new Date()).format("MM/YYYY"),
@@ -241,7 +220,6 @@ function Home(props) {
           let index = datamonth_.findIndex((d) => d.date == item.date)
           datamonth_[index][vmonth] = parseFloat(Number(datamonth_[index][vmonth]) + Number(item.value)).toFixed(2)
         })
-
       } else {
         sum_month[i] = 0
       }
@@ -256,19 +234,15 @@ function Home(props) {
           let index = datayear_.findIndex((d) => d.month == item.month)
           datayear_[index][vyear] = parseFloat(Number(datayear_[index][vyear]) + Number(item.value)).toFixed(2)
         })
-
       } else {
         sum_year[i] = 0
       }
 
-
       cap[i] = item.capacity
       if (i == plant.value.length - 1) {
-        console.log(datamonth_, datayear_)
+        // console.log(datamonth_, datayear_)
         setDatamonth(datamonth_)
         setDatayear(datayear_)
-
-
 
         let total_month = parseFloat(sum_month.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
         setMonthlyProduction(total_month)
@@ -279,7 +253,6 @@ function Home(props) {
         let total = parseFloat(cap.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
         setCapacity(total)
       }
-
     })
 
     var price = [];
@@ -328,8 +301,6 @@ function Home(props) {
         }
       })
 
-
-
       if (index == plant.value.length - 1) {
         let total = parseFloat(price.reduce((accumulator, currentValue) => {
           return Number(accumulator) + Number(currentValue)
@@ -337,7 +308,6 @@ function Home(props) {
         setPrice(total);
       }
     })
-
 
     var cal = {}
     var num_ = {
@@ -356,12 +326,14 @@ function Home(props) {
       pro_2: [],
       pro_3: []
     }
+
     logger.value.map((item, i) => {
       Object.entries(item.pdata).map(([key, value]) => {
         switch (value.type) {
           case "sum":
             let inum = [];
             let cal_ = JSON.parse(value.cal);
+
             Object.entries(value.register).map(([key, value]) => {
               let n = JSON.parse(value)
               inum[key] = parseFloat(invt[item.psn]?.[n[0]] || 0) * parseFloat(cal_[0]) * parseFloat(invt[item.psn]?.[n[1]] || 0) * parseFloat(cal_[1]);
@@ -370,8 +342,8 @@ function Home(props) {
             num_[key][i] = inum.reduce((accumulator, currentValue) => {
               return Number(accumulator) + Number(currentValue)
             }, 0)
-            if (i == logger.value.length - 1) {
 
+            if (i == logger.value.length - 1) {
               if (invt[item.psn]?.enabled == 1) {
                 cal[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue)
@@ -379,7 +351,6 @@ function Home(props) {
               } else {
                 cal[key] = 0
               }
-
             }
             break;
           case "word":
@@ -394,8 +365,10 @@ function Home(props) {
               var floatView = new Float32Array(buffer);
               intView[0] = doubleword;
               var float_value = floatView[0];
+
               return type === "int" ? parseFloat(doubleword).toFixed(2) : parseFloat(float_value).toFixed(2) || 0;
             }
+
             num_[key][i] = convertToDoublewordAndFloat(e, "int");
 
             if (i == logger.value.length - 1) {
@@ -403,10 +376,7 @@ function Home(props) {
               cal[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
                 return Number(accumulator) + Number(currentValue)
               }, 0) * parseFloat(value.cal)).toFixed(2);
-
-
             }
-
             break;
           default:
             num_[key][i] = parseFloat(invt[item.psn]?.[value.register] || 0) * parseFloat(value.cal);
@@ -430,8 +400,6 @@ function Home(props) {
       value: cal.pro_3
     }
 
-
-
   }, [invt])
 
   return (
@@ -448,9 +416,6 @@ function Home(props) {
             <div className="DAT_Home_Overview-Head-Title">
               {dataLang.formatMessage({ id: 'overview' })}
             </div>
-            {/* <div className="DAT_Home_Overview-Head-Date">
-              Đã cập nhật: {moment().format("DD/MM/YYYY HH:mm:ss")}
-            </div> */}
           </div>
 
           <div className="DAT_Home_Overview-Main">
@@ -460,10 +425,12 @@ function Home(props) {
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_num">
                     {parseFloat((production / capacity) * 100).toFixed(2) === "NaN" ? "--" : parseFloat((production / capacity) * 100).toFixed(2)}
                   </div>
+
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">%</div>
                 </div>
               </div>
             </div>
+
             <div className="DAT_Home_Overview-Main-Value">
               <div className="DAT_Home_Overview-Main-Value-Item">
                 <div className="DAT_Home_Overview-Main-Value-Item-Title">
@@ -475,6 +442,7 @@ function Home(props) {
                   <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
                 </div>
               </div>
+
               <div className="DAT_Home_Overview-Main-Value-Item">
                 <div className="DAT_Home_Overview-Main-Value-Item-Title">
                   {dataLang.formatMessage({ id: 'inCapacity' })}
@@ -501,6 +469,7 @@ function Home(props) {
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
             </div>
+
             <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
             >
@@ -513,6 +482,7 @@ function Home(props) {
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
             </div>
+
             <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
             >
@@ -525,6 +495,7 @@ function Home(props) {
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
             </div>
+
             <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
             >
@@ -571,6 +542,7 @@ function Home(props) {
                 {dataLang.formatMessage({ id: 'month' })}
               </span>
             </div>
+
             <div className="DAT_Home_History-Head-Datetime">
               {chart === "year" ? moment(new Date()).format("YYYY") : moment(new Date()).format("MM/YYYY")}
               {/* <input
@@ -644,6 +616,7 @@ function Home(props) {
             </span>
             <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{total}</span>
           </div>
+
           <div className="DAT_Home_State-Content">
             <div className="DAT_Home_State-Content-Item">
               <div className="DAT_Home_State-Content-Item-Title">
@@ -662,6 +635,7 @@ function Home(props) {
               </div>
             </div>
           </div>
+
           <div className="DAT_Home_State-Content">
             <div className="DAT_Home_State-Content-Item">
               <div className="DAT_Home_State-Content-Item-Title">
@@ -690,7 +664,6 @@ function Home(props) {
               defaultCenter={defaultProps.center}
               defaultZoom={defaultProps.zoom}
             //onGoogleApiLoaded={onGoogleApiLoaded}
-
             >
               {plant.value.map((item, index) => {
                 return (
@@ -719,6 +692,7 @@ function Home(props) {
               ></input> */}
             </div>
           </div>
+
           <div className="DAT_Home_Rank-Content">
             <DataTable
               className="DAT_Table_Home"
@@ -757,6 +731,7 @@ function Home(props) {
                 </div>
               </div>
             </div>
+
             <div className="DAT_Home_Benefit_Content_Item">
               <div className="DAT_Home_Benefit_Content_Item_Icon">
                 <FaTree size={24} color="#6495ed" />
@@ -794,6 +769,7 @@ function Home(props) {
                 </div>
               </div>
             </div>
+
             <div className="DAT_Home_Benefit_Content_Item">
               <div className="DAT_Home_Benefit_Content_Item_Icon">
                 <FaMoneyBill size={24} color="#6495ed" />
@@ -817,5 +793,3 @@ function Home(props) {
     </>
   );
 }
-
-export default Home;

@@ -1,12 +1,13 @@
-import React, { Component, useEffect } from "react";
+import React, { useState } from "react";
 import "./Device.scss";
-import { IoIosArrowDown } from "react-icons/io";
-import { FaCheckCircle } from "react-icons/fa";
-import { MdOutlineError } from "react-icons/md";
+
 import { infoState, info, tab } from "./Device";
-import { FaSave } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
 import { useIntl } from "react-intl";
+
+import { IoIosArrowDown } from "react-icons/io";
+import { FaCheckCircle, FaSave } from "react-icons/fa";
+import { MdOutlineError } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx";
 
 const dataAC = [
   {
@@ -82,17 +83,16 @@ const dataTemp = [
 
 const BasicInformation = (props) => {
   const dataLang = useIntl();
-  const [display, setDisplay] = React.useState(true);
+
+  const [display, setDisplay] = useState(true);
 
   return (
     <div className="DAT_Info_Databox" id="Basic Information">
       <div className="DAT_Info_Databox_Title">
         <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'basicInfo' })}</div>
-        <div
-          className="DAT_Info_Databox_Title_Right"
+        <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          {/* {display ? <>Thu gọn</> : <>Mở</>} */}
           <IoIosArrowDown
             size={20}
             style={{
@@ -102,8 +102,8 @@ const BasicInformation = (props) => {
           />
         </div>
       </div>
-      <div
-        className="Animation"
+
+      <div className="Animation"
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
@@ -131,18 +131,18 @@ const BasicInformation = (props) => {
 
 const VersionInformation = (props) => {
   const dataLang = useIntl()
-  const [display, setDisplay] = React.useState(true);
+
+  const [display, setDisplay] = useState(true);
+
   return (
     <div className="DAT_Info_Databox" id="Version Information">
       <div className="DAT_Info_Databox_Title">
         <div className="DAT_Info_Databox_Title_Left">
           {dataLang.formatMessage({ id: 'versionInfo' })}
         </div>
-        <div
-          className="DAT_Info_Databox_Title_Right"
+        <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          {/* {display ? <>Thu gọn</> : <>Mở</>} */}
           <IoIosArrowDown
             size={20}
             style={{
@@ -152,8 +152,8 @@ const VersionInformation = (props) => {
           />
         </div>
       </div>
-      <div
-        className="Animation"
+
+      <div className="Animation"
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
@@ -175,18 +175,17 @@ const VersionInformation = (props) => {
 const OperationInformation = (props) => {
   const dataLang = useIntl()
 
-  const [display, setDisplay] = React.useState(true);
+  const [display, setDisplay] = useState(true);
+
   return (
     <div className="DAT_Info_Databox" id="Version Information">
       <div className="DAT_Info_Databox_Title">
         <div className="DAT_Info_Databox_Title_Left">
           {dataLang.formatMessage({ id: 'operationInfo' })}
         </div>
-        <div
-          className="DAT_Info_Databox_Title_Right"
+        <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          {/* {display ? <>Thu gọn</> : <>Mở</>} */}
           <IoIosArrowDown
             size={20}
             style={{
@@ -196,8 +195,8 @@ const OperationInformation = (props) => {
           />
         </div>
       </div>
-      <div
-        className="Animation"
+
+      <div className="Animation"
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
@@ -223,16 +222,15 @@ const OperationInformation = (props) => {
 };
 
 const ElectricityGeneration = (props) => {
-  const [display, setDisplay] = React.useState(true);
+  const [display, setDisplay] = useState(true);
+
   return (
     <div className="DAT_Info_Databox" id="Electricity Generation">
       <div className="DAT_Info_Databox_Title">
         <div className="DAT_Info_Databox_Title_Left">Điện năng tái tạo</div>
-        <div
-          className="DAT_Info_Databox_Title_Right"
+        <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          {/* {display ? <>Thu gọn</> : <>Mở</>} */}
           <IoIosArrowDown
             size={20}
             style={{
@@ -242,8 +240,8 @@ const ElectricityGeneration = (props) => {
           />
         </div>
       </div>
-      <div
-        className="Animation"
+
+      <div className="Animation"
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
@@ -328,16 +326,15 @@ const ElectricityGeneration = (props) => {
 };
 
 const PowerGrid = (props) => {
-  const [display, setDisplay] = React.useState(true);
+  const [display, setDisplay] = useState(true);
+
   return (
     <div className="DAT_Info_Databox" id="PowerGrid">
       <div className="DAT_Info_Databox_Title">
         <div className="DAT_Info_Databox_Title_Left">Mạng lưới điện</div>
-        <div
-          className="DAT_Info_Databox_Title_Right"
+        <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          {/* {display ? <>Thu gọn</> : <>Mở</>} */}
           <IoIosArrowDown
             size={20}
             style={{
@@ -347,8 +344,7 @@ const PowerGrid = (props) => {
           />
         </div>
       </div>
-      <div
-        className="Animation"
+      <div className="Animation"
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
@@ -381,16 +377,15 @@ const PowerGrid = (props) => {
 };
 
 const ElectricityConsumption = (props) => {
-  const [display, setDisplay] = React.useState(true);
+  const [display, setDisplay] = useState(true);
+
   return (
     <div className="DAT_Info_Databox" id="ElectricityConsumption">
       <div className="DAT_Info_Databox_Title">
         <div className="DAT_Info_Databox_Title_Left">Tiêu thụ điện</div>
-        <div
-          className="DAT_Info_Databox_Title_Right"
+        <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          {/* {display ? <>Thu gọn</> : <>Mở</>} */}
           <IoIosArrowDown
             size={20}
             style={{
@@ -400,8 +395,8 @@ const ElectricityConsumption = (props) => {
           />
         </div>
       </div>
-      <div
-        className="Animation"
+
+      <div className="Animation"
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
@@ -425,16 +420,15 @@ const ElectricityConsumption = (props) => {
 };
 
 const Temperature = (props) => {
-  const [display, setDisplay] = React.useState(true);
+  const [display, setDisplay] = useState(true);
+
   return (
     <div className="DAT_Info_Databox" id="Temperature">
       <div className="DAT_Info_Databox_Title">
         <div className="DAT_Info_Databox_Title_Left">Nhiệt độ</div>
-        <div
-          className="DAT_Info_Databox_Title_Right"
+        <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          {/* {display ? <>Thu gọn</> : <>Mở</>} */}
           <IoIosArrowDown
             size={20}
             style={{
@@ -444,8 +438,8 @@ const Temperature = (props) => {
           />
         </div>
       </div>
-      <div
-        className="Animation"
+
+      <div className="Animation"
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
@@ -471,16 +465,14 @@ const Temperature = (props) => {
 };
 
 const Other = (props) => {
-  const [display, setDisplay] = React.useState(true);
+  const [display, setDisplay] = useState(true);
   return (
     <div className="DAT_Info_Databox" id="Other">
       <div className="DAT_Info_Databox_Title">
         <div className="DAT_Info_Databox_Title_Left">Khác</div>
-        <div
-          className="DAT_Info_Databox_Title_Right"
+        <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          {/* {display ? <>Thu gọn</> : <>Mở</>} */}
           <IoIosArrowDown
             size={20}
             style={{
@@ -490,8 +482,8 @@ const Other = (props) => {
           />
         </div>
       </div>
-      <div
-        className="Animation"
+
+      <div className="Animation"
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
@@ -583,16 +575,15 @@ const Other = (props) => {
 };
 
 const State = (props) => {
-  const [display, setDisplay] = React.useState(true);
+  const [display, setDisplay] = useState(true);
+
   return (
     <div className="DAT_Info_Databox" id="State">
       <div className="DAT_Info_Databox_Title">
         <div className="DAT_Info_Databox_Title_Left">Trạng thái</div>
-        <div
-          className="DAT_Info_Databox_Title_Right"
+        <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          {/* {display ? <>Thu gọn</> : <>Mở</>} */}
           <IoIosArrowDown
             size={20}
             style={{
@@ -602,8 +593,8 @@ const State = (props) => {
           />
         </div>
       </div>
-      <div
-        className="Animation"
+
+      <div className="Animation"
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
@@ -628,16 +619,15 @@ const State = (props) => {
 };
 
 const Control = (props) => {
-  const [display, setDisplay] = React.useState(true);
+  const [display, setDisplay] = useState(true);
+
   return (
     <div className="DAT_Info_Databox" id="Control">
       <div className="DAT_Info_Databox_Title">
         <div className="DAT_Info_Databox_Title_Left">Điều khiển</div>
-        <div
-          className="DAT_Info_Databox_Title_Right"
+        <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          {/* {display ? <>Thu gọn</> : <>Mở</>} */}
           <IoIosArrowDown
             size={20}
             style={{
@@ -647,8 +637,8 @@ const Control = (props) => {
           />
         </div>
       </div>
-      <div
-        className="Animation"
+
+      <div className="Animation"
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
@@ -693,16 +683,15 @@ const Control = (props) => {
 };
 
 const HistoricalData = (props) => {
-  const [display, setDisplay] = React.useState(true);
+  const [display, setDisplay] = useState(true);
+
   return (
     <div className="DAT_Info_Databox" id="HistoricalData">
       <div className="DAT_Info_Databox_Title">
         <div className="DAT_Info_Databox_Title_Left">Lịch sử dữ liệu</div>
-        <div
-          className="DAT_Info_Databox_Title_Right"
+        <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          {/* {display ? <>Thu gọn</> : <>Mở</>} */}
           <IoIosArrowDown
             size={20}
             style={{
@@ -712,8 +701,8 @@ const HistoricalData = (props) => {
           />
         </div>
       </div>
-      <div
-        className="Animation"
+
+      <div className="Animation"
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
@@ -747,22 +736,21 @@ const HistoricalData = (props) => {
 
 export default function Info() {
   const dataLang = useIntl();
-  const [display, setDisplay] = React.useState(true);
 
   return (
     <div className="DAT_Info">
       <div className="DAT_Info_Header">
         <div className="DAT_Info_Header_Left">
           <p style={{ fontWeight: "bold" }}>{info.value.pname}: {info.value.psn}</p>
-          <a style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-
+          <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             {info.value.pstate == 1 ? (
               <FaCheckCircle size={20} color="green" />
             ) : (
               <MdOutlineError size={20} color="red" />
             )}
-          </a>
+          </p>
         </div>
+
         <div className="DAT_Info_Header_Right">
           <div className="DAT_Info_Header_Right_Save">
             <FaSave size={20} color="white" />
@@ -776,7 +764,6 @@ export default function Info() {
               color="white"
             />
           </div>
-          {/* <p>{info.value.update}</p> */}
         </div>
       </div>
 
@@ -812,6 +799,8 @@ export default function Info() {
                 <OperationInformation />
               </>
             );
+          default:
+            return <></>;
         }
       })()}
     </div>

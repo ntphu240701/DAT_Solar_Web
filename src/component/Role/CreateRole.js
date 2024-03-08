@@ -1,8 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import "./Role.scss";
 
-import { FaSave } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
 import { roleState } from "./Role";
 import { useIntl } from "react-intl";
 import { alertDispatch } from "../Alert/Alert";
@@ -10,7 +8,10 @@ import { partnerInfor } from "../../App";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 
-function CreateRole(props) {
+import { FaSave } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
+
+export default function CreateRole(props) {
   const datalang = useIntl();
   const username = useRef();
   const mail = useRef();
@@ -35,7 +36,6 @@ function CreateRole(props) {
     e.preventDefault();
 
     if (pwd.current.value === authpwd.current.value) {
-
       let res = await callApi('post', host.AUTH + '/CheckUser', { usr: username.current.value, mail: mail.current.value, code: partnerInfor.value.code })
       console.log(res)
       if (res.status) {
@@ -56,9 +56,7 @@ function CreateRole(props) {
     } else {
       alertDispatch(datalang.formatMessage({ id: "alert_18" }))
     }
-
   }
-
 
   return (
     <form className="DAT_CreateRole" onSubmit={handleSave}>
@@ -80,37 +78,6 @@ function CreateRole(props) {
       </div>
 
       <div className="DAT_CreateRole_Body">
-        {/* <div className="DAT_CreateRole_Body_Row1">
-          <div className="DAT_CreateRole_Body_Row1_Left">
-            <div className="DAT_CreateRole_Body_Row1_Left_Content">
-              <div>
-                <input
-                  id="email"
-                  type="radio"
-                  defaultChecked={true}
-                  ref={email}
-                  onChange={(e) => handleCheck(e)}
-                />
-                E-mail
-              </div>
-
-              <div>
-                <input
-                  id="phone"
-                  type="radio"
-                  ref={phone}
-                  onChange={(e) => handleCheck(e)}
-                />
-                Số điện thoại
-              </div>
-            </div>
-          </div>
-
-          <div className="DAT_CreateRole_Body_Row1_Right">
-            <div className="DAT_CreateRole_Body_Row1_Right_Content"></div>
-          </div>
-        </div> */}
-
         <div className="DAT_CreateRole_Body_Row2">
           <div className="DAT_CreateRole_Body_Row2_Left">
             <div className="DAT_CreateRole_Body_Row2_Left_Content">
@@ -192,18 +159,9 @@ function CreateRole(props) {
           </div>
 
           <div className="DAT_CreateRole_Body_Row2_Right">
-            {/* <div className="DAT_CreateRole_Body_Row2_Right_Content">
-              <div className="DAT_CreateRole_Body_Row2_Right_Content_Tit">
-                <span style={{ color: "red" }}>* </span>
-                <span style={{ color: "grey" }}>Tên dự án:</span>
-              </div>
-              <input></input>
-            </div> */}
           </div>
         </div>
       </div>
     </form>
   );
 }
-
-export default CreateRole;

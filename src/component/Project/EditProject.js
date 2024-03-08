@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./Project.scss";
+
 import { plantState, projectData } from "./Project";
 import GoogleMap from "google-maps-react-markers";
-
-import { FaSave } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
-import { IoIosArrowDown } from "react-icons/io";
 import { isMobile } from "../Navigation/Navigation";
 import moment from "moment-timezone";
 import { callApi } from "../Api/Api";
@@ -16,9 +13,14 @@ import { setKey, geocode, RequestType } from "react-geocode";
 import { useIntl } from "react-intl";
 import Resizer from "react-image-file-resizer";
 
+import { FaSave } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
+import { IoIosArrowDown } from "react-icons/io";
+
 const BasicInfo = (props) => {
   const dataLang = useIntl();
   const [state, setState] = useState(true);
+
   const defaultProps = {
     center: {
       lat: 10.8356853,
@@ -29,7 +31,6 @@ const BasicInfo = (props) => {
 
   const handleBasic = (e) => {
     projectData.value[e.currentTarget.id] = e.currentTarget.value;
-
   };
 
   const handleMap = (e) => {
@@ -49,23 +50,18 @@ const BasicInfo = (props) => {
           lat: response.results[0].geometry.location.lat,
           long: response.results[0].geometry.location.lng,
         }
-
-
       })
       .catch((error) => {
         alertDispatch(dataLang.formatMessage({ id: "alert_19" }))
-
       });
   }
-
 
   return (
     <div className="DAT_EditProject_BasicInfo">
       <div className="DAT_EditProject_BasicInfo_Tit">
         <div className="DAT_EditProject_BasicInfo_Tit_Left">{props.tit}</div>
 
-        <div
-          className="DAT_EditProject_BasicInfo_Tit_Right"
+        <div className="DAT_EditProject_BasicInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -176,6 +172,7 @@ const BasicInfo = (props) => {
 const SystemInfo = (props) => {
   const dataLang = useIntl();
   const [state, setState] = useState(true);
+
   const handleSystem = (e) => {
     projectData.value[e.currentTarget.id] = e.currentTarget.value;
   };
@@ -195,8 +192,7 @@ const SystemInfo = (props) => {
       <div className="DAT_EditProject_SystemInfo_Tit">
         <div className="DAT_EditProject_SystemInfo_Tit_Left">{props.tit}</div>
 
-        <div
-          className="DAT_EditProject_SystemInfo_Tit_Right"
+        <div className="DAT_EditProject_SystemInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -261,7 +257,7 @@ const SystemInfo = (props) => {
                 </div>
                 <input
                   id="capacity"
-                  type="text"
+                  type="number"
                   defaultValue={projectData.value.capacity}
                   onChange={(e) => handleSystem(e)}
                 />
@@ -291,7 +287,7 @@ const SystemInfo = (props) => {
                 </div>
                 <input
                   id="angle"
-                  type="text"
+                  type="number"
                   defaultValue={projectData.value.angle}
                   onChange={(e) => handleSystem(e)}
                 />
@@ -313,13 +309,13 @@ const YieldInfo = (props) => {
   const handleYield = (e) => {
     projectData.value[e.currentTarget.id] = e.currentTarget.value;
   };
+
   return (
     <div className="DAT_EditProject_YieldInfo">
       <div className="DAT_EditProject_YieldInfo_Tit">
         <div className="DAT_EditProject_YieldInfo_Tit_Left">{props.tit}</div>
 
-        <div
-          className="DAT_EditProject_YieldInfo_Tit_Right"
+        <div className="DAT_EditProject_YieldInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -366,7 +362,7 @@ const YieldInfo = (props) => {
                 </div>
                 <input
                   id="price"
-                  type="text"
+                  type="number"
                   defaultValue={projectData.value.price}
                   onChange={(e) => handleYield(e)}
                 />
@@ -491,7 +487,6 @@ const ImgInfo = (props) => {
       );
     });
 
-
   const handleChooseAvatar = async (e) => {
     // setAva(URL.createObjectURL(e.target.files[0]));
     // console.log(e.target.files[0].name);
@@ -565,8 +560,9 @@ const ImgInfo = (props) => {
   );
 }
 
-function EditProject(props) {
+export default function EditProject(props) {
   const dataLang = useIntl();
+
   const handleSave = () => {
     var check = 0;
     Object.entries(projectData.value).map(([key, value]) => {
@@ -578,83 +574,37 @@ function EditProject(props) {
     if (check !== 0) {
       alertDispatch(dataLang.formatMessage({ id: "alert_22" }))
     } else {
-      const editProject = async (
-        plantid,
-        usrname,
-        plantname,
-        company,
-        addr,
-        long,
-        lat,
-        contact,
-        phone,
-        business,
-        planttype,
-        plantmode,
-        griddate,
-        capacity,
-        angle,
-        currency,
-        price,
-        production,
-        power,
-        partnerid,
-        usrtype,
-        img
-      ) => {
+      const editProject = async () => {
         let d = await callApi('post', host.DATA + '/editPlant', {
-          plantid: plantid,
-          usr: usrname,
-          name: plantname,
-          company: company,
-          addr: addr,
-          long: long,
-          lat: lat,
-          contact: contact,
-          phone: phone,
-          business: business,
-          type: planttype,
-          mode: plantmode,
-          griddate: griddate,
-          capacity: capacity,
-          angle: angle,
-          currency: currency,
-          price: price,
-          production: production,
-          power: power,
-          partnerid: partnerid,
-          usrtype: usrtype,
-          img: img
+          plantid: projectData.value.plantid,
+          usr: props.usr,
+          name: projectData.value.plantname,
+          company: projectData.value.company,
+          addr: projectData.value.addr,
+          long: projectData.value.long,
+          lat: projectData.value.lat,
+          contact: projectData.value.contact,
+          phone: projectData.value.phone,
+          business: projectData.value.business,
+          type: projectData.value.planttype,
+          mode: projectData.value.plantmode,
+          griddate: projectData.value.griddate,
+          capacity: projectData.value.capacity,
+          angle: projectData.value.angle,
+          currency: projectData.value.currency,
+          price: projectData.value.price,
+          production: projectData.value.production,
+          power: projectData.value.power,
+          partnerid: userInfor.value.partnerid,
+          usrtype: userInfor.value.type,
+          img: projectData.value.img ? projectData.value.img : "/dat_picture/solar_panel.png"
         })
         if (d.status === true) {
           alertDispatch(dataLang.formatMessage({ id: "alert_30" }))
           plantState.value = "default";
         }
       };
-      editProject(
-        projectData.value.plantid,
-        props.usr,
-        projectData.value.plantname,
-        projectData.value.company,
-        projectData.value.addr,
-        projectData.value.long,
-        projectData.value.lat,
-        projectData.value.contact,
-        projectData.value.phone,
-        projectData.value.business,
-        projectData.value.planttype,
-        projectData.value.plantmode,
-        projectData.value.griddate,
-        projectData.value.capacity,
-        projectData.value.angle,
-        projectData.value.currency,
-        projectData.value.price,
-        projectData.value.production,
-        projectData.value.power,
-        userInfor.value.partnerid,
-        userInfor.value.type,
-        projectData.value.img ? projectData.value.img : "/dat_picture/solar_panel.png"
-      );
+      editProject();
     }
   };
 
@@ -664,8 +614,7 @@ function EditProject(props) {
         <div className="DAT_EditProject_Header_Left"> {dataLang.formatMessage({ id: 'edit' })} </div>
 
         <div className="DAT_EditProject_Header_Right">
-          <div
-            className="DAT_EditProject_Header_Right_Save"
+          <div className="DAT_EditProject_Header_Right_Save"
             onClick={() => handleSave()}
           >
             <FaSave size={20} color="white" />
@@ -708,5 +657,3 @@ function EditProject(props) {
     </div>
   );
 }
-
-export default EditProject;

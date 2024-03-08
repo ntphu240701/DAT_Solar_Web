@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./Rule.scss";
-import { FaUsers } from "react-icons/fa";
-import { CiSearch } from "react-icons/ci";
+
 import { Empty } from "../Project/Project";
 import { signal } from "@preact/signals-react";
 import DataTable from "react-data-table-component";
@@ -11,6 +10,8 @@ import EditRule, { editruledata } from "./EditRule";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
+
+import { CiSearch } from "react-icons/ci";
 import { IoAddOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { IoMdMore } from "react-icons/io";

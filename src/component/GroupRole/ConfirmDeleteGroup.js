@@ -1,9 +1,11 @@
 import React from "react";
 import "./GroupRole.scss";
-import { dataUsers, group, groupEdit, groupID, groupUser, popupState } from "./GroupRole";
-import { IoClose } from "react-icons/io5";
+
+import { dataUsers, group, groupID, groupUser } from "./GroupRole";
 import { groupDelState } from "./GroupRole";
 import { useIntl } from "react-intl";
+
+import { IoClose } from "react-icons/io5";
 
 export default function ConfirmDeleteGroup() {
   const dataLang = useIntl();
@@ -21,7 +23,6 @@ export default function ConfirmDeleteGroup() {
   };
 
   const handleDelete = (e) => {
-
     groupDelState.value = false;
     console.log(groupID.value);
     group.value = group.value.filter(
@@ -40,9 +41,9 @@ export default function ConfirmDeleteGroup() {
         <div className="DAT_DeleteGroupPopup_Box_Head_Left">
           <p>{dataLang.formatMessage({ id: 'delGroupRole' })}</p>
         </div>
+
         <div className="DAT_DeleteGroupPopup_Box_Head_Right">
-          <div
-            className="DAT_DeleteGroupPopup_Box_Head_Right_Icon"
+          <div className="DAT_DeleteGroupPopup_Box_Head_Right_Icon"
             onClick={() => (groupDelState.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -52,11 +53,13 @@ export default function ConfirmDeleteGroup() {
           </div>
         </div>
       </div>
+
       <div className="DAT_DeleteGroupPopup_Box_Body">
         <p>
           {dataLang.formatMessage({ id: 'delgroupmess' })}
         </p>
       </div>
+
       <div className="DAT_DeleteGroupPopup_Box_Foot">
         <button
           style={{

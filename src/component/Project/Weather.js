@@ -2,16 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { WiStrongWind } from "react-icons/wi";
 import { WiHumidity } from "react-icons/wi";
-import { isMobile } from "../Navigation/Navigation";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, } from "recharts";
 import { PacmanLoader } from "react-spinners";
 import { projectData } from "./Project";
 
@@ -136,7 +127,8 @@ export default function Weather() {
           <img
             src={"https:" + data.current.condition.icon}
             style={{ width: "70px", height: "70px" }}
-          ></img>
+            alt=""
+          />
           <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Left_Deg">
             {type === "C" ? data.current.temp_c : data.current.temp_f}
           </div>
@@ -165,15 +157,15 @@ export default function Weather() {
           </div>
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right">
-            <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit">
-              {data.location.name},{/* {data.location.country} */}
-              <div>{data.location.localtime}</div>
-              <div>Mô tả: {data.current.condition.text}</div>
-            </div>
+          <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit">
+            {data.location.name},{/* {data.location.country} */}
+            <div>{data.location.localtime}</div>
+            <div>Mô tả: {data.current.condition.text}</div>
           </div>
+        </div>
 
-        
-        
+
+
       </div>
       <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Describe">
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -241,7 +233,7 @@ export default function Weather() {
               >
                 {item.day.avgtemp_c}°C
               </div>
-              <img src={"https:" + item.day.condition.icon}></img>
+              <img src={"https:" + item.day.condition.icon} alt="" />
             </div>
           );
         })}

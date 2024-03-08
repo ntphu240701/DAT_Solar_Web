@@ -1,12 +1,13 @@
 import React from "react";
 import "./Device.scss"
+
 import { loggerList, popupState } from "./Device";
-import { IoClose } from "react-icons/io5";
-import { hasIn } from "lodash";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
+
+import { IoClose } from "react-icons/io5";
 
 export default function Popup(props) {
   const dataLang = useIntl();
@@ -24,8 +25,8 @@ export default function Popup(props) {
   }
 
   const handleDelete = (e) => {
-    const dropLogger = async (plantid, sn) => {
-      let d = await callApi('post', host.DATA + '/dropLogger', { plantid: plantid, sn: sn });
+    const dropLogger = async () => {
+      let d = await callApi('post', host.DATA + '/dropLogger', { plantid: props.plantid, sn: props.sn });
       if (d.status === true) {
         loggerList.value = loggerList.value.filter((item) => item.psn != props.sn);
         alertDispatch(dataLang.formatMessage({ id: "alert_25" }))
@@ -36,7 +37,7 @@ export default function Popup(props) {
         alertDispatch(dataLang.formatMessage({ id: "alert_27" }))
       }
     }
-    dropLogger(props.plantid, props.sn);
+    dropLogger();
   }
 
   return (
