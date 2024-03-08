@@ -109,8 +109,8 @@ function Warn(props) {
       },
     },
     {
-      name: dataLang.formatMessage({ id: 'name' }),
-      selector: (row) => row.boxid,
+      name: dataLang.formatMessage({ id: 'errcode' }),
+      selector: (row) => dataLang.formatMessage({ id: row.boxid }),
       sortable: true,
       minWidth: "200px",
       style: {
@@ -314,11 +314,32 @@ function Warn(props) {
                         <div key={i} className="DAT_WarnMobile_Content">
                           <div className="DAT_WarnMobile_Content_Top">
                             <div className="DAT_WarnMobile_Content_Top_Left">
-
+                              <div className="DAT_WarnMobile_Content_Top_Left_Name">{dataLang.formatMessage({ id: 'errcode' })}: {item.boxid}</div>
+                              <div className="DAT_WarnMobile_Content_Top_Left_Device">{dataLang.formatMessage({ id: 'device' })}: {item.device}</div>
+                              <div className="DAT_WarnMobile_Content_Top_Left_Project">{dataLang.formatMessage({ id: 'project' })}: {item.plant}</div>
+                              <div className="DAT_WarnMobile_Content_Top_Left_Level">{item.level === "warning" ? (
+                                <div className="DAT_TableWarning">{dataLang.formatMessage({ id: 'warn' })}</div>
+                              ) : (
+                                <div className="DAT_TableNotice">{dataLang.formatMessage({ id: 'notice' })}</div>
+                              )}</div>
                             </div>
 
                             <div className="DAT_WarnMobile_Content_Top_Right">
+                              <div className="DAT_DeviceMobile_Content_Top_Right_Item"
+                                id={item.boxid + "_" + item.warnid}
+                                onClick={(e) => handleDeleteWarn(e)}
+                              >
+                                <MdDelete size={20} color="red" />
+                              </div>
+                            </div>
+                          </div>
 
+                          <div className="DAT_WarnMobile_Content_Bottom">
+                            <div className="DAT_WarnMobile_Content_Bottom_Open">
+                              {dataLang.formatMessage({ id: 'openWarnTime' })}: {item.opentime}
+                            </div>
+                            <div className="DAT_WarnMobile_Content_Bottom_Close">
+                              {dataLang.formatMessage({ id: 'closeWarnTime' })}: {item.closedtime}
                             </div>
                           </div>
                         </div>
