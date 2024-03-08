@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./GroupRole.scss";
-// import DataTable from "react-data-table-component";
-import { IoMdAnalytics } from "react-icons/io";
-// import { Empty } from "../Project/Project";
-import { CiSearch } from "react-icons/ci";
-import { signal } from "@preact/signals-react";
+
 import CreateGroupRole from "./CreateGroupRole";
-import { MdDelete } from "react-icons/md";
-import { MdEdit } from "react-icons/md";
 import Popup from "./Popup";
 import AddUsers from "./AddUsers";
 import ConfirmDeleteGroup from "./ConfirmDeleteGroup";
 import EditGroup from "./EditGroup";
 import DataTable from "react-data-table-component";
 import { Empty } from "../Project/Project";
-import { IoMdPersonAdd } from "react-icons/io";
-import { data } from "jquery";
-import { IoMdMore } from "react-icons/io";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
+import { signal } from "@preact/signals-react";
+
+import { CiSearch } from "react-icons/ci";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { IoMdPersonAdd, IoMdMore } from "react-icons/io";
 import { IoAddOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { FaUsersGear } from "react-icons/fa6";
@@ -230,10 +226,10 @@ const GroupUsers = () => {
         <div className="DAT_GR_Content_DevideTable_Left_Head">
           {dataLang.formatMessage({ id: 'grouprole' })}
         </div>
+
         <div className="DAT_GR_Content_DevideTable_Left_ItemList">
           {dataGroup.value.map((item) => (
-            <div
-              className="DAT_GR_Content_DevideTable_Left_ItemList_Item"
+            <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item"
               key={item.id}
               id={item.id}
               style={{
@@ -242,50 +238,46 @@ const GroupUsers = () => {
               }}
               onClick={(e) => handleChangeGroup(e)}
             >
-              <div
-                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
+              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
                 style={{ fontSize: "15px" }}
               >
                 {item.name}
               </div>
-              <div
-                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
+
+              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
                 style={{ fontSize: "13px", color: "grey", maxWidth: "100px" }}
               >
                 {item.subinfo}
               </div>
 
-              <div
-                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Shortcut"
+              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Shortcut"
                 id={item.id + "_dot"}
                 onMouseEnter={(e) => handleShowFunction(e)}
               >
                 <IoMdMore size={20} />
               </div>
 
-              <div
-                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More"
+              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More"
                 id={item.id + "_function"}
                 style={{ display: "none" }}
                 onMouseLeave={(e) => handleShowFunction(e)}
               >
-                <div
-                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Delete"
+                <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Delete"
                   id={item.id}
                   onClick={(e) => handleDeleteGroup(e)}
                 >
                   <MdDelete size={20} />
                 </div>
-                <div
-                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Edit"
+
+                <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Edit"
                   style={{ right: "40px" }}
                   id={item.id}
                   onClick={(e) => handleEditGroup(e)}
                 >
                   <MdEdit size={20} color="#216990" />
                 </div>
-                <div
-                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
+
+                <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
                   onClick={() => (addState.value = true)}
                 >
                   <IoMdPersonAdd size={20} />
@@ -324,7 +316,7 @@ const GroupUsers = () => {
   );
 };
 
-function GroupRole(props) {
+export default function GroupRole(props) {
   const dataLang = useIntl()
   const [filter, setFilter] = useState(false);
 
@@ -471,5 +463,3 @@ function GroupRole(props) {
     </>
   );
 }
-
-export default GroupRole;

@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Report.scss";
+
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -105,7 +106,7 @@ export const ReportData = signal([
   },
 ]);
 
-function Report(props) {
+export default function Report(props) {
   //DataLang
   const dataLang = useIntl();
 
@@ -222,5 +223,3 @@ function Report(props) {
     </>
   );
 }
-
-export default Report;

@@ -1,11 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
+import "./Report.scss";
+
 import { popupStateReport } from "./Report";
-import { IoClose } from "react-icons/io5";
-import { list, idReport, ReportData } from "./Report";
+import { idReport, ReportData } from "./Report";
 import { useIntl } from "react-intl";
+
+import { IoClose } from "react-icons/io5";
 
 export default function Popup() {
   const dataLang = useIntl();
+
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
+  };
 
   const handleDeleteReport = (e) => {
     popupStateReport.value = false;
@@ -14,11 +22,6 @@ export default function Popup() {
     );
     console.log(newDB);
     ReportData.value = newDB;
-  };
-
-  const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
   };
 
   const handlePopup = (state) => {
@@ -39,8 +42,7 @@ export default function Popup() {
           <p>{dataLang.formatMessage({ id: 'delDevice' })}</p>
         </div>
         <div className="DAT_PopupReport_Box_Head_Right">
-          <div
-            className="DAT_PopupReport_Box_Head_Right_Icon"
+          <div className="DAT_PopupReport_Box_Head_Right_Icon"
             onClick={() => (popupStateReport.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -50,11 +52,13 @@ export default function Popup() {
           </div>
         </div>
       </div>
+
       <div className="DAT_PopupReport_Box_Body">
         <p>
           {dataLang.formatMessage({ id: 'delreportmess' })}
         </p>
       </div>
+
       <div className="DAT_PopupReport_Box_Foot">
         <button
           style={{

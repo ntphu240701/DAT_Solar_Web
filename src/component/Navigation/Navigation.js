@@ -1,14 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import "./Navigation.scss";
+
 import { sidenar } from "../../component/Sidenar/Sidenar";
-import { BsFillMenuButtonWideFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
-import { IoIosNotificationsOutline } from "react-icons/io";
-import { IoAddCircleOutline } from "react-icons/io5";
-import { MdOutlineLanguage } from "react-icons/md";
 import { signal } from "@preact/signals-react";
-import { FaRegMessage } from "react-icons/fa6";
-import { IoMdClose } from "react-icons/io";
 import { partnerInfor, userInfor } from "../../App";
 import { useDispatch, useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
@@ -18,13 +13,20 @@ import { useIntl } from "react-intl";
 import adminslice from "../Redux/adminslice";
 import { dataWarn } from "../Warn/Warn";
 
-export const isMobile = signal(false);
+import { BsFillMenuButtonWideFill } from "react-icons/bs";
+import { IoIosNotificationsOutline, IoMdClose } from "react-icons/io";
+import { MdOutlineLanguage } from "react-icons/md";
+import { FaRegMessage } from "react-icons/fa6";
+
 const userNav = signal(false);
-export const notifNav = signal(false);
 const langNav = signal(false);
 const langStateNav = signal([false, false]);
 const messageNav = signal(false);
+const messageContent = signal([]);
+const messageOption = signal("default");
 
+export const isMobile = signal(false);
+export const notifNav = signal(false);
 export const message = signal([
   {
     boxid: "E01",
@@ -39,10 +41,8 @@ export const message = signal([
     total: 0,
   },
 ]);
-const messageContent = signal([]);
-const messageOption = signal("default");
 
-function Navigation(props) {
+export default function Navigation(props) {
   const dataLang = useIntl();
   const navigate = useNavigate();
   const user_icon = useRef();
@@ -63,6 +63,7 @@ function Navigation(props) {
       messageOption.value = "mess";
     }
   };
+
   const handleOutsideLang = () => {
     setTimeout(() => {
       //console.log(langState.value[0],langState.value[1])
@@ -70,7 +71,6 @@ function Navigation(props) {
         langNav.value = false;
         langStateNav.value = [false, false];
       }
-
       clearTimeout();
     }, 250);
   };
@@ -103,6 +103,7 @@ function Navigation(props) {
         return item;
       }
     });
+
     warnid.map((item_) => {
       let index = dataWarn.value.findIndex((item, i) => item.warnid == item_);
       dataWarn.value[index] = {
@@ -117,35 +118,13 @@ function Navigation(props) {
     });
 
     warnid = [];
-    // dataWarn.value.map((item)=>{
-
-    //   if(item.boxid == e.currentTarget.id){
-
-    //   }
-
-    // })
     console.log(dataWarn.value);
-
     console.log(messageContent.value);
     messageNav.value = true;
     if (isMobile.value) {
       messageOption.value = "content";
     }
   };
-
-  // useEffect(() => {
-  //   tabLable.value = listTab[0].name;
-
-  //   // get logger
-  //   const getAllLogger = async (usrname, partnerid, type) => {
-  //     let d = await callApi('post', host.DATA + '/getallLogger', { usr: usrname, partnerid: partnerid, type: type });
-  //     if (d.status === true) {
-  //       loggerList.value = d.data;
-  //     }
-  //   };
-  //   getAllLogger(user, userInfor.value.partnerid, userInfor.value.type);
-
-  // }, []);
 
   useEffect(function () {
     if (window.innerWidth >= 900) {
@@ -202,8 +181,7 @@ function Navigation(props) {
     <>
       <div className="DAT_Navigation">
         <div className="DAT_Navigation-menu">
-          <button
-            id="DAT_menuaction"
+          <button id="DAT_menuaction"
             onClick={(event) => {
               handleMenu(event);
             }}
@@ -211,6 +189,7 @@ function Navigation(props) {
             <BsFillMenuButtonWideFill color="white" size={22} />
           </button>
         </div>
+
         <div className="DAT_Navigation_left">
           <Link to="/" style={{ textDecoration: "none" }}>
             <div className="DAT_Navigation_left-logo">
@@ -226,20 +205,10 @@ function Navigation(props) {
             </div>
           </Link>
         </div>
-        <div className="DAT_Navigation_center"></div>
-        <div className="DAT_Navigation_right">
-          {/* <button
-                        className="DAT_Navigation_right-item"
-                        id="notif"
-                        style={{ display: isMobile.value ? "none" : "block" }}
-                    >
-                        <IoAddCircleOutline color='white' size={24} />
-                    </button > */}
 
-          <button
-            className="DAT_Navigation_right-item"
+        <div className="DAT_Navigation_right">
+          <button className="DAT_Navigation_right-item"
             id="notif"
-            // style={{ display: isMobile.value ? "none" : "block" }}
             onClick={() => (notifNav.value = !notifNav.value)}
             ref={notif_icon}
           >
@@ -255,8 +224,7 @@ function Navigation(props) {
             )}
           </button>
 
-          <button
-            className="DAT_Navigation_right-language"
+          <button className="DAT_Navigation_right-language"
             id="lang"
             onMouseEnter={() => {
               langNav.value = true;
@@ -268,8 +236,7 @@ function Navigation(props) {
             <span>{lang === "vi" ? "Vi" : "En"}</span>
           </button>
 
-          <button
-            className="DAT_Navigation_right-item"
+          <button className="DAT_Navigation_right-item"
             id="user"
             style={{
               backgroundColor: "rgba(159, 155, 155, 0.4)",
@@ -290,8 +257,7 @@ function Navigation(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_NavUser"
+      <div className="DAT_NavUser"
         style={{ display: userNav.value ? "block" : "none" }}
         ref={user_box}
       >
@@ -306,6 +272,7 @@ function Navigation(props) {
               alt=""
             />
           </div>
+
           <div className="DAT_NavUser-inf-content">
             <div className="DAT_NavUser-inf-content-name">
               {userInfor.value.name}
@@ -313,20 +280,20 @@ function Navigation(props) {
             <div className="DAT_NavUser-inf-content-email">{mail}</div>
           </div>
         </div>
-        <div
-          className="DAT_NavUser-item"
+
+        <div className="DAT_NavUser-item"
           style={{ cursor: "pointer", borderBottom: "1px solid gray" }}
           onClick={() => navigate("/User")}
         >
           <span>{dataLang.formatMessage({ id: "account" })}</span>
         </div>
+
         <div className="DAT_NavUser-item" onClick={() => logout()}>
           <span>{dataLang.formatMessage({ id: "logout" })}</span>
         </div>
       </div>
 
-      <div
-        className="DAT_NavNotif"
+      <div className="DAT_NavNotif"
         style={{ display: notifNav.value ? "block" : "none" }}
         ref={notif_box}
       >
@@ -362,9 +329,6 @@ function Navigation(props) {
                           <span>{item.boxid}</span>
                           {item.total === 0 ? <></> : <span>{item.total}</span>}
                         </div>
-                        {/* <div className="DAT_NavNotif-content-message-group-inf">
-                            Có một {item.boxid} tại {""} {item.detail}
-                          </div> */}
                       </div>
                     ))}
                   </div>
@@ -375,8 +339,7 @@ function Navigation(props) {
                     {messageNav.value ? (
                       <>
                         {messageContent.value.map((item, index) => (
-                          <div
-                            className="DAT_NavNotif-content-main-group"
+                          <div className="DAT_NavNotif-content-main-group"
                             key={index}
                           >
                             <div className="DAT_NavNotif-content-main-group-datetime">
@@ -387,13 +350,13 @@ function Navigation(props) {
                                 Có một {item.boxid} tại {item.plant}
                               </div>
                               <div className="DAT_NavNotif-content-main-group-content-device">
-                                Thiết bị:{" "}
+                                Thiết bị:
                                 <span style={{ color: "black" }}>
                                   {item.device}
                                 </span>
                               </div>
                               <div className="DAT_NavNotif-content-main-group-content-level">
-                                Mức độ:{" "}
+                                Mức độ:
                                 <span style={{ color: "black" }}>
                                   {item.level}
                                 </span>
@@ -431,9 +394,6 @@ function Navigation(props) {
                               <span>{item.total}</span>
                             )}
                           </div>
-                          {/* <div className="DAT_NavNotif-content-message-group-inf">
-                            Có một {item.boxid} tại {""} {item.detail}
-                          </div> */}
                         </div>
                       ))}
                     </div>
@@ -450,17 +410,17 @@ function Navigation(props) {
                               </div>
                               <div className="DAT_NavNotif-content-main-group-content">
                                 <div className="DAT_NavNotif-content-main-group-content-tit">
-                                  {dataLang.formatMessage({ id: item.boxid })} {dataLang.formatMessage({ id: 'at' })}{" "}
+                                  {dataLang.formatMessage({ id: item.boxid })} {dataLang.formatMessage({ id: 'at' })}
                                   {item.plant}
                                 </div>
                                 <div className="DAT_NavNotif-content-main-group-content-device">
-                                  {dataLang.formatMessage({ id: 'device' })}:{" "}
+                                  {dataLang.formatMessage({ id: 'device' })}:
                                   <span style={{ color: "black" }}>
                                     {item.device}
                                   </span>
                                 </div>
                                 <div className="DAT_NavNotif-content-main-group-content-level">
-                                  {dataLang.formatMessage({ id: 'level' })}:{" "}
+                                  {dataLang.formatMessage({ id: 'level' })}:
                                   <span style={{ color: "black" }}>
                                     {item.level}
                                   </span>
@@ -483,44 +443,28 @@ function Navigation(props) {
             }
           })()}
         </div>
-
-        {/* <div className='DAT_NavNotif-footer'>
-          Chỉ hiển thị thông báo trong 6 tháng
-         </div> */}
       </div>
 
-      <div
-        className="DAT_NavLang"
+      <div className="DAT_NavLang"
         style={{ display: langNav.value ? "block" : "none" }}
-        onMouseEnter={() => {
-          langStateNav.value = [true, true];
-        }}
-        onMouseLeave={() => {
-          langNav.value = false;
-          langStateNav.value = [false, false];
-        }}
+        onMouseEnter={() => { langStateNav.value = [true, true]; }}
+        onMouseLeave={() => { langNav.value = false; langStateNav.value = [false, false]; }}
       >
-        <div
-          className="DAT_NavLang-item"
+        <div className="DAT_NavLang-item"
           style={{
             backgroundColor: lang === "vi" ? "rgba(41, 95, 255)" : "white",
             color: lang === "vi" ? "white" : "black",
           }}
-          onClick={() => {
-            handleLang("vi");
-          }}
+          onClick={() => { handleLang("vi"); }}
         >
           <span>Tiếng Việt</span>
         </div>
-        <div
-          className="DAT_NavLang-item"
+        <div className="DAT_NavLang-item"
           style={{
             backgroundColor: lang === "en" ? "rgba(41, 95, 255)" : "white",
             color: lang === "en" ? "white" : "black",
           }}
-          onClick={() => {
-            handleLang("en");
-          }}
+          onClick={() => { handleLang("en"); }}
         >
           <span>English</span>
         </div>
@@ -528,5 +472,3 @@ function Navigation(props) {
     </>
   );
 }
-
-export default Navigation;

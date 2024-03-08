@@ -4,7 +4,6 @@ export const host = {
     CLOUD: process.env.REACT_APP_CLOUD
 };
 
-
 export const messages = {
     en: {
         account: 'Account',

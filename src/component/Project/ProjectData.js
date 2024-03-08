@@ -1,39 +1,32 @@
 import React, { useEffect, useState } from "react";
 import "./Project.scss";
-import AddGateway, { crudtype, raiseBoxState } from "./AddGateway";
-import { Empty, plantState, projectData, deviceData, Logger, Inverter, popupState } from "./Project";
+
+import AddGateway from "./AddGateway";
+import { Empty, plantState, projectData, deviceData, Inverter, popupState } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from "recharts";
-
-import { IoIosArrowDown, IoIosArrowForward, IoIosCloud, IoMdMore } from "react-icons/io";
-import { IoAdd, IoAddOutline, IoArrowForward, IoCalendarOutline, IoMenu } from "react-icons/io5";
-import { MdDelete, MdEdit, MdOutlineError, MdPermDataSetting } from "react-icons/md";
-import { FaCheckCircle, FaTree } from "react-icons/fa";
-import { RiMoneyCnyCircleFill } from "react-icons/ri";
-import { RxCross2 } from "react-icons/rx";
-import { AiOutlineDashboard } from "react-icons/ai";
-import { BsMenuButtonWide, BsThreeDotsVertical } from "react-icons/bs";
-import { GoAlertFill } from "react-icons/go";
-import { LiaLongArrowAltLeftSolid } from "react-icons/lia";
-import { CiSearch } from "react-icons/ci";
-
 import { signal } from "@preact/signals-react";
 import DataTable from "react-data-table-component";
 import moment from "moment-timezone";
 import Weather from "./Weather";
-import AddSubsystem from "./AddSubsystem";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useNavigate } from "react-router-dom";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { drop, set } from "lodash";
-import RaiseBox from "./RaiseBox";
 import { Token } from "../../App";
 import axios from "axios";
-import { alertDispatch } from "../Alert/Alert";
 import Popup from "./Popup";
 import { useIntl } from "react-intl";
+
+import { IoIosArrowDown, IoIosArrowForward, IoIosCloud, IoMdMore } from "react-icons/io";
+import { IoAddOutline, IoArrowForward, IoCalendarOutline } from "react-icons/io5";
+import { MdDelete, MdEdit, MdOutlineError, MdPermDataSetting } from "react-icons/md";
+import { FaCheckCircle, FaTree } from "react-icons/fa";
+import { RiMoneyCnyCircleFill } from "react-icons/ri";
+import { RxCross2 } from "react-icons/rx";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { LiaLongArrowAltLeftSolid } from "react-icons/lia";
+import { CiSearch } from "react-icons/ci";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -112,212 +105,14 @@ const dataAlert = [
   },
 ];
 
-// const dbDay = [
-//   {
-//     date: "19/02/2024",
-//     name: 'electricOutputDay',
-//     data: [
-//       { time: "00:00", val: 1.234 },
-//       { time: "01:00", val: 2.345 },
-//       { time: "02:00", val: 3.456 },
-//       { time: "03:00", val: 4.567 },
-//       { time: "04:00", val: 5.678 },
-//       { time: "05:00", val: 6.789 },
-//       { time: "06:00", val: 7.89 },
-//       { time: "07:00", val: 8.901 },
-//       { time: "08:00", val: 9.012 },
-//       { time: "09:00", val: 1.013 },
-//       { time: "10:00", val: 1.124 },
-//       { time: "11:00", val: 1.235 },
-//       { time: "12:00", val: 1.346 },
-//       { time: "13:00", val: 1.457 },
-//       { time: "14:00", val: 1.568 },
-//       { time: "15:00", val: 1.679 },
-//       { time: "16:00", val: 1.78 },
-//       { time: "17:00", val: 1.891 },
-//       { time: "18:00", val: 1.902 },
-//       { time: "19:00", val: 2.013 },
-//       { time: "20:00", val: 2.124 },
-//       { time: "21:00", val: 2.235 },
-//       { time: "22:00", val: 2.346 },
-//       { time: "23:00", val: 2.457 },
-//     ],
-//   },
-//   {
-//     date: "20/02/2024",
-//     name: "Sản lượng ngày",
-//     data: [
-//       { time: "00:00", val: 9.234 },
-//       { time: "01:00", val: 8.345 },
-//       { time: "02:00", val: 7.456 },
-//       { time: "03:00", val: 6.567 },
-//       { time: "04:00", val: 5.678 },
-//       { time: "05:00", val: 4.789 },
-//       { time: "06:00", val: 3.89 },
-//       { time: "07:00", val: 2.901 },
-//       { time: "08:00", val: 1.012 },
-//       { time: "09:00", val: 1.013 },
-//       { time: "10:00", val: 3.124 },
-//       { time: "11:00", val: 5.235 },
-//       { time: "12:00", val: 7.346 },
-//       { time: "13:00", val: 8.457 },
-//       { time: "14:00", val: 1.568 },
-//       { time: "15:00", val: 1.679 },
-//       { time: "16:00", val: 2.78 },
-//       { time: "17:00", val: 3.891 },
-//       { time: "18:00", val: 4.902 },
-//       { time: "19:00", val: 5.013 },
-//       { time: "20:00", val: 6.124 },
-//       { time: "21:00", val: 7.235 },
-//       { time: "22:00", val: 8.346 },
-//       { time: "23:00", val: 9.457 },
-//     ],
-//   },
-// ];
-
-// const dbMonth = [
-//   {
-//     month: "01/2024",
-//     name: "Sản lượng tháng",
-//     data: [
-//       { time: "1", val: 21.69 },
-//       { time: "2", val: 22.31 },
-//       { time: "3", val: 23.45 },
-//       { time: "4", val: 24.56 },
-//       { time: "5", val: 25.67 },
-//       { time: "6", val: 26.78 },
-//       { time: "7", val: 27.89 },
-//       { time: "8", val: 28.9 },
-//       { time: "9", val: 29.01 },
-//       { time: "10", val: 22.12 },
-//       { time: "11", val: 23.23 },
-//       { time: "12", val: 22.34 },
-//       { time: "13", val: 24.45 },
-//       { time: "14", val: 23.56 },
-//       { time: "15", val: 22.67 },
-//       { time: "16", val: 24.78 },
-//       { time: "17", val: 21.89 },
-//       { time: "18", val: 21.9 },
-//       { time: "19", val: 22.01 },
-//       { time: "20", val: 20.12 },
-//       { time: "21", val: 21.23 },
-//       { time: "22", val: 22.34 },
-//       { time: "23", val: 23.45 },
-//       { time: "24", val: 24.56 },
-//       { time: "25", val: 25.67 },
-//       { time: "26", val: 24.78 },
-//       { time: "27", val: 23.89 },
-//       { time: "28", val: 22.9 },
-//       { time: "29", val: 23.01 },
-//       { time: "30", val: 21.12 },
-//       { time: "31", val: 21.23 },
-//     ],
-//   },
-//   {
-//     month: "02/2024",
-//     name: "Sản lượng tháng",
-//     data: [
-//       { time: "1", val: 24.78 },
-//       { time: "2", val: 21.89 },
-//       { time: "3", val: 22.9 },
-//       { time: "4", val: 21.9 },
-//       { time: "5", val: 22.01 },
-//       { time: "6", val: 20.12 },
-//       { time: "7", val: 27.89 },
-//       { time: "8", val: 28.9 },
-//       { time: "9", val: 29.01 },
-//       { time: "10", val: 21.23 },
-//       { time: "11", val: 23.23 },
-//       { time: "12", val: 22.34 },
-//       { time: "13", val: 24.45 },
-//       { time: "14", val: 23.56 },
-//       { time: "15", val: 22.67 },
-//       { time: "16", val: 24.78 },
-//       { time: "17", val: 21.89 },
-//       { time: "18", val: 21.9 },
-//       { time: "19", val: 22.01 },
-//       { time: "20", val: 20.12 },
-//       { time: "21", val: 21.23 },
-//       { time: "22", val: 22.34 },
-//       { time: "23", val: 23.45 },
-//       { time: "24", val: 24.56 },
-//       { time: "25", val: 25.67 },
-//       { time: "26", val: 24.78 },
-//       { time: "27", val: 23.89 },
-//       { time: "28", val: 22.9 },
-//       { time: "29", val: 23.01 },
-//       { time: "30", val: 21.12 },
-//       { time: "31", val: 21.23 },
-//     ],
-//   },
-// ];
-
-// const dbYear = [
-//   {
-//     year: "2024",
-//     name: "Sản lượng năm",
-//     data: [
-//       { time: "1", val: 21.69 },
-//       { time: "2", val: 22.31 },
-//       { time: "3", val: 23.45 },
-//       { time: "4", val: 24.56 },
-//       { time: "5", val: 25.67 },
-//       { time: "6", val: 26.78 },
-//       { time: "7", val: 27.89 },
-//       { time: "8", val: 28.9 },
-//       { time: "9", val: 29.01 },
-//       { time: "10", val: 22.12 },
-//       { time: "11", val: 23.23 },
-//       { time: "12", val: 22.34 },
-//     ],
-//   },
-//   {
-//     year: "2023",
-//     name: "Sản lượng năm",
-//     data: [
-//       { time: "1", val: 24.78 },
-//       { time: "2", val: 21.89 },
-//       { time: "3", val: 22.9 },
-//       { time: "4", val: 24.56 },
-//       { time: "5", val: 25.67 },
-//       { time: "6", val: 26.78 },
-//       { time: "7", val: 27.89 },
-//       { time: "8", val: 28.9 },
-//       { time: "9", val: 29.01 },
-//       { time: "10", val: 22.12 },
-//       { time: "11", val: 23.23 },
-//       { time: "12", val: 22.34 },
-//     ],
-//   },
-// ];
-
-// const dbTotal = [
-//   {
-//     name: "Sản lượng năm",
-//     data: [
-//       { time: "2018", val: 21.69 },
-//       { time: "2019", val: 22.31 },
-//       { time: "2020", val: 23.45 },
-//       { time: "2021", val: 24.56 },
-//       { time: "2022", val: 25.67 },
-//       { time: "2023", val: 26.78 },
-//       { time: "2024", val: 27.89 },
-//     ],
-//   },
-// ]
-
-function ProjectData(props) {
+export default function ProjectData(props) {
   const dataLang = useIntl();
   const [nav, setNav] = useState("graph");
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
-
   const [configname, setConfigname] = useState(dataLang.formatMessage({ id: 'choosePara' }));
   const [dropConfig, setDropConfig] = useState(false);
-
-  // const [temp, setTemp] = useState([]);
   const [tempInverter, setTempInverter] = useState({});
-
   const [dataDay, setDataDay] = useState([]);
   const [vDay, setVDay] = useState(dataLang.formatMessage({ id: 'unknown' }));
   const [dataMonth, setDataMonth] = useState([]);
@@ -327,16 +122,12 @@ function ProjectData(props) {
   const [dataTotal, setDataTotal] = useState([]);
   const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: 'unknown' }));
   const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: 'unknown' }));
-
   const [d, setD] = useState({
     date: moment(new Date()).format("YYYY-MM-DD"),
     month: moment(new Date()).format("YYYY-MM"),
     year: moment(new Date()).format("YYYY"),
     total: "Tổng",
   });
-
-  const navigate = useNavigate();
-
   const [invt, setInvt] = useState({})
 
   const color = {
@@ -358,9 +149,9 @@ function ProjectData(props) {
   };
 
   const listDeviceTab = [
+    { id: "logger", name: "Logger" },
     { id: "inverter", name: "Inverter" },
     // { id: "meter", name: "Meter" },
-    { id: "logger", name: "Logger" },
   ];
 
   const columnInverter = [
@@ -632,11 +423,6 @@ function ProjectData(props) {
     }
   }
 
-  const handleWarn = () => {
-    navigate('/Warn');
-    window.location.reload();
-  }
-
   const handleNav = (e) => {
     var id = e.currentTarget.id;
     setNav(id);
@@ -788,6 +574,7 @@ function ProjectData(props) {
     open.value = dataAlert.filter((item) => item.status == true);
     close.value = dataAlert.filter((item) => item.status == false);
     tabLableAlert.value = listAlertTab[0].name;
+    tabLable.value = listDeviceTab[0].name;
 
     // data InverterTable
     setTempInverter([]);
@@ -797,15 +584,6 @@ function ProjectData(props) {
     });
 
     // data Day
-    // const newDataDay = dbDay.find((item) => item.date === moment(new Date()).format("DD/MM/YYYY"));
-    // if (newDataDay) {
-    //   let vDay = newDataDay.name;
-    //   setDataDay([]);
-    //   newDataDay.data.map((item) => {
-    //     setDataDay((old) => [...old, { time: item.time, [vDay]: item.val }]);
-    //   });
-    //   setVDay(newDataDay.name);
-    // }
     const getDaily = async () => {
       const d = await callApi('post', host.DATA + '/getChart', { plantid: projectData.value.plantid, date: moment(new Date()).format("MM/DD/YYYY") });
       setDataDay([]);
@@ -818,19 +596,9 @@ function ProjectData(props) {
         setVDay(dataLang.formatMessage({ id: d.data.name }));
       }
     }
-
     getDaily();
 
     //data Month
-    // const newDataMonth = dbMonth.find((item) => item.month === moment(new Date()).format("MM/YYYY"));
-    // if (newDataMonth) {
-    //   let vMonth = newDataMonth.name;
-    //   setDataMonth([]);
-    //   newDataMonth.data.map((item) => {
-    //     setDataMonth((old) => [...old, { time: item.time, [vMonth]: item.val }]);
-    //   });
-    //   setVMonth(newDataMonth.name);
-    // }
     const getMonth = async () => {
       const d = await callApi('post', host.DATA + '/getMonthChart', { plantid: projectData.value.plantid, month: moment(new Date()).format("MM/YYYY") });
       if (d.status) {
@@ -865,15 +633,6 @@ function ProjectData(props) {
     getMonth();
 
     //data Year
-    // const newData = dbYear.find((item) => item.year === moment(new Date()).format("YYYY"));
-    // if (newData) {
-    //   let vYear = newData.name;
-    //   setDataYear([]);
-    //   newData.data.map((item) => {
-    //     setDataYear((old) => [...old, { time: item.time, [vYear]: item.val }]);
-    //   });
-    //   setVYear(newData.name);
-    // }
     const getYear = async () => {
       const d = await callApi('post', host.DATA + '/getYearChart', { plantid: projectData.value.plantid, year: moment(new Date()).format("YYYY") });
       //console.log(d)
@@ -906,18 +665,10 @@ function ProjectData(props) {
     getYear();
 
     //data Total
-    // dbTotal.map((item) => {
-    //   let vTotal = item.name;
-    //   setDataTotal([]);
-    //   item.data.map((item) => {
-    //     setDataTotal((old) => [...old, { time: item.time, [vTotal]: item.val }]);
-    //   });
-    //   setVTotal(item.name);
-    // });
     const getTotal = async () => {
       const d = await callApi('post', host.DATA + '/getTotalChart', { plantid: projectData.value.plantid });
       setDataTotal([]);
-      console.log(d)
+      // console.log(d)
       if (d.status) {
         //console.log(d.data)
         let vTotal = dataLang.formatMessage({ id: d.data.name });
@@ -935,30 +686,23 @@ function ProjectData(props) {
     getTotal();
 
     //data Logger
-    const getLogger = async (plantid) => {
-      let d = await callApi('post', host.DATA + '/getLogger', { plantid: plantid })
-      // setTemp(d)
+    const getLogger = async () => {
+      let d = await callApi('post', host.DATA + '/getLogger', { plantid: projectData.value.plantid })
       temp.value = d;
       // console.log(d)
-      let _invt = {}
       d.map(async (item) => {
-
         const res = await invtCloud('{"deviceCode":"' + item.sn + '"}', Token.value.token);
         // console.log(res)
         if (res.ret === 0) {
           //console.log(res.data)
           setInvt(pre => ({ ...pre, [item.sn]: res.data }))
-
         } else {
           setInvt(pre => ({ ...pre, [item.sn]: {} }))
         }
-
       })
-      //setInvt(_invt)
     };
+    getLogger();
 
-
-    getLogger(projectData.value.plantid);
     return () => {
       cal.value = {}
     }
@@ -985,7 +729,6 @@ function ProjectData(props) {
     }
     //console.log("data", temp.value)
     temp.value.map(async (item, i) => {
-
       Object.entries(item.data).map(([key, value]) => {
         switch (value.type) {
           case "sum":
@@ -1031,9 +774,7 @@ function ProjectData(props) {
               cal.value[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
                 return Number(accumulator) + Number(currentValue)
               }, 0) * parseFloat(value.cal)).toFixed(2);
-
             }
-
             break;
           default:
             num_[key][i] = parseFloat(invt[item.sn]?.[value.register] || 0) * parseFloat(value.cal);
@@ -1048,7 +789,7 @@ function ProjectData(props) {
       })
     })
 
-    console.log(cal.value)
+    // console.log(cal.value)
     coalsave.value = {
       ...coalsave.value,
       value: cal.value.pro_3
@@ -1094,6 +835,12 @@ function ProjectData(props) {
             })()}
 
             <div className="DAT_ProjectData_Header_Right">
+              <div className="DAT_ProjectData_Header_Right_More" onClick={() => (dropState.value = !dropState.value)}>
+                <BsThreeDotsVertical
+                  size={20}
+                  color="#9e9e9e"
+                />
+              </div>
               <div className="DAT_ProjectData_Header_Right_Add" style={{ display: view === "device" ? "block" : "none" }}>
                 <button
                   id="add"
@@ -1103,12 +850,6 @@ function ProjectData(props) {
                     size={20}
                     color="white" />
                 </button>
-              </div>
-              <div className="DAT_ProjectData_Header_Right_More" onClick={() => (dropState.value = !dropState.value)}>
-                <BsThreeDotsVertical
-                  size={20}
-                  color="#9e9e9e"
-                />
               </div>
               <div className="DAT_ProjectData_Header_Right_Close" onClick={() => (plantState.value = "default")}>
                 <RxCross2
@@ -1152,20 +893,22 @@ function ProjectData(props) {
             })()}
 
             <div className="DAT_ProjectData_Header_Right">
-              <div className="DAT_ProjectData_Header_Right_Add" style={{ display: view === "device" ? "block" : "none" }}>
-                <button
-                  id="add"
-                  onClick={() => popupAddGateway.value = true}
-                >
-                  {dataLang.formatMessage({ id: 'ADD' })}
-                </button>
-              </div>
               <div className="DAT_ProjectData_Header_Right_More">
                 <BsThreeDotsVertical
                   size={20}
                   color="#9e9e9e"
                   onClick={() => (dropState.value = !dropState.value)}
                 />
+              </div>
+              <div className="DAT_ProjectData_Header_Right_Add" style={{ display: view === "device" ? "block" : "none" }}>
+                <button
+                  id="add"
+                  onClick={() => popupAddGateway.value = true}
+                >
+                  <IoAddOutline
+                    size={20}
+                    color="white" />
+                </button>
               </div>
               <div className="DAT_ProjectData_Header_Right_Close" onClick={() => (plantState.value = "default")}>
                 <RxCross2
@@ -1661,32 +1404,6 @@ function ProjectData(props) {
             case "device":
               return (
                 <div className="DAT_ProjectData_Device">
-                  {/* <div className="DAT_ProjectData_Device_Analysis"> */}
-                  {/* <div className="DAT_ProjectData_Device_Analysis_Func">
-                      <div className="DAT_ProjectData_Device_Analysis_Func_Select">
-                        <select>
-                          <option hidden>Trạng thái</option>
-                          <option>Tất cả</option>
-                          <option>Online</option>
-                          <option>Cảnh báo</option>
-                          <option>Offline</option>
-                        </select>
-                        <select>
-                          <option hidden>Hiệu suất</option>
-                          <option>Tắt</option>
-                          <option>Rất thấp</option>
-                          <option>Thấp</option>
-                          <option>Bình thường</option>
-                        </select>
-                      </div>
-                      <button
-                        id="add"
-                        onClick={() => {popupAddGateway.value = true}}
-                      >
-                        Thêm
-                      </button>
-                    </div> */}
-
                   {isMobile.value ? (
                     <div className="DAT_ProjectData_Device_TableMobile">
                       <div className="DAT_Toollist_Tab_Mobile">
@@ -1706,7 +1423,6 @@ function ProjectData(props) {
                             {listDeviceTab.map((item, i) => {
                               return (
                                 <div className="DAT_Toollist_Tab_Mobile_list_item"
-                                  // style={{ display: tabMobile.value ? "block" : "none" }}
                                   key={"tabmobile_" + i}
                                   id={item.id}
                                   onClick={(e) => handleTabMobileDevice(e)}
@@ -1723,32 +1439,118 @@ function ProjectData(props) {
 
                       {(() => {
                         switch (tab.value) {
-                          case "inverter":
-                            return (
-                              <DataTable className="DAT_Table_Device"
-                                columns={columnInverter}
-                                data={tempInverter}
-                                pagination
-                                paginationComponentOptions={paginationComponentOptions}
-                                fixedHeader={true}
-                                noDataComponent={<Empty />}
-                              />
-                            );
-                          case "meter":
-                            return (
-                              <DataTable className="DAT_Table_Device"
-                                columns={columnMeter}
-                                data={dataMeter}
-                                pagination
-                                paginationComponentOptions={paginationComponentOptions}
-                                fixedHeader={true}
-                                noDataComponent={<Empty />}
-                              />
-                            );
                           case "logger":
                             return (
                               <>
                                 {temp.value?.map((item, i) => {
+                                  return (
+                                    <div key={i} className="DAT_ProjectData_Device_TableMobile_Content">
+                                      <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left">
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Name">
+                                            {dataLang.formatMessage({ id: 'name' })}: {item.name}
+                                          </div>
+
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Sn">
+                                            SN: {item.sn}
+                                          </div>
+                                        </div>
+
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right">
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item" onClick={(e) => handleEdit(e)}>
+                                            <MdEdit size={20} color="#216990" />
+                                          </div>
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
+                                            id={item.sn}
+                                            onClick={(e) => handleDelete(e)}
+                                          >
+                                            <MdDelete size={20} color="red" />
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom">
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_State">
+                                          {item.state ?
+                                            <>
+                                              <FaCheckCircle size={20} color="green" />
+                                              <span>{dataLang.formatMessage({ id: 'online' })}</span>
+                                            </>
+                                            :
+                                            <>
+                                              <MdOutlineError size={22} color="red" />
+                                              <span>{dataLang.formatMessage({ id: 'offline' })}</span>
+                                            </>
+                                          }
+                                        </div>
+
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_Type">
+                                          {dataLang.formatMessage({ id: 'type' })}: {item.type}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )
+                                })}
+                              </>
+                            );
+                          case "inverter":
+                            return (
+                              <>
+                                {tempInverter.value?.map((item, i) => {
+                                  return (
+                                    <div key={i} className="DAT_ProjectData_Device_TableMobile_Content">
+                                      <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left">
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Name">
+                                            {dataLang.formatMessage({ id: 'name' })}: {item.name}
+                                          </div>
+
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Sn">
+                                            SN: {item.sn}
+                                          </div>
+                                        </div>
+
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right">
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item" onClick={(e) => handleEdit(e)}>
+                                            <MdEdit size={20} color="#216990" />
+                                          </div>
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
+                                            id={item.sn}
+                                            onClick={(e) => handleDelete(e)}
+                                          >
+                                            <MdDelete size={20} color="red" />
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom">
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_State">
+                                          {item.state ?
+                                            <>
+                                              <FaCheckCircle size={20} color="green" />
+                                              <span>{dataLang.formatMessage({ id: 'online' })}</span>
+                                            </>
+                                            :
+                                            <>
+                                              <MdOutlineError size={22} color="red" />
+                                              <span>{dataLang.formatMessage({ id: 'offline' })}</span>
+                                            </>
+                                          }
+                                        </div>
+
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_Type">
+                                          {dataLang.formatMessage({ id: 'type' })}: {item.type}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )
+                                })}
+                              </>
+                            );
+                          case "meter":
+                            return (
+                              <>
+                                {tempInverter.value?.map((item, i) => {
                                   return (
                                     <div key={i} className="DAT_ProjectData_Device_TableMobile_Content">
                                       <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
@@ -2034,14 +1836,6 @@ function ProjectData(props) {
         <> </>
       )}
 
-      {/* {raiseBoxState.value.status ? (
-        <div className="DAT_RaiseBoxPopup">
-          <RaiseBox state={raiseBoxState.value.text} />
-        </div>
-      ) : (
-        <></>
-      )} */}
-
       {isMobile.value ? (
         <>
           {dropState.value ? (
@@ -2060,12 +1854,6 @@ function ProjectData(props) {
               >
                 {dataLang.formatMessage({ id: 'device' })}
               </div>
-              {/* <div className="DAT_ProjectDataDrop_Item"
-              id="alert"
-              onClick={() => handleWarn()}
-            >
-              Cảnh báo
-            </div> */}
             </div>
           ) : (
             <></>
@@ -2089,12 +1877,6 @@ function ProjectData(props) {
               >
                 {dataLang.formatMessage({ id: 'device' })}
               </div>
-              {/* <div className="DAT_ProjectDataDrop_Item"
-                id="alert"
-                onClick={() => handleWarn()}
-              >
-                Cảnh báo
-              </div> */}
             </div>
           ) : (
             <></>
@@ -2105,38 +1887,8 @@ function ProjectData(props) {
   );
 }
 
-export default ProjectData;
-
 // Thẻ Data
-
 const Graph = (props) => {
-  const path = document.querySelector(".infinity");
-  const circle = document.querySelector(".circle");
-  const val = { distance: 0 };
-
-  useEffect(() => {
-    console.log(props.type);
-  }, []);
-
-  // Create an object that gsap can animate
-  // Create a tween
-  // gsap.to(val, {
-  //   // Animate from distance 0 to the total distance
-  //   distance: path.getTotalLength(),
-  //   // Loop the animation
-  //   repeat: -1,
-  //   // Make the animation lasts 5 seconds
-  //   duration: 5,
-  //   // Function call on each frame of the animation
-  //   onUpdate: () => {
-  //     // Query a point at the new distance value
-  //     const point = path.getPointAtLength(val.distance);
-  //     // Update the circle coordinates
-  //     circle.setAttribute('cx', point.x);
-  //     circle.setAttribute('cy', point.y);
-  //   }
-  // });
-
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Graph">
       {(() => {
@@ -2146,13 +1898,11 @@ const Graph = (props) => {
               <>
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine" style={{ scale: isMobile.value ? "0.8" : "1" }}>
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine_Solar">
-                    <img src="/dat_picture/solar-panel.png"></img>
+                    <img src="/dat_picture/solar-panel.png" alt="" />
                   </div>
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine_G">
-
                     <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine_G_B">
                       <svg width="220px" height="25px" verssion="1.1" >
-
                         <path
                           className="path"
                           d="M 6 6 L 210 6"
@@ -2165,12 +1915,11 @@ const Graph = (props) => {
                             strokeLinecap: "round",
                             overflow: "hidden",
                           }}
-                        ></path>
+                        />
                         {projectData.value.state
                           ? <path
                             d="M 0 0 L 20 0"
                             style={{
-
                               position: "absolute",
                               zIndex: "20",
                               top: "0",
@@ -2193,7 +1942,7 @@ const Graph = (props) => {
                     </div>
                   </div>
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine_Grid">
-                    <img src="/dat_picture/grid.png" alt=""></img>
+                    <img src="/dat_picture/grid.png" alt="" />
                   </div>
                 </div>
               </>
@@ -2205,7 +1954,6 @@ const Graph = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop">
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P1">
                   <svg width="120px" height="160px" version="1.1">
-
                     <path
                       className="path"
                       d="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
@@ -2218,7 +1966,7 @@ const Graph = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                       }}
-                    ></path>
+                    />
                     <circle
                       r={4}
                       style={{
@@ -2241,10 +1989,9 @@ const Graph = (props) => {
                 </div>
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2">
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Solar">
-                    <img src="/dat_picture/solar-panel.png"></img>
+                    <img src="/dat_picture/solar-panel.png" alt="" />
                   </div>
                   <svg width="70px" height="40px" version="1.1">
-
                     <path
                       d="M 35 7 L 35 35"
                       style={{
@@ -2256,7 +2003,7 @@ const Graph = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                       }}
-                    ></path>
+                    />
                     <circle
                       r={4}
                       style={{
@@ -2276,12 +2023,11 @@ const Graph = (props) => {
                     </circle>
                   </svg>
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Load">
-                    <img src="/dat_picture/load.png"></img>
+                    <img src="/dat_picture/load.png" alt="" />
                   </div>
                 </div>
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P3">
                   <svg width="120px" height="160px" version="1.1">
-
                     <path
                       d="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
                       style={{
@@ -2293,7 +2039,7 @@ const Graph = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                       }}
-                    ></path>
+                    />
                     <circle
                       r={4}
                       style={{
@@ -2317,13 +2063,12 @@ const Graph = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid">
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_Pin">
-                  <img src="/dat_picture/battery.png"></img>
+                  <img src="/dat_picture/battery.png" alt="" />
                 </div>
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G">
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_T">
                     <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P1">
                       <svg width="120px" height="45px" version="1.1">
-
                         <path
                           className="path"
                           d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
@@ -2336,7 +2081,7 @@ const Graph = (props) => {
                             strokeLinecap: "round",
                             overflow: "hidden",
                           }}
-                        ></path>
+                        />
                         <circle
                           r={4}
                           style={{
@@ -2359,7 +2104,6 @@ const Graph = (props) => {
                     </div>
                     <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P2">
                       <svg width="110px" height="45px" version="1.1">
-
                         <path
                           d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
                           style={{
@@ -2371,7 +2115,7 @@ const Graph = (props) => {
                             strokeLinecap: "round",
                             overflow: "hidden",
                           }}
-                        ></path>
+                        />
                         <circle
                           r={4}
                           style={{
@@ -2395,7 +2139,6 @@ const Graph = (props) => {
                   </div>
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineBottom_G_B">
                     <svg width="230px" height="25px" verssion="1.1">
-
                       <path
                         className="path"
                         d="M 220 7 L 14 7"
@@ -2408,7 +2151,7 @@ const Graph = (props) => {
                           strokeLinecap: "round",
                           overflow: "hidden",
                         }}
-                      ></path>
+                      />
                       <circle
                         r={4}
                         style={{
@@ -2431,7 +2174,7 @@ const Graph = (props) => {
                   </div>
                 </div>
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_Grid">
-                  <img src="/dat_picture/grid.png"></img>
+                  <img src="/dat_picture/grid.png" alt="" />
                 </div>
               </div>
             </>);
@@ -2440,7 +2183,6 @@ const Graph = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop">
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P1">
                   <svg width="120px" height="160px" version="1.1">
-
                     <path
                       className="path"
                       d="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
@@ -2453,7 +2195,7 @@ const Graph = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                       }}
-                    ></path>
+                    />
                     <circle
                       r={4}
                       style={{
@@ -2476,10 +2218,9 @@ const Graph = (props) => {
                 </div>
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2">
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Solar">
-                    <img src="/dat_picture/solar-panel.png"></img>
+                    <img src="/dat_picture/solar-panel.png" alt="" />
                   </div>
                   <svg width="70px" height="40px" version="1.1">
-
                     <path
                       d="M 35 7 L 35 35"
                       style={{
@@ -2491,7 +2232,7 @@ const Graph = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                       }}
-                    ></path>
+                    />
                     <circle
                       r={4}
                       style={{
@@ -2511,12 +2252,11 @@ const Graph = (props) => {
                     </circle>
                   </svg>
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Load">
-                    <img src="/dat_picture/load.png"></img>
+                    <img src="/dat_picture/load.png" alt="" />
                   </div>
                 </div>
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P3">
                   <svg width="120px" height="160px" version="1.1">
-
                     <path
                       d="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
                       style={{
@@ -2528,7 +2268,7 @@ const Graph = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                       }}
-                    ></path>
+                    />
                     <circle
                       r={4}
                       style={{
@@ -2552,13 +2292,12 @@ const Graph = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid">
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_Pin">
-                  <img src="/dat_picture/battery.png"></img>
+                  <img src="/dat_picture/battery.png" alt="" />
                 </div>
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G">
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_T">
                     <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P1">
                       <svg width="120px" height="45px" version="1.1">
-
                         <path
                           className="path"
                           d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
@@ -2571,7 +2310,7 @@ const Graph = (props) => {
                             strokeLinecap: "round",
                             overflow: "hidden",
                           }}
-                        ></path>
+                        />
                         <circle
                           r={4}
                           style={{
@@ -2594,7 +2333,6 @@ const Graph = (props) => {
                     </div>
                     <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P2">
                       <svg width="110px" height="45px" version="1.1">
-
                         <path
                           d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
                           style={{
@@ -2606,7 +2344,7 @@ const Graph = (props) => {
                             strokeLinecap: "round",
                             overflow: "hidden",
                           }}
-                        ></path>
+                        />
                         <circle
                           r={4}
                           style={{
@@ -2630,7 +2368,6 @@ const Graph = (props) => {
                   </div>
                   <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineBottom_G_B">
                     <svg width="230px" height="25px" verssion="1.1">
-
                       <path
                         className="path"
                         d="M 220 7 L 14 7"
@@ -2643,7 +2380,7 @@ const Graph = (props) => {
                           strokeLinecap: "round",
                           overflow: "hidden",
                         }}
-                      ></path>
+                      />
                       <circle
                         r={4}
                         style={{
@@ -2666,7 +2403,7 @@ const Graph = (props) => {
                   </div>
                 </div>
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_Grid">
-                  <img src="/dat_picture/grid.png"></img>
+                  <img src="/dat_picture/grid.png" alt="" />
                 </div>
               </div>
             </>);
@@ -2674,8 +2411,6 @@ const Graph = (props) => {
             <></>;
         }
       })()}
-
-
     </div>
   );
 };
@@ -3257,15 +2992,6 @@ const Battery = (props) => {
 
 // Thẻ Chart
 const Day = (props) => {
-  const dataLang = useIntl();
-  // const [data, setData] = useState([]);
-  // const [v, setV] = useState("--");
-
-  // useEffect(() => {
-  //   setData(props.data);
-  //   setV(props.v);
-  // }, [props.data, props.v]);
-
   return (
     <div className="DAT_ProjectData_Dashboard_History_Day">
       <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
@@ -3273,7 +2999,6 @@ const Day = (props) => {
           kWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {/* {dataLang.formatMessage({ id: props.v })}: {cal.value.pro_2}kWh */}
           {props.v}: {cal.value.pro_2} kWh
         </div>
       </div>
@@ -3299,15 +3024,6 @@ const Day = (props) => {
 };
 
 const Month = (props) => {
-  const dataLang = useIntl();
-  // const [data, setData] = useState([]);
-  // const [v, setV] = useState("--");
-
-  // useEffect(() => {
-  //   setData(props.data);
-  //   setV(props.v);
-  // }, [props.data, props.v]);
-
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
 
@@ -3323,7 +3039,6 @@ const Month = (props) => {
           kWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {/* {dataLang.formatMessage({ id: props.v })}: {cal.value.pro_monthly}kWh */}
           {props.v}: {cal.value.pro_month} kWh
         </div>
       </div>
@@ -3344,15 +3059,6 @@ const Month = (props) => {
 };
 
 const Year = (props) => {
-  const dataLang = useIntl();
-  // const [data, setData] = useState([]);
-  // const [v, setV] = useState("--");
-
-  // useEffect(() => {
-  //   setData(props.data);
-  //   setV(props.v);
-  // }, [props.data, props.v]);
-
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
 
@@ -3369,7 +3075,6 @@ const Year = (props) => {
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           {props.v}: {cal.value.pro_year} kWh
-          {/* {dataLang.formatMessage({ id: props.v })}: {cal.value.pro_year}kWh */}
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
@@ -3389,15 +3094,6 @@ const Year = (props) => {
 };
 
 const Total = (props) => {
-  const dataLang = useIntl();
-  // const [data, setData] = useState([]);
-  // const [v, setV] = useState("--");
-
-  // useEffect(() => {
-  //   setData(props.data);
-  //   setV(props.v);
-  // }, [props.data, props.v]);
-
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
 
@@ -3413,8 +3109,6 @@ const Total = (props) => {
           MWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {/* Sản lượng tổng: 13.69 MWh */}
-          {/* {dataLang.formatMessage({ id: props.v })}: {cal.value.pro_total}kWh */}
           {props.v}: {cal.value.pro_total} kWh
         </div>
       </div>
@@ -3433,13 +3127,3 @@ const Total = (props) => {
     </div>
   );
 };
-
-const getDaysInCurrentMonth = () => {
-  const date = new Date();
-
-  return new Date(
-    date.getFullYear(),
-    date.getMonth() + 1,
-    0,
-  ).getDate();
-}

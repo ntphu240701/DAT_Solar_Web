@@ -1,18 +1,18 @@
 import React from "react";
 import "./Contact.scss";
-import PopupAvatar from "./PopupAva";
 
-import { MdOutlineContactPhone } from "react-icons/md";
-import { signal } from "@preact/signals-react";
+import PopupAvatar from "./PopupAva";
 import EditContactInfo from "./EditContactInfo";
 import { partnerInfor, userInfor } from "../../App";
+import { signal } from "@preact/signals-react";
 import { useIntl } from "react-intl";
+
+import { MdOutlineContactPhone } from "react-icons/md";
 
 export const popupStateContact = signal(false);
 export const contactState = signal("default");
 
-
-function Contact(props) {
+export default function Contact(props) {
   const dataLang = useIntl();
 
   const Type = {
@@ -21,6 +21,7 @@ function Contact(props) {
     Distributor: "distributor",
     Manufacturer: "manufacturer",
   }
+
   return (
     <>
       <div className="DAT_ContactHeader">
@@ -40,29 +41,28 @@ function Contact(props) {
                   {dataLang.formatMessage({ id: 'edit' })}
                 </div>
               }
-
             </div>
+
             <div className="DAT_Contact_Item_Registation_Content">
               <div>{dataLang.formatMessage({ id: 'businessModel' })}</div>
               <div>{partnerInfor.value.businessmodel}</div>
             </div>
+
             <div className="DAT_Contact_Item_Registation_Content">
               <div>{dataLang.formatMessage({ id: 'businessname' })}</div>
               <div>{partnerInfor.value.businessname}</div>
             </div>
+
             <div className="DAT_Contact_Item_Registation_Content">
               <div>{dataLang.formatMessage({ id: 'area' })}</div>
               <div>{partnerInfor.value.area}</div>
             </div>
+
             <div className="DAT_Contact_Item_Registation_Content">
               <div>{dataLang.formatMessage({ id: 'businesstype' })}</div>
               <div>{dataLang.formatMessage({ id: Type[partnerInfor.value.businesstype] })}</div>
             </div>
           </div>
-
-          {/* <div className='DAT_Contact_Item_More'>
-                        <div className='DAT_Contact_Item_More_Tit'></div>
-                    </div> */}
         </div>
 
         <div className="DAT_Contact_Item">
@@ -76,10 +76,12 @@ function Contact(props) {
                 </div>
               }
             </div>
+
             <div className="DAT_Contact_Item_Contact_Content">
               <div>{dataLang.formatMessage({ id: 'name' })}</div>
               <div>{partnerInfor.value.name}</div>
             </div>
+
             <div className="DAT_Contact_Item_Contact_Content">
               <div>{dataLang.formatMessage({ id: 'phone' })}</div>
               <div>{partnerInfor.value.phone}</div>
@@ -101,6 +103,7 @@ function Contact(props) {
                 </div>
               }
             </div>
+
             <div className="DAT_Contact_Item_Logo_Content">
               <img src={partnerInfor.value.logo ? partnerInfor.value.logo : "/dat_icon/logo_DAT.png"} alt="" />
             </div>
@@ -136,5 +139,3 @@ function Contact(props) {
     </>
   );
 }
-
-export default Contact;

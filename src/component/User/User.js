@@ -1,18 +1,19 @@
 import React from "react";
 import "./User.scss";
-import { FaRegUser } from "react-icons/fa";
+
 import Popup from "./Popup";
 import { signal } from "@preact/signals-react";
-import { partnerInfor, userInfor } from "../../App";
+import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
-import { VscAccount } from "react-icons/vsc";
 
+import { VscAccount } from "react-icons/vsc";
 
 export const popupStateUser = signal(false);
 export const editType = signal();
 
-function User(props) {
+export default function User(props) {
   const dataLang = useIntl();
+
   return (
     <>
       <div className="DAT_UsrHeader">
@@ -20,6 +21,7 @@ function User(props) {
           <VscAccount color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'account' })}</span>
         </div>
       </div>
+
       <div className="DAT_Usr">
         <div className="DAT_Usr_Item">
           <div className="DAT_Usr_Item_Content">
@@ -57,6 +59,7 @@ function User(props) {
             {dataLang.formatMessage({ id: 'edit' })}
           </span>
         </div>
+
         <div className="DAT_Usr_Item">
           <div className="DAT_Usr_Item_Content">
             <div className="DAT_Usr_Item_Content_Title">{dataLang.formatMessage({ id: 'address' })}</div>
@@ -79,6 +82,7 @@ function User(props) {
           </span>
         </div>
       </div>
+
       {popupStateUser.value ? (
         <div className="DAT_EditPopup">
           <Popup></Popup>
@@ -89,5 +93,3 @@ function User(props) {
     </>
   );
 }
-
-export default User;

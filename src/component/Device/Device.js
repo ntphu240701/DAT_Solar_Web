@@ -1,39 +1,39 @@
 import React, { useEffect, useState } from "react";
 import "./Device.scss";
-import DataTable from "react-data-table-component";
-import { FaCheckCircle } from "react-icons/fa";
-import { MdDelete, MdEdit, MdDevices, MdOutlineError } from "react-icons/md";
-import { signal } from "@preact/signals-react";
-import { CiSearch } from "react-icons/ci";
-import { Empty } from "../Project/Project";
-import { isMobile } from "../Navigation/Navigation";
-import { TbSettingsCode } from "react-icons/tb";
-import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
+
 import Info from "./Info";
 import Config from "./Config";
 import Popup from "./Popup";
+import DataTable from "react-data-table-component";
+import { signal } from "@preact/signals-react";
+import { Empty } from "../Project/Project";
+import { isMobile } from "../Navigation/Navigation";
 import { useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { set } from "lodash";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
+
+import { MdDelete, MdEdit, MdDevices, MdOutlineError } from "react-icons/md";
+import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
+import { FaCheckCircle } from "react-icons/fa";
+import { CiSearch } from "react-icons/ci";
+import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
 
 export const tab = signal("logger");
-const tabLable = signal("");
-const tabMobile = signal(false);
-
 export const infoState = signal(false);
 export const info = signal({});
 export const configState = signal(false);
 export const popupState = signal(false);
 export const displayState = signal("default");
-
 export const projectList = signal([]);
 export const loggerList = signal([]);
 
-function Device(props) {
+const tabMobile = signal(false);
+const tabLable = signal("");
+
+export default function Device(props) {
   const dataLang = useIntl();
   const user = useSelector(state => state.admin.usr);
   const [filter, setFilter] = useState(false);
@@ -45,8 +45,6 @@ function Device(props) {
     { id: "inverter", name: "Inverter" },
     // { id: "meter", name: "Meter" },
   ];
-
-  const color = { cur: "#6495ed", pre: "gray" };
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
@@ -117,33 +115,6 @@ function Device(props) {
       status: true,
       production: "45",
       dailyproduction: "1024.4",
-      updated: "12/30/2023 12:07:12",
-    },
-  ];
-
-  const dataLogger = [
-    {
-      id: 1,
-      SN: "L0000102",
-      name: "Logger 01",
-      plant: "Năng lượng DAT 01",
-      status: true,
-      updated: "12/30/2023 12:07:12",
-    },
-    {
-      id: 2,
-      SN: "L0000101",
-      name: "Logger 02",
-      plant: "Năng lượng DAT 01",
-      status: true,
-      updated: "12/30/2023 12:07:12",
-    },
-    {
-      id: 3,
-      SN: "L0000103",
-      name: "Logger 03",
-      plant: "Năng lượng DAT 02",
-      status: true,
       updated: "12/30/2023 12:07:12",
     },
   ];
@@ -405,13 +376,13 @@ function Device(props) {
     tabLable.value = listTab[0].name;
 
     // get logger
-    const getAllLogger = async (usrname, partnerid, type) => {
-      let d = await callApi('post', host.DATA + '/getallLogger', { usr: usrname, partnerid: partnerid, type: type });
+    const getAllLogger = async () => {
+      let d = await callApi('post', host.DATA + '/getallLogger', { usr: user, partnerid: userInfor.value.partnerid, type: userInfor.value.type });
       if (d.status === true) {
         loggerList.value = d.data;
       }
     };
-    getAllLogger(user, userInfor.value.partnerid, userInfor.value.type);
+    getAllLogger();
 
   }, []);
 
@@ -457,29 +428,21 @@ function Device(props) {
         )}
       </div>
 
-      {/* <div className='DAT_Device_Nav'>
-                    <span id='inverter' style={{ color: tab.value === "inverter" ? color.cur : color.pre }} onClick={() => { tab.value = "inverter" }} >Inverter</span>
-                    <span id='meter' style={{ color: tab.value === "meter" ? color.cur : color.pre }} onClick={() => { tab.value = "meter" }} >Meter</span>
-                    <span id='logger' style={{ color: tab.value === "logger" ? color.cur : color.pre }} onClick={() => { tab.value = "logger" }} >Logger</span>
-                </div> */}
       {isMobile.value ? (
         <div className="DAT_DeviceMobile">
           <div className="DAT_Toollist_Tab_Mobile" >
-            <button
-              className="DAT_Toollist_Tab_Mobile_content"
+            <button className="DAT_Toollist_Tab_Mobile_content"
               onClick={() => (tabMobile.value = !tabMobile.value)}
-
             >
               <span> {tabLable.value}</span>
               {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}
             </button>
+
             {tabMobile.value ? (
               <div className="DAT_Toollist_Tab_Mobile_list">
                 {listTab.map((item, i) => {
                   return (
-                    <div
-                      className="DAT_Toollist_Tab_Mobile_list_item"
-                      // style={{ display: tabMobile.value ? "block" : "none" }}
+                    <div className="DAT_Toollist_Tab_Mobile_list_item"
                       key={i}
                       id={item.id}
                       onClick={(e) => handleTabMobile(e)}
@@ -498,15 +461,55 @@ function Device(props) {
             switch (tab.value) {
               case "inverter":
                 return (
-                  <DataTable
-                    className="DAT_Table_Container"
-                    columns={columnDevice}
-                    data={dataInverter}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
-                    noDataComponent={<Empty />}
-                  />
+                  <>
+                    {dataInverter?.map((item, i) => {
+                      return (
+                        <div key={i} className="DAT_DeviceMobile_Content">
+                          <div className="DAT_DeviceMobile_Content_Top">
+                            <div className="DAT_DeviceMobile_Content_Top_Left"
+                              id={item.pid + "_" + tab.value}
+                              onClick={(e) => handleShowInfo(e)}
+                            >
+                              <div className="DAT_DeviceMobile_Content_Top_Left_Name">{dataLang.formatMessage({ id: 'name' })}: {item.pname}</div>
+                              <div className="DAT_DeviceMobile_Content_Top_Left_Sn">SN: {item.psn}</div>
+                            </div>
+
+                            <div className="DAT_DeviceMobile_Content_Top_Right">
+                              <div className="DAT_DeviceMobile_Content_Top_Right_Item">
+                                <MdEdit size={20} color="#216990" />
+                              </div>
+                              <div className="DAT_DeviceMobile_Content_Top_Right_Item"
+                                id={item.psn + "_" + item.pplantid}
+                                onClick={(e) => handleRemove(e)}
+                              >
+                                <MdDelete size={20} color="red" />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="DAT_DeviceMobile_Content_Bottom">
+                            <div className="DAT_DeviceMobile_Content_Bottom_State">
+                              {item.pstate ?
+                                <>
+                                  <FaCheckCircle size={20} color="green" />
+                                  <span>{dataLang.formatMessage({ id: 'online' })}</span>
+                                </>
+                                :
+                                <>
+                                  <MdOutlineError size={22} color="red" />
+                                  <span>{dataLang.formatMessage({ id: 'offline' })}</span>
+                                </>
+                              }
+                            </div>
+
+                            <div className="DAT_DeviceMobile_Content_Bottom_Type">
+                              {dataLang.formatMessage({ id: 'project' })}: {item.pplantname}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </>
                 );
               case "meter":
                 return (
@@ -572,7 +575,6 @@ function Device(props) {
                     })}
                   </>
                 );
-
               default:
                 return <></>;
             }
@@ -585,8 +587,7 @@ function Device(props) {
               return tab.value === item.id ? (
                 <div key={i} className="DAT_Toollist_Tab_main">
                   <p className="DAT_Toollist_Tab_main_left"></p>
-                  <span
-                    className="DAT_Toollist_Tab_main_content1"
+                  <span className="DAT_Toollist_Tab_main_content1"
                     id={item.id}
                     style={{
                       backgroundColor: "White",
@@ -600,8 +601,7 @@ function Device(props) {
                   <p className="DAT_Toollist_Tab_main_right"></p>
                 </div>
               ) : (
-                <span
-                  className="DAT_Toollist_Tab_main_content2"
+                <span className="DAT_Toollist_Tab_main_content2"
                   key={i}
                   id={item.id}
                   style={{ backgroundColor: "#dadada" }}
@@ -685,5 +685,3 @@ function Device(props) {
     </>
   );
 }
-
-export default Device;

@@ -1,17 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
-import { FaSave } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
+import React, { useEffect, useRef } from "react";
+import "./Rule.scss";
+
 import { signal } from "@preact/signals-react";
 import { isMobile } from "../Navigation/Navigation";
-import { createruleState, datarule, editRuleState, ruleID } from "./Rule";
+import { datarule, editRuleState } from "./Rule";
 import { ruletitle } from "./CreateRule";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 
+import { FaSave } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
+
 export const editruledata = signal();
 
 export const CheckBox = (props) => {
-  const dataLang = useIntl()
   const handleShow = (e) => {
     let arr = props.html.split("_");
     console.log(arr[0]);
@@ -129,19 +131,16 @@ export const CheckBox = (props) => {
     console.log(editruledata.value);
   };
 
-
   useEffect(() => {
     console.log(editruledata.value)// lay tu datarule amin
   }, [])
 
   return (
-    <div
-      className="DAT_CreateRule_Body_Item_Option_Check_SingleCheck"
+    <div className="DAT_CreateRule_Body_Item_Option_Check_SingleCheck"
       style={{ width: props.width }}
     >
       <div className="form-check">
-        <input
-          className="form-check-input"
+        <input className="form-check-input"
           type="checkbox"
           value=""
           id={props.html}
@@ -149,10 +148,9 @@ export const CheckBox = (props) => {
           onChange={(e) => {
             handleShow(e);
           }}
-        ></input>
-        <label
+        />
+        <label className="form-check-label"
           style={{ cursor: "pointer", fontSize: "15px", color: "grey" }}
-          className="form-check-label"
           htmlFor={props.html}
         >
           {props.id}
@@ -161,8 +159,6 @@ export const CheckBox = (props) => {
     </div>
   );
 };
-
-
 
 export default function EditRule() {
   const dataLang = useIntl()
@@ -186,7 +182,7 @@ export default function EditRule() {
               id="reportname"
               defaultValue={rulenameRef.current}
               onChange={(e) => handelChangeRuleName(e)}
-            ></input>
+            />
           </div>
         </div>
       </div>
@@ -194,7 +190,6 @@ export default function EditRule() {
   };
 
   const handleSave = () => {
-
     if (rulenameRef.current !== "") {
       editruledata.value = {
         ...editruledata.value,
@@ -226,61 +221,57 @@ export default function EditRule() {
   }, [isMobile.value]);
 
   return (
-    <div>
-      <div className="DAT_CreateRule">
-        <div className="DAT_CreateRule_Header">
-          <div className="DAT_CreateRule_Header_Left">
-            <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'edits' })}</p>
+    <div className="DAT_CreateRule">
+      <div className="DAT_CreateRule_Header">
+        <div className="DAT_CreateRule_Header_Left">
+          <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'edits' })}</p>
+        </div>
+        <div className="DAT_CreateRule_Header_Right">
+          <div className="DAT_CreateRule_Header_Right_Save"
+            onClick={() => handleSave()}
+          >
+            <FaSave size={20} color="white" />
+            <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
-          <div className="DAT_CreateRule_Header_Right">
-            <div
-              className="DAT_CreateRule_Header_Right_Save"
-              onClick={() => handleSave()}
-            >
-              <FaSave size={20} color="white" />
-              <span>{dataLang.formatMessage({ id: 'save' })}</span>
-            </div>
-            <div className="DAT_CreateRule_Header_Right_Close">
-              <RxCross2
-                size={20}
-                color="white"
-                onClick={() => (editRuleState.value = false)}
-              />
-            </div>
+          <div className="DAT_CreateRule_Header_Right_Close">
+            <RxCross2
+              size={20}
+              color="white"
+              onClick={() => (editRuleState.value = false)}
+            />
           </div>
         </div>
+      </div>
 
-        <div className="DAT_CreateRule_Body">
+      <div className="DAT_CreateRule_Body">
 
-          <TypeReport />
+        <TypeReport />
 
-          <div className="DAT_CreateRule_Body_Item">
-            <div className="DAT_CreateRule_Body_Item_Option">
-              <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: 'ruleOptions' })}</label>
-              {ruletitle.value.map((item, key) => (
-                <div
-                  key={key}
-                  className="DAT_CreateRule_Body_Item_Option_Check"
-                >
-                  <p style={{ color: "grey" }}>
-                    {dataLang.formatMessage({ id: editruledata.value.setting[item].lang })}
-                  </p>
-                  {Object.entries(editruledata.value.setting[item].option).map(
-                    ([key, value]) => (
-                      <CheckBox
-                        key={key}
-                        num={String(key)}
-                        tab={item + "_content"}
-                        status={value.status}
-                        id={dataLang.formatMessage({ id: value.lang })}
-                        html={item + "_" + key}
-                        width={widthCheckBox}
-                      />
-                    )
-                  )}
-                </div>
-              ))}
-            </div>
+        <div className="DAT_CreateRule_Body_Item">
+          <div className="DAT_CreateRule_Body_Item_Option">
+            <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: 'ruleOptions' })}</label>
+            {ruletitle.value.map((item, key) => (
+              <div className="DAT_CreateRule_Body_Item_Option_Check"
+                key={key}
+              >
+                <p style={{ color: "grey" }}>
+                  {dataLang.formatMessage({ id: editruledata.value.setting[item].lang })}
+                </p>
+                {Object.entries(editruledata.value.setting[item].option).map(
+                  ([key, value]) => (
+                    <CheckBox
+                      key={key}
+                      num={String(key)}
+                      tab={item + "_content"}
+                      status={value.status}
+                      id={dataLang.formatMessage({ id: value.lang })}
+                      html={item + "_" + key}
+                      width={widthCheckBox}
+                    />
+                  )
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>
