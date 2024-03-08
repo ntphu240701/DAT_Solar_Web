@@ -27,6 +27,7 @@ import { RxCross2 } from "react-icons/rx";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { LiaLongArrowAltLeftSolid } from "react-icons/lia";
 import { CiSearch } from "react-icons/ci";
+import { useSelector } from "react-redux";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -107,6 +108,7 @@ const dataAlert = [
 
 export default function ProjectData(props) {
   const dataLang = useIntl();
+  const lang = useSelector((state) => state.admin.lang);
   const [nav, setNav] = useState("graph");
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
@@ -674,7 +676,7 @@ export default function ProjectData(props) {
         let vTotal = dataLang.formatMessage({ id: d.data.name });
         let sum_total = []
         d.data.data.map((item, i) => {
-          setDataTotal((old) => [...old, { year: item.year, [vTotal]: item.value }]);
+          setDataTotal((old) => [...old, { year: item.year, [dataLang.formatMessage({ id: 'totalOutputSmall' })]: item.value }]);
           sum_total[i] = item.value
           if (i == d.data.data.length - 1) {
             cal.value['pro_total'] = parseFloat(sum_total.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
@@ -708,7 +710,7 @@ export default function ProjectData(props) {
     }
 
     // eslint-disable-next-line
-  }, []);
+  }, [lang]);
 
   useEffect(() => {
     var num_ = {
@@ -2992,14 +2994,17 @@ const Battery = (props) => {
 
 // Thẻ Chart
 const Day = (props) => {
+  const dataLang = useIntl();
+
   return (
     <div className="DAT_ProjectData_Dashboard_History_Day">
       <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Unit">
-          kWh
+          kW
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {props.v}: {cal.value.pro_2} kWh
+          {/* {props.v}: {cal.value.pro_1} kW */}
+          {dataLang.formatMessage({ id: 'production' })}: {cal.value.pro_1} kW
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
@@ -3024,6 +3029,8 @@ const Day = (props) => {
 };
 
 const Month = (props) => {
+  const dataLang = useIntl();
+
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
 
@@ -3039,7 +3046,8 @@ const Month = (props) => {
           kWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {props.v}: {cal.value.pro_month} kWh
+          {/* {props.v}: {cal.value.pro_month} kWh */}
+          {dataLang.formatMessage({ id: 'monthOutputSmall' })}: {cal.value.pro_month} kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
@@ -3059,6 +3067,8 @@ const Month = (props) => {
 };
 
 const Year = (props) => {
+  const dataLang = useIntl();
+
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
 
@@ -3074,7 +3084,8 @@ const Year = (props) => {
           kWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {props.v}: {cal.value.pro_year} kWh
+          {/* {props.v}: {cal.value.pro_year} kWh */}
+          {dataLang.formatMessage({ id: 'yearOutputSmall' })}: {cal.value.pro_year} kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
@@ -3094,6 +3105,8 @@ const Year = (props) => {
 };
 
 const Total = (props) => {
+  const dataLang = useIntl();
+
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
 
@@ -3109,18 +3122,19 @@ const Total = (props) => {
           MWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {props.v}: {cal.value.pro_total} kWh
+          {/* {props.v}: {cal.value.pro_total} kWh */}
+          {dataLang.formatMessage({ id: 'totalOutputSmall' })}: {cal.value.pro_total} kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
         <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
           <BarChart width={150} height={200} data={props.data}>
             <XAxis dataKey="year" axisLine={false} tickLine={false} />
-            <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...props.data.map(item => item[props.v])))]} />
+            <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...props.data.map(item => item[dataLang.formatMessage({ id: 'totalOutputSmall' })])))]} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
-            <Bar shape={<TriangleBar />} dataKey={props.v} fill="#6495ed" barSize={15} legendType="circle" />
+            <Bar shape={<TriangleBar />} dataKey={dataLang.formatMessage({ id: 'totalOutputSmall' })} fill="#6495ed" barSize={15} legendType="circle" />
           </BarChart>
         </ResponsiveContainer>
       </div>
