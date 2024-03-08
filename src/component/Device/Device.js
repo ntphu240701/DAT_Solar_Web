@@ -527,7 +527,10 @@ function Device(props) {
                       return (
                         <div key={i} className="DAT_DeviceMobile_Content">
                           <div className="DAT_DeviceMobile_Content_Top">
-                            <div className="DAT_DeviceMobile_Content_Top_Left">
+                            <div className="DAT_DeviceMobile_Content_Top_Left"
+                              id={item.pid + "_" + tab.value}
+                              onClick={(e) => handleShowInfo(e)}
+                            >
                               <div className="DAT_DeviceMobile_Content_Top_Left_Name">Tên: {item.pname}</div>
                               <div className="DAT_DeviceMobile_Content_Top_Left_Sn">SN: {item.psn}</div>
                             </div>
@@ -649,7 +652,6 @@ function Device(props) {
                       noDataComponent={<Empty />}
                     />
                   );
-
                 default:
                   return <></>;
               }
