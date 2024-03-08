@@ -6,7 +6,7 @@ import { isMobile } from "../Navigation/Navigation";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from "recharts";
 
 import { IoIosArrowDown, IoIosArrowForward, IoIosCloud, IoMdMore } from "react-icons/io";
-import { IoArrowForward, IoCalendarOutline, IoMenu } from "react-icons/io5";
+import { IoAdd, IoAddOutline, IoArrowForward, IoCalendarOutline, IoMenu } from "react-icons/io5";
 import { MdDelete, MdEdit, MdOutlineError, MdPermDataSetting } from "react-icons/md";
 import { FaCheckCircle, FaTree } from "react-icons/fa";
 import { RiMoneyCnyCircleFill } from "react-icons/ri";
@@ -1056,21 +1056,21 @@ function ProjectData(props) {
                   id="add"
                   onClick={() => popupAddGateway.value = true}
                 >
-                  {dataLang.formatMessage({ id: 'ADD' })}
+                  <IoAddOutline
+                    size={20}
+                    color="white" />
                 </button>
               </div>
-              <div className="DAT_ProjectData_Header_Right_More">
+              <div className="DAT_ProjectData_Header_Right_More" onClick={() => (dropState.value = !dropState.value)}>
                 <BsThreeDotsVertical
                   size={20}
                   color="#9e9e9e"
-                  onClick={() => (dropState.value = !dropState.value)}
                 />
               </div>
-              <div className="DAT_ProjectData_Header_Right_Close">
+              <div className="DAT_ProjectData_Header_Right_Close" onClick={() => (plantState.value = "default")}>
                 <RxCross2
                   size={20}
                   color="white"
-                  onClick={() => (plantState.value = "default")}
                 />
               </div>
             </div>
@@ -1711,7 +1711,7 @@ function ProjectData(props) {
                                       <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
                                         <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left">
                                           <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Name">
-                                            Tên: {item.name}
+                                            {dataLang.formatMessage({ id: 'name' })}: {item.name}
                                           </div>
 
                                           <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Sn">
@@ -1748,7 +1748,7 @@ function ProjectData(props) {
                                         </div>
 
                                         <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_Type">
-                                          Loại: {item.type}
+                                          {dataLang.formatMessage({ id: 'type' })}: {item.type}
                                         </div>
                                       </div>
                                     </div>
