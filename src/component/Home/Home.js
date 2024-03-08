@@ -584,7 +584,7 @@ function Home(props) {
             <div className="DAT_Home_History-Chart-label">
               <div className="DAT_Home_History-Chart-label-Unit">MWh</div>
               <div className="DAT_Home_History-Chart-label-Label">
-                {dataLang.formatMessage({ id: 'monthOutputSmall' })}: {chart === "year" ? yearlyproduction : monthlyproduction} kWh
+                {chart === "year" ? dataLang.formatMessage({ id: 'yearOutputSmall' }) : dataLang.formatMessage({ id: 'monthOutputSmall' })}: {chart === "year" ? yearlyproduction : monthlyproduction} kWh
               </div>
             </div>
             <div className="DAT_Home_History-Chart-Content">
@@ -594,7 +594,7 @@ function Home(props) {
                 >
                   <BarChart width={150} height={200} data={datayear}>
                     <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                    <YAxis axisLine={false} tickLine={false} />
+                    <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...datayear.map(item => item[dataLang.formatMessage({ id: 'yearOutputSmall' })])))]} />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
                     <Legend />
@@ -613,7 +613,7 @@ function Home(props) {
                 >
                   <BarChart width={150} height={200} data={datamonth}>
                     <XAxis dataKey="date" axisLine={false} tickLine={false} />
-                    <YAxis axisLine={false} tickLine={false} />
+                    <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...datamonth.map(item => item[dataLang.formatMessage({ id: 'monthOutputSmall' })])))]} />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
                     <Legend />
