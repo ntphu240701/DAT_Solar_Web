@@ -26,10 +26,10 @@ export default function ConfirmDeleteGroup() {
     groupDelState.value = false;
     console.log(groupID.value);
     group.value = group.value.filter(
-      (item) => item.id != groupID.value
+      (item) => item.id_ != groupID.value
     );
     groupUser.value = groupUser.value.filter(
-      (item) => item.groupid != groupID.value
+      (item) => item.groupid_ != groupID.value
     );
     dataUsers.value = [];
     groupID.value = 0;
