@@ -58,11 +58,11 @@ export default function Popup(props) {
         </div>
       </div>
       <div className="DAT_Popup_Box_Body">
+        {/* <p> */}
         <p>
-          <p>
-            {dataLang.formatMessage({ id: 'delDevicemess' })}
-          </p>
+          {dataLang.formatMessage({ id: 'delDevicemess' })}
         </p>
+        {/* </p> */}
       </div>
       <div className="DAT_Popup_Box_Foot">
         <button

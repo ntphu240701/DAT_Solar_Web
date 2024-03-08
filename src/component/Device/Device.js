@@ -457,14 +457,14 @@ function Device(props) {
         )}
       </div>
 
-      <div className="DAT_Device">
-        {/* <div className='DAT_Device_Nav'>
+      {/* <div className='DAT_Device_Nav'>
                     <span id='inverter' style={{ color: tab.value === "inverter" ? color.cur : color.pre }} onClick={() => { tab.value = "inverter" }} >Inverter</span>
                     <span id='meter' style={{ color: tab.value === "meter" ? color.cur : color.pre }} onClick={() => { tab.value = "meter" }} >Meter</span>
                     <span id='logger' style={{ color: tab.value === "logger" ? color.cur : color.pre }} onClick={() => { tab.value = "logger" }} >Logger</span>
                 </div> */}
-        {isMobile.value ? (
-          <div className="DAT_Toollist_Tab_Mobile" style={{ paddingLeft: "10px" }}>
+      {isMobile.value ? (
+        <div className="DAT_DeviceMobile">
+          <div className="DAT_Toollist_Tab_Mobile" >
             <button
               className="DAT_Toollist_Tab_Mobile_content"
               onClick={() => (tabMobile.value = !tabMobile.value)}
@@ -493,7 +493,93 @@ function Device(props) {
               <></>
             )}
           </div>
-        ) : (
+
+          {(() => {
+            switch (tab.value) {
+              case "inverter":
+                return (
+                  <DataTable
+                    className="DAT_Table_Container"
+                    columns={columnDevice}
+                    data={dataInverter}
+                    pagination
+                    paginationComponentOptions={paginationComponentOptions}
+                    fixedHeader={true}
+                    noDataComponent={<Empty />}
+                  />
+                );
+              case "meter":
+                return (
+                  <DataTable
+                    className="DAT_Table_Container"
+                    columns={columnDevice}
+                    data={dataMeter}
+                    pagination
+                    paginationComponentOptions={paginationComponentOptions}
+                    fixedHeader={true}
+                    noDataComponent={<Empty />}
+                  />
+                );
+              case "logger":
+                return (
+                  <>
+                    {loggerList.value?.map((item, i) => {
+                      return (
+                        <div key={i} className="DAT_DeviceMobile_Content">
+                          <div className="DAT_DeviceMobile_Content_Top">
+                            <div className="DAT_DeviceMobile_Content_Top_Left"
+                              id={item.pid + "_" + tab.value}
+                              onClick={(e) => handleShowInfo(e)}
+                            >
+                              <div className="DAT_DeviceMobile_Content_Top_Left_Name">Tên: {item.pname}</div>
+                              <div className="DAT_DeviceMobile_Content_Top_Left_Sn">SN: {item.psn}</div>
+                            </div>
+
+                            <div className="DAT_DeviceMobile_Content_Top_Right">
+                              <div className="DAT_DeviceMobile_Content_Top_Right_Item">
+                                <MdEdit size={20} color="#216990" />
+                              </div>
+                              <div className="DAT_DeviceMobile_Content_Top_Right_Item"
+                                id={item.psn + "_" + item.pplantid}
+                                onClick={(e) => handleRemove(e)}
+                              >
+                                <MdDelete size={20} color="red" />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="DAT_DeviceMobile_Content_Bottom">
+                            <div className="DAT_DeviceMobile_Content_Bottom_State">
+                              {item.pstate ?
+                                <>
+                                  <FaCheckCircle size={20} color="green" />
+                                  <span>{dataLang.formatMessage({ id: 'online' })}</span>
+                                </>
+                                :
+                                <>
+                                  <MdOutlineError size={22} color="red" />
+                                  <span>{dataLang.formatMessage({ id: 'offline' })}</span>
+                                </>
+                              }
+                            </div>
+
+                            <div className="DAT_DeviceMobile_Content_Bottom_Type">
+                              Dự án: {item.pplantname}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </>
+                );
+
+              default:
+                return <></>;
+            }
+          })()}
+        </div>
+      ) : (
+        <div className="DAT_Device">
           <div className="DAT_Toollist_Tab">
             {listTab.map((item, i) => {
               return tab.value === item.id ? (
@@ -526,53 +612,53 @@ function Device(props) {
               );
             })}
           </div>
-        )}
-        <div className="DAT_Device_Content">
-          {(() => {
-            switch (tab.value) {
-              case "inverter":
-                return (
-                  <DataTable
-                    className="DAT_Table_Container"
-                    columns={columnDevice}
-                    data={dataInverter}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
-                    noDataComponent={<Empty />}
-                  />
-                );
-              case "meter":
-                return (
-                  <DataTable
-                    className="DAT_Table_Container"
-                    columns={columnDevice}
-                    data={dataMeter}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
-                    noDataComponent={<Empty />}
-                  />
-                );
-              case "logger":
-                return (
-                  <DataTable
-                    className="DAT_Table_Container"
-                    columns={columnRemote}
-                    data={loggerList.value}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
-                    noDataComponent={<Empty />}
-                  />
-                );
 
-              default:
-                return <></>;
-            }
-          })()}
+          <div className="DAT_Device_Content">
+            {(() => {
+              switch (tab.value) {
+                case "inverter":
+                  return (
+                    <DataTable
+                      className="DAT_Table_Container"
+                      columns={columnDevice}
+                      data={dataInverter}
+                      pagination
+                      paginationComponentOptions={paginationComponentOptions}
+                      fixedHeader={true}
+                      noDataComponent={<Empty />}
+                    />
+                  );
+                case "meter":
+                  return (
+                    <DataTable
+                      className="DAT_Table_Container"
+                      columns={columnDevice}
+                      data={dataMeter}
+                      pagination
+                      paginationComponentOptions={paginationComponentOptions}
+                      fixedHeader={true}
+                      noDataComponent={<Empty />}
+                    />
+                  );
+                case "logger":
+                  return (
+                    <DataTable
+                      className="DAT_Table_Container"
+                      columns={columnRemote}
+                      data={loggerList.value}
+                      pagination
+                      paginationComponentOptions={paginationComponentOptions}
+                      fixedHeader={true}
+                      noDataComponent={<Empty />}
+                    />
+                  );
+                default:
+                  return <></>;
+              }
+            })()}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="DAT_DeviceInfor"
         style={{ height: infoState.value ? "100%" : "0px", transition: "0.5s" }}
