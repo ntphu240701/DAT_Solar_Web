@@ -439,7 +439,7 @@ export const messages = {
         lowMess: 'Thông báo 60 phút sau khi xảy ra lỗi',
         medMess: 'Thông báo 15 phút sau khi xảy ra lỗi',
         highMess: 'Thông báo ngay lập tức khi xảy ra lỗi',
-        production: 'Sản xuất',
+        production: 'Công suất tức thời',
         taskSeq: 'Trình tự công việc',
         inProgress: 'Đang thực hiện',
         complete: 'Hoàn thành',

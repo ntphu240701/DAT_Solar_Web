@@ -224,10 +224,13 @@ export default function Role(props) {
                       </div>
 
                       <div className="DAT_RoleMobile_Content_Item_Row_Right">
-                        <div className="DAT_RoleMobile_Content_Item_Row_Right_Item">
+                        <div className="DAT_RoleMobile_Content_Item_Row_Right_Item"
+                          id={item.id_}
+                          onClick={(e) => handleEdit(e)}
+                        >
                           <MdEdit size={20} color="#216990" />
                         </div>
-                        <div className="DAT_RoleMobile_Content_Item_Row_Right_Item">
+                        <div className="DAT_RoleMobile_Content_Item_Row_Right_Item" onClick={() => (popupState.value = "delete")}>
                           <MdDelete size={20} color="red" />
                         </div>
                       </div>

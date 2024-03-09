@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./GroupRole.scss";
-import { CiSearch } from "react-icons/ci";
+
 import { signal } from "@preact/signals-react";
 import CreateGroupRole from "./CreateGroupRole";
 import Popup from "./Popup";
