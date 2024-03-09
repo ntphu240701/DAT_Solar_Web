@@ -9,70 +9,70 @@ import { IoClose } from "react-icons/io5";
 
 const infouser = signal([
   {
-    username: "tantaingo",
-    name: "Tài Giỏi",
-    email: "tantai.ngo@datgroup.com.vn",
+    usr__: "tantaingo",
+    name_: "Tài Giỏi",
+    mail_: "tantai.ngo@datgroup.com.vn",
   },
   {
-    username: "loctp",
-    name: "Tony Trần",
-    email: "locdat_012@datgroup.com.vn",
+    usr__: "loctp",
+    name_: "Tony Trần",
+    mail_: "locdat_012@datgroup.com.vn",
   },
   {
-    username: "tiendv",
-    name: "Tiến Bịp DAT",
-    email: "tiendat_012@datgroup.com.vn",
+    usr__: "tiendv",
+    name_: "Tiến Bịp DAT",
+    mail_: "tiendat_012@datgroup.com.vn",
   },
   {
-    username: "hiepga",
-    name: "Hiệp sĩ đường phố",
-    email: "hiepdat_012@datgroup.com.vn",
+    usr__: "hiepga",
+    name_: "Hiệp sĩ đường phố",
+    mail_: "hiepdat_012@datgroup.com.vn",
   },
   {
-    username: "tridat",
-    name: "Johnny Trí Nguyễn",
-    email: "tridat_012@datgroup.com.vn",
+    usr__: "tridat",
+    name_: "Johnny Trí Nguyễn",
+    mail_: "tridat_012@datgroup.com.vn",
   },
   {
-    username: "tonydat_012",
-    name: "Tony Trần",
-    email: "tonydat_012@datgroup.com.vn",
+    usr__: "tonydat_012",
+    name_: "Tony Trần",
+    mail_: "tonydat_012@datgroup.com.vn",
   },
   {
-    username: "phudat_012",
-    name: "Phú Hộ",
-    email: "phudat_012@datgroup.com.vn",
+    usr__: "phudat_012",
+    name_: "Phú Hộ",
+    mail_: "phudat_012@datgroup.com.vn",
   },
   {
-    username: "anhadat_012",
-    name: "Anh A",
-    email: "anhadat_012@datgroup.com.vn",
+    usr__: "anhadat_012",
+    name_: "Anh A",
+    mail_: "anhadat_012@datgroup.com.vn",
   },
   {
-    username: "anhbdat_012",
-    name: "Anh B",
-    email: "anhadat_012@datgroup.com.vn",
+    usr__: "anhbdat_012",
+    name_: "Anh B",
+    mail_: "anhadat_012@datgroup.com.vn",
   },
   {
-    name: "Anh C",
-    username: "anhcdat_012",
-    email: "anhcdat_012@datgroup.com.vn",
+    name_: "Anh C",
+    usr__: "anhcdat_012",
+    mail_: "anhcdat_012@datgroup.com.vn",
   },
   {
-    name: "Anh D",
-    username: "anhddat_012",
-    email: "anhddat_012@datgroup.com.vn",
+    name_: "Anh D",
+    usr__: "anhddat_012",
+    mail_: "anhddat_012@datgroup.com.vn",
   },
   {
-    name: "Anh E",
-    username: "anhedat_012",
-    email: "anhddat_012@datgroup.com.vn",
+    name_: "Anh E",
+    usr__: "anhedat_012",
+    mail_: "anhddat_012@datgroup.com.vn",
   },
 ]);
 
 export default function AddUsers() {
   const dataLang = useIntl();
-  const [username, setUsername] = useState("");
+  const [usr_, setusr_] = useState("");
   const [addUserState, setAddUserState] = useState("none");
 
   const popup_state = {
@@ -93,10 +93,10 @@ export default function AddUsers() {
       (item) => item.groupid === groupID.value
     );
     const check = groupUser.value[i].users.findIndex(
-      (item) => item.username === username
+      (item) => item.usr_ === usr_
     );
     if (check === -1) {
-      const t = infouser.value.find((item) => item.username === username);
+      const t = infouser.value.find((item) => item.usr_ === usr_);
       if (t !== undefined) {
         groupUser.value[i] = {
           ...groupUser.value[i],
@@ -169,7 +169,7 @@ export default function AddUsers() {
                     <input
                       type="text"
                       required
-                      onChange={(e) => setUsername(e.target.value)}
+                      onChange={(e) => setusr_(e.target.value)}
                     />
                   </>
                 );

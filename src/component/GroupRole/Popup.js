@@ -23,7 +23,6 @@ export default function Popup() {
   };
 
   const handleDelete = (e) => {
-    // popupState.value = false;
     // groupUser.value.forEach((item) => {
     //   if (item.id_ == groupID.value) {
     //     item.users = item.users.filter(
@@ -36,13 +35,15 @@ export default function Popup() {
     if (parseInt(userDel.value) === 1) {
       alertDispatch("Cant delete user");
     } else {
-
-      
-       const i = groupUser.value.findIndex((item) => item.id_ == parseInt(userDel.value));
-       console.log(userDel.value, i);
-       groupUser.value = groupUser.value.filter((item) => item.id_ != parseInt(userDel.value))
-      
-      // alertDispatch("Delete user success");
+      const i = groupUser.value.findIndex(
+        (item) => item.id_ == parseInt(userDel.value)
+      );
+      console.log(userDel.value, i);
+      groupUser.value = groupUser.value.filter(
+        (item) => item.id_ != parseInt(userDel.value)
+      );
+      popupState.value = false;
+      alertDispatch("Delete user success");
       // console.log(userDel.value, i);
     }
     console.log(groupUser.value);
@@ -56,7 +57,8 @@ export default function Popup() {
         </div>
 
         <div className="DAT_Popup_Box_Head_Right">
-          <div className="DAT_Popup_Box_Head_Right_Icon"
+          <div
+            className="DAT_Popup_Box_Head_Right_Icon"
             onClick={() => (popupState.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}

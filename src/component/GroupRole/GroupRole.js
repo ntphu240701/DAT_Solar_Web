@@ -11,9 +11,6 @@ import DataTable from "react-data-table-component";
 import { Empty } from "../Project/Project";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
-import { signal } from "@preact/signals-react";
-
-import { CiSearch } from "react-icons/ci";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { IoMdPersonAdd, IoMdMore } from "react-icons/io";
 import { IoAddOutline } from "react-icons/io5";
@@ -22,6 +19,8 @@ import { FaUsersGear } from "react-icons/fa6";
 import { PiUsersFour } from "react-icons/pi";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { partnerInfor, phuhosting, userInfor } from "../../App";
+import { useSelector } from "react-redux";
 
 //DATA TEMP
 export const group = signal([
@@ -122,10 +121,6 @@ export const groupID = signal(0);
 export const groupDelID = signal();
 export const userDel = signal();
 export const groupEdit = signal();
-export const dataUsers = signal([]);
-
-const dataGroup = signal([]);
-const dataGroupUser = signal([]);
 
 const GroupUsers = () => {
   const dataLang = useIntl();
@@ -229,9 +224,14 @@ const GroupUsers = () => {
 
   const handleEditGroup = (e) => {
     editState.value = true;
+    // groupEdit.value = group.value.find(
+    //   (item) => item.id == Number(e.currentTarget.id)
+    // );
+    // console.log(e.currentTarget.id)
     groupEdit.value = group.value.find(
-      (item) => item.id == Number(e.currentTarget.id)
+      (item) => item.id_ == Number(e.currentTarget.id)
     );
+    // console.log(groupEdit.value)
   };
 
   const handleShowFunction = (e) => {
@@ -257,7 +257,7 @@ const GroupUsers = () => {
         </div>
 
         <div className="DAT_GR_Content_DevideTable_Left_ItemList">
-          {dataGroup.value.map((item, index) => (
+          {group.value.map((item, index) => (
             <div
               className="DAT_GR_Content_DevideTable_Left_ItemList_Item"
               key={index}
@@ -268,13 +268,15 @@ const GroupUsers = () => {
               }}
               onClick={(e) => handleChangeGroup(e)}
             >
-              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
+              <div
+                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
                 style={{ fontSize: "15px" }}
               >
                 {item.name_}
               </div>
 
-              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
+              <div
+                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
                 style={{ fontSize: "13px", color: "grey", maxWidth: "100px" }}
               >
                 {item.code_}
@@ -314,7 +316,8 @@ const GroupUsers = () => {
                   <MdEdit size={20} color="#216990" />
                 </div>
 
-                <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
+                <div
+                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
                   onClick={() => (addState.value = true)}
                 >
                   <IoMdPersonAdd size={20} />
@@ -350,7 +353,7 @@ const GroupUsers = () => {
 };
 
 export default function GroupRole(props) {
-  const dataLang = useIntl()
+  const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
 
   const handleFilter = (e) => {
@@ -370,7 +373,7 @@ export default function GroupRole(props) {
         // console.log(group);
       }
     } else {
-      dataGroupUser.value = groupUser.value;
+      groupUser.value = groupUser.value;
     }
   };
 
@@ -378,21 +381,21 @@ export default function GroupRole(props) {
     const checkApi = async () => {
       const allPartner = await callApi("get", host.DATA + "/getallPartner", "");
       group.value = allPartner.data;
-      dataGroup.value = group.value;
+    };
+    // console.log("Reload")
+    checkApi();
+  }, []);
 
+  useEffect(() => {
+    const checkApi = async () => {
       const getUser = await callApi("post", host.DATA + "/getallUser", {
         partnerid: groupID.value,
       });
-      console.log(getUser.data);
+      // console.log(getUser.data);
       groupUser.value = getUser.data;
-      // dataGroupUser.value = groupUser.value
     };
-    console.log("Reload")
+    // console.log("Reload")
     checkApi();
-
-    // dataGroupUser.value = groupUser.value;
-    // for(const group of dataGroupUser.value){ console.log(group)}
-    // // console.log(dataGroupUser.value);
   }, [groupID.value]);
 
   return (
