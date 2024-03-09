@@ -143,7 +143,13 @@ export default function App() {
       }
     }
 
-    const checkApi = async () => { }
+    const checkApi = async () => {
+      // const d = await callApi('post', 'http://192.168.68.6:3001' + '/removeWarn', { sn: '123456789', boxid: 'E01' })
+      // const d = await callApi('post', 'http://192.168.68.6:3001' + '/updateWarn', { partnerid: 'ntphu', boxid: 'E01', type: 'warn' })
+      // const d = await callApi('post', 'http://192.168.68.6:3001' + '/addWarn', { sn: 'T0623A000162', boxid: 'E01', level: 'warn', type: 'open' })
+      // const d = await callApi('get', 'http://192.168.68.6:3001' + '/getWarnBox', '')
+      // console.log(d)
+    }
     checkAuth();
 
     if (status) {

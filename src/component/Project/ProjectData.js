@@ -124,13 +124,14 @@ export default function ProjectData(props) {
   const [dataTotal, setDataTotal] = useState([]);
   const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: 'unknown' }));
   const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: 'unknown' }));
+  const [invt, setInvt] = useState({})
+
   const [d, setD] = useState({
     date: moment(new Date()).format("YYYY-MM-DD"),
     month: moment(new Date()).format("YYYY-MM"),
     year: moment(new Date()).format("YYYY"),
     total: "Tổng",
   });
-  const [invt, setInvt] = useState({})
 
   const color = {
     cur: "blue",

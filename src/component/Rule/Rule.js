@@ -243,7 +243,7 @@ export default function Rule() {
           >
             <div
               className="DAT_ModifyBox_Fix"
-              id={row.id}
+              id={row.ruleid}
               onClick={(e) => handleEdit(e)}
             >
               <MdEdit size={20} color="#216990" />
@@ -266,12 +266,13 @@ export default function Rule() {
   ];
 
   const handleEdit = (e) => {
-    if (ruleID.value === 1) {
+    const id = e.currentTarget.id;
+    if (id == 1) {
       alertDispatch(dataLang.formatMessage({ id: 'alert_20' }));
     } else {
       editRuleState.value = true;
       editruledata.value = datarule.value.find(
-        (data) => data.ruleid === ruleID.value
+        (data) => data.ruleid == id
       );
     }
   };
@@ -279,7 +280,7 @@ export default function Rule() {
   const handleModify = (e, type) => {
     const id = e.currentTarget.id;
     var arr = id.split("_");
-    ruleID.value = parseInt(arr[0]);
+
     const mod = document.getElementById(arr[0] + "_Modify");
     mod.style.display = type;
   };
@@ -331,28 +332,64 @@ export default function Rule() {
 
       </div>
 
-      <div className="DAT_Rule">
-        <div
-          className="DAT_Rule_Header"
-          style={{
-            padding: "15px",
-            backgroundColor: "rgba(233, 233, 233, 0.5)",
-          }}
-        >
-          {dataLang.formatMessage({ id: 'ruleList' })}
+      {isMobile.value ? (
+        <div className="DAT_RuleMobile">
+          <div className="DAT_RuleMobile_Header" style={{ padding: "15px" }}>
+            {dataLang.formatMessage({ id: 'ruleList' })}
+          </div>
+
+          {datarule.value.map((item, i) => {
+            return (
+              <div key={i} className="DAT_RuleMobile_Content">
+                <div className="DAT_RuleMobile_Content_Item">
+                  <div className="DAT_RuleMobile_Content_Item_Row">
+                    <div className="DAT_RuleMobile_Content_Item_Row_Left">
+                      <div className="DAT_RuleMobile_Content_Item_Row_Left_Item">
+                        {dataLang.formatMessage({ id: 'name' })}: {item.name}
+                      </div>
+                      <div className="DAT_RuleMobile_Content_Item_Row_Left_Item">
+                        ID: {item.ruleid}
+                      </div>
+                    </div>
+
+                    <div className="DAT_RuleMobile_Content_Item_Row_Right">
+                      <div className="DAT_RuleMobile_Content_Item_Row_Right_Item" id={item.ruleid} onClick={(e) => handleEdit(e)}>
+                        <MdEdit size={20} color="#216990" />
+                      </div>
+                      <div className="DAT_RuleMobile_Content_Item_Row_Right_Item" onClick={() => (confirmDeleteState.value = "delete")}>
+                        <MdDelete size={20} color="red" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
         </div>
-        <div className="DAT_Rule_Content">
-          <DataTable
-            className="DAT_Table_Container"
-            columns={columnrule}
-            data={datarule.value}
-            pagination
-            paginationComponentOptions={paginationComponentOptions}
-            fixedHeader={true}
-            noDataComponent={<Empty />}
-          />
+      ) : (
+        <div className="DAT_Rule">
+          <div className="DAT_Rule_Header"
+            style={{
+              padding: "15px",
+              backgroundColor: "rgba(233, 233, 233, 0.5)",
+            }}
+          >
+            {dataLang.formatMessage({ id: 'ruleList' })}
+          </div>
+
+          <div className="DAT_Rule_Content">
+            <DataTable
+              className="DAT_Table_Container"
+              columns={columnrule}
+              data={datarule.value}
+              pagination
+              paginationComponentOptions={paginationComponentOptions}
+              fixedHeader={true}
+              noDataComponent={<Empty />}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="DAT_RuleCreate"
         style={{
