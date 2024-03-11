@@ -51,7 +51,7 @@ const close = signal([]);
 const cal = signal({});
 
 const dataMeter = [
- 
+
 ];
 
 const dataAlert = [
@@ -518,9 +518,9 @@ export default function ProjectData(props) {
     mod.style.display = type;
   };
   const handleOutsideUser = (e) => {
-          // if(!box.current.contains(e.target)){
-          //   plantState.value = "default";
-          // } 
+    // if(!box.current.contains(e.target)){
+    //   plantState.value = "default";
+    // } 
   }
 
   const handleEdit = (e) => { console.log("sua") };
@@ -635,7 +635,7 @@ export default function ProjectData(props) {
         let vTotal = dataLang.formatMessage({ id: d.data.name });
         let sum_total = []
         d.data.data.map((item, i) => {
-          setDataTotal((old) => [...old, { year: item.year, [dataLang.formatMessage({ id: 'totalOutputSmall' })]: item.value }]);
+          setDataTotal((old) => [...old, { year: item.year, [dataLang.formatMessage({ id: 'totalOutput' })]: item.value }]);
           sum_total[i] = item.value
           if (i == d.data.data.length - 1) {
             cal.value['pro_total'] = parseFloat(sum_total.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
@@ -757,7 +757,7 @@ export default function ProjectData(props) {
     }
 
 
-      
+
     document.addEventListener("mousedown", handleOutsideUser);
     return () => {
       document.removeEventListener("mousedown", handleOutsideUser);
@@ -2437,7 +2437,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: 'dailyOutputSmall' })}
+            {dataLang.formatMessage({ id: 'dailyOutput' })}
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -2454,7 +2454,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: 'monthOutputSmall' })}
+            {dataLang.formatMessage({ id: 'monthOutput' })}
 
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
@@ -2472,7 +2472,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: 'yearOutputSmall' })}
+            {dataLang.formatMessage({ id: 'yearOutput' })}
 
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
@@ -2490,7 +2490,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: 'totalOutputSmall' })}
+            {dataLang.formatMessage({ id: 'totalOutput' })}
 
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
@@ -3013,7 +3013,7 @@ const Month = (props) => {
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           {/* {props.v}: {cal.value.pro_month} kWh */}
-          {dataLang.formatMessage({ id: 'monthOutputSmall' })}: {cal.value.pro_month} kWh
+          {dataLang.formatMessage({ id: 'monthOutput' })}: {cal.value.pro_month} kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
@@ -3033,7 +3033,7 @@ const Month = (props) => {
 };
 
 const Year = (props) => {
-const dataLang = useIntl();
+  const dataLang = useIntl();
 
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
@@ -3051,7 +3051,7 @@ const dataLang = useIntl();
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           {/* {props.v}: {cal.value.pro_year} kWh */}
-          {dataLang.formatMessage({ id: 'yearOutputSmall' })}: {cal.value.pro_year} kWh
+          {dataLang.formatMessage({ id: 'yearOutput' })}: {cal.value.pro_year} kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
@@ -3089,18 +3089,18 @@ const Total = (props) => {
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           {/* {props.v}: {cal.value.pro_total} kWh */}
-          {dataLang.formatMessage({ id: 'totalOutputSmall' })}: {cal.value.pro_total} kWh
+          {dataLang.formatMessage({ id: 'totalOutput' })}: {cal.value.pro_total} kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
         <ResponsiveContainer style={{ width: "100%", height: "100%", marginLeft: "-20px" }}>
           <BarChart width={150} height={200} data={props.data}>
             <XAxis dataKey="year" axisLine={false} tickLine={false} />
-            <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...props.data.map(item => item[dataLang.formatMessage({ id: 'totalOutputSmall' })])))]} />
+            <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...props.data.map(item => item[dataLang.formatMessage({ id: 'totalOutput' })])))]} />
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <Tooltip />
             <Legend />
-            <Bar shape={<TriangleBar />} dataKey={dataLang.formatMessage({ id: 'totalOutputSmall' })} fill="#6495ed" barSize={15} legendType="circle" />
+            <Bar shape={<TriangleBar />} dataKey={dataLang.formatMessage({ id: 'totalOutput' })} fill="#6495ed" barSize={15} legendType="circle" />
           </BarChart>
         </ResponsiveContainer>
       </div>

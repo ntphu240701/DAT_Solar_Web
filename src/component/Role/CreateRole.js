@@ -41,6 +41,7 @@ export default function CreateRole(props) {
       if (res.status) {
         console.log(window.location.host)
         let register = await callApi('post', host.AUTH + '/Register', { usr: username.current.value, mail: mail.current.value, pwd: pwd.current.value, name: name.current.value, phone: phone.current.value, addr: '--', type: role.current.value, code: partnerInfor.value.code, host: window.location.host })
+        console.log(register)
         if (register.status) {
           alertDispatch(datalang.formatMessage({ id: "alert_6" }))
         } else {

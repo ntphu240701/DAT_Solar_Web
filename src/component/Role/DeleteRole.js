@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Role.scss";
 
-import { popupState } from "./Role";
+import { Usr_, popupState } from "./Role";
 import { useIntl } from "react-intl";
 
 import { IoClose } from "react-icons/io5";
+import { alertDispatch } from "../Alert/Alert";
 
-export default function DeleteRole() {
+export default function DeleteRole(props) {
   const dataLang = useIntl();
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
+  };
+
+  const handleDelete = () => {
+    let abc = Usr_.value.filter((d) => d.usr_ != props.user)
+    Usr_.value = abc;
+    popupState.value = "default";
+    alertDispatch(dataLang.formatMessage({ id: 'alert_26' }))
   };
 
   const handlePopup = (state) => {
@@ -20,6 +28,10 @@ export default function DeleteRole() {
     popup.style.transition = popup_state[state].transition;
     popup.style.color = popup_state[state].color;
   };
+
+  useEffect(() => {
+    console.log(props.user)
+  }, [props.user])
 
   return (
     <div className="DAT_DeleteRole">
@@ -58,6 +70,7 @@ export default function DeleteRole() {
         </button>
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
+          onClick={() => handleDelete()}
         >
           {dataLang.formatMessage({ id: 'confirm' })}
         </button>

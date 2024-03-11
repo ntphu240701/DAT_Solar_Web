@@ -25,21 +25,21 @@ export default function ConfirmDeleteGroup() {
     popup.style.color = popup_state[state].color;
   };
 
-  const handleDelete = async(e) => {
+  const handleDelete = async (e) => {
     groupDelState.value = false;
-    console.log(groupID.value);
+    // console.log(groupID.value);
 
-    let d_ =  group.value.find(
+    let d_ = group.value.find(
       (item) => item.id_ == groupID.value
-    ); 
+    );
     // console.log(d_);
 
     let res = await callApi("post", host.DATA + "/removePartner", {
       code: d_.code_
     });
-    
+
     console.log(res);
-    if(res.status){
+    if (res.status) {
       group.value = group.value.filter(
         (item) => item.id_ != groupID.value
       );
@@ -48,15 +48,15 @@ export default function ConfirmDeleteGroup() {
       );
       groupID.value = 0;
       alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
-    }else{
+    } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
 
 
-    
-    
- 
-   
+
+
+
+
   };
 
   return (
