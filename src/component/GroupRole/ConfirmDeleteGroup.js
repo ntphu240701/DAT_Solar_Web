@@ -51,12 +51,6 @@ export default function ConfirmDeleteGroup() {
     }else{
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
-
-
-    
-    
- 
-   
   };
 
   return (

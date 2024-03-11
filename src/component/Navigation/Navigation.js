@@ -107,8 +107,7 @@ export default function Navigation(props) {
         boxid: e.currentTarget.id,
         type: userInfor.value.type,
       });
-      
-      // console.log(warn);
+      console.log(warn);
     };
     checkApi();
 

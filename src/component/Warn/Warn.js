@@ -8,7 +8,6 @@ import { isMobile } from "../Navigation/Navigation";
 import SettingWarn from "./SettingWarn";
 import RaiseBox from "./RaiseBox";
 import { useIntl } from "react-intl";
-
 import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { LuMailWarning } from "react-icons/lu";
@@ -16,9 +15,7 @@ import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
 import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
 import { RiMailSettingsLine } from "react-icons/ri";
-import { useSelector } from "react-redux";
-import { callApi } from "../Api/Api";
-import { partnerInfor, phuhosting, userInfor } from "../../App";
+
 
 const tab = signal("all");
 const tabMobile = signal(false);
@@ -31,50 +28,6 @@ export const deletewarnState = signal(false);
 export const idDel = signal();
 
 export const dataWarn = signal([
-  // {
-  //   boxid: "E01",
-  //   warnid: 1,
-  //   plant: "Năng lượng DAT 01",
-  //   device: "T0623A000169",
-  //   status: "closed",
-  //   opentime: "12/30/2023 12:07:12",
-  //   closedtime: "12/30/2023 15:00:58",
-  //   level: "notice",
-  //   state: false,
-  // },
-  // {
-  //   boxid: "E01",
-  //   warnid: 2,
-  //   plant: "Năng lượng DAT 01",
-  //   device: "T0623A000162",
-  //   status: "open",
-  //   opentime: "01/16/2023 19:30:12",
-  //   closedtime: "--",
-  //   level: "warning",
-  //   state: false,
-  // },
-  // {
-  //   boxid: "E02",
-  //   warnid: 3,
-  //   plant: "Năng lượng DAT 01",
-  //   device: "T0623A000179",
-  //   status: "open",
-  //   opentime: "01/16/2023 21:07:12",
-  //   closedtime: "--",
-  //   level: "warning",
-  //   state: false,
-  // },
-  // {
-  //   boxid: "E03",
-  //   warnid: 4,
-  //   plant: "Năng lượng DAT 01",
-  //   device: "T0623A000179",
-  //   status: "open",
-  //   opentime: "02/16/2023 13:18:21",
-  //   closedtime: "--",
-  //   level: "notice",
-  //   state: false,
-  // },
 ]);
 
 export default function Warn(props) {

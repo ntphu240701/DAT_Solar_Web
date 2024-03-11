@@ -378,6 +378,7 @@ export default function Device(props) {
     // get logger
     const getAllLogger = async () => {
       let d = await callApi('post', host.DATA + '/getallLogger', { usr: user, partnerid: userInfor.value.partnerid, type: userInfor.value.type });
+      console.log(d);
       if (d.status === true) {
         loggerList.value = d.data;
       }
