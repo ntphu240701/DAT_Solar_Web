@@ -1,73 +1,17 @@
 import React, { useState } from "react";
 import "./GroupRole.scss";
 
-import { addState, groupID, groupUser } from "./GroupRole";
+import { addState, group, groupID, groupUser } from "./GroupRole";
 import { signal } from "@preact/signals-react";
 import { useIntl } from "react-intl";
 
 import { IoClose } from "react-icons/io5";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
+import { alertDispatch } from "../Alert/Alert";
 
 const infouser = signal([
-  {
-    usr__: "tantaingo",
-    name_: "Tài Giỏi",
-    mail_: "tantai.ngo@datgroup.com.vn",
-  },
-  {
-    usr__: "loctp",
-    name_: "Tony Trần",
-    mail_: "locdat_012@datgroup.com.vn",
-  },
-  {
-    usr__: "tiendv",
-    name_: "Tiến Bịp DAT",
-    mail_: "tiendat_012@datgroup.com.vn",
-  },
-  {
-    usr__: "hiepga",
-    name_: "Hiệp sĩ đường phố",
-    mail_: "hiepdat_012@datgroup.com.vn",
-  },
-  {
-    usr__: "tridat",
-    name_: "Johnny Trí Nguyễn",
-    mail_: "tridat_012@datgroup.com.vn",
-  },
-  {
-    usr__: "tonydat_012",
-    name_: "Tony Trần",
-    mail_: "tonydat_012@datgroup.com.vn",
-  },
-  {
-    usr__: "phudat_012",
-    name_: "Phú Hộ",
-    mail_: "phudat_012@datgroup.com.vn",
-  },
-  {
-    usr__: "anhadat_012",
-    name_: "Anh A",
-    mail_: "anhadat_012@datgroup.com.vn",
-  },
-  {
-    usr__: "anhbdat_012",
-    name_: "Anh B",
-    mail_: "anhadat_012@datgroup.com.vn",
-  },
-  {
-    name_: "Anh C",
-    usr__: "anhcdat_012",
-    mail_: "anhcdat_012@datgroup.com.vn",
-  },
-  {
-    name_: "Anh D",
-    usr__: "anhddat_012",
-    mail_: "anhddat_012@datgroup.com.vn",
-  },
-  {
-    name_: "Anh E",
-    usr__: "anhedat_012",
-    mail_: "anhddat_012@datgroup.com.vn",
-  },
+
 ]);
 
 export default function AddUsers() {
@@ -87,28 +31,68 @@ export default function AddUsers() {
     popup.style.color = popup_state[state].color;
   };
 
-  const handleAddUser = () => {
-    // addState.value = false;
-    const i = groupUser.value.findIndex(
-      (item) => item.groupid === groupID.value
-    );
-    const check = groupUser.value[i].users.findIndex(
-      (item) => item.usr_ === usr_
-    );
-    if (check === -1) {
-      const t = infouser.value.find((item) => item.usr_ === usr_);
-      if (t !== undefined) {
-        groupUser.value[i] = {
-          ...groupUser.value[i],
-          users: [...groupUser.value[i].users, t],
-        };
-        setAddUserState("AddSuccess");
+  const handleAddUser = async () => {
+
+
+    const validateEmail = (email) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+    // console.log(group.value , groupID.value)
+    // ););
+    //   letd = group.value.find(
+    //   (item) => item.usr_ === usr_
+    // );
+
+    // console.log(usr_);
+    if (validateEmail(usr_)) {
+      let d = await callApi("post", host.DATA + "/addUsrPartner", {
+        mail: usr_,
+        partnerid: String(groupID.value),
+
+      })
+      console.log(d);
+      if (d.status === true) {
+        alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+        groupUser.value = [
+          ...groupUser.value,
+          d.data
+        ]
+        console.log(groupUser.value);
+        addState.value = false;
       } else {
-        setAddUserState("UserNotFound");
+        alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
       }
     } else {
-      setAddUserState("UserAlreadyInGroup");
+      alertDispatch(dataLang.formatMessage({ id: "alert_3" }));
     }
+
+
+
+    // addState.value = false;
+    // const i = groupUser.value.findIndex(
+    //   (item) => item.groupid === groupID.value
+    // );
+    // const check = groupUser.value[i].users.findIndex(
+    //   (item) => item.usr_ === usr_
+    // );
+    // if (check === -1) {
+    //   const t = infouser.value.find((item) => item.usr_ === usr_);
+    //   if (t !== undefined) {
+    //     groupUser.value[i] = {
+    //       ...groupUser.value[i],
+    //       users: [...groupUser.value[i].users, t],
+    //     };
+
+    //     console.log(groupUser.value);
+
+    //     setAddUserState("AddSuccess");
+    //   } else {
+    //     setAddUserState("UserNotFound");
+    //   }
+    // } else {
+    //   setAddUserState("UserAlreadyInGroup");
+    // }
   };
 
   const AddButton = () => {
@@ -165,9 +149,9 @@ export default function AddUsers() {
               default:
                 return (
                   <>
-                    <span>{dataLang.formatMessage({ id: 'username' })}:</span>
+                    <span>{dataLang.formatMessage({ id: 'email' })}:</span>
                     <input
-                      type="text"
+                      type="email"
                       required
                       onChange={(e) => setusr_(e.target.value)}
                     />

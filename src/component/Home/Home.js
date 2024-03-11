@@ -4,7 +4,7 @@ import "./Home.scss";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
-import { Empty } from "../Project/Project";
+import { Empty, plantState, projectData } from "../Project/Project";
 import DataTable from "react-data-table-component";
 import { useSelector } from "react-redux";
 import { Token, partnerInfor, userInfor } from "../../App";
@@ -14,12 +14,14 @@ import { signal } from "@preact/signals-react";
 import axios from "axios";
 import { useIntl } from "react-intl";
 import { coalsave } from "../Project/ProjectData";
+import { Loader } from "@googlemaps/js-api-loader"
 
 import { FaSolarPanel, FaTree } from "react-icons/fa6";
 import { VscDashboard } from "react-icons/vsc";
 import { IoIosCloud } from "react-icons/io";
 import { GiCoalWagon } from "react-icons/gi";
 import { FaMoneyBill } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const plant = signal([])
 const logger = signal([])
@@ -36,6 +38,7 @@ const AnyReactComponent = ({ text }) => {
 
 export default function Home(props) {
   const usr = useSelector((state) => state.admin.usr)
+  const lang = useSelector((state) => state.admin.lang)
   const [total, setTotal] = useState(0)
   const [online, setOnline] = useState(0)
   const [offline, setOffline] = useState(0)
@@ -55,7 +58,7 @@ export default function Home(props) {
   const [datamonth, setDatamonth] = useState([])
   const [vyear, setVyear] = useState(dataLang.formatMessage({ id: 'yearOutputSmall' }));
   const [datayear, setDatayear] = useState([])
-
+  const navigate = useNavigate();
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
     rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
@@ -92,11 +95,44 @@ export default function Home(props) {
 
   const defaultProps = {
     center: {
-      lat: 10.8356853,
-      lng: 106.6271617,
+      lat: 16.0544068,
+      lng: 108.2021667	,
     },
-    zoom: 7.0,
+    zoom: 5,
+    mapId: 'my_map',
   };
+
+
+  const loader = new Loader({
+    apiKey: process.env.REACT_APP_GGKEY,
+    version: "weekly",
+    libraries: ["places"]
+  });
+
+
+  
+
+  const initMap = async (data) => {
+    const { AdvancedMarkerElement } = await loader.importLibrary("marker");
+    const { Map } = await loader.importLibrary("maps");
+
+    let map = new Map(document.getElementById("map"), defaultProps);
+    
+    data.map((item) => {
+      const marker ={lat: parseFloat(item.lat), lng: parseFloat(item.long)}
+      const markerElement = new AdvancedMarkerElement({ position: marker, map: map, title: item.plantname });
+      markerElement.addListener("click", () => {
+        //console.log(item)
+        navigate("/project");
+        plantState.value = "info";
+        projectData.value = item;
+        
+      });
+      return markerElement
+    })
+    
+
+  }
 
   const invtCloud = async (data, token) => {
     var reqData = {
@@ -137,55 +173,7 @@ export default function Home(props) {
     );
   };
 
-  useEffect(() => {
-    const getPlant = async () => {
-      let d = await callApi('post', host.DATA + '/getPlant', {
-        usr: usr,
-        partnerid: partnerInfor.value.partnerid,
-        type: userInfor.value.type,
-      })
-      //console.log(d)
-      if (d.status === true) {
-        plant.value = d.data
-        setTotal(d.data.length)
-        setOnline(d.data.filter(data => data.state == 1).length)
-        setOffline(d.data.filter(data => data.state == 0).length)
-        setWarn(d.data.filter(data => data.warn == 0).length)
-      }
-    }
-
-    const getLogger = async () => {
-      let d = await callApi('post', host.DATA + '/getallLogger', {
-        usr: usr,
-        partnerid: partnerInfor.value.partnerid,
-        type: userInfor.value.type,
-      })
-      // console.log(d)
-      if (d.status) {
-        logger.value = d.data
-        d.data.map(async (item) => {
-          const res = await invtCloud('{"deviceCode":"' + item.psn + '"}', Token.value.token);
-          // console.log(res)
-          if (res.ret === 0) {
-            //console.log(res.data)
-            setInvt(pre => ({ ...pre, [item.psn]: res.data }))
-          } else {
-            setInvt(pre => ({ ...pre, [item.psn]: {} }))
-          }
-        })
-      }
-    }
-
-    getPlant();
-    getLogger();
-
-  }, [])
-
-  const handleChart = (e) => {
-    console.log(e.target.id)
-  }
-
-  useEffect(() => {
+  const getChart = async (data) => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1;  // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
     const currentYear = currentDate.getFullYear();
@@ -196,53 +184,56 @@ export default function Home(props) {
     for (let i = 1; i <= daysInMonth; i++) {
       datamonth_ = [
         ...datamonth_,
-        { date: i < 10 ? `0${i}` : `${i}`, [vmonth]: 0 }]
+        { date: i < 10 ? `0${i}` : `${i}`, [dataLang.formatMessage({ id: 'monthOutputSmall' })]: 0 }]
     }
 
     let datayear_ = []
     for (let i = 1; i <= 12; i++) {
       datayear_ = [
         ...datayear_,
-        { month: i < 10 ? `0${i}` : `${i}`, [vyear]: 0 }]
+        { month: i < 10 ? `0${i}` : `${i}`, [dataLang.formatMessage({ id: 'yearOutputSmall' })]: 0 }]
     }
 
     let cap = []
     let sum_month = []
     let sum_year = []
-    plant.value.map(async (item, i) => {
+    data.map(async (item, i) => {
+      cap[i] = item.capacity
       let chart = await callApi('post', host.DATA + '/getMonthChart', {
         plantid: item.plantid,
         month: moment(new Date()).format("MM/YYYY"),
       })
+      let chartY = await callApi('post', host.DATA + '/getYearChart', {
+        plantid: item.plantid,
+        year: moment(new Date()).format("YYYY"),
+      })
+
+
       if (chart.status) {
         sum_month[i] = chart.data.data.map(item => item.value).reduce((a, b) => Number(a) + Number(b), 0)
         chart.data.data.map((item, j) => {
           let index = datamonth_.findIndex((d) => d.date == item.date)
-          datamonth_[index][vmonth] = parseFloat(Number(datamonth_[index][vmonth]) + Number(item.value)).toFixed(2)
+          datamonth_[index][dataLang.formatMessage({ id: 'monthOutputSmall' })] = parseFloat(Number(datamonth_[index][dataLang.formatMessage({ id: 'monthOutputSmall' })]) + Number(item.value)).toFixed(2)
         })
       } else {
         sum_month[i] = 0
       }
 
-      let chartY = await callApi('post', host.DATA + '/getYearChart', {
-        plantid: item.plantid,
-        year: moment(new Date()).format("YYYY"),
-      })
+
       if (chartY.status) {
         sum_year[i] = chartY.data.data.map(item => item.value).reduce((a, b) => Number(a) + Number(b), 0)
         chartY.data.data.map((item, j) => {
           let index = datayear_.findIndex((d) => d.month == item.month)
-          datayear_[index][vyear] = parseFloat(Number(datayear_[index][vyear]) + Number(item.value)).toFixed(2)
+          datayear_[index][dataLang.formatMessage({ id: 'yearOutputSmall' })] = parseFloat(Number(datayear_[index][dataLang.formatMessage({ id: 'yearOutputSmall' })]) + Number(item.value)).toFixed(2)
         })
       } else {
         sum_year[i] = 0
       }
 
-      cap[i] = item.capacity
+
       if (i == plant.value.length - 1) {
         // console.log(datamonth_, datayear_)
-        setDatamonth(datamonth_)
-        setDatayear(datayear_)
+
 
         let total_month = parseFloat(sum_month.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
         setMonthlyProduction(total_month)
@@ -252,13 +243,18 @@ export default function Home(props) {
 
         let total = parseFloat(cap.reduce((a, b) => Number(a) + Number(b), 0)).toFixed(2);
         setCapacity(total)
+
+        setDatamonth(datamonth_)
+        setDatayear(datayear_)
       }
     })
+  }
 
+  const getPrice = async (data, logger) => {
     var price = [];
-    plant.value.map((itemplant, index) => {
+    data.map((itemplant, index) => {
       var sum_logger = [];
-      let logger_ = logger.value.filter(data => data.pplantid == itemplant.plantid)
+      let logger_ = logger.filter(data => data.pplantid == itemplant.plantid)
       //console.log(logger_)
       logger_.map((item, i) => {
         const type = (item.pdata.pro_3.type);
@@ -308,6 +304,61 @@ export default function Home(props) {
         setPrice(total);
       }
     })
+  }
+
+  useEffect(() => {
+
+    const getPlant = async () => {
+      let d = await callApi('post', host.DATA + '/getPlant', {
+        usr: usr,
+        partnerid: partnerInfor.value.partnerid,
+        type: userInfor.value.type,
+      })
+      console.log(d)
+      if (d.status === true) {
+        initMap(d.data);
+        getChart(d.data)
+        setTotal(d.data.length)
+        setOnline(d.data.filter(data => data.state == 1).length)
+        setOffline(d.data.filter(data => data.state == 0).length)
+        setWarn(d.data.filter(data => data.warn == 0).length)
+        plant.value = d.data
+      }
+    }
+
+    
+
+    const getLogger = async () => {
+      let d = await callApi('post', host.DATA + '/getallLogger', {
+        usr: usr,
+        partnerid: partnerInfor.value.partnerid,
+        type: userInfor.value.type,
+      })
+      console.log(d)
+      if (d.status) {
+        logger.value = d.data
+        d.data.map(async (item) => {
+          const res = await invtCloud('{"deviceCode":"' + item.psn + '"}', Token.value.token);
+          // console.log(res)
+          if (res.ret === 0) {
+            //console.log(res.data)
+            setInvt(pre => ({ ...pre, [item.psn]: res.data }))
+          } else {
+            setInvt(pre => ({ ...pre, [item.psn]: {} }))
+          }
+        })
+      }
+    }
+
+    getPlant();
+    getLogger();
+    getPrice(plant.value, logger.value)
+   
+
+  }, [lang,usr,partnerInfor.value.partnerid,userInfor.value.type,Token.value.token])
+
+
+  useEffect(() => {
 
     var cal = {}
     var num_ = {
@@ -400,7 +451,9 @@ export default function Home(props) {
       value: cal.pro_3
     }
 
-  }, [invt])
+  }, [invt,usr])
+
+
 
   return (
     <>
@@ -556,7 +609,7 @@ export default function Home(props) {
             <div className="DAT_Home_History-Chart-label">
               <div className="DAT_Home_History-Chart-label-Unit">MWh</div>
               <div className="DAT_Home_History-Chart-label-Label">
-                {chart === "year" ? dataLang.formatMessage({ id: 'yearOutputSmall' }) : dataLang.formatMessage({ id: 'monthOutputSmall' })}: {chart === "year" ? yearlyproduction : monthlyproduction} kWh
+                {chart === "year" ? vyear : vmonth}: {chart === "year" ? yearlyproduction : monthlyproduction} kWh
               </div>
             </div>
             <div className="DAT_Home_History-Chart-Content">
@@ -572,7 +625,7 @@ export default function Home(props) {
                     <Legend />
                     <Bar
                       shape={<TriangleBar />}
-                      dataKey={vyear}
+                      dataKey={dataLang.formatMessage({ id: 'yearOutputSmall' })}
                       fill="#6495ed"
                       barSize={15}
                       legendType="circle"
@@ -591,7 +644,7 @@ export default function Home(props) {
                     <Legend />
                     <Bar
                       shape={<TriangleBar />}
-                      dataKey={vmonth}
+                      dataKey={dataLang.formatMessage({ id: 'monthOutputSmall' })}
                       fill="#6495ed"
                       barSize={15}
                       legendType="circle"
@@ -659,7 +712,8 @@ export default function Home(props) {
         <div className="DAT_Home_Distribution">
           {/* <div className='DAT_Home_Distribution-Title'>Vị trí</div> */}
           <div className="DAT_Home_Distribution-Map">
-            <GoogleMap
+            <div id="map" style={{ width: "100%", height: "100%" }}></div>
+            {/* <GoogleMap
               apiKey={process.env.REACT_APP_GGKEY}
               defaultCenter={defaultProps.center}
               defaultZoom={defaultProps.zoom}
@@ -676,7 +730,7 @@ export default function Home(props) {
                   />
                 )
               })}
-            </GoogleMap>
+            </GoogleMap> */}
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./Project.scss";
 
 import AddGateway from "./AddGateway";
@@ -51,59 +51,11 @@ const close = signal([]);
 const cal = signal({});
 
 const dataMeter = [
-  // {
-  //   id: 1,
-  //   SN: "M0000223",
-  //   name: "Meter 01",
-  //   plant: "Năng lượng DAT 02",
-  //   status: true,
-  //   production: "66",
-  //   dailyproduction: "895.4",
-  //   updated: "12/30/2023 12:07:12",
-  // },
-  // {
-  //   id: 2,
-  //   SN: "M0000009",
-  //   name: "Meter 02",
-  //   plant: "Năng lượng DAT 02",
-  //   status: true,
-  //   production: "18",
-  //   dailyproduction: "1238.4",
-  //   updated: "12/30/2023 12:07:12",
-  // },
-  // {
-  //   id: 3,
-  //   SN: "M0000327",
-  //   name: "Meter 03",
-  //   plant: "Năng lượng DAT 02",
-  //   status: true,
-  //   production: "45",
-  //   dailyproduction: "1024.4",
-  //   updated: "12/30/2023 12:07:12",
-  // },
+ 
 ];
 
 const dataAlert = [
-  {
-    id: 1,
-    name: "Input UV",
-    status: true,
-    importance: "Cao",
-    device: "Inverter 01",
-    SN: "I0000145",
-    openedtime: "12/30/2023 12:07:12",
-    closedtime: "12/30/2023 15:07:12",
-  },
-  {
-    id: 2,
-    name: "Cmd Shut",
-    status: false,
-    importance: "Thấp",
-    device: "Inverter 01",
-    SN: "I0000145",
-    openedtime: "12/30/2023 12:07:12",
-    closedtime: "12/30/2023 15:07:12",
-  },
+
 ];
 
 export default function ProjectData(props) {
@@ -125,6 +77,7 @@ export default function ProjectData(props) {
   const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: 'unknown' }));
   const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: 'unknown' }));
   const [invt, setInvt] = useState({})
+  const box = useRef();
 
   const [d, setD] = useState({
     date: moment(new Date()).format("YYYY-MM-DD"),
@@ -564,6 +517,11 @@ export default function ProjectData(props) {
     const mod = document.getElementById(arr[0] + "_Modify");
     mod.style.display = type;
   };
+  const handleOutsideUser = (e) => {
+          // if(!box.current.contains(e.target)){
+          //   plantState.value = "default";
+          // } 
+  }
 
   const handleEdit = (e) => { console.log("sua") };
 
@@ -797,11 +755,18 @@ export default function ProjectData(props) {
       ...coalsave.value,
       value: cal.value.pro_3
     }
+
+
+      
+    document.addEventListener("mousedown", handleOutsideUser);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideUser);
+    }
   }, [invt]);
 
   return (
-    <>
-      <div className="DAT_ProjectData">
+    <div ref={box} >
+      <div className="DAT_ProjectData" >
         {isMobile.value ? (
           <div className="DAT_ProjectData_Header">
             {(() => {
@@ -1886,7 +1851,7 @@ export default function ProjectData(props) {
           )}
         </>
       )}
-    </>
+    </div>
   );
 }
 
@@ -3068,7 +3033,7 @@ const Month = (props) => {
 };
 
 const Year = (props) => {
-  const dataLang = useIntl();
+const dataLang = useIntl();
 
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;

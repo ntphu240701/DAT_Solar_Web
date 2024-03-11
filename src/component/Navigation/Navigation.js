@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Navigation.scss";
 
 import { sidenar } from "../../component/Sidenar/Sidenar";
@@ -17,6 +17,7 @@ import { BsFillMenuButtonWideFill } from "react-icons/bs";
 import { IoIosNotificationsOutline, IoMdClose } from "react-icons/io";
 import { MdOutlineLanguage } from "react-icons/md";
 import { FaRegMessage } from "react-icons/fa6";
+import { plantState } from "../Project/Project";
 
 const userNav = signal(false);
 const langNav = signal(false);
@@ -53,6 +54,7 @@ export default function Navigation(props) {
   const lang = useSelector((state) => state.admin.lang);
   const usr = useSelector((state) => state.admin.usr);
   const rootDispatch = useDispatch();
+  const [code,setCode] = useState('default');
 
   const handleWindowResize = () => {
     if (window.innerWidth >= 900) {
@@ -98,13 +100,15 @@ export default function Navigation(props) {
 
 
   const handleMessage = (e) => {
+    setCode(e.currentTarget.id);
     const checkApi = async () => {
       const warn = await callApi("post", host.DATA + "/updateWarn", {
         partnerid: partnerInfor.value.partnerid,
         boxid: e.currentTarget.id,
         type: userInfor.value.type,
       });
-      console.log(warn);
+      
+      // console.log(warn);
     };
     checkApi();
 
@@ -196,7 +200,7 @@ export default function Navigation(props) {
 
   return (
     <>
-      <div className="DAT_Navigation">
+      <div className="DAT_Navigation" onClick={()=> plantState.value = "default"}>
         <div className="DAT_Navigation-menu">
           <button id="DAT_menuaction"
             onClick={(event) => {
@@ -208,19 +212,20 @@ export default function Navigation(props) {
         </div>
 
         <div className="DAT_Navigation_left">
-          <Link to="/" style={{ textDecoration: "none" }}>
+          
             <div className="DAT_Navigation_left-logo">
               <img
+                onClick={() => navigate("/")}
                 src={
                   partnerInfor.value.logo
                     ? partnerInfor.value.logo
                     : "/dat_icon/logo_DAT.png"
                 }
                 alt=""
-                style={{ height: "40px" }}
+                style={{ height: "40px", cursor: "pointer" }}
               />
             </div>
-          </Link>
+          
         </div>
 
         <div className="DAT_Navigation_right">
@@ -402,6 +407,7 @@ export default function Navigation(props) {
                           id={item.boxid}
                           key={item.boxid}
                           onClick={(e) => handleMessage(e)}
+                          style={{ backgroundColor: code === item.boxid ? 'rgba(159, 155, 155, 0.2)'  : "white" }}
                         >
                           <div className="DAT_NavNotif-content-message-group-tit">
                             <span>{dataLang.formatMessage({ id: item.boxid })}</span>

@@ -8,7 +8,9 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+
   Navigate,
+
 } from "react-router-dom";
 import { ClockLoader, PacmanLoader } from "react-spinners";
 import Login from "./component/Login/Login";
@@ -76,6 +78,7 @@ export default function App() {
   const usr = useSelector((state) => state.admin.usr);
   const status = useSelector((state) => state.admin.status);
   const rootDispatch = useDispatch();
+
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -155,7 +158,7 @@ export default function App() {
       }
     };
 
-    const checkApi = async () => {};
+    const checkApi = async () => { };
     checkAuth();
 
     if (status) {
@@ -168,11 +171,11 @@ export default function App() {
   }, [status]);
 
   useEffect(() => {
-    const getwarn = async () => {
+    const getwarn = async (usr, partnerid, type) => {
       const warn = await callApi("post", host.DATA + "/getWarn", {
         usr: usr,
-        partnerid: partnerInfor.value.partnerid,
-        type: userInfor.value.type,
+        partnerid: partnerid,
+        type: type,
       });
       console.log(warn);
       if (warn.status) {
@@ -197,18 +200,36 @@ export default function App() {
       }
       //console.log(dataWarn.value);
     };
-    if (status && userInfor.value.type && partnerInfor.value.partnerid) {
-      getwarn();
+    if (userInfor.value.type && partnerInfor.value.partnerid && usr) {
+      getwarn(usr, partnerInfor.value.partnerid, userInfor.value.type);
     }
-  }, [status, userInfor.value.type, partnerInfor.value.partnerid]);
+  }, [userInfor.value.type, partnerInfor.value.partnerid, usr]);
+  const handleOut = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.reload();
+  }
 
   return (
     <>
+      {userInfor.value.partnerid === "0"
+        ? <div className="DAT_Clock" >
+          <div className="DAT_Clock_Infor">
+            <div className="DAT_Clock_Infor_Tit">Thông báo</div>
+            <div className="DAT_Clock_Infor_Content">Tài khoản của bạn hiện đang bị khoá vui lòng liên hệ quản trị viên để kích hoạt lại!</div>
+            <div  className="DAT_Clock_Infor_Btn">
+              <button onClick={() => {handleOut()}}>Thoát</button>
+            </div>
+
+          </div>
+        </div>
+        : <></>
+      }
       <Router>
         <Alert />
         {loading ? (
           window.location.pathname === "/Verify" ||
-          window.location.pathname === "/VerifyRegister" ? (
+            window.location.pathname === "/VerifyRegister" ? (
             <Verify path={window.location.pathname} />
           ) : (
             <div className="DAT_Loading">
@@ -218,8 +239,11 @@ export default function App() {
         ) : (
           <>
             {status ? (
+
+
               <>
                 <Navigation />
+
                 <div className="DAT_App">
                   <Sidenar />
                   <div className="DAT_App_Content">
@@ -467,7 +491,10 @@ export default function App() {
                     </Routes>
                   </div>
                 </div>
+
               </>
+
+
             ) : (
               <Login />
             )}

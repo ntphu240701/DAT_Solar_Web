@@ -7,6 +7,8 @@ import { useIntl } from "react-intl";
 
 import { IoClose } from "react-icons/io5";
 import { alertDispatch } from "../Alert/Alert";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
 
 export default function ConfirmDeleteGroup() {
   const dataLang = useIntl();
@@ -23,17 +25,38 @@ export default function ConfirmDeleteGroup() {
     popup.style.color = popup_state[state].color;
   };
 
-  const handleDelete = (e) => {
+  const handleDelete = async(e) => {
     groupDelState.value = false;
     console.log(groupID.value);
-group.value = group.value.filter(
-      (item) => item.id_ != groupID.value
-    );
-    groupUser.value = groupUser.value.filter(
-      (item) => item.groupid_ != groupID.value
-    );
-    groupID.value = 0;
-    alertDispatch("Delete group success");
+
+    let d_ =  group.value.find(
+      (item) => item.id_ == groupID.value
+    ); 
+    // console.log(d_);
+
+    let res = await callApi("post", host.DATA + "/removePartner", {
+      code: d_.code_
+    });
+    
+    console.log(res);
+    if(res.status){
+      group.value = group.value.filter(
+        (item) => item.id_ != groupID.value
+      );
+      groupUser.value = groupUser.value.filter(
+        (item) => item.groupid_ != groupID.value
+      );
+      groupID.value = 0;
+      alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+    }else{
+      alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+    }
+
+
+    
+    
+ 
+   
   };
 
   return (
