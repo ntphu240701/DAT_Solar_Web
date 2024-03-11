@@ -21,94 +21,13 @@ import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { partnerInfor, phuhosting, userInfor } from "../../App";
 import { useSelector } from "react-redux";
+import { CiSearch } from "react-icons/ci";
 
 //DATA TEMP
 export const group = signal([
-  // {
-  //   id: 1,
-  //   name: "Phòng RnD",
-  //   code: "CTy DAT Group - Head: Ngài Tô",
-  //   role: {
-  //     1: { lang: "role1", status: true },
-  //     2: { lang: "role2", status: true },
-  //     3: { lang: "role3", status: false },
-  //     4: { lang: "role4", status: false },
-  //   },
-  // },
-  // {
-  //   id: 2,
-  //   name: "Nhóm 2",
-  //   code: "CTy DAT Group - Head: Phó Lũ",
-  //   role: {
-  //     1: { lang: "role1", status: false },
-  //     2: { lang: "role2", status: true },
-  //     3: { lang: "role3", status: true },
-  //     4: { lang: "role4", status: false },
-  //   },
-  // },
 ]);
 
 export const groupUser = signal([
-  // {
-  //   groupid: 1,
-  //   users: [
-  //     {
-  //       username: "tantaingo",
-  //       name: "Tài Giỏi",
-  //       email: "tantai.ngo@datgroup.com.vn",
-  //     },
-  //     {
-  //       username: "loctp",
-  //       name: "Tony Trần",
-  //       email: "locdat_012@datgroup.com.vn",
-  //     },
-  //     {
-  //       username: "tiendv",
-  //       name: "Tiến Bịp DAT",
-  //       email: "tiendat_012@datgroup.com.vn",
-  //     },
-  //     {
-  //       username: "hiepga",
-  //       name: "Hiệp sĩ đường phố",
-  //       email: "hiepdat_012@datgroup.com.vn",
-  //     },
-  //     {
-  //       username: "tridat",
-  //       name: "Johnny Trí Nguyễn",
-  //       email: "tridat_012@datgroup.com.vn",
-  //     },
-  //     {
-  //       username: "tonydat_012",
-  //       name: "Tony Trần",
-  //       email: "tonydat_012@datgroup.com.vn",
-  //     },
-  //     {
-  //       username: "phudat_012",
-  //       name: "Phú Hộ",
-  //       email: "phudat_012@datgroup.com.vn",
-  //     },
-  //   ],
-  // },
-  // {
-  //   groupid: 2,
-  //   users: [
-  //     {
-  //       username: "anhadat_012",
-  //       name: "Anh A",
-  //       email: "anhadat_012@datgroup.com.vn",
-  //     },
-  //     {
-  //       username: "anhbdat_012",
-  //       name: "Anh B",
-  //       email: "anhadat_012@datgroup.com.vn",
-  //     },
-  //     {
-  //       name: "Anh C",
-  //       username: "anhcdat_012",
-  //       email: "anhcdat_012@datgroup.com.vn",
-  //     },
-  //   ],
-  // },
 ]);
 
 //CONST SIGNALS
@@ -143,7 +62,7 @@ const GroupUsers = () => {
       name: dataLang.formatMessage({ id: "account" }),
       selector: (user) => user.usr_,
       sortable: true,
-      maxWidth: "200px",
+      minWidth: "200px",
       style: {
         justifyContent: "left",
       },
@@ -159,50 +78,58 @@ const GroupUsers = () => {
     },
     {
       name: "Email",
-      selector: (user) => user.phone_,
+      selector: (user) => user.mail_,
       sortable: true,
-      // width: "150px",
+      width: "250px",
       style: {
         justifyContent: "left",
       },
     },
     {
       name: dataLang.formatMessage({ id: "phone" }),
-      selector: (user) => user.mail_,
+      selector: (user) => user.phone_,
       sortable: true,
-      // width: "150px",
+      minwidth: "200px",
       style: {
         justifyContent: "left",
       },
     },
-    {
-      name: "ID",
-      selector: (user) => user.id_,
-      sortable: true,
-      // width: "150px",
-      style: {
-        justifyContent: "left",
-      },
-    },
-    {
-      name: "Rule ID",
-      selector: (user) => user.ruleid_,
-      sortable: true,
-      // width: "150px",
-      style: {
-        justifyContent: "left",
-      },
-    },
+    // {
+    //   name: "ID",
+    //   selector: (user) => user.id_,
+    //   sortable: true,
+    //   // width: "150px",
+    //   style: {
+    //     justifyContent: "left",
+    //   },
+    // },
+    // {
+    //   name: "Rule ID",
+    //   selector: (user) => user.ruleid_,
+    //   sortable: true,
+    //   // width: "150px",
+    //   style: {
+    //     justifyContent: "left",
+    //   },
+    // },
     {
       name: dataLang.formatMessage({ id: "setting" }),
       selector: (user) => (
-        <div
+        <>
+        {user.type_ === "master"
+        ?<></>
+        :<div
           className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Delete"
           id={user.id_}
           onClick={(e) => handleDeleteUser(e)}
+          style={{ cursor: "pointer" }}
         >
-          <MdDelete size={20} />
+          <MdDelete size={20} color="red" />
         </div>
+        
+        }
+        </>
+        
       ),
       width: "100px",
     },
@@ -210,6 +137,18 @@ const GroupUsers = () => {
 
   const handleChangeGroup = (e) => {
     groupID.value = Number(e.currentTarget.id);
+    const checkApi = async () => {
+      const getUser = await callApi("post", host.DATA + "/getallUser", {
+        partnerid: groupID.value,
+      });
+      if(getUser.status){
+        groupUser.value = getUser.data.sort((a, b) => a.id_ - b.id_);
+      }
+      
+      // console.log(groupUser.value);
+    };
+    // console.log("Reload")
+    checkApi();
   };
 
   const handleDeleteUser = (e) => {
@@ -268,26 +207,27 @@ const GroupUsers = () => {
               }}
               onClick={(e) => handleChangeGroup(e)}
             >
-              <div
-                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
-                style={{ fontSize: "15px" }}
-              >
-                {item.name_}
-              </div>
+              <div>
+                <div
+                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
+                  style={{ fontSize: "15px" }}
+                >
+                  {item.name_}
+                </div>
 
-              <div
-                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
-                style={{ fontSize: "13px", color: "grey", maxWidth: "100px" }}
-              >
-                {item.code_}
+                <div
+                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
+                  style={{ fontSize: "13px", color: "grey", maxWidth: "100px" }}
+                >
+                  {item.code_}
+                </div>
               </div>
-
               <div
                 className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Shortcut"
                 id={item.id_ + "_dot"}
                 onMouseEnter={(e) => handleShowFunction(e)}
               >
-                <IoMdMore size={20} />
+                <IoMdMore size={20} color="grey" />
               </div>
 
               <div
@@ -304,7 +244,7 @@ const GroupUsers = () => {
                     id={item.id_}
                     onClick={(e) => handleDeleteGroup(e)}
                   >
-                    <MdDelete size={20} />
+                    <MdDelete size={18} color="red" />
                   </div>
                 )}
                 <div
@@ -313,14 +253,14 @@ const GroupUsers = () => {
                   id={item.id_}
                   onClick={(e) => handleEditGroup(e)}
                 >
-                  <MdEdit size={20} color="#216990" />
+                  <MdEdit size={18} color="green" />
                 </div>
 
                 <div
                   className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
                   onClick={() => (addState.value = true)}
                 >
-                  <IoMdPersonAdd size={20} />
+                  <IoMdPersonAdd size={18} color="#216990" />
                 </div>
               </div>
             </div>
@@ -329,9 +269,9 @@ const GroupUsers = () => {
       </div>
 
       <div className="DAT_GR_Content_DevideTable_Right">
-        <div className="DAT_GR_Content_DevideTable_Right_Head">
+        {/* <div className="DAT_GR_Content_DevideTable_Right_Head">
           {dataLang.formatMessage({ id: "roleList" })}
-        </div>
+        </div> */}
         <div className="DAT_GR_Content_DevideTable_Right_ItemList">
           {groupID.value === 0 ? (
             <Empty />
@@ -357,11 +297,11 @@ export default function GroupRole(props) {
   const [filter, setFilter] = useState(false);
 
   const handleFilter = (e) => {
-    filter.value = e.target.value;
-    if (filter.value !== "") {
+    setFilter(e.target.value);
+    if (filter !== "") {
       for (const group of groupUser.value) {
         for (const user of group.users) {
-          if (user.username.includes(filter.value)) {
+          if (user.username.includes(filter)) {
             const t = groupUser.value.find(
               (item) => item.groupid == group.groupid
             );
@@ -380,23 +320,18 @@ export default function GroupRole(props) {
   useEffect(() => {
     const checkApi = async () => {
       const allPartner = await callApi("get", host.DATA + "/getallPartner", "");
-      group.value = allPartner.data;
+      if(allPartner.status){
+        group.value = allPartner.data.sort((a, b) => a.id_ - b.id_);
+      }
+     
+      
+      
     };
     // console.log("Reload")
     checkApi();
   }, []);
 
-  useEffect(() => {
-    const checkApi = async () => {
-      const getUser = await callApi("post", host.DATA + "/getallUser", {
-        partnerid: groupID.value,
-      });
-      // console.log(getUser.data);
-      groupUser.value = getUser.data;
-    };
-    // console.log("Reload")
-    checkApi();
-  }, [groupID.value]);
+
 
   return (
     <>
@@ -428,7 +363,7 @@ export default function GroupRole(props) {
                 <input
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterInfo" })}
-                  value={filter.value}
+                  value={filter}
                   onChange={(e) => handleFilter(e)}
                 />
                 <div
@@ -448,7 +383,6 @@ export default function GroupRole(props) {
               <input
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterInfo" })}
-                value={filter.value}
                 onChange={(e) => handleFilter(e)}
               />
               <CiSearch color="gray" size={20} />

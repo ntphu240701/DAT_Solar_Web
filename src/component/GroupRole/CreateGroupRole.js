@@ -8,6 +8,8 @@ import { useIntl } from "react-intl";
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
 
 const idplus = signal(2);
 const newdb = signal({
@@ -61,25 +63,42 @@ export default function CreateGroupRole() {
   const dataLang = useIntl();
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
-  const handleCreate = () => {
-    if (name !== "") {
-      idplus.value += 1;
-      newdb.value = {
-        ...newdb.value,
-        id_: idplus.value,
-        name_: name,
-        code_: code,
-      };
-      const arr = {
-        groupid: idplus.value,
-        users: [],
+  const handleCreate = async () => {
+    if (name !== "" && code !== "") {
+      //idplus.value += 1;
+
+      let res = await callApi("post", host.DATA + "/addPartner", {
+        name: name,
+        code: code
+      });
+      console.log(res);
+      if (res.status) {
+
+        group.value = [
+          ...group.value,
+          res.data
+        ]
+
+        // newdb.value = {
+        //   ...newdb.value,
+        //   id_: idplus.value,
+        //   name_: name,
+        //   code_: code,
+        // };
+        // const arr = {
+        //   groupid: idplus.value,
+        //   users: [],
+        // }
+        // groupUser.value.push(arr);
+        // group.value.push(newdb.value);
+        // newdb.value = temp.value;
+        // console.log(group.value);
+        createState.value = false;
+        alertDispatch(dataLang.formatMessage({ id: "alert_31" }))
+      }else{
+        alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
       }
-      groupUser.value.push(arr);
-      group.value.push(newdb.value);
-      newdb.value = temp.value;
-      // console.log(group.value);
-      createState.value = false;
-      alertDispatch(dataLang.formatMessage({ id: "alert_31" }))
+
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_22" }))
     }

@@ -38,10 +38,10 @@ export const deviceData = signal([]);
 export const inverterData = signal([]);
 export const dataproject = signal([]);
 
-export const Empty = () => {
+export const Empty = (props) => {
   const dataLang = useIntl();
   return (
-    <div className="DAT_TableEmpty" style={{ backgroundColor: "#FEFEFE" }}>
+    <div className="DAT_TableEmpty" style={{ backgroundColor: props.backgroundColor? props.backgroundColor : "white", height: props.height ? props.height : "calc(100vh - 180px)", width: props.width ? props.width : "100%" }}>
       <div className="DAT_TableEmpty_Group">
         <div className="DAT_TableEmpty_Group_Icon">
           <FaRegFileAlt size={50} color="gray" />
@@ -112,7 +112,7 @@ export default function Project(props) {
         <div className="DAT_Table" id={row.plantid} onClick={(e) => handlePlant(e)}>
           <img src={row.img ? row.img : "/dat_picture/solar_panel.png"} alt="" />
 
-          <div className="DAT_Table_Infor">
+          <div className="DAT_Table_Infor" style={{ cursor: "pointer"}}>
             <div className="DAT_Table_Infor_Name">{row.plantname}</div>
             <div className="DAT_Table_Infor_Addr">{row.addr}</div>
           </div>

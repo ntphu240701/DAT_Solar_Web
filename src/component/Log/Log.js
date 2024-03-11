@@ -19,36 +19,36 @@ export default function Log(props) {
     };
 
     const dataLog = [
-        {
-            id: 1,
-            SN: "I0000145",
-            type: "Inverter",
-            config: 'Remote',
-            state: true,
-            operator: "Admin",
-            runtime: "12/30/2023 12:07:12",
-            response: "12/30/2023 12:07:50",
-        },
-        {
-            id: 2,
-            SN: "I0000012",
-            type: "Inverter",
-            config: 'Remote',
-            state: true,
-            operator: "Admin",
-            runtime: "12/30/2023 13:00:12",
-            response: "12/30/2023 13:01:50",
-        },
-        {
-            id: 3,
-            SN: "I0000001",
-            type: "Inverter",
-            config: 'Upgade',
-            state: false,
-            operator: "Admin",
-            runtime: "12/30/2023 19:18:12",
-            response: "12/30/2023 19:19:50",
-        },
+        // {
+        //     id: 1,
+        //     SN: "I0000145",
+        //     type: "Inverter",
+        //     config: 'Remote',
+        //     state: true,
+        //     operator: "Admin",
+        //     runtime: "12/30/2023 12:07:12",
+        //     response: "12/30/2023 12:07:50",
+        // },
+        // {
+        //     id: 2,
+        //     SN: "I0000012",
+        //     type: "Inverter",
+        //     config: 'Remote',
+        //     state: true,
+        //     operator: "Admin",
+        //     runtime: "12/30/2023 13:00:12",
+        //     response: "12/30/2023 13:01:50",
+        // },
+        // {
+        //     id: 3,
+        //     SN: "I0000001",
+        //     type: "Inverter",
+        //     config: 'Upgade',
+        //     state: false,
+        //     operator: "Admin",
+        //     runtime: "12/30/2023 19:18:12",
+        //     response: "12/30/2023 19:19:50",
+        // },
     ];
 
     const columnLog = [
