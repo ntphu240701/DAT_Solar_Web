@@ -25,22 +25,22 @@ export default function Popup() {
   };
 
   const handleDelete = async (e) => {
-     const i = groupUser.value.findIndex(
-      (item) => item.id_ == parseInt(userDel.value)
+    const i = groupUser.value.findIndex(
+      (item) => item.id_ === parseInt(userDel.value)
     );
     let d = await callApi('post', host.DATA + '/removeUsrPartner', {
-            mail: groupUser.value[i].mail_,
-            partnerid: String(groupID.value)
+      mail: groupUser.value[i].mail_,
+      partnerid: String(groupID.value)
     })
     console.log(d);
-    if(d.status){
+    if (d.status) {
       groupUser.value = groupUser.value.filter(
-        (item) => item.id_ != groupID.value
+        (item) => item.id_ !== groupID.value
       );
       groupID.value = 0;
       popupState.value = false;
       alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
-    }else{
+    } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
 

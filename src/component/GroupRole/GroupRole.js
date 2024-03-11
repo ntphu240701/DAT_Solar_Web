@@ -116,20 +116,20 @@ const GroupUsers = () => {
       name: dataLang.formatMessage({ id: "setting" }),
       selector: (user) => (
         <>
-        {user.type_ === "master"
-        ?<></>
-        :<div
-          className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Delete"
-          id={user.id_}
-          onClick={(e) => handleDeleteUser(e)}
-          style={{ cursor: "pointer" }}
-        >
-          <MdDelete size={20} color="red" />
-        </div>
-        
-        }
+          {user.type_ === "master"
+            ? <></>
+            : <div
+              className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Delete"
+              id={user.id_}
+              onClick={(e) => handleDeleteUser(e)}
+              style={{ cursor: "pointer" }}
+            >
+              <MdDelete size={20} color="red" />
+            </div>
+
+          }
         </>
-        
+
       ),
       width: "100px",
     },
@@ -141,7 +141,8 @@ const GroupUsers = () => {
       const getUser = await callApi("post", host.DATA + "/getallUser", {
         partnerid: groupID.value,
       });
-      if(getUser.status){
+      // console.log(getUser, "ABC")
+      if (getUser.status) {
         groupUser.value = getUser.data.sort((a, b) => a.id_ - b.id_);
       }
     };
@@ -160,7 +161,7 @@ const GroupUsers = () => {
   const handleEditGroup = (e) => {
     editState.value = true;
     groupEdit.value = group.value.find(
-      (item) => item.id_ == Number(e.currentTarget.id)
+      (item) => item.id_ === Number(e.currentTarget.id)
     );
   };
 
@@ -294,7 +295,7 @@ export default function GroupRole(props) {
         for (const user of group.users) {
           if (user.username.includes(filter)) {
             const t = groupUser.value.find(
-              (item) => item.groupid == group.groupid
+              (item) => item.groupid === group.groupid
             );
             console.log(t);
           } else {
@@ -311,14 +312,10 @@ export default function GroupRole(props) {
   useEffect(() => {
     const checkApi = async () => {
       const allPartner = await callApi("get", host.DATA + "/getallPartner", "");
-      if(allPartner.status){
+      if (allPartner.status) {
         group.value = allPartner.data.sort((a, b) => a.id_ - b.id_);
       }
-     
-      
-      
     };
-    // console.log("Reload")
     checkApi();
   }, []);
 
