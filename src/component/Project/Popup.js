@@ -27,7 +27,6 @@ export default function Popup(props) {
   };
 
   const handleDelete = (e) => {
-    console.log(props.type,props.plantid);
     switch (props.type) {
       case "plant":
         const dropProject = async () => {

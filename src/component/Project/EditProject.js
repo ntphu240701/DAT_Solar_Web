@@ -35,12 +35,9 @@ const BasicInfo = (props) => {
 
   const handleMap = (e) => {
     const addr = document.getElementById("addr")
-    console.log(addr.value)
     setKey(process.env.REACT_APP_GGKEY);
     geocode(RequestType.ADDRESS, addr.value)
       .then((response) => {
-        console.log(response.results[0].geometry.location);
-
         var long_ = document.getElementById("long")
         var lat_ = document.getElementById("lat")
         lat_.value = response.results[0].geometry.location.lat
@@ -492,7 +489,6 @@ const ImgInfo = (props) => {
     // console.log(e.target.files[0].name);
     // projectData.value[e.currentTarget.id] = e.current
     var reader = new FileReader();
-    console.log("old size", e.target.files[0].size)
     if (e.target.files[0].size > 50000) {
       const image = await resizeFilAvatar(e.target.files[0]);
       reader.readAsDataURL(image);
@@ -502,7 +498,6 @@ const ImgInfo = (props) => {
       }
     } else {
       reader.readAsDataURL(e.target.files[0]);
-      console.log(e.target.files[0].size)
       reader.onload = () => {
         setAva(reader.result);
         projectData.value.img = reader.result;

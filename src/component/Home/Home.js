@@ -96,7 +96,7 @@ export default function Home(props) {
   const defaultProps = {
     center: {
       lat: 16.0544068,
-      lng: 108.2021667	,
+      lng: 108.2021667,
     },
     zoom: 5,
     mapId: 'my_map',
@@ -110,27 +110,27 @@ export default function Home(props) {
   });
 
 
-  
+
 
   const initMap = async (data) => {
     const { AdvancedMarkerElement } = await loader.importLibrary("marker");
     const { Map } = await loader.importLibrary("maps");
 
     let map = new Map(document.getElementById("map"), defaultProps);
-    
+
     data.map((item) => {
-      const marker ={lat: parseFloat(item.lat), lng: parseFloat(item.long)}
+      const marker = { lat: parseFloat(item.lat), lng: parseFloat(item.long) }
       const markerElement = new AdvancedMarkerElement({ position: marker, map: map, title: item.plantname });
       markerElement.addListener("click", () => {
         //console.log(item)
         navigate("/project");
         plantState.value = "info";
         projectData.value = item;
-        
+
       });
       return markerElement
     })
-    
+
 
   }
 
@@ -207,7 +207,6 @@ export default function Home(props) {
         plantid: item.plantid,
         year: moment(new Date()).format("YYYY"),
       })
-
 
       if (chart.status) {
         sum_month[i] = chart.data.data.map(item => item.value).reduce((a, b) => Number(a) + Number(b), 0)
@@ -314,7 +313,6 @@ export default function Home(props) {
         partnerid: partnerInfor.value.partnerid,
         type: userInfor.value.type,
       })
-      console.log(d)
       if (d.status === true) {
         initMap(d.data);
         getChart(d.data)
@@ -326,7 +324,7 @@ export default function Home(props) {
       }
     }
 
-    
+
 
     const getLogger = async () => {
       let d = await callApi('post', host.DATA + '/getallLogger', {
@@ -334,7 +332,6 @@ export default function Home(props) {
         partnerid: partnerInfor.value.partnerid,
         type: userInfor.value.type,
       })
-      console.log(d)
       if (d.status) {
         logger.value = d.data
         d.data.map(async (item) => {
@@ -353,9 +350,9 @@ export default function Home(props) {
     getPlant();
     getLogger();
     getPrice(plant.value, logger.value)
-   
 
-  }, [lang,usr,partnerInfor.value.partnerid,userInfor.value.type,Token.value.token])
+
+  }, [lang, usr, partnerInfor.value.partnerid, userInfor.value.type, Token.value.token])
 
 
   useEffect(() => {
@@ -451,7 +448,7 @@ export default function Home(props) {
       value: cal.pro_3
     }
 
-  }, [invt,usr])
+  }, [invt, usr])
 
 
 

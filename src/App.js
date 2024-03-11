@@ -113,7 +113,6 @@ export default function App() {
 
     const checkRule = async (id) => {
       const data = await callApi("post", host.AUTH + "/Rule", { ruleid: id });
-      console.log(data);
       if (data.status) {
         console.log("Rule", data.data);
         ruleInfor.value = {
@@ -128,7 +127,6 @@ export default function App() {
       const data = await callApi("post", host.AUTH + "/Partner", {
         partnerid: id,
       });
-
       if (data.status) {
         console.log("Partner", data.data);
         partnerInfor.value = {
@@ -148,7 +146,6 @@ export default function App() {
 
     const checkToken = async () => {
       const d = await callApi("get", host.DATA + "/getToken");
-
       if (d.status) {
         console.log("Token", d.data);
         Token.value = {
@@ -177,7 +174,6 @@ export default function App() {
         partnerid: partnerid,
         type: type,
       });
-      console.log(warn);
       if (warn.status) {
         warn.data.map((item, index) => {
           dataWarn.value = [
@@ -217,8 +213,8 @@ export default function App() {
           <div className="DAT_Clock_Infor">
             <div className="DAT_Clock_Infor_Tit">Thông báo</div>
             <div className="DAT_Clock_Infor_Content">Tài khoản của bạn hiện đang bị khoá vui lòng liên hệ quản trị viên để kích hoạt lại!</div>
-            <div  className="DAT_Clock_Infor_Btn">
-              <button onClick={() => {handleOut()}}>Thoát</button>
+            <div className="DAT_Clock_Infor_Btn">
+              <button onClick={() => { handleOut() }}>Thoát</button>
             </div>
 
           </div>
