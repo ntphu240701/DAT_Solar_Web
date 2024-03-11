@@ -4,7 +4,7 @@ import "./Navigation.scss";
 import { sidenar } from "../../component/Sidenar/Sidenar";
 import { Link, useNavigate } from "react-router-dom";
 import { signal } from "@preact/signals-react";
-import { partnerInfor, userInfor } from "../../App";
+import { partnerInfor, phuhosting, userInfor } from "../../App";
 import { useDispatch, useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
@@ -95,7 +95,19 @@ export default function Navigation(props) {
     sidenar.value = !sidenar.value;
   };
 
+
+
   const handleMessage = (e) => {
+    const checkApi = async () => {
+      const warn = await callApi("post", host.DATA + "/updateWarn", {
+        partnerid: partnerInfor.value.partnerid,
+        boxid: e.currentTarget.id,
+        type: userInfor.value.type,
+      });
+      console.log(warn);
+    };
+    checkApi();
+
     let warnid = [];
     messageContent.value = dataWarn.value.filter((item, i) => {
       if (item.boxid == e.currentTarget.id) {
@@ -108,13 +120,13 @@ export default function Navigation(props) {
       let index = dataWarn.value.findIndex((item, i) => item.warnid == item_);
       dataWarn.value[index] = {
         ...dataWarn.value[index],
-        state: true,
+        state: 0,
       };
     });
 
     message.value.map((item) => {
       let data = dataWarn.value.filter((item_) => item_.boxid == item.boxid);
-      item.total = data.filter((item) => item.state == false).length;
+      item.total = data.filter((item) => item.state == 1).length;
     });
 
     warnid = [];
@@ -145,6 +157,11 @@ export default function Navigation(props) {
     };
   }, []);
 
+  useEffect(() => {
+    // console.log(partnerInfor.value.partnerid, dataWarn.value.boxid, userInfor.value.type);
+    
+  })
+
   let logout = function () {
     //navigate('/Login');
     const setDefault = async () => {
@@ -173,7 +190,7 @@ export default function Navigation(props) {
   useEffect(() => {
     message.value.map((item) => {
       let data = dataWarn.value.filter((item_) => item_.boxid == item.boxid);
-      item.total = data.filter((item) => item.state == false).length;
+      item.total = data.filter((item) => item.state == 1).length;
     });
   }, [dataWarn.value]);
 
@@ -214,12 +231,12 @@ export default function Navigation(props) {
           >
             <IoIosNotificationsOutline color="white" size={22} />
 
-            {dataWarn.value.filter((item) => item.state == false).length ===
+            {dataWarn.value.filter((item) => item.state == 1).length ===
               0 ? (
               <></>
             ) : (
               <span>
-                {dataWarn.value.filter((item) => item.state == false).length}
+                {dataWarn.value.filter((item) => item.state == 1).length}
               </span>
             )}
           </button>

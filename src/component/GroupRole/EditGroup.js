@@ -6,6 +6,7 @@ import { useIntl } from "react-intl";
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
+import { alertDispatch } from "../Alert/Alert";
 
 const CheckBox = (props) => {
   const handleCheck = (e) => {
@@ -43,28 +44,26 @@ const CheckBox = (props) => {
 
 export default function CreateGroupRole() {
   const dataLang = useIntl();
-  const [name, setName] = useState(groupEdit.value.name);
-  const [subinfo, setSubinfo] = useState(groupEdit.value.subinfo);
+  const [name, setName] = useState(groupEdit.value.name_);
 
   const handleSave = () => {
-    const t = group.value.findIndex((item) => item.id == groupEdit.value.id);
+    const t = group.value.findIndex((item) => item.id_ == groupEdit.value.id_);
     group.value[t] = {
       ...group.value[t],
-      name: name,
-      subinfo: subinfo,
-      role: groupEdit.value.role,
+      name_: name,
     }
     editState.value = false;
     console.log(group.value);
+    alertDispatch("Edit group success");
   };
 
   const handleEditName = (e) => {
     setName(e.currentTarget.value);
   };
 
-  const handleEditSubinfo = (e) => {
-    setSubinfo(e.currentTarget.value);
-  };
+  // const handleEditCode = (e) => {
+  //   setCode(e.currentTarget.value);
+  // };
 
   return (
     <>
@@ -103,16 +102,16 @@ export default function CreateGroupRole() {
               />
             </div>
 
-            <div className="DAT_CreateGroupRole_Body_Item_Input">
+            {/* <div className="DAT_CreateGroupRole_Body_Item_Input">
               <span>{dataLang.formatMessage({ id: 'groupInfo' })}:</span>
               <input
                 type="text"
-                value={subinfo}
-                onChange={(e) => handleEditSubinfo(e)}
+                value={code}
+                onChange={(e) => handleEditCode(e)}
               />
-            </div>
+            </div> */}
 
-            <div className="DAT_CreateGroupRole_Body_Item_Checkbox">
+            {/* <div className="DAT_CreateGroupRole_Body_Item_Checkbox">
               {Object.entries(groupEdit.value.role).map(([key, value]) => (
                 <CheckBox
                   info={value.lang}
@@ -121,7 +120,7 @@ export default function CreateGroupRole() {
                   num={String(key)}
                 />
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

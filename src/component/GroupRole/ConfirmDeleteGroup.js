@@ -1,11 +1,12 @@
 import React from "react";
 import "./GroupRole.scss";
 
-import { dataUsers, group, groupID, groupUser } from "./GroupRole";
+import { group, groupID, groupUser } from "./GroupRole";
 import { groupDelState } from "./GroupRole";
 import { useIntl } from "react-intl";
 
 import { IoClose } from "react-icons/io5";
+import { alertDispatch } from "../Alert/Alert";
 
 export default function ConfirmDeleteGroup() {
   const dataLang = useIntl();
@@ -25,14 +26,14 @@ export default function ConfirmDeleteGroup() {
   const handleDelete = (e) => {
     groupDelState.value = false;
     console.log(groupID.value);
-    group.value = group.value.filter(
-      (item) => item.id != groupID.value
+group.value = group.value.filter(
+      (item) => item.id_ != groupID.value
     );
     groupUser.value = groupUser.value.filter(
-      (item) => item.groupid != groupID.value
+      (item) => item.groupid_ != groupID.value
     );
-    dataUsers.value = [];
     groupID.value = 0;
+    alertDispatch("Delete group success");
   };
 
   return (

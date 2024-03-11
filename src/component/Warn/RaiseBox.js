@@ -6,6 +6,9 @@ import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 
 import { IoClose } from "react-icons/io5";
+import { callApi } from "../Api/Api";
+import { phuhosting } from "../../App";
+import { host } from "../Lang/Contant";
 
 export default function RaiseBox(props) {
   const dataLang = useIntl();
@@ -17,12 +20,19 @@ export default function RaiseBox(props) {
 
   const handleDeleteReport = (e) => {
     deletewarnState.value = false;
-    const arr = idDel.value.split("_"); //['E01', '1']
-    dataWarn.value = dataWarn.value.filter(
-      (item) => item.warnid != arr[1]
-    )
-    alertDispatch(dataLang.formatMessage({ id: 'alert_28' }))
-    console.log(dataWarn.value)
+    const arr = idDel.value.split("_"); //['E02', 'T0623A000162']
+    console.log(arr);
+    dataWarn.value = dataWarn.value.filter((item) => item.device != arr[1] || item.boxid != arr[0]);
+    alertDispatch(dataLang.formatMessage({ id: "alert_28" }));
+    console.log(dataWarn.value);
+    const checkApi = async () => {
+      const warn = await callApi("post", host.DATA + "/removeWarn", {
+        sn: arr[1],
+        boxid: arr[0],
+      });
+      console.log(warn);
+    };
+    checkApi();
   };
 
   const handlePopup = (state) => {
@@ -40,12 +50,11 @@ export default function RaiseBox(props) {
     <div className="DAT_PopupReport_Box">
       <div className="DAT_PopupReport_Box_Head">
         <div className="DAT_PopupReport_Box_Head_Left">
-          <p>
-            {dataLang.formatMessage({ id: 'delWarn' })}
-          </p>
+          <p>{dataLang.formatMessage({ id: "delWarn" })}</p>
         </div>
         <div className="DAT_PopupReport_Box_Head_Right">
-          <div className="DAT_PopupReport_Box_Head_Right_Icon"
+          <div
+            className="DAT_PopupReport_Box_Head_Right_Icon"
             onClick={() => (deletewarnState.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -57,9 +66,7 @@ export default function RaiseBox(props) {
       </div>
 
       <div className="DAT_PopupReport_Box_Body">
-        <p>
-          {dataLang.formatMessage({ id: 'delreportmess' })}
-        </p>
+        <p>{dataLang.formatMessage({ id: "delreportmess" })}</p>
       </div>
 
       <div className="DAT_PopupReport_Box_Foot">
@@ -71,13 +78,13 @@ export default function RaiseBox(props) {
           }}
           onClick={() => (deletewarnState.value = false)}
         >
-          {dataLang.formatMessage({ id: 'cancel' })}
+          {dataLang.formatMessage({ id: "cancel" })}
         </button>
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={(e) => handleDeleteReport(e)}
         >
-          {dataLang.formatMessage({ id: 'confirm' })}
+          {dataLang.formatMessage({ id: "confirm" })}
         </button>
       </div>
     </div>

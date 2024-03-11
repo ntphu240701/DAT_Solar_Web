@@ -11,15 +11,15 @@ import { RxCross2 } from "react-icons/rx";
 
 const idplus = signal(2);
 const newdb = signal({
-  id: 0,
-  name: "",
-  subinfo: "",
-  role: {
-    1: { lang: "role1", status: false },
-    2: { lang: "role2", status: false },
-    3: { lang: "role3", status: false },
-    4: { lang: "role4", status: false },
-  },
+  id_: 0,
+  name_: "",
+  code_: "",
+  // role: {
+  //   1: { lang: "role1", status: false },
+  //   2: { lang: "role2", status: false },
+  //   3: { lang: "role3", status: false },
+  //   4: { lang: "role4", status: false },
+  // },
 });
 const temp = signal(newdb.value);
 
@@ -60,16 +60,15 @@ const CheckBox = (props) => {
 export default function CreateGroupRole() {
   const dataLang = useIntl();
   const [name, setName] = useState("");
-  const [subinfo, setSubinfo] = useState("");
-
+  const [code, setCode] = useState("");
   const handleCreate = () => {
-    if (name !== "" || subinfo !== "") {
+    if (name !== "") {
       idplus.value += 1;
       newdb.value = {
         ...newdb.value,
-        id: idplus.value,
-        name: name,
-        subinfo: subinfo,
+        id_: idplus.value,
+        name_: name,
+        code_: code,
       };
       const arr = {
         groupid: idplus.value,
@@ -113,17 +112,17 @@ export default function CreateGroupRole() {
         <div className="DAT_CreateGroupRole_Body">
           <div className="DAT_CreateGroupRole_Body_Item">
             <h4>{dataLang.formatMessage({ id: 'grouproleInfo' })}</h4>
-            <div className="DAT_CreateGroupRole_Body_Item_Input">
+            <div className="DAT_CreateGroupRole_Body_Item_Input" style={{ marginBottom: "0px" }}>
               <span>{dataLang.formatMessage({ id: 'groupName' })}:</span>
               <input type="text" onChange={(e) => setName(e.target.value)} required />
             </div>
 
-            <div className="DAT_CreateGroupRole_Body_Item_Input">
-              <span>{dataLang.formatMessage({ id: 'groupInfo' })}:</span>
-              <input type="text" onChange={(e) => setSubinfo(e.target.value)} required />
+            <div className="DAT_CreateGroupRole_Body_Item_Input" >
+              <span>{dataLang.formatMessage({ id: 'join' })}:</span>
+              <input type="text" onChange={(e) => setCode(e.target.value)} required />
             </div>
 
-            <div className="DAT_CreateGroupRole_Body_Item_Checkbox">
+            {/* <div className="DAT_CreateGroupRole_Body_Item_Checkbox">
               {Object.entries(newdb.value.role).map(([key, value]) => (
                 <CheckBox
                   info={value.lang}
@@ -132,7 +131,7 @@ export default function CreateGroupRole() {
                   num={String(key)}
                 />
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

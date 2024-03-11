@@ -3,6 +3,7 @@ import "./GroupRole.scss";
 
 import { groupID, groupUser, popupState, userDel } from "./GroupRole";
 import { useIntl } from "react-intl";
+import { alertDispatch } from "../Alert/Alert";
 
 import { IoClose } from "react-icons/io5";
 
@@ -22,14 +23,29 @@ export default function Popup() {
   };
 
   const handleDelete = (e) => {
-    popupState.value = false;
-    groupUser.value.forEach((item) => {
-      if (item.groupid == groupID.value) {
-        item.users = item.users.filter(
-          (user) => user.username != userDel.value
-        );
-      }
-    });
+    // groupUser.value.forEach((item) => {
+    //   if (item.id_ == groupID.value) {
+    //     item.users = item.users.filter(
+    //       (user) => user.username != userDel.value
+    //     );
+    //   }
+    // });
+    // console.log(userDel.value);
+    console.log(userDel.value);
+    if (parseInt(userDel.value) === 1) {
+      alertDispatch("Cant delete user");
+    } else {
+      const i = groupUser.value.findIndex(
+        (item) => item.id_ == parseInt(userDel.value)
+      );
+      console.log(userDel.value, i);
+      groupUser.value = groupUser.value.filter(
+        (item) => item.id_ != parseInt(userDel.value)
+      );
+      popupState.value = false;
+      alertDispatch("Delete user success");
+      // console.log(userDel.value, i);
+    }
     console.log(groupUser.value);
   };
 
@@ -37,11 +53,12 @@ export default function Popup() {
     <div className="DAT_Popup_Box">
       <div className="DAT_Popup_Box_Head">
         <div className="DAT_Popup_Box_Head_Left">
-          <p>{dataLang.formatMessage({ id: 'delAccount' })}</p>
+          <p>{dataLang.formatMessage({ id: "delAccount" })}</p>
         </div>
 
         <div className="DAT_Popup_Box_Head_Right">
-          <div className="DAT_Popup_Box_Head_Right_Icon"
+          <div
+            className="DAT_Popup_Box_Head_Right_Icon"
             onClick={() => (popupState.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -53,9 +70,7 @@ export default function Popup() {
       </div>
 
       <div className="DAT_Popup_Box_Body">
-        <p>
-          {dataLang.formatMessage({ id: 'delaccountmess' })}
-        </p>
+        <p>{dataLang.formatMessage({ id: "delaccountmess" })}</p>
       </div>
 
       <div className="DAT_Popup_Box_Foot">
@@ -67,7 +82,7 @@ export default function Popup() {
           }}
           onClick={() => (popupState.value = false)}
         >
-          {dataLang.formatMessage({ id: 'cancel' })}
+          {dataLang.formatMessage({ id: "cancel" })}
         </button>
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
@@ -75,7 +90,7 @@ export default function Popup() {
             handleDelete();
           }}
         >
-          {dataLang.formatMessage({ id: 'confirm' })}
+          {dataLang.formatMessage({ id: "confirm" })}
         </button>
       </div>
     </div>

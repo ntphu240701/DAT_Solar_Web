@@ -47,6 +47,7 @@
         &:hover {
             background-color: #3e80fb;
         }
+
         & span {
             display: flex;
             justify-content: center;
@@ -84,6 +85,35 @@
     }
 }
 
+.DAT_RuleMobile {
+    &_Content {
+        &_Item {
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: white;
+            width: 98%;
+            margin: auto;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow:
+                2px 2px 5px rgba(198, 197, 197, 0.4),
+                -2px -2px 5px rgba(198, 197, 197, 0.4);
+
+            &_Row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                &_Right {
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 5px;
+                }
+            }
+        }
+    }
+}
+
 .DAT_RuleCreate {
     height: 100vh;
     width: 100%;
@@ -96,6 +126,7 @@
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
+
     &::-webkit-scrollbar {
         display: none;
     }
@@ -117,6 +148,7 @@
         left: 0px;
         align-items: center;
         padding: 20px;
+
         &_Left {
             flex: 5;
             white-space: nowrap;
@@ -127,6 +159,7 @@
                 margin: 0;
             }
         }
+
         &_Right {
             flex: 5;
 
@@ -173,20 +206,24 @@
             background-color: white;
             padding: 20px;
             border-bottom: 1px dashed rgb(128, 128, 128, 0.3);
+
             &_Type {
                 display: flex;
                 gap: 20px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+
                 & h4 {
                     margin: 0;
                 }
             }
+
             &_Data {
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+
                 &_Name {
                     // margin-top: 20px;
                     gap: 20px;
@@ -195,6 +232,7 @@
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+
                     & input {
                         padding: 7px;
                         border: 1px solid rgb(128, 128, 128, 0.3);
@@ -202,6 +240,7 @@
                     }
                 }
             }
+
             &_Option {
                 & p {
                     // position: fixed;
@@ -288,6 +327,7 @@
             display: flex;
             justify-content: flex-end;
             flex: 5;
+
             &_Icon {
                 display: flex;
                 align-items: center;
