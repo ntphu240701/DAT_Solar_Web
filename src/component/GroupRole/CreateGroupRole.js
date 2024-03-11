@@ -16,12 +16,6 @@ const newdb = signal({
   id_: 0,
   name_: "",
   code_: "",
-  // role: {
-  //   1: { lang: "role1", status: false },
-  //   2: { lang: "role2", status: false },
-  //   3: { lang: "role3", status: false },
-  //   4: { lang: "role4", status: false },
-  // },
 });
 const temp = signal(newdb.value);
 

@@ -144,17 +144,13 @@ const GroupUsers = () => {
       if(getUser.status){
         groupUser.value = getUser.data.sort((a, b) => a.id_ - b.id_);
       }
-      
-      // console.log(groupUser.value);
     };
-    // console.log("Reload")
     checkApi();
   };
 
   const handleDeleteUser = (e) => {
     popupState.value = true;
     userDel.value = e.currentTarget.id;
-    // console.log(groupUser.value);
   };
 
   const handleDeleteGroup = (e) => {
@@ -163,14 +159,9 @@ const GroupUsers = () => {
 
   const handleEditGroup = (e) => {
     editState.value = true;
-    // groupEdit.value = group.value.find(
-    //   (item) => item.id == Number(e.currentTarget.id)
-    // );
-    // console.log(e.currentTarget.id)
     groupEdit.value = group.value.find(
       (item) => item.id_ == Number(e.currentTarget.id)
     );
-    // console.log(groupEdit.value)
   };
 
   const handleShowFunction = (e) => {
