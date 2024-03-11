@@ -5,7 +5,6 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
 import { VscDashboard } from "react-icons/vsc";
-import { IoIosCloud } from "react-icons/io";
 import { Empty } from "../Project/Project";
 import DataTable from "react-data-table-component";
 import { useSelector } from "react-redux";
@@ -16,9 +15,7 @@ import { signal } from "@preact/signals-react";
 import axios from "axios";
 import { useIntl } from "react-intl";
 import { coalsave } from "../Project/ProjectData";
-
 import { FaSolarPanel, FaTree } from "react-icons/fa6";
-import { VscDashboard } from "react-icons/vsc";
 import { IoIosCloud } from "react-icons/io";
 import { GiCoalWagon } from "react-icons/gi";
 import { FaMoneyBill } from "react-icons/fa";
