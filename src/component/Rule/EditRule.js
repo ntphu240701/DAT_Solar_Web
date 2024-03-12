@@ -12,6 +12,7 @@ import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { IoSaveOutline } from "react-icons/io5";
 
 export const editruledata = signal();
 const temp = signal();
@@ -21,7 +22,7 @@ export const CheckBox = (props) => {
     console.log(arr[0]);
     temp.value = {
       ...editruledata.value,
-    }
+    };
     editruledata.value.setting[props.rights][props.custom] = e.target.checked;
     console.log(editruledata.value);
   };
@@ -60,8 +61,6 @@ export default function EditRule() {
   const rulenameRef = useRef();
 
   const TypeReport = (props) => {
-
-
     return (
       <div className="DAT_CreateRule_Body_Item">
         <div className="DAT_CreateRule_Body_Item_Data">
@@ -81,49 +80,46 @@ export default function EditRule() {
     );
   };
 
-  const handleSave = async() => {
+  const handleSave = async () => {
     console.log(rulenameRef.current.value);
 
     if (rulenameRef.current.value !== "") {
-
-      console.log(rulenameRef.current.value)
-      let d = await callApi(
-        "post",
-        host.DATA + "/updateRule",
-        {
-          ruleid: editruledata.value.ruleid_,
-          name: rulenameRef.current.value,
-          setting: JSON.stringify(editruledata.value.setting),
-        }
-      )
-      if(d.status){
-        let newData = datarule.value
-        let index = newData.findIndex((d) => d.ruleid_ == editruledata.value.ruleid_)
-        newData[index].rulename_ = rulenameRef.current.value
-        datarule.value = [...newData]
+      console.log(rulenameRef.current.value);
+      let d = await callApi("post", host.DATA + "/updateRule", {
+        ruleid: editruledata.value.ruleid_,
+        name: rulenameRef.current.value,
+        setting: JSON.stringify(editruledata.value.setting),
+      });
+      if (d.status) {
+        let newData = datarule.value;
+        let index = newData.findIndex(
+          (d) => d.ruleid_ == editruledata.value.ruleid_
+        );
+        newData[index].rulename_ = rulenameRef.current.value;
+        datarule.value = [...newData];
         editRuleState.value = false;
         alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
-      }else{
+      } else {
         alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
       }
 
-    //   editruledata.value = {
-    //     ...temp.value,
-    //     rulename_: rulenameRef.current,
-    //   };
-    //   const i = datarule.value.findIndex(
-    //     (item) => item.ruleid_ === editruledata.value.ruleid_
-    //   );
-    //   datarule.value = [
-    //     ...datarule.value.slice(0, i),
-    //     editruledata.value,
-    //     ...datarule.value.slice(i + 1),
-    //   ];
-    //   editRuleState.value = false;
-    //   alertDispatch(dataLang.formatMessage({ id: "alert_21" }));
-    //   // console.log(datarule.value);
-    // } else {
-    //   alertDispatch(dataLang.formatMessage({ id: "alert_22" }));
+      //   editruledata.value = {
+      //     ...temp.value,
+      //     rulename_: rulenameRef.current,
+      //   };
+      //   const i = datarule.value.findIndex(
+      //     (item) => item.ruleid_ === editruledata.value.ruleid_
+      //   );
+      //   datarule.value = [
+      //     ...datarule.value.slice(0, i),
+      //     editruledata.value,
+      //     ...datarule.value.slice(i + 1),
+      //   ];
+      //   editRuleState.value = false;
+      //   alertDispatch(dataLang.formatMessage({ id: "alert_21" }));
+      //   // console.log(datarule.value);
+      // } else {
+      //   alertDispatch(dataLang.formatMessage({ id: "alert_22" }));
     }
   };
 
@@ -147,8 +143,8 @@ export default function EditRule() {
             className="DAT_CreateRule_Header_Right_Save"
             onClick={() => handleSave()}
           >
-            <FaSave size={20} color="white" />
-            <span>Lưu</span>
+            <IoSaveOutline size={20} color="white" />
+            <span>{dataLang.formatMessage({ id: "save" })}</span>
           </div>
           <div className="DAT_CreateRule_Header_Right_Close">
             <RxCross2

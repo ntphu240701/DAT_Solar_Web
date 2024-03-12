@@ -5,6 +5,7 @@ import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { warnState } from "./Warn";
 import { useIntl } from "react-intl";
+import { IoSaveOutline } from "react-icons/io5";
 
 export default function SettingWarn(props) {
   const dataLang = useIntl();
@@ -16,7 +17,7 @@ export default function SettingWarn(props) {
 
         <div className="DAT_SettingWarn_Header_Right">
           <div className="DAT_SettingWarn_Header_Right_Save">
-            <FaSave size={20} color="white" />
+            <IoSaveOutline size={20} color="white" />
             <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
           <div className="DAT_SettingWarn_Header_Right_Close" onClick={() => (warnState.value = "default")}>
@@ -41,7 +42,6 @@ export default function SettingWarn(props) {
         </div>
 
         <div className="DAT_SettingWarn_Body_Line" />
-
         <div className="DAT_SettingWarn_Body_Row2">
           <div className="DAT_SettingWarn_Body_Row2_Left">
             <div className="DAT_SettingWarn_Body_Row2_Left_Tit">

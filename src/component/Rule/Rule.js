@@ -12,12 +12,13 @@ import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 
 import { CiSearch } from "react-icons/ci";
-import { IoAddOutline } from "react-icons/io5";
+import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { IoMdMore } from "react-icons/io";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { GrUserAdmin } from "react-icons/gr";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { FiEdit } from "react-icons/fi";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { partnerInfor } from "../../App";
@@ -239,7 +240,7 @@ export default function Rule() {
       if (rule.status) {
         console.log(rule.data);
         datarule.value = rule.data;
-        datarule.value = datarule.value.sort((a,b)=> a.ruleid_-b.ruleid_);
+        datarule.value = datarule.value.sort((a, b) => a.ruleid_ - b.ruleid_);
       }
     };
     getRule();
@@ -273,11 +274,14 @@ export default function Rule() {
       name: dataLang.formatMessage({ id: "edit" }),
       selector: (row) => (
         <>
-          {row.ruleid_ === 1 ? null : (
+          {row.ruleid_ == 1 ? (
+            <></>
+          ) : (
             <div className="DAT_TableEdit">
               <span
                 id={row.ruleid_ + "_MORE"}
-                onMouseEnter={(e) => handleModify(e, "block")}
+                // onMouseEnter={(e) => handleModify(e, "block")}
+                onClick={(e) => handleModify(e, "block")}
               >
                 <IoMdMore size={20} />
               </span>
@@ -295,7 +299,7 @@ export default function Rule() {
               id={row.ruleid_}
               onClick={(e) => handleEdit(e)}
             >
-              <MdEdit size={20} color="#216990" />
+              <FiEdit size={14} />
               &nbsp;
               {dataLang.formatMessage({ id: "edit" })}
             </div>
@@ -304,7 +308,7 @@ export default function Rule() {
               id={row.ruleid_}
               onClick={(e) => handleDel(e)}
             >
-              <MdDelete size={20} />
+              <IoTrashOutline size={16} />
               &nbsp;
               {dataLang.formatMessage({ id: "remove" })}
             </div>
@@ -336,7 +340,7 @@ export default function Rule() {
   const handleModify = (e, type) => {
     const id = e.currentTarget.id;
     var arr = id.split("_");
-
+    // console.log(id);
     const mod = document.getElementById(arr[0] + "_Modify");
     mod.style.display = type;
   };

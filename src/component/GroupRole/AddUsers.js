@@ -96,15 +96,6 @@ export default function AddUsers() {
     return (
       <div className="DAT_AddUserPopup_Box_Foot">
         <button
-          style={{
-            border: "1px solid #505050",
-            backgroundColor: "white",
-            color: "#505050",
-          }}
-        >
-          {dataLang.formatMessage({ id: "cancel" })}
-        </button>
-        <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={() => handleAddUser()}
         >

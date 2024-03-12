@@ -8,6 +8,7 @@ import { useIntl } from "react-intl";
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
+import { IoSaveOutline } from "react-icons/io5";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { userInfor } from "../../App";
@@ -43,13 +44,6 @@ const temp = signal({
     },
   },
 });
-
-const key = {
-  edit: "edits",
-  delete: "delete",
-  create: "createNew",
-  status: "status",
-};
 
 const newruledata = signal(temp.value);
 
@@ -169,8 +163,8 @@ export default function CreateRule() {
               className="DAT_CreateRule_Header_Right_Save"
               onClick={() => handleCreate()}
             >
-              <FaSave size={20} color="white" />
-              <span>{dataLang.formatMessage({ id: "save" })}</span>
+              <IoSaveOutline size={20} color="white" />
+              <span>{dataLang.formatMessage({ id: 'save' })}</span>
             </div>
             <div
               className="DAT_CreateRule_Header_Right_Close"

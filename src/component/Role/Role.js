@@ -13,14 +13,16 @@ import { partnerInfor } from "../../App";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 
+import { AiOutlineUserAdd } from "react-icons/ai";
 import { FaUserPlus } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
-import { IoAddOutline } from "react-icons/io5";
+import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { IoMdMore } from "react-icons/io";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { LuUserSquare } from "react-icons/lu";
 import { datarule } from "../Rule/Rule";
+import { FiEdit } from "react-icons/fi";
 
 export const roleData = signal({});
 export const roleState = signal("default");
@@ -109,7 +111,8 @@ export default function Role(props) {
             <div className="DAT_TableEdit">
               <span
                 id={row.id_ + "_MORE"}
-                onMouseEnter={(e) => handleModify(e, "block")}
+                // onMouseEnter={(e) => handleModify(e, "block")}
+                onClick={(e) => handleModify(e, "block")}
               >
                 <IoMdMore size={20} />
               </span>
@@ -126,7 +129,7 @@ export default function Role(props) {
               id={row.id_}
               onClick={(e) => handleEdit(e)}
             >
-              <MdEdit size={20} color="#216990" />
+              <FiEdit size={14} />
               &nbsp;
               {dataLang.formatMessage({ id: "edit" })}
             </div>
@@ -135,7 +138,7 @@ export default function Role(props) {
               id={row.usr_}
               onClick={(e) => handleDelete_(e)}
             >
-              <MdDelete size={20} />
+              <IoTrashOutline size={16} />
               &nbsp;
               {dataLang.formatMessage({ id: "remove" })}
             </div>
@@ -252,7 +255,7 @@ export default function Role(props) {
               onClick={() => (roleState.value = "create")}
             >
               <span>
-                <FaUserPlus color="white" size={20} />
+                <AiOutlineUserAdd color="white" size={20} />
                 &nbsp;
                 {dataLang.formatMessage({ id: "createNew" })}
               </span>

@@ -15,7 +15,10 @@ import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
 import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
 import { RiMailSettingsLine } from "react-icons/ri";
-
+import { useSelector } from "react-redux";
+import { callApi } from "../Api/Api";
+import { partnerInfor, phuhosting, userInfor } from "../../App";
+import { IoTrashOutline } from "react-icons/io5";
 
 const tab = signal("all");
 const tabMobile = signal(false);
@@ -84,7 +87,7 @@ export default function Warn(props) {
       name: dataLang.formatMessage({ id: "level" }),
       selector: (row) => (
         <>
-          {row.level === "warning" ? (
+          {row.level === "warn" ? (
             <div className="DAT_TableWarning">
               {dataLang.formatMessage({ id: "warn" })}
             </div>
@@ -117,7 +120,8 @@ export default function Warn(props) {
           <div className="DAT_TableEdit">
             <span
               id={row.boxid + "" + row.warnid + "_MORE"}
-              onMouseEnter={(e) => handleModify(e, "block")}
+              // onMouseEnter={(e) => handleModify(e, "block")}
+              onClick={(e) => handleModify(e, "block")}
             >
               <IoMdMore size={20} />
             </span>
@@ -145,7 +149,7 @@ export default function Warn(props) {
               }}
               onClick={(e) => handleDeleteWarn(e)}
             >
-              <MdDelete size={20} />
+              <IoTrashOutline size={16} />
               &nbsp;
               {dataLang.formatMessage({ id: "delete" })}
             </div>
@@ -299,7 +303,7 @@ export default function Warn(props) {
                                 {item.plant}
                               </div>
                               <div className="DAT_WarnMobile_Content_Top_Left_Level">
-                                {item.level === "warning" ? (
+                                {item.level === "warn" ? (
                                   <div className="DAT_TableWarning">
                                     {dataLang.formatMessage({ id: "warn" })}
                                   </div>
@@ -358,7 +362,7 @@ export default function Warn(props) {
                                 {item.plant}
                               </div>
                               <div className="DAT_WarnMobile_Content_Top_Left_Level">
-                                {item.level === "warning" ? (
+                                {item.level === "warn" ? (
                                   <div className="DAT_TableWarning">
                                     {dataLang.formatMessage({ id: "warn" })}
                                   </div>
@@ -417,7 +421,7 @@ export default function Warn(props) {
                                 {item.plant}
                               </div>
                               <div className="DAT_WarnMobile_Content_Top_Left_Level">
-                                {item.level === "warning" ? (
+                                {item.level === "warn" ? (
                                   <div className="DAT_TableWarning">
                                     {dataLang.formatMessage({ id: "warn" })}
                                   </div>

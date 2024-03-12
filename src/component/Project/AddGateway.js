@@ -100,7 +100,7 @@ export default function AddGateway(props) {
       </div>
 
       <div className="DAT_AddGateway_Foot">
-        <button
+        {/* <button
           style={{
             border: "1px solid #505050",
             backgroundColor: "white",
@@ -109,7 +109,7 @@ export default function AddGateway(props) {
           onClick={() => handleClose()}
         >
           {dataLang.formatMessage({ id: 'cancel' })}
-        </button>
+        </button> */}
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={(e) => handleSave(e)}

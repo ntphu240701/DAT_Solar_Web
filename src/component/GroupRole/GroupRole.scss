@@ -47,6 +47,7 @@
         &:hover {
             background-color: #3e80fb;
         }
+
         & span {
             display: flex;
             justify-content: center;
@@ -86,12 +87,13 @@
         &_DevideTable {
             width: 100%;
             display: flex;
+
             // flex-wrap: wrap;
             &_Left {
                 width: 300px;
-                border-right:  solid 1px rgba(198, 198, 198, 0.5);
-                
-                &_Head{
+                border-right: solid 1px rgba(198, 198, 198, 0.5);
+
+                &_Head {
                     height: 52px;
                     font-size: 12px;
                     font-family: sans-serif;
@@ -99,31 +101,32 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    background-color:   #888;                    
+                    background-color: #6495ed;
+                    color: white;
                     border-top: solid 1px rgba(198, 198, 198, 0.5);
                     border-bottom: solid 1px rgba(198, 198, 198, 0.5);
                 }
 
 
-                &_ItemList{
-                 
+                &_ItemList {
+
                     width: 100%;
                     background-color: white;
                     cursor: pointer;
 
-                   
 
-                    
-                    &_Item{
+
+
+                    &_Item {
                         height: 61px;
                         padding: 10px;
                         box-sizing: border-box;
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
-                        border-bottom:  solid 1px rgba(198, 198, 198, 0.5);
+                        border-bottom: solid 1px rgba(198, 198, 198, 0.5);
 
-                        &_More{
+                        &_More {
                             background-color: #e1e1e1;
                             padding: 5px;
                             box-sizing: border-box;
@@ -131,17 +134,21 @@
                             display: flex;
                             align-items: center;
                             justify-content: center;
-                            gap:5px;
+                            gap: 5px;
                             box-shadow: 3px 3px 5px rgba(226, 226, 226, 0.5);
                         }
-                        
+
                     }
+
                     // &_Item:last-child{
-                       
+
                     // }
 
-                };
+                }
+
+                ;
             }
+
             &_Right {
 
                 width: 100%;
@@ -150,21 +157,22 @@
 
                 // width: 100%;
                 &_ItemList {
-                   width: 100%;
-                   height: 100%;
-                   background-color: white;
-                   //adding: 10px;
+                    width: 100%;
+                    height: 100%;
+                    background-color: white;
+                    //adding: 10px;
                 }
-                
+
             }
+
             // background-color: rgb(207, 207, 207, 0.4);
             // display: flex;
             // justify-content: center;
             // align-self: center;
             // &_Left {
             //     min-width: 250px;
-                
-                
+
+
             //     border-right: 1px solid rgb(207, 207, 207);
             //     &_Head {
             //         display: flex;
@@ -214,7 +222,7 @@
             //                 position: absolute;
             //                 right: 10px;
             //                 gap: 10px;
-                            
+
             //                 &_Delete {
             //                     position: relative;
             //                     color: red;
@@ -392,6 +400,7 @@
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
+
     &::-webkit-scrollbar {
         display: none;
     }
@@ -409,6 +418,7 @@
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
+
     &::-webkit-scrollbar {
         display: none;
     }
@@ -430,6 +440,7 @@
         left: 0px;
         align-items: center;
         padding: 20px;
+
         &_Left {
             flex: 5;
 
@@ -438,6 +449,7 @@
                 //padding: 16px;
             }
         }
+
         &_Right {
             flex: 5;
             //padding: 16px;
@@ -485,6 +497,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+
             & h4 {
                 background-color: rgb(230, 230, 230);
                 padding: 15px;
@@ -497,9 +510,11 @@
                 align-items: center;
                 padding-left: 15px;
                 margin-bottom: 20px;
+
                 & span {
                     width: 140px;
                 }
+
                 & input {
                     padding: 5px;
                     border: none;
@@ -526,6 +541,7 @@
                         gap: 10px;
                     }
                 }
+
                 :last-child {
                     border: none;
                 }
@@ -562,6 +578,7 @@
             display: flex;
             justify-content: flex-end;
             flex: 5;
+
             &_Icon {
                 display: flex;
                 align-items: center;
@@ -620,6 +637,7 @@
             display: flex;
             justify-content: flex-end;
             flex: 5;
+
             &_Icon {
                 display: flex;
                 align-items: center;
@@ -636,10 +654,12 @@
         display: flex;
         flex-direction: column;
         gap: 5px;
+
         &_Input {
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             & input {
                 padding: 5px;
                 border: 0.5px solid gray;
@@ -692,6 +712,7 @@
             display: flex;
             justify-content: flex-end;
             flex: 5;
+
             &_Icon {
                 display: flex;
                 align-items: center;
@@ -725,6 +746,7 @@
 @media (max-width: 900px) {
     .DAT_Role {
         width: 98%;
+
         //height: 68vh;
         // overflow: hidden;
         &_Content {

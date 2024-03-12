@@ -7,6 +7,7 @@ import { isMobile } from "../Navigation/Navigation";
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
+import { IoSaveOutline } from "react-icons/io5";
 
 export const checkbox = signal({
   tthtc: { status: false },
@@ -108,7 +109,7 @@ export default function Create() {
           </div>
           <div className="DAT_Edit_Header_Right">
             <div className="DAT_Edit_Header_Right_Save">
-              <FaSave size={20} color="white" />
+              <IoSaveOutline size={20} color="white" />
               <span>Lưu</span>
             </div>
             <div className="DAT_Edit_Header_Right_Close">
