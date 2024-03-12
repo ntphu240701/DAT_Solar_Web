@@ -646,14 +646,11 @@ export default function ProjectData(props) {
     }
     getTotal();
 
-
-
     //data Logger
     const getLogger = async () => {
       let d = await callApi('post', host.DATA + '/getLogger', { plantid: projectData.value.plantid })
-      console.log(d)
       temp.value = d;
-     
+      // console.log(d)
       d.map(async (item) => {
         const res = await invtCloud('{"deviceCode":"' + item.sn + '"}', Token.value.token);
         // console.log(res)

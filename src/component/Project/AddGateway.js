@@ -42,7 +42,6 @@ export default function AddGateway(props) {
         name: name.current.value,
         type: type.current.value,
       });
-      console.log(d);
       if (d.status) {
         temp.value = [...temp.value, d.data];
         popupAddGateway.value = false;
