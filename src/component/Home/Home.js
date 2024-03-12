@@ -108,6 +108,9 @@ export default function Home(props) {
     libraries: ["places"]
   });
 
+
+
+
   const initMap = async (data) => {
     const { AdvancedMarkerElement } = await loader.importLibrary("marker");
     const { Map } = await loader.importLibrary("maps");
@@ -202,7 +205,6 @@ export default function Home(props) {
         plantid: item.plantid,
         year: moment(new Date()).format("YYYY"),
       })
-
 
       if (chart.status) {
         sum_month[i] = chart.data.data.map(item => item.value).reduce((a, b) => Number(a) + Number(b), 0)
@@ -309,7 +311,6 @@ export default function Home(props) {
         partnerid: partnerInfor.value.partnerid,
         type: userInfor.value.type,
       })
-      console.log(d)
       if (d.status === true) {
         initMap(d.data);
         getChart(d.data)
@@ -329,7 +330,6 @@ export default function Home(props) {
         partnerid: partnerInfor.value.partnerid,
         type: userInfor.value.type,
       })
-      console.log(d)
       if (d.status) {
         logger.value = d.data
         d.data.map(async (item) => {

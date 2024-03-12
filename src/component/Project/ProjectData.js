@@ -50,13 +50,9 @@ const open = signal([]);
 const close = signal([]);
 const cal = signal({});
 
-const dataMeter = [
+const dataMeter = [];
 
-];
-
-const dataAlert = [
-
-];
+const dataAlert = [];
 
 export default function ProjectData(props) {
   const dataLang = useIntl();
@@ -629,7 +625,6 @@ export default function ProjectData(props) {
     const getTotal = async () => {
       const d = await callApi('post', host.DATA + '/getTotalChart', { plantid: projectData.value.plantid });
       setDataTotal([]);
-      // console.log(d)
       if (d.status) {
         //console.log(d.data)
         let vTotal = dataLang.formatMessage({ id: d.data.name });
@@ -650,7 +645,6 @@ export default function ProjectData(props) {
     const getLogger = async () => {
       let d = await callApi('post', host.DATA + '/getLogger', { plantid: projectData.value.plantid })
       temp.value = d;
-      // console.log(d)
       d.map(async (item) => {
         const res = await invtCloud('{"deviceCode":"' + item.sn + '"}', Token.value.token);
         // console.log(res)
@@ -1863,518 +1857,18 @@ const Graph = (props) => {
         switch (props.type) {
           case "grid":
             return (
-              <>
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine" style={{ scale: isMobile.value ? "0.8" : "1" }}>
-                  <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine_Solar">
-                    <img src="/dat_picture/solar-panel.png" alt="" />
-                  </div>
-                  <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine_G">
-                    <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine_G_B">
-                      <svg width="220px" height="25px" verssion="1.1" >
-                        <path
-                          className="path"
-                          d="M 6 6 L 210 6"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            fill: "none",
-                            stroke: "rgb(107, 107, 107,0.4)",
-                            strokeWidth: "5",
-                            strokeLinecap: "round",
-                            overflow: "hidden",
-                          }}
-                        />
-                        {projectData.value.state
-                          ? <path
-                            d="M 0 0 L 20 0"
-                            style={{
-                              position: "absolute",
-                              zIndex: "20",
-                              top: "0",
-                              left: "0",
-                              stroke: "rgb(103, 179, 255)",
-                              strokeWidth: "5",
-                              strokeLinecap: "round",
-                            }}
-                          >
-                            <animateMotion
-                              path="M 6 6 L 190 6"
-                              dur="2s"
-                              repeatCount="indefinite"
-                            ></animateMotion>
-                          </path>
-                          : <></>
-                        }
-                      </svg>
-                      {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
-                    </div>
-                  </div>
-                  <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine_Grid">
-                    <img src="/dat_picture/grid.png" alt="" />
-                  </div>
-                </div>
-              </>
+              <GraphGrid />
             );
           case "consumption":
             return (<></>);
           case "hybrid":
-            return (<>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop">
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P1">
-                  <svg width="120px" height="160px" version="1.1">
-                    <path
-                      className="path"
-                      d="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        fill: "none",
-                        stroke: "rgb(107, 107, 107,0.4)",
-                        strokeWidth: "5",
-                        strokeLinecap: "round",
-                        overflow: "hidden",
-                      }}
-                    />
-                    <circle
-                      r={4}
-                      style={{
-                        fill: "none",
-                        stroke: "#3e80fb",
-                        strokeWidth: "3",
-                        position: "absolute",
-                        top: "0",
-                        left: "0",
-                      }}
-                    >
-                      <animateMotion
-                        path="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
-                        dur="2s"
-                        repeatCount="indefinite"
-                      ></animateMotion>
-                    </circle>
-                  </svg>
-                  {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
-                </div>
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2">
-                  <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Solar">
-                    <img src="/dat_picture/solar-panel.png" alt="" />
-                  </div>
-                  <svg width="70px" height="40px" version="1.1">
-                    <path
-                      d="M 35 7 L 35 35"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        fill: "none",
-                        stroke: "rgb(107, 107, 107,0.4)",
-                        strokeWidth: "5",
-                        strokeLinecap: "round",
-                        overflow: "hidden",
-                      }}
-                    />
-                    <circle
-                      r={4}
-                      style={{
-                        fill: "none",
-                        stroke: "#3e80fb",
-                        strokeWidth: "3",
-                        position: "absolute",
-                        top: "0",
-                        left: "0",
-                      }}
-                    >
-                      <animateMotion
-                        path="M 35 7 L 35 35"
-                        dur="2s"
-                        repeatCount="indefinite"
-                      ></animateMotion>
-                    </circle>
-                  </svg>
-                  <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Load">
-                    <img src="/dat_picture/load.png" alt="" />
-                  </div>
-                </div>
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P3">
-                  <svg width="120px" height="160px" version="1.1">
-                    <path
-                      d="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        fill: "none",
-                        stroke: "rgb(107, 107, 107,0.4)",
-                        strokeWidth: "5",
-                        strokeLinecap: "round",
-                        overflow: "hidden",
-                      }}
-                    />
-                    <circle
-                      r={4}
-                      style={{
-                        fill: "none",
-                        stroke: "#3e80fb",
-                        strokeWidth: "3",
-                        position: "absolute",
-                        top: "0",
-                        left: "0",
-                      }}
-                    >
-                      <animateMotion
-                        path="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
-                        dur="2s"
-                        repeatCount="indefinite"
-                      ></animateMotion>
-                    </circle>
-                  </svg>
-                  {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line2_Ball"></div> */}
-                </div>
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid">
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_Pin">
-                  <img src="/dat_picture/battery.png" alt="" />
-                </div>
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G">
-                  <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_T">
-                    <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P1">
-                      <svg width="120px" height="45px" version="1.1">
-                        <path
-                          className="path"
-                          d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            fill: "none",
-                            stroke: "rgb(107, 107, 107,0.4)",
-                            strokeWidth: "5",
-                            strokeLinecap: "round",
-                            overflow: "hidden",
-                          }}
-                        />
-                        <circle
-                          r={4}
-                          style={{
-                            fill: "none",
-                            stroke: "#3e80fb",
-                            strokeWidth: "3",
-                            position: "absolute",
-                            top: "0",
-                            left: "0",
-                          }}
-                        >
-                          <animateMotion
-                            path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-                            dur="2s"
-                            repeatCount="indefinite"
-                          ></animateMotion>
-                        </circle>
-                      </svg>
-                      {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
-                    </div>
-                    <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P2">
-                      <svg width="110px" height="45px" version="1.1">
-                        <path
-                          d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            fill: "none",
-                            stroke: "rgb(107, 107, 107,0.4)",
-                            strokeWidth: "5",
-                            strokeLinecap: "round",
-                            overflow: "hidden",
-                          }}
-                        />
-                        <circle
-                          r={4}
-                          style={{
-                            fill: "none",
-                            stroke: "#3e80fb",
-                            strokeWidth: "3",
-                            position: "absolute",
-                            top: "0",
-                            left: "0",
-                          }}
-                        >
-                          <animateMotion
-                            path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
-                            dur="2s"
-                            repeatCount="indefinite"
-                          ></animateMotion>
-                        </circle>
-                      </svg>
-                      {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line2_Ball"></div> */}
-                    </div>
-                  </div>
-                  <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineBottom_G_B">
-                    <svg width="230px" height="25px" verssion="1.1">
-                      <path
-                        className="path"
-                        d="M 220 7 L 14 7"
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          fill: "none",
-                          stroke: "rgb(107, 107, 107,0.4)",
-                          strokeWidth: "5",
-                          strokeLinecap: "round",
-                          overflow: "hidden",
-                        }}
-                      />
-                      <circle
-                        r={4}
-                        style={{
-                          fill: "none",
-                          stroke: "#3e80fb",
-                          strokeWidth: "3",
-                          position: "absolute",
-                          top: "0",
-                          left: "0",
-                        }}
-                      >
-                        <animateMotion
-                          path="M 220 7 L 14 7"
-                          dur="2s"
-                          repeatCount="indefinite"
-                        ></animateMotion>
-                      </circle>
-                    </svg>
-                    {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
-                  </div>
-                </div>
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_Grid">
-                  <img src="/dat_picture/grid.png" alt="" />
-                </div>
-              </div>
-            </>);
+            return (
+              <GraphFull />
+            );
           case "ESS":
-            return (<>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop">
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P1">
-                  <svg width="120px" height="160px" version="1.1">
-                    <path
-                      className="path"
-                      d="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        fill: "none",
-                        stroke: "rgb(107, 107, 107,0.4)",
-                        strokeWidth: "5",
-                        strokeLinecap: "round",
-                        overflow: "hidden",
-                      }}
-                    />
-                    <circle
-                      r={4}
-                      style={{
-                        fill: "none",
-                        stroke: "#3e80fb",
-                        strokeWidth: "3",
-                        position: "absolute",
-                        top: "0",
-                        left: "0",
-                      }}
-                    >
-                      <animateMotion
-                        path="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
-                        dur="2s"
-                        repeatCount="indefinite"
-                      ></animateMotion>
-                    </circle>
-                  </svg>
-                  {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
-                </div>
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2">
-                  <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Solar">
-                    <img src="/dat_picture/solar-panel.png" alt="" />
-                  </div>
-                  <svg width="70px" height="40px" version="1.1">
-                    <path
-                      d="M 35 7 L 35 35"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        fill: "none",
-                        stroke: "rgb(107, 107, 107,0.4)",
-                        strokeWidth: "5",
-                        strokeLinecap: "round",
-                        overflow: "hidden",
-                      }}
-                    />
-                    <circle
-                      r={4}
-                      style={{
-                        fill: "none",
-                        stroke: "#3e80fb",
-                        strokeWidth: "3",
-                        position: "absolute",
-                        top: "0",
-                        left: "0",
-                      }}
-                    >
-                      <animateMotion
-                        path="M 35 7 L 35 35"
-                        dur="2s"
-                        repeatCount="indefinite"
-                      ></animateMotion>
-                    </circle>
-                  </svg>
-                  <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Load">
-                    <img src="/dat_picture/load.png" alt="" />
-                  </div>
-                </div>
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P3">
-                  <svg width="120px" height="160px" version="1.1">
-                    <path
-                      d="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        fill: "none",
-                        stroke: "rgb(107, 107, 107,0.4)",
-                        strokeWidth: "5",
-                        strokeLinecap: "round",
-                        overflow: "hidden",
-                      }}
-                    />
-                    <circle
-                      r={4}
-                      style={{
-                        fill: "none",
-                        stroke: "#3e80fb",
-                        strokeWidth: "3",
-                        position: "absolute",
-                        top: "0",
-                        left: "0",
-                      }}
-                    >
-                      <animateMotion
-                        path="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
-                        dur="2s"
-                        repeatCount="indefinite"
-                      ></animateMotion>
-                    </circle>
-                  </svg>
-                  {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line2_Ball"></div> */}
-                </div>
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid">
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_Pin">
-                  <img src="/dat_picture/battery.png" alt="" />
-                </div>
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G">
-                  <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_T">
-                    <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P1">
-                      <svg width="120px" height="45px" version="1.1">
-                        <path
-                          className="path"
-                          d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            fill: "none",
-                            stroke: "rgb(107, 107, 107,0.4)",
-                            strokeWidth: "5",
-                            strokeLinecap: "round",
-                            overflow: "hidden",
-                          }}
-                        />
-                        <circle
-                          r={4}
-                          style={{
-                            fill: "none",
-                            stroke: "#3e80fb",
-                            strokeWidth: "3",
-                            position: "absolute",
-                            top: "0",
-                            left: "0",
-                          }}
-                        >
-                          <animateMotion
-                            path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-                            dur="2s"
-                            repeatCount="indefinite"
-                          ></animateMotion>
-                        </circle>
-                      </svg>
-                      {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
-                    </div>
-                    <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P2">
-                      <svg width="110px" height="45px" version="1.1">
-                        <path
-                          d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            fill: "none",
-                            stroke: "rgb(107, 107, 107,0.4)",
-                            strokeWidth: "5",
-                            strokeLinecap: "round",
-                            overflow: "hidden",
-                          }}
-                        />
-                        <circle
-                          r={4}
-                          style={{
-                            fill: "none",
-                            stroke: "#3e80fb",
-                            strokeWidth: "3",
-                            position: "absolute",
-                            top: "0",
-                            left: "0",
-                          }}
-                        >
-                          <animateMotion
-                            path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
-                            dur="2s"
-                            repeatCount="indefinite"
-                          ></animateMotion>
-                        </circle>
-                      </svg>
-                      {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line2_Ball"></div> */}
-                    </div>
-                  </div>
-                  <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineBottom_G_B">
-                    <svg width="230px" height="25px" verssion="1.1">
-                      <path
-                        className="path"
-                        d="M 220 7 L 14 7"
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          fill: "none",
-                          stroke: "rgb(107, 107, 107,0.4)",
-                          strokeWidth: "5",
-                          strokeLinecap: "round",
-                          overflow: "hidden",
-                        }}
-                      />
-                      <circle
-                        r={4}
-                        style={{
-                          fill: "none",
-                          stroke: "#3e80fb",
-                          strokeWidth: "3",
-                          position: "absolute",
-                          top: "0",
-                          left: "0",
-                        }}
-                      >
-                        <animateMotion
-                          path="M 220 7 L 14 7"
-                          dur="2s"
-                          repeatCount="indefinite"
-                        ></animateMotion>
-                      </circle>
-                    </svg>
-                    {/* <div className="DAT_ProjectData_Body_Data_Center_Graph_Line1_Ball"></div> */}
-                  </div>
-                </div>
-                <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_Grid">
-                  <img src="/dat_picture/grid.png" alt="" />
-                </div>
-              </div>
-            </>);
+            return (
+              <GraphFull />
+            );
           default:
             <></>;
         }
@@ -2382,6 +1876,365 @@ const Graph = (props) => {
     </div>
   );
 };
+
+const GraphGrid = (props) => {
+
+  const LineA = (props) => {
+    return (
+      <svg width={`${props.width}px`} height={`${props.height}px`} verssion="1.1" >
+        <path
+          className="path"
+          d="M 6 6 L 210 6"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        {projectData.value.state
+          ? <path
+            d="M 0 0 L 20 0"
+            style={{
+              position: "absolute",
+              zIndex: "20",
+              top: "0",
+              left: "0",
+              stroke: "rgb(103, 179, 255)",
+              strokeWidth: "5",
+              strokeLinecap: "round",
+            }}
+          >
+            <animateMotion
+              path="M 6 6 L 190 6"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </path>
+          : <></>
+        }
+      </svg>
+    )
+  }
+
+  const ImgGrid = (props) => {
+    return (
+      <img src="/dat_picture/grid.png" style={{ width: `${props.width}px`, height: `${props.height}px` }} alt="" />
+    )
+  }
+
+  const ImgSolar = (props) => {
+    return (
+      <img src="/dat_picture/solar-panel.png" style={{ width: `${props.width}px`, height: `${props.height}px` }} alt="" />
+    )
+  }
+
+  return (
+    <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine" style={{ scale: isMobile.value ? "0.8" : "1" }}>
+      <div>
+        <ImgSolar width="100" height="100" />
+      </div>
+      <div >
+        <LineA width="220" height="25" />
+      </div>
+      <div >
+        <ImgGrid width="100" height="180" />
+      </div>
+    </div>
+  )
+}
+
+const GraphFull = (props) => {
+
+  const LineA = (props) => {
+    return (
+      <svg width={`${props.width}px`} height={`${props.height}px`} version="1.1">
+        <path
+          className="path"
+          d="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        <circle
+          r={4}
+          style={{
+            fill: "none",
+            stroke: "#3e80fb",
+            strokeWidth: "3",
+            position: "absolute",
+            top: "0",
+            left: "0",
+          }}
+        >
+          <animateMotion
+            path="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
+            dur="2s"
+            repeatCount="indefinite"
+          ></animateMotion>
+        </circle>
+      </svg>
+    )
+  }
+
+  const LineB = (props) => {
+    return (
+      <svg width={`${props.width}px`} height={`${props.height}px`} version="1.1">
+        <path
+          d="M 35 7 L 35 35"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        <circle
+          r={4}
+          style={{
+            fill: "none",
+            stroke: "#3e80fb",
+            strokeWidth: "3",
+            position: "absolute",
+            top: "0",
+            left: "0",
+          }}
+        >
+          <animateMotion
+            path="M 35 7 L 35 35"
+            dur="2s"
+            repeatCount="indefinite"
+          ></animateMotion>
+        </circle>
+      </svg>
+    )
+  }
+
+  const LineC = (props) => {
+    return (
+      <svg width={`${props.width}px`} height={`${props.height}px`} version="1.1">
+        <path
+          d="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        <circle
+          r={4}
+          style={{
+            fill: "none",
+            stroke: "#3e80fb",
+            strokeWidth: "3",
+            position: "absolute",
+            top: "0",
+            left: "0",
+          }}
+        >
+          <animateMotion
+            path="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
+            dur="2s"
+            repeatCount="indefinite"
+          ></animateMotion>
+        </circle>
+      </svg>
+    )
+  }
+
+  const LineD = (props) => {
+    return (
+      <svg width={`${props.width}px`} height={`${props.height}px`} version="1.1">
+        <path
+          className="path"
+          d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        <circle
+          r={4}
+          style={{
+            fill: "none",
+            stroke: "#3e80fb",
+            strokeWidth: "3",
+            position: "absolute",
+            top: "0",
+            left: "0",
+          }}
+        >
+          <animateMotion
+            path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
+            dur="2s"
+            repeatCount="indefinite"
+          ></animateMotion>
+        </circle>
+      </svg>
+    )
+  }
+
+  const LineE = (props) => {
+    return (
+      <svg width={`${props.width}px`} height={`${props.height}px`} version="1.1">
+        <path
+          d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        <circle
+          r={4}
+          style={{
+            fill: "none",
+            stroke: "#3e80fb",
+            strokeWidth: "3",
+            position: "absolute",
+            top: "0",
+            left: "0",
+          }}
+        >
+          <animateMotion
+            path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+            dur="2s"
+            repeatCount="indefinite"
+          ></animateMotion>
+        </circle>
+      </svg>
+    )
+  }
+
+  const LineF = (props) => {
+    return (
+      <svg width={`${props.width}px`} height={`${props.height}px`} verssion="1.1">
+        <path
+          className="path"
+          d="M 220 7 L 14 7"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        <circle
+          r={4}
+          style={{
+            fill: "none",
+            stroke: "#3e80fb",
+            strokeWidth: "3",
+            position: "absolute",
+            top: "0",
+            left: "0",
+          }}
+        >
+          <animateMotion
+            path="M 220 7 L 14 7"
+            dur="2s"
+            repeatCount="indefinite"
+          ></animateMotion>
+        </circle>
+      </svg>
+    )
+  }
+
+  const ImgSolar = (props) => {
+    return (
+      <img src="/dat_picture/solar-panel.png" style={{ width: `${props.width}px`, height: `${props.height}px` }} alt="" />
+    )
+  }
+
+  const ImgGrid = (props) => {
+    return (
+      <img src="/dat_picture/grid.png" style={{ width: `${props.width}px`, height: `${props.height}px` }} alt="" />
+    )
+  }
+
+  const ImgLoad = (props) => {
+    return (
+      <img src="/dat_picture/load.png" style={{ width: `${props.width}px`, height: `${props.height}px` }} alt="" />
+    )
+  }
+
+  const ImgBat = (props) => {
+    return (
+      <img src="/dat_picture/battery.png" style={{ width: `${props.width}px`, height: `${props.height}px` }} alt="" />
+    )
+  }
+
+  return (
+    <>
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P1">
+          <LineA width="120" height="160" />
+        </div>
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Solar">
+            <ImgSolar width="70" height="70" />
+          </div>
+          <LineB width="70" height="40" />
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Load">
+            <ImgLoad width="70" height="70" />
+          </div>
+        </div>
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P3">
+          <LineC width="120" height="160" />
+        </div>
+      </div>
+      <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid">
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_Pin">
+          <ImgBat width="70" height="70" />
+        </div>
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_T">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P1">
+              <LineD width="120" height="45" />
+            </div>
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P2">
+              <LineE width="110" height="45" />
+            </div>
+          </div>
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineBottom_G_B">
+            <LineF width="230" height="25" />
+          </div>
+        </div>
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_Grid">
+          <ImgGrid width="70" height="70" />
+        </div>
+      </div>
+    </>
+  )
+}
 
 const Production = (props) => {
   const dataLang = useIntl();

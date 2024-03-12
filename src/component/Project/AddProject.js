@@ -55,12 +55,9 @@ const BasicInfo = (props) => {
 
   const handleMap = (e) => {
     const addr = document.getElementById("addr")
-    console.log(addr.value)
     setKey(process.env.REACT_APP_GGKEY);
     geocode(RequestType.ADDRESS, addr.value)
       .then((response) => {
-        console.log(response.results[0].geometry.location);
-
         var long_ = document.getElementById("long")
         var lat_ = document.getElementById("lat")
         lat_.value = response.results[0].geometry.location.lat
