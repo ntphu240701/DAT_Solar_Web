@@ -131,7 +131,7 @@ export default function Warn(props) {
       name: dataLang.formatMessage({ id: "level" }),
       selector: (row) => (
         <>
-          {row.level === "warning" ? (
+          {row.level === "warn" ? (
             <div className="DAT_TableWarning">
               {dataLang.formatMessage({ id: "warn" })}
             </div>
@@ -346,7 +346,7 @@ export default function Warn(props) {
                                 {item.plant}
                               </div>
                               <div className="DAT_WarnMobile_Content_Top_Left_Level">
-                                {item.level === "warning" ? (
+                                {item.level === "warn" ? (
                                   <div className="DAT_TableWarning">
                                     {dataLang.formatMessage({ id: "warn" })}
                                   </div>
@@ -405,7 +405,7 @@ export default function Warn(props) {
                                 {item.plant}
                               </div>
                               <div className="DAT_WarnMobile_Content_Top_Left_Level">
-                                {item.level === "warning" ? (
+                                {item.level === "warn" ? (
                                   <div className="DAT_TableWarning">
                                     {dataLang.formatMessage({ id: "warn" })}
                                   </div>
@@ -464,7 +464,7 @@ export default function Warn(props) {
                                 {item.plant}
                               </div>
                               <div className="DAT_WarnMobile_Content_Top_Left_Level">
-                                {item.level === "warning" ? (
+                                {item.level === "warn" ? (
                                   <div className="DAT_TableWarning">
                                     {dataLang.formatMessage({ id: "warn" })}
                                   </div>

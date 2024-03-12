@@ -229,7 +229,7 @@ export default function Rule() {
           <div className="DAT_TableEdit">
             <span
               id={row.ruleid + "_MORE"}
-              onMouseEnter={(e) => handleModify(e, "block")}
+              onClick={(e) => handleModify(e, "block")}
             >
               <IoMdMore size={20} />
             </span>

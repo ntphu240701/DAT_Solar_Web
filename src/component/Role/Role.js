@@ -106,7 +106,7 @@ export default function Role(props) {
             ? <div className="DAT_TableEdit">
               <span
                 id={row.id_ + "_MORE"}
-                onMouseEnter={(e) => handleModify(e, "block")}
+                onClick={(e) => handleModify(e, "block")}
               >
                 <IoMdMore size={20} />
               </span>

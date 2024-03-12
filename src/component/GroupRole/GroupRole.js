@@ -217,7 +217,7 @@ const GroupUsers = () => {
               <div
                 className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Shortcut"
                 id={item.id_ + "_dot"}
-                onMouseEnter={(e) => handleShowFunction(e)}
+                onClick={(e) => handleShowFunction(e)}
               >
                 <IoMdMore size={20} color="grey" />
               </div>

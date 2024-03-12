@@ -41,7 +41,6 @@ export default function SettingWarn(props) {
         </div>
 
         <div className="DAT_SettingWarn_Body_Line" />
-
         <div className="DAT_SettingWarn_Body_Row2">
           <div className="DAT_SettingWarn_Body_Row2_Left">
             <div className="DAT_SettingWarn_Body_Row2_Left_Tit">
