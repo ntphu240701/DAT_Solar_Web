@@ -8,6 +8,7 @@ import { useIntl } from "react-intl";
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
+import { IoSaveOutline } from "react-icons/io5";
 
 const reportname = signal();
 
@@ -171,7 +172,7 @@ export default function Create() {
           <div className="DAT_EditReport_Header_Right_Save"
             onClick={() => handleSaveData()}
           >
-            <FaSave size={20} color="white" />
+            <IoSaveOutline size={20} color="white" />
             <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
           <div className="DAT_EditReport_Header_Right_Close">

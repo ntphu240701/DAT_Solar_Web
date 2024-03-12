@@ -358,8 +358,9 @@
         &_Left {
             flex: 5;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            // flex-direction: column;
+            gap: 16px;
+            align-items: center;
 
             & p {
                 padding-bottom: 10px;

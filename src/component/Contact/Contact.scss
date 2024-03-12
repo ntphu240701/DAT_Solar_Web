@@ -478,11 +478,11 @@
                         -moz-box-sizing: border-box;
                     }
 
-                   
+
                 }
             }
 
-          
+
         }
     }
 }
@@ -493,25 +493,26 @@
             &_Row1 {
                 &_Content {
                     display: contents;
+                    flex-wrap: wrap;
+                    overflow: hidden;
+
+                    &_Item {
+                        padding: 16px;
+                        box-sizing: border-box;
+
+                    }
                 }
             }
 
             &_Row2 {
                 display: contents;
+                flex-wrap: wrap;
+                overflow: hidden;
 
-                &_Left {
+                &_Item {
                     padding: 16px;
                     box-sizing: border-box;
 
-                    &_Content {}
-                }
-
-                &_Right {
-                    padding: 16px;
-
-                    &_Content {
-                        display: contents;
-                    }
                 }
             }
         }

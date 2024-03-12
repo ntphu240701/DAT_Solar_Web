@@ -85,7 +85,7 @@ export default function ConfirmDeleteGroup() {
       </div>
 
       <div className="DAT_DeleteGroupPopup_Box_Foot">
-        <button
+        {/* <button
           style={{
             border: "1px solid #505050",
             backgroundColor: "white",
@@ -94,7 +94,7 @@ export default function ConfirmDeleteGroup() {
           onClick={() => (groupDelState.value = false)}
         >
           {dataLang.formatMessage({ id: 'cancel' })}
-        </button>
+        </button> */}
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={() => {

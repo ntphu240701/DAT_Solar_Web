@@ -118,7 +118,7 @@ export default function PopupAva(props) {
       </div>
 
       <div className="DAT_PopupAva_Foot">
-        <button
+        {/* <button
           style={{
             border: "1px solid #505050",
             backgroundColor: "white",
@@ -130,7 +130,7 @@ export default function PopupAva(props) {
         >
           {dataLang.formatMessage({ id: 'cancel' })}
 
-        </button>
+        </button> */}
         <button style={{ backgroundColor: "#048FFF", color: "white" }} onClick={() => { handleSave() }}>
           {dataLang.formatMessage({ id: 'save' })}
         </button>

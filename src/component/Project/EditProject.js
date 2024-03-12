@@ -16,6 +16,7 @@ import Resizer from "react-image-file-resizer";
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
+import { IoSaveOutline } from "react-icons/io5";
 
 const BasicInfo = (props) => {
   const dataLang = useIntl();
@@ -612,7 +613,7 @@ export default function EditProject(props) {
           <div className="DAT_EditProject_Header_Right_Save"
             onClick={() => handleSave()}
           >
-            <FaSave size={20} color="white" />
+            <IoSaveOutline size={20} color="white" />
             <span> {dataLang.formatMessage({ id: 'save' })}</span>
           </div>
           <div className="DAT_EditProject_Header_Right_Close">

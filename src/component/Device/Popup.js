@@ -66,7 +66,7 @@ export default function Popup(props) {
         {/* </p> */}
       </div>
       <div className="DAT_Popup_Box_Foot">
-        <button
+        {/* <button
           style={{
             border: "1px solid #505050", backgroundColor: "white",
             color: "#505050"
@@ -74,7 +74,7 @@ export default function Popup(props) {
           onClick={() => (popupState.value = false)}
         >
           {dataLang.formatMessage({ id: 'cancel' })}
-        </button>
+        </button> */}
         <button style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={(e) => handleDelete(e)}
         >

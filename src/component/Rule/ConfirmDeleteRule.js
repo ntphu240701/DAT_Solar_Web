@@ -69,7 +69,7 @@ export default function ConfirmDeleteRule() {
       <div className="DAT_ConfirmPopup_Box_Foot">
         {del ? (
           <>
-            <button
+            {/* <button
               style={{
                 border: "1px solid #505050",
                 backgroundColor: "white",
@@ -78,7 +78,7 @@ export default function ConfirmDeleteRule() {
               onClick={() => (confirmDeleteState.value = false)}
             >
               {dataLang.formatMessage({ id: 'cancel' })}
-            </button>
+            </button> */}
             <button
               style={{ backgroundColor: "#048FFF", color: "white" }}
               onClick={(e) => handleDeleteReport(e)}

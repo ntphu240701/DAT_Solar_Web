@@ -13,7 +13,7 @@ import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { IoMdPersonAdd, IoMdMore } from "react-icons/io";
-import { IoAddOutline } from "react-icons/io5";
+import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { FaUsersGear } from "react-icons/fa6";
 import { PiUsersFour } from "react-icons/pi";
@@ -22,6 +22,8 @@ import { host } from "../Lang/Contant";
 import { partnerInfor, phuhosting, userInfor } from "../../App";
 import { useSelector } from "react-redux";
 import { CiSearch } from "react-icons/ci";
+import { AiOutlineUserAdd, AiOutlineUsergroupAdd } from "react-icons/ai";
+import { FiEdit } from "react-icons/fi";
 
 //DATA TEMP
 export const group = signal([
@@ -236,7 +238,7 @@ const GroupUsers = () => {
                     id={item.id_}
                     onClick={(e) => handleDeleteGroup(e)}
                   >
-                    <MdDelete size={18} color="red" />
+                    <IoTrashOutline size={18} />
                   </div>
                 )}
                 <div
@@ -245,14 +247,14 @@ const GroupUsers = () => {
                   id={item.id_}
                   onClick={(e) => handleEditGroup(e)}
                 >
-                  <MdEdit size={18} color="green" />
+                  <FiEdit size={18} />
                 </div>
 
                 <div
                   className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
                   onClick={() => (addState.value = true)}
                 >
-                  <IoMdPersonAdd size={18} color="#216990" />
+                  <AiOutlineUserAdd size={18} />
                 </div>
               </div>
             </div>
@@ -325,7 +327,7 @@ export default function GroupRole(props) {
     <>
       <div className="DAT_GRHeader">
         <div className="DAT_GRHeader_Title">
-          <PiUsersFour color="gray" size={25} />{" "}
+          <PiUsersFour color="gray" size={25} />
           <span>{dataLang.formatMessage({ id: "roleList" })}</span>
         </div>
 
@@ -380,7 +382,7 @@ export default function GroupRole(props) {
               onClick={() => (createState.value = true)}
             >
               <span>
-                <FaUsersGear color="white" size={20} />
+                <AiOutlineUsergroupAdd color="white" size={20} />
                 &nbsp;
                 {dataLang.formatMessage({ id: "createNewGroup" })}
               </span>

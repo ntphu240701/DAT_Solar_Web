@@ -10,6 +10,7 @@ import { host } from "../Lang/Contant";
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
+import { IoSaveOutline } from "react-icons/io5";
 
 export default function CreateRole(props) {
   const datalang = useIntl();
@@ -66,7 +67,7 @@ export default function CreateRole(props) {
 
         <div className="DAT_CreateRole_Header_Right">
           <button className="DAT_CreateRole_Header_Right_Save" >
-            <FaSave size={20} color="white" />
+            <IoSaveOutline size={20} color="white" />
             <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </button>
           <div className="DAT_CreateRole_Header_Right_Close" onClick={() => (roleState.value = "default")}>

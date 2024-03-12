@@ -70,7 +70,7 @@ export default function RaiseBox(props) {
       </div>
 
       <div className="DAT_PopupReport_Box_Foot">
-        <button
+        {/* <button
           style={{
             border: "1px solid #505050",
             backgroundColor: "white",
@@ -79,7 +79,7 @@ export default function RaiseBox(props) {
           onClick={() => (deletewarnState.value = false)}
         >
           {dataLang.formatMessage({ id: "cancel" })}
-        </button>
+        </button> */}
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={(e) => handleDeleteReport(e)}

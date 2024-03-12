@@ -12,12 +12,13 @@ import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 
 import { CiSearch } from "react-icons/ci";
-import { IoAddOutline } from "react-icons/io5";
+import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { IoMdMore } from "react-icons/io";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { GrUserAdmin } from "react-icons/gr";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { FiEdit } from "react-icons/fi";
 
 const key = {
   edit: 'edits',
@@ -229,7 +230,8 @@ export default function Rule() {
           <div className="DAT_TableEdit">
             <span
               id={row.ruleid + "_MORE"}
-              onMouseEnter={(e) => handleModify(e, "block")}
+              // onMouseEnter={(e) => handleModify(e, "block")}
+              onClick={(e) => handleModify(e, "block")}
             >
               <IoMdMore size={20} />
             </span>
@@ -246,7 +248,7 @@ export default function Rule() {
               id={row.ruleid}
               onClick={(e) => handleEdit(e)}
             >
-              <MdEdit size={20} color="#216990" />
+              <FiEdit size={14} />
               &nbsp;
               {dataLang.formatMessage({ id: 'edit' })}
             </div>
@@ -254,7 +256,7 @@ export default function Rule() {
               className="DAT_ModifyBox_Remove"
               onClick={() => (confirmDeleteState.value = "delete")}
             >
-              <MdDelete size={20} />
+              <IoTrashOutline size={16} />
               &nbsp;
               {dataLang.formatMessage({ id: 'remove' })}
             </div>

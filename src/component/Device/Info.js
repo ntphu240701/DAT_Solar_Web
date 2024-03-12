@@ -293,7 +293,7 @@ const ElectricityGeneration = (props) => {
                 })}
               </div>
             </div>
-            <div className="DAT_Info_Databox_Content">
+            {/* <div className="DAT_Info_Databox_Content">
               <div className="DAT_Info_Databox_Content_ColumnElec">
                 <p>String Input Current1：0.54 A</p>
                 <p>String Input Current1：0.54 A</p>
@@ -315,7 +315,7 @@ const ElectricityGeneration = (props) => {
                 <p>String Input Current1：0.54 A</p>
                 <p>String Input Current1：0.54 A</p>
               </div>
-            </div>
+            </div> */}
           </>
         ) : (
           <></>
@@ -446,14 +446,14 @@ const Temperature = (props) => {
           <div className="DAT_Info_Databox_Content">
             <div className="DAT_Info_Databox_Content_Column">
               <p>Nhiệt độ Radiator: 37.70°C</p>
-              <p>Nhiệt độ Module Pha S của Inverter: 39.80°C</p>
+              {/* <p>Nhiệt độ Module Pha S của Inverter: 39.80°C</p> */}
             </div>
             <div className="DAT_Info_Databox_Content_Column">
               <p>Nhiệt độ - tăng cường: 51.40°C</p>
-              <p>Nhiệt độ mô-đun pha T của biến tần: 39.90°C</p>
+              {/* <p>Nhiệt độ mô-đun pha T của biến tần: 39.90°C</p> */}
             </div>
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Mô-đun pha R biến tần Nhiệt độ: 38,80°C</p>
+              {/* <p>Mô-đun pha R biến tần Nhiệt độ: 38,80°C</p> */}
             </div>
           </div>
         ) : (
@@ -752,10 +752,10 @@ export default function Info() {
         </div>
 
         <div className="DAT_Info_Header_Right">
-          <div className="DAT_Info_Header_Right_Save">
+          {/* <div className="DAT_Info_Header_Right_Save">
             <FaSave size={20} color="white" />
             <span>{dataLang.formatMessage({ id: 'save' })} </span>
-          </div>
+          </div> */}
           <div className="DAT_Info_Header_Right_Close" onClick={() => {
             infoState.value = false;
           }}>
@@ -775,12 +775,12 @@ export default function Info() {
                 <BasicInformation />
                 <VersionInformation />
                 <ElectricityGeneration />
-                <PowerGrid />
-                <ElectricityConsumption />
+                {/* <PowerGrid /> */}
+                {/* <ElectricityConsumption /> */}
                 <Temperature />
-                <Other />
+                {/* <Other /> */}
                 <State />
-                <Control />
+                {/* <Control /> */}
                 <HistoricalData />
               </>
             );
