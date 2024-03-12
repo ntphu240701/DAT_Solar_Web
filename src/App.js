@@ -213,17 +213,10 @@ export default function App() {
       {userInfor.value.partnerid === "0"
         ? <div className="DAT_Clock" >
           <div className="DAT_Clock_Infor">
-<<<<<<< HEAD
-            <div className="DAT_Clock_Infor_Tit">Thông báo</div>
-            <div className="DAT_Clock_Infor_Content">Tài khoản của bạn hiện đang bị khoá vui lòng liên hệ quản trị viên để kích hoạt lại!</div>
-            <div className="DAT_Clock_Infor_Btn">
-              <button onClick={() => { handleOut() }}>Thoát</button>
-=======
             <div className="DAT_Clock_Infor_Tit">{dataLang.formatMessage({ id: 'notification' })}</div>
             <div className="DAT_Clock_Infor_Content">{dataLang.formatMessage({ id: 'accountLockAlert' })}</div>
             <div className="DAT_Clock_Infor_Btn">
               <button onClick={() => { handleOut() }}>{dataLang.formatMessage({ id: 'quit' })}</button>
->>>>>>> 2d8e0ad62608bb4887f41fde86af7014498499dd
             </div>
 
           </div>

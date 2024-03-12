@@ -20,6 +20,8 @@ import { FaCheckCircle } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
+import { FiEdit } from "react-icons/fi";
+import { IoTrashOutline } from "react-icons/io5";
 
 export const tab = signal("logger");
 export const infoState = signal(false);
@@ -54,16 +56,16 @@ export default function Device(props) {
   };
 
   const dataInverter = [
-    // {
-    //   id: 1,
-    //   SN: "I0000145",
-    //   name: "Inverter 01",
-    //   plant: "Năng lượng DAT 01",
-    //   status: true,
-    //   production: "16",
-    //   dailyproduction: "123.4",
-    //   updated: "12/30/2023 12:07:12",
-    // },
+    {
+      id: 1,
+      SN: "I0000145",
+      name: "Inverter 01",
+      plant: "Năng lượng DAT 01",
+      status: true,
+      production: "16",
+      dailyproduction: "123.4",
+      updated: "12/30/2023 12:07:12",
+    },
     // {
     //   id: 2,
     //   SN: "I0000012",
@@ -121,7 +123,7 @@ export default function Device(props) {
 
   const columnDevice = [
     {
-      name: dataLang.formatMessage({ id: 'name' }),
+      name: 'Mã thiết bị',
       selector: (row) => (
         <div className="DAT_Table">
           <div
@@ -130,8 +132,9 @@ export default function Device(props) {
             id={row.id + "_" + tab.value}
             onClick={(e) => handleShowInfo(e)}
           >
-            <div className="DAT_Table_Infor_Name">{row.name}</div>
-            <div className="DAT_Table_Infor_Addr">{row.SN}</div>
+            <div className="DAT_Table_Infor_Name">{row.SN}</div>
+            {/* <div className="DAT_Table_Infor_Name">{row.name}</div>
+            <div className="DAT_Table_Infor_Addr">{row.SN}</div> */}
           </div>
         </div>
       ),
@@ -189,7 +192,7 @@ export default function Device(props) {
           <div className="DAT_TableEdit">
             <span
               id={row.id + "_MORE"}
-              onMouseEnter={(e) => handleModify(e, "block")}
+              onClick={(e) => handleModify(e, "block")}
             >
               <IoMdMore size={20} />
             </span>
@@ -207,7 +210,7 @@ export default function Device(props) {
               id={row.id + "_" + tab.value}
               onClick={(e) => handleRemove(e)}
             >
-              <MdDelete size={20} />
+              <IoTrashOutline size={16} />
               &nbsp;
               {dataLang.formatMessage({ id: 'remove' })}
             </div>
@@ -275,7 +278,8 @@ export default function Device(props) {
           <div className="DAT_TableEdit">
             <span
               id={row.psn + "_MORE"}
-              onMouseEnter={(e) => handleModify(e, "block")}
+              // onMouseEnter={(e) => handleModify(e, "block")}
+              onClick={(e) => handleModify(e, "block")}
             >
               <IoMdMore size={20} />
             </span>
@@ -289,7 +293,7 @@ export default function Device(props) {
             <div className="DAT_ModifyBox_Fix"
               onClick={(e) => handleEdit(e)}
             >
-              <MdEdit size={20} color="#216990" />
+              <FiEdit size={14} />
               &nbsp;
               {dataLang.formatMessage({ id: 'edits' })}
             </div>
@@ -297,7 +301,7 @@ export default function Device(props) {
               id={row.psn + "_" + row.pplantid}
               onClick={(e) => handleRemove(e)}
             >
-              <MdDelete size={20} />
+              <IoTrashOutline size={16} />
               &nbsp;
               {dataLang.formatMessage({ id: 'delete' })}
             </div>
@@ -397,7 +401,7 @@ export default function Device(props) {
           <>
             <div className="DAT_Modify">
               <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
-              <div className="DAT_Modify_Add" onClick={handleShowConfig}><TbSettingsCode color="white" size={20} /></div>
+              {/* <div className="DAT_Modify_Add" onClick={handleShowConfig}><TbSettingsCode color="white" size={20} /></div> */}
             </div>
 
             {filter ? (
@@ -417,13 +421,14 @@ export default function Device(props) {
               <input type="text" placeholder={dataLang.formatMessage({ id: 'enterDev' })} />
               <CiSearch color="gray" size={20} />
             </div>
-            <button className="DAT_DeviceHeader_New" onClick={handleShowConfig}>
+            <div></div>
+            {/* <button className="DAT_DeviceHeader_New" onClick={handleShowConfig}>
               <span>
                 <TbSettingsCode color="white" size={20} />
                 &nbsp;
                 {dataLang.formatMessage({ id: 'config' })}
               </span>
-            </button>
+            </button> */}
           </>
         )}
       </div>

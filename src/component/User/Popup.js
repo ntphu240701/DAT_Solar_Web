@@ -292,7 +292,7 @@ export default function Popup() {
       </div>
 
       <div className="DAT_PopupUser_Box_Foot">
-        <button
+        {/* <button
           style={{
             border: "1px solid #505050",
             backgroundColor: "white",
@@ -303,7 +303,7 @@ export default function Popup() {
           }}
         >
           {dataLang.formatMessage({ id: 'cancel' })}
-        </button>
+        </button> */}
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={() => handleSave()}

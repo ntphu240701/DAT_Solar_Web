@@ -18,10 +18,11 @@ import { useIntl } from "react-intl";
 import { FaCheckCircle, FaRegFileAlt } from "react-icons/fa";
 import { MdOutlineError, MdEdit, MdDelete, MdAddchart } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
-import { GoProject } from "react-icons/go";
+import { GoPencil, GoProject } from "react-icons/go";
 import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
-import { IoAddOutline } from "react-icons/io5";
+import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
+import { FiEdit } from "react-icons/fi";
 
 const tab = signal("total");
 const tabLable = signal("");
@@ -41,7 +42,7 @@ export const dataproject = signal([]);
 export const Empty = (props) => {
   const dataLang = useIntl();
   return (
-    <div className="DAT_TableEmpty" style={{ backgroundColor: props.backgroundColor? props.backgroundColor : "white", height: props.height ? props.height : "calc(100vh - 180px)", width: props.width ? props.width : "100%" }}>
+    <div className="DAT_TableEmpty" style={{ backgroundColor: props.backgroundColor ? props.backgroundColor : "white", height: props.height ? props.height : "calc(100vh - 180px)", width: props.width ? props.width : "100%" }}>
       <div className="DAT_TableEmpty_Group">
         <div className="DAT_TableEmpty_Group_Icon">
           <FaRegFileAlt size={50} color="gray" />
@@ -112,7 +113,7 @@ export default function Project(props) {
         <div className="DAT_Table" id={row.plantid} onClick={(e) => handlePlant(e)}>
           <img src={row.img ? row.img : "/dat_picture/solar_panel.png"} alt="" />
 
-          <div className="DAT_Table_Infor" style={{ cursor: "pointer"}}>
+          <div className="DAT_Table_Infor" style={{ cursor: "pointer" }}>
             <div className="DAT_Table_Infor_Name">{row.plantname}</div>
             <div className="DAT_Table_Infor_Addr">{row.addr}</div>
           </div>
@@ -178,13 +179,13 @@ export default function Project(props) {
     //   width: "100px",
     // },
     {
-      name: dataLang.formatMessage({ id: 'lastUpdate' }),
+      name: dataLang.formatMessage({ id: 'lastupdate' }),
       selector: (row) => row.lastupdate,
       sortable: true,
       width: "180px",
     },
     {
-      name: dataLang.formatMessage({ id: 'createDate' }),
+      name: dataLang.formatMessage({ id: 'createdate' }),
       selector: (row) => row.createdate,
       sortable: true,
       width: "180px",
@@ -196,35 +197,33 @@ export default function Project(props) {
           <div className="DAT_TableEdit">
             <span
               id={row.plantid + "_MORE"}
-              onMouseEnter={(e) => handleModify(e, "block")}
+              // onMouseEnter={(e) => handleModify(e, "block")}
+              onClick={(e) => handleModify(e, "block")}
             >
               <IoMdMore size={20} />
             </span>
           </div>
 
-          <div
-            className="DAT_ModifyBox"
+          <div className="DAT_ModifyBox"
             id={row.plantid + "_Modify"}
             style={{ display: "none", marginTop: '3px', marginRight: '3px' }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            <div
-              className="DAT_ModifyBox_Fix"
+            <div className="DAT_ModifyBox_Fix"
               id={row.plantid}
               style={{ display: "flex", justifyContent: 'flex-start', alignItems: 'center' }}
               onClick={(e) => handleEdit(e)}
             >
-              <MdEdit size={20} color="#216990" />
+              <FiEdit size={14} />
               &nbsp;
               {dataLang.formatMessage({ id: 'edits' })}
             </div>
-            <div
-              className="DAT_ModifyBox_Remove"
+            <div className="DAT_ModifyBox_Remove"
               id={row.plantid}
               style={{ display: "flex", justifyContent: 'flex-start', alignItems: 'center' }}
               onClick={(e) => handleDelete(e)}
             >
-              <MdDelete size={20} />
+              <IoTrashOutline size={16} />
               &nbsp;
               {dataLang.formatMessage({ id: 'delete' })}
             </div>
@@ -280,6 +279,8 @@ export default function Project(props) {
 
   const pickTypeFilter = (e) => {
     setType(e.target.value);
+    let search = document.getElementById("search");
+    search.placeholder = dataLang.formatMessage({ id: 'enter' }) + dataLang.formatMessage({ id: e.target.value });
   };
 
   const handleSearch = (e) => {
@@ -364,12 +365,12 @@ export default function Project(props) {
                   <option value={"capacity"}>{dataLang.formatMessage({ id: 'capacity' })}</option>
                   <option value={"production"}>{dataLang.formatMessage({ id: 'production' })}</option>
                   <option value={"power"}>{dataLang.formatMessage({ id: 'power' })}</option>
-                  <option value={"lastupdate"}>{dataLang.formatMessage({ id: 'lastUpdate' })}</option>
-                  <option value={"createdate"}>{dataLang.formatMessage({ id: 'createDate' })}</option>
+                  <option value={"lastupdate"}>{dataLang.formatMessage({ id: 'lastupdate' })}</option>
+                  <option value={"createdate"}>{dataLang.formatMessage({ id: 'createdate' })}</option>
                 </select>
                 <input
                   type="text"
-                  placeholder={dataLang.formatMessage({ id: 'enterPr' })}
+                  placeholder={dataLang.formatMessage({ id: 'enter' }) + dataLang.formatMessage({ id: 'project' })}
                   onChange={(e) => handleSearch(e)}
                 />
                 <div className="DAT_Modify_Filter_Close" onClick={() => setFilter(!filter)}>
@@ -388,12 +389,13 @@ export default function Project(props) {
                 <option value={"capacity"}>{dataLang.formatMessage({ id: 'capacity' })}</option>
                 <option value={"production"}>{dataLang.formatMessage({ id: 'production' })}</option>
                 <option value={"power"}>{dataLang.formatMessage({ id: 'power' })}</option>
-                <option value={"lastupdate"}>{dataLang.formatMessage({ id: 'lastUpdate' })}</option>
-                <option value={"createdate"}>{dataLang.formatMessage({ id: 'createDate' })}</option>
+                <option value={"lastupdate"}>{dataLang.formatMessage({ id: 'lastupdate' })}</option>
+                <option value={"createdate"}>{dataLang.formatMessage({ id: 'createdate' })}</option>
               </select>
               <input
+                id="search"
                 type="text"
-                placeholder={dataLang.formatMessage({ id: 'enterPr' })}
+                placeholder={dataLang.formatMessage({ id: 'enter' }) + dataLang.formatMessage({ id: 'project' })}
                 onChange={(e) => handleSearch(e)}
               />
               <CiSearch color="gray" size={20} />

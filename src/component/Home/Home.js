@@ -347,7 +347,6 @@ export default function Home(props) {
 
     getPlant();
     getLogger();
-    getPrice(plant.value, logger.value)
 
 
   }, [lang, usr, partnerInfor.value.partnerid, userInfor.value.type, Token.value.token])
@@ -390,13 +389,13 @@ export default function Home(props) {
             }, 0)
 
             if (i == logger.value.length - 1) {
-              if (invt[item.psn]?.enabled == 1) {
-                cal[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
-                  return Number(accumulator) + Number(currentValue)
-                }, 0) / 1000).toFixed(2);
-              } else {
-                cal[key] = 0
-              }
+              // if (invt[item.psn]?.enabled == 1) {
+              cal[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
+                return Number(accumulator) + Number(currentValue)
+              }, 0) / 1000).toFixed(2);
+              // } else {
+              // cal[key] = 0
+              // }
             }
             break;
           case "word":
@@ -437,6 +436,7 @@ export default function Home(props) {
       })
     })
     //console.log(num_)
+    getPrice(plant.value, logger.value)
     setProduction(cal?.pro_1 || 0)
     setDailyProduction(cal?.pro_2 || 0)
     setTotalProduction(cal?.pro_3 || 0)
@@ -471,7 +471,7 @@ export default function Home(props) {
               <div className="DAT_Home_Overview-Main-Percent-Item">
                 <div className="DAT_Home_Overview-Main-Percent-Item-value">
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_num">
-                    {parseFloat((production / capacity) * 100).toFixed(2) === "NaN" ? "--" : parseFloat((production / capacity) * 100).toFixed(2)}
+                    {Number(parseFloat((production / capacity) * 100).toFixed(2)).toLocaleString('en-US') === "NaN" ? "--" : Number(parseFloat((production / capacity) * 100).toFixed(2)).toLocaleString('en-US')}
                   </div>
 
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">%</div>
@@ -485,7 +485,7 @@ export default function Home(props) {
                   {dataLang.formatMessage({ id: 'totalOutput' })}
                 </div>
                 <div>
-                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{production}</span>
+                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{Number(production).toLocaleString('en-US')}</span>
                   &nbsp;
                   <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
                 </div>
@@ -496,7 +496,7 @@ export default function Home(props) {
                   {dataLang.formatMessage({ id: 'inCapacity' })}
                 </div>
                 <div>
-                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{capacity}</span>
+                  <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{Number(capacity).toLocaleString('en-US')}</span>
                   &nbsp;
                   <span style={{ color: "gray", fontSize: "13px" }}>kWp</span>
                 </div>
@@ -512,7 +512,7 @@ export default function Home(props) {
                 {dataLang.formatMessage({ id: 'dailyOutput' })}
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{dailyproduction}</span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{Number(dailyproduction).toLocaleString('en-US')}</span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
@@ -525,7 +525,7 @@ export default function Home(props) {
                 {dataLang.formatMessage({ id: 'monthOutput' })}
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{monthlyproduction}</span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{Number(monthlyproduction).toLocaleString('en-US')}</span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
@@ -538,7 +538,7 @@ export default function Home(props) {
                 {dataLang.formatMessage({ id: 'yearOutput' })}
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{yearlyproduction}</span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{Number(yearlyproduction).toLocaleString('en-US')}</span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
@@ -551,7 +551,7 @@ export default function Home(props) {
                 {dataLang.formatMessage({ id: 'totalOutput' })}
               </div>
               <div>
-                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{totalproduction}</span>
+                <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{Number(totalproduction).toLocaleString('en-US')}</span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
               </div>
@@ -604,7 +604,7 @@ export default function Home(props) {
             <div className="DAT_Home_History-Chart-label">
               <div className="DAT_Home_History-Chart-label-Unit">MWh</div>
               <div className="DAT_Home_History-Chart-label-Label">
-                {chart === "year" ? vyear : vmonth}: {chart === "year" ? yearlyproduction : monthlyproduction} kWh
+                {chart === "year" ? dataLang.formatMessage({ id: 'yearOutput' }) : dataLang.formatMessage({ id: 'monthOutput' })}: {chart === "year" ? yearlyproduction : monthlyproduction} kWh
               </div>
             </div>
             <div className="DAT_Home_History-Chart-Content">
@@ -772,7 +772,7 @@ export default function Home(props) {
                   {dataLang.formatMessage({ id: 'coalSave' })}
                 </div>
                 <div>
-                  {parseFloat(coalsave.value.value * coalsave.value.ef).toFixed(2)}
+                  {Number(parseFloat(coalsave.value.value * coalsave.value.ef).toFixed(2)).toLocaleString('en-US')}
                   &nbsp;
                   <span style={{ color: "grey", fontSize: "12px" }}>
                     t
@@ -790,7 +790,7 @@ export default function Home(props) {
                   {dataLang.formatMessage({ id: 'cropYield' })}
                 </div>
                 <div>
-                  {parseFloat(coalsave.value.value * coalsave.value.tree).toFixed(2)}
+                  {Number(parseFloat(coalsave.value.value * coalsave.value.tree).toFixed(2)).toLocaleString('en-US')}
                   &nbsp;
                   <span style={{ color: "grey", fontSize: "12px" }}>
                     {dataLang.formatMessage({ id: 'tree' })}
@@ -810,7 +810,7 @@ export default function Home(props) {
                   {dataLang.formatMessage({ id: 'C02' })}
                 </div>
                 <div>
-                  {parseFloat(coalsave.value.value * coalsave.value.avr).toFixed(2)}
+                  {Number(parseFloat(coalsave.value.value * coalsave.value.avr).toFixed(2)).toLocaleString('en-US')}
                   &nbsp;
                   <span style={{ color: "grey", fontSize: "12px" }}>
                     t
@@ -828,7 +828,7 @@ export default function Home(props) {
                   {dataLang.formatMessage({ id: 'totalRevenue' })}
                 </div>
                 <div>
-                  {parseFloat((price) / 1000).toFixed(2)}
+                  {Number(parseFloat((price) / 1000).toFixed(2)).toLocaleString('en-US')}
                   &nbsp;
                   <span style={{ color: "grey", fontSize: "12px" }}>
                     k{plant.value.currency}

@@ -73,7 +73,7 @@ export default function EditRole() {
       </div>
 
       <div className="DAT_EditRole_Foot">
-        <button
+        {/* <button
           style={{
             border: "1px solid #505050",
             backgroundColor: "white",
@@ -82,7 +82,7 @@ export default function EditRole() {
           onClick={() => (popupState.value = "default")}
         >
           Hủy
-        </button>
+        </button> */}
         <button style={{ backgroundColor: "#048FFF", color: "white" }}>
           Xác nhận
         </button>

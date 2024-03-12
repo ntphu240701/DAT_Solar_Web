@@ -10,6 +10,7 @@ import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { IoSaveOutline } from "react-icons/io5";
 
 const idplus = signal(2);
 const newdb = signal({
@@ -89,7 +90,7 @@ export default function CreateGroupRole() {
         // console.log(group.value);
         createState.value = false;
         alertDispatch(dataLang.formatMessage({ id: "alert_31" }))
-      }else{
+      } else {
         alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
       }
 
@@ -110,7 +111,7 @@ export default function CreateGroupRole() {
             <div className="DAT_CreateGroupRole_Header_Right_Save"
               onClick={() => handleCreate()}
             >
-              <FaSave size={20} color="white" />
+              <IoSaveOutline size={20} color="white" />
               <span>{dataLang.formatMessage({ id: 'save' })}</span>
             </div>
             <div className="DAT_CreateGroupRole_Header_Right_Close" onClick={() => (createState.value = false)}>

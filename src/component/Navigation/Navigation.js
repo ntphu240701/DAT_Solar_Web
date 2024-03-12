@@ -18,6 +18,8 @@ import { IoIosNotificationsOutline, IoMdClose } from "react-icons/io";
 import { MdOutlineLanguage } from "react-icons/md";
 import { FaRegMessage } from "react-icons/fa6";
 import { plantState } from "../Project/Project";
+import { IoLogInOutline } from "react-icons/io5";
+import { PiUserCircle } from "react-icons/pi";
 
 const userNav = signal(false);
 const langNav = signal(false);
@@ -307,10 +309,14 @@ export default function Navigation(props) {
           style={{ cursor: "pointer", borderBottom: "1px solid gray" }}
           onClick={() => navigate("/User")}
         >
+          <PiUserCircle size={18} />
+          &nbsp;
           <span>{dataLang.formatMessage({ id: "account" })}</span>
         </div>
 
         <div className="DAT_NavUser-item" onClick={() => logout()}>
+          <IoLogInOutline size={18} />
+          &nbsp;
           <span>{dataLang.formatMessage({ id: "logout" })}</span>
         </div>
       </div>
