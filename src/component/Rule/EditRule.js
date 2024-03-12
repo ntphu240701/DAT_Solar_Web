@@ -10,137 +10,30 @@ import { useIntl } from "react-intl";
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
 
 export const editruledata = signal();
-
+const temp = signal();
 export const CheckBox = (props) => {
   const handleShow = (e) => {
     let arr = props.html.split("_");
     console.log(arr[0]);
-    switch (arr[0]) {
-      case "alert":
-        editruledata.value = {
-          ...editruledata.value,
-          setting: {
-            ...editruledata.value.setting,
-            alert: {
-              ...editruledata.value.setting.alert,
-              option: {
-                ...editruledata.value.setting.alert.option,
-                [props.num]: {
-                  ...editruledata.value.setting.alert.option[props.num],
-                  status: e.target.checked,
-                },
-              },
-            },
-          },
-        };
-        break;
-      case "device":
-        editruledata.value = {
-          ...editruledata.value,
-          setting: {
-            ...editruledata.value.setting,
-            device: {
-              ...editruledata.value.setting.device,
-              option: {
-                ...editruledata.value.setting.device.option,
-                [props.num]: {
-                  ...editruledata.value.setting.device.option[props.num],
-                  status: e.target.checked,
-                },
-              },
-            },
-          },
-        };
-        break;
-      case "partner":
-        editruledata.value = {
-          ...editruledata.value,
-          setting: {
-            ...editruledata.value.setting,
-            partner: {
-              ...editruledata.value.setting.partner,
-              option: {
-                ...editruledata.value.setting.partner.option,
-                [props.num]: {
-                  ...editruledata.value.setting.partner.option[props.num],
-                  status: e.target.checked,
-                },
-              },
-            },
-          },
-        };
-        break;
-      case "plant":
-        editruledata.value = {
-          ...editruledata.value,
-          setting: {
-            ...editruledata.value.setting,
-            plant: {
-              ...editruledata.value.setting.plant,
-              option: {
-                ...editruledata.value.setting.plant.option,
-                [props.num]: {
-                  ...editruledata.value.setting.plant.option[props.num],
-                  status: e.target.checked,
-                },
-              },
-            },
-          },
-        };
-        break;
-      case "report":
-        editruledata.value = {
-          ...editruledata.value,
-          setting: {
-            ...editruledata.value.setting,
-            report: {
-              ...editruledata.value.setting.report,
-              option: {
-                ...editruledata.value.setting.report.option,
-                [props.num]: {
-                  ...editruledata.value.setting.report.option[props.num],
-                  status: e.target.checked,
-                },
-              },
-            },
-          },
-        };
-        break;
-      case "rule":
-        editruledata.value = {
-          ...editruledata.value,
-          setting: {
-            ...editruledata.value.setting,
-            rule: {
-              ...editruledata.value.setting.rule,
-              option: {
-                ...editruledata.value.setting.rule.option,
-                [props.num]: {
-                  ...editruledata.value.setting.rule.option[props.num],
-                  status: e.target.checked,
-                },
-              },
-            },
-          },
-        };
-        break;
-      default: break;
+    temp.value = {
+      ...editruledata.value,
     }
+    editruledata.value.setting[props.rights][props.custom] = e.target.checked;
     console.log(editruledata.value);
   };
 
-  useEffect(() => {
-    console.log(editruledata.value)// lay tu datarule amin
-  }, [])
-
   return (
-    <div className="DAT_CreateRule_Body_Item_Option_Check_SingleCheck"
+    <div
+      className="DAT_CreateRule_Body_Item_Option_Check_SingleCheck"
       style={{ width: props.width }}
     >
       <div className="form-check">
-        <input className="form-check-input"
+        <input
+          className="form-check-input"
           type="checkbox"
           value=""
           id={props.html}
@@ -149,7 +42,8 @@ export const CheckBox = (props) => {
             handleShow(e);
           }}
         />
-        <label className="form-check-label"
+        <label
+          className="form-check-label"
           style={{ cursor: "pointer", fontSize: "15px", color: "grey" }}
           htmlFor={props.html}
         >
@@ -161,27 +55,25 @@ export const CheckBox = (props) => {
 };
 
 export default function EditRule() {
-  const dataLang = useIntl()
+  const dataLang = useIntl();
   const [widthCheckBox, setWidwidthCheckBox] = React.useState("");
-  const rulenameRef = useRef(editruledata.value.name);
+  const rulenameRef = useRef();
 
   const TypeReport = (props) => {
-    const handelChangeRuleName = (e) => {
-      rulenameRef.current = e.target.value;
-    };
+
 
     return (
       <div className="DAT_CreateRule_Body_Item">
         <div className="DAT_CreateRule_Body_Item_Data">
           <div className="DAT_CreateRule_Body_Item_Data_Name">
-            <label>{dataLang.formatMessage({ id: 'ruleName' })}: </label>
+            <label>{dataLang.formatMessage({ id: "ruleName" })}: </label>
             <input
               type="text"
-              placeholder={dataLang.formatMessage({ id: 'required' })}
+              placeholder={dataLang.formatMessage({ id: "required" })}
               required
               id="reportname"
-              defaultValue={rulenameRef.current}
-              onChange={(e) => handelChangeRuleName(e)}
+              defaultValue={editruledata.value.rulename_}
+              ref={rulenameRef}
             />
           </div>
         </div>
@@ -189,26 +81,50 @@ export default function EditRule() {
     );
   };
 
-  const handleSave = () => {
-    if (rulenameRef.current !== "") {
-      editruledata.value = {
-        ...editruledata.value,
-        name: rulenameRef.current,
-      };
-      const i = datarule.value.findIndex(
-        (item) => item.ruleid === editruledata.value.ruleid
-      )
-      datarule.value = [
-        ...datarule.value.slice(0, i),
-        editruledata.value,
-        ...datarule.value.slice(i + 1),
-      ]
-      editRuleState.value = false;
-      alertDispatch(dataLang.formatMessage({ id: 'alert_21' }))
-    } else {
-      alertDispatch(dataLang.formatMessage({ id: 'alert_22' }));
-    }
+  const handleSave = async() => {
+    console.log(rulenameRef.current.value);
 
+    if (rulenameRef.current.value !== "") {
+
+      console.log(rulenameRef.current.value)
+      let d = await callApi(
+        "post",
+        host.DATA + "/updateRule",
+        {
+          ruleid: editruledata.value.ruleid_,
+          name: rulenameRef.current.value,
+          setting: JSON.stringify(editruledata.value.setting),
+        }
+      )
+      if(d.status){
+        let newData = datarule.value
+        let index = newData.findIndex((d) => d.ruleid_ == editruledata.value.ruleid_)
+        newData[index].rulename_ = rulenameRef.current.value
+        datarule.value = [...newData]
+        editRuleState.value = false;
+        alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+      }else{
+        alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+      }
+
+    //   editruledata.value = {
+    //     ...temp.value,
+    //     rulename_: rulenameRef.current,
+    //   };
+    //   const i = datarule.value.findIndex(
+    //     (item) => item.ruleid_ === editruledata.value.ruleid_
+    //   );
+    //   datarule.value = [
+    //     ...datarule.value.slice(0, i),
+    //     editruledata.value,
+    //     ...datarule.value.slice(i + 1),
+    //   ];
+    //   editRuleState.value = false;
+    //   alertDispatch(dataLang.formatMessage({ id: "alert_21" }));
+    //   // console.log(datarule.value);
+    // } else {
+    //   alertDispatch(dataLang.formatMessage({ id: "alert_22" }));
+    }
   };
 
   useEffect(() => {
@@ -224,14 +140,15 @@ export default function EditRule() {
     <div className="DAT_CreateRule">
       <div className="DAT_CreateRule_Header">
         <div className="DAT_CreateRule_Header_Left">
-          <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'edits' })}</p>
+          <p style={{ fontSize: "20px" }}>Chỉnh sửa quyền</p>
         </div>
         <div className="DAT_CreateRule_Header_Right">
-          <div className="DAT_CreateRule_Header_Right_Save"
+          <div
+            className="DAT_CreateRule_Header_Right_Save"
             onClick={() => handleSave()}
           >
             <FaSave size={20} color="white" />
-            <span>{dataLang.formatMessage({ id: 'save' })}</span>
+            <span>Lưu</span>
           </div>
           <div className="DAT_CreateRule_Header_Right_Close">
             <RxCross2
@@ -244,34 +161,34 @@ export default function EditRule() {
       </div>
 
       <div className="DAT_CreateRule_Body">
-
         <TypeReport />
 
         <div className="DAT_CreateRule_Body_Item">
           <div className="DAT_CreateRule_Body_Item_Option">
-            <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: 'ruleOptions' })}</label>
-            {ruletitle.value.map((item, key) => (
-              <div className="DAT_CreateRule_Body_Item_Option_Check"
-                key={key}
-              >
-                <p style={{ color: "grey" }}>
-                  {dataLang.formatMessage({ id: editruledata.value.setting[item].lang })}
-                </p>
-                {Object.entries(editruledata.value.setting[item].option).map(
-                  ([key, value]) => (
+            <label style={{ margin: "0" }}>Tùy chọn cấp quyền</label>
+            {Object.entries(editruledata.value.setting).map(
+              ([key, value], index) => (
+                <div
+                  className="DAT_CreateRule_Body_Item_Option_Check"
+                  key={key}
+                >
+                  <p style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: key })}
+                  </p>
+                  {Object.entries(value).map(([key_, value_], index_) => (
                     <CheckBox
-                      key={key}
-                      num={String(key)}
-                      tab={item + "_content"}
-                      status={value.status}
-                      id={dataLang.formatMessage({ id: value.lang })}
-                      html={item + "_" + key}
+                      key={index_}
+                      rights={key}
+                      custom={key_}
+                      status={value_}
+                      id={dataLang.formatMessage({ id: key_ })}
+                      html={index + "_" + index_}
                       width={widthCheckBox}
                     />
-                  )
-                )}
-              </div>
-            ))}
+                  ))}
+                </div>
+              )
+            )}
           </div>
         </div>
       </div>

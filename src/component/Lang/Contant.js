@@ -296,6 +296,8 @@ export const messages = {
         version: 'Version',
         previous: 'Back',
         unknown: '--',
+        active: 'Active',
+        modify: 'Modify',
     },
     vi: {
         account: 'Tài khoản',
@@ -479,7 +481,7 @@ export const messages = {
         delRule: 'Xóa phân quyền người dùng',
         addProj: "Thêm dự án",
         save: 'Lưu',
-        add: '+Thêm',
+        add: 'Thêm',
         ADD: 'Thêm',
         export: 'Xuất báo cáo',
         cancel: 'Hủy',
@@ -589,5 +591,7 @@ export const messages = {
         sologon: 'Nền tảng giải pháp năng lượng',
         previous: 'Quay lại',
         unknown: '--',
+        active: 'Phân quyền cấp thấp',
+        modify: 'Chỉnh sửa',
     }
 }

@@ -20,6 +20,7 @@ import { RxCross2 } from "react-icons/rx";
 import { IoMdMore } from "react-icons/io";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { LuUserSquare } from "react-icons/lu";
+import { datarule } from "../Rule/Rule";
 
 export const roleData = signal({});
 export const roleState = signal("default");
@@ -32,35 +33,35 @@ export default function Role(props) {
   const [filter, setFilter] = useState(false);
 
   const paginationComponentOptions = {
-    rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
-    rangeSeparatorText: dataLang.formatMessage({ id: 'to' }),
+    rowsPerPageText: dataLang.formatMessage({ id: "row" }),
+    rangeSeparatorText: dataLang.formatMessage({ id: "to" }),
     selectAllRowsItem: true,
-    selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
+    selectAllRowsItemText: dataLang.formatMessage({ id: "showAll" }),
   };
 
   const columnrole = [
     {
-      name: dataLang.formatMessage({ id: 'ordinalNumber' }),
-      selector: (row) => row.id,
+      name: dataLang.formatMessage({ id: "ordinalNumber" }),
+      selector: (row,i) => i+1,
       sortable: true,
       width: "80px",
     },
     {
-      name: dataLang.formatMessage({ id: 'name' }),
+      name: dataLang.formatMessage({ id: "name" }),
       selector: (row) => row.name_,
       sortable: true,
       minWidth: "200px",
       style: {
         justifyContent: "left",
-      }
+      },
     },
     {
-      name: dataLang.formatMessage({ id: 'phone' }),
+      name: dataLang.formatMessage({ id: "phone" }),
       selector: (row) => row.phone_,
       minWidth: "250px",
       style: {
         justifyContent: "left",
-      }
+      },
     },
     {
       name: "E-mail",
@@ -68,42 +69,44 @@ export default function Role(props) {
       width: "250px",
       style: {
         justifyContent: "left",
-      }
+      },
     },
     {
-      name: dataLang.formatMessage({ id: 'rule' }),
+      name: dataLang.formatMessage({ id: "rule" }),
       selector: (row) => row.rulename_,
       sortable: true,
       width: "160px",
       style: {
         justifyContent: "left",
-      }
+      },
     },
 
     {
-      name: dataLang.formatMessage({ id: 'account' }),
+      name: dataLang.formatMessage({ id: "account" }),
       selector: (row) => {
         switch (row.type_) {
           case "master":
-            return (dataLang.formatMessage({ id: 'master' }))
+            return dataLang.formatMessage({ id: "master" });
           case "admin":
-            return (dataLang.formatMessage({ id: 'admin' }))
+            return dataLang.formatMessage({ id: "admin" });
           default:
-            return (dataLang.formatMessage({ id: 'user' }))
+            return dataLang.formatMessage({ id: "user" });
         }
       },
       sortable: true,
       width: "180px",
       style: {
         justifyContent: "left",
-      }
+      },
     },
     {
-      name: dataLang.formatMessage({ id: 'setting' }),
+      name: dataLang.formatMessage({ id: "setting" }),
       selector: (row) => (
         <>
-          {row.type_ === "user"
-            ? <div className="DAT_TableEdit">
+          {row.type_ === "master" ? (
+            <></>
+          ) : (
+            <div className="DAT_TableEdit">
               <span
                 id={row.id_ + "_MORE"}
                 onMouseEnter={(e) => handleModify(e, "block")}
@@ -111,12 +114,11 @@ export default function Role(props) {
                 <IoMdMore size={20} />
               </span>
             </div>
-            : <></>
-          }
+          )}
           <div
             className="DAT_ModifyBox"
             id={row.id_ + "_Modify"}
-            style={{ display: "none", marginRight: '4px', marginTop: '2px' }}
+            style={{ display: "none", marginRight: "4px", marginTop: "2px" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             <div
@@ -126,7 +128,7 @@ export default function Role(props) {
             >
               <MdEdit size={20} color="#216990" />
               &nbsp;
-              {dataLang.formatMessage({ id: 'edit' })}
+              {dataLang.formatMessage({ id: "edit" })}
             </div>
             <div
               className="DAT_ModifyBox_Remove"
@@ -135,7 +137,7 @@ export default function Role(props) {
             >
               <MdDelete size={20} />
               &nbsp;
-              {dataLang.formatMessage({ id: 'remove' })}
+              {dataLang.formatMessage({ id: "remove" })}
             </div>
           </div>
         </>
@@ -147,13 +149,14 @@ export default function Role(props) {
   const handleDelete_ = (e) => {
     popupState.value = "delete";
     setTemp(e.currentTarget.id);
-    console.log(e.currentTarget.id)
+    console.log(e.currentTarget.id);
   };
 
   const handleEdit = (e) => {
     popupState.value = "edit";
     const id = e.currentTarget.id;
     roleData.value = Usr_.value.find((item) => item.id_ == id);
+    console.log(roleData.value);
   };
 
   const handleModify = (e, type) => {
@@ -166,36 +169,68 @@ export default function Role(props) {
 
   useEffect(() => {
     const fetchUsr = async () => {
-      const d = await callApi('post', host.DATA + '/getallUser', { partnerid: partnerInfor.value.partnerid });
-      console.log(d)
+      const d = await callApi("post", host.DATA + "/getallUser", {
+        partnerid: partnerInfor.value.partnerid,
+      });
+      console.log(d);
       if (d.status === true) {
-        Usr_.value = d.data
-        Usr_.value.map((item, i) => item.id = i + 1);
+        Usr_.value = d.data;
+        
+        Usr_.value = Usr_.value.sort((a, b) => a.ruleid_ - b.ruleid_);
       }
-    }
-    fetchUsr()
-  }, [])
+    };
+    fetchUsr();
+  }, []);
+
+  useEffect(() => {
+    const getRule = async (partnerid) => {
+      const rule = await callApi("post", host.DATA + "/getRule", {
+        partnerid: partnerInfor.value.partnerid,
+      });
+      if (rule.status) {
+        console.log(rule.data);
+        datarule.value = rule.data;
+        datarule.value = datarule.value.sort((a, b) => a.ruleid_ - b.ruleid_);
+      }
+    };
+    getRule();
+  }, [partnerInfor.value.partnerid]);
 
   return (
     <>
       <div className="DAT_RoleHeader">
         <div className="DAT_RoleHeader_Title">
-          <LuUserSquare color="gray" size={25} /> <span>
-            {dataLang.formatMessage({ id: 'role' })}
-          </span>
+          <LuUserSquare color="gray" size={25} />{" "}
+          <span>{dataLang.formatMessage({ id: "role" })}</span>
         </div>
 
         {isMobile.value ? (
           <>
             <div className="DAT_Modify">
-              <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}><CiSearch color="white" size={20} /></div>
-              <div className="DAT_Modify_Add" onClick={() => (roleState.value = "create")}><IoAddOutline color="white" size={20} /></div>
+              <div
+                className="DAT_Modify_Item"
+                onClick={() => setFilter(!filter)}
+              >
+                <CiSearch color="white" size={20} />
+              </div>
+              <div
+                className="DAT_Modify_Add"
+                onClick={() => (roleState.value = "create")}
+              >
+                <IoAddOutline color="white" size={20} />
+              </div>
             </div>
 
             {filter ? (
               <div className="DAT_Modify_Filter">
-                <input type="text" placeholder={dataLang.formatMessage({ id: 'enterName' })} />
-                <div className="DAT_Modify_Filter_Close" onClick={() => setFilter(!filter)}>
+                <input
+                  type="text"
+                  placeholder={dataLang.formatMessage({ id: "enterName" })}
+                />
+                <div
+                  className="DAT_Modify_Filter_Close"
+                  onClick={() => setFilter(!filter)}
+                >
                   <RxCross2 size={20} color="white" />
                 </div>
               </div>
@@ -206,7 +241,10 @@ export default function Role(props) {
         ) : (
           <>
             <div className="DAT_RoleHeader_Filter">
-              <input type="text" placeholder={dataLang.formatMessage({ id: 'enterName' })} />
+              <input
+                type="text"
+                placeholder={dataLang.formatMessage({ id: "enterName" })}
+              />
               <CiSearch color="gray" size={20} />
             </div>
             <button
@@ -216,7 +254,7 @@ export default function Role(props) {
               <span>
                 <FaUserPlus color="white" size={20} />
                 &nbsp;
-                {dataLang.formatMessage({ id: 'createNew' })}
+                {dataLang.formatMessage({ id: "createNew" })}
               </span>
             </button>
           </>
@@ -226,8 +264,8 @@ export default function Role(props) {
       {isMobile.value ? (
         <>
           <div className="DAT_RoleMobile">
-            <div className='DAT_RoleMobile_Header' style={{ padding: "15px" }}>
-              {dataLang.formatMessage({ id: 'roleList' })}
+            <div className="DAT_RoleMobile_Header" style={{ padding: "15px" }}>
+              {dataLang.formatMessage({ id: "roleList" })}
             </div>
 
             {Usr_.value.map((item, i) => {
@@ -236,17 +274,21 @@ export default function Role(props) {
                   <div className="DAT_RoleMobile_Content_Item">
                     <div className="DAT_RoleMobile_Content_Item_Row">
                       <div className="DAT_RoleMobile_Content_Item_Row_Name">
-                        {dataLang.formatMessage({ id: 'name' })}: {item.name_}
+                        {dataLang.formatMessage({ id: "name" })}: {item.name_}
                       </div>
 
                       <div className="DAT_RoleMobile_Content_Item_Row_Right">
-                        <div className="DAT_RoleMobile_Content_Item_Row_Right_Item"
+                        <div
+                          className="DAT_RoleMobile_Content_Item_Row_Right_Item"
                           id={item.id_}
                           onClick={(e) => handleEdit(e)}
                         >
                           <MdEdit size={20} color="#216990" />
                         </div>
-                        <div className="DAT_RoleMobile_Content_Item_Row_Right_Item" onClick={() => (popupState.value = "delete")}>
+                        <div
+                          className="DAT_RoleMobile_Content_Item_Row_Right_Item"
+                          onClick={() => (popupState.value = "delete")}
+                        >
                           <MdDelete size={20} color="red" />
                         </div>
                       </div>
@@ -254,17 +296,19 @@ export default function Role(props) {
 
                     <div className="DAT_RoleMobile_Content_Item_Row">
                       <div className="DAT_RoleMobile_Content_Item_Row_Rule">
-                        {dataLang.formatMessage({ id: 'rule' })}: {item.rulename_}
+                        {dataLang.formatMessage({ id: "rule" })}:{" "}
+                        {item.rulename_}
                       </div>
 
                       <div className="DAT_RoleMobile_Content_Item_Row_Acc">
-                        {dataLang.formatMessage({ id: 'account' })}: {item.type_}
+                        {dataLang.formatMessage({ id: "account" })}:{" "}
+                        {item.type_}
                       </div>
                     </div>
 
                     <div className="DAT_RoleMobile_Content_Item_Row">
                       <div className="DAT_RoleMobile_Content_Item_Row_Phone">
-                        {dataLang.formatMessage({ id: 'phone' })}: {item.phone_}
+                        {dataLang.formatMessage({ id: "phone" })}: {item.phone_}
                       </div>
 
                       <div className="DAT_RoleMobile_Content_Item_Row_Email">
@@ -273,15 +317,21 @@ export default function Role(props) {
                     </div>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         </>
       ) : (
         <>
           <div className="DAT_Role">
-            <div className='DAT_Role_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>
-              {dataLang.formatMessage({ id: 'roleList' })}
+            <div
+              className="DAT_Role_Header"
+              style={{
+                padding: "15px",
+                backgroundColor: "rgba(233, 233, 233, 0.5)",
+              }}
+            >
+              {dataLang.formatMessage({ id: "roleList" })}
             </div>
 
             <div className="DAT_Role_Content">
@@ -299,7 +349,8 @@ export default function Role(props) {
         </>
       )}
 
-      <div className="DAT_RoleInfor"
+      <div
+        className="DAT_RoleInfor"
         style={{
           height: roleState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",
@@ -315,7 +366,8 @@ export default function Role(props) {
         })()}
       </div>
 
-      <div className="DAT_RolePopup"
+      <div
+        className="DAT_RolePopup"
         style={{
           height: popupState.value === "default" ? "0px" : "100vh",
         }}

@@ -8,8 +8,50 @@ import { useIntl } from "react-intl";
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
+import { userInfor } from "../../App";
+import { json } from "react-router-dom";
+import { alertDispatch } from "../Alert/Alert";
 
-export const lastruleID = signal(3);
+const temp = signal({
+  ruleid_: 0,
+  rulename_: "",
+  setting: {
+    contact: { edit: false },
+    device: { add: false, modify: false, remove: false },
+    project: {
+      add: false,
+      modify: false,
+      remove: false,
+    },
+    report: {
+      add: false,
+      modify: false,
+      remove: false,
+    },
+    rule: {
+      active: false,
+      add: false,
+      modify: false,
+      remove: false,
+    },
+    user: { add: false, modify: false, remove: false },
+    warn: { remove: false },
+    partner: {
+      modify: false,
+    },
+  },
+});
+
+const key = {
+  edit: "edits",
+  delete: "delete",
+  create: "createNew",
+  status: "status",
+};
+
+const newruledata = signal(temp.value);
 
 export const ruletitle = signal([
   "alert",
@@ -24,118 +66,7 @@ export const CheckBox = (props) => {
   const handleShow = (e) => {
     let arr = props.html.split("_");
     console.log(arr[0]);
-    switch (arr[0]) {
-      case "alert":
-        newruledata.value = {
-          ...newruledata.value,
-          setting: {
-            ...newruledata.value.setting,
-            alert: {
-              ...newruledata.value.setting.alert,
-              option: {
-                ...newruledata.value.setting.alert.option,
-                [props.num]: {
-                  ...newruledata.value.setting.alert.option[props.num],
-                  status: e.target.checked,
-                },
-              },
-            },
-          },
-        };
-        break;
-      case "device":
-        newruledata.value = {
-          ...newruledata.value,
-          setting: {
-            ...newruledata.value.setting,
-            device: {
-              ...newruledata.value.setting.device,
-              option: {
-                ...newruledata.value.setting.device.option,
-                [props.num]: {
-                  ...newruledata.value.setting.device.option[props.num],
-                  status: e.target.checked,
-                },
-              },
-            },
-          },
-        };
-        break;
-      case "partner":
-        newruledata.value = {
-          ...newruledata.value,
-          setting: {
-            ...newruledata.value.setting,
-            partner: {
-              ...newruledata.value.setting.partner,
-              option: {
-                ...newruledata.value.setting.partner.option,
-                [props.num]: {
-                  ...newruledata.value.setting.partner.option[props.num],
-                  status: e.target.checked,
-                },
-              },
-            },
-          },
-        };
-        break;
-      case "plant":
-        newruledata.value = {
-          ...newruledata.value,
-          setting: {
-            ...newruledata.value.setting,
-            plant: {
-              ...newruledata.value.setting.plant,
-              option: {
-                ...newruledata.value.setting.plant.option,
-                [props.num]: {
-                  ...newruledata.value.setting.plant.option[props.num],
-                  status: e.target.checked,
-                },
-              },
-            },
-          },
-        };
-        break;
-      case "report":
-        newruledata.value = {
-          ...newruledata.value,
-          setting: {
-            ...newruledata.value.setting,
-            report: {
-              ...newruledata.value.setting.report,
-              option: {
-                ...newruledata.value.setting.report.option,
-                [props.num]: {
-                  ...newruledata.value.setting.report.option[props.num],
-                  status: e.target.checked,
-                },
-              },
-            },
-          },
-        };
-        break;
-      case "rule":
-        newruledata.value = {
-          ...newruledata.value,
-          setting: {
-            ...newruledata.value.setting,
-            rule: {
-              ...newruledata.value.setting.rule,
-              option: {
-                ...newruledata.value.setting.rule.option,
-                [props.num]: {
-                  ...newruledata.value.setting.rule.option[props.num],
-                  status: e.target.checked,
-                },
-              },
-            },
-          },
-        };
-        break;
-      default:
-        break;
-    }
+    newruledata.value.setting[props.rights][props.custom] = e.target.checked;
     console.log(newruledata.value);
   };
 
@@ -166,139 +97,6 @@ export const CheckBox = (props) => {
   );
 };
 
-const key = {
-  edit: 'edits',
-  delete: 'delete',
-  create: 'createNew',
-  status: 'status'
-}
-
-const newruledata = signal({
-  ruleid: 1,
-  name: "",
-  setting: {
-    alert: {
-      lang: "notification",
-      option: {
-        1: { lang: key.edit, status: true },
-        2: { lang: key.delete, status: true },
-      },
-    },
-    device: {
-      lang: "device",
-      option: {
-        1: { lang: key.edit, status: true },
-        2: { lang: key.delete, status: true },
-        3: { lang: key.create, status: true },
-      },
-    },
-    partner: {
-      lang: "partner",
-      option: {
-        1: { lang: key.edit, status: true },
-      },
-    },
-    plant: {
-      lang: "project",
-      option: {
-        1: { lang: key.edit, status: true },
-        2: { lang: key.delete, status: true },
-        3: { lang: key.create, status: true },
-      },
-    },
-    report: {
-      lang: "report",
-      option: {
-        1: { lang: key.edit, status: true },
-        2: { lang: key.delete, status: true },
-        3: { lang: key.create, status: true },
-      },
-    },
-    rule: {
-      lang: "rule",
-      option: {
-        1: { lang: key.edit, status: true },
-        2: { lang: key.delete, status: true },
-        3: { lang: key.create, status: true },
-        4: { lang: key.status, status: true },
-      },
-    },
-  },
-});
-
-const newdata = signal({
-  id: 1,
-  name: "",
-  type: "",
-  create: "",
-  date: "",
-  inf: {
-    1: { lang: "report_1", status: false },
-    2: { lang: "report_2", status: false },
-    3: { lang: "report_3", status: false },
-    4: { lang: "report_4", status: false },
-    5: { lang: "report_5", status: false },
-    6: { lang: "report_6", status: false },
-    7: { lang: "report_7", status: false },
-    8: { lang: "report_8", status: false },
-    9: { lang: "report_9", status: false },
-    10: { lang: "report_10", status: false },
-    11: { lang: "report_11", status: false },
-    12: { lang: "report_12", status: false },
-  },
-  subinf: {
-    lang: "report_tit_1",
-    status: false,
-    option: {
-      1: { lang: "report_13", status: false },
-      2: { lang: "report_14", status: false },
-    },
-  },
-  deviceinfo: {
-    lang: "report_tit_2",
-    status: false,
-    option: {
-      1: { lang: "report_15", status: false },
-      2: { lang: "report_16", status: false },
-      3: { lang: "report_17", status: false },
-      4: { lang: "report_18", status: false },
-      5: { lang: "report_19", status: false },
-      6: { lang: "report_20", status: false },
-      7: { lang: "report_21", status: false },
-      8: { lang: "report_22", status: false },
-      9: { lang: "report_23", status: false },
-      10: { lang: "report_24", status: false },
-      11: { lang: "report_25", status: false },
-      12: { lang: "report_26", status: false },
-    },
-  },
-  customdata: {
-    1: { lang: "report_27", status: false },
-    2: { lang: "report_28", status: false },
-    3: { lang: "report_29", status: false },
-    4: { lang: "report_30", status: false },
-    5: { lang: "report_31", status: false },
-    6: { lang: "report_32", status: false },
-    7: { lang: "report_33", status: false },
-    8: { lang: "report_34", status: false },
-    9: { lang: "report_35", status: false },
-    10: { lang: "report_36", status: false },
-    11: { lang: "report_37", status: false },
-    12: { lang: "report_38", status: false },
-    13: { lang: "report_39", status: false },
-    14: { lang: "report_40", status: false },
-    15: { lang: "report_41", status: false },
-    16: { lang: "report_42", status: false },
-    17: { lang: "report_43", status: false },
-    18: { lang: "report_44", status: false },
-    19: { lang: "report_45", status: false },
-    20: { lang: "report_46", status: false },
-  },
-});
-
-const temp = signal(newdata.value);
-const show = signal({ id: "none", status: false });
-
 export default function CreateRule() {
   const dataLang = useIntl();
   const [widthCheckBox, setWidwidthCheckBox] = useState("");
@@ -314,10 +112,10 @@ export default function CreateRule() {
       <div className="DAT_CreateRule_Body_Item">
         <div className="DAT_CreateRule_Body_Item_Data">
           <div className="DAT_CreateRule_Body_Item_Data_Name">
-            <label>{dataLang.formatMessage({ id: 'ruleName' })}: </label>
+            <label>{dataLang.formatMessage({ id: "ruleName" })}: </label>
             <input
               type="text"
-              placeholder={dataLang.formatMessage({ id: 'required' })}
+              placeholder={dataLang.formatMessage({ id: "required" })}
               required
               id="reportname"
               defaultValue={rulenameRef.current}
@@ -329,21 +127,23 @@ export default function CreateRule() {
     );
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
+    // console.log(rulenameRef.current,  userInfor.value.partnerid, JSON.stringify(newruledata.value.setting));
     if (rulenameRef.current !== "") {
-      lastruleID.value = lastruleID.value + 1;
-      newruledata.value = {
-        ...newruledata.value,
+      const createRule = await callApi("post", host.DATA + "/addRule", {
         name: rulenameRef.current,
-        ruleid: lastruleID.value,
-      };
-      datarule.value = [...datarule.value, newruledata.value];
-      console.log(datarule.value);
-      createruleState.value = false;
-    } else {
-      alert("Please enter report name");
+        partnerid: userInfor.value.partnerid,
+        setting:  JSON.stringify(newruledata.value.setting),
+      });
+      if (createRule.status) {
+        datarule.value = [...datarule.value, createRule.data];
+        createruleState.value = false;
+        alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+      } else {
+        alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+      }
+
     }
-    console.log()
   };
 
   useEffect(() => {
@@ -360,7 +160,9 @@ export default function CreateRule() {
       <div className="DAT_CreateRule">
         <div className="DAT_CreateRule_Header">
           <div className="DAT_CreateRule_Header_Left">
-            <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'newRule' })}</p>
+            <p style={{ fontSize: "20px" }}>
+              {dataLang.formatMessage({ id: "newRule" })}
+            </p>
           </div>
           <div className="DAT_CreateRule_Header_Right">
             <div
@@ -368,13 +170,13 @@ export default function CreateRule() {
               onClick={() => handleCreate()}
             >
               <FaSave size={20} color="white" />
-              <span>{dataLang.formatMessage({ id: 'save' })}</span>
+              <span>{dataLang.formatMessage({ id: "save" })}</span>
             </div>
-            <div className="DAT_CreateRule_Header_Right_Close" onClick={() => (createruleState.value = false)}>
-              <RxCross2
-                size={20}
-                color="white"
-              />
+            <div
+              className="DAT_CreateRule_Header_Right_Close"
+              onClick={() => (createruleState.value = false)}
+            >
+              <RxCross2 size={20} color="white" />
             </div>
           </div>
         </div>
@@ -383,31 +185,33 @@ export default function CreateRule() {
           <TypeReport />
           <div className="DAT_CreateRule_Body_Item">
             <div className="DAT_CreateRule_Body_Item_Option">
-              <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: 'ruleOptions' })}</label>
+              <label style={{ margin: "0" }}>
+                {dataLang.formatMessage({ id: "ruleOptions" })}
+              </label>
 
-              {ruletitle.value.map((item, key) => (
-                <div
-                  key={key}
-                  className="DAT_CreateRule_Body_Item_Option_Check"
-                >
-                  <p style={{ color: "grey" }}>
-                    {dataLang.formatMessage({ id: newruledata.value.setting[item].lang })}
-                  </p>
-                  {Object.entries(newruledata.value.setting[item].option).map(
-                    ([key, value]) => (
+              {Object.entries(newruledata.value.setting).map(
+                ([key, value], index) => (
+                  <div
+                    className="DAT_CreateRule_Body_Item_Option_Check"
+                    key={key}
+                  >
+                    <p style={{ color: "grey" }}>
+                      {dataLang.formatMessage({ id: key })}
+                    </p>
+                    {Object.entries(value).map(([key_, value_], index_) => (
                       <CheckBox
-                        key={key}
-                        num={String(key)}
-                        tab={item + "_content"}
-                        status={value.status}
-                        id={dataLang.formatMessage({ id: value.lang })}
-                        html={item + "_" + key}
+                        key={index_}
+                        rights={key}
+                        custom={key_}
+                        status={value_}
+                        id={dataLang.formatMessage({ id: key_ })}
+                        html={index + "_" + index_}
                         width={widthCheckBox}
                       />
-                    )
-                  )}
-                </div>
-              ))}
+                    ))}
+                  </div>
+                )
+              )}
             </div>
           </div>
         </div>
