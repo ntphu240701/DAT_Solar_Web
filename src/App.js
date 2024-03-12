@@ -21,6 +21,7 @@ import adminslice from "./component/Redux/adminslice";
 import { callApi } from "./component/Api/Api";
 import { signal } from "@preact/signals-react";
 import { closed, dataWarn, open } from "./component/Warn/Warn";
+import { useIntl } from "react-intl";
 
 const Home = React.lazy(() => import("./component/Home/Home"));
 const Project = React.lazy(() => import("./component/Project/Project"));
@@ -74,6 +75,7 @@ export const partnerInfor = signal({
 });
 
 export default function App() {
+  const dataLang = useIntl();
   const [loading, setLoading] = useState(true);
   const usr = useSelector((state) => state.admin.usr);
   const status = useSelector((state) => state.admin.status);
@@ -113,7 +115,6 @@ export default function App() {
 
     const checkRule = async (id) => {
       const data = await callApi("post", host.AUTH + "/Rule", { ruleid: id });
-      console.log(data);
       if (data.status) {
         console.log("Rule", data.data);
         ruleInfor.value = {
@@ -128,7 +129,6 @@ export default function App() {
       const data = await callApi("post", host.AUTH + "/Partner", {
         partnerid: id,
       });
-
       if (data.status) {
         console.log("Partner", data.data);
         partnerInfor.value = {
@@ -148,7 +148,6 @@ export default function App() {
 
     const checkToken = async () => {
       const d = await callApi("get", host.DATA + "/getToken");
-
       if (d.status) {
         console.log("Token", d.data);
         Token.value = {
@@ -177,7 +176,6 @@ export default function App() {
         partnerid: partnerid,
         type: type,
       });
-      console.log(warn);
       if (warn.status) {
         warn.data.map((item, index) => {
           dataWarn.value = [
@@ -215,10 +213,17 @@ export default function App() {
       {userInfor.value.partnerid === "0"
         ? <div className="DAT_Clock" >
           <div className="DAT_Clock_Infor">
+<<<<<<< HEAD
             <div className="DAT_Clock_Infor_Tit">Thông báo</div>
             <div className="DAT_Clock_Infor_Content">Tài khoản của bạn hiện đang bị khoá vui lòng liên hệ quản trị viên để kích hoạt lại!</div>
-            <div  className="DAT_Clock_Infor_Btn">
-              <button onClick={() => {handleOut()}}>Thoát</button>
+            <div className="DAT_Clock_Infor_Btn">
+              <button onClick={() => { handleOut() }}>Thoát</button>
+=======
+            <div className="DAT_Clock_Infor_Tit">{dataLang.formatMessage({ id: 'notification' })}</div>
+            <div className="DAT_Clock_Infor_Content">{dataLang.formatMessage({ id: 'accountLockAlert' })}</div>
+            <div className="DAT_Clock_Infor_Btn">
+              <button onClick={() => { handleOut() }}>{dataLang.formatMessage({ id: 'quit' })}</button>
+>>>>>>> 2d8e0ad62608bb4887f41fde86af7014498499dd
             </div>
 
           </div>

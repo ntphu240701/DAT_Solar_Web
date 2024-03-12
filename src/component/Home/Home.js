@@ -17,11 +17,11 @@ import { coalsave } from "../Project/ProjectData";
 import { Loader } from "@googlemaps/js-api-loader"
 
 import { FaSolarPanel, FaTree } from "react-icons/fa6";
-import { VscDashboard } from "react-icons/vsc";
 import { IoIosCloud } from "react-icons/io";
 import { GiCoalWagon } from "react-icons/gi";
 import { FaMoneyBill } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { VscDashboard } from "react-icons/vsc";
 
 const plant = signal([])
 const logger = signal([])
@@ -54,9 +54,9 @@ export default function Home(props) {
   const [totalproduction, setTotalProduction] = useState(0)
   const dataLang = useIntl()
   const [chart, setChart] = useState('year')
-  const [vmonth, setVmonth] = useState(dataLang.formatMessage({ id: 'monthOutputSmall' }));
+  const [vmonth, setVmonth] = useState(dataLang.formatMessage({ id: 'monthOutput' }));
   const [datamonth, setDatamonth] = useState([])
-  const [vyear, setVyear] = useState(dataLang.formatMessage({ id: 'yearOutputSmall' }));
+  const [vyear, setVyear] = useState(dataLang.formatMessage({ id: 'yearOutput' }));
   const [datayear, setDatayear] = useState([])
   const navigate = useNavigate();
   const paginationComponentOptions = {
@@ -96,12 +96,11 @@ export default function Home(props) {
   const defaultProps = {
     center: {
       lat: 16.0544068,
-      lng: 108.2021667	,
+      lng: 108.2021667,
     },
     zoom: 5,
     mapId: 'my_map',
   };
-
 
   const loader = new Loader({
     apiKey: process.env.REACT_APP_GGKEY,
@@ -110,27 +109,27 @@ export default function Home(props) {
   });
 
 
-  
+
 
   const initMap = async (data) => {
     const { AdvancedMarkerElement } = await loader.importLibrary("marker");
     const { Map } = await loader.importLibrary("maps");
 
     let map = new Map(document.getElementById("map"), defaultProps);
-    
+
     data.map((item) => {
-      const marker ={lat: parseFloat(item.lat), lng: parseFloat(item.long)}
+      const marker = { lat: parseFloat(item.lat), lng: parseFloat(item.long) }
       const markerElement = new AdvancedMarkerElement({ position: marker, map: map, title: item.plantname });
       markerElement.addListener("click", () => {
         //console.log(item)
         navigate("/project");
         plantState.value = "info";
         projectData.value = item;
-        
+
       });
       return markerElement
     })
-    
+
 
   }
 
@@ -179,19 +178,18 @@ export default function Home(props) {
     const currentYear = currentDate.getFullYear();
     const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
 
-    //console.log(daysInMonth);
     let datamonth_ = []
     for (let i = 1; i <= daysInMonth; i++) {
       datamonth_ = [
         ...datamonth_,
-        { date: i < 10 ? `0${i}` : `${i}`, [dataLang.formatMessage({ id: 'monthOutputSmall' })]: 0 }]
+        { date: i < 10 ? `0${i}` : `${i}`, [dataLang.formatMessage({ id: 'monthOutput' })]: 0 }]
     }
 
     let datayear_ = []
     for (let i = 1; i <= 12; i++) {
       datayear_ = [
         ...datayear_,
-        { month: i < 10 ? `0${i}` : `${i}`, [dataLang.formatMessage({ id: 'yearOutputSmall' })]: 0 }]
+        { month: i < 10 ? `0${i}` : `${i}`, [dataLang.formatMessage({ id: 'yearOutput' })]: 0 }]
     }
 
     let cap = []
@@ -208,12 +206,11 @@ export default function Home(props) {
         year: moment(new Date()).format("YYYY"),
       })
 
-
       if (chart.status) {
         sum_month[i] = chart.data.data.map(item => item.value).reduce((a, b) => Number(a) + Number(b), 0)
         chart.data.data.map((item, j) => {
           let index = datamonth_.findIndex((d) => d.date == item.date)
-          datamonth_[index][dataLang.formatMessage({ id: 'monthOutputSmall' })] = parseFloat(Number(datamonth_[index][dataLang.formatMessage({ id: 'monthOutputSmall' })]) + Number(item.value)).toFixed(2)
+          datamonth_[index][dataLang.formatMessage({ id: 'monthOutput' })] = parseFloat(Number(datamonth_[index][dataLang.formatMessage({ id: 'monthOutput' })]) + Number(item.value)).toFixed(2)
         })
       } else {
         sum_month[i] = 0
@@ -224,7 +221,7 @@ export default function Home(props) {
         sum_year[i] = chartY.data.data.map(item => item.value).reduce((a, b) => Number(a) + Number(b), 0)
         chartY.data.data.map((item, j) => {
           let index = datayear_.findIndex((d) => d.month == item.month)
-          datayear_[index][dataLang.formatMessage({ id: 'yearOutputSmall' })] = parseFloat(Number(datayear_[index][dataLang.formatMessage({ id: 'yearOutputSmall' })]) + Number(item.value)).toFixed(2)
+          datayear_[index][dataLang.formatMessage({ id: 'yearOutput' })] = parseFloat(Number(datayear_[index][dataLang.formatMessage({ id: 'yearOutput' })]) + Number(item.value)).toFixed(2)
         })
       } else {
         sum_year[i] = 0
@@ -314,7 +311,6 @@ export default function Home(props) {
         partnerid: partnerInfor.value.partnerid,
         type: userInfor.value.type,
       })
-      console.log(d)
       if (d.status === true) {
         initMap(d.data);
         getChart(d.data)
@@ -326,7 +322,7 @@ export default function Home(props) {
       }
     }
 
-    
+
 
     const getLogger = async () => {
       let d = await callApi('post', host.DATA + '/getallLogger', {
@@ -334,7 +330,6 @@ export default function Home(props) {
         partnerid: partnerInfor.value.partnerid,
         type: userInfor.value.type,
       })
-      console.log(d)
       if (d.status) {
         logger.value = d.data
         d.data.map(async (item) => {
@@ -353,9 +348,9 @@ export default function Home(props) {
     getPlant();
     getLogger();
     getPrice(plant.value, logger.value)
-   
 
-  }, [lang,usr,partnerInfor.value.partnerid,userInfor.value.type,Token.value.token])
+
+  }, [lang, usr, partnerInfor.value.partnerid, userInfor.value.type, Token.value.token])
 
 
   useEffect(() => {
@@ -451,7 +446,7 @@ export default function Home(props) {
       value: cal.pro_3
     }
 
-  }, [invt,usr])
+  }, [invt, usr])
 
 
 
@@ -487,7 +482,7 @@ export default function Home(props) {
             <div className="DAT_Home_Overview-Main-Value">
               <div className="DAT_Home_Overview-Main-Value-Item">
                 <div className="DAT_Home_Overview-Main-Value-Item-Title">
-                  {dataLang.formatMessage({ id: 'totalPower' })}
+                  {dataLang.formatMessage({ id: 'totalOutput' })}
                 </div>
                 <div>
                   <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{production}</span>
@@ -514,7 +509,7 @@ export default function Home(props) {
               style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: 'dailyOutputSmall' })}
+                {dataLang.formatMessage({ id: 'dailyOutput' })}
               </div>
               <div>
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{dailyproduction}</span>
@@ -527,7 +522,7 @@ export default function Home(props) {
               style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: 'monthOutputSmall' })}
+                {dataLang.formatMessage({ id: 'monthOutput' })}
               </div>
               <div>
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{monthlyproduction}</span>
@@ -540,7 +535,7 @@ export default function Home(props) {
               style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: 'yearOutputSmall' })}
+                {dataLang.formatMessage({ id: 'yearOutput' })}
               </div>
               <div>
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{yearlyproduction}</span>
@@ -553,7 +548,7 @@ export default function Home(props) {
               style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: 'totalPower' })}
+                {dataLang.formatMessage({ id: 'totalOutput' })}
               </div>
               <div>
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{totalproduction}</span>
@@ -619,13 +614,13 @@ export default function Home(props) {
                 >
                   <BarChart width={150} height={200} data={datayear}>
                     <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                    <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...datayear.map(item => item[dataLang.formatMessage({ id: 'yearOutputSmall' })])))]} />
+                    <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...datayear.map(item => item[dataLang.formatMessage({ id: 'yearOutput' })])))]} />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
                     <Legend />
                     <Bar
                       shape={<TriangleBar />}
-                      dataKey={dataLang.formatMessage({ id: 'yearOutputSmall' })}
+                      dataKey={dataLang.formatMessage({ id: 'yearOutput' })}
                       fill="#6495ed"
                       barSize={15}
                       legendType="circle"
@@ -638,13 +633,13 @@ export default function Home(props) {
                 >
                   <BarChart width={150} height={200} data={datamonth}>
                     <XAxis dataKey="date" axisLine={false} tickLine={false} />
-                    <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...datamonth.map(item => item[dataLang.formatMessage({ id: 'monthOutputSmall' })])))]} />
+                    <YAxis axisLine={false} tickLine={false} domain={[0, (Math.max(...datamonth.map(item => item[dataLang.formatMessage({ id: 'monthOutput' })])))]} />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
                     <Legend />
                     <Bar
                       shape={<TriangleBar />}
-                      dataKey={dataLang.formatMessage({ id: 'monthOutputSmall' })}
+                      dataKey={dataLang.formatMessage({ id: 'monthOutput' })}
                       fill="#6495ed"
                       barSize={15}
                       legendType="circle"

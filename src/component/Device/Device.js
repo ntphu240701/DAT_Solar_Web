@@ -171,7 +171,7 @@ export default function Device(props) {
       width: "170px",
     },
     {
-      name: dataLang.formatMessage({ id: 'dailyOutputSmall' }),
+      name: dataLang.formatMessage({ id: 'dailyOutput' }),
       selector: (row) => row.dailyproduction + " kWh",
       sortable: true,
       width: "210px",

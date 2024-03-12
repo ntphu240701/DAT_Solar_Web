@@ -42,16 +42,32 @@ export default function EditRole() {
 
       <div className="DAT_EditRole_Body">
         <div className="DAT_EditRole_Body_Row">
-          {dataLang.formatMessage({ id: 'username' })}: &nbsp;
+          <div className="DAT_EditRole_Body_Row_Left">
+            {dataLang.formatMessage({ id: 'username' })}:
+          </div>
           {roleData.value.name_}
         </div>
 
         <div className="DAT_EditRole_Body_Row">
-          <span style={{ color: "red" }}>* </span>
-          <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'rule' })}: &nbsp;</span>
+          <div className="DAT_EditRole_Body_Row_Left">
+            <span style={{ color: "red" }}>* </span>
+            <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'account' })}: &nbsp;</span>
+          </div>
           <select>
-            <option>User</option>
-            <option>Admin</option>
+            <option>{dataLang.formatMessage({ id: 'master' })}</option>
+            <option>{dataLang.formatMessage({ id: 'admin' })}</option>
+            <option>{dataLang.formatMessage({ id: 'user' })}</option>
+          </select>
+        </div>
+
+        <div className="DAT_EditRole_Body_Row">
+          <div className="DAT_EditRole_Body_Row_Left">
+            <span style={{ color: "red" }}>* </span>
+            <span style={{ color: "grey", marginRight: '18px' }}>{dataLang.formatMessage({ id: 'rule' })}: &nbsp;</span>
+          </div>
+          <select>
+            <option>{dataLang.formatMessage({ id: 'user' })}</option>
+            <option>{dataLang.formatMessage({ id: 'master' })}</option>
           </select>
         </div>
       </div>

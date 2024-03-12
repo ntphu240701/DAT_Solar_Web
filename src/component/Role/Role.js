@@ -24,11 +24,11 @@ import { LuUserSquare } from "react-icons/lu";
 export const roleData = signal({});
 export const roleState = signal("default");
 export const popupState = signal("default");
-const Usr_ = signal([]);
+export const Usr_ = signal([]);
 
 export default function Role(props) {
   const dataLang = useIntl();
-
+  const [temp, setTemp] = useState();
   const [filter, setFilter] = useState(false);
 
   const paginationComponentOptions = {
@@ -82,7 +82,16 @@ export default function Role(props) {
 
     {
       name: dataLang.formatMessage({ id: 'account' }),
-      selector: (row) => row.type_,
+      selector: (row) => {
+        switch (row.type_) {
+          case "master":
+            return (dataLang.formatMessage({ id: 'master' }))
+          case "admin":
+            return (dataLang.formatMessage({ id: 'admin' }))
+          default:
+            return (dataLang.formatMessage({ id: 'user' }))
+        }
+      },
       sortable: true,
       width: "180px",
       style: {
@@ -121,7 +130,8 @@ export default function Role(props) {
             </div>
             <div
               className="DAT_ModifyBox_Remove"
-              onClick={() => (popupState.value = "delete")}
+              id={row.usr_}
+              onClick={(e) => handleDelete_(e)}
             >
               <MdDelete size={20} />
               &nbsp;
@@ -133,6 +143,12 @@ export default function Role(props) {
       width: "110px",
     },
   ];
+
+  const handleDelete_ = (e) => {
+    popupState.value = "delete";
+    setTemp(e.currentTarget.id);
+    console.log(e.currentTarget.id)
+  };
 
   const handleEdit = (e) => {
     popupState.value = "edit";
@@ -307,7 +323,7 @@ export default function Role(props) {
         {(() => {
           switch (popupState.value) {
             case "delete":
-              return <DeleteRole />;
+              return <DeleteRole user={temp} />;
             case "edit":
               return <EditRole />;
             default:
