@@ -56,22 +56,22 @@ export default function Device(props) {
   };
 
   const dataInverter = [
-    {
-      id: 1,
-      SN: "I0000145",
-      name: "Inverter 01",
-      plant: "Năng lượng DAT 01",
-      status: true,
-      production: "16",
-      dailyproduction: "123.4",
-      updated: "12/30/2023 12:07:12",
-    },
+    // {
+    //   id: 1,
+    //   SN: "I0000145",
+    //   name: "Inverter 01",
+    //   plant: "Năng lượng DAT 01",
+    //   status: true,
+    //   production: "16",
+    //   dailyproduction: "123.4",
+    //   updated: "12/30/2023 12:07:12",
+    // },
     // {
     //   id: 2,
     //   SN: "I0000012",
     //   name: "Inverter 02",
     //   plant: "Năng lượng DAT 01",
-    //   status: true,
+    //   status: false,
     //   production: "18",
     //   dailyproduction: "238.4",
     //   updated: "12/30/2023 12:07:12",
@@ -123,6 +123,15 @@ export default function Device(props) {
 
   const columnDevice = [
     {
+      name: dataLang.formatMessage({ id: 'ordinalNumber' }),
+      selector: (row, i) => i + 1,
+      sortable: true,
+      width: "80px",
+      style: {
+        justifyContent: "center",
+      },
+    },
+    {
       name: 'Mã thiết bị',
       selector: (row) => (
         <div className="DAT_Table">
@@ -132,14 +141,23 @@ export default function Device(props) {
             id={row.id + "_" + tab.value}
             onClick={(e) => handleShowInfo(e)}
           >
-            <div className="DAT_Table_Infor_Name">{row.SN}</div>
-            {/* <div className="DAT_Table_Infor_Name">{row.name}</div>
-            <div className="DAT_Table_Infor_Addr">{row.SN}</div> */}
+            {/* <div className="DAT_Table_Infor_Name">{row.SN}</div> */}
+            <div className="DAT_Table_Infor_Name">{row.name}</div>
+            <div className="DAT_Table_Infor_Addr">{row.SN}</div>
           </div>
         </div>
       ),
       sortable: true,
       // minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: dataLang.formatMessage({ id: 'project' }),
+      selector: (row) => row.plant,
+      sortable: true,
+      minWidth: "350px",
       style: {
         justifyContent: "left",
       },
@@ -158,16 +176,6 @@ export default function Device(props) {
       width: "110px",
     },
     {
-      name: dataLang.formatMessage({ id: 'project' }),
-      selector: (row) => row.plant,
-      sortable: true,
-      minWidth: "350px",
-      style: {
-        justifyContent: "left",
-      },
-    },
-
-    {
       name: dataLang.formatMessage({ id: 'electricGen' }),
       selector: (row) => row.production + " kW",
       sortable: true,
@@ -179,12 +187,12 @@ export default function Device(props) {
       sortable: true,
       width: "210px",
     },
-    {
-      name: dataLang.formatMessage({ id: 'update' }),
-      selector: (row) => row.updated,
-      sortable: true,
-      width: "180px",
-    },
+    // {
+    //   name: dataLang.formatMessage({ id: 'update' }),
+    //   selector: (row) => row.updated,
+    //   sortable: true,
+    //   width: "180px",
+    // },
     {
       name: dataLang.formatMessage({ id: 'setting' }),
       selector: (row) => (
@@ -223,6 +231,15 @@ export default function Device(props) {
 
   const columnRemote = [
     {
+      name: dataLang.formatMessage({ id: 'ordinalNumber' }),
+      selector: (row, i) => i + 1,
+      sortable: true,
+      width: "80px",
+      style: {
+        justifyContent: "center",
+      },
+    },
+    {
       name: dataLang.formatMessage({ id: 'name' }),
       selector: (row) => (
         <div className="DAT_Table">
@@ -244,6 +261,15 @@ export default function Device(props) {
       },
     },
     {
+      name: dataLang.formatMessage({ id: 'project' }),
+      selector: (row) => row.pplantname,
+      sortable: true,
+      minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
       name: dataLang.formatMessage({ id: 'status' }),
       selector: (row) => (
         <>
@@ -255,15 +281,6 @@ export default function Device(props) {
         </>
       ),
       width: "110px",
-    },
-    {
-      name: dataLang.formatMessage({ id: 'project' }),
-      selector: (row) => row.pplantname,
-      sortable: true,
-      minWidth: "350px",
-      style: {
-        justifyContent: "center",
-      },
     },
     // {
     //   name: "Cập nhật",
@@ -382,7 +399,7 @@ export default function Device(props) {
     // get logger
     const getAllLogger = async () => {
       let d = await callApi('post', host.DATA + '/getallLogger', { usr: user, partnerid: userInfor.value.partnerid, type: userInfor.value.type });
-      console.log(d);
+      // console.log(d);
       if (d.status === true) {
         loggerList.value = d.data;
       }

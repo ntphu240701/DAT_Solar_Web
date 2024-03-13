@@ -73,7 +73,7 @@ export default function Popup(props) {
     <div className="DAT_Popup_Box">
       <div className="DAT_Popup_Box_Head">
         <div className="DAT_Popup_Box_Head_Left">
-          <p>{dataLang.formatMessage({ id: 'delete' })} </p>
+          <p>{dataLang.formatMessage({ id: 'delete' })} {props.type === "plant" ? 'dự án' : 'thiết bị'}</p>
         </div>
         <div className="DAT_Popup_Box_Head_Right">
           <div className="DAT_Popup_Box_Head_Right_Icon"
@@ -89,12 +89,13 @@ export default function Popup(props) {
 
       <div className="DAT_Popup_Box_Body">
         <span>
-          {dataLang.formatMessage({ id: 'delPlant' })}
+          {props.type === "plant" ?
+            dataLang.formatMessage({ id: 'delPlant' })
+            : dataLang.formatMessage({ id: 'delDevicemess' })}
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
             {props.type === "plant" ? projectData.value.plantname : props.sn}
           </span>
-          &nbsp;
         </span>
       </div>
 

@@ -62,6 +62,10 @@ export default function Popup(props) {
         {/* <p> */}
         <p>
           {dataLang.formatMessage({ id: 'delDevicemess' })}
+          &nbsp;
+          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+            {props.sn}
+          </span>
         </p>
         {/* </p> */}
       </div>

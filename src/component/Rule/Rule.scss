@@ -316,7 +316,7 @@
         padding: 16px;
 
         &_Left {
-            flex: 5;
+            flex: 7;
 
             & p {
                 margin: 0;
@@ -326,7 +326,7 @@
         &_Right {
             display: flex;
             justify-content: flex-end;
-            flex: 5;
+            flex: 3;
 
             &_Icon {
                 display: flex;

@@ -108,18 +108,46 @@ const BasicInformation = (props) => {
       >
         {display ? (
           <div className="DAT_Info_Databox_Content">
-            <div className="DAT_Info_Databox_Content_Column">
-              <p>SN: {info.value.psn}</p>
-              {/* <p>Sản lượng hàng ngày: {info.value.dailyproduction}</p> */}
-            </div>
-            <div className="DAT_Info_Databox_Content_Column">
-              <p>{dataLang.formatMessage({ id: 'name' })}: {info.value.pname}</p>
-            </div>
-            <div className="DAT_Info_Databox_Content_Column">
-              <p>{dataLang.formatMessage({ id: 'project' })}: {info.value.pplantname}</p>
-              {/* <p>Sản lượng: {info.value.production}</p> */}
-              {/* <p>Cập nhật mới nhất: {info.value.updated}</p> */}
-            </div>
+            {(() => {
+              switch (tab.value) {
+                case 'logger':
+                  return (
+                    <>
+                      <div className="DAT_Info_Databox_Content_Column">
+                        <p>SN: {info.value.psn}</p>
+                        {/* <p>Sản lượng hàng ngày: {info.value.dailyproduction}</p> */}
+                      </div>
+                      <div className="DAT_Info_Databox_Content_Column">
+                        <p>{dataLang.formatMessage({ id: 'name' })}: {info.value.pname}</p>
+                      </div>
+                      <div className="DAT_Info_Databox_Content_Column">
+                        <p>{dataLang.formatMessage({ id: 'project' })}: {info.value.pplantname}</p>
+                        {/* <p>Sản lượng: {info.value.production}</p> */}
+                        {/* <p>Cập nhật mới nhất: {info.value.updated}</p> */}
+                      </div>
+                    </>
+                  )
+                case 'inverter':
+                  return (
+                    <>
+                      <div className="DAT_Info_Databox_Content_Column">
+                        <p>SN: {info.value.SN}</p>
+                        {/* <p>Sản lượng hàng ngày: {info.value.dailyproduction}</p> */}
+                      </div>
+                      <div className="DAT_Info_Databox_Content_Column">
+                        <p>{dataLang.formatMessage({ id: 'name' })}: {info.value.name}</p>
+                      </div>
+                      <div className="DAT_Info_Databox_Content_Column">
+                        <p>{dataLang.formatMessage({ id: 'project' })}: {info.value.plant}</p>
+                        {/* <p>Sản lượng: {info.value.production}</p> */}
+                        {/* <p>Cập nhật mới nhất: {info.value.updated}</p> */}
+                      </div>
+                    </>
+                  )
+                default:
+                  <></>
+              }
+            })()}
           </div>
         ) : (
           <></>
@@ -741,14 +769,42 @@ export default function Info() {
     <div className="DAT_Info">
       <div className="DAT_Info_Header">
         <div className="DAT_Info_Header_Left">
-          <p style={{ fontWeight: "bold" }}>{info.value.pname}: {info.value.psn}</p>
-          <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            {info.value.pstate == 1 ? (
-              <FaCheckCircle size={20} color="green" />
-            ) : (
-              <MdOutlineError size={20} color="red" />
-            )}
-          </p>
+          {(() => {
+            switch (tab.value) {
+              case 'logger':
+                return (
+                  <>
+                    <p style={{ fontWeight: "bold" }}>
+                      {info.value.pname}: {info.value.psn}
+                    </p>
+                    <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      {info.value.pstate == 1 ? (
+                        <FaCheckCircle size={20} color="green" />
+                      ) : (
+                        <MdOutlineError size={20} color="red" />
+                      )}
+                    </p>
+                  </>
+                )
+              case 'inverter':
+                return (
+                  <>
+                    <p style={{ fontWeight: "bold" }}>
+                      {info.value.name}: {info.value.SN}
+                    </p>
+                    <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      {info.value.status ? (
+                        <FaCheckCircle size={20} color="green" />
+                      ) : (
+                        <MdOutlineError size={20} color="red" />
+                      )}
+                    </p>
+                  </>
+                )
+              default:
+                return <></>;
+            }
+          })()}
         </div>
 
         <div className="DAT_Info_Header_Right">
