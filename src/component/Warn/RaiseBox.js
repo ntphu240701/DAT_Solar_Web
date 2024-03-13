@@ -66,7 +66,7 @@ export default function RaiseBox(props) {
       </div>
 
       <div className="DAT_PopupReport_Box_Body">
-        <p>{dataLang.formatMessage({ id: "delreportmess" })}</p>
+        <p>{dataLang.formatMessage({ id: "delWarnmess" })}</p>
       </div>
 
       <div className="DAT_PopupReport_Box_Foot">

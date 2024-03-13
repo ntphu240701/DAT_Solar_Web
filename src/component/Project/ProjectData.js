@@ -62,6 +62,8 @@ import { LiaLongArrowAltLeftSolid } from "react-icons/lia";
 import { CiSearch } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import { FiEdit } from "react-icons/fi";
+import { plantData } from "./AddProject";
+import { set } from "lodash";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -91,7 +93,7 @@ const dataAlert = [];
 export default function ProjectData(props) {
   const dataLang = useIntl();
   const lang = useSelector((state) => state.admin.lang);
-  const [nav, setNav] = useState("graph");
+  const [nav, setNav] = useState(projectData.value.plantmode === "grid" ? "production" : "graph");
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
   const [configname, setConfigname] = useState(
@@ -108,13 +110,10 @@ export default function ProjectData(props) {
   const [dataYear, setDataYear] = useState([]);
   const [vYear, setVYear] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataTotal, setDataTotal] = useState([]);
-  const [vTotal, setVTotal] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [snlogger, setSnlogger] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [invt, setInvt] = useState({});
+  const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: 'unknown' }));
+  const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: 'unknown' }));
+  const [type, setType] = useState("");
+  const [invt, setInvt] = useState({})
   const box = useRef();
 
   const [d, setD] = useState({
@@ -312,18 +311,16 @@ export default function ProjectData(props) {
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            <div
-              className="DAT_ModifyBox_Fix"
-              id={row.sn}
+            <div className="DAT_ModifyBox_Fix"
+              id={row.sn + "_edit"}
               onClick={(e) => handleEdit(e)}
             >
               <FiEdit size={14} />
               &nbsp;
               {dataLang.formatMessage({ id: "edit" })}
             </div>
-            <div
-              className="DAT_ModifyBox_Remove"
-              id={row.sn}
+            <div className="DAT_ModifyBox_Remove"
+              id={row.sn + "_remove"}
               onClick={(e) => handleDelete(e)}
             >
               <IoTrashOutline size={16} />
@@ -478,7 +475,8 @@ export default function ProjectData(props) {
           date: moment(date).format("MM/DD/YYYY"),
         });
         setDataDay([]);
-        console.log(d);
+        console.log(projectData.value.plantid)
+        console.log(d)
         if (d.status) {
           console.log(d.data);
           let vDay = d.data.name;
@@ -590,12 +588,19 @@ export default function ProjectData(props) {
   };
 
   const handleEdit = (e) => {
-    console.log("sua");
+    popupState.value = true;
+    const id = e.currentTarget.id;
+    const idArr = id.split("_");
+    setSnlogger(idArr[0]);
+    setType(idArr[1]);
   };
 
   const handleDelete = (e) => {
     popupState.value = true;
-    setSnlogger(e.currentTarget.id);
+    const id = e.currentTarget.id;
+    const idArr = id.split("_");
+    setSnlogger(idArr[0]);
+    setType(idArr[1]);
   };
 
   useEffect(() => {
@@ -1119,6 +1124,10 @@ export default function ProjectData(props) {
                           id="graph"
                           style={{
                             color: nav === "graph" ? color.cur : color.pre,
+                            display:
+                              projectData.value.plantmode === "grid"
+                                ? "none"
+                                : "block",
                             // width: nav === "graph" ? "150px" : "60px",
                           }}
                           onClick={(e) => handleNav(e)}
@@ -1271,7 +1280,7 @@ export default function ProjectData(props) {
                               setDropConfig(!dropConfig);
                             }}
                           >
-                            {configname}
+                            {dataLang.formatMessage({ id: 'choosePara' })}
                           </button>
                         </div>
 
@@ -1354,12 +1363,12 @@ export default function ProjectData(props) {
                                     <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                       <input id="Production" type="checkbox" />
                                       <label htmlFor="Production">
-                                        Production
+                                        {dataLang.formatMessage({ id: 'production' })}
                                       </label>
                                     </div>
                                   </td>
                                 </tr>
-                                <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                {/* <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                   <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
                                     {dataLang.formatMessage({ id: "envi" })}
                                   </th>
@@ -1381,7 +1390,7 @@ export default function ProjectData(props) {
                                       </label>
                                     </div>
                                   </td>
-                                </tr>
+                                </tr> */}
                               </tbody>
                             </table>
                           </div>
@@ -2130,12 +2139,7 @@ export default function ProjectData(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup
-            plantid={projectData.value.plantid}
-            type="logger"
-            sn={snlogger}
-            data={temp.value}
-          />
+          <Popup plantid={projectData.value.plantid} type="logger" sn={snlogger} data={temp.value} func={type} />
         </div>
       ) : (
         <> </>
@@ -2803,9 +2807,7 @@ const Consumption = (props) => {
               {dataLang.formatMessage({ id: "yearlyConsumption" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(props.cal?.pro_year || 0).toLocaleString("en-US")}
-              </span>
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.con_year || 0).toLocaleString('en-US')}</span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
             </div>
@@ -2821,9 +2823,7 @@ const Consumption = (props) => {
               {dataLang.formatMessage({ id: "monthlyConsumption" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(props.cal?.pro_month || 0).toLocaleString("en-US")}
-              </span>
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.con_month || 0).toLocaleString('en-US')}</span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
             </div>
@@ -2902,9 +2902,7 @@ const Grid = (props) => {
               {dataLang.formatMessage({ id: "month" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                0
-              </span>
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.grid_in_month || 0).toLocaleString('en-US')}</span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
             </div>
@@ -2915,9 +2913,7 @@ const Grid = (props) => {
               {dataLang.formatMessage({ id: "year" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                0
-              </span>
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.grid_in_year || 0).toLocaleString('en-US')}</span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
             </div>
@@ -2968,9 +2964,7 @@ const Grid = (props) => {
               {dataLang.formatMessage({ id: "month" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                0
-              </span>
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.grid_out_month || 0).toLocaleString('en-US')}</span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
             </div>
@@ -2981,9 +2975,7 @@ const Grid = (props) => {
               {dataLang.formatMessage({ id: "year" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                0
-              </span>
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.grid_out_year || 0).toLocaleString('en-US')}</span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
             </div>
@@ -3074,13 +3066,10 @@ const Battery = (props) => {
           </div>
 
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
-              {dataLang.formatMessage({ id: "today" })}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">{dataLang.formatMessage({ id: 'month' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                0
-              </span>
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.bat_in_month || 0).toLocaleString('en-US')}</span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
             </div>
@@ -3091,9 +3080,7 @@ const Battery = (props) => {
               {dataLang.formatMessage({ id: "year" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                0
-              </span>
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.bat_in_year || 0).toLocaleString('en-US')}</span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
             </div>
@@ -3104,9 +3091,7 @@ const Battery = (props) => {
               {dataLang.formatMessage({ id: "total" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                0
-              </span>
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.bat_in_total || 0).toLocaleString('en-US')}</span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
             </div>
@@ -3144,9 +3129,7 @@ const Battery = (props) => {
               {dataLang.formatMessage({ id: "month" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                0
-              </span>
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.bat_out_month || 0).toLocaleString('en-US')}</span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
             </div>
@@ -3157,9 +3140,7 @@ const Battery = (props) => {
               {dataLang.formatMessage({ id: "year" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                0
-              </span>
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.bat_out_year || 0).toLocaleString('en-US')}</span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
             </div>
@@ -3170,9 +3151,7 @@ const Battery = (props) => {
               {dataLang.formatMessage({ id: "total" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                0
-              </span>
+              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.bat_out_total || 0).toLocaleString('en-US')}</span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
             </div>
