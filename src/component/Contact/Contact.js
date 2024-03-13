@@ -3,7 +3,7 @@ import "./Contact.scss";
 
 import PopupAvatar from "./PopupAva";
 import EditContactInfo from "./EditContactInfo";
-import { partnerInfor, userInfor } from "../../App";
+import { partnerInfor, ruleInfor, userInfor } from "../../App";
 import { signal } from "@preact/signals-react";
 import { useIntl } from "react-intl";
 
@@ -35,7 +35,7 @@ export default function Contact(props) {
           <div className="DAT_Contact_Item_Registation">
             <div className="DAT_Contact_Item_Registation_Tit">
               <div>{dataLang.formatMessage({ id: 'registerInfo' })}</div>
-              {userInfor.value.type === "user"
+              {ruleInfor.value.setting.contact.edit === false
                 ? <></>
                 : <div onClick={() => (contactState.value = "editRegisterInf")}>
                   {dataLang.formatMessage({ id: 'edit' })}
@@ -69,7 +69,7 @@ export default function Contact(props) {
           <div className="DAT_Contact_Item_Contact">
             <div className="DAT_Contact_Item_Contact_Tit">
               <div>{dataLang.formatMessage({ id: 'contact' })}</div>
-              {userInfor.value.type === "user"
+              {ruleInfor.value.setting.contact.edit === false
                 ? <></>
                 : <div onClick={() => (contactState.value = "editContactInf")}>
                   {dataLang.formatMessage({ id: 'edit' })}
@@ -96,7 +96,7 @@ export default function Contact(props) {
           <div className="DAT_Contact_Item_Logo">
             <div className="DAT_Contact_Item_Logo_Tit">
               <div>Logo</div>
-              {userInfor.value.type === "user"
+              {ruleInfor.value.setting.contact.edit === false
                 ? <></>
                 : <div onClick={() => (popupStateContact.value = true)}>
                   {dataLang.formatMessage({ id: 'edit' })}

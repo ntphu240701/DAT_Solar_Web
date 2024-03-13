@@ -96,15 +96,15 @@ const GroupUsers = () => {
         justifyContent: "left",
       },
     },
-    // {
-    //   name: "ID",
-    //   selector: (user) => user.id_,
-    //   sortable: true,
-    //   // width: "150px",
-    //   style: {
-    //     justifyContent: "left",
-    //   },
-    // },
+    {
+      name: dataLang.formatMessage({ id: "rule" }),
+      selector: (user) => dataLang.formatMessage({ id: user.type_ }),
+      sortable: true,
+      // width: "150px",
+      style: {
+        justifyContent: "left",
+      },
+    },
     // {
     //   name: "Rule ID",
     //   selector: (user) => user.ruleid_,
@@ -143,7 +143,7 @@ const GroupUsers = () => {
       const getUser = await callApi("post", host.DATA + "/getallUser", {
         partnerid: groupID.value,
       });
-      // console.log(getUser, "ABC")
+      console.log(getUser)
       if (getUser.status) {
         groupUser.value = getUser.data.sort((a, b) => a.id_ - b.id_);
       }
@@ -315,6 +315,7 @@ export default function GroupRole(props) {
     const checkApi = async () => {
       const allPartner = await callApi("get", host.DATA + "/getallPartner", "");
       if (allPartner.status) {
+        // console.log(allPartner)
         group.value = allPartner.data.sort((a, b) => a.id_ - b.id_);
       }
     };
