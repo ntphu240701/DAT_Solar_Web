@@ -30,6 +30,7 @@ import { CiSearch } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import { FiEdit } from "react-icons/fi";
 import { plantData } from "./AddProject";
+import { set } from "lodash";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -74,6 +75,7 @@ export default function ProjectData(props) {
   const [dataTotal, setDataTotal] = useState([]);
   const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: 'unknown' }));
   const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: 'unknown' }));
+  const [type, setType] = useState("");
   const [invt, setInvt] = useState({})
   const box = useRef();
 
@@ -268,7 +270,7 @@ export default function ProjectData(props) {
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             <div className="DAT_ModifyBox_Fix"
-              id={row.sn}
+              id={row.sn + "_edit"}
               onClick={(e) => handleEdit(e)}
             >
               <FiEdit size={14} />
@@ -276,7 +278,7 @@ export default function ProjectData(props) {
               {dataLang.formatMessage({ id: 'edit' })}
             </div>
             <div className="DAT_ModifyBox_Remove"
-              id={row.sn}
+              id={row.sn + "_remove"}
               onClick={(e) => handleDelete(e)}
             >
               <IoTrashOutline size={16} />
@@ -520,11 +522,20 @@ export default function ProjectData(props) {
     // } 
   }
 
-  const handleEdit = (e) => { console.log("sua") };
+  const handleEdit = (e) => {
+    popupState.value = true;
+    const id = e.currentTarget.id;
+    const idArr = id.split("_");
+    setSnlogger(idArr[0]);
+    setType(idArr[1]);
+  };
 
   const handleDelete = (e) => {
     popupState.value = true;
-    setSnlogger(e.currentTarget.id);
+    const id = e.currentTarget.id;
+    const idArr = id.split("_");
+    setSnlogger(idArr[0]);
+    setType(idArr[1]);
   };
 
   useEffect(() => {
@@ -1797,7 +1808,7 @@ export default function ProjectData(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup plantid={projectData.value.plantid} type="logger" sn={snlogger} data={temp.value} />
+          <Popup plantid={projectData.value.plantid} type="logger" sn={snlogger} data={temp.value} func={type} />
         </div>
       ) : (
         <> </>

@@ -415,7 +415,7 @@ export default function Device(props) {
     };
     getAllLogger();
 
-  }, [loggerList.value]);
+  }, []);
 
   return (
     <>

@@ -48,6 +48,10 @@ export default function Popup(props) {
         alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
       } else if (d.status === true) {
         alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+        let newData = loggerList.value
+        let index = newData.findIndex((item) => item.psn == props.sn);
+        newData[index].pname = name.current.value;
+        loggerList.value = [...newData];
         popupState.value = false;
       }
     }
