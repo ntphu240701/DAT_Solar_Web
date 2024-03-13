@@ -157,7 +157,7 @@ export default function Report(props) {
                   {dataLang.formatMessage({ id: 'createBy' })}: {item.create}
                 </div>
                 <div className="DAT_Report_List_Form_Date">
-                  {dataLang.formatMessage({ id: 'createDate' })}: {item.date}
+                  {dataLang.formatMessage({ id: 'createdate' })}: {item.date}
                 </div>
                 <div className="DAT_Report_List_Form_Custom">
                   <div

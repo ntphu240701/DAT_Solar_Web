@@ -143,7 +143,7 @@ const GroupUsers = () => {
       const getUser = await callApi("post", host.DATA + "/getallUser", {
         partnerid: groupID.value,
       });
-      // console.log(getUser, "ABC")
+      // console.log(getUser)
       if (getUser.status) {
         groupUser.value = getUser.data.sort((a, b) => a.id_ - b.id_);
       }

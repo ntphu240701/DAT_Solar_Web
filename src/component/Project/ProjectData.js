@@ -422,6 +422,7 @@ export default function ProjectData(props) {
       const getDaily = async () => {
         const d = await callApi('post', host.DATA + '/getChart', { plantid: projectData.value.plantid, date: moment(date).format("MM/DD/YYYY") });
         setDataDay([]);
+        console.log(projectData.value.plantid)
         console.log(d)
         if (d.status) {
           console.log(d.data)
@@ -615,7 +616,6 @@ export default function ProjectData(props) {
       } else {
         setDataYear([]);
         setVYear(dataLang.formatMessage({ id: 'unknown' }));
-
       }
     }
     getYear();
@@ -1124,7 +1124,7 @@ export default function ProjectData(props) {
                               setDropConfig(!dropConfig);
                             }}
                           >
-                            {configname}
+                            {dataLang.formatMessage({ id: 'choosePara' })}
                           </button>
                         </div>
 
@@ -1201,12 +1201,12 @@ export default function ProjectData(props) {
                                     <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                       <input id="Production" type="checkbox" />
                                       <label htmlFor="Production">
-                                        Production
+                                        {dataLang.formatMessage({ id: 'production' })}
                                       </label>
                                     </div>
                                   </td>
                                 </tr>
-                                <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                {/* <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                   <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
                                     {dataLang.formatMessage({ id: 'envi' })}
                                   </th>
@@ -1224,7 +1224,7 @@ export default function ProjectData(props) {
                                       </label>
                                     </div>
                                   </td>
-                                </tr>
+                                </tr> */}
                               </tbody>
                             </table>
                           </div>
@@ -2595,7 +2595,7 @@ const Battery = (props) => {
           </div>
 
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">{dataLang.formatMessage({ id: 'today' })}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">{dataLang.formatMessage({ id: 'month' })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>0</span>
