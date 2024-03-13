@@ -39,6 +39,7 @@ export default function Device(props) {
   const dataLang = useIntl();
   const user = useSelector(state => state.admin.usr);
   const [filter, setFilter] = useState(false);
+  const [type, setType] = useState("");
   const [plantid, setPlantid] = useState("");
   const [snlogger, setSnlogger] = useState("");
 
@@ -308,6 +309,7 @@ export default function Device(props) {
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             <div className="DAT_ModifyBox_Fix"
+              id={row.psn + "_" + row.pplantid + "_edit"}
               onClick={(e) => handleEdit(e)}
             >
               <FiEdit size={14} />
@@ -315,7 +317,7 @@ export default function Device(props) {
               {dataLang.formatMessage({ id: 'edits' })}
             </div>
             <div className="DAT_ModifyBox_Remove"
-              id={row.psn + "_" + row.pplantid}
+              id={row.psn + "_" + row.pplantid + "_remove"}
               onClick={(e) => handleRemove(e)}
             >
               <IoTrashOutline size={16} />
@@ -349,7 +351,13 @@ export default function Device(props) {
     }
   };
 
-  const handleEdit = (e) => { };
+  const handleEdit = (e) => {
+    popupState.value = true;
+    const id = e.currentTarget.id;
+    const idArr = id.split("_");
+    setSnlogger(idArr[0]);
+    setType(idArr[2]);
+  };
 
   const handleRemove = (e) => {
     popupState.value = true;
@@ -357,6 +365,7 @@ export default function Device(props) {
     const idArr = id.split("_");
     setPlantid(idArr[1]);
     setSnlogger(idArr[0]);
+    setType(idArr[2]);
 
     // switch (idArr[1]) {
     //   case "inverter":
@@ -406,7 +415,7 @@ export default function Device(props) {
     };
     getAllLogger();
 
-  }, []);
+  }, [loggerList.value]);
 
   return (
     <>
@@ -700,7 +709,7 @@ export default function Device(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup plantid={plantid} sn={snlogger} />
+          <Popup plantid={plantid} sn={snlogger} type={type} />
         </div>
       ) : (
         <></>

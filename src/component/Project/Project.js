@@ -724,7 +724,7 @@ export default function Project(props) {
                         </div>
 
                         <div className="DAT_ProjectMobile_Content_Bottom">
-                          <span>{dataLang.formatMessage({ id: 'lastUpdate' })}</span> &nbsp; <span>{item.lastupdate}</span>
+                          <span>{dataLang.formatMessage({ id: 'lastupdate' })}</span> &nbsp; <span>{item.lastupdate}</span>
                         </div>
                       </div>
                     })}
