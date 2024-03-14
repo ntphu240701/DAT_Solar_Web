@@ -44,7 +44,7 @@ export default function Role(props) {
   const columnrole = [
     {
       name: dataLang.formatMessage({ id: "ordinalNumber" }),
-      selector: (row,i) => i+1,
+      selector: (row, i) => i + 1,
       sortable: true,
       width: "80px",
     },
@@ -175,7 +175,7 @@ export default function Role(props) {
       const d = await callApi("post", host.DATA + "/getallUser", {
         partnerid: partnerInfor.value.partnerid,
       });
-      console.log(d);
+      // console.log(d);
       if (d.status === true) {
         Usr_.value = d.data;
         Usr_.value = Usr_.value.sort((a, b) => a.ruleid_ - b.ruleid_);
@@ -190,7 +190,7 @@ export default function Role(props) {
         partnerid: partnerInfor.value.partnerid,
       });
       if (rule.status) {
-        console.log(rule.data);
+        // console.log(rule.data);
         datarule.value = rule.data;
         datarule.value = datarule.value.sort((a, b) => a.ruleid_ - b.ruleid_);
       }

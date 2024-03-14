@@ -303,7 +303,7 @@ export default function ProjectData(props) {
               </span>
             </div>
           ) : (
-            <></>
+            <div></div>
           )}
           <div
             className="DAT_ModifyBox"
@@ -762,7 +762,7 @@ export default function ProjectData(props) {
             ).toFixed(2);
           }
         });
-        console.log(d.data.name);
+        // console.log(d.data.name);
         setVTotal(dataLang.formatMessage({ id: d.data.name }));
       }
     };
@@ -959,7 +959,7 @@ export default function ProjectData(props) {
                   </button>
                 </div>
               ) : (
-                <></>
+                <div></div>
               )}
 
               <div
@@ -1025,7 +1025,7 @@ export default function ProjectData(props) {
                   </button>
                 </div>
               ) : (
-                <></>
+                <div></div>
               )}
               <div
                 className="DAT_ProjectData_Header_Right_Close"
@@ -1673,7 +1673,7 @@ export default function ProjectData(props) {
                                               />
                                             </div>
                                           ) : (
-                                            <></>
+                                            <div></div>
                                           )}
                                           {ruleInfor.value.setting.device
                                             .remove === true ? (
@@ -1685,7 +1685,7 @@ export default function ProjectData(props) {
                                               <MdDelete size={20} color="red" />
                                             </div>
                                           ) : (
-                                            <></>
+                                            <div></div>
                                           )}
                                         </div>
                                       </div>
@@ -1767,7 +1767,7 @@ export default function ProjectData(props) {
                                               />
                                             </div>
                                           ) : (
-                                            <></>
+                                            <div></div>
                                           )}
                                           {ruleInfor.value.setting.device
                                             .remove === true ? (
@@ -1779,7 +1779,7 @@ export default function ProjectData(props) {
                                               <MdDelete size={20} color="red" />
                                             </div>
                                           ) : (
-                                            <></>
+                                            <div></div>
                                           )}
                                         </div>
                                       </div>
@@ -1858,7 +1858,7 @@ export default function ProjectData(props) {
                                               <MdEdit size={20} color="#216990" />
                                             </div>
                                           ) : (
-                                            <></>
+                                            <div></div>
                                           )}
                                           {ruleInfor.value.setting.device
                                             .remove === true ? (
@@ -1870,7 +1870,7 @@ export default function ProjectData(props) {
                                               <MdDelete size={20} color="red" />
                                             </div>
                                           ) : (
-                                            <></>
+                                            <div></div>
                                           )}
                                         </div>
                                       </div>

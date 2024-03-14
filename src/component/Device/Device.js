@@ -42,6 +42,7 @@ export default function Device(props) {
   const [type, setType] = useState("");
   const [plantid, setPlantid] = useState("");
   const [snlogger, setSnlogger] = useState("");
+  const [datafilter, setDatafilter] = useState([]);
 
   const listTab = [
     { id: "logger", name: "Logger" },
@@ -164,7 +165,7 @@ export default function Device(props) {
         justifyContent: "left",
       },
     },
- 
+
     {
       name: dataLang.formatMessage({ id: "status" }),
       selector: (row) => (
@@ -202,7 +203,7 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
-          ruleInfor.value.setting.device.delete === true ? (
+            ruleInfor.value.setting.device.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.id + "_MORE"}
@@ -212,7 +213,7 @@ export default function Device(props) {
               </span>
             </div>
           ) : (
-            <></>
+            <div></div>
           )}
           <div
             className="DAT_ModifyBox"
@@ -303,7 +304,7 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
-          ruleInfor.value.setting.device.delete === true ? (
+            ruleInfor.value.setting.device.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.psn + "_MORE"}
@@ -314,7 +315,7 @@ export default function Device(props) {
               </span>
             </div>
           ) : (
-            <></>
+            <div></div>
           )}
           <div
             className="DAT_ModifyBox"
@@ -355,7 +356,7 @@ export default function Device(props) {
         break;
       case "logger":
         info.value = loggerList.value.find((item) => item.pid == idArr[0]);
-        console.log(info.value);
+        // console.log(info.value);
         break;
       case "meter":
         info.value = dataMeter.find((item) => item.id == idArr[0]);
@@ -416,6 +417,26 @@ export default function Device(props) {
     }
   };
 
+  const handleSearch = (e) => {
+    if (e.target.value == "") {
+      setDatafilter(loggerList.value);
+    } else {
+      const t = e.target.value;
+      const db = loggerList.value.filter((item) => {
+        return (
+          item.pname.toLowerCase().includes(t.toLowerCase()) ||
+          item.psn.toLowerCase().includes(t.toLowerCase()) ||
+          item.pplantname.toLowerCase().includes(t.toLowerCase())
+        );
+      });
+      setDatafilter(db);
+    }
+  };
+
+  useEffect(() => {
+    setDatafilter(loggerList.value);
+  }, [loggerList.value])
+
   useEffect(() => {
     tabLable.value = listTab[0].name;
 
@@ -426,7 +447,7 @@ export default function Device(props) {
         partnerid: userInfor.value.partnerid,
         type: userInfor.value.type,
       });
-      console.log(d);
+      // console.log(d);
       if (d.status === true) {
         loggerList.value = d.data;
       }
@@ -477,6 +498,7 @@ export default function Device(props) {
               <input
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterDev" })}
+                onChange={(e) => handleSearch(e)}
               />
               <CiSearch color="gray" size={20} />
             </div>
@@ -548,15 +570,15 @@ export default function Device(props) {
 
                             <div className="DAT_DeviceMobile_Content_Top_Right">
                               {ruleInfor.value.setting.device.modify ===
-                              true ? (
+                                true ? (
                                 <div className="DAT_DeviceMobile_Content_Top_Right_Item">
                                   <MdEdit size={20} color="#216990" />
                                 </div>
                               ) : (
-                                <></>
+                                <div></div>
                               )}
                               {ruleInfor.value.setting.device.delete ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_DeviceMobile_Content_Top_Right_Item"
                                   id={item.psn + "_" + item.pplantid}
@@ -565,7 +587,7 @@ export default function Device(props) {
                                   <MdDelete size={20} color="red" />
                                 </div>
                               ) : (
-                                <></>
+                                <div></div>
                               )}
                             </div>
                           </div>
@@ -634,15 +656,15 @@ export default function Device(props) {
 
                             <div className="DAT_DeviceMobile_Content_Top_Right">
                               {ruleInfor.value.setting.device.modify ===
-                              true ? (
+                                true ? (
                                 <div className="DAT_DeviceMobile_Content_Top_Right_Item">
                                   <MdEdit size={20} color="#216990" />
                                 </div>
                               ) : (
-                                <></>
+                                <div></div>
                               )}
                               {ruleInfor.value.setting.device.remove ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_DeviceMobile_Content_Top_Right_Item"
                                   id={item.psn + "_" + item.pplantid}
@@ -651,7 +673,7 @@ export default function Device(props) {
                                   <MdDelete size={20} color="red" />
                                 </div>
                               ) : (
-                                <></>
+                                <div></div>
                               )}
                             </div>
                           </div>
@@ -757,7 +779,7 @@ export default function Device(props) {
                     <DataTable
                       className="DAT_Table_Container"
                       columns={columnRemote}
-                      data={loggerList.value}
+                      data={datafilter}
                       pagination
                       paginationComponentOptions={paginationComponentOptions}
                       fixedHeader={true}

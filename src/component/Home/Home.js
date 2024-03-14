@@ -451,7 +451,7 @@ export default function Home(props) {
         }
       })
     })
-    console.log(sun_)
+    // console.log(sun_)
     setSun(sun_)
     // plant.value.map((item, i) => {
     //   item.sun = sun_[i]?.value

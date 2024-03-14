@@ -7,7 +7,7 @@ import ProjectData from "./ProjectData";
 import EditProject from "./EditProject";
 import AddProject from "./AddProject";
 import Popup from "./Popup";
-import { lowerCase } from "lodash";
+// import { lowerCase } from "lodash";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { useSelector } from "react-redux";
@@ -24,6 +24,7 @@ import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { FiEdit } from "react-icons/fi";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const tab = signal("total");
 const tabLable = signal("");
@@ -138,6 +139,7 @@ export default function Project(props) {
   const [invt, setInvt] = useState(0)
   const [power, setPower] = useState([])
   const [dailyProduction, setDailyProduction] = useState([])
+  const navigate = useNavigate();
 
   const listTab = [
     { id: "total", name: dataLang.formatMessage({ id: "total" }) },
@@ -183,20 +185,20 @@ export default function Project(props) {
     {
       name: dataLang.formatMessage({ id: "connect" }),
       selector: (row) => (
-        <>
+        <div style={{ cursor: "pointer" }} onClick={() => navigate("/Device")}>
           {row.state === 1 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
             <MdOutlineError size={22} color="red" />
           )}
-        </>
+        </div>
       ),
       width: "100px",
     },
     {
       name: dataLang.formatMessage({ id: "warn" }),
       selector: (row) => (
-        <div>
+        <div style={{ cursor: "pointer" }} onClick={() => navigate("/Warn")}>
           {row.warn === 1 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
@@ -250,7 +252,7 @@ export default function Project(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify == true ||
-          ruleInfor.value.setting.project.remove == true ? (
+            ruleInfor.value.setting.project.remove == true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.plantid + "_MORE"}
@@ -261,7 +263,7 @@ export default function Project(props) {
               </span>
             </div>
           ) : (
-            <></>
+            <div></div>
           )}
           <div
             className="DAT_ModifyBox"
@@ -285,7 +287,7 @@ export default function Project(props) {
                 {dataLang.formatMessage({ id: "edits" })}
               </div>
             ) : (
-              <></>
+              <div></div>
             )}
             {ruleInfor.value.setting.project.remove === true ? (
               <div
@@ -303,7 +305,7 @@ export default function Project(props) {
                 {dataLang.formatMessage({ id: "delete" })}
               </div>
             ) : (
-              <></>
+              <div></div>
             )}
           </div>
         </>
@@ -364,31 +366,34 @@ export default function Project(props) {
   };
 
   const handleSearch = (e) => {
-    if (e.target.value === "") {
+    if (e.target.value == "") {
       setDatafilter(dataproject.value);
     } else {
       const t = e.target.value;
+      // console.log(t);
+      // console.log(type);
       const db = dataproject.value.filter((row) =>
-        // item.name.includes(t)
-        {
-          console.log(row.power);
-          switch (type) {
-            case "name":
-              return row.name.toLowerCase().includes(lowerCase(t));
-            case "capacity":
-              return String(row.capacity) === t;
-            case "production":
-              return String(row.production) === t;
-            case "power":
-              return row.power === t;
-            case "lastupdate":
-              return row.lastupdate === t;
-            case "createdate":
-              return row.createdate === t;
-            default:
-              return row.name.toLowerCase().includes(lowerCase(t));
-          }
+      // item.name.includes(t)
+      {
+        switch (type) {
+          // case "name":
+          //   return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
+          // return (console.log(row.plantname.includes(t) || row.plantname.toLowerCase().includes(t)));
+          case "inCapacity":
+            return String(row.capacity) == t;
+          case "production":
+            return String(row.production) == t;
+          case "power":
+            return String(row.power) == t;
+          // case "lastupdate":
+          //   return String(row.lastupdate) == t;
+          // case "createdate":
+          //   return String(row.createdate) == t;
+          default:
+            return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
+          // return row.name.toLowerCase().includes(t);
         }
+      }
       );
       setDatafilter(db);
     }
@@ -613,7 +618,7 @@ export default function Project(props) {
                   <IoAddOutline color="white" size={20} />
                 </div>
               ) : (
-                <></>
+                <div></div>
               )}
             </div>
 
@@ -671,27 +676,27 @@ export default function Project(props) {
                 <option value={"name"}>
                   {dataLang.formatMessage({ id: "name" })}
                 </option>
-                <option value={"connect"}>
+                {/* <option value={"connect"}>
                   {dataLang.formatMessage({ id: "connect" })}
                 </option>
                 <option value={"status"}>
                   {dataLang.formatMessage({ id: "status" })}
-                </option>
-                <option value={"capacity"}>
-                  {dataLang.formatMessage({ id: "capacity" })}
+                </option> */}
+                <option value={"inCapacity"}>
+                  {dataLang.formatMessage({ id: "inCapacity" })}
                 </option>
                 <option value={"production"}>
-                  {dataLang.formatMessage({ id: "production" })}
+                  {dataLang.formatMessage({ id: "daily" })}
                 </option>
                 <option value={"power"}>
                   {dataLang.formatMessage({ id: "power" })}
                 </option>
-                <option value={"lastupdate"}>
+                {/* <option value={"lastupdate"}>
                   {dataLang.formatMessage({ id: "lastupdate" })}
                 </option>
                 <option value={"createdate"}>
                   {dataLang.formatMessage({ id: "createdate" })}
-                </option>
+                </option> */}
               </select>
               <input
                 id="search"
@@ -716,7 +721,7 @@ export default function Project(props) {
                 </span>
               </button>
             ) : (
-              <></>
+              <div></div>
             )}
           </>
         )}
@@ -787,7 +792,7 @@ export default function Project(props) {
 
                                 <div className="DAT_ProjectMobile_Content_Top_Info_Name_Right">
                                   {ruleInfor.value.setting.project.modify ===
-                                  true ? (
+                                    true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
                                       id={item.plantid}
@@ -796,10 +801,10 @@ export default function Project(props) {
                                       <MdEdit size={20} color="#216990" />
                                     </div>
                                   ) : (
-                                    <></>
+                                    <div></div>
                                   )}
                                   {ruleInfor.value.setting.project.modify ===
-                                  true ? (
+                                    true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
                                       id={item.plantid}
@@ -808,7 +813,7 @@ export default function Project(props) {
                                       <MdDelete size={20} color="red" />
                                     </div>
                                   ) : (
-                                    <></>
+                                    <div></div>
                                   )}
                                 </div>
                               </div>
@@ -894,10 +899,10 @@ export default function Project(props) {
                             </div>
                           </div>
 
-                        <div className="DAT_ProjectMobile_Content_Bottom">
-                          <span>{dataLang.formatMessage({ id: 'lastupdate' })}</span> &nbsp; <span>{item.lastupdate}</span>
-                        </div>
-                      </div>)
+                          <div className="DAT_ProjectMobile_Content_Bottom">
+                            <span>{dataLang.formatMessage({ id: 'lastupdate' })}</span> &nbsp; <span>{item.lastupdate}</span>
+                          </div>
+                        </div>)
                     })}
                   </>
                 );
@@ -1304,13 +1309,13 @@ export default function Project(props) {
                             </div>
                           </div>
 
-                      <div className="DAT_ProjectMobile_Content_Bottom">
-                        <span>{dataLang.formatMessage({ id: 'lastupdate' })}</span>&nbsp; <span>{item.lastupdate}</span>
-                      </div>
+                          <div className="DAT_ProjectMobile_Content_Bottom">
+                            <span>{dataLang.formatMessage({ id: 'lastupdate' })}</span>&nbsp; <span>{item.lastupdate}</span>
+                          </div>
 
-                    </div>)
-                  })}
-                </>);
+                        </div>)
+                    })}
+                  </>);
               case "warn":
                 return (
                   <>
@@ -1438,13 +1443,13 @@ export default function Project(props) {
                             </div>
                           </div>
 
-                      <div className="DAT_ProjectMobile_Content_Bottom">
-                        <span>{dataLang.formatMessage({ id: 'lastupdate' })}</span>&nbsp; <span>{item.lastupdate}</span>
-                      </div>
+                          <div className="DAT_ProjectMobile_Content_Bottom">
+                            <span>{dataLang.formatMessage({ id: 'lastupdate' })}</span>&nbsp; <span>{item.lastupdate}</span>
+                          </div>
 
-                    </div>)
-                  })}
-                </>);
+                        </div>)
+                    })}
+                  </>);
               default:
                 return <></>;
             }
@@ -1579,7 +1584,7 @@ export default function Project(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup plantid={projectData.value.plantid} type="plant" usr={user} />
+          <Popup plantid={projectData.value.plantid} func="remove" type="plant" usr={user} />
         </div>
       ) : (
         <></>
