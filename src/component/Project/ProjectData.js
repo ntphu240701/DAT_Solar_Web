@@ -292,7 +292,7 @@ export default function ProjectData(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify === true ||
-          ruleInfor.value.setting.project.delete === true ? (
+            ruleInfor.value.setting.project.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.sn + "_MORE"}
@@ -478,15 +478,31 @@ export default function ProjectData(props) {
         console.log(projectData.value.plantid)
         console.log(d)
         if (d.status) {
-          console.log(d.data);
-          let vDay = d.data.name;
-          d.data.data.map((item) => {
-            setDataDay((old) => [
-              ...old,
-              { time: item.time, [vDay]: item.value },
-            ]);
-          });
-          setVDay(d.data.name);
+          // console.log(d.data);
+          let vDay_ = dataLang.formatMessage({ id: d.data.name });
+          if (moment(date).format("DD/MM/YYYY") === moment(new Date()).format("DD/MM/YYYY")) {
+            let x = [];
+            d.data.data.map((item) => {
+              x = [...x, { time: item.time, [vDay_]: item.value }];
+            });
+
+            for (let i = x.length; i < 287; i++) {
+              let nextTime = moment(x[x.length - 1].time, 'HH:mm:ss').add(5, 'minutes').format('HH:mm:ss');
+              x.push({ time: nextTime, [vDay_]: 0 });
+
+            }
+            setDataDay(x);
+          } else {
+
+            d.data.data.map((item) => {
+              setDataDay((old) => [
+                ...old,
+                { time: item.time, [vDay_]: item.value },
+              ]);
+            });
+            setVDay(vDay_);
+          }
+
         } else {
           setDataDay([]);
           setVDay(dataLang.formatMessage({ id: "unknown" }));
@@ -624,15 +640,21 @@ export default function ProjectData(props) {
         date: moment(new Date()).format("MM/DD/YYYY"),
       });
       setDataDay([]);
+      let x = []
       if (d.status) {
         //console.log(d.data)
-        let vDay = dataLang.formatMessage({ id: d.data.name });
+        let vDay_ = dataLang.formatMessage({ id: d.data.name });
         d.data.data.map((item) => {
-          setDataDay((old) => [
-            ...old,
-            { time: item.time, [vDay]: item.value },
-          ]);
+          x = [...x, { time: item.time, [vDay_]: item.value }];
         });
+
+        for (let i = x.length; i < 287; i++) {
+          let nextTime = moment(x[x.length - 1].time, 'HH:mm:ss').add(5, 'minutes').format('HH:mm:ss');
+          x.push({ time: nextTime, [vDay_]: 0 });
+
+        }
+        // console.log(x)
+        setDataDay(x);
         setVDay(dataLang.formatMessage({ id: d.data.name }));
       }
     };
@@ -1181,7 +1203,7 @@ export default function ProjectData(props) {
                             color: nav === "battery" ? color.cur : color.pre,
                             display:
                               projectData.value.plantmode === "grid" ||
-                              projectData.value.plantmode === "consumption"
+                                projectData.value.plantmode === "consumption"
                                 ? "none"
                                 : "block",
                           }}
@@ -1194,7 +1216,7 @@ export default function ProjectData(props) {
                       {(() => {
                         switch (nav) {
                           case "graph":
-                            return <Graph type={projectData.value.plantmode} />;
+                            return <Graph type={projectData.value.plantmode} cal={cal.value} />;
                           case "production":
                             return <Production cal={cal.value} />;
                           case "consumption":
@@ -1555,7 +1577,7 @@ export default function ProjectData(props) {
                                   parseFloat(
                                     (coalsave.value.value *
                                       projectData.value.price) /
-                                      1000
+                                    1000
                                   ).toFixed(2)
                                 ).toLocaleString("en-US")}
                                 &nbsp;
@@ -1827,29 +1849,29 @@ export default function ProjectData(props) {
                                         </div>
 
                                         <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right">
-                                        {ruleInfor.value.setting.device
+                                          {ruleInfor.value.setting.device
                                             .modify === true ? (
-                                          <div
-                                            className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
-                                            onClick={(e) => handleEdit(e)}
-                                          >
-                                            <MdEdit size={20} color="#216990" />
-                                          </div>
+                                            <div
+                                              className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
+                                              onClick={(e) => handleEdit(e)}
+                                            >
+                                              <MdEdit size={20} color="#216990" />
+                                            </div>
                                           ) : (
                                             <></>
                                           )}
                                           {ruleInfor.value.setting.device
                                             .remove === true ? (
-                                          <div
-                                            className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
-                                            id={item.sn}
-                                            onClick={(e) => handleDelete(e)}
-                                          >
-                                            <MdDelete size={20} color="red" />
-                                          </div>
+                                            <div
+                                              className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
+                                              id={item.sn}
+                                              onClick={(e) => handleDelete(e)}
+                                            >
+                                              <MdDelete size={20} color="red" />
+                                            </div>
                                           ) : (
-                                    <></>
-                                  )}
+                                            <></>
+                                          )}
                                         </div>
                                       </div>
 
@@ -2207,13 +2229,13 @@ const Graph = (props) => {
       {(() => {
         switch (props.type) {
           case "grid":
-            return <GraphGrid />;
+            return <GraphGrid cal={props.cal} />;
           case "consumption":
-            return <></>;
+            return <GraphConsumption cal={cal.value} />;
           case "hybrid":
-            return <GraphFull />;
+            return <GraphFull cal={cal.value} />;
           case "ESS":
-            return <GraphFull />;
+            return <GraphFull cal={cal.value} />;
           default:
             <></>;
         }
@@ -2288,25 +2310,227 @@ const GraphGrid = (props) => {
       />
     );
   };
+  const ImgLoad = (props) => {
+    return (
+      <img
+        src="/dat_picture/load.png"
+        style={{ width: `${props.width}px`, height: `${props.height}px` }}
+        alt=""
+      />
+    );
+  };
 
   return (
     <div
-      className="DAT_ProjectData_Dashboard_Data_Center_Graph_SingleLine"
       style={{ scale: isMobile.value ? "0.8" : "1" }}
     >
       <div>
-        <ImgSolar width="100" height="100" />
-      </div>
-      <div>
+        <ImgLoad width="100" height="100" />
         <LineA width="220" height="25" />
-      </div>
-      <div>
         <ImgGrid width="100" height="180" />
       </div>
     </div>
   );
 };
+const GraphConsumption = (props) => {
+  const LineA = (props) => {
+    return (
+      <svg
+        width={`${props.width}px`}
+        height={`${props.height}px`}
+        verssion="1.1"
+      >
+        <path
+          className="path"
+          d="M 6 6 L 210 6"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
 
+        <path
+          d="M 20 0 L 0 0"
+          style={{
+            position: "absolute",
+            zIndex: "20",
+            top: "0",
+            left: "0",
+            stroke: "rgb(103, 179, 255)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+          }}
+        >
+          <animateMotion
+            path="M 190 6 L 6 6"
+            dur={props.dur}
+            repeatCount="indefinite"
+          ></animateMotion>
+        </path>
+
+      </svg>
+    );
+  };
+  const LineB = (props) => {
+    return (
+      <svg
+        width={`${props.width}px`}
+        height={`${props.height}px`}
+        version="1.1"
+      >
+        <path
+          d="M 35 7 L 35 35"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        {projectData.value.state ? (
+          <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 35 7 L 35 35"
+              dur={props.dur}
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+        ) : (
+          <></>
+        )}
+      </svg>
+    );
+  };
+  const LineC = (props) => {
+    return (
+      <svg
+        width={`${props.width}px`}
+        height={`${props.height}px`}
+        version="1.1"
+      >
+        <path
+          d="M 10.011 12.517 L 233.708 12.443 C 249.946 12.253 267.392 16.822 267.772 42.404 L 267.468 130"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        {projectData.value.state ? (
+          <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 10.011 12.517 L 233.708 12.443 C 249.946 12.253 267.392 16.822 267.772 42.404 L 267.468 130"
+              dur={props.dur}
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+        ) : (
+          <></>
+        )}
+      </svg>
+    );
+  };
+
+  const ImgGrid = (props) => {
+    return (
+      <img
+        src="/dat_picture/grid.png"
+        style={{ width: `${props.width}px`, height: `${props.height}px` }}
+        alt=""
+      />
+    );
+  };
+
+  const ImgSolar = (props) => {
+    return (
+      <img
+        src="/dat_picture/solar-panel.png"
+        style={{ width: `${props.width}px`, height: `${props.height}px` }}
+        alt=""
+      />
+    );
+  };
+  const ImgLoad = (props) => {
+    return (
+      <img
+        src="/dat_picture/load.png"
+        style={{ width: `${props.width}px`, height: `${props.height}px` }}
+        alt=""
+      />
+    );
+  };
+  return (
+    <div
+      style={{ scale: isMobile.value ? "0.8" : "1" }}
+    >
+      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <div >
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <ImgSolar width="80" height="100" />
+            <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
+              {Number(props.cal?.pro_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>%</span>
+            </div>
+          </div>
+
+          <LineB width="80" height="40" dur="1s" />
+        </div>
+        <div>
+          <LineC width="320" height="140" dur="2s" />
+        </div>
+      </div>
+      <div style={{ width: "100%", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <ImgLoad width="80" height="80" />
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
+            {Number(props.cal?.con_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>kw</span>
+          </div>
+        </div>
+
+
+        <LineA width="220" height="25" dur="1.5s" />
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "center" }} >
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
+            {Number(props.cal?.grid_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>kw</span>
+          </div>
+          <ImgGrid width="100" height="120" />
+        </div>
+
+      </div>
+    </div>
+  );
+}
 const GraphFull = (props) => {
   const LineA = (props) => {
     return (
@@ -2328,23 +2552,26 @@ const GraphFull = (props) => {
             overflow: "hidden",
           }}
         />
-        <circle
-          r={4}
-          style={{
-            fill: "none",
-            stroke: "#3e80fb",
-            strokeWidth: "3",
-            position: "absolute",
-            top: "0",
-            left: "0",
-          }}
-        >
-          <animateMotion
-            path="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
-            dur="2s"
-            repeatCount="indefinite"
-          ></animateMotion>
-        </circle>
+        {projectData.value.state
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
+              dur={props.dur}
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>
+        }
       </svg>
     );
   };
@@ -2368,23 +2595,25 @@ const GraphFull = (props) => {
             overflow: "hidden",
           }}
         />
-        <circle
-          r={4}
-          style={{
-            fill: "none",
-            stroke: "#3e80fb",
-            strokeWidth: "3",
-            position: "absolute",
-            top: "0",
-            left: "0",
-          }}
-        >
-          <animateMotion
-            path="M 35 7 L 35 35"
-            dur="2s"
-            repeatCount="indefinite"
-          ></animateMotion>
-        </circle>
+        {projectData.value.state
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 35 7 L 35 35"
+              dur={props.dur}
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>}
       </svg>
     );
   };
@@ -2408,23 +2637,25 @@ const GraphFull = (props) => {
             overflow: "hidden",
           }}
         />
-        <circle
-          r={4}
-          style={{
-            fill: "none",
-            stroke: "#3e80fb",
-            strokeWidth: "3",
-            position: "absolute",
-            top: "0",
-            left: "0",
-          }}
-        >
-          <animateMotion
-            path="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
-            dur="2s"
-            repeatCount="indefinite"
-          ></animateMotion>
-        </circle>
+        {projectData.value.state
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
+              dur={props.dur}
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>}
       </svg>
     );
   };
@@ -2449,23 +2680,25 @@ const GraphFull = (props) => {
             overflow: "hidden",
           }}
         />
-        <circle
-          r={4}
-          style={{
-            fill: "none",
-            stroke: "#3e80fb",
-            strokeWidth: "3",
-            position: "absolute",
-            top: "0",
-            left: "0",
-          }}
-        >
-          <animateMotion
-            path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-            dur="2s"
-            repeatCount="indefinite"
-          ></animateMotion>
-        </circle>
+        {projectData.value.state
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>}
       </svg>
     );
   };
@@ -2489,23 +2722,26 @@ const GraphFull = (props) => {
             overflow: "hidden",
           }}
         />
-        <circle
-          r={4}
-          style={{
-            fill: "none",
-            stroke: "#3e80fb",
-            strokeWidth: "3",
-            position: "absolute",
-            top: "0",
-            left: "0",
-          }}
-        >
-          <animateMotion
-            path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
-            dur="2s"
-            repeatCount="indefinite"
-          ></animateMotion>
-        </circle>
+        {projectData.value.state
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>
+        }
       </svg>
     );
   };
@@ -2530,7 +2766,8 @@ const GraphFull = (props) => {
             overflow: "hidden",
           }}
         />
-        <circle
+        {projectData.value.state
+        ?<circle
           r={4}
           style={{
             fill: "none",
@@ -2547,6 +2784,7 @@ const GraphFull = (props) => {
             repeatCount="indefinite"
           ></animateMotion>
         </circle>
+        : <></>}
       </svg>
     );
   };
@@ -2593,41 +2831,48 @@ const GraphFull = (props) => {
 
   return (
     <>
-      <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop">
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P1">
-          <LineA width="120" height="160" />
-        </div>
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2">
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Solar">
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+
+        <LineA width="120" height="160" dur="2s" />
+
+        <div >
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
             <ImgSolar width="70" height="70" />
+            <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
+              {Number(props.cal?.pro_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>%</span>
+            </div>
           </div>
-          <LineB width="70" height="40" />
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P2_Load">
+          <LineB width="70" height="40" dur="1s" />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <ImgLoad width="70" height="70" />
+            <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
+              {Number(props.cal?.con_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>kw</span>
+            </div>
           </div>
+
         </div>
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineTop_P3">
-          <LineC width="120" height="160" />
-        </div>
+
+        <LineC width="120" height="160" dur="2s" />
+
       </div>
-      <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid">
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_Pin">
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
           <ImgBat width="70" height="70" />
-        </div>
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G">
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_T">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P1">
-              <LineD width="120" height="45" />
-            </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_G_P2">
-              <LineE width="110" height="45" />
-            </div>
-          </div>
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineBottom_G_B">
-            <LineF width="230" height="25" />
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
+            {Number(props.cal?.bat_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>%</span>
           </div>
         </div>
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Graph_LineMid_Grid">
+        <div >
+          <div >
+            <LineD width="120" height="45" />
+            <LineE width="110" height="45" />
+          </div>
+          <LineF width="230" height="25" />
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
+            {Number(props.cal?.grid_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>%</span>
+          </div>
           <ImgGrid width="70" height="70" />
         </div>
       </div>

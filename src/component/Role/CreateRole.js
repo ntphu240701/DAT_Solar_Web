@@ -110,9 +110,9 @@ export default function CreateRole(props) {
                 ref={username}
                 minLength="6"
                 onChange={(e) =>
-                  (username.current.value = e.target.value
-                    .trim()
-                    .toLocaleLowerCase())
+                (username.current.value = e.target.value
+                  .trim()
+                  .toLocaleLowerCase())
                 }
                 required
               />
@@ -188,17 +188,23 @@ export default function CreateRole(props) {
               <div className="DAT_CreateRole_Body_Row2_Left_Content_Tit">
                 <span style={{ color: "red" }}>* </span>
                 <span style={{ color: "grey" }}>
-                  {dataLang.formatMessage({ id: "rule" })}:
+                  {dataLang.formatMessage({ id: "account" })}:
                 </span>
               </div>
               <select ref={role}>
-                {datarule.value
+                <option value="admin">
+                  {dataLang.formatMessage({ id: "admin" })}
+                </option>
+                <option  value="user">
+                  {dataLang.formatMessage({ id: "user" })}
+                </option>
+                {/* {datarule.value
                   .filter((item, key) => item.ruleid_ !== 1)
                   .map((item, key) => (
                     <option key={key} value={item.ruleid_}>
                       {item.rulename_}
                     </option>
-                  ))}
+                  ))} */}
               </select>
             </div>
           </div>

@@ -39,6 +39,7 @@ export default function Device(props) {
   const dataLang = useIntl();
   const user = useSelector((state) => state.admin.usr);
   const [filter, setFilter] = useState(false);
+  const [type, setType] = useState("");
   const [plantid, setPlantid] = useState("");
   const [snlogger, setSnlogger] = useState("");
 
@@ -56,22 +57,22 @@ export default function Device(props) {
   };
 
   const dataInverter = [
-    {
-      id: 1,
-      SN: "I0000145",
-      name: "Inverter 01",
-      plant: "Năng lượng DAT 01",
-      status: true,
-      production: "16",
-      dailyproduction: "123.4",
-      updated: "12/30/2023 12:07:12",
-    },
+    // {
+    //   id: 1,
+    //   SN: "I0000145",
+    //   name: "Inverter 01",
+    //   plant: "Năng lượng DAT 01",
+    //   status: true,
+    //   production: "16",
+    //   dailyproduction: "123.4",
+    //   updated: "12/30/2023 12:07:12",
+    // },
     // {
     //   id: 2,
     //   SN: "I0000012",
     //   name: "Inverter 02",
     //   plant: "Năng lượng DAT 01",
-    //   status: true,
+    //   status: false,
     //   production: "18",
     //   dailyproduction: "238.4",
     //   updated: "12/30/2023 12:07:12",
@@ -122,6 +123,16 @@ export default function Device(props) {
   ];
 
   const columnDevice = [
+
+    {
+      name: dataLang.formatMessage({ id: 'ordinalNumber' }),
+      selector: (row, i) => i + 1,
+      sortable: true,
+      width: "80px",
+      style: {
+        justifyContent: "center",
+      },
+    },
     {
       name: "Mã thiết bị",
       selector: (row) => (
@@ -132,9 +143,9 @@ export default function Device(props) {
             id={row.id + "_" + tab.value}
             onClick={(e) => handleShowInfo(e)}
           >
-            <div className="DAT_Table_Infor_Name">{row.SN}</div>
-            {/* <div className="DAT_Table_Infor_Name">{row.name}</div>
-            <div className="DAT_Table_Infor_Addr">{row.SN}</div> */}
+            {/* <div className="DAT_Table_Infor_Name">{row.SN}</div> */}
+            <div className="DAT_Table_Infor_Name">{row.name}</div>
+            <div className="DAT_Table_Infor_Addr">{row.SN}</div>
           </div>
         </div>
       ),
@@ -144,6 +155,16 @@ export default function Device(props) {
         justifyContent: "left",
       },
     },
+    {
+      name: dataLang.formatMessage({ id: 'project' }),
+      selector: (row) => row.plant,
+      sortable: true,
+      minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+ 
     {
       name: dataLang.formatMessage({ id: "status" }),
       selector: (row) => (
@@ -156,15 +177,6 @@ export default function Device(props) {
         </>
       ),
       width: "110px",
-    },
-    {
-      name: dataLang.formatMessage({ id: "project" }),
-      selector: (row) => row.plant,
-      sortable: true,
-      minWidth: "350px",
-      style: {
-        justifyContent: "left",
-      },
     },
 
     {
@@ -226,6 +238,16 @@ export default function Device(props) {
   ];
 
   const columnRemote = [
+
+    {
+      name: dataLang.formatMessage({ id: 'ordinalNumber' }),
+      selector: (row, i) => i + 1,
+      sortable: true,
+      width: "80px",
+      style: {
+        justifyContent: "center",
+      },
+    },
     {
       name: dataLang.formatMessage({ id: "name" }),
       selector: (row) => (
@@ -248,6 +270,15 @@ export default function Device(props) {
       },
     },
     {
+      name: dataLang.formatMessage({ id: 'project' }),
+      selector: (row) => row.pplantname,
+      sortable: true,
+      minWidth: "350px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
       name: dataLang.formatMessage({ id: "status" }),
       selector: (row) => (
         <>
@@ -260,15 +291,7 @@ export default function Device(props) {
       ),
       width: "110px",
     },
-    {
-      name: dataLang.formatMessage({ id: "project" }),
-      selector: (row) => row.pplantname,
-      sortable: true,
-      minWidth: "350px",
-      style: {
-        justifyContent: "center",
-      },
-    },
+
     // {
     //   name: "Cập nhật",
     //   selector: (row) => row.updated,
@@ -299,14 +322,16 @@ export default function Device(props) {
             style={{ display: "none", marginTop: "2px" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            <div className="DAT_ModifyBox_Fix" onClick={(e) => handleEdit(e)}>
+            <div className="DAT_ModifyBox_Fix"
+              id={row.psn + "_" + row.pplantid + "_edit"}
+              onClick={(e) => handleEdit(e)}
+            >
               <FiEdit size={14} />
               &nbsp;
               {dataLang.formatMessage({ id: "edits" })}
             </div>
-            <div
-              className="DAT_ModifyBox_Remove"
-              id={row.psn + "_" + row.pplantid}
+            <div className="DAT_ModifyBox_Remove"
+              id={row.psn + "_" + row.pplantid + "_remove"}
               onClick={(e) => handleRemove(e)}
             >
               <IoTrashOutline size={16} />
@@ -340,7 +365,13 @@ export default function Device(props) {
     }
   };
 
-  const handleEdit = (e) => {};
+  const handleEdit = (e) => {
+    popupState.value = true;
+    const id = e.currentTarget.id;
+    const idArr = id.split("_");
+    setSnlogger(idArr[0]);
+    setType(idArr[2]);
+  };
 
   const handleRemove = (e) => {
     popupState.value = true;
@@ -348,6 +379,7 @@ export default function Device(props) {
     const idArr = id.split("_");
     setPlantid(idArr[1]);
     setSnlogger(idArr[0]);
+    setType(idArr[2]);
 
     // switch (idArr[1]) {
     //   case "inverter":
@@ -759,7 +791,7 @@ export default function Device(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup plantid={plantid} sn={snlogger} />
+          <Popup plantid={plantid} sn={snlogger} type={type} />
         </div>
       ) : (
         <></>

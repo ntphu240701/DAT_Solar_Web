@@ -8,6 +8,8 @@ import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { alertDispatch } from "../Alert/Alert";
 import { IoSaveOutline } from "react-icons/io5";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
 
 const CheckBox = (props) => {
   const handleCheck = (e) => {
@@ -47,15 +49,24 @@ export default function CreateGroupRole() {
   const dataLang = useIntl();
   const [name, setName] = useState(groupEdit.value.name_);
 
-  const handleSave = () => {
-    const t = group.value.findIndex((item) => item.id_ == groupEdit.value.id_);
-    group.value[t] = {
-      ...group.value[t],
-      name_: name,
+  const handleSave = async () => {
+
+    let res = await callApi("post", `${host.DATA}/updatePartner`, {
+      code: groupEdit.value.code_,
+      type: "name",
+      data: name,
+    });
+    if (res.status) {
+          const t = group.value.findIndex((item) => item.id_ == groupEdit.value.id_);
+          group.value[t] = {
+            ...group.value[t],
+            name_: name,
+          }
+          editState.value = false;
+          alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+    }else{
+      alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
-    editState.value = false;
-    console.log(group.value);
-    alertDispatch("Edit group success");
   };
 
   const handleEditName = (e) => {
