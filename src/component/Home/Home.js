@@ -305,6 +305,10 @@ export default function Home(props) {
 
   useEffect(() => {
 
+    let a = { is: 1 }
+
+    console.log(JSON.stringify(a));
+
     const getPlant = async () => {
       let d = await callApi('post', host.DATA + '/getPlant', {
         usr: usr,
