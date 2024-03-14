@@ -2500,7 +2500,7 @@ const GraphConsumption = (props) => {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
             <ImgSolar width="80" height="100" />
             <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
-              {Number(props.cal?.pro_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>%</span>
+              {Number((props.cal?.pro_1 / projectData.value.capacity * 100).toFixed(2) || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>%</span>
             </div>
           </div>
 
@@ -2767,24 +2767,24 @@ const GraphFull = (props) => {
           }}
         />
         {projectData.value.state
-        ?<circle
-          r={4}
-          style={{
-            fill: "none",
-            stroke: "#3e80fb",
-            strokeWidth: "3",
-            position: "absolute",
-            top: "0",
-            left: "0",
-          }}
-        >
-          <animateMotion
-            path="M 220 7 L 14 7"
-            dur="2s"
-            repeatCount="indefinite"
-          ></animateMotion>
-        </circle>
-        : <></>}
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 220 7 L 14 7"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>}
       </svg>
     );
   };
@@ -2839,7 +2839,7 @@ const GraphFull = (props) => {
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
             <ImgSolar width="70" height="70" />
             <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
-              {Number(props.cal?.pro_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>%</span>
+              {Number((props.cal?.pro_1 / projectData.value.capacity * 100).toFixed(2) || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>%</span>
             </div>
           </div>
           <LineB width="70" height="40" dur="1s" />

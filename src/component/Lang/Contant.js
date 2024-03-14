@@ -381,7 +381,7 @@ export const messages = {
     logList: "Danh sách nhật ký",
     address: "Địa chỉ",
     coord: "Tọa độ :",
-    longitude: "Kính độ",
+    longitude: "Kinh độ",
     latitude: "Vĩ độ",
     location: "Vị trí",
     type: "Loại",
