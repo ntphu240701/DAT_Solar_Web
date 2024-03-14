@@ -53,6 +53,7 @@ export default function Home(props) {
   const [yearlyproduction, setYearlyProduction] = useState(0)
   const [totalproduction, setTotalProduction] = useState(0)
   const dataLang = useIntl()
+  const [sun, setSun] = useState([])
   const [chart, setChart] = useState('year')
   const [vmonth, setVmonth] = useState(dataLang.formatMessage({ id: 'monthOutput' }));
   const [datamonth, setDatamonth] = useState([])
@@ -67,6 +68,15 @@ export default function Home(props) {
   };
 
   const columnHome = [
+    {
+      name: dataLang.formatMessage({ id: 'ordinalNumber' }),
+      selector: (row, i) => i + 1,
+      sortable: true,
+      minWidth: "80px",
+      style: {
+        justifyContent: "center",
+      },
+    },
     {
       name: dataLang.formatMessage({ id: 'name' }),
       selector: (row) => row.plantname,
@@ -87,7 +97,7 @@ export default function Home(props) {
 
     {
       name: "kWh/kWp(h)",
-      selector: (row) => row.production,
+      selector: (row) => parseFloat(sun[row.plantid]).toFixed(2) === "NaN" ? 0 : Number(parseFloat(sun[row.plantid] / row.capacity).toFixed(2)).toLocaleString("en-US"),
       sortable: true,
       width: "120px",
     },
@@ -249,6 +259,7 @@ export default function Home(props) {
 
   const getPrice = async (data, logger) => {
     var price = [];
+
     data.map((itemplant, index) => {
       var sum_logger = [];
       let logger_ = logger.filter(data => data.pplantid == itemplant.plantid)
@@ -323,6 +334,7 @@ export default function Home(props) {
         setOffline(d.data.filter(data => data.state == 0).length)
         setWarn(d.data.filter(data => data.warn == 0).length)
         plant.value = d.data
+        plant.value = plant.value.sort((a, b) => a.plantid - b.plantid)
       }
     }
 
@@ -375,8 +387,9 @@ export default function Home(props) {
       pro_2: [],
       pro_3: []
     }
-
+    let sun_ = {}
     logger.value.map((item, i) => {
+      // console.log(item)
       Object.entries(item.pdata).map(([key, value]) => {
         switch (value.type) {
           case "sum":
@@ -429,8 +442,11 @@ export default function Home(props) {
             break;
           default:
             num_[key][i] = parseFloat(invt[item.psn]?.[value.register] || 0) * parseFloat(value.cal);
+            if (key == "pro_2") {
+              sun_[item.pplantid] = parseFloat(invt[item.psn]?.[value.register]) * parseFloat(value.cal)
+            }
             if (i == logger.value.length - 1) {
-              //console.log(num_)
+
               cal[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
                 return accumulator + currentValue
               })).toFixed(2)
@@ -439,7 +455,12 @@ export default function Home(props) {
         }
       })
     })
-    //console.log(num_)
+    console.log(sun_)
+    setSun(sun_)
+    // plant.value.map((item, i) => {
+    //   item.sun = sun_[i]?.value
+    // })
+    // console.log(sun_)
     getPrice(plant.value, logger.value)
     setProduction(cal?.pro_1 || 0)
     setDailyProduction(cal?.pro_2 || 0)

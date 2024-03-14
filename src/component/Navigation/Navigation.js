@@ -250,7 +250,7 @@ export default function Navigation(props) {
 
           <button className="DAT_Navigation_right-language"
             id="lang"
-            onMouseEnter={() => {
+            onClick={() => {
               langNav.value = true;
               langStateNav.value = [true, false];
             }}
