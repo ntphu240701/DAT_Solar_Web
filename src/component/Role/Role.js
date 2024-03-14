@@ -178,7 +178,6 @@ export default function Role(props) {
       console.log(d);
       if (d.status === true) {
         Usr_.value = d.data;
-        
         Usr_.value = Usr_.value.sort((a, b) => a.ruleid_ - b.ruleid_);
       }
     };

@@ -19,38 +19,28 @@ const newdata = signal({
   create: "",
   date: "",
   inf: {
-    1: { id: "report_1", status: false },
-    2: { id: "report_2", status: false },
-    3: { id: "report_3", status: false },
-    4: { id: "report_4", status: false },
-  },
-  subinf: {
-    id: "report_tit_1",
-    status: false,
-    option: {
-      1: { id: "report_13", status: false },
-      2: { id: "report_14", status: false },
-    },
-  },
-  deviceinfo: {
-    id: "report_tit_2",
-    status: false,
-    option: {
-      1: { id: "report_15", status: false },
-      2: { id: "report_16", status: false },
-      3: { id: "report_17", status: false },
-      4: { id: "report_18", status: false },
-    },
+    1: { id: "projname", status: false },
+    2: { id: "address", status: false },
+    3: { id: "coord", status: false },
+    4: { id: "projType", status: false },
+    5: { id: "capacity", status: false },
+    6: { id: "tiltAngle", status: false },
+    7: { id: "electricType", status: false },
+    8: { id: "gridData", status: false },
+    9: { id: "currency", status: false },
+    10: { id: "unitPrice", status: false },
+    11: { id: "contactName", status: false },
+    12: { id: "phone", status: false },
+    13: { id: "companyName", status: false },
   },
   customdata: {
-    1: { id: "report_27", status: false },
-    2: { id: "report_28", status: false },
-    3: { id: "report_29", status: false },
-    4: { id: "report_30", status: false },
-    5: { id: "report_31", status: false },
-    6: { id: "report_32", status: false },
-    7: { id: "report_33", status: false },
-    8: { id: "report_34", status: false },
+    1: { id: "productionData", status: false },
+    2: { id: "consumptionData", status: false },
+    3: { id: "purchasedelectricity", status: false },
+    4: { id: "inchargeelectricity", status: false },
+    5: { id: "dischargedelectricity", status: false },
+    6: { id: "weatherinfo", status: false },
+    7: { id: "kWhonkWp", status: false },
   },
 });
 
@@ -105,11 +95,13 @@ export const CheckBox = (props) => {
   };
 
   return (
-    <div className="DAT_Create_Body_Item_Option_Check_SingleCheck"
+    <div
+      className="DAT_Create_Body_Item_Option_Check_SingleCheck"
       style={{ width: props.width }}
     >
       <div className="form-check">
-        <input className="form-check-input"
+        <input
+          className="form-check-input"
           type="checkbox"
           value=""
           id={props.id}
@@ -117,7 +109,8 @@ export const CheckBox = (props) => {
             handleShow(e);
           }}
         />
-        <label className="form-check-label"
+        <label
+          className="form-check-label"
           style={{ cursor: "pointer", fontSize: "15px", color: "grey" }}
           htmlFor={props.id}
         >
@@ -129,7 +122,7 @@ export const CheckBox = (props) => {
 };
 
 export default function Create() {
-  const dataLang = useIntl()
+  const dataLang = useIntl();
   const [widthCheckBox, setWidwidthCheckBox] = useState("");
   const [reportType, setReportType] = useState("Daily Report");
   const reportnameRef = useRef("");
@@ -137,7 +130,7 @@ export default function Create() {
   const usr = useSelector((state) => state.admin.usr);
 
   const TypeReport = (props) => {
-    const dataLang = useIntl()
+    const dataLang = useIntl();
 
     const handerChangeReportName = (e) => {
       reportnameRef.current = e.target.value;
@@ -153,10 +146,10 @@ export default function Create() {
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
-                      {dataLang.formatMessage({ id: 'dailyReport' })}
+                      {dataLang.formatMessage({ id: "dailyReport" })}
                     </label>
                     <p style={{ color: "grey", margin: "0" }}>
-                      {dataLang.formatMessage({ id: 'dailyReportDesc' })}
+                      {dataLang.formatMessage({ id: "dailyReportDesc" })}
                     </p>
                   </>
                 );
@@ -164,10 +157,10 @@ export default function Create() {
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
-                      {dataLang.formatMessage({ id: 'monthlyReport' })}
+                      {dataLang.formatMessage({ id: "monthlyReport" })}
                     </label>
                     <p style={{ color: "grey", margin: "0" }}>
-                      {dataLang.formatMessage({ id: 'monthlyReportDesc' })}
+                      {dataLang.formatMessage({ id: "monthlyReportDesc" })}
                     </p>
                   </>
                 );
@@ -175,10 +168,10 @@ export default function Create() {
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
-                      {dataLang.formatMessage({ id: 'yearlyReport' })}
+                      {dataLang.formatMessage({ id: "yearlyReport" })}
                     </label>
                     <p style={{ color: "grey", margin: "0" }}>
-                      {dataLang.formatMessage({ id: 'yearlyReportDesc' })}
+                      {dataLang.formatMessage({ id: "yearlyReportDesc" })}
                     </p>
                   </>
                 );
@@ -186,10 +179,10 @@ export default function Create() {
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
-                      {dataLang.formatMessage({ id: 'totalReport' })}
+                      {dataLang.formatMessage({ id: "totalReport" })}
                     </label>
                     <p style={{ color: "grey", margin: "0" }}>
-                      {dataLang.formatMessage({ id: 'yearlyReportDesc' })}
+                      {dataLang.formatMessage({ id: "yearlyReportDesc" })}
                     </p>
                   </>
                 );
@@ -197,10 +190,10 @@ export default function Create() {
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
-                      {dataLang.formatMessage({ id: 'dailyReport' })}
+                      {dataLang.formatMessage({ id: "dailyReport" })}
                     </label>
                     <p style={{ color: "grey", margin: "0" }}>
-                      {dataLang.formatMessage({ id: 'dailyReportDesc' })}
+                      {dataLang.formatMessage({ id: "dailyReportDesc" })}
                     </p>
                   </>
                 );
@@ -208,10 +201,10 @@ export default function Create() {
           })()}
 
           <div className="DAT_Create_Body_Item_Data_Name">
-            <label>{dataLang.formatMessage({ id: 'reportName' })}: </label>
+            <label>{dataLang.formatMessage({ id: "reportName" })}: </label>
             <input
               type="text"
-              placeholder={dataLang.formatMessage({ id: 'required' })}
+              placeholder={dataLang.formatMessage({ id: "required" })}
               required
               //ref={reportnameRef}
               id="reportname"
@@ -274,20 +267,23 @@ export default function Create() {
       <div className="DAT_Create">
         <div className="DAT_Create_Header">
           <div className="DAT_Create_Header_Left">
-            <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'createReport' })}</p>
+            <p style={{ fontSize: "20px" }}>
+              {dataLang.formatMessage({ id: "createReport" })}
+            </p>
           </div>
           <div className="DAT_Create_Header_Right">
-            <div className="DAT_Create_Header_Right_Save"
+            <div
+              className="DAT_Create_Header_Right_Save"
               onClick={() => handleCreate()}
             >
               <IoSaveOutline size={20} color="white" />
-              <span>{dataLang.formatMessage({ id: 'save' })}</span>
+              <span>{dataLang.formatMessage({ id: "save" })}</span>
             </div>
-            <div className="DAT_Create_Header_Right_Close" onClick={() => (createState.value = false)}>
-              <RxCross2
-                size={20}
-                color="white"
-              />
+            <div
+              className="DAT_Create_Header_Right_Close"
+              onClick={() => (createState.value = false)}
+            >
+              <RxCross2 size={20} color="white" />
             </div>
           </div>
         </div>
@@ -295,24 +291,25 @@ export default function Create() {
         <div className="DAT_Create_Body">
           <div className="DAT_Create_Body_Item">
             <div className="DAT_Create_Body_Item_Type">
-              <h4>{dataLang.formatMessage({ id: 'reportType' })}</h4>
-              <select className="form-select form-select-sm mt-3"
+              <h4>{dataLang.formatMessage({ id: "reportType" })}</h4>
+              <select
+                className="form-select form-select-sm mt-3"
                 defaultValue={"Daily Data Report"}
                 onChange={(e) => {
                   handleDataType(e);
                 }}
               >
                 <option value={"Daily Data Report"}>
-                  {dataLang.formatMessage({ id: 'dailyReport' })}
+                  {dataLang.formatMessage({ id: "dailyReport" })}
                 </option>
                 <option value={"Monthly Data Report"}>
-                  {dataLang.formatMessage({ id: 'monthlyReport' })}
+                  {dataLang.formatMessage({ id: "monthlyReport" })}
                 </option>
                 <option value={"Yearly Data Report"}>
-                  {dataLang.formatMessage({ id: 'yearlyReport' })}
+                  {dataLang.formatMessage({ id: "yearlyReport" })}
                 </option>
                 <option value={"Total Data Report"}>
-                  {dataLang.formatMessage({ id: 'totalReport' })}
+                  {dataLang.formatMessage({ id: "totalReport" })}
                 </option>
               </select>
             </div>
@@ -322,22 +319,26 @@ export default function Create() {
 
           <div className="DAT_Create_Body_Item">
             <div className="DAT_Create_Body_Item_Option">
-              <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: 'customOpt' })}</label>
+              <label style={{ margin: "0" }}>
+                {dataLang.formatMessage({ id: "customOpt" })}
+              </label>
               <div className="DAT_Create_Body_Item_Option_Check">
-                <p style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'projectInfo' })}</p>
+                <p style={{ color: "grey" }}>
+                  {dataLang.formatMessage({ id: "reportprojectitem" })}
+                </p>
                 {Object.entries(newdata.value.inf).map(([key, value]) => (
                   <CheckBox
                     key={key}
                     num={String(key)}
                     tab="inf_content"
                     status={newdata.value.inf[key].status}
-                    id={newdata.value.inf[key].id}
+                    id={dataLang.formatMessage({ id:newdata.value.inf[key].id})}
                     width={widthCheckBox}
                   />
                 ))}
               </div>
 
-              <div className="DAT_Create_Body_Item_Option_Check"
+              {/* <div className="DAT_Create_Body_Item_Option_Check"
                 style={{
                   border: newdata.value.subinf.status
                     ? "1px solid grey"
@@ -409,14 +410,18 @@ export default function Create() {
                 ) : (
                   <></>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="DAT_Create_Body_Item">
             <div className="DAT_Create_Body_Item_Option">
-              <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: 'dataPref' })}</label>
+              <label style={{ margin: "0" }}>
+                {dataLang.formatMessage({ id: "dataPref" })}
+              </label>
               <div className="DAT_Create_Body_Item_Option_Check">
-                <p style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'projData' })}</p>
+                <p style={{ color: "grey" }}>
+                  {dataLang.formatMessage({ id: "projData" })}
+                </p>
                 {Object.entries(newdata.value.customdata).map(
                   ([key, value]) => (
                     <CheckBox
@@ -424,7 +429,7 @@ export default function Create() {
                       num={String(key)}
                       tab="customdata_content"
                       status={newdata.value.customdata[key].status}
-                      id={newdata.value.customdata[key].id}
+                      id={dataLang.formatMessage({ id: newdata.value.customdata[key].id })}
                       width={widthCheckBox}
                     />
                   )

@@ -264,12 +264,12 @@ export default function Rule() {
         justifyContent: "left",
       },
     },
-    {
-      name: "ID",
-      selector: (row) => row.ruleid_,
-      sortable: true,
-      width: "100px",
-    },
+    // {
+    //   name: "ID",
+    //   selector: (row) => row.ruleid_,
+    //   sortable: true,
+    //   width: "100px",
+    // },
     {
       name: dataLang.formatMessage({ id: "edit" }),
       selector: (row) => (

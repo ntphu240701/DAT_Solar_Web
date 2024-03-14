@@ -26,56 +26,24 @@ export default function Popup() {
 
   const handleDelete = async (e) => {
     const i = groupUser.value.findIndex(
-      (item) => item.id_ === parseInt(userDel.value)
+      (item) => item.id_ == parseInt(userDel.value)
     );
-    let d = await callApi('post', host.DATA + '/removeUsrPartner', {
+
+    let d = await callApi("post", host.DATA + "/removeUsrPartner", {
       mail: groupUser.value[i].mail_,
-      partnerid: String(groupID.value)
-    })
+      partnerid: String(groupID.value),
+    });
     console.log(d);
     if (d.status) {
       groupUser.value = groupUser.value.filter(
-        (item) => item.id_ !== groupID.value
+        (item) => item.id_ != parseInt(userDel.value)
       );
-      groupID.value = 0;
+      // groupID.value = 0;
       popupState.value = false;
       alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
-
-    // groupUser.value.forEach((item) => {
-    //   if (item.id_ == groupID.value) {
-    //     item.users = item.users.filter(
-    //       (user) => user.username != userDel.value
-    //     );
-    //   }
-    // });
-    // console.log(userDel.value);
-
-    // console.log(userDel.value);
-    // if (parseInt(userDel.value) === 1) {
-    //   alertDispatch("Cant delete user");
-    // } else {
-
-    // let res = await callApi("post", host.DATA + "/removePartner", {
-    //   code: code
-    // });
-    // console.log(res);
-
-    // const i = groupUser.value.findIndex(
-    //   (item) => item.id_ == parseInt(userDel.value)
-    // );
-    // console.log(userDel.value, i);
-    // groupUser.value = groupUser.value.filter(
-    //   (item) => item.id_ != parseInt(userDel.value)
-    // );
-    // console.log(groupUser.value);
-    // popupState.value = false;
-    // alertDispatch("Delete user success");
-    // console.log(userDel.value, i);
-    //}
-    //console.log(groupUser.value);
   };
 
   return (

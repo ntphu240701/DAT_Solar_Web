@@ -17,7 +17,7 @@ import { RxCross2 } from "react-icons/rx";
 import { RiMailSettingsLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
-import { partnerInfor, phuhosting, userInfor } from "../../App";
+import { partnerInfor, phuhosting, ruleInfor, userInfor } from "../../App";
 import { IoTrashOutline } from "react-icons/io5";
 
 const tab = signal("all");
@@ -30,8 +30,7 @@ export const temp = signal([]);
 export const deletewarnState = signal(false);
 export const idDel = signal();
 
-export const dataWarn = signal([
-]);
+export const dataWarn = signal([]);
 
 export default function Warn(props) {
   const dataLang = useIntl();
@@ -117,15 +116,20 @@ export default function Warn(props) {
       name: dataLang.formatMessage({ id: "setting" }),
       selector: (row) => (
         <>
-          <div className="DAT_TableEdit">
-            <span
-              id={row.boxid + "" + row.warnid + "_MORE"}
-              // onMouseEnter={(e) => handleModify(e, "block")}
-              onClick={(e) => handleModify(e, "block")}
-            >
-              <IoMdMore size={20} />
-            </span>
-          </div>
+          {ruleInfor.value.setting.warn.modify === true ||
+          ruleInfor.value.setting.warn.remove === true ? (
+            <div className="DAT_TableEdit">
+              <span
+                id={row.boxid + "" + row.warnid + "_MORE"}
+                // onMouseEnter={(e) => handleModify(e, "block")}
+                onClick={(e) => handleModify(e, "block")}
+              >
+                <IoMdMore size={20} />
+              </span>
+            </div>
+          ) : (
+            <></>
+          )}
 
           <div
             className="DAT_ModifyBox"
@@ -139,20 +143,24 @@ export default function Warn(props) {
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             {/* <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div> */}
-            <div
-              className="DAT_ModifyBox_Remove"
-              id={row.boxid + "_" + row.device}
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-              onClick={(e) => handleDeleteWarn(e)}
-            >
-              <IoTrashOutline size={16} />
-              &nbsp;
-              {dataLang.formatMessage({ id: "delete" })}
-            </div>
+            {ruleInfor.value.setting.warn.remove === true ? (
+              <div
+                className="DAT_ModifyBox_Remove"
+                id={row.boxid + "_" + row.device}
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
+                onClick={(e) => handleDeleteWarn(e)}
+              >
+                <IoTrashOutline size={16} />
+                &nbsp;
+                {dataLang.formatMessage({ id: "delete" })}
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </>
       ),
@@ -205,9 +213,16 @@ export default function Warn(props) {
               >
                 <CiSearch color="white" size={20} />
               </div>
-              <div className="DAT_Modify_Add" onClick={(e) => handleSetting(e)}>
-                <TbSettingsCode color="white" size={20} />
-              </div>
+              {ruleInfor.value.setting.warn.remove ? (
+                <div
+                  className="DAT_Modify_Add"
+                  onClick={(e) => handleSetting(e)}
+                >
+                  <TbSettingsCode color="white" size={20} />
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
 
             {filter ? (
@@ -236,7 +251,7 @@ export default function Warn(props) {
               />
               <CiSearch color="gray" size={20} />
             </div>
-            <button
+            {/* <button
               className="DAT_WarnHeader_New"
               onClick={(e) => handleSetting(e)}
             >
@@ -245,7 +260,7 @@ export default function Warn(props) {
                 &nbsp;
                 {dataLang.formatMessage({ id: "setting" })}
               </span>
-            </button>
+            </button> */}
           </>
         )}
       </div>
