@@ -305,18 +305,26 @@
                 gap: 10px;
 
                 & img {
-                    width: 45px;
-                    height: 45px;
-                    // border: solid 4px rgba(79, 79, 79, 0.5);
+                    width: 50px;
+                    height: 50px;
                     border-radius: 50%;
                     cursor: pointer;
                 }
 
-                &_Name {
+                &_Content {
                     display: flex;
                     flex-direction: column;
-                    // align-items: center;
-                    // gap: 10px;
+
+                    &_Name {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                    }
+
+                    &_Addr {
+                        color: gray;
+                        font-size: 14px;
+                    }
                 }
             }
 
@@ -476,58 +484,81 @@
             display: flex;
             gap: 16px;
 
+            // &_Left {
+            //     background-color: white;
+            //     width: 25%;
+            //     // height: 360px;
+            //     border-radius: 5px;
+            //     overflow: hidden;
+
+            //     & img {
+            //         width: 100%;
+            //         height: 200px;
+            //         object-fit: cover;
+            //         border-top-right-radius: 5px;
+            //         border-top-left-radius: 5px;
+            //     }
+
+            //     &_Info {
+            //         padding: 16px;
+
+            //         &_Addr {
+            //             display: flex;
+            //             // flex-wrap: wrap;
+            //             // overflow: hidden;
+            //             // min-width: 300px;
+
+            //             &_Title {
+            //                 flex: 4;
+            //                 font-size: 14px;
+            //                 color: rgb(128, 128, 128);
+            //                 width: 100%;
+            //                 white-space: nowrap; // ngan xuong dong
+            //                 overflow: hidden; // an noi dung vuot ra ngoai
+            //                 text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
+            //             }
+
+            //             &_Content {
+            //                 flex: 6;
+            //                 font-size: 14px;
+            //                 color: black;
+            //                 white-space: nowrap; // ngan xuong dong
+            //                 overflow: hidden; // an noi dung vuot ra ngoai
+            //                 text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
+            //             }
+            //         }
+            //     }
+            // }
+
             &_Left {
+                width: 32%;
                 background-color: white;
-                width: 25%;
-                // height: 360px;
                 border-radius: 5px;
                 overflow: hidden;
 
-                & img {
-                    width: 100%;
-                    height: 200px;
-                    object-fit: cover;
-                    border-top-right-radius: 5px;
-                    border-top-left-radius: 5px;
-                }
+                &_Tit {
+                    display: flex;
 
-                &_Info {
-                    padding: 16px;
-
-                    &_Addr {
-                        display: flex;
-                        // flex-wrap: wrap;
-                        // overflow: hidden;
-                        // min-width: 300px;
-
-                        &_Title {
-                            flex: 4;
-                            font-size: 14px;
-                            color: rgb(128, 128, 128);
-                            width: 100%;
-                            white-space: nowrap; // ngan xuong dong
-                            overflow: hidden; // an noi dung vuot ra ngoai
-                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
-                        }
-
-                        &_Content {
-                            flex: 6;
-                            font-size: 14px;
-                            color: black;
-                            white-space: nowrap; // ngan xuong dong
-                            overflow: hidden; // an noi dung vuot ra ngoai
-                            text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
-                        }
+                    &_Item {
+                        padding: 16px;
+                        // cursor: pointer;
+                        white-space: nowrap; // ngan xuong dong
+                        overflow: hidden; // an noi dung vuot ra ngoai
+                        text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
                     }
                 }
             }
 
             &_Center {
                 background-color: white;
-                width: 50%;
+                width: 43%;
                 // height: 360px;
                 border-radius: 5px;
                 overflow: hidden;
+
+
+                // &_Right {
+                //     width: 60%;
 
                 &_Tit {
                     display: flex;
@@ -540,6 +571,8 @@
                         text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
                     }
                 }
+
+                // }
 
                 &_Graph {
                     position: relative;
@@ -777,7 +810,7 @@
                             border-radius: 5px;
 
                             &_Tit {
-                                font-size: 14px;
+                                font-size: 13px;
                                 color: gray;
                             }
 
@@ -1344,11 +1377,76 @@
                     display: flex;
                     flex-wrap: wrap;
                     overflow: hidden;
+                    // justify-content: space-between;
 
-                    &_Item {
+                    &_Left {
                         flex: 5;
-                        padding: 16px;
+
+                        &_Item {
+                            box-sizing: border-box;
+                            // flex: 5;
+                            padding: 16px;
+                            display: flex;
+                            gap: 20px;
+                            // width: 100%;
+                            // justify-content: space-between;
+
+                            &_Title {
+                                flex: 4;
+                                font-size: 14px;
+                                color: rgb(128, 128, 128);
+                                // width: 100%;
+                                white-space: nowrap; // ngan xuong dong
+                                overflow: hidden; // an noi dung vuot ra ngoai
+                                text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
+                            }
+
+                            &_Content {
+                                flex: 6;
+                                font-size: 14px;
+                                // text-align: right;
+                                color: black;
+                                white-space: nowrap; // ngan xuong dong
+                                overflow: hidden; // an noi dung vuot ra ngoai
+                                text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
+                            }
+                        }
                     }
+
+                    &_Right {
+                        flex: 5;
+
+                        &_Item {
+                            box-sizing: border-box;
+                            // flex: 5;
+                            padding: 16px;
+                            display: flex;
+                            gap: 20px;
+                            // width: 100%;
+
+                            &_Title {
+                                flex: 5;
+                                font-size: 14px;
+                                color: rgb(128, 128, 128);
+                                // width: 100%;
+                                white-space: nowrap; // ngan xuong dong
+                                overflow: hidden; // an noi dung vuot ra ngoai
+                                text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
+                            }
+
+                            &_Content {
+                                flex: 5;
+                                font-size: 14px;
+                                // text-align: right;
+                                color: black;
+                                white-space: nowrap; // ngan xuong dong
+                                overflow: hidden; // an noi dung vuot ra ngoai
+                                text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
+                            }
+                        }
+                    }
+
+
                 }
             }
 
@@ -1379,10 +1477,10 @@
 
     &_Device {
         position: relative;
-        // margin-top: 16px;
-        // margin-bottom: 16px;
-        background-color: white;
-        height: calc(100vh - 180px);
+        margin-top: 16px;
+        margin-bottom: 16px;
+        // background-color: white;
+        // height: calc(100vh - 180px);
 
         // &_Analysis {
         // width: 98%;
@@ -1564,6 +1662,7 @@
             width: 98%;
             margin: auto;
             overflow: hidden;
+            background-color: white;
             -webkit-box-sizing: border-box;
             /* Safari/Chrome, other WebKit */
             -moz-box-sizing: border-box;

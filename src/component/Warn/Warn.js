@@ -19,8 +19,6 @@ import { useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
 import { partnerInfor, phuhosting, ruleInfor, userInfor } from "../../App";
 import { IoTrashOutline } from "react-icons/io5";
-import { set } from "lodash";
-import { data } from "jquery";
 
 const tab = signal("all");
 const tabMobile = signal(false);
@@ -37,6 +35,7 @@ export const dataWarn = signal([]);
 export default function Warn(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
+  const [type, setType] = useState('project');
   const [datafilter, setDatafilter] = useState([]);
 
   const listTab = [
@@ -200,6 +199,10 @@ export default function Warn(props) {
     tabLable.value = newLabel.name;
   };
 
+  const changeFilter = (e) => {
+    setType(e.currentTarget.value);
+  };
+
   // by Mr Loc
   const handleSearch = (e) => {
     if(e.currentTarget.value === ""){
@@ -304,12 +307,17 @@ export default function Warn(props) {
         ) : (
           <>
             <div className="DAT_WarnHeader_Filter">
+              {/* <select onChange={((e) => changeFilter(e))} style={{ border: 'none', outline: 'none' }}>
+                <option value={'project'}>{dataLang.formatMessage({ id: "project" })}</option>
+                <option value={'code'}>{dataLang.formatMessage({ id: "errcode" })}</option>
+                <option value={'device'}>{dataLang.formatMessage({ id: "device" })}</option>
+              </select> */}
               <input
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterWarn" })}
-                // id="warnsearch"
-                id={warnfilter.value.warnid}
-                value={warnfilter.value.warnid}
+                id="warnsearch"
+                // id={warnfilter.value.warnid}
+                // value={warnfilter.value.warnid}
                 onChange={(e) => handleSearch(e)}
               />
               <CiSearch color="gray" size={20} />

@@ -91,7 +91,8 @@ const dataAlert = [];
 export default function ProjectData(props) {
   const dataLang = useIntl();
   const lang = useSelector((state) => state.admin.lang);
-  const [nav, setNav] = useState(projectData.value.plantmode === "grid" ? "production" : "graph");
+  // const [nav, setNav] = useState(projectData.value.plantmode === "grid" ? "production" : "graph");
+  const [nav, setNav] = useState("production");
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
   const [configname, setConfigname] = useState(
@@ -437,7 +438,7 @@ export default function ProjectData(props) {
     var id = e.currentTarget.id;
     setView(id);
     if (id === "dashboard") {
-      setNav("graph");
+      setNav("production");
     }
     dropState.value = !dropState.value;
   };
@@ -477,7 +478,7 @@ export default function ProjectData(props) {
         console.log(d)
         if (d.status) {
           // console.log(d.data);
-          let vDay_ = dataLang.formatMessage({ id: d.data.name });
+          let vDay_ = dataLang.formatMessage({ id: "production" });
           if (moment(date).format("DD/MM/YYYY") === moment(new Date()).format("DD/MM/YYYY")) {
             let x = [];
             d.data.data.map((item) => {
@@ -641,7 +642,7 @@ export default function ProjectData(props) {
       let x = []
       if (d.status) {
         //console.log(d.data)
-        let vDay_ = dataLang.formatMessage({ id: d.data.name });
+        let vDay_ = dataLang.formatMessage({ id: "production" });
         d.data.data.map((item) => {
           x = [...x, { time: item.time, [vDay_]: item.value }];
         });
@@ -653,7 +654,7 @@ export default function ProjectData(props) {
         }
         // console.log(x)
         setDataDay(x);
-        setVDay(dataLang.formatMessage({ id: d.data.name }));
+        setVDay(dataLang.formatMessage({ id: "production" }));
       }
     };
     getDaily();
@@ -975,16 +976,16 @@ export default function ProjectData(props) {
                 case "dashboard":
                   return (
                     <div className="DAT_ProjectData_Header_LeftDashboard">
-                      <div className="DAT_ProjectData_Header_LeftDashboard_Top" style={{ fontSize: 22, marginBottom: "8px" }}>
+                      <div className="DAT_ProjectData_Header_LeftDashboard_Top" style={{ fontSize: 22 }}>
                         <img src={
                           projectData.value.img
                             ? projectData.value.img
                             : "/dat_picture/solar_panel.png"
                         }
                           alt="" />
-                        <div className="DAT_ProjectData_Header_LeftDashboard_Top_Name">
-                          <div>
-                            {tit[view]}
+                        <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content">
+                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Name">
+                            {projectData.value.plantname}
                             {projectData.value.state === 1 ? (
                               <>
                                 <FaCheckCircle size={20} color="green" />
@@ -995,22 +996,54 @@ export default function ProjectData(props) {
                               </>
                             )}
                           </div>
-                          <span>
-                            hello
-                          </span>
+                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Addr">
+                            {projectData.value.addr}
+                          </div>
+                          {/* <div style={{ color: "grey", fontSize: 14 }}>
+                            {dataLang.formatMessage({ id: "lastupdate" })}{" "}
+                            {projectData.value.lastupdate}
+                          </div> */}
                         </div>
                       </div>
 
-                      <div style={{ color: "grey", fontSize: 14 }}>
-                        {dataLang.formatMessage({ id: "lastupdate" })}{" "}
-                        {projectData.value.lastupdate}
-                      </div>
                     </div>
                   );
                 case "device":
                   return (
-                    <div className="DAT_ProjectData_Header_LeftDevice">
-                      <div style={{ fontSize: 22 }}>{tit[view]}</div>
+                    // <div className="DAT_ProjectData_Header_LeftDevice">
+                    //   <div style={{ fontSize: 22 }}>{tit[view]}</div>
+                    // </div>
+                    <div className="DAT_ProjectData_Header_LeftDashboard">
+                      <div className="DAT_ProjectData_Header_LeftDashboard_Top" style={{ fontSize: 22 }}>
+                        <img src={
+                          projectData.value.img
+                            ? projectData.value.img
+                            : "/dat_picture/solar_panel.png"
+                        }
+                          alt="" />
+                        <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content">
+                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Name">
+                            {projectData.value.plantname}
+                            {projectData.value.state === 1 ? (
+                              <>
+                                <FaCheckCircle size={20} color="green" />
+                              </>
+                            ) : (
+                              <>
+                                <MdOutlineError size={20} color="red" />
+                              </>
+                            )}
+                          </div>
+                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Addr">
+                            {projectData.value.addr}
+                          </div>
+                          {/* <div style={{ color: "grey", fontSize: 14 }}>
+                            {dataLang.formatMessage({ id: "lastupdate" })}{" "}
+                            {projectData.value.lastupdate}
+                          </div> */}
+                        </div>
+                      </div>
+
                     </div>
                   );
                 case "alert":
@@ -1063,7 +1096,7 @@ export default function ProjectData(props) {
               return (
                 <div className="DAT_ProjectData_Dashboard">
                   <div className="DAT_ProjectData_Dashboard_Data">
-                    <div className="DAT_ProjectData_Dashboard_Data_Left">
+                    {/* <div className="DAT_ProjectData_Dashboard_Data_Left">
                       <div className="DAT_ProjectData_Dashboard_Data_Left_Img">
                         <img
                           src={
@@ -1130,7 +1163,7 @@ export default function ProjectData(props) {
                           </div>
                         </div>
 
-                        {/* <div
+                        <div
                     className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
                     style={{ marginBottom: "16px" }}
                   >
@@ -1143,7 +1176,7 @@ export default function ProjectData(props) {
                     >
                       --
                     </div>
-                  </div> */}
+                  </div>
 
                         <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr">
                           <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
@@ -1157,25 +1190,67 @@ export default function ProjectData(props) {
                           </div>
                         </div>
                       </div>
+                    </div> */}
+                    <div className="DAT_ProjectData_Dashboard_Data_Left">
+                      <div className="DAT_ProjectData_Dashboard_Data_Left_Tit">
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                        // id="graph"
+                        // style={{
+                        //   color: nav === "graph" ? color.cur : color.pre,
+                        //   display:
+                        //     projectData.value.plantmode === "grid"
+                        //       ? "none"
+                        //       : "block",
+                        //   // width: nav === "graph" ? "150px" : "60px",
+                        // }}
+                        // onClick={(e) => handleNav(e)}
+                        >
+                          {(() => {
+                            switch (projectData.value.plantmode) {
+                              case "consumption":
+                                return (<>
+                                  {dataLang.formatMessage({ id: 'consumptionType' })}
+                                </>)
+                              case "hybrid":
+                                return (<>
+                                  {dataLang.formatMessage({ id: 'hybridType' })}
+                                </>)
+                              case "ESS":
+                                return (<>
+                                  {dataLang.formatMessage({ id: 'ESS' })}
+                                </>)
+                              default:
+                                return (
+                                  <>
+                                    {dataLang.formatMessage({ id: 'gridType' })}
+                                  </>
+                                )
+                            }
+                          })()}
+                        </div>
+                      </div>
+                      <Graph type={projectData.value.plantmode} cal={cal.value} />
                     </div>
 
                     <div className="DAT_ProjectData_Dashboard_Data_Center">
+                      {/* <div className="DAT_ProjectData_Dashboard_Data_Center_Right"> */}
                       <div className="DAT_ProjectData_Dashboard_Data_Center_Tit">
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
-                          id="graph"
-                          style={{
-                            color: nav === "graph" ? color.cur : color.pre,
-                            display:
-                              projectData.value.plantmode === "grid"
-                                ? "none"
-                                : "block",
-                            // width: nav === "graph" ? "150px" : "60px",
-                          }}
-                          onClick={(e) => handleNav(e)}
-                        >
-                          {dataLang.formatMessage({ id: "graph" })}
-                        </div>
+                        {/* <div
+                            className="DAT_ProjectData_Dashboard_Data_Center_Right_Tit_Item"
+                            id="graph"
+                            style={{
+                              color: nav === "graph" ? color.cur : color.pre,
+                              display:
+                                projectData.value.plantmode === "grid"
+                                  ? "none"
+                                  : "block",
+                              // width: nav === "graph" ? "150px" : "60px",
+                            }}
+                            onClick={(e) => handleNav(e)}
+                          >
+                            {dataLang.formatMessage({ id: "graph" })}
+                          </div> */}
                         <div
                           className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
                           id="production"
@@ -1249,6 +1324,7 @@ export default function ProjectData(props) {
                             <></>;
                         }
                       })()}
+                      {/* </div> */}
                     </div>
 
                     <div className="DAT_ProjectData_Dashboard_Data_Right">
@@ -1446,15 +1522,16 @@ export default function ProjectData(props) {
                   <div className="DAT_ProjectData_Dashboard_More">
                     <div className="DAT_ProjectData_Dashboard_More_Left">
                       <div className="DAT_ProjectData_Dashboard_More_Left_Tit">
-                        <span>{dataLang.formatMessage({ id: "taskSeq" })}</span>
-                        <div className="DAT_ProjectData_Dashboard_More_Left_Tit_Button">
+                        <span>Thông tin dự án</span>
+                        {/* <div className="DAT_ProjectData_Dashboard_More_Left_Tit_Button">
                           <IoArrowForward />
-                        </div>
+                        </div> */}
                       </div>
 
                       <div className="DAT_ProjectData_Dashboard_More_Left_Content">
-                        <div className="DAT_ProjectData_Dashboard_More_Left_Content_Item">
-                          <div
+                        <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left">
+                          <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item">
+                            {/* <div
                             className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
                             style={{
                               textAlign: "center",
@@ -1475,11 +1552,27 @@ export default function ProjectData(props) {
                             }}
                           >
                             {dataLang.formatMessage({ id: "inProgress" })}
-                          </div>
-                        </div>
+                          </div> */}
+                            {/* <div
+                            className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
+                            style={{ marginBottom: "16px" }}
+                          > */}
+                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Title">
+                              {dataLang.formatMessage({ id: "projType" })}
+                            </div>
+                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Content">
+                              {projectData.value.planttype === "industrial" ? (
+                                <>{dataLang.formatMessage({ id: "factory" })}</>
+                              ) : (
+                                <>{dataLang.formatMessage({ id: "household" })}</>
+                              )}
+                            </div>
+                            {/* </div> */}
 
-                        <div className="DAT_ProjectData_Dashboard_More_Left_Content_Item">
-                          <div
+                          </div>
+
+                          <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item">
+                            {/* <div
                             className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
                             style={{
                               textAlign: "center",
@@ -1500,7 +1593,153 @@ export default function ProjectData(props) {
                             }}
                           >
                             {dataLang.formatMessage({ id: "complete" })}
+                          </div> */}
+                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Title">
+                              {dataLang.formatMessage({ id: "companyName" })}:
+
+                            </div>
+                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Content">
+                              {projectData.value.business}
+
+                            </div>
                           </div>
+
+                          {/* <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item"> */}
+                          {/* <div
+                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
+                            style={{
+                              textAlign: "center",
+                              fontSize: "32px",
+                              color: "#41D068",
+                            }}
+                          >
+                            0
+                          </div>
+
+                          <div
+                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
+                            style={{
+                              textAlign: "center",
+                              fontSize: "14px",
+                              color: "grey",
+                              marginTop: "8px",
+                            }}
+                          >
+                            {dataLang.formatMessage({ id: "complete" })}
+                          </div> */}
+                          {/* <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Title">
+                              {dataLang.formatMessage({ id: "unitPrice" })}:
+
+                            </div>
+                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Content">
+                              {projectData.value.price}
+
+                            </div>
+                          </div> */}
+                        </div>
+
+                        <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right">
+                          <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item">
+                            {/* <div
+                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
+                            style={{
+                              textAlign: "center",
+                              fontSize: "32px",
+                              color: "#41D068",
+                            }}
+                          >
+                            0
+                          </div>
+
+                          <div
+                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
+                            style={{
+                              textAlign: "center",
+                              fontSize: "14px",
+                              color: "grey",
+                              marginTop: "8px",
+                            }}
+                          >
+                            {dataLang.formatMessage({ id: "complete" })}
+                          </div> */}
+                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Title">
+
+                              {dataLang.formatMessage({ id: "contactName" })}:
+
+                            </div>
+                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Content">
+
+                              {projectData.value.contact}
+
+                            </div>
+                          </div>
+
+                          <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item">
+                            {/* <div
+                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
+                            style={{
+                              textAlign: "center",
+                              fontSize: "32px",
+                              color: "#41D068",
+                            }}
+                          >
+                            0
+                          </div>
+
+                          <div
+                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
+                            style={{
+                              textAlign: "center",
+                              fontSize: "14px",
+                              color: "grey",
+                              marginTop: "8px",
+                            }}
+                          >
+                            {dataLang.formatMessage({ id: "complete" })}
+                          </div> */}
+                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Title">
+                              {dataLang.formatMessage({ id: "phone" })}:
+
+                            </div>
+                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Content">
+                              {projectData.value.phone}
+
+                            </div>
+                          </div>
+
+                          {/* <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item"> */}
+                          {/* <div
+                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
+                            style={{
+                              textAlign: "center",
+                              fontSize: "32px",
+                              color: "#41D068",
+                            }}
+                          >
+                            0
+                          </div>
+
+                          <div
+                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
+                            style={{
+                              textAlign: "center",
+                              fontSize: "14px",
+                              color: "grey",
+                              marginTop: "8px",
+                            }}
+                          >
+                            {dataLang.formatMessage({ id: "complete" })}
+                          </div> */}
+                          {/* <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Title">
+                              {dataLang.formatMessage({ id: "companyName" })}:
+
+
+                            </div>
+                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Content">
+
+
+                            </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -2191,22 +2430,29 @@ export default function ProjectData(props) {
         <>
           {dropState.value ? (
             <div className="DAT_ProjectDataDrop">
-              <div
-                className="DAT_ProjectDataDrop_Item"
-                id="dashboard"
-                style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                onClick={(e) => handleView(e)}
-              >
-                {dataLang.formatMessage({ id: "monitor" })}
-              </div>
-              <div
-                className="DAT_ProjectDataDrop_Item"
-                id="device"
-                style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                onClick={(e) => handleView(e)}
-              >
-                {dataLang.formatMessage({ id: "device" })}
-              </div>
+              {view === "dashboard" ? (
+                <>
+                  <div
+                    className="DAT_ProjectDataDrop_Item"
+                    id="device"
+                    // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                    onClick={(e) => handleView(e)}
+                  >
+                    {dataLang.formatMessage({ id: "device" })}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div
+                    className="DAT_ProjectDataDrop_Item"
+                    id="dashboard"
+                    // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                    onClick={(e) => handleView(e)}
+                  >
+                    {dataLang.formatMessage({ id: "monitor" })}
+                  </div>
+                </>
+              )}
             </div>
           ) : (
             <></>
@@ -2216,22 +2462,29 @@ export default function ProjectData(props) {
         <>
           {dropState.value ? (
             <div className="DAT_ProjectDataDrop">
-              <div
-                className="DAT_ProjectDataDrop_Item"
-                id="dashboard"
-                style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                onClick={(e) => handleView(e)}
-              >
-                {dataLang.formatMessage({ id: "monitor" })}
-              </div>
-              <div
-                className="DAT_ProjectDataDrop_Item"
-                id="device"
-                style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                onClick={(e) => handleView(e)}
-              >
-                {dataLang.formatMessage({ id: "device" })}
-              </div>
+              {view === "dashboard" ? (
+                <>
+                  <div
+                    className="DAT_ProjectDataDrop_Item"
+                    id="device"
+                    // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                    onClick={(e) => handleView(e)}
+                  >
+                    {dataLang.formatMessage({ id: "device" })}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div
+                    className="DAT_ProjectDataDrop_Item"
+                    id="dashboard"
+                    // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                    onClick={(e) => handleView(e)}
+                  >
+                    {dataLang.formatMessage({ id: "monitor" })}
+                  </div>
+                </>
+              )}
             </div>
           ) : (
             <></>
@@ -2520,7 +2773,7 @@ const GraphConsumption = (props) => {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
             <ImgSolar width="80" height="100" />
             <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
-              {Number((props.cal?.pro_1 / projectData.value.capacity * 100).toFixed(2) || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>%</span>
+              {Number((props.cal?.pro_1) || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>kW</span>
             </div>
           </div>
 
@@ -2945,7 +3198,7 @@ const Production = (props) => {
             }}
           />
           <div style={{ marginBottom: "8px", color: "grey" }}>
-            {dataLang.formatMessage({ id: "capacity" })}
+            {dataLang.formatMessage({ id: "inCapacity" })}
           </div>
           <div>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
