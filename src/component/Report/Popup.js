@@ -6,6 +6,9 @@ import { idReport, ReportData } from "./Report";
 import { useIntl } from "react-intl";
 
 import { IoClose } from "react-icons/io5";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
+import { userInfor } from "../../App";
 
 export default function Popup() {
   const dataLang = useIntl();
@@ -15,13 +18,22 @@ export default function Popup() {
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
   };
 
-  const handleDeleteReport = (e) => {
-    popupStateReport.value = false;
-    const newDB = ReportData.value.filter(
-      (item) => item.id !== parseInt(idReport.value)
-    );
-    console.log(newDB);
-    ReportData.value = newDB;
+  const handleDeleteReport = async (e) => {
+    console.log(userInfor.value.partnerid, idReport.value);
+    const removeReport = await callApi("post", host.DATA + "/removeReport", {
+      partnerid: userInfor.value.partnerid,
+      reportid: idReport.value,
+    });
+    if (removeReport.status) {
+      popupStateReport.value = false;
+      const newDB = ReportData.value.filter(
+        (item) => item.id !== parseInt(idReport.value)
+      );
+      console.log(newDB);
+      ReportData.value = newDB;
+    }
+    console.log(removeReport);
+
   };
 
   const handlePopup = (state) => {
@@ -39,10 +51,11 @@ export default function Popup() {
     <div className="DAT_PopupReport_Box">
       <div className="DAT_PopupReport_Box_Head">
         <div className="DAT_PopupReport_Box_Head_Left">
-          <p>{dataLang.formatMessage({ id: 'delDevice' })}</p>
+          <p>{dataLang.formatMessage({ id: "delDevice" })}</p>
         </div>
         <div className="DAT_PopupReport_Box_Head_Right">
-          <div className="DAT_PopupReport_Box_Head_Right_Icon"
+          <div
+            className="DAT_PopupReport_Box_Head_Right_Icon"
             onClick={() => (popupStateReport.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -54,9 +67,7 @@ export default function Popup() {
       </div>
 
       <div className="DAT_PopupReport_Box_Body">
-        <p>
-          {dataLang.formatMessage({ id: 'delreportmess' })}
-        </p>
+        <p>{dataLang.formatMessage({ id: "delreportmess" })}</p>
       </div>
 
       <div className="DAT_PopupReport_Box_Foot">
@@ -74,7 +85,7 @@ export default function Popup() {
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={(e) => handleDeleteReport(e)}
         >
-          {dataLang.formatMessage({ id: 'confirm' })}
+          {dataLang.formatMessage({ id: "confirm" })}
         </button>
       </div>
     </div>
