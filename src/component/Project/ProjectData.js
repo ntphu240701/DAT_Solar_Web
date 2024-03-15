@@ -997,9 +997,9 @@ export default function ProjectData(props) {
                               </>
                             )}
                           </div>
-                          <span>
-                            hello
-                          </span>
+                          <div>
+                            {projectData.value.addr}
+                          </div>
                         </div>
                       </div>
 
