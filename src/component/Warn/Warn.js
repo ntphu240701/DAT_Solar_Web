@@ -19,8 +19,6 @@ import { useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
 import { partnerInfor, phuhosting, ruleInfor, userInfor } from "../../App";
 import { IoTrashOutline } from "react-icons/io5";
-import { set } from "lodash";
-import { data } from "jquery";
 
 const tab = signal("all");
 const tabMobile = signal(false);
@@ -37,6 +35,7 @@ export const dataWarn = signal([]);
 export default function Warn(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
+  const [type, setType] = useState('project');
   const [datafilter, setDatafilter] = useState([]);
 
   const listTab = [
@@ -195,12 +194,26 @@ export default function Warn(props) {
     tabLable.value = newLabel.name;
   };
 
+  const changeFilter = (e) => {
+    setType(e.currentTarget.value);
+  };
+
   const handleSearch = (e) => {
     if (e.target.value == "") {
       setDatafilter(dataWarn.value);
     } else {
-      console.log(e.target.value);
-
+      const t = e.target.value
+      const df = dataWarn.value.filter((item) => {
+        switch (type) {
+          case 'code':
+            return item.boxid.includes(t) || item.boxid.toLowerCase().includes(t);
+          case 'device':
+            return item.device.includes(t) || item.device.toLowerCase().includes(t);
+          default:
+            return item.plant.includes(t) || item.plant.toLowerCase().includes(t);
+        }
+      })
+      setDatafilter(df)
     }
   }
 
@@ -259,6 +272,11 @@ export default function Warn(props) {
         ) : (
           <>
             <div className="DAT_WarnHeader_Filter">
+              <select onChange={((e) => changeFilter(e))} style={{ border: 'none', outline: 'none' }}>
+                <option value={'project'}>{dataLang.formatMessage({ id: "project" })}</option>
+                <option value={'code'}>{dataLang.formatMessage({ id: "errcode" })}</option>
+                <option value={'device'}>{dataLang.formatMessage({ id: "device" })}</option>
+              </select>
               <input
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterWarn" })}
