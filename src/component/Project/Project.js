@@ -395,6 +395,7 @@ export default function Project(props) {
         }
       }
       );
+      console.log(db);
       setDatafilter(db);
     }
   };
