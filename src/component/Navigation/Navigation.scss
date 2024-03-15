@@ -21,7 +21,6 @@
         height: 44px;
 
         & button {
-
             cursor: pointer;
             height: 44px;
             width: 44px;
@@ -40,13 +39,8 @@
 
             &:hover {
                 background-color: rgba(206, 206, 206, 0.4);
-
             }
-
         }
-
-
-
     }
 
     &_left {
@@ -106,8 +100,6 @@
                 object-fit: cover;
             }
 
-
-
             & span {
                 position: absolute;
                 top: 0;
@@ -131,11 +123,7 @@
 
             &:hover {
                 background-color: rgba(237, 237, 237, 0.4);
-
             }
-
-
-
         }
 
         &-language {
@@ -174,14 +162,10 @@
 
             &:hover {
                 background-color: rgba(237, 237, 237, 0.4);
-
             }
         }
-
     }
 }
-
-
 
 .DAT_NavUser {
     position: relative;
@@ -192,7 +176,9 @@
 
     border-radius: 5px;
     background-color: white;
-    box-shadow: 3px 3px 5px rgba(198, 197, 197, 0.4), -3px -3px 5px rgba(198, 197, 197, 0.4);
+    box-shadow:
+        3px 3px 5px rgba(198, 197, 197, 0.4),
+        -3px -3px 5px rgba(198, 197, 197, 0.4);
     overflow: hidden;
 
     -webkit-animation: animatetop 0.6s;
@@ -227,7 +213,6 @@
                 height: 100%;
                 object-fit: cover;
             }
-
         }
 
         &-content {
@@ -235,7 +220,6 @@
                 font-size: 19px;
                 color: black;
                 padding-bottom: 3px;
-
             }
 
             &-email {
@@ -278,7 +262,9 @@
     border-radius: 5px;
     background-color: white;
     background-color: rgba(230, 230, 230, 1);
-    box-shadow: 3px 3px 5px rgba(198, 197, 197, 0.4), -3px -3px 5px rgba(198, 197, 197, 0.4);
+    box-shadow:
+        3px 3px 5px rgba(198, 197, 197, 0.4),
+        -3px -3px 5px rgba(198, 197, 197, 0.4);
     overflow: hidden;
 
     -webkit-animation: animateright 0.6s;
@@ -324,7 +310,6 @@
         // box-sizing: border-box;
         display: flex;
         overflow: hidden;
-
 
         &-message {
             flex: 4;
@@ -381,7 +366,6 @@
                     font-size: 12px;
                     color: gray;
                 }
-
             }
         }
 
@@ -416,7 +400,9 @@
                     padding: 15px;
                     background-color: white;
                     border-radius: 5px;
-                    box-shadow: 3px 3px 5px rgba(198, 197, 197, 0.4), -3px -3px 5px rgba(198, 197, 197, 0.4);
+                    box-shadow:
+                        3px 3px 5px rgba(198, 197, 197, 0.4),
+                        -3px -3px 5px rgba(198, 197, 197, 0.4);
 
                     &-tit {
                         font-size: 16px;
@@ -442,6 +428,10 @@
                         color: black;
                         font-size: 14px;
                     }
+                    &:hover {
+                        background-color: rgb(201, 201, 201, 0.7);
+                        transition: ease-in-out 0.2s;
+                    }
                 }
             }
 
@@ -454,11 +444,7 @@
                 justify-content: center;
             }
         }
-
     }
-
-
-
 }
 
 .DAT_NavLang {
@@ -471,14 +457,15 @@
 
     border-radius: 5px;
     background-color: white;
-    box-shadow: 3px 3px 5px rgba(198, 197, 197, 0.4), -3px -3px 5px rgba(198, 197, 197, 0.4);
+    box-shadow:
+        3px 3px 5px rgba(198, 197, 197, 0.4),
+        -3px -3px 5px rgba(198, 197, 197, 0.4);
     overflow: hidden;
 
     -webkit-animation: animatetop 0.6s;
     animation: animatetop 0.6s;
 
     &-item {
-
         cursor: pointer;
         font-size: 12px;
         color: black;
@@ -495,8 +482,6 @@
     }
 }
 
-
-
 @media (min-width: 900px) {
     .DAT_NavUser {
         position: absolute;
@@ -507,8 +492,9 @@
 
         border-radius: 5px;
         background-color: white;
-        box-shadow: 3px 3px 5px rgba(198, 197, 197, 0.4), -3px -3px 5px rgba(198, 197, 197, 0.4);
-
+        box-shadow:
+            3px 3px 5px rgba(198, 197, 197, 0.4),
+            -3px -3px 5px rgba(198, 197, 197, 0.4);
     }
 
     .DAT_NavLang {
@@ -520,8 +506,9 @@
 
         border-radius: 5px;
         background-color: white;
-        box-shadow: 3px 3px 5px rgba(198, 197, 197, 0.4), -3px -3px 5px rgba(198, 197, 197, 0.4);
-
+        box-shadow:
+            3px 3px 5px rgba(198, 197, 197, 0.4),
+            -3px -3px 5px rgba(198, 197, 197, 0.4);
     }
 
     .DAT_NavNotif {
@@ -533,7 +520,9 @@
 
         border-radius: 5px;
         background-color: rgba(230, 230, 230, 1);
-        box-shadow: 3px 3px 5px rgba(198, 197, 197, 0.4), -3px -3px 5px rgba(198, 197, 197, 0.4);
+        box-shadow:
+            3px 3px 5px rgba(198, 197, 197, 0.4),
+            -3px -3px 5px rgba(198, 197, 197, 0.4);
 
         &-content {
             // padding: 10px;
@@ -599,7 +588,6 @@
                         font-size: 12px;
                         color: gray;
                     }
-
                 }
             }
 
@@ -632,7 +620,9 @@
                         padding: 15px;
                         background-color: white;
                         border-radius: 5px;
-                        box-shadow: 3px 3px 5px rgba(198, 197, 197, 0.4), -3px -3px 5px rgba(198, 197, 197, 0.4);
+                        box-shadow:
+                            3px 3px 5px rgba(198, 197, 197, 0.4),
+                            -3px -3px 5px rgba(198, 197, 197, 0.4);
 
                         &-tit {
                             font-size: 16px;
@@ -669,11 +659,6 @@
                     justify-content: center;
                 }
             }
-
         }
-
-
     }
-
-
 }

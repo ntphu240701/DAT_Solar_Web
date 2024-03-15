@@ -4,7 +4,7 @@ import "./Warn.scss";
 import DataTable from "react-data-table-component";
 import { signal } from "@preact/signals-react";
 import { Empty } from "../Project/Project";
-import { isMobile } from "../Navigation/Navigation";
+import { isMobile, warnfilter } from "../Navigation/Navigation";
 import SettingWarn from "./SettingWarn";
 import RaiseBox from "./RaiseBox";
 import { useIntl } from "react-intl";
@@ -33,7 +33,7 @@ export const deletewarnState = signal(false);
 export const idDel = signal();
 
 export const dataWarn = signal([]);
-
+// const datafilter = signal([]);
 export default function Warn(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
@@ -62,7 +62,7 @@ export default function Warn(props) {
       name: dataLang.formatMessage({ id: "project" }),
       selector: (row) => row.plant,
       sortable: true,
-      minWidth: "350px",
+      minWidth: "250px",
       style: {
         justifyContent: "left",
       },
@@ -84,6 +84,11 @@ export default function Warn(props) {
       style: {
         justifyContent: "left",
       },
+    },
+    {
+      name: "ID",
+      selector: (row) => row.warnid,
+      sortable: true,
     },
     {
       name: dataLang.formatMessage({ id: "level" }),
@@ -120,7 +125,7 @@ export default function Warn(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.warn.modify === true ||
-            ruleInfor.value.setting.warn.remove === true ? (
+          ruleInfor.value.setting.warn.remove === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.boxid + "" + row.warnid + "_MORE"}
@@ -195,20 +200,59 @@ export default function Warn(props) {
     tabLable.value = newLabel.name;
   };
 
+  // by Mr Loc
   const handleSearch = (e) => {
-    if (e.target.value == "") {
-      setDatafilter(dataWarn.value);
-    } else {
-      console.log(e.target.value);
-
+    if(e.currentTarget.value === ""){
+      setDatafilter([...dataWarn.value])
+      warnfilter.value = {};
+    }else{
+      let temp = dataWarn.value.filter((item) => item.plant.includes(e.currentTarget.value));
+      console.log(temp);
+      setDatafilter([...temp]);
+      warnfilter.value = {};
     }
-  }
+  };
 
+  // by Mr Loc
+  useEffect(() => {
+    if (warnfilter.value.device) {
+      console.log(warnfilter.value);
+      let d = document.getElementById("warnsearch");
+      d.value = warnfilter.value.device;
+      let temp_ = dataWarn.value.filter(
+        (item) => item.warnid == warnfilter.value.warnid
+      );
+      setDatafilter([...temp_]);
+    }
+  }, [dataWarn.value, warnfilter.value]);
+
+  // by Mr Loc
   useEffect(() => {
     tabLable.value = listTab[0].name;
+    if (warnfilter.value.device === undefined) {
+        setDatafilter([...dataWarn.value]);
+    }
 
-    setDatafilter(dataWarn.value);
   }, [dataWarn.value]);
+
+  //by Mr  Tai
+
+  // useEffect(() => {
+  //   tabLable.value = listTab[0].name;
+  //   setDatafilter([...dataWarn.value]);
+  // }, [dataWarn.value]);
+
+  // const handleSearch = (e) => {
+  //   console.log(e.target.value);
+  //   // console.log(warnfilter.value.warnid);
+  //   // warnfilter.value.warnid = e.target.value;
+  //   if(warnfilter.value.warnid){
+  //     let temp = dataWarn.value.filter((item) => item.warnid == warnfilter.value.warnid);
+  //     setDatafilter(temp);
+  //     console.log(temp);
+  //   }
+  // };
+
 
   return (
     <>
@@ -244,6 +288,7 @@ export default function Warn(props) {
                 <input
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterWarn" })}
+                  // onChange={(e) => handlefilterwarn(e)}
                 />
                 <div
                   className="DAT_Modify_Filter_Close"
@@ -262,6 +307,9 @@ export default function Warn(props) {
               <input
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterWarn" })}
+                // id="warnsearch"
+                id={warnfilter.value.warnid}
+                value={warnfilter.value.warnid}
                 onChange={(e) => handleSearch(e)}
               />
               <CiSearch color="gray" size={20} />
