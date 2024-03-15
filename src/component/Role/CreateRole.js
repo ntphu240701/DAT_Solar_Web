@@ -58,6 +58,7 @@ export default function CreateRole(props) {
         });
         console.log(register);
         if (register.status) {
+          roleState.value = "default";
           alertDispatch(datalang.formatMessage({ id: "alert_6" }));
         } else {
           alertDispatch(datalang.formatMessage({ id: "alert_7" }));
@@ -110,9 +111,9 @@ export default function CreateRole(props) {
                 ref={username}
                 minLength="6"
                 onChange={(e) =>
-                (username.current.value = e.target.value
-                  .trim()
-                  .toLocaleLowerCase())
+                  (username.current.value = e.target.value
+                    .trim()
+                    .toLocaleLowerCase())
                 }
                 required
               />
@@ -195,7 +196,7 @@ export default function CreateRole(props) {
                 <option value="admin">
                   {dataLang.formatMessage({ id: "admin" })}
                 </option>
-                <option  value="user">
+                <option value="user">
                   {dataLang.formatMessage({ id: "user" })}
                 </option>
                 {/* {datarule.value
