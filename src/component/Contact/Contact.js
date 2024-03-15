@@ -36,7 +36,7 @@ export default function Contact(props) {
             <div className="DAT_Contact_Item_Registation_Tit">
               <div>{dataLang.formatMessage({ id: 'registerInfo' })}</div>
               {ruleInfor.value.setting.contact.edit === false
-                ? <></>
+                ? <div></div>
                 : <div onClick={() => (contactState.value = "editRegisterInf")}>
                   {dataLang.formatMessage({ id: 'edit' })}
                 </div>
@@ -70,7 +70,7 @@ export default function Contact(props) {
             <div className="DAT_Contact_Item_Contact_Tit">
               <div>{dataLang.formatMessage({ id: 'contact' })}</div>
               {ruleInfor.value.setting.contact.edit === false
-                ? <></>
+                ? <div></div>
                 : <div onClick={() => (contactState.value = "editContactInf")}>
                   {dataLang.formatMessage({ id: 'edit' })}
                 </div>
@@ -97,7 +97,7 @@ export default function Contact(props) {
             <div className="DAT_Contact_Item_Logo_Tit">
               <div>Logo</div>
               {ruleInfor.value.setting.contact.edit === false
-                ? <></>
+                ? <div></div>
                 : <div onClick={() => (popupStateContact.value = true)}>
                   {dataLang.formatMessage({ id: 'edit' })}
                 </div>

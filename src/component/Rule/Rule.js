@@ -238,7 +238,7 @@ export default function Rule() {
         partnerid: partnerInfor.value.partnerid,
       });
       if (rule.status) {
-        console.log(rule.data);
+        // console.log(rule.data);
         datarule.value = rule.data;
         datarule.value = datarule.value.sort((a, b) => a.ruleid_ - b.ruleid_);
       }

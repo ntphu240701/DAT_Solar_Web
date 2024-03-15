@@ -298,6 +298,28 @@
             flex: 8;
             padding: 16px;
             min-width: 200px;
+
+            &_Top {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                & img {
+                    width: 45px;
+                    height: 45px;
+                    // border: solid 4px rgba(79, 79, 79, 0.5);
+                    border-radius: 50%;
+                    cursor: pointer;
+                }
+
+                &_Name {
+                    display: flex;
+                    flex-direction: column;
+                    // align-items: center;
+                    // gap: 10px;
+                }
+            }
+
         }
 
         &_LeftDevice {

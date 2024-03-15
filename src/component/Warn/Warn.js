@@ -19,6 +19,8 @@ import { useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
 import { partnerInfor, phuhosting, ruleInfor, userInfor } from "../../App";
 import { IoTrashOutline } from "react-icons/io5";
+import { set } from "lodash";
+import { data } from "jquery";
 
 const tab = signal("all");
 const tabMobile = signal(false);
@@ -35,6 +37,7 @@ export const dataWarn = signal([]);
 export default function Warn(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
+  const [datafilter, setDatafilter] = useState([]);
 
   const listTab = [
     { id: "all", name: dataLang.formatMessage({ id: "total" }) },
@@ -117,7 +120,7 @@ export default function Warn(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.warn.modify === true ||
-          ruleInfor.value.setting.warn.remove === true ? (
+            ruleInfor.value.setting.warn.remove === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.boxid + "" + row.warnid + "_MORE"}
@@ -128,7 +131,7 @@ export default function Warn(props) {
               </span>
             </div>
           ) : (
-            <></>
+            <div></div>
           )}
 
           <div
@@ -159,7 +162,7 @@ export default function Warn(props) {
                 {dataLang.formatMessage({ id: "delete" })}
               </div>
             ) : (
-              <></>
+              <div></div>
             )}
           </div>
         </>
@@ -192,9 +195,20 @@ export default function Warn(props) {
     tabLable.value = newLabel.name;
   };
 
+  const handleSearch = (e) => {
+    if (e.target.value == "") {
+      setDatafilter(dataWarn.value);
+    } else {
+      console.log(e.target.value);
+
+    }
+  }
+
   useEffect(() => {
     tabLable.value = listTab[0].name;
-  }, []);
+
+    setDatafilter(dataWarn.value);
+  }, [dataWarn.value]);
 
   return (
     <>
@@ -221,7 +235,7 @@ export default function Warn(props) {
                   <TbSettingsCode color="white" size={20} />
                 </div>
               ) : (
-                <></>
+                <div></div>
               )}
             </div>
 
@@ -248,9 +262,11 @@ export default function Warn(props) {
               <input
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterWarn" })}
+                onChange={(e) => handleSearch(e)}
               />
               <CiSearch color="gray" size={20} />
             </div>
+            <div></div>
             {/* <button
               className="DAT_WarnHeader_New"
               onClick={(e) => handleSetting(e)}
@@ -522,7 +538,7 @@ export default function Warn(props) {
                     <DataTable
                       className="DAT_Table_Container"
                       columns={columnWarn}
-                      data={dataWarn.value}
+                      data={datafilter}
                       pagination
                       paginationComponentOptions={paginationComponentOptions}
                       fixedHeader={true}
