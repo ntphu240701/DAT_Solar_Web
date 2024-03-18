@@ -315,7 +315,6 @@ export default function GroupRole(props) {
     const checkApi = async () => {
       const allPartner = await callApi("get", host.DATA + "/getallPartner", "");
       if (allPartner.status) {
-        // console.log(allPartner)
         group.value = allPartner.data.sort((a, b) => a.id_ - b.id_);
       }
     };
@@ -454,3 +453,8 @@ export default function GroupRole(props) {
     </>
   );
 }
+
+
+
+
+

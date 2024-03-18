@@ -124,7 +124,7 @@ export default function Warn(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.warn.modify === true ||
-          ruleInfor.value.setting.warn.remove === true ? (
+            ruleInfor.value.setting.warn.remove === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.boxid + "" + row.warnid + "_MORE"}
@@ -199,17 +199,37 @@ export default function Warn(props) {
     tabLable.value = newLabel.name;
   };
 
-  const changeFilter = (e) => {
-    setType(e.currentTarget.value);
+  const changeData = (e) => {
+    if (e.target.value == ' ') {
+      setDatafilter(dataWarn.value);
+    } else {
+      const t = e.target.value
+      const df = dataWarn.value.filter((item) => {
+        switch (type) {
+          case 'code':
+            return item.boxid.includes(t) || item.boxid.toLowerCase().includes(t);
+          case 'device':
+            return item.device.includes(t) || item.device.toLowerCase().includes(t);
+          default:
+            return item.plant.includes(t) || item.plant.toLowerCase().includes(t);
+        }
+      })
+      setDatafilter(df)
+    }
   };
 
   // by Mr Loc
   const handleSearch = (e) => {
-    if(e.currentTarget.value === ""){
+    const searchTerm = e.currentTarget.value.toLowerCase();
+
+    if (searchTerm === "") {
       setDatafilter([...dataWarn.value])
       warnfilter.value = {};
-    }else{
-      let temp = dataWarn.value.filter((item) => item.plant.includes(e.currentTarget.value));
+    } else {
+      let temp = dataWarn.value.filter((item) => {
+        const plantName = item.plant.toLowerCase();
+        return plantName.includes(searchTerm);
+      });
       console.log(temp);
       setDatafilter([...temp]);
       warnfilter.value = {};
@@ -233,7 +253,7 @@ export default function Warn(props) {
   useEffect(() => {
     tabLable.value = listTab[0].name;
     if (warnfilter.value.device === undefined) {
-        setDatafilter([...dataWarn.value]);
+      setDatafilter([...dataWarn.value]);
     }
 
   }, [dataWarn.value]);
@@ -291,7 +311,7 @@ export default function Warn(props) {
                 <input
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterWarn" })}
-                  // onChange={(e) => handlefilterwarn(e)}
+                // onChange={(e) => handlefilterwarn(e)}
                 />
                 <div
                   className="DAT_Modify_Filter_Close"

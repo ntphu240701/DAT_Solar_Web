@@ -26,7 +26,7 @@ import { FiEdit } from "react-icons/fi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const tab = signal("total");
+export const tab = signal("total");
 const tabLable = signal("");
 const tabMobile = signal(false);
 const online = signal([]);

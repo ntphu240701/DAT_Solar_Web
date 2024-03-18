@@ -366,7 +366,6 @@
                 flex: 1;
                 min-width: 120px;
                 background-color: rgba(228, 228, 228, 0.5);
-
                 border-radius: 5px;
                 padding: 20px;
                 -webkit-box-sizing: border-box;
@@ -377,7 +376,10 @@
                 //white-space: nowrap;
                 overflow: hidden;
 
-                //text-overflow: ellipsis;
+                &:hover {
+                background-color: #8adeff;
+                }
+
                 &-Title {
                     font-size: 13px;
                     color: gray;

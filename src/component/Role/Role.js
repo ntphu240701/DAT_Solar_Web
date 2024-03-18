@@ -23,6 +23,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { LuUserSquare } from "react-icons/lu";
 import { datarule } from "../Rule/Rule";
 import { FiEdit } from "react-icons/fi";
+import { lowerCase } from "lodash";
 
 export const roleData = signal({});
 export const roleState = signal("default");
@@ -33,6 +34,7 @@ export default function Role(props) {
   const dataLang = useIntl();
   const [temp, setTemp] = useState();
   const [filter, setFilter] = useState(false);
+  const [datafilter, setdatafilter] = useState([]);
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: "row" }),
@@ -170,6 +172,22 @@ export default function Role(props) {
     mod.style.display = type;
   };
 
+  const handleFilter = (e) => {
+    const searchterm = e.currentTarget.value.toLowerCase();
+    console.log(e.currentTarget.value)
+    if (searchterm == "") {
+      setdatafilter(Usr_.value);
+    } else {
+      let df = Usr_.value.filter((item) => {
+        const roleName = item.name_.toLowerCase();
+        const rolePhone = item.phone_.toLowerCase();
+        const roleMail = item.mail_.toLowerCase();
+        return roleName.includes(searchterm) || rolePhone.includes(searchterm) || roleMail.includes(searchterm)
+      });
+      setdatafilter(df);
+    }
+  };
+
   useEffect(() => {
     const fetchUsr = async () => {
       const d = await callApi("post", host.DATA + "/getallUser", {
@@ -178,6 +196,8 @@ export default function Role(props) {
       // console.log(d);
       if (d.status === true) {
         Usr_.value = d.data;
+        setdatafilter(d.data)
+        console.log(Usr_.value)
         Usr_.value = Usr_.value.sort((a, b) => a.ruleid_ - b.ruleid_);
       }
     };
@@ -228,6 +248,7 @@ export default function Role(props) {
                 <input
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterName" })}
+                  onChange={(e) => handleFilter(e)}
                 />
                 <div
                   className="DAT_Modify_Filter_Close"
@@ -246,6 +267,7 @@ export default function Role(props) {
               <input
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterName" })}
+                onChange={(e) => handleFilter(e)}
               />
               <CiSearch color="gray" size={20} />
             </div>
@@ -340,7 +362,7 @@ export default function Role(props) {
               <DataTable
                 className="DAT_Table_Container"
                 columns={columnrole}
-                data={Usr_.value}
+                data={datafilter}
                 pagination
                 paginationComponentOptions={paginationComponentOptions}
                 fixedHeader={true}
