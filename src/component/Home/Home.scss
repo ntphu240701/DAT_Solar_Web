@@ -375,9 +375,10 @@
                 box-sizing: border-box;
                 //white-space: nowrap;
                 overflow: hidden;
+                cursor: pointer;
 
                 &:hover {
-                background-color: #8adeff;
+                    background-color: #8adeff;
                 }
 
                 &-Title {
