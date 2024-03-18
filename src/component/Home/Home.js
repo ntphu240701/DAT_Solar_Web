@@ -552,7 +552,7 @@ export default function Home(props) {
               style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: 'dailyOutput' })}
+                {dataLang.formatMessage({ id: 'today' })}
               </div>
               <div>
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{Number(dailyproduction).toLocaleString('en-US')}</span>
@@ -565,7 +565,7 @@ export default function Home(props) {
               style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: 'monthOutput' })}
+                {dataLang.formatMessage({ id: 'month' })}
               </div>
               <div>
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{Number(monthlyproduction).toLocaleString('en-US')}</span>
@@ -578,7 +578,7 @@ export default function Home(props) {
               style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: 'yearOutput' })}
+                {dataLang.formatMessage({ id: 'year' })}
               </div>
               <div>
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{Number(yearlyproduction).toLocaleString('en-US')}</span>
@@ -591,7 +591,7 @@ export default function Home(props) {
               style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: 'totalOutput' })}
+                {dataLang.formatMessage({ id: 'total' })}
               </div>
               <div>
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{Number(totalproduction).toLocaleString('en-US')}</span>
