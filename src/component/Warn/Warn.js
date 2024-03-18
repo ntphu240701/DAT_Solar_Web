@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
 import { partnerInfor, phuhosting, ruleInfor, userInfor } from "../../App";
 import { IoTrashOutline } from "react-icons/io5";
+import { lowerCase } from "lodash";
 
 const tab = signal("all");
 const tabMobile = signal(false);
@@ -35,7 +36,7 @@ export const dataWarn = signal([]);
 export default function Warn(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
-  const [type, setType] = useState('project');
+  const [type, setType] = useState("project");
   const [datafilter, setDatafilter] = useState([]);
 
   const listTab = [
@@ -205,11 +206,21 @@ export default function Warn(props) {
 
   // by Mr Loc
   const handleSearch = (e) => {
-    if(e.currentTarget.value === ""){
-      setDatafilter([...dataWarn.value])
+    if (e.currentTarget.value === "") {
+      setDatafilter([...dataWarn.value]);
       warnfilter.value = {};
-    }else{
-      let temp = dataWarn.value.filter((item) => item.plant.includes(e.currentTarget.value));
+    } else {
+      let temp = dataWarn.value.filter(
+        (item) =>
+          item.plant.toLowerCase().includes(lowerCase(e.currentTarget.value)) ||
+          item.device
+            .toLowerCase()
+            .includes(e.currentTarget.value) ||
+          item.device
+            .toUpperCase()
+            .includes(e.currentTarget.value) ||
+          String(item.warnid).includes(e.currentTarget.value)
+      );
       console.log(temp);
       setDatafilter([...temp]);
       warnfilter.value = {};
@@ -233,29 +244,9 @@ export default function Warn(props) {
   useEffect(() => {
     tabLable.value = listTab[0].name;
     if (warnfilter.value.device === undefined) {
-        setDatafilter([...dataWarn.value]);
+      setDatafilter([...dataWarn.value]);
     }
-
   }, [dataWarn.value]);
-
-  //by Mr  Tai
-
-  // useEffect(() => {
-  //   tabLable.value = listTab[0].name;
-  //   setDatafilter([...dataWarn.value]);
-  // }, [dataWarn.value]);
-
-  // const handleSearch = (e) => {
-  //   console.log(e.target.value);
-  //   // console.log(warnfilter.value.warnid);
-  //   // warnfilter.value.warnid = e.target.value;
-  //   if(warnfilter.value.warnid){
-  //     let temp = dataWarn.value.filter((item) => item.warnid == warnfilter.value.warnid);
-  //     setDatafilter(temp);
-  //     console.log(temp);
-  //   }
-  // };
-
 
   return (
     <>
@@ -316,8 +307,7 @@ export default function Warn(props) {
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterWarn" })}
                 id="warnsearch"
-                // id={warnfilter.value.warnid}
-                // value={warnfilter.value.warnid}
+                // value={warnfilter.value?.warnid || ""}
                 onChange={(e) => handleSearch(e)}
               />
               <CiSearch color="gray" size={20} />

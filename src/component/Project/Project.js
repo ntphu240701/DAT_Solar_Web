@@ -33,6 +33,7 @@ const online = signal([]);
 const offline = signal([]);
 const warn = signal([]);
 const demo = signal([]);
+export const connectval = signal();
 export const plantState = signal("default");
 export const plantEdit = signal(false);
 export const projectData = signal({});
@@ -136,9 +137,9 @@ export default function Project(props) {
   const [datafilter, setDatafilter] = useState([]);
   const [type, setType] = useState("name");
   const [filter, setFilter] = useState(false);
-  const [invt, setInvt] = useState(0)
-  const [power, setPower] = useState([])
-  const [dailyProduction, setDailyProduction] = useState([])
+  const [invt, setInvt] = useState(0);
+  const [power, setPower] = useState([]);
+  const [dailyProduction, setDailyProduction] = useState([]);
   const navigate = useNavigate();
 
   const listTab = [
@@ -185,7 +186,11 @@ export default function Project(props) {
     {
       name: dataLang.formatMessage({ id: "connect" }),
       selector: (row) => (
-        <div style={{ cursor: "pointer" }} onClick={() => navigate("/Device")}>
+        <div
+          style={{ cursor: "pointer" }}
+          id={row.plantname}
+          onClick={(e) => { connectval.value = e.currentTarget.id; navigate("/Device")}}
+        >
           {row.state === 1 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
@@ -198,7 +203,7 @@ export default function Project(props) {
     {
       name: dataLang.formatMessage({ id: "warn" }),
       selector: (row) => (
-        <div style={{ cursor: "pointer" }} onClick={() => navigate("/Warn")}>
+        <div style={{ cursor: "pointer" }} id={row.plantname} onClick={(e) => {navigate("/Warn")}}>
           {row.warn === 1 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
@@ -215,14 +220,26 @@ export default function Project(props) {
       width: "180px",
     },
     {
-      name: dataLang.formatMessage({ id: 'daily' }),
-      selector: (row) => parseFloat(dailyProduction[row.plantid]).toFixed(2) === "NaN" ? 0 + " kWh" : Number(parseFloat(dailyProduction[row.plantid]).toFixed(2)).toLocaleString("en-US") + " kWh",
+      name: dataLang.formatMessage({ id: "daily" }),
+      selector: (row) =>
+        parseFloat(dailyProduction[row.plantid]).toFixed(2) === "NaN"
+          ? 0 + " kWh"
+          : Number(
+              parseFloat(dailyProduction[row.plantid]).toFixed(2)
+            ).toLocaleString("en-US") + " kWh",
       sortable: true,
       width: "180px",
     },
     {
-      name: dataLang.formatMessage({ id: 'power' }),
-      selector: (row) => parseFloat(power[row.plantid]).toFixed(2) === "NaN" ? 0 + " %" : Number(parseFloat(((power[row.plantid] / 1000) / row.capacity) * 100).toFixed(2)).toLocaleString("en-US") + " %",
+      name: dataLang.formatMessage({ id: "power" }),
+      selector: (row) =>
+        parseFloat(power[row.plantid]).toFixed(2) === "NaN"
+          ? 0 + " %"
+          : Number(
+              parseFloat(
+                (power[row.plantid] / 1000 / row.capacity) * 100
+              ).toFixed(2)
+            ).toLocaleString("en-US") + " %",
       sortable: true,
       width: "180px",
     },
@@ -252,7 +269,7 @@ export default function Project(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify == true ||
-            ruleInfor.value.setting.project.remove == true ? (
+          ruleInfor.value.setting.project.remove == true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.plantid + "_MORE"}
@@ -320,11 +337,6 @@ export default function Project(props) {
       (item) => item.plantid == e.currentTarget.id
     );
     projectData.value = newPlant;
-
-    // const newDevicePlant = devicePlant.value.filter(
-    //   (item) => item.plantId == e.currentTarget.id
-    // );
-    // deviceData.value = newDevicePlant;
   };
 
   const handleEdit = (e) => {
@@ -357,43 +369,36 @@ export default function Project(props) {
     tabLable.value = newLabel.name;
   };
 
-  const pickTypeFilter = (e) => {
-    setType(e.target.value);
-    let search = document.getElementById("search");
-    search.placeholder =
-      dataLang.formatMessage({ id: "enter" }) +
-      dataLang.formatMessage({ id: e.target.value });
-  };
-
   const handleSearch = (e) => {
     if (e.target.value == "") {
       setDatafilter(dataproject.value);
     } else {
       const t = e.target.value;
-      // console.log(t);
-      // console.log(type);
       const db = dataproject.value.filter((row) =>
-      // item.name.includes(t)
-      {
-        switch (type) {
-          // case "name":
-          //   return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
-          // return (console.log(row.plantname.includes(t) || row.plantname.toLowerCase().includes(t)));
-          case "inCapacity":
-            return String(row.capacity) == t;
-          case "production":
-            return String(row.production) == t;
-          case "power":
-            return String(row.power) == t;
-          // case "lastupdate":
-          //   return String(row.lastupdate) == t;
-          // case "createdate":
-          //   return String(row.createdate) == t;
-          default:
-            return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
-          // return row.name.toLowerCase().includes(t);
+        // item.name.includes(t)
+        {
+          switch (type) {
+            // case "name":
+            //   return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
+            // return (console.log(row.plantname.includes(t) || row.plantname.toLowerCase().includes(t)));
+            case "inCapacity":
+              return String(row.capacity) == t;
+            case "production":
+              return String(row.production) == t;
+            case "power":
+              return String(row.power) == t;
+            // case "lastupdate":
+            //   return String(row.lastupdate) == t;
+            // case "createdate":
+            //   return String(row.createdate) == t;
+            default:
+              return (
+                row.plantname.includes(t) ||
+                row.plantname.toLowerCase().includes(t)
+              );
+            // return row.name.toLowerCase().includes(t);
+          }
         }
-      }
       );
       console.log(db);
       setDatafilter(db);
@@ -402,8 +407,8 @@ export default function Project(props) {
 
   const invtCloud = async (data, token) => {
     var reqData = {
-      "data": data,
-      "token": token
+      data: data,
+      token: token,
     };
 
     try {
@@ -413,14 +418,20 @@ export default function Project(props) {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        data: Object.keys(reqData).map(function (key) { return encodeURIComponent(key) + '=' + encodeURIComponent(reqData[key]) }).join('&'),
+        data: Object.keys(reqData)
+          .map(function (key) {
+            return (
+              encodeURIComponent(key) + "=" + encodeURIComponent(reqData[key])
+            );
+          })
+          .join("&"),
       });
 
-      return response.data
+      return response.data;
     } catch (e) {
-      return ({ ret: 1, msg: "cloud err" })
+      return { ret: 1, msg: "cloud err" };
     }
-  }
+  };
 
   useEffect(() => {
     online.value = dataproject.value.filter((item) => item.state == 1);
@@ -438,34 +449,36 @@ export default function Project(props) {
         type: userInfor.value.type,
       });
       if (d.status === true) {
-        // console.log(d.data)
+        console.log(d.data);
         dataproject.value = d.data;
       }
     };
     getPlant();
 
     const getLogger = async () => {
-      let d = await callApi('post', host.DATA + '/getallLogger', {
+      let d = await callApi("post", host.DATA + "/getallLogger", {
         usr: user,
         partnerid: partnerInfor.value.partnerid,
         type: userInfor.value.type,
-      })
+      });
       if (d.status) {
-        logger.value = d.data
+        logger.value = d.data;
         d.data.map(async (item) => {
-          const res = await invtCloud('{"deviceCode":"' + item.psn + '"}', Token.value.token);
+          const res = await invtCloud(
+            '{"deviceCode":"' + item.psn + '"}',
+            Token.value.token
+          );
           // console.log(res)
           if (res.ret === 0) {
             //console.log(res.data)
-            setInvt(pre => ({ ...pre, [item.psn]: res.data }))
+            setInvt((pre) => ({ ...pre, [item.psn]: res.data }));
           } else {
-            setInvt(pre => ({ ...pre, [item.psn]: {} }))
+            setInvt((pre) => ({ ...pre, [item.psn]: {} }));
           }
-        })
+        });
       }
-    }
+    };
     getLogger();
-
 
     return () => {
       plantState.value = "default";
@@ -479,8 +492,7 @@ export default function Project(props) {
   // }, [ruleInfor.value]);
 
   useEffect(() => {
-
-    var cal = {}
+    var cal = {};
     var num_ = {
       bat_1: [],
       bat_2: [],
@@ -495,10 +507,10 @@ export default function Project(props) {
       grid_out_2: [],
       pro_1: [],
       pro_2: [],
-      pro_3: []
-    }
-    let daily_ = {}
-    let power_ = {}
+      pro_3: [],
+    };
+    let daily_ = {};
+    let power_ = {};
     logger.value.map((item, i) => {
       // console.log(item)
       Object.entries(item.pdata).map(([key, value]) => {
@@ -508,28 +520,37 @@ export default function Project(props) {
             let cal_ = JSON.parse(value.cal);
 
             Object.entries(value.register).map(([key, value]) => {
-              let n = JSON.parse(value)
-              inum[key] = parseFloat(invt[item.psn]?.[n[0]] || 0) * parseFloat(cal_[0]) * parseFloat(invt[item.psn]?.[n[1]] || 0) * parseFloat(cal_[1]);
+              let n = JSON.parse(value);
+              inum[key] =
+                parseFloat(invt[item.psn]?.[n[0]] || 0) *
+                parseFloat(cal_[0]) *
+                parseFloat(invt[item.psn]?.[n[1]] || 0) *
+                parseFloat(cal_[1]);
             });
 
             num_[key][i] = inum.reduce((accumulator, currentValue) => {
-              return Number(accumulator) + Number(currentValue)
-            }, 0)
+              return Number(accumulator) + Number(currentValue);
+            }, 0);
             if (key == "pro_1") {
-              if (invt[item.psn]?.enabled == '1') {
-                power_[item.pplantid] = inum.reduce((accumulator, currentValue) => {
-                  return Number(accumulator) + Number(currentValue)
-                }, 0)
+              if (invt[item.psn]?.enabled == "1") {
+                power_[item.pplantid] = inum.reduce(
+                  (accumulator, currentValue) => {
+                    return Number(accumulator) + Number(currentValue);
+                  },
+                  0
+                );
               } else {
-                power_[item.pplantid] = 0
+                power_[item.pplantid] = 0;
               }
             }
 
             if (i == logger.value.length - 1) {
               // if (invt[item.psn]?.enabled == 1) {
-              cal[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
-                return Number(accumulator) + Number(currentValue)
-              }, 0) / 1000).toFixed(2);
+              cal[key] = parseFloat(
+                num_[key].reduce((accumulator, currentValue) => {
+                  return Number(accumulator) + Number(currentValue);
+                }, 0) / 1000
+              ).toFixed(2);
               // } else {
               // cal[key] = 0
               // }
@@ -541,43 +562,52 @@ export default function Project(props) {
             let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]] || 0];
 
             const convertToDoublewordAndFloat = (word, type) => {
-              var doubleword = ((word[1]) << 16) | (word[0]);
+              var doubleword = (word[1] << 16) | word[0];
               var buffer = new ArrayBuffer(4);
               var intView = new Int32Array(buffer);
               var floatView = new Float32Array(buffer);
               intView[0] = doubleword;
               var float_value = floatView[0];
 
-              return type === "int" ? parseFloat(doubleword).toFixed(2) : parseFloat(float_value).toFixed(2) || 0;
-            }
+              return type === "int"
+                ? parseFloat(doubleword).toFixed(2)
+                : parseFloat(float_value).toFixed(2) || 0;
+            };
 
             num_[key][i] = convertToDoublewordAndFloat(e, "int");
 
             if (i == logger.value.length - 1) {
               //console.log(num_)
-              cal[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
-                return Number(accumulator) + Number(currentValue)
-              }, 0) * parseFloat(value.cal)).toFixed(2);
+              cal[key] = parseFloat(
+                num_[key].reduce((accumulator, currentValue) => {
+                  return Number(accumulator) + Number(currentValue);
+                }, 0) * parseFloat(value.cal)
+              ).toFixed(2);
             }
             break;
           default:
-            num_[key][i] = parseFloat(invt[item.psn]?.[value.register] || 0) * parseFloat(value.cal);
+            num_[key][i] =
+              parseFloat(invt[item.psn]?.[value.register] || 0) *
+              parseFloat(value.cal);
             if (key == "pro_2") {
-              daily_[item.pplantid] = parseFloat(invt[item.psn]?.[value.register]) * parseFloat(value.cal)
+              daily_[item.pplantid] =
+                parseFloat(invt[item.psn]?.[value.register]) *
+                parseFloat(value.cal);
             }
             if (i == logger.value.length - 1) {
-
-              cal[key] = parseFloat(num_[key].reduce((accumulator, currentValue) => {
-                return accumulator + currentValue
-              })).toFixed(2)
+              cal[key] = parseFloat(
+                num_[key].reduce((accumulator, currentValue) => {
+                  return accumulator + currentValue;
+                })
+              ).toFixed(2);
             }
             break;
         }
-      })
-    })
+      });
+    });
     // console.log(power_)
-    setDailyProduction(daily_)
-    setPower(power_)
+    setDailyProduction(daily_);
+    setPower(power_);
     // // plant.value.map((item, i) => {
     // //   item.sun = sun_[i]?.value
     // // })
@@ -591,7 +621,6 @@ export default function Project(props) {
     //   ...coalsave.value,
     //   value: cal.pro_3
     // }
-
   }, [invt, user]);
 
   return (
@@ -625,7 +654,7 @@ export default function Project(props) {
 
             {filter ? (
               <div className="DAT_Modify_Filter">
-                <select onChange={(e) => pickTypeFilter(e)}>
+                {/* <select onChange={(e) => pickTypeFilter(e)}>
                   <option value={"name"}>
                     {dataLang.formatMessage({ id: "name" })}
                   </option>
@@ -650,7 +679,7 @@ export default function Project(props) {
                   <option value={"createdate"}>
                     {dataLang.formatMessage({ id: "createdate" })}
                   </option>
-                </select>
+                </select> */}
                 <input
                   type="text"
                   placeholder={
@@ -673,17 +702,17 @@ export default function Project(props) {
         ) : (
           <>
             <div className="DAT_ProjectHeader_Filter">
-              <select onChange={(e) => pickTypeFilter(e)}>
-                <option value={"name"}>
+              {/* <select onChange={(e) => pickTypeFilter(e)}> */}
+              {/* <option value={"name"}>
                   {dataLang.formatMessage({ id: "name" })}
-                </option>
-                {/* <option value={"connect"}>
+                </option> */}
+              {/* <option value={"connect"}>
                   {dataLang.formatMessage({ id: "connect" })}
                 </option>
                 <option value={"status"}>
                   {dataLang.formatMessage({ id: "status" })}
                 </option> */}
-                <option value={"inCapacity"}>
+              {/* <option value={"inCapacity"}>
                   {dataLang.formatMessage({ id: "inCapacity" })}
                 </option>
                 <option value={"production"}>
@@ -691,14 +720,14 @@ export default function Project(props) {
                 </option>
                 <option value={"power"}>
                   {dataLang.formatMessage({ id: "power" })}
-                </option>
-                {/* <option value={"lastupdate"}>
+                </option> */}
+              {/* <option value={"lastupdate"}>
                   {dataLang.formatMessage({ id: "lastupdate" })}
                 </option>
                 <option value={"createdate"}>
                   {dataLang.formatMessage({ id: "createdate" })}
                 </option> */}
-              </select>
+              {/* </select> */}
               <input
                 id="search"
                 type="text"
@@ -793,7 +822,7 @@ export default function Project(props) {
 
                                 <div className="DAT_ProjectMobile_Content_Top_Info_Name_Right">
                                   {ruleInfor.value.setting.project.modify ===
-                                    true ? (
+                                  true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
                                       id={item.plantid}
@@ -805,7 +834,7 @@ export default function Project(props) {
                                     <div></div>
                                   )}
                                   {ruleInfor.value.setting.project.modify ===
-                                    true ? (
+                                  true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
                                       id={item.plantid}
@@ -901,9 +930,13 @@ export default function Project(props) {
                           </div>
 
                           <div className="DAT_ProjectMobile_Content_Bottom">
-                            <span>{dataLang.formatMessage({ id: 'lastupdate' })}</span> &nbsp; <span>{item.lastupdate}</span>
+                            <span>
+                              {dataLang.formatMessage({ id: "lastupdate" })}
+                            </span>{" "}
+                            &nbsp; <span>{item.lastupdate}</span>
                           </div>
-                        </div>)
+                        </div>
+                      );
                     })}
                   </>
                 );
@@ -1311,12 +1344,16 @@ export default function Project(props) {
                           </div>
 
                           <div className="DAT_ProjectMobile_Content_Bottom">
-                            <span>{dataLang.formatMessage({ id: 'lastupdate' })}</span>&nbsp; <span>{item.lastupdate}</span>
+                            <span>
+                              {dataLang.formatMessage({ id: "lastupdate" })}
+                            </span>
+                            &nbsp; <span>{item.lastupdate}</span>
                           </div>
-
-                        </div>)
+                        </div>
+                      );
                     })}
-                  </>);
+                  </>
+                );
               case "warn":
                 return (
                   <>
@@ -1445,12 +1482,16 @@ export default function Project(props) {
                           </div>
 
                           <div className="DAT_ProjectMobile_Content_Bottom">
-                            <span>{dataLang.formatMessage({ id: 'lastupdate' })}</span>&nbsp; <span>{item.lastupdate}</span>
+                            <span>
+                              {dataLang.formatMessage({ id: "lastupdate" })}
+                            </span>
+                            &nbsp; <span>{item.lastupdate}</span>
                           </div>
-
-                        </div>)
+                        </div>
+                      );
                     })}
-                  </>);
+                  </>
+                );
               default:
                 return <></>;
             }
@@ -1585,7 +1626,12 @@ export default function Project(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup plantid={projectData.value.plantid} func="remove" type="plant" usr={user} />
+          <Popup
+            plantid={projectData.value.plantid}
+            func="remove"
+            type="plant"
+            usr={user}
+          />
         </div>
       ) : (
         <></>

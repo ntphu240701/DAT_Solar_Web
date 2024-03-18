@@ -63,6 +63,8 @@ import { CiSearch } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import { FiEdit } from "react-icons/fi";
 
+import styled, { keyframes } from 'styled-components';
+
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
 export const popupAddSubsystem = signal(false);
@@ -482,21 +484,28 @@ export default function ProjectData(props) {
           if (moment(date).format("DD/MM/YYYY") === moment(new Date()).format("DD/MM/YYYY")) {
             let x = [];
             d.data.data.map((item) => {
-              x = [...x, { time: item.time, [vDay_]: item.value }];
+
+              let arr = item.time.split(":");
+              x = [...x, { time: `${arr[0]}:${arr[1]}`, [vDay_]: item.value }];
             });
 
             for (let i = x.length; i < 287; i++) {
-              let nextTime = moment(x[x.length - 1].time, 'HH:mm:ss').add(5, 'minutes').format('HH:mm:ss');
-              x.push({ time: nextTime, [vDay_]: 0 });
+
+              if (moment(x[x.length - 1].time, 'HH:mm') < moment('23:55', 'HH:mm')) {
+
+                let nextTime = moment(x[x.length - 1].time, 'HH:mm').add(5, 'minutes').format('HH:mm');
+                x.push({ time: nextTime, [vDay_]: 0 });
+              }
 
             }
             setDataDay(x);
           } else {
 
             d.data.data.map((item) => {
+              let arr = item.time.split(":");
               setDataDay((old) => [
                 ...old,
-                { time: item.time, [vDay_]: item.value },
+                { time: `${arr[0]}:${arr[1]}`, [vDay_]: item.value },
               ]);
             });
             setVDay(vDay_);
@@ -644,13 +653,16 @@ export default function ProjectData(props) {
         //console.log(d.data)
         let vDay_ = dataLang.formatMessage({ id: "production" });
         d.data.data.map((item) => {
-          x = [...x, { time: item.time, [vDay_]: item.value }];
+          let arr = item.time.split(":");
+          x = [...x, { time: `${arr[0]}:${arr[1]}`, [vDay_]: item.value }];
         });
 
         for (let i = x.length; i < 287; i++) {
-          let nextTime = moment(x[x.length - 1].time, 'HH:mm:ss').add(5, 'minutes').format('HH:mm:ss');
-          x.push({ time: nextTime, [vDay_]: 0 });
+          if (moment(x[x.length - 1].time, 'HH:mm') < moment('23:55', 'HH:mm')) {
 
+            let nextTime = moment(x[x.length - 1].time, 'HH:mm').add(5, 'minutes').format('HH:mm');
+            x.push({ time: nextTime, [vDay_]: 0 });
+          }
         }
         // console.log(x)
         setDataDay(x);
@@ -2527,7 +2539,7 @@ const GraphGrid = (props) => {
       >
         <path
           className="path"
-          d="M 6 6 L 210 6"
+          d="M 117.276 2.1 L 118.337 142.757"
           style={{
             width: "100%",
             height: "100%",
@@ -2538,31 +2550,85 @@ const GraphGrid = (props) => {
             overflow: "hidden",
           }}
         />
+        <path
+          className="path"
+          d="M 5.885 145.361 L 229.076 145.361"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "#6495ed",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
         {projectData.value.state ? (
-          <path
-            d="M 0 0 L 20 0"
+          <circle
+            r={4}
             style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
               position: "absolute",
-              zIndex: "20",
               top: "0",
               left: "0",
-              stroke: "rgb(103, 179, 255)",
-              strokeWidth: "5",
-              strokeLinecap: "round",
             }}
           >
             <animateMotion
-              path="M 6 6 L 190 6"
+              path="M 117.276 2.1 L 118.337 142.757"
               dur="2s"
               repeatCount="indefinite"
             ></animateMotion>
-          </path>
+          </circle>
         ) : (
           <></>
         )}
       </svg>
     );
   };
+
+  // const LineB = (props) => {
+  //   return (
+  //     <svg
+  //       width={`${props.width}px`}
+  //       height={`${props.height}px`}
+  //       version="1.1"
+  //     >
+  //       <path
+  //         d="M 35 7 L 35 35"
+  //         style={{
+  //           width: "100%",
+  //           height: "100%",
+  //           fill: "none",
+  //           stroke: "rgb(107, 107, 107,0.4)",
+  //           strokeWidth: "5",
+  //           strokeLinecap: "round",
+  //           overflow: "hidden",
+  //         }}
+  //       />
+  //       {projectData.value.state
+  //         ? <circle
+  //           r={4}
+  //           style={{
+  //             fill: "none",
+  //             stroke: "#3e80fb",
+  //             strokeWidth: "3",
+  //             position: "absolute",
+  //             top: "0",
+  //             left: "0",
+  //           }}
+  //         >
+  //           <animateMotion
+  //             path="M 35 7 L 35 35"
+  //             dur={props.dur}
+  //             repeatCount="indefinite"
+  //           ></animateMotion>
+  //         </circle>
+  //         : <></>}
+  //     </svg>
+  //   );
+  // };
 
   const ImgGrid = (props) => {
     return (
@@ -2598,9 +2664,17 @@ const GraphGrid = (props) => {
       style={{ scale: isMobile.value ? "0.8" : "1" }}
     >
       <div>
-        <ImgLoad width="100" height="100" />
-        <LineA width="220" height="25" />
-        <ImgGrid width="100" height="180" />
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
+          <ImgSolar width="70" height="70" />
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", minwidth: "120px" }}>
+            {Number(props.cal?.pro_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>kW</span>
+          </div>
+        </div>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-end" }} >
+        <ImgLoad width="80" height="80" />
+        <LineA width="232" height="152" />
+        <ImgGrid width="80" height="120" />
       </div>
     </div>
   );
@@ -3155,15 +3229,51 @@ const GraphFull = (props) => {
 
 const Production = (props) => {
   const dataLang = useIntl();
+  const in_max = 100
+  const in_min = 0
+  const out_max = -10
+  const out_min = 140
+  const [per,setPer] = useState(0)
+
+  const  mapValue = (data, in_min, in_max, out_min, out_max)=> {
+    return ((data - in_min) * (out_max - out_min) / (in_max - in_min)) + out_min;
+  }
+
+  useEffect(()=>{
+      //-10        130
+      //100%       0%
+      let result =  parseFloat(((props.cal?.pro_1 || 0) / projectData.value.capacity) * 100)
+      console.log(result)
+      setPer(mapValue(Number(result), in_min, in_max, out_min, out_max))
+  },[props.cal.pro_1])
+
+  const keyframes = `
+    @keyframes customAnimation {
+      0% { background-position: -600px ${parseFloat(per)}px, -400px ${per+10}px, -200px ${per+10}px; }
+      100% { background-position: 100px ${parseFloat(per)}px;, 0x ${per+10}px, 50px ${per+10}px; }
+    }
+  `;
+
+  const divStyle = {
+    animationName: 'customAnimation',
+    animationDuration: '7s',
+    animationTimingFunction: 'linear',
+    animationIterationCount: 'infinite',
+
+  };
+
+
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Production">
+
       <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart">
           <div
             className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data"
-            style={{ fontSize: "28px" }}
+            style={divStyle}
           >
+            <style>{keyframes}</style>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value">
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_num">
                 {Number(
