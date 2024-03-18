@@ -63,10 +63,6 @@ import { CiSearch } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import { FiEdit } from "react-icons/fi";
 
-import styled, { keyframes } from 'styled-components';
-
-import styled, { keyframes } from 'styled-components';
-
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
 export const popupAddSubsystem = signal(false);
