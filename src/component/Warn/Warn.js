@@ -35,6 +35,8 @@ export const dataWarn = signal([]);
 export default function Warn(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
+  const [type, setType] = useState('project');
+  const [datafilter, setDatafilter] = useState([]);
 
   const listTab = [
     { id: "all", name: dataLang.formatMessage({ id: "total" }) },
@@ -117,7 +119,7 @@ export default function Warn(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.warn.modify === true ||
-          ruleInfor.value.setting.warn.remove === true ? (
+            ruleInfor.value.setting.warn.remove === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.boxid + "" + row.warnid + "_MORE"}
@@ -192,9 +194,33 @@ export default function Warn(props) {
     tabLable.value = newLabel.name;
   };
 
+  const changeFilter = (e) => {
+    setType(e.currentTarget.value);
+  };
+
+  const changeData = (e) => {
+    if (e.target.value == ' ') {
+      setDatafilter(dataWarn.value);
+    } else {
+      const t = e.target.value
+      const df = dataWarn.value.filter((item) => {
+        switch (type) {
+          case 'code':
+            return item.boxid.includes(t) || item.boxid.toLowerCase().includes(t);
+          case 'device':
+            return item.device.includes(t) || item.device.toLowerCase().includes(t);
+          default:
+            return item.plant.includes(t) || item.plant.toLowerCase().includes(t);
+        }
+      })
+      setDatafilter(df)
+    }
+  };
+
   useEffect(() => {
     tabLable.value = listTab[0].name;
-  }, []);
+    setDatafilter(dataWarn.value)
+  }, [dataWarn.value]);
 
   return (
     <>
@@ -245,12 +271,19 @@ export default function Warn(props) {
         ) : (
           <>
             <div className="DAT_WarnHeader_Filter">
+              <select onChange={((e) => changeFilter(e))} style={{ border: 'none', outline: 'none' }}>
+                <option value={'project'}>{dataLang.formatMessage({ id: "project" })}</option>
+                <option value={'code'}>{dataLang.formatMessage({ id: "errcode" })}</option>
+                <option value={'device'}>{dataLang.formatMessage({ id: "device" })}</option>
+              </select>
               <input
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterWarn" })}
+                onChange={(e) => changeData(e)}
               />
               <CiSearch color="gray" size={20} />
             </div>
+            <div></div>
             {/* <button
               className="DAT_WarnHeader_New"
               onClick={(e) => handleSetting(e)}
@@ -522,7 +555,7 @@ export default function Warn(props) {
                     <DataTable
                       className="DAT_Table_Container"
                       columns={columnWarn}
-                      data={dataWarn.value}
+                      data={datafilter}
                       pagination
                       paginationComponentOptions={paginationComponentOptions}
                       fixedHeader={true}

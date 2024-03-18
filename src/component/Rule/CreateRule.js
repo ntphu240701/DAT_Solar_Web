@@ -127,8 +127,9 @@ export default function CreateRule() {
       const createRule = await callApi("post", host.DATA + "/addRule", {
         name: rulenameRef.current,
         partnerid: userInfor.value.partnerid,
-        setting:  JSON.stringify(newruledata.value.setting),
+        setting: JSON.stringify(newruledata.value.setting),
       });
+      console.log(JSON.stringify(newruledata.value.setting))
       if (createRule.status) {
         datarule.value = [...datarule.value, createRule.data];
         createruleState.value = false;

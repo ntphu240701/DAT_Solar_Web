@@ -643,7 +643,7 @@ export default function ProjectData(props) {
       let x = []
       if (d.status) {
         //console.log(d.data)
-        let vDay_ = dataLang.formatMessage({ id: d.data.name });
+        let vDay_ = dataLang.formatMessage({ id: 'production' });
         d.data.data.map((item) => {
           x = [...x, { time: item.time, [vDay_]: item.value }];
         });
@@ -655,7 +655,7 @@ export default function ProjectData(props) {
         }
         // console.log(x)
         setDataDay(x);
-        setVDay(dataLang.formatMessage({ id: d.data.name }));
+        setVDay(dataLang.formatMessage({ id: 'production' }));
       }
     };
     getDaily();

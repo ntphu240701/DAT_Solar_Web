@@ -59,14 +59,14 @@ export const ruleInfor = signal({
   ruleid: "",
   name: "",
   setting: {
-    contact: {edit: false},
-    device: {add: false, modify: false, remove: false},
-    partner: {modify: false},
-    project: {add: false, modify: false, remove: false},
-    report: {add: false, modify: false, remove: false}, 
-    rule: {add: false, active: false, modify: false, remove: false},
-    user: {add: false, modify: false, remove: false},
-    warn: {remove: false}
+    contact: { edit: false },
+    device: { add: false, modify: false, remove: false },
+    partner: { modify: false },
+    project: { add: false, modify: false, remove: false },
+    report: { add: false, modify: false, remove: false },
+    rule: { add: false, active: false, modify: false, remove: false },
+    user: { add: false, modify: false, remove: false },
+    warn: { remove: false }
   },
 });
 
