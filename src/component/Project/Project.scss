@@ -308,7 +308,7 @@
                     width: 50px;
                     height: 50px;
                     border-radius: 50%;
-                    cursor: pointer;
+                    // cursor: pointer;
                 }
 
                 &_Content {
@@ -531,7 +531,7 @@
             // }
 
             &_Left {
-                width: 32%;
+                width: 35%;
                 background-color: white;
                 border-radius: 5px;
                 overflow: hidden;
@@ -541,7 +541,7 @@
 
                     &_Item {
                         padding: 16px;
-                        // cursor: pointer;
+                        cursor: pointer;
                         white-space: nowrap; // ngan xuong dong
                         overflow: hidden; // an noi dung vuot ra ngoai
                         text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
@@ -551,7 +551,7 @@
 
             &_Center {
                 background-color: white;
-                width: 43%;
+                width: 35%;
                 // height: 360px;
                 border-radius: 5px;
                 overflow: hidden;
@@ -565,7 +565,6 @@
 
                     &_Item {
                         padding: 16px;
-                        cursor: pointer;
                         white-space: nowrap; // ngan xuong dong
                         overflow: hidden; // an noi dung vuot ra ngoai
                         text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
@@ -758,7 +757,7 @@
                             display: flex;
                             justify-content: center;
 
-                          
+
 
                             &_Data {
                                 border-radius: 50%;
@@ -777,7 +776,7 @@
                                 // &::after, &::before {
                                 //     content: '';
                                 //     position: absolute;
-                                    
+
                                 //     width: 200%;
                                 //     height: 200%;
                                 //     top: -50%;
@@ -796,12 +795,12 @@
                                 //     animation: flow 10s linear infinite;
                                 // }
                                 background: url('../../../public/dat_picture/wave2.png'),
-                                url('../../../public/dat_picture/wave3.png'),
-                                url('../../../public/dat_picture/wave4.png');
-                                background-size: 100px 100px;
+                                    url('../../../public/dat_picture/wave3.png'),
+                                    url('../../../public/dat_picture/wave4.png');
+                                background-size: 220px 200px;
                                 background-repeat: repeat-x;
                                 // animation: flow 10s linear infinite;
-                            
+
 
                                 &_value {
                                     width: 100%;
@@ -846,7 +845,7 @@
                             border-radius: 5px;
 
                             &_Tit {
-                                font-size: 13px;
+                                font-size: 12px;
                                 color: gray;
                             }
 
@@ -862,7 +861,7 @@
                         display: flex;
                         align-items: center;
                         gap: 10px;
-                        padding: 16px;
+                        padding: 16px 16px 0px 16px;
 
                         &_Img {
                             & img {
@@ -889,7 +888,7 @@
                                 border-radius: 5px;
 
                                 &_Tit {
-                                    font-size: 14px;
+                                    font-size: 12px;
                                     color: gray;
                                 }
 
@@ -910,7 +909,7 @@
                                 border-radius: 5px;
 
                                 &_Tit {
-                                    font-size: 14px;
+                                    font-size: 12px;
                                     color: gray;
                                 }
 
@@ -927,7 +926,7 @@
                         display: flex;
                         align-items: center;
                         gap: 10px;
-                        padding: 16px;
+                        padding: 16px 16px 0px 16px;
 
                         &_Img {
                             & img {
@@ -940,27 +939,34 @@
                     &_Row {
                         display: flex;
                         flex-direction: column;
-                        gap: 10px;
+                        gap: 8px;
                         padding: 16px;
 
                         &_Left {
                             display: flex;
-                            gap: 10px;
+                            // gap: 10px;
 
                             &_Tit {
+                                // flex: 1;
                                 padding: 16px;
                                 display: flex;
                                 align-items: center;
-                                width: 60px;
+                                min-width: 60px;
+                                font-size: 14px;
                             }
 
                             &_Data {
-                                padding: 16px;
+                                // flex: 9;
                                 // width: 100px;
+                                display: flex;
 
-                                &_Tit {
-                                    font-size: 14px;
-                                    color: grey;
+                                &_Item {
+                                    padding: 16px;
+
+                                    &_Tit {
+                                        font-size: 12px;
+                                        color: grey;
+                                    }
                                 }
                             }
                         }
@@ -972,7 +978,7 @@
                         display: flex;
                         align-items: center;
                         gap: 10px;
-                        padding: 16px;
+                        padding: 16px 16px 0px 16px;
 
                         &_Img {
                             & img {
@@ -990,26 +996,34 @@
                     &_Row {
                         display: flex;
                         flex-direction: column;
-                        gap: 10px;
+                        gap: 8px;
                         padding: 16px;
 
                         &_Left {
                             display: flex;
-                            gap: 10px;
+                            // gap: 10px;
 
                             &_Tit {
+                                // flex: 2;
                                 padding: 16px;
                                 display: flex;
                                 align-items: center;
-                                width: 90px;
+                                min-width: 70px;
+
                             }
 
                             &_Data {
-                                padding: 16px;
+                                // flex: 8;
+                                // width: 100px;
+                                display: flex;
 
-                                &_Tit {
-                                    font-size: 14px;
-                                    color: grey;
+                                &_Item {
+                                    padding: 16px;
+
+                                    &_Tit {
+                                        font-size: 12px;
+                                        color: grey;
+                                    }
                                 }
                             }
                         }
@@ -1018,7 +1032,7 @@
             }
 
             &_Right {
-                width: 25%;
+                width: 30%;
                 //height: 360px;
                 border-radius: 5px;
                 overflow: hidden;
@@ -1054,7 +1068,7 @@
                                 white-space: nowrap;
 
                                 &_Deg {
-                                    font-size: 32px;
+                                    font-size: 24px;
                                     font-family: Arial, Helvetica, sans-serif;
                                     font-weight: 550;
                                 }
@@ -1097,7 +1111,7 @@
                                     display: flex;
                                     align-items: flex-end;
                                     flex-direction: column;
-                                    font-size: 14px;
+                                    font-size: 12px;
                                     color: gray;
                                 }
                             }
@@ -1428,7 +1442,7 @@
                             // justify-content: space-between;
 
                             &_Title {
-                                flex: 4;
+                                flex: 5;
                                 font-size: 14px;
                                 color: rgb(128, 128, 128);
                                 // width: 100%;
@@ -1438,7 +1452,7 @@
                             }
 
                             &_Content {
-                                flex: 6;
+                                flex: 5;
                                 font-size: 14px;
                                 // text-align: right;
                                 color: black;

@@ -42,6 +42,7 @@ export default function Home(props) {
   const [total, setTotal] = useState(0)
   const [online, setOnline] = useState(0)
   const [offline, setOffline] = useState(0)
+  const [project, setProject] = useState({})
   const [trial, setTrial] = useState(0)
   const [warn, setWarn] = useState(0)
   const [invt, setInvt] = useState(0)
@@ -79,7 +80,15 @@ export default function Home(props) {
     },
     {
       name: dataLang.formatMessage({ id: 'name' }),
-      selector: (row) => row.plantname,
+      selector: (row) =>
+        <div
+          id={row.plantid}
+          style={{ cursor: "pointer" }}
+          onClick={(e) => handleInfo(e)}
+        >
+          {row.plantname}
+        </div>
+      ,
       sortable: true,
       minWidth: "150px",
       style: {
@@ -118,7 +127,15 @@ export default function Home(props) {
     libraries: ["places"]
   });
 
-
+  const handleInfo = (e) => {
+    const newPlant = project.find(
+      (item) => item.plantid == e.currentTarget.id
+    );
+    projectData.value = newPlant;
+    console.log(newPlant)
+    navigate("/project");
+    plantState.value = "info";
+  };
 
 
   const initMap = async (data) => {
@@ -328,6 +345,7 @@ export default function Home(props) {
       })
       if (d.status === true) {
         initMap(d.data);
+        setProject(d.data)
         getChart(d.data)
         setTotal(d.data.length)
         setOnline(d.data.filter(data => data.state == 1).length)

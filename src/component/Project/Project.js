@@ -146,7 +146,7 @@ export default function Project(props) {
     { id: "online", name: dataLang.formatMessage({ id: "online" }) },
     { id: "offline", name: dataLang.formatMessage({ id: "offline" }) },
     { id: "warn", name: dataLang.formatMessage({ id: "warn" }) },
-    // { id: "demo", name: dataLang.formatMessage({ id: 'demo' }) },
+    { id: "demo", name: dataLang.formatMessage({ id: 'demo' }) },
   ];
 
   const paginationComponentOptions = {
@@ -163,6 +163,7 @@ export default function Project(props) {
         <div
           className="DAT_Table"
           id={row.plantid}
+          style={{ cursor: "pointer" }}
           onClick={(e) => handlePlant(e)}
         >
           <img
@@ -170,7 +171,7 @@ export default function Project(props) {
             alt=""
           />
 
-          <div className="DAT_Table_Infor" style={{ cursor: "pointer" }}>
+          <div className="DAT_Table_Infor">
             <div className="DAT_Table_Infor_Name">{row.plantname}</div>
             <div className="DAT_Table_Infor_Addr">{row.addr}</div>
           </div>
@@ -320,6 +321,7 @@ export default function Project(props) {
       (item) => item.plantid == e.currentTarget.id
     );
     projectData.value = newPlant;
+    console.log(newPlant)
 
     // const newDevicePlant = devicePlant.value.filter(
     //   (item) => item.plantId == e.currentTarget.id

@@ -65,6 +65,8 @@ import { FiEdit } from "react-icons/fi";
 
 import styled, { keyframes } from 'styled-components';
 
+import styled, { keyframes } from 'styled-components';
+
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
 export const popupAddSubsystem = signal(false);
@@ -1108,116 +1110,80 @@ export default function ProjectData(props) {
               return (
                 <div className="DAT_ProjectData_Dashboard">
                   <div className="DAT_ProjectData_Dashboard_Data">
-                    {/* <div className="DAT_ProjectData_Dashboard_Data_Left">
-                      <div className="DAT_ProjectData_Dashboard_Data_Left_Img">
-                        <img
-                          src={
-                            projectData.value.img
-                              ? projectData.value.img
-                              : "/dat_picture/solar_panel.png"
-                          }
-                          alt=""
-                        />
-                      </div>
-
-                      <div className="DAT_ProjectData_Dashboard_Data_Left_Info">
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
-                          style={{ marginBottom: "16px" }}
-                        >
-                          <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
-                            {dataLang.formatMessage({ id: "address" })}
-                          </div>
-                          <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content">
-                            {projectData.value.addr}
-                          </div>
-                        </div>
-
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
-                          style={{ marginBottom: "16px" }}
-                        >
-                          <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
-                            {dataLang.formatMessage({ id: "status" })}
-                          </div>
-                          <div
-                            className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
-                            style={{ textAlign: "right" }}
-                          >
-                            {projectData.value.state === 1 ? (
-                              <>
-                                <FaCheckCircle size={20} color="green" />
-                              </>
-                            ) : (
-                              <>
-                                <MdOutlineError size={20} color="red" />
-                              </>
-                            )}
-                          </div>
-                        </div>
-
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
-                          style={{ marginBottom: "16px" }}
-                        >
-                          <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
-                            {dataLang.formatMessage({ id: "projType" })}
-                          </div>
-                          <div
-                            className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
-                            style={{ textAlign: "right" }}
-                          >
-                            {projectData.value.planttype === "industry" ? (
-                              <>{dataLang.formatMessage({ id: "factory" })}</>
-                            ) : (
-                              <>{dataLang.formatMessage({ id: "household" })}</>
-                            )}
-                          </div>
-                        </div>
-
-                        <div
-                    className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
-                    style={{ marginBottom: "16px" }}
-                  >
-                    <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
-                      Loại Hệ Thống
-                    </div>
-                    <div
-                      className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
-                      style={{ textAlign: "right" }}
-                    >
-                      --
-                    </div>
-                  </div>
-
-                        <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr">
-                          <div className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Title">
-                            {dataLang.formatMessage({ id: "phone" })}
-                          </div>
-                          <div
-                            className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr_Content"
-                            style={{ textAlign: "right" }}
-                          >
-                            {projectData.value.phone}
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
                     <div className="DAT_ProjectData_Dashboard_Data_Left">
                       <div className="DAT_ProjectData_Dashboard_Data_Left_Tit">
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
-                        // id="graph"
-                        // style={{
-                        //   color: nav === "graph" ? color.cur : color.pre,
-                        //   display:
-                        //     projectData.value.plantmode === "grid"
-                        //       ? "none"
-                        //       : "block",
-                        //   // width: nav === "graph" ? "150px" : "60px",
-                        // }}
-                        // onClick={(e) => handleNav(e)}
+                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                          id="production"
+                          style={{
+                            color: nav === "production" ? color.cur : color.pre,
+                            // width: nav === "production" ? "150px" : "90px",
+                          }}
+                          onClick={(e) => handleNav(e)}
                         >
+                          {dataLang.formatMessage({ id: "productionData" })}
+                        </div>
+                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                          id="consumption"
+                          style={{
+                            color: nav === "consumption" ? color.cur : color.pre,
+                            // width: nav === "consumption" ? "150px" : "90px",
+                            display:
+                              projectData.value.plantmode === "grid"
+                                ? "none"
+                                : "block",
+                          }}
+                          onClick={(e) => handleNav(e)}
+                        >
+                          {dataLang.formatMessage({ id: "consumptionData" })}
+                        </div>
+                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                          id="grid"
+                          style={{
+                            color: nav === "grid" ? color.cur : color.pre,
+                            display:
+                              projectData.value.plantmode === "grid"
+                                ? "none"
+                                : "block",
+                          }}
+                          onClick={(e) => handleNav(e)}
+                        >
+                          {dataLang.formatMessage({ id: "grid" })}
+                        </div>
+                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                          id="battery"
+                          style={{
+                            color: nav === "battery" ? color.cur : color.pre,
+                            display:
+                              projectData.value.plantmode === "grid" ||
+                                projectData.value.plantmode === "consumption"
+                                ? "none"
+                                : "block",
+                          }}
+                          onClick={(e) => handleNav(e)}
+                        >
+                          {dataLang.formatMessage({ id: "batteryData" })}
+                        </div>
+                      </div>
+
+                      {(() => {
+                        switch (nav) {
+                          case "production":
+                            return <Production cal={cal.value} />;
+                          case "consumption":
+                            return <Consumption cal={cal.value} />;
+                          case "grid":
+                            return <Grid cal={cal.value} />;
+                          case "battery":
+                            return <Battery cal={cal.value} />;
+                          default:
+                            <></>;
+                        }
+                      })()}
+                    </div>
+
+                    <div className="DAT_ProjectData_Dashboard_Data_Center">
+                      <div className="DAT_ProjectData_Dashboard_Data_Center_Tit">
+                        <div className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item">
                           {(() => {
                             switch (projectData.value.plantmode) {
                               case "consumption":
@@ -1243,100 +1209,6 @@ export default function ProjectData(props) {
                         </div>
                       </div>
                       <Graph type={projectData.value.plantmode} cal={cal.value} />
-                    </div>
-
-                    <div className="DAT_ProjectData_Dashboard_Data_Center">
-                      {/* <div className="DAT_ProjectData_Dashboard_Data_Center_Right"> */}
-                      <div className="DAT_ProjectData_Dashboard_Data_Center_Tit">
-                        {/* <div
-                            className="DAT_ProjectData_Dashboard_Data_Center_Right_Tit_Item"
-                            id="graph"
-                            style={{
-                              color: nav === "graph" ? color.cur : color.pre,
-                              display:
-                                projectData.value.plantmode === "grid"
-                                  ? "none"
-                                  : "block",
-                              // width: nav === "graph" ? "150px" : "60px",
-                            }}
-                            onClick={(e) => handleNav(e)}
-                          >
-                            {dataLang.formatMessage({ id: "graph" })}
-                          </div> */}
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
-                          id="production"
-                          style={{
-                            color: nav === "production" ? color.cur : color.pre,
-                            // width: nav === "production" ? "300px" : "60px",
-                          }}
-                          onClick={(e) => handleNav(e)}
-                        >
-                          {dataLang.formatMessage({ id: "productionData" })}
-                        </div>
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
-                          id="consumption"
-                          style={{
-                            color:
-                              nav === "consumption" ? color.cur : color.pre,
-                            display:
-                              projectData.value.plantmode === "grid"
-                                ? "none"
-                                : "block",
-                          }}
-                          onClick={(e) => handleNav(e)}
-                        >
-                          {dataLang.formatMessage({ id: "consumptionData" })}
-                        </div>
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
-                          id="grid"
-                          style={{
-                            color: nav === "grid" ? color.cur : color.pre,
-                            display:
-                              projectData.value.plantmode === "grid"
-                                ? "none"
-                                : "block",
-                          }}
-                          onClick={(e) => handleNav(e)}
-                        >
-                          {dataLang.formatMessage({ id: "grid" })}
-                        </div>
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Center_Tit_Item"
-                          id="battery"
-                          style={{
-                            color: nav === "battery" ? color.cur : color.pre,
-                            display:
-                              projectData.value.plantmode === "grid" ||
-                                projectData.value.plantmode === "consumption"
-                                ? "none"
-                                : "block",
-                          }}
-                          onClick={(e) => handleNav(e)}
-                        >
-                          {dataLang.formatMessage({ id: "batteryData" })}
-                        </div>
-                      </div>
-
-                      {(() => {
-                        switch (nav) {
-                          case "graph":
-                            return <Graph type={projectData.value.plantmode} cal={cal.value} />;
-                          case "production":
-                            return <Production cal={cal.value} />;
-                          case "consumption":
-                            return <Consumption cal={cal.value} />;
-                          case "grid":
-                            return <Grid cal={cal.value} />;
-                          case "battery":
-                            return <Battery cal={cal.value} />;
-                          default:
-                            <></>;
-                        }
-                      })()}
-                      {/* </div> */}
                     </div>
 
                     <div className="DAT_ProjectData_Dashboard_Data_Right">
@@ -2679,6 +2551,7 @@ const GraphGrid = (props) => {
     </div>
   );
 };
+
 const GraphConsumption = (props) => {
   const LineA = (props) => {
     return (
@@ -2878,6 +2751,7 @@ const GraphConsumption = (props) => {
     </div>
   );
 }
+
 const GraphFull = (props) => {
   const LineA = (props) => {
     return (
@@ -3182,18 +3056,27 @@ const GraphFull = (props) => {
 
         <LineA width="120" height="160" dur="2s" />
 
-        <div >
+        <div style={{ width: "150px" }} >
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
             <ImgSolar width="70" height="70" />
-            <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
-              {Number((props.cal?.pro_1 / projectData.value.capacity * 100).toFixed(2) || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>%</span>
+            <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+              <div>
+                {Number(props.cal?.pro_1 || 0).toLocaleString("en-US")}
+              </div>
+              <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
             </div>
           </div>
-          <LineB width="70" height="40" dur="1s" />
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+
+            <LineB width="70" height="40" dur="1s" />
+          </div>
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <ImgLoad width="70" height="70" />
-            <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
-              {Number(props.cal?.con_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>kw</span>
+            <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+              <div>
+                {Number(props.cal?.con_1 || 0).toLocaleString("en-US")}
+              </div>
+              <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
             </div>
           </div>
 
@@ -3205,8 +3088,11 @@ const GraphFull = (props) => {
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
           <ImgBat width="70" height="70" />
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
-            {Number(props.cal?.bat_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>%</span>
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+            <div>
+              {Number(props.cal?.bat_1 || 0).toLocaleString("en-US")}
+            </div>
+            <span style={{ color: "gray", fontSize: "13px" }}>W</span>
           </div>
         </div>
         <div >
@@ -3217,8 +3103,11 @@ const GraphFull = (props) => {
           <LineF width="230" height="25" />
         </div>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
-            {Number(props.cal?.grid_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>%</span>
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+            <div>
+              {Number(props.cal?.grid_1 || 0).toLocaleString("en-US")}
+            </div>
+            <span style={{ color: "gray", fontSize: "13px" }}>W</span>
           </div>
           <ImgGrid width="70" height="70" />
         </div>
@@ -3233,30 +3122,30 @@ const Production = (props) => {
   const in_min = 0
   const out_max = -10
   const out_min = 140
-  const [per,setPer] = useState(0)
+  const [per, setPer] = useState(0)
 
-  const  mapValue = (data, in_min, in_max, out_min, out_max)=> {
+  const mapValue = (data, in_min, in_max, out_min, out_max) => {
     return ((data - in_min) * (out_max - out_min) / (in_max - in_min)) + out_min;
   }
 
-  useEffect(()=>{
-      //-10        130
-      //100%       0%
-      let result =  parseFloat(((props.cal?.pro_1 || 0) / projectData.value.capacity) * 100)
-      console.log(result)
-      setPer(mapValue(Number(result), in_min, in_max, out_min, out_max))
-  },[props.cal.pro_1])
+  useEffect(() => {
+    //-10        130
+    //100%       0%
+    let result = parseFloat(((props.cal?.pro_1 || 0) / projectData.value.capacity) * 100)
+    console.log(result)
+    setPer(mapValue(result, in_min, in_max, out_min, out_max))
+  }, [props.cal.pro_1])
 
   const keyframes = `
-    @keyframes customAnimation {
-      0% { background-position: -600px ${parseFloat(per)}px, -400px ${per+10}px, -200px ${per+10}px; }
-      100% { background-position: 100px ${parseFloat(per)}px;, 0x ${per+10}px, 50px ${per+10}px; }
+    @keyframes plant {
+      0% { background-position: -1200px ${parseFloat(per)}px, -800px ${per}px, -400px ${per}px; }
+      100% { background-position: 200px ${parseFloat(per)}px;, 100x ${per}px, 0px ${per}px; }
     }
   `;
 
   const divStyle = {
-    animationName: 'customAnimation',
-    animationDuration: '7s',
+    animationName: 'plant',
+    animationDuration: '30s',
     animationTimingFunction: 'linear',
     animationIterationCount: 'infinite',
 
@@ -3326,7 +3215,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: "dailyOutput" })}
+            {dataLang.formatMessage({ id: "today" })}
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3342,7 +3231,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: "monthOutput" })}
+            {dataLang.formatMessage({ id: "month" })}
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3358,7 +3247,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: "yearOutput" })}
+            {dataLang.formatMessage({ id: "year" })}
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3374,7 +3263,7 @@ const Production = (props) => {
           style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: "totalOutput" })}
+            {dataLang.formatMessage({ id: "total" })}
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3416,7 +3305,7 @@ const Consumption = (props) => {
             style={{ backgroundColor: "rgb(245, 251, 255)" }}
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
-              {dataLang.formatMessage({ id: "dailyConsumption" })}
+              {dataLang.formatMessage({ id: "today" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3432,7 +3321,7 @@ const Consumption = (props) => {
             style={{ backgroundColor: "rgb(246, 245, 255)" }}
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
-              {dataLang.formatMessage({ id: "yearlyConsumption" })}
+              {dataLang.formatMessage({ id: "year" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.con_year || 0).toLocaleString('en-US')}</span>
@@ -3448,7 +3337,7 @@ const Consumption = (props) => {
             style={{ backgroundColor: "rgb(255, 248, 247)" }}
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
-              {dataLang.formatMessage({ id: "monthlyConsumption" })}
+              {dataLang.formatMessage({ id: "month" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.con_month || 0).toLocaleString('en-US')}</span>
@@ -3462,7 +3351,7 @@ const Consumption = (props) => {
             style={{ backgroundColor: "rgb(245, 250, 246)" }}
           >
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
-              {dataLang.formatMessage({ id: "totalConsumption" })}
+              {dataLang.formatMessage({ id: "total" })}
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
@@ -3499,126 +3388,138 @@ const Grid = (props) => {
       </div>
 
       <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row">
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit">
-            {dataLang.formatMessage({ id: "gridfeed" })}
-          </div>
           {isMobile.value ? (
-            <div style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }} />
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
+              style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }}
+            >
+              {dataLang.formatMessage({ id: "gridfeed" })}
+            </div>
           ) : (
-            <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
+              style={{ borderRight: "solid 1px rgb(231, 231, 231)" }}
+            >
+              {dataLang.formatMessage({ id: "gridfeed" })}
+            </div>
           )}
 
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              {dataLang.formatMessage({ id: "today" })}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "today" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(props.cal?.grid_in_1 || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(props.cal?.grid_in_1 || 0).toLocaleString("en-US")}
-              </span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
-            </div>
-          </div>
 
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              {dataLang.formatMessage({ id: "month" })}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "month" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.grid_in_month || 0).toLocaleString('en-US')}</span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.grid_in_month || 0).toLocaleString('en-US')}</span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
-            </div>
-          </div>
 
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              {dataLang.formatMessage({ id: "year" })}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "year" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.grid_in_year || 0).toLocaleString('en-US')}</span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.grid_in_year || 0).toLocaleString('en-US')}</span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
-            </div>
-          </div>
 
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              {dataLang.formatMessage({ id: "total" })}
-            </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(props.cal?.grid_in_2 || 0).toLocaleString("en-US")}
-              </span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "total" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(props.cal?.grid_in_2 || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit">
-            {dataLang.formatMessage({ id: "purchaseE" })}
-          </div>
           {isMobile.value ? (
-            <div style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }} />
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
+              style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }}
+            >
+              {dataLang.formatMessage({ id: "purchaseE" })}
+            </div>
           ) : (
-            <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
+              style={{ borderRight: "solid 1px rgb(231, 231, 231)" }}
+            >
+              {dataLang.formatMessage({ id: "purchaseE" })}
+            </div>
           )}
 
           <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              {dataLang.formatMessage({ id: "today" })}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "today" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(props.cal?.grid_out_1 || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(props.cal?.grid_out_1 || 0).toLocaleString("en-US")}
-              </span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
-            </div>
-          </div>
 
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              {dataLang.formatMessage({ id: "month" })}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "month" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.grid_out_month || 0).toLocaleString('en-US')}</span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.grid_out_month || 0).toLocaleString('en-US')}</span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
-            </div>
-          </div>
 
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              {dataLang.formatMessage({ id: "year" })}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "year" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.grid_out_year || 0).toLocaleString('en-US')}</span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.grid_out_year || 0).toLocaleString('en-US')}</span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
-            </div>
-          </div>
 
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Tit">
-              {dataLang.formatMessage({ id: "total" })}
-            </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(props.cal?.grid_out_2 || 0).toLocaleString("en-US")}
-              </span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "total" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(props.cal?.grid_out_2 || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
             </div>
           </div>
         </div>
@@ -3667,79 +3568,143 @@ const Battery = (props) => {
       </div>
 
       <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row">
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit">
-            {dataLang.formatMessage({ id: "charge" })}
-          </div>
           {isMobile.value ? (
-            <div style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }} />
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
+              style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }}
+            >
+              {dataLang.formatMessage({ id: "charge" })}
+            </div>
           ) : (
-            <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
+              style={{ borderRight: "solid 1px rgb(231, 231, 231)" }}
+            >
+              {dataLang.formatMessage({ id: "charge" })}
+            </div>
           )}
 
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
-              {dataLang.formatMessage({ id: "today" })}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "today" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(props.cal?.bat_in_1 || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(props.cal?.bat_in_1 || 0).toLocaleString("en-US")}
-              </span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
-            </div>
-          </div>
 
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">{dataLang.formatMessage({ id: 'month' })}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">{dataLang.formatMessage({ id: 'month' })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.bat_in_month || 0).toLocaleString('en-US')}</span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.bat_in_month || 0).toLocaleString('en-US')}</span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
-            </div>
-          </div>
 
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
-              {dataLang.formatMessage({ id: "year" })}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "year" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.bat_in_year || 0).toLocaleString('en-US')}</span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.bat_in_year || 0).toLocaleString('en-US')}</span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
-            </div>
-          </div>
 
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
-              {dataLang.formatMessage({ id: "total" })}
-            </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.bat_in_total || 0).toLocaleString('en-US')}</span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "total" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>{Number(props.cal?.bat_in_total || 0).toLocaleString('en-US')}</span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit">
-            {dataLang.formatMessage({ id: "discharge" })}
-          </div>
           {isMobile.value ? (
-            <div style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }} />
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
+              style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }}
+            >
+              {dataLang.formatMessage({ id: "discharge" })}
+            </div>
           ) : (
-            <div style={{ borderLeft: "solid 1px rgb(231, 231, 231)" }} />
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
+              style={{ borderRight: "solid 1px rgb(231, 231, 231)" }}
+            >
+              {dataLang.formatMessage({ id: "discharge" })}
+            </div>
           )}
 
           <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "today" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(props.cal?.bat_out_1 || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
+            </div>
+
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: 'month' })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(props.cal?.bat_out_month || 0).toLocaleString('en-US')}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
+            </div>
+
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "year" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(props.cal?.bat_out_year || 0).toLocaleString('en-US')}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
+            </div>
+
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "total" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(props.cal?.bat_out_total || 0).toLocaleString('en-US')}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
+            </div>
+          </div>
+
+          {/* <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Tit">
               {dataLang.formatMessage({ id: "today" })}
             </div>
@@ -3783,7 +3748,7 @@ const Battery = (props) => {
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
