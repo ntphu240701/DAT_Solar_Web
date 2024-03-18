@@ -115,12 +115,12 @@ export default function Report(props) {
         partnerid: userInfor.value.partnerid,
         type: userInfor.value.type,
       })
-      if(d.status){
+      if (d.status) {
         ReportData.value = d.data;
       }
     }
     getReport()
-  },[])
+  }, [])
 
   return (
     <>
@@ -141,7 +141,7 @@ export default function Report(props) {
             </span>
           </button>
         ) : (
-          <></>
+          <div></div>
         )}
       </div>
       <div className="DAT_Report">
@@ -175,7 +175,7 @@ export default function Report(props) {
                       />
                     </div>
                   ) : (
-                    <></>
+                    <div></div>
                   )}
                   {/* <div className="DAT_Report_List_Form_Custom_Report">
                     <HiOutlineDocumentReport color="green" size={20} />
@@ -193,7 +193,7 @@ export default function Report(props) {
                       />
                     </div>
                   ) : (
-                    <></>
+                    <div></div>
                   )}
                 </div>
               </div>

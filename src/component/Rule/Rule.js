@@ -224,6 +224,7 @@ export default function Rule() {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
   const [idDel, setIdDel] = useState();
+  const [datafilter, setdatafilter] = useState([]);
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: "row" }),
@@ -241,6 +242,7 @@ export default function Rule() {
         console.log(rule.data);
         datarule.value = rule.data;
         datarule.value = datarule.value.sort((a, b) => a.ruleid_ - b.ruleid_);
+        setdatafilter(rule.data);
       }
     };
     getRule();
@@ -345,6 +347,18 @@ export default function Rule() {
     mod.style.display = type;
   };
 
+  const handleFilter = (e) => {
+    const searchterm = e.currentTarget.value.toLowerCase();
+    if (searchterm == "") {
+      setdatafilter(datarule.value);
+    } else {
+      let df = datarule.value.filter((item) => {
+        return item.rulename_.toLowerCase().includes(searchterm);
+      });
+      setdatafilter(df)
+    }
+  };
+
   return (
     <>
       <div className="DAT_RuleHeader">
@@ -393,6 +407,7 @@ export default function Rule() {
               <input
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterName" })}
+                onChange={(e) => handleFilter(e)}
               />
               <CiSearch color="gray" size={20} />
             </div>
@@ -467,7 +482,7 @@ export default function Rule() {
             <DataTable
               className="DAT_Table_Container"
               columns={columnrule}
-              data={datarule.value}
+              data={datafilter}
               pagination
               paginationComponentOptions={paginationComponentOptions}
               fixedHeader={true}

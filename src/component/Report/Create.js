@@ -11,6 +11,10 @@ import { useIntl } from "react-intl";
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { IoSaveOutline } from "react-icons/io5";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
+import { userInfor } from "../../App";
+import { alertDispatch } from "../Alert/Alert";
 
 const newdata = signal({
   id: 1,
@@ -218,33 +222,39 @@ export default function Create() {
     );
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
     const today = new Date();
-    // const day = today.getDate();
-    // const month = today.getMonth() + 1;
-    // const year = today.getFullYear();
-    // const date = month + "/" + day + "/" + year;
-
-    // console.log(moment(today).format("MM/DD/YYYY HH:mm:ss"));
-
     if (reportnameRef.current === "") {
-      alert("Please enter report name");
+      alertDispatch("Please enter report name");
     } else {
-      lastID.value = lastID.value + 1;
-      newdata.value = {
-        ...newdata.value,
+      const addReport = await callApi("post", host.DATA + "/addReport", {
+        usr: usr,
+        partnerid: userInfor.value.partnerid,
         name: reportnameRef.current,
         type: reportType,
-        id: lastID.value,
         date: moment(today).format("MM/DD/YYYY HH:mm:ss"),
-      };
-      ReportData.value.push(newdata.value);
+        createby: userInfor.value.name,
+        inf: JSON.stringify(newdata.value.inf),
+        customdata: JSON.stringify(newdata.value.customdata),
+      });
+      if (addReport.status) {
+        console.log(addReport);
+        // lastID.value = lastID.value + 1;
+        newdata.value = {
+          ...newdata.value,
+          name: reportnameRef.current,
+          type: reportType,
+          id: addReport.id,
+          date: moment(today).format("MM/DD/YYYY HH:mm:ss"),
+        };
+        ReportData.value.push(newdata.value);
+        alertDispatch(dataLang.formatMessage({ id: "alert_40" }));
+        //BAT TAT TRANG
+        createState.value = false;
 
-      //BAT TAT TRANG
-      createState.value = false;
-
-      console.log(newdata.value);
-      newdata.value = temp.value;
+        console.log(newdata.value);
+        newdata.value = temp.value;
+      }
     }
   };
 
@@ -332,7 +342,9 @@ export default function Create() {
                     num={String(key)}
                     tab="inf_content"
                     status={newdata.value.inf[key].status}
-                    id={dataLang.formatMessage({ id:newdata.value.inf[key].id})}
+                    id={dataLang.formatMessage({
+                      id: newdata.value.inf[key].id,
+                    })}
                     width={widthCheckBox}
                   />
                 ))}
@@ -429,7 +441,9 @@ export default function Create() {
                       num={String(key)}
                       tab="customdata_content"
                       status={newdata.value.customdata[key].status}
-                      id={dataLang.formatMessage({ id: newdata.value.customdata[key].id })}
+                      id={dataLang.formatMessage({
+                        id: newdata.value.customdata[key].id,
+                      })}
                       width={widthCheckBox}
                     />
                   )

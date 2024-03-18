@@ -4,7 +4,7 @@ import "./Warn.scss";
 import DataTable from "react-data-table-component";
 import { signal } from "@preact/signals-react";
 import { Empty } from "../Project/Project";
-import { isMobile } from "../Navigation/Navigation";
+import { isMobile, warnfilter } from "../Navigation/Navigation";
 import SettingWarn from "./SettingWarn";
 import RaiseBox from "./RaiseBox";
 import { useIntl } from "react-intl";
@@ -31,7 +31,7 @@ export const deletewarnState = signal(false);
 export const idDel = signal();
 
 export const dataWarn = signal([]);
-
+// const datafilter = signal([]);
 export default function Warn(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
@@ -61,7 +61,7 @@ export default function Warn(props) {
       name: dataLang.formatMessage({ id: "project" }),
       selector: (row) => row.plant,
       sortable: true,
-      minWidth: "350px",
+      minWidth: "250px",
       style: {
         justifyContent: "left",
       },
@@ -83,6 +83,11 @@ export default function Warn(props) {
       style: {
         justifyContent: "left",
       },
+    },
+    {
+      name: "ID",
+      selector: (row) => row.warnid,
+      sortable: true,
     },
     {
       name: dataLang.formatMessage({ id: "level" }),
@@ -130,7 +135,7 @@ export default function Warn(props) {
               </span>
             </div>
           ) : (
-            <></>
+            <div></div>
           )}
 
           <div
@@ -161,7 +166,7 @@ export default function Warn(props) {
                 {dataLang.formatMessage({ id: "delete" })}
               </div>
             ) : (
-              <></>
+              <div></div>
             )}
           </div>
         </>
@@ -194,10 +199,6 @@ export default function Warn(props) {
     tabLable.value = newLabel.name;
   };
 
-  const changeFilter = (e) => {
-    setType(e.currentTarget.value);
-  };
-
   const changeData = (e) => {
     if (e.target.value == ' ') {
       setDatafilter(dataWarn.value);
@@ -217,10 +218,64 @@ export default function Warn(props) {
     }
   };
 
+  // by Mr Loc
+  const handleSearch = (e) => {
+    const searchTerm = e.currentTarget.value.toLowerCase();
+
+    if (searchTerm === "") {
+      setDatafilter([...dataWarn.value])
+      warnfilter.value = {};
+    } else {
+      let temp = dataWarn.value.filter((item) => {
+        const plantName = item.plant.toLowerCase();
+        return plantName.includes(searchTerm);
+      });
+      console.log(temp);
+      setDatafilter([...temp]);
+      warnfilter.value = {};
+    }
+  };
+
+  // by Mr Loc
+  useEffect(() => {
+    if (warnfilter.value.device) {
+      console.log(warnfilter.value);
+      let d = document.getElementById("warnsearch");
+      d.value = warnfilter.value.device;
+      let temp_ = dataWarn.value.filter(
+        (item) => item.warnid == warnfilter.value.warnid
+      );
+      setDatafilter([...temp_]);
+    }
+  }, [dataWarn.value, warnfilter.value]);
+
+  // by Mr Loc
   useEffect(() => {
     tabLable.value = listTab[0].name;
-    setDatafilter(dataWarn.value)
+    if (warnfilter.value.device === undefined) {
+      setDatafilter([...dataWarn.value]);
+    }
+
   }, [dataWarn.value]);
+
+  //by Mr  Tai
+
+  // useEffect(() => {
+  //   tabLable.value = listTab[0].name;
+  //   setDatafilter([...dataWarn.value]);
+  // }, [dataWarn.value]);
+
+  // const handleSearch = (e) => {
+  //   console.log(e.target.value);
+  //   // console.log(warnfilter.value.warnid);
+  //   // warnfilter.value.warnid = e.target.value;
+  //   if(warnfilter.value.warnid){
+  //     let temp = dataWarn.value.filter((item) => item.warnid == warnfilter.value.warnid);
+  //     setDatafilter(temp);
+  //     console.log(temp);
+  //   }
+  // };
+
 
   return (
     <>
@@ -247,7 +302,7 @@ export default function Warn(props) {
                   <TbSettingsCode color="white" size={20} />
                 </div>
               ) : (
-                <></>
+                <div></div>
               )}
             </div>
 
@@ -256,6 +311,7 @@ export default function Warn(props) {
                 <input
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterWarn" })}
+                // onChange={(e) => handlefilterwarn(e)}
                 />
                 <div
                   className="DAT_Modify_Filter_Close"
@@ -271,15 +327,18 @@ export default function Warn(props) {
         ) : (
           <>
             <div className="DAT_WarnHeader_Filter">
-              <select onChange={((e) => changeFilter(e))} style={{ border: 'none', outline: 'none' }}>
+              {/* <select onChange={((e) => changeFilter(e))} style={{ border: 'none', outline: 'none' }}>
                 <option value={'project'}>{dataLang.formatMessage({ id: "project" })}</option>
                 <option value={'code'}>{dataLang.formatMessage({ id: "errcode" })}</option>
                 <option value={'device'}>{dataLang.formatMessage({ id: "device" })}</option>
-              </select>
+              </select> */}
               <input
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterWarn" })}
-                onChange={(e) => changeData(e)}
+                id="warnsearch"
+                // id={warnfilter.value.warnid}
+                // value={warnfilter.value.warnid}
+                onChange={(e) => handleSearch(e)}
               />
               <CiSearch color="gray" size={20} />
             </div>

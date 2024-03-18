@@ -6,6 +6,8 @@ import { useIntl } from "react-intl";
 
 import { IoClose } from "react-icons/io5";
 import { alertDispatch } from "../Alert/Alert";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
 
 export default function DeleteRole(props) {
   const dataLang = useIntl();
@@ -15,11 +17,17 @@ export default function DeleteRole(props) {
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
   };
 
-  const handleDelete = () => {
-    let abc = Usr_.value.filter((d) => d.usr_ != props.user)
-    Usr_.value = abc;
-    popupState.value = "default";
-    alertDispatch(dataLang.formatMessage({ id: 'alert_26' }))
+  const handleDelete = async () => {
+    // console.log(props.user);
+    const d = await callApi("post", host.DATA + "/removeUser", {
+      usr: "qweqwe",
+    });
+    if (d.status === true) {
+      let abc = Usr_.value.filter((d) => d.usr_ != props.user)
+      Usr_.value = abc;
+      popupState.value = "default";
+      alertDispatch(dataLang.formatMessage({ id: 'alert_26' }))
+    }
   };
 
   const handlePopup = (state) => {
@@ -29,18 +37,15 @@ export default function DeleteRole(props) {
     popup.style.color = popup_state[state].color;
   };
 
-  useEffect(() => {
-    console.log(props.user)
-  }, [props.user])
-
   return (
     <div className="DAT_DeleteRole">
       <div className="DAT_DeleteRole_Head">
         <div className="DAT_DeleteRole_Head_Left">
-          <p>{dataLang.formatMessage({ id: 'delAccount' })}</p>
+          <p>{dataLang.formatMessage({ id: "delAccount" })}</p>
         </div>
         <div className="DAT_DeleteRole_Head_Right">
-          <div className="DAT_DeleteRole_Head_Right_Icon"
+          <div
+            className="DAT_DeleteRole_Head_Right_Icon"
             onClick={() => (popupState.value = "default")}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
@@ -52,9 +57,7 @@ export default function DeleteRole(props) {
       </div>
 
       <div className="DAT_DeleteRole_Body">
-        <p>
-          {dataLang.formatMessage({ id: 'delaccountmess' })}
-        </p>
+        <p>{dataLang.formatMessage({ id: "delaccountmess" })}</p>
       </div>
 
       <div className="DAT_DeleteRole_Foot">
@@ -72,7 +75,7 @@ export default function DeleteRole(props) {
           style={{ backgroundColor: "#048FFF", color: "white" }}
           onClick={() => handleDelete()}
         >
-          {dataLang.formatMessage({ id: 'confirm' })}
+          {dataLang.formatMessage({ id: "confirm" })}
         </button>
       </div>
     </div>

@@ -4,7 +4,7 @@ import "./Home.scss";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
-import { Empty, plantState, projectData } from "../Project/Project";
+import { Empty, plantState, projectData, tab } from "../Project/Project";
 import DataTable from "react-data-table-component";
 import { useSelector } from "react-redux";
 import { Token, partnerInfor, userInfor } from "../../App";
@@ -455,7 +455,7 @@ export default function Home(props) {
         }
       })
     })
-    console.log(sun_)
+    // console.log(sun_)
     setSun(sun_)
     // plant.value.map((item, i) => {
     //   item.sun = sun_[i]?.value
@@ -691,7 +691,7 @@ export default function Home(props) {
           </div>
 
           <div className="DAT_Home_State-Content">
-            <div className="DAT_Home_State-Content-Item">
+            <div className="DAT_Home_State-Content-Item" onClick={() => { tab.value = 'online'; navigate("/Project") }}>
               <div className="DAT_Home_State-Content-Item-Title">
                 {dataLang.formatMessage({ id: 'online' })}
               </div>
@@ -699,7 +699,8 @@ export default function Home(props) {
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{online}</span>
               </div>
             </div>
-            <div className="DAT_Home_State-Content-Item">
+
+            <div className="DAT_Home_State-Content-Item" onClick={() => { tab.value = 'offline'; navigate("/Project") }}>
               <div className="DAT_Home_State-Content-Item-Title">
                 {dataLang.formatMessage({ id: 'offline' })}
               </div>
@@ -718,7 +719,8 @@ export default function Home(props) {
                 <span style={{ color: "black", fontSize: "20px", fontWeight: "650", fontFamily: "sans-serif" }}>{trial}</span>
               </div>
             </div>
-            <div className="DAT_Home_State-Content-Item">
+
+            <div className="DAT_Home_State-Content-Item" onClick={() => { tab.value = 'warn'; navigate("/Project") }} >
               <div className="DAT_Home_State-Content-Item-Title">
                 {dataLang.formatMessage({ id: 'projectWarn' })}
               </div>
@@ -863,7 +865,7 @@ export default function Home(props) {
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 }

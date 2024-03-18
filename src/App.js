@@ -186,6 +186,7 @@ export default function App() {
         type: type,
       });
       if (warn.status) {
+        console.log("Warn", warn.data);
         warn.data.map((item, index) => {
           dataWarn.value = [
             ...dataWarn.value,
