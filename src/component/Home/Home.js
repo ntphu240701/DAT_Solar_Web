@@ -729,7 +729,7 @@ export default function Home(props) {
           </div>
 
           <div className="DAT_Home_State-Content">
-            <div className="DAT_Home_State-Content-Item">
+            <div className="DAT_Home_State-Content-Item" onClick={() => { tab.value = 'demo'; navigate("/Project") }}>
               <div className="DAT_Home_State-Content-Item-Title">
                 {dataLang.formatMessage({ id: 'demo' })}
               </div>
