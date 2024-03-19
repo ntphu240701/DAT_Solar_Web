@@ -234,9 +234,8 @@ export default function Warn(props) {
       projectwarnfilter.value = 0;
     } else {
       let temp = dataWarn.value.filter(
-        (item) =>
-          item.plant.toLowerCase().includes(searchTerm)
-          // item.device.toLowerCase().includes(searchTerm)
+        (item) => item.plant.toLowerCase().includes(searchTerm)
+        // item.device.toLowerCase().includes(searchTerm)
       );
       console.log(temp);
       setDatafilter([...temp]);
@@ -252,38 +251,33 @@ export default function Warn(props) {
       let d = document.getElementById("warnsearch");
       d.value = warnfilter.value.device;
       let temp_ = dataWarn.value.filter(
-        (item) => item.warnid ==  warnfilter.value.warnid
+        (item) => item.warnid == warnfilter.value.warnid
       );
       setDatafilter([...temp_]);
-   
-    }
-    else if (projectwarnfilter.value !== 0) {
-      // console.log(projectwarnfilter.value);
-     
-      
+    } else if (projectwarnfilter.value !== 0) {
       let t = dataWarn.value.filter(
-       
-         (item) => item.plantid == projectwarnfilter.value
+        (item) => item.plantid == projectwarnfilter.value
       );
-      let d = document.getElementById("warnsearch");
-      d.value = t[0]?.plant || "";
+      if (t[0]?.plant) {
+        let d = document.getElementById("warnsearch");
+        d.value = t[0].plant;
+      }
       setDatafilter([...t]);
-      
-    }else{
-
+    } else {
     }
-
   }, [dataWarn.value, warnfilter.value, projectwarnfilter.value]);
 
   // by Mr Loc
   useEffect(() => {
     tabLable.value = listTab[0].name;
-    console.log(warnfilter.value.device,projectwarnfilter.value);
-    if (warnfilter.value.device === undefined && Number(projectwarnfilter.value) === 0) {
+    console.log(warnfilter.value.device, projectwarnfilter.value);
+    if (
+      warnfilter.value.device === undefined &&
+      Number(projectwarnfilter.value) === 0
+    ) {
       console.log("ok");
       setDatafilter([...dataWarn.value]);
     }
-
   }, [dataWarn.value]);
 
   //by Mr  Tai

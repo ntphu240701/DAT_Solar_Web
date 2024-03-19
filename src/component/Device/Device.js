@@ -22,6 +22,7 @@ import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
 import { FiEdit } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
+import { lowerCase } from "lodash";
 
 export const tab = signal("logger");
 export const infoState = signal(false);
@@ -419,28 +420,31 @@ export default function Device(props) {
   // }, [connectval.value]);
 
   const handleSearch = (e) => {
-    connectval.value = e.target.value;
+    const t = e.target.value.toLowerCase();
     if (e.target.value == "") {
       setDatafilter(loggerList.value);
+      console.log("1111111")
     } else {
       const t = e.target.value;
+      console.log("22222")
+      // console.log(loggerList.value);
       const db = loggerList.value.filter((item) => {
         return (
-          item.pname.includes(t.toLowerCase()) ||
-          item.psn.includes(t.toLowerCase()) ||
-          item.pplantname.includes(t.toLowerCase()) ||
-          item.pname.toLowerCase().includes(t.toLowerCase()) ||
-          item.psn.toLowerCase().includes(t.toLowerCase()) ||
-          item.pplantname.toLowerCase().includes(t.toLowerCase())
+          item.pname.includes(t) ||
+          item.psn.includes(t) ||
+          item.pplantname.includes(t) ||
+          item.pname.toLowerCase().includes(t) ||
+          item.psn.toLowerCase().includes(t) ||
+          item.pplantname.toLowerCase().includes(t)
         );
       });
-      setDatafilter(db);
+      // console.log(db);
+      setDatafilter([...db]);
     }
   };
 
   useEffect(() => {
     if (connectval.value) {
-      // console.log(connectval.value, loggerList.value);
       let filter = loggerList.value.filter(
         (item) =>
           item.pplantname.includes(connectval.value) ||
@@ -451,6 +455,7 @@ export default function Device(props) {
       let d = document.getElementById("search");
       d.value = connectval.value;
     } else {
+      // console.log("55555")
       setDatafilter(loggerList.value);
     }
   }, [loggerList.value, connectval.value]);

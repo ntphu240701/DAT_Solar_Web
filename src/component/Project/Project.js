@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
 import { ruleInfor, Token, partnerInfor, userInfor } from "../../App";
 import { useIntl } from "react-intl";
-
+import { FaStar  } from "react-icons/fa";
 import { FaCheckCircle, FaRegFileAlt } from "react-icons/fa";
 import { MdOutlineError, MdEdit, MdDelete, MdAddchart } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
@@ -280,7 +280,14 @@ export default function Project(props) {
     {
       name: dataLang.formatMessage({ id: "edit" }),
       selector: (row) => (
-        <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            // gap: "15px",
+          }}
+        >
           {ruleInfor.value.setting.project.modify == true ||
           ruleInfor.value.setting.project.remove == true ? (
             <div className="DAT_TableEdit">
@@ -338,9 +345,22 @@ export default function Project(props) {
               <div></div>
             )}
           </div>
-        </>
+          <div className="DAT_TableMark">
+            <FaStar 
+              id="icon"
+              style={{
+                cursor: "pointer",
+                // color: "grey"
+              }}
+              size={17}
+            />
+          </div>
+        </div>
       ),
       width: "110px",
+      // display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
     },
   ];
 
