@@ -20,7 +20,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit, FiFilter } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
 
 export const tab = signal("logger");
@@ -43,6 +43,7 @@ export default function Device(props) {
   const [plantid, setPlantid] = useState("");
   const [snlogger, setSnlogger] = useState("");
   const [datafilter, setDatafilter] = useState([]);
+  const [display, setDisplay] = useState(false);
 
   const listTab = [
     { id: "logger", name: "Logger" },
@@ -765,6 +766,18 @@ export default function Device(props) {
                 </span>
               );
             })}
+
+            <div className="DAT_Device_Filter"
+              onClick={(e) => setDisplay(!display)}
+            >
+              <FiFilter />
+              <IoIosArrowDown
+                style={{
+                  transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+                  transition: "0.5s",
+                }}
+              />
+            </div>
           </div>
 
           <div className="DAT_Device_Content">
@@ -810,6 +823,41 @@ export default function Device(props) {
                   return <></>;
               }
             })()}
+
+            <div className="DAT_Device_Content_FilterSub"
+              style={{
+                height: display ? "567px" : "0px",
+                transition: "0.5s",
+              }}
+            >
+              {display ? (
+                <div className="DAT_Device_Content_FilterSub_Dropdown"
+                  style={{
+                    height: display ? "200px" : "0px",
+                    transition: "0.5s",
+                  }}
+                >
+                  <div className="DAT_Device_Content_FilterSub_Dropdown_Item">
+                    <table className="DAT_Device_Content_FilterSub_Dropdown_Item_Table">
+                      <tbody>
+                        <tr className="DAT_Device_Content_FilterSub_Dropdown_Item_Table_Tr">
+                          <th className="DAT_Device_Content_FilterSub_Dropdown_Item_Table_Tr_Th">
+                            {dataLang.formatMessage({ id: "project" })}:
+                          </th>
+                          <td className="DAT_Device_Content_FilterSub_Dropdown_Item_Table_Tr_Td">
+                            <div className="DAT_Device_Content_FilterSub_Dropdown_Item_Table_Tr_Td_Checkbox">
+                              <input />
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
         </div>
       )}

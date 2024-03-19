@@ -6,6 +6,7 @@ import { isMobile } from "../Navigation/Navigation";
 import ProjectData from "./ProjectData";
 import EditProject from "./EditProject";
 import AddProject from "./AddProject";
+import Filter from "./Filter";
 import { sidebartab, sidebartabli } from "../Sidenar/Sidenar";
 import Popup from "./Popup";
 import { callApi } from "../Api/Api";
@@ -140,7 +141,7 @@ export default function Project(props) {
   const [invt, setInvt] = useState(0);
   const [power, setPower] = useState([]);
   const [dailyProduction, setDailyProduction] = useState([]);
-  const [display, setDisplay] = useState(true);
+  const [display, setDisplay] = useState(false);
   const navigate = useNavigate();
 
   const listTab = [
@@ -454,6 +455,11 @@ export default function Project(props) {
     } catch (e) {
       return { ret: 1, msg: "cloud err" };
     }
+  };
+
+  const handleCloseFilter = (min, max, location) => {
+    setDisplay(false);
+    console.log(min, max, location);
   };
 
   useEffect(() => {
@@ -1535,7 +1541,7 @@ export default function Project(props) {
               <FiFilter />
               <IoIosArrowDown
                 style={{
-                  transform: display ? "rotate(0deg)" : "rotate(-180deg)",
+                  transform: display ? "rotate(-180deg)" : "rotate(0deg)",
                   transition: "0.5s",
                 }}
               />
@@ -1609,24 +1615,12 @@ export default function Project(props) {
                   return <></>;
               }
             })()}
-          </div>
 
-          <div className="DAT_Project_FilterSub"
-            style={{
-              height: display ? "0px" : "567px",
-              transition: "0.5s",
-            }}
-          >
-            {display ? (
-              <div>
-
-              </div>
-            ) : (
-              <></>
-            )}
+            <Filter display={display} handleClose={handleCloseFilter} />
           </div>
-        </div>
-      )}
+        </div >
+      )
+      }
 
       <div className="DAT_ProjectInfor"
         style={{
@@ -1648,18 +1642,20 @@ export default function Project(props) {
         })()}
       </div>
 
-      {popupState.value ? (
-        <div className="DAT_DevicePopup">
-          <Popup
-            plantid={projectData.value.plantid}
-            func="remove"
-            type="plant"
-            usr={user}
-          />
-        </div>
-      ) : (
-        <></>
-      )}
+      {
+        popupState.value ? (
+          <div className="DAT_DevicePopup">
+            <Popup
+              plantid={projectData.value.plantid}
+              func="remove"
+              type="plant"
+              usr={user}
+            />
+          </div>
+        ) : (
+          <></>
+        )
+      }
     </>
   );
 }

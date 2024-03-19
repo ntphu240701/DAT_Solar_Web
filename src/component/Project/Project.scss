@@ -110,6 +110,7 @@
         -moz-box-sizing: border-box;
         /* Firefox, other Gecko */
         box-sizing: border-box;
+        position: relative;
     }
 
     &_Filter {
@@ -125,16 +126,6 @@
         text-overflow: ellipsis;
         display: flex;
         gap: 2px;
-    }
-
-    &_FilterSub {
-        position: fixed;
-        z-index: 30;
-        background-color: rgb(128, 128, 128, 0.5);
-        width: 1310px;
-        top: 165px;
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
     }
 }
 
@@ -1349,7 +1340,9 @@
 
                         // color: hwb(0 33% 67%);
                         &_Table {
-                            border: solid 1px #b8b8b8;
+                            border-top: solid 1px #b8b8b8;
+                            border-left: solid 1px #b8b8b8;
+                            border-right: solid 1px #b8b8b8;
 
                             & tr:first-child {
                                 border-bottom: solid 1px #b8b8b8;
