@@ -421,25 +421,20 @@ export default function Device(props) {
   // }, [connectval.value]);
 
   const handleSearch = (e) => {
-    const t = e.target.value.toLowerCase();
-    if (e.target.value == "") {
+    const searchTerm = e.currentTarget.value.toLowerCase();
+    if (searchTerm == "") {
       setDatafilter(loggerList.value);
-      console.log("1111111")
     } else {
-      const t = e.target.value;
-      console.log("22222")
-      // console.log(loggerList.value);
       const db = loggerList.value.filter((item) => {
         return (
-          item.pname.includes(t) ||
-          item.psn.includes(t) ||
-          item.pplantname.includes(t) ||
-          item.pname.toLowerCase().includes(t) ||
-          item.psn.toLowerCase().includes(t) ||
-          item.pplantname.toLowerCase().includes(t)
+          item.pname.toLowerCase().includes(searchTerm) ||
+          item.psn.toLowerCase().includes(searchTerm) ||
+          item.pplantname.toLowerCase().includes(searchTerm) ||
+          item.pname.toLowerCase().toLowerCase().includes(searchTerm) ||
+          item.psn.toLowerCase().toLowerCase().includes(searchTerm) ||
+          item.pplantname.toLowerCase().includes(searchTerm)
         );
       });
-      // console.log(db);
       setDatafilter([...db]);
     }
   };
@@ -451,12 +446,10 @@ export default function Device(props) {
           item.pplantname.includes(connectval.value) ||
           item.pplantname.toLowerCase().includes(connectval.value)
       );
-      // console.log(filter)
       setDatafilter([...filter]);
       let d = document.getElementById("search");
       d.value = connectval.value;
     } else {
-      // console.log("55555")
       setDatafilter(loggerList.value);
     }
   }, [loggerList.value, connectval.value]);

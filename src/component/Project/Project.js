@@ -218,6 +218,8 @@ export default function Project(props) {
           onClick={(e) => {
             projectwarnfilter.value = e.currentTarget.id;
             warnfilter.value = {};
+            sidebartab.value = "Monitor";
+            sidebartabli.value = "/Warn";
             navigate("/Warn");
           }}
         >
