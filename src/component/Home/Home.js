@@ -946,7 +946,6 @@ export default function Home(props) {
                   }}
                 >
                   {online}
-                  <span></span><span></span><span></span><span></span>
                 </span>
               </div>
             </div>
