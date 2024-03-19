@@ -89,11 +89,11 @@ export default function Home(props) {
   const keyframes = `
   @keyframes home {
     0% { background-position: -1200px ${parseFloat(
-      per
-    )}px, -800px ${per}px, -400px ${per}px; }
+    per
+  )}px, -800px ${per}px, -400px ${per}px; }
     100% { background-position: 200px ${parseFloat(
-      per
-    )}px;, 100x ${per}px, 0px ${per}px; }
+    per
+  )}px;, 100x ${per}px, 0px ${per}px; }
   }
 `;
 
@@ -153,8 +153,8 @@ export default function Home(props) {
         parseFloat(sun[row.plantid]).toFixed(2) === "NaN"
           ? 0
           : Number(
-              parseFloat(sun[row.plantid] / row.capacity).toFixed(2)
-            ).toLocaleString("en-US"),
+            parseFloat(sun[row.plantid] / row.capacity).toFixed(2)
+          ).toLocaleString("en-US"),
       sortable: true,
       width: "120px",
     },
@@ -622,8 +622,8 @@ export default function Home(props) {
                     ).toLocaleString("en-US") === "NaN"
                       ? "--"
                       : Number(
-                          parseFloat((production / capacity) * 100).toFixed(2)
-                        ).toLocaleString("en-US")}
+                        parseFloat((production / capacity) * 100).toFixed(2)
+                      ).toLocaleString("en-US")}
                   </div>
 
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">
@@ -878,7 +878,7 @@ export default function Home(props) {
                           ...datamonth.map(
                             (item) =>
                               item[
-                                dataLang.formatMessage({ id: "monthOutput" })
+                              dataLang.formatMessage({ id: "monthOutput" })
                               ]
                           )
                         ),
