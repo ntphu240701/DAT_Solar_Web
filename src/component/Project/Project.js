@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Project.scss";
 
 import DataTable from "react-data-table-component";
-import { isMobile } from "../Navigation/Navigation";
+import { isMobile, warnfilter } from "../Navigation/Navigation";
 import ProjectData from "./ProjectData";
 import EditProject from "./EditProject";
 import AddProject from "./AddProject";
@@ -130,6 +130,7 @@ export const Inverter = signal([
   //   updated: "12/30/2023 12:07:12",
   // },
 ]);
+export const projectwarnfilter = signal(0);
 
 export default function Project(props) {
   const dataLang = useIntl();
@@ -147,7 +148,7 @@ export default function Project(props) {
     { id: "online", name: dataLang.formatMessage({ id: "online" }) },
     { id: "offline", name: dataLang.formatMessage({ id: "offline" }) },
     { id: "warn", name: dataLang.formatMessage({ id: "warn" }) },
-    { id: "demo", name: dataLang.formatMessage({ id: 'demo' }) },
+    { id: "demo", name: dataLang.formatMessage({ id: "demo" }) },
   ];
 
   const paginationComponentOptions = {
@@ -190,7 +191,10 @@ export default function Project(props) {
         <div
           style={{ cursor: "pointer" }}
           id={row.plantname}
-          onClick={(e) => { connectval.value = e.currentTarget.id; navigate("/Device")}}
+          onClick={(e) => {
+            connectval.value = e.currentTarget.id;
+            navigate("/Device");
+          }}
         >
           {row.state === 1 ? (
             <FaCheckCircle size={20} color="green" />
@@ -204,7 +208,15 @@ export default function Project(props) {
     {
       name: dataLang.formatMessage({ id: "warn" }),
       selector: (row) => (
-        <div style={{ cursor: "pointer" }} id={row.plantname} onClick={(e) => {navigate("/Warn")}}>
+        <div
+          style={{ cursor: "pointer" }}
+          id={row.plantid}
+          onClick={(e) => {
+            projectwarnfilter.value = e.currentTarget.id;
+            warnfilter.value = {};
+            navigate("/Warn");
+          }}
+        >
           {row.warn === 1 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (

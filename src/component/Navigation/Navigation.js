@@ -17,7 +17,7 @@ import { BsFillMenuButtonWideFill } from "react-icons/bs";
 import { IoIosNotificationsOutline, IoMdClose } from "react-icons/io";
 import { MdOutlineLanguage } from "react-icons/md";
 import { FaRegMessage } from "react-icons/fa6";
-import { plantState } from "../Project/Project";
+import { plantState, projectwarnfilter } from "../Project/Project";
 import { IoLogInOutline } from "react-icons/io5";
 import { PiUserCircle } from "react-icons/pi";
 
@@ -109,7 +109,7 @@ export default function Navigation(props) {
         type: userInfor.value.type,
       });
 
-      // console.log(warn);
+      console.log(warn);
     };
     checkApi();
 
@@ -199,6 +199,7 @@ export default function Navigation(props) {
   }, [dataWarn.value]);
 
   const handleFilterWarn = (e) => {
+    projectwarnfilter.value = 0;
     warnfilter.value = dataWarn.value.find(
       (item) => item.warnid == e.currentTarget.id
     );

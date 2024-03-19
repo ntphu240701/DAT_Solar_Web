@@ -200,6 +200,7 @@ export default function App() {
               closedtime: item.closedtime_,
               level: item.level_,
               state: item.state_, // 1:false, 0:true
+              plantid: item.plantid_,
             },
           ];
         });

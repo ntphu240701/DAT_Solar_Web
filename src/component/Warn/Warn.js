@@ -3,7 +3,7 @@ import "./Warn.scss";
 
 import DataTable from "react-data-table-component";
 import { signal } from "@preact/signals-react";
-import { Empty } from "../Project/Project";
+import { Empty, projectwarnfilter } from "../Project/Project";
 import { isMobile, warnfilter } from "../Navigation/Navigation";
 import SettingWarn from "./SettingWarn";
 import RaiseBox from "./RaiseBox";
@@ -35,7 +35,7 @@ export const dataWarn = signal([]);
 export default function Warn(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
-  const [type, setType] = useState('project');
+  const [type, setType] = useState("project");
   const [datafilter, setDatafilter] = useState([]);
 
   const listTab = [
@@ -124,7 +124,7 @@ export default function Warn(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.warn.modify === true ||
-            ruleInfor.value.setting.warn.remove === true ? (
+          ruleInfor.value.setting.warn.remove === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.boxid + "" + row.warnid + "_MORE"}
@@ -200,21 +200,27 @@ export default function Warn(props) {
   };
 
   const changeData = (e) => {
-    if (e.target.value == ' ') {
+    if (e.target.value == " ") {
       setDatafilter(dataWarn.value);
     } else {
-      const t = e.target.value
+      const t = e.target.value;
       const df = dataWarn.value.filter((item) => {
         switch (type) {
-          case 'code':
-            return item.boxid.includes(t) || item.boxid.toLowerCase().includes(t);
-          case 'device':
-            return item.device.includes(t) || item.device.toLowerCase().includes(t);
+          case "code":
+            return (
+              item.boxid.includes(t) || item.boxid.toLowerCase().includes(t)
+            );
+          case "device":
+            return (
+              item.device.includes(t) || item.device.toLowerCase().includes(t)
+            );
           default:
-            return item.plant.includes(t) || item.plant.toLowerCase().includes(t);
+            return (
+              item.plant.includes(t) || item.plant.toLowerCase().includes(t)
+            );
         }
-      })
-      setDatafilter(df)
+      });
+      setDatafilter(df);
     }
   };
 
@@ -223,13 +229,15 @@ export default function Warn(props) {
     const searchTerm = e.currentTarget.value.toLowerCase();
 
     if (searchTerm === "") {
-      setDatafilter([...dataWarn.value])
+      setDatafilter([...dataWarn.value]);
       warnfilter.value = {};
+      projectwarnfilter.value = 0;
     } else {
-      let temp = dataWarn.value.filter((item) => {
-        const plantName = item.plant.toLowerCase();
-        return plantName.includes(searchTerm);
-      });
+      let temp = dataWarn.value.filter(
+        (item) =>
+          item.plant.toLowerCase().includes(searchTerm)
+          // item.device.toLowerCase().includes(searchTerm)
+      );
       console.log(temp);
       setDatafilter([...temp]);
       warnfilter.value = {};
@@ -238,21 +246,41 @@ export default function Warn(props) {
 
   // by Mr Loc
   useEffect(() => {
+    // console.log(warnfilter.value);
     if (warnfilter.value.device) {
       console.log(warnfilter.value);
       let d = document.getElementById("warnsearch");
       d.value = warnfilter.value.device;
       let temp_ = dataWarn.value.filter(
-        (item) => item.warnid == warnfilter.value.warnid
+        (item) => item.warnid ==  warnfilter.value.warnid
       );
       setDatafilter([...temp_]);
+   
     }
-  }, [dataWarn.value, warnfilter.value]);
+    else if (projectwarnfilter.value !== 0) {
+      // console.log(projectwarnfilter.value);
+     
+      
+      let t = dataWarn.value.filter(
+       
+         (item) => item.plantid == projectwarnfilter.value
+      );
+      let d = document.getElementById("warnsearch");
+      d.value = t[0]?.plant || "";
+      setDatafilter([...t]);
+      
+    }else{
+
+    }
+
+  }, [dataWarn.value, warnfilter.value, projectwarnfilter.value]);
 
   // by Mr Loc
   useEffect(() => {
     tabLable.value = listTab[0].name;
-    if (warnfilter.value.device === undefined) {
+    console.log(warnfilter.value.device,projectwarnfilter.value);
+    if (warnfilter.value.device === undefined && Number(projectwarnfilter.value) === 0) {
+      console.log("ok");
       setDatafilter([...dataWarn.value]);
     }
 
@@ -275,7 +303,6 @@ export default function Warn(props) {
   //     console.log(temp);
   //   }
   // };
-
 
   return (
     <>
@@ -311,7 +338,7 @@ export default function Warn(props) {
                 <input
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterWarn" })}
-                // onChange={(e) => handlefilterwarn(e)}
+                  // onChange={(e) => handlefilterwarn(e)}
                 />
                 <div
                   className="DAT_Modify_Filter_Close"

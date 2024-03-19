@@ -440,7 +440,7 @@ export default function Device(props) {
 
   useEffect(() => {
     if (connectval.value) {
-      console.log(connectval.value, loggerList.value);
+      // console.log(connectval.value, loggerList.value);
       let filter = loggerList.value.filter(
         (item) =>
           item.pplantname.includes(connectval.value) ||
