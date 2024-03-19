@@ -1094,7 +1094,10 @@ export default function ProjectData(props) {
               )}
               <div
                 className="DAT_ProjectData_Header_Right_Close"
-                onClick={() => (plantState.value = "default")}
+                onClick={() => {
+                  (plantState.value = "default");
+                  (dropState.value = false);
+                }}
               >
                 <RxCross2 size={20} color="white" />
               </div>
@@ -1280,7 +1283,7 @@ export default function ProjectData(props) {
                               setDropConfig(!dropConfig);
                             }}
                           >
-                            {dataLang.formatMessage({ id: 'choosePara' })}
+                            {configname}
                           </button>
                         </div>
 
@@ -1341,58 +1344,293 @@ export default function ProjectData(props) {
                             transition: "0.5s",
                           }}
                         >
-                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Search">
-                            <input
-                              type="text"
-                              placeholder={dataLang.formatMessage({
-                                id: "enterPara",
-                              })}
-                            />
-                            <CiSearch size={20} />
-                          </div>
                           <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
-                            <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
-                              <tbody>
-                                <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-                                  <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                    {dataLang.formatMessage({
-                                      id: "production",
-                                    })}
-                                  </th>
-                                  <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                    <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                      <input id="Production" type="checkbox" />
-                                      <label htmlFor="Production">
-                                        {dataLang.formatMessage({ id: 'production' })}
-                                      </label>
-                                    </div>
-                                  </td>
-                                </tr>
-                                {/* <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-                                  <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                    {dataLang.formatMessage({ id: "envi" })}
-                                  </th>
-                                  <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                    <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                      <input id="Weather" type="checkbox" />
-                                      <label htmlFor="Weather">
-                                        {dataLang.formatMessage({
-                                          id: "weather",
-                                        })}
-                                      </label>
-                                    </div>
-                                    <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                      <input id="Temperature" type="checkbox" />
-                                      <label htmlFor="Temperature">
-                                        {dataLang.formatMessage({
-                                          id: "temperature",
-                                        })}
-                                      </label>
-                                    </div>
-                                  </td>
-                                </tr> */}
-                              </tbody>
-                            </table>
+                            {(() => {
+                              switch (projectData.value.plantmode) {
+                                case "consumption":
+                                  return (
+                                    <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                                      <tbody>
+                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                            {dataLang.formatMessage({ id: "production" })}
+                                          </th>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'production' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+
+                                      <tbody>
+                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                            {dataLang.formatMessage({ id: "consumption" })}
+                                          </th>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'consumption' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+
+                                      <tbody>
+                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                            {dataLang.formatMessage({ id: "grid" })}
+                                          </th>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'gridfeed' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'purchaseE' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  )
+                                case "hybrid":
+                                  return (
+                                    <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                                      <tbody>
+                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                            {dataLang.formatMessage({ id: "production" })}
+                                          </th>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'production' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+
+                                      <tbody>
+                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                            {dataLang.formatMessage({ id: "consumption" })}
+                                          </th>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'consumption' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+
+                                      <tbody>
+                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                            {dataLang.formatMessage({ id: "grid" })}
+                                          </th>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'grid' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'gridfeed' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'purchaseE' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+
+                                      <tbody>
+                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                            {dataLang.formatMessage({ id: "batteryData" })}
+                                          </th>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'batteryData' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'charge' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'discharge' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  )
+                                case "ESS":
+                                  return (
+                                    <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                                      <tbody>
+                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                            {dataLang.formatMessage({ id: "production" })}
+                                          </th>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'production' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+
+                                      <tbody>
+                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                            {dataLang.formatMessage({ id: "consumption" })}
+                                          </th>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'consumption' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+
+                                      <tbody>
+                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                            {dataLang.formatMessage({ id: "grid" })}
+                                          </th>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'grid' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'gridfeed' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'purchaseE' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+
+                                      <tbody>
+                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                            {dataLang.formatMessage({ id: "batteryData" })}
+                                          </th>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'batteryData' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'charge' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'discharge' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  )
+                                default:
+                                  return (
+                                    <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                                      <tbody>
+                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                            {dataLang.formatMessage({
+                                              id: "production",
+                                            })}
+                                          </th>
+                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                              <input id="Production" type="checkbox" />
+                                              <label htmlFor="Production">
+                                                {dataLang.formatMessage({ id: 'production' })}
+                                              </label>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  )
+                              }
+                            })()}
                           </div>
                         </div>
                       ) : (
@@ -3136,8 +3374,8 @@ const Production = (props) => {
 
   const keyframes = `
     @keyframes plant {
-      0% { background-position: -1200px ${parseFloat(per)}px, -800px ${per}px, -400px ${per}px; }
-      100% { background-position: 200px ${parseFloat(per)}px;, 100x ${per}px, 0px ${per}px; }
+      0% { background-position: -1200px ${parseFloat(per)}px, -800px ${per}px, -400px ${per}px}
+      100% { background-position: 200px ${parseFloat(per)}px;, 100x ${per}px, 0px ${per}px}
     }`;
 
   const divStyle = {
@@ -3145,7 +3383,6 @@ const Production = (props) => {
     animationDuration: '30s',
     animationTimingFunction: 'linear',
     animationIterationCount: 'infinite',
-
   };
 
   return (

@@ -5,6 +5,7 @@ import { sidenar } from "../../component/Sidenar/Sidenar";
 import { Link, useNavigate } from "react-router-dom";
 import { signal } from "@preact/signals-react";
 import { partnerInfor, phuhosting, userInfor } from "../../App";
+import { sidebartab, sidebartabli } from "../../component/Sidenar/Sidenar";
 import { useDispatch, useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
@@ -28,7 +29,7 @@ const messageNav = signal(false);
 const messageContent = signal([]);
 const messageOption = signal("default");
 
-export const warnfilter = signal({warnid: ""});
+export const warnfilter = signal({ warnid: "" });
 export const isMobile = signal(false);
 export const notifNav = signal(false);
 export const message = signal([
@@ -242,7 +243,8 @@ export default function Navigation(props) {
           <button
             className="DAT_Navigation_right-item"
             id="notif"
-            onClick={() => (notifNav.value = !notifNav.value)}
+            onClick={() =>
+              (notifNav.value = !notifNav.value)}
             ref={notif_icon}
           >
             <IoIosNotificationsOutline color="white" size={22} />
@@ -476,7 +478,11 @@ export default function Navigation(props) {
                                 <div
                                   className="DAT_NavNotif-content-main-group-content"
                                   id={item.warnid}
-                                  onClick={(e) => handleFilterWarn(e)}
+                                  onClick={(e) => {
+                                    handleFilterWarn(e);
+                                    sidebartab.value = "Monitor";
+                                    sidebartabli.value = "/Warn"
+                                  }}
                                 >
                                   <div className="DAT_NavNotif-content-main-group-content-tit">
                                     {dataLang.formatMessage({ id: item.boxid })}

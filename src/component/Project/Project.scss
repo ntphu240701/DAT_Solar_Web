@@ -110,6 +110,22 @@
         -moz-box-sizing: border-box;
         /* Firefox, other Gecko */
         box-sizing: border-box;
+        position: relative;
+    }
+
+    &_Filter {
+        cursor: pointer;
+        max-width: 350px;
+        font-size: 14px;
+        color: rgb(80, 80, 80);
+        background-color: #dadada;
+        padding: 10px 25px 10px 25px;
+        margin-top: 2px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: flex;
+        gap: 2px;
     }
 }
 
@@ -555,6 +571,7 @@
                 border-radius: 5px;
                 overflow: hidden;
 
+
                 // &_Right {
                 //     width: 60%;
 
@@ -677,8 +694,7 @@
                                 display: flex;
                             }
 
-                            &_B {
-                            }
+                            &_B {}
                         }
 
                         &_Grid {
@@ -712,8 +728,7 @@
 
                         // background-color: #3e80fb;
 
-                        &_P {
-                        }
+                        &_P {}
                     }
 
                     &_SingleLine {
@@ -984,6 +999,7 @@
                                 display: flex;
                                 align-items: center;
                                 min-width: 70px;
+
                             }
 
                             &_Data {
@@ -1058,6 +1074,7 @@
                                     display: flex;
                                     justify-content: center;
                                     gap: 2px;
+
                                 }
 
                                 &_Describe {
@@ -1170,12 +1187,12 @@
                 overflow: hidden;
 
                 &_Left {
-                    flex: 1;
+                    flex: 2;
                     min-width: 80px;
                 }
 
                 &_Right {
-                    flex: 9;
+                    flex: 8;
                     display: flex;
                     flex-wrap: wrap;
                     overflow: hidden;
@@ -1323,7 +1340,9 @@
 
                         // color: hwb(0 33% 67%);
                         &_Table {
-                            border: solid 1px #b8b8b8;
+                            border-top: solid 1px #b8b8b8;
+                            border-left: solid 1px #b8b8b8;
+                            border-right: solid 1px #b8b8b8;
 
                             & tr:first-child {
                                 border-bottom: solid 1px #b8b8b8;
@@ -1468,6 +1487,8 @@
                             }
                         }
                     }
+
+
                 }
             }
 
@@ -1671,8 +1692,7 @@
                         justify-content: center;
                         gap: 5px;
 
-                        &_Item {
-                        }
+                        &_Item {}
                     }
                 }
             }
@@ -2449,6 +2469,7 @@
                     }
                 }
             }
+
         }
     }
 }
@@ -3040,6 +3061,7 @@
                     }
                 }
             }
+
         }
     }
 }
@@ -3578,6 +3600,7 @@
                                 }
                             }
                         }
+
                     }
 
                     &_Consumption {
@@ -3621,11 +3644,9 @@
                 }
             }
 
-            &_History {
-            }
+            &_History {}
 
-            &_More {
-            }
+            &_More {}
         }
 
         &_Device {

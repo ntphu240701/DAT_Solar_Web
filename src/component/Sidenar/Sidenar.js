@@ -15,8 +15,8 @@ import { VscDashboard } from "react-icons/vsc";
 
 export const sidenar = signal(true);
 
-const tab = signal("Dashboard");
-const tabli = signal("none");
+export const sidebartab = signal("Dashboard");
+export const sidebartabli = signal("none");
 
 export default function Sidenar(props) {
   //Datalang
@@ -78,16 +78,16 @@ export default function Sidenar(props) {
   const handleMenu = (e) => {
     const ID = e.currentTarget.id;
     console.log(ID);
-    tab.value = ID;
+    sidebartab.value = ID;
     if (data[ID].li.length === 0) {
-      tabli.value = "none";
+      sidebartabli.value = "none";
     }
   };
 
   const handleMenuLi = (e) => {
     const ID = e.currentTarget.id;
     console.log(ID);
-    tabli.value = ID;
+    sidebartabli.value = ID;
   };
 
   const Menu = (id, label) => {
@@ -100,7 +100,7 @@ export default function Sidenar(props) {
       >
         <div className="DAT_Sidenar_Content-icon"
           style={{
-            color: tab.value === id ? dataColor.cur.color : dataColor.pre.color,
+            color: sidebartab.value === id ? dataColor.cur.color : dataColor.pre.color,
           }}
         >
           {data[id].icon}
@@ -109,7 +109,7 @@ export default function Sidenar(props) {
           <label
             style={{
               color:
-                tab.value === id ? dataColor.cur.color : dataColor.pre.color,
+                sidebartab.value === id ? dataColor.cur.color : dataColor.pre.color,
             }}
           >
             {label}
@@ -119,7 +119,7 @@ export default function Sidenar(props) {
             <label
               style={{
                 color:
-                  tab.value === id ? dataColor.cur.color : dataColor.pre.color,
+                  sidebartab.value === id ? dataColor.cur.color : dataColor.pre.color,
               }}
             >
               {label}
@@ -131,7 +131,7 @@ export default function Sidenar(props) {
         >
           {data[id].li.length === 0 ? (
             <></>
-          ) : tab.value === id ? (
+          ) : sidebartab.value === id ? (
             <IoIosArrowDown color="gray" />
           ) : (
             <IoIosArrowForward color="gray" />
@@ -161,7 +161,7 @@ export default function Sidenar(props) {
                   }}
                   style={{
                     color:
-                      tabli.value === data.link
+                      sidebartabli.value === data.link
                         ? dataColor.cur.color
                         : dataColor.pre.color,
                   }}
@@ -189,14 +189,14 @@ export default function Sidenar(props) {
           {Menu("Dashboard", dataLang.formatMessage({ id: 'dashboard' }))}
 
           {Menu("Monitor", dataLang.formatMessage({ id: 'monitor' }))}
-          {tab.value === "Monitor" ? <>{MenuLi("Monitor")}</> : <></>}
+          {sidebartab.value === "Monitor" ? <>{MenuLi("Monitor")}</> : <></>}
 
           {Menu("Analytics", dataLang.formatMessage({ id: 'maintain' }))}
-          {tab.value === "Analytics" ? <>{MenuLi("Analytics")}</> : <></>}
+          {sidebartab.value === "Analytics" ? <>{MenuLi("Analytics")}</> : <></>}
           {/* {Menu("Notif", "Thông báo")} */}
 
           {Menu("Setting", dataLang.formatMessage({ id: 'setting' }))}
-          {tab.value === "Setting" ? <>{MenuLi("Setting")}</> : <></>}
+          {sidebartab.value === "Setting" ? <>{MenuLi("Setting")}</> : <></>}
         </div>
       </div>
       <div className="DAT_User"

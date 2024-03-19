@@ -6,8 +6,9 @@ import { isMobile, warnfilter } from "../Navigation/Navigation";
 import ProjectData from "./ProjectData";
 import EditProject from "./EditProject";
 import AddProject from "./AddProject";
+import Filter from "./Filter";
+import { sidebartab, sidebartabli } from "../Sidenar/Sidenar";
 import Popup from "./Popup";
-// import { lowerCase } from "lodash";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { useSelector } from "react-redux";
@@ -22,11 +23,11 @@ import { GoPencil, GoProject } from "react-icons/go";
 import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit, FiFilter } from "react-icons/fi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export const tab = signal("total");
+export const projtab = signal("total");
 const tabLable = signal("");
 const tabMobile = signal(false);
 const online = signal([]);
@@ -141,6 +142,7 @@ export default function Project(props) {
   const [invt, setInvt] = useState(0);
   const [power, setPower] = useState([]);
   const [dailyProduction, setDailyProduction] = useState([]);
+  const [display, setDisplay] = useState(false);
   const navigate = useNavigate();
 
   const listTab = [
@@ -193,6 +195,8 @@ export default function Project(props) {
           id={row.plantname}
           onClick={(e) => {
             connectval.value = e.currentTarget.id;
+            sidebartab.value = "Monitor";
+            sidebartabli.value = "/Device";
             navigate("/Device");
           }}
         >
@@ -203,7 +207,7 @@ export default function Project(props) {
           )}
         </div>
       ),
-      width: "100px",
+      width: "80px",
     },
     {
       name: dataLang.formatMessage({ id: "warn" }),
@@ -224,13 +228,13 @@ export default function Project(props) {
           )}
         </div>
       ),
-      width: "100px",
+      width: "80px",
     },
     {
       name: dataLang.formatMessage({ id: "inCapacity" }),
       selector: (row) => row.capacity + " kWp",
       sortable: true,
-      width: "180px",
+      width: "160px",
     },
     {
       name: dataLang.formatMessage({ id: "daily" }),
@@ -238,10 +242,10 @@ export default function Project(props) {
         parseFloat(dailyProduction[row.plantid]).toFixed(2) === "NaN"
           ? 0 + " kWh"
           : Number(
-              parseFloat(dailyProduction[row.plantid]).toFixed(2)
-            ).toLocaleString("en-US") + " kWh",
+            parseFloat(dailyProduction[row.plantid]).toFixed(2)
+          ).toLocaleString("en-US") + " kWh",
       sortable: true,
-      width: "180px",
+      width: "160px",
     },
     {
       name: dataLang.formatMessage({ id: "power" }),
@@ -249,12 +253,12 @@ export default function Project(props) {
         parseFloat(power[row.plantid]).toFixed(2) === "NaN"
           ? 0 + " %"
           : Number(
-              parseFloat(
-                (power[row.plantid] / 1000 / row.capacity) * 100
-              ).toFixed(2)
-            ).toLocaleString("en-US") + " %",
+            parseFloat(
+              (power[row.plantid] / 1000 / row.capacity) * 100
+            ).toFixed(2)
+          ).toLocaleString("en-US") + " %",
       sortable: true,
-      width: "180px",
+      width: "160px",
     },
     // {
     //   name: "Tag",
@@ -289,7 +293,7 @@ export default function Project(props) {
           }}
         >
           {ruleInfor.value.setting.project.modify == true ||
-          ruleInfor.value.setting.project.remove == true ? (
+            ruleInfor.value.setting.project.remove == true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.plantid + "_MORE"}
@@ -370,6 +374,11 @@ export default function Project(props) {
       (item) => item.plantid == e.currentTarget.id
     );
     projectData.value = newPlant;
+
+    // const newDevicePlant = devicePlant.value.filter(
+    //   (item) => item.plantId == e.currentTarget.id
+    // );
+    // deviceData.value = newDevicePlant;
   };
 
   const handleEdit = (e) => {
@@ -397,9 +406,17 @@ export default function Project(props) {
 
   const handleTabMobile = (e) => {
     const id = e.currentTarget.id;
-    tab.value = id;
+    projtab.value = id;
     const newLabel = listTab.find((item) => item.id == id);
     tabLable.value = newLabel.name;
+  };
+
+  const pickTypeFilter = (e) => {
+    setType(e.target.value);
+    let search = document.getElementById("search");
+    search.placeholder =
+      dataLang.formatMessage({ id: "enter" }) +
+      dataLang.formatMessage({ id: e.target.value });
   };
 
   const handleSearch = (e) => {
@@ -408,32 +425,31 @@ export default function Project(props) {
     } else {
       const t = e.target.value;
       const db = dataproject.value.filter((row) =>
-        // item.name.includes(t)
-        {
-          switch (type) {
-            // case "name":
-            //   return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
-            // return (console.log(row.plantname.includes(t) || row.plantname.toLowerCase().includes(t)));
-            case "inCapacity":
-              return String(row.capacity) == t;
-            case "production":
-              return String(row.production) == t;
-            case "power":
-              return String(row.power) == t;
-            // case "lastupdate":
-            //   return String(row.lastupdate) == t;
-            // case "createdate":
-            //   return String(row.createdate) == t;
-            default:
-              return (
-                row.plantname.includes(t) ||
-                row.plantname.toLowerCase().includes(t)
-              );
-            // return row.name.toLowerCase().includes(t);
-          }
+      // item.name.includes(t)
+      {
+        switch (type) {
+          // case "name":
+          //   return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
+          // return (console.log(row.plantname.includes(t) || row.plantname.toLowerCase().includes(t)));
+          case "inCapacity":
+            return String(row.capacity) == t;
+          case "production":
+            return String(row.production) == t;
+          case "power":
+            return String(row.power) == t;
+          // case "lastupdate":
+          //   return String(row.lastupdate) == t;
+          // case "createdate":
+          //   return String(row.createdate) == t;
+          default:
+            return (
+              row.plantname.includes(t) ||
+              row.plantname.toLowerCase().includes(t)
+            );
+          // return row.name.toLowerCase().includes(t);
         }
+      }
       );
-      console.log(db);
       setDatafilter(db);
     }
   };
@@ -464,6 +480,11 @@ export default function Project(props) {
     } catch (e) {
       return { ret: 1, msg: "cloud err" };
     }
+  };
+
+  const handleCloseFilter = (min, max, location) => {
+    setDisplay(false);
+    console.log(min, max, location);
   };
 
   useEffect(() => {
@@ -518,12 +539,6 @@ export default function Project(props) {
     };
   }, []);
 
-  // useEffect(() => {
-  //   if (ruleInfor.value) {
-  //     console.log(ruleInfor.value);
-  //   }
-  // }, [ruleInfor.value]);
-
   useEffect(() => {
     var cal = {};
     var num_ = {
@@ -545,7 +560,6 @@ export default function Project(props) {
     let daily_ = {};
     let power_ = {};
     logger.value.map((item, i) => {
-      // console.log(item)
       Object.entries(item.pdata).map(([key, value]) => {
         switch (value.type) {
           case "sum":
@@ -578,19 +592,14 @@ export default function Project(props) {
             }
 
             if (i == logger.value.length - 1) {
-              // if (invt[item.psn]?.enabled == 1) {
               cal[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
                 }, 0) / 1000
               ).toFixed(2);
-              // } else {
-              // cal[key] = 0
-              // }
             }
             break;
           case "word":
-            //console.log(key, value)
             let d = JSON.parse(value.register);
             let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]] || 0];
 
@@ -610,7 +619,6 @@ export default function Project(props) {
             num_[key][i] = convertToDoublewordAndFloat(e, "int");
 
             if (i == logger.value.length - 1) {
-              //console.log(num_)
               cal[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
@@ -638,22 +646,9 @@ export default function Project(props) {
         }
       });
     });
-    // console.log(power_)
+
     setDailyProduction(daily_);
     setPower(power_);
-    // // plant.value.map((item, i) => {
-    // //   item.sun = sun_[i]?.value
-    // // })
-    // // console.log(sun_)
-    // getPrice(plant.value, logger.value)
-    // setProduction(cal?.pro_1 || 0)
-    // setDailyProduction(cal?.pro_2 || 0)
-    // setTotalProduction(cal?.pro_3 || 0)
-
-    // coalsave.value = {
-    //   ...coalsave.value,
-    //   value: cal.pro_3
-    // }
   }, [invt, user]);
 
   return (
@@ -817,6 +812,7 @@ export default function Project(props) {
                     </div>
                   );
                 })}
+
               </div>
             ) : (
               <></>
@@ -824,7 +820,7 @@ export default function Project(props) {
           </div>
 
           {(() => {
-            switch (tab.value) {
+            switch (projtab.value) {
               case "total":
                 return (
                   <>
@@ -855,7 +851,7 @@ export default function Project(props) {
 
                                 <div className="DAT_ProjectMobile_Content_Top_Info_Name_Right">
                                   {ruleInfor.value.setting.project.modify ===
-                                  true ? (
+                                    true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
                                       id={item.plantid}
@@ -867,7 +863,7 @@ export default function Project(props) {
                                     <div></div>
                                   )}
                                   {ruleInfor.value.setting.project.modify ===
-                                  true ? (
+                                    true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
                                       id={item.plantid}
@@ -1534,7 +1530,7 @@ export default function Project(props) {
         <div className="DAT_Project">
           <div className="DAT_Toollist_Tab">
             {listTab.map((item, i) => {
-              return tab.value === item.id ? (
+              return projtab.value === item.id ? (
                 <div key={"tab_" + i} className="DAT_Toollist_Tab_main">
                   <p className="DAT_Toollist_Tab_main_left"></p>
                   <span
@@ -1545,7 +1541,7 @@ export default function Project(props) {
                       color: "black",
                       borderRadius: "10px 10px 0 0",
                     }}
-                    onClick={(e) => (tab.value = item.id)}
+                    onClick={(e) => (projtab.value = item.id)}
                   >
                     {item.name}
                   </span>
@@ -1557,17 +1553,29 @@ export default function Project(props) {
                   key={"tab_" + i}
                   id={item.id}
                   style={{ backgroundColor: "#dadada" }}
-                  onClick={(e) => (tab.value = item.id)}
+                  onClick={(e) => (projtab.value = item.id)}
                 >
                   {item.name}
                 </span>
               );
             })}
+
+            <div className="DAT_Project_Filter"
+              onClick={(e) => setDisplay(!display)}
+            >
+              <FiFilter />
+              <IoIosArrowDown
+                style={{
+                  transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+                  transition: "0.5s",
+                }}
+              />
+            </div>
           </div>
 
           <div className="DAT_Project_Content">
             {(() => {
-              switch (tab.value) {
+              switch (projtab.value) {
                 case "total":
                   return (
                     <DataTable
@@ -1632,12 +1640,14 @@ export default function Project(props) {
                   return <></>;
               }
             })()}
-          </div>
-        </div>
-      )}
 
-      <div
-        className="DAT_ProjectInfor"
+            <Filter display={display} handleClose={handleCloseFilter} />
+          </div>
+        </div >
+      )
+      }
+
+      <div className="DAT_ProjectInfor"
         style={{
           height: plantState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",
@@ -1657,18 +1667,20 @@ export default function Project(props) {
         })()}
       </div>
 
-      {popupState.value ? (
-        <div className="DAT_DevicePopup">
-          <Popup
-            plantid={projectData.value.plantid}
-            func="remove"
-            type="plant"
-            usr={user}
-          />
-        </div>
-      ) : (
-        <></>
-      )}
+      {
+        popupState.value ? (
+          <div className="DAT_DevicePopup">
+            <Popup
+              plantid={projectData.value.plantid}
+              func="remove"
+              type="plant"
+              usr={user}
+            />
+          </div>
+        ) : (
+          <></>
+        )
+      }
     </>
   );
 }

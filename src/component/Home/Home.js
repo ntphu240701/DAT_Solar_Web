@@ -13,7 +13,9 @@ import {
 } from "recharts";
 import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
-import { Empty, plantState, projectData, tab } from "../Project/Project";
+import ProjectData from "../Project/ProjectData";
+import { Empty, plantState, projectData, projtab } from "../Project/Project";
+import { sidebartab, sidebartabli } from "../Sidenar/Sidenar";
 import DataTable from "react-data-table-component";
 import { useSelector } from "react-redux";
 import { Token, partnerInfor, userInfor } from "../../App";
@@ -116,7 +118,7 @@ export default function Home(props) {
       name: dataLang.formatMessage({ id: "ordinalNumber" }),
       selector: (row, i) => i + 1,
       sortable: true,
-      minWidth: "80px",
+      width: "80px",
       style: {
         justifyContent: "center",
       },
@@ -127,13 +129,15 @@ export default function Home(props) {
         <div
           id={row.plantid}
           style={{ cursor: "pointer" }}
-          onClick={(e) => handleInfo(e)}
+          onClick={(e) => {
+            handleInfo(e);
+          }}
         >
           {row.plantname}
         </div>
       ),
       sortable: true,
-      minWidth: "150px",
+      minWidth: "180px",
       style: {
         justifyContent: "left",
       },
@@ -178,8 +182,8 @@ export default function Home(props) {
   const handleInfo = (e) => {
     const newPlant = project.find((item) => item.plantid == e.currentTarget.id);
     projectData.value = newPlant;
-    console.log(newPlant);
-    navigate("/project");
+    // console.log(newPlant);
+    // navigate("/project");
     plantState.value = "info";
   };
 
@@ -198,9 +202,11 @@ export default function Home(props) {
       });
       markerElement.addListener("click", () => {
         //console.log(item)
-        navigate("/project");
+        // navigate("/project");
         plantState.value = "info";
         projectData.value = item;
+        sidebartab.value = "Monitor";
+        sidebartabli.value = "/Project";
       });
       return markerElement;
     });
@@ -929,7 +935,9 @@ export default function Home(props) {
             <div
               className="DAT_Home_State-Content-Item"
               onClick={() => {
-                tab.value = "online";
+                sidebartab.value = "Monitor";
+                sidebartabli.value = "/Project";
+                projtab.value = "online";
                 navigate("/Project");
               }}
             >
@@ -953,7 +961,9 @@ export default function Home(props) {
             <div
               className="DAT_Home_State-Content-Item"
               onClick={() => {
-                tab.value = "offline";
+                sidebartab.value = "Monitor";
+                sidebartabli.value = "/Project";
+                projtab.value = "offline";
                 navigate("/Project");
               }}
             >
@@ -979,7 +989,9 @@ export default function Home(props) {
             <div
               className="DAT_Home_State-Content-Item"
               onClick={() => {
-                tab.value = "demo";
+                sidebartab.value = "Monitor";
+                sidebartabli.value = "/Project";
+                projtab.value = "demo";
                 navigate("/Project");
               }}
             >
@@ -1003,7 +1015,9 @@ export default function Home(props) {
             <div
               className="DAT_Home_State-Content-Item"
               onClick={() => {
-                tab.value = "warn";
+                sidebartab.value = "Monitor";
+                sidebartabli.value = "/Project";
+                projtab.value = "warn";
                 navigate("/Project");
               }}
             >
@@ -1171,6 +1185,21 @@ export default function Home(props) {
           </div>
         </div>
       </div>
+
+      {(() => {
+        switch (plantState.value) {
+          case "info":
+            return (
+              <div className="DAT_PlantHome">
+                <ProjectData />
+              </div>
+            )
+          default:
+            return (
+              <></>
+            )
+        }
+      })()}
     </>
   );
 }
