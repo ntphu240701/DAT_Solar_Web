@@ -119,18 +119,7 @@ export default function Popup(props) {
         </div>
 
         <div className="DAT_Popup_Box_Foot">
-          {/* <button
-          style={{
-            border: "1px solid #505050",
-            backgroundColor: "white",
-            color: "#505050",
-          }}
-          onClick={() => (popupState.value = false)}
-        >
-          {dataLang.formatMessage({ id: 'cancel' })}
-        </button> */}
           <button
-            // id={projectData.value.plantid}
             style={{ backgroundColor: "#048FFF", color: "white" }}
             onClick={(e) => handleDelete(e)}
           >
@@ -156,32 +145,11 @@ export default function Popup(props) {
         </div>
 
         <div className="DAT_Popup_Box_Body">
-          {/* <span>
-            {props.type === "plant" ?
-              dataLang.formatMessage({ id: 'delPlant' })
-              : dataLang.formatMessage({ id: 'delDevicemess' })}
-            &nbsp;
-            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {props.type === "plant" ? projectData.value.plantname : props.sn}
-            </span>
-          </span> */}
           <input type="text" placeholder={dataLang.formatMessage({ id: 'name' })} ref={name} />
-
         </div>
 
         <div className="DAT_Popup_Box_Foot">
-          {/* <button
-        style={{
-          border: "1px solid #505050",
-          backgroundColor: "white",
-          color: "#505050",
-        }}
-        onClick={() => (popupState.value = false)}
-      >
-        {dataLang.formatMessage({ id: 'cancel' })}
-      </button> */}
           <button
-            // id={projectData.value.plantid}
             style={{ backgroundColor: "#048FFF", color: "white" }}
             onClick={(e) => handleUpdate(e)}
           >
