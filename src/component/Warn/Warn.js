@@ -19,7 +19,6 @@ import { useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
 import { partnerInfor, phuhosting, ruleInfor, userInfor } from "../../App";
 import { IoTrashOutline } from "react-icons/io5";
-import { lowerCase } from "lodash";
 
 const tab = signal("all");
 const tabMobile = signal(false);
@@ -36,7 +35,7 @@ export const dataWarn = signal([]);
 export default function Warn(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
-  const [type, setType] = useState("project");
+  const [type, setType] = useState('project');
   const [datafilter, setDatafilter] = useState([]);
 
   const listTab = [
@@ -125,7 +124,7 @@ export default function Warn(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.warn.modify === true ||
-          ruleInfor.value.setting.warn.remove === true ? (
+            ruleInfor.value.setting.warn.remove === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.boxid + "" + row.warnid + "_MORE"}
@@ -200,27 +199,37 @@ export default function Warn(props) {
     tabLable.value = newLabel.name;
   };
 
-  const changeFilter = (e) => {
-    setType(e.currentTarget.value);
+  const changeData = (e) => {
+    if (e.target.value == ' ') {
+      setDatafilter(dataWarn.value);
+    } else {
+      const t = e.target.value
+      const df = dataWarn.value.filter((item) => {
+        switch (type) {
+          case 'code':
+            return item.boxid.includes(t) || item.boxid.toLowerCase().includes(t);
+          case 'device':
+            return item.device.includes(t) || item.device.toLowerCase().includes(t);
+          default:
+            return item.plant.includes(t) || item.plant.toLowerCase().includes(t);
+        }
+      })
+      setDatafilter(df)
+    }
   };
 
   // by Mr Loc
   const handleSearch = (e) => {
-    if (e.currentTarget.value === "") {
-      setDatafilter([...dataWarn.value]);
+    const searchTerm = e.currentTarget.value.toLowerCase();
+
+    if (searchTerm === "") {
+      setDatafilter([...dataWarn.value])
       warnfilter.value = {};
     } else {
-      let temp = dataWarn.value.filter(
-        (item) =>
-          item.plant.toLowerCase().includes(lowerCase(e.currentTarget.value)) ||
-          item.device
-            .toLowerCase()
-            .includes(e.currentTarget.value) ||
-          item.device
-            .toUpperCase()
-            .includes(e.currentTarget.value) ||
-          String(item.warnid).includes(e.currentTarget.value)
-      );
+      let temp = dataWarn.value.filter((item) => {
+        const plantName = item.plant.toLowerCase();
+        return plantName.includes(searchTerm);
+      });
       console.log(temp);
       setDatafilter([...temp]);
       warnfilter.value = {};
@@ -246,7 +255,27 @@ export default function Warn(props) {
     if (warnfilter.value.device === undefined) {
       setDatafilter([...dataWarn.value]);
     }
+
   }, [dataWarn.value]);
+
+  //by Mr  Tai
+
+  // useEffect(() => {
+  //   tabLable.value = listTab[0].name;
+  //   setDatafilter([...dataWarn.value]);
+  // }, [dataWarn.value]);
+
+  // const handleSearch = (e) => {
+  //   console.log(e.target.value);
+  //   // console.log(warnfilter.value.warnid);
+  //   // warnfilter.value.warnid = e.target.value;
+  //   if(warnfilter.value.warnid){
+  //     let temp = dataWarn.value.filter((item) => item.warnid == warnfilter.value.warnid);
+  //     setDatafilter(temp);
+  //     console.log(temp);
+  //   }
+  // };
+
 
   return (
     <>
@@ -282,7 +311,7 @@ export default function Warn(props) {
                 <input
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterWarn" })}
-                  // onChange={(e) => handlefilterwarn(e)}
+                // onChange={(e) => handlefilterwarn(e)}
                 />
                 <div
                   className="DAT_Modify_Filter_Close"
@@ -307,7 +336,8 @@ export default function Warn(props) {
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterWarn" })}
                 id="warnsearch"
-                // value={warnfilter.value?.warnid || ""}
+                // id={warnfilter.value.warnid}
+                // value={warnfilter.value.warnid}
                 onChange={(e) => handleSearch(e)}
               />
               <CiSearch color="gray" size={20} />

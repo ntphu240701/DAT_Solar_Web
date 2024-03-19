@@ -26,7 +26,7 @@ import { FiEdit } from "react-icons/fi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const tab = signal("total");
+export const tab = signal("total");
 const tabLable = signal("");
 const tabMobile = signal(false);
 const online = signal([]);
@@ -147,7 +147,7 @@ export default function Project(props) {
     { id: "online", name: dataLang.formatMessage({ id: "online" }) },
     { id: "offline", name: dataLang.formatMessage({ id: "offline" }) },
     { id: "warn", name: dataLang.formatMessage({ id: "warn" }) },
-    // { id: "demo", name: dataLang.formatMessage({ id: 'demo' }) },
+    { id: "demo", name: dataLang.formatMessage({ id: 'demo' }) },
   ];
 
   const paginationComponentOptions = {
@@ -164,6 +164,7 @@ export default function Project(props) {
         <div
           className="DAT_Table"
           id={row.plantid}
+          style={{ cursor: "pointer" }}
           onClick={(e) => handlePlant(e)}
         >
           <img
@@ -171,7 +172,7 @@ export default function Project(props) {
             alt=""
           />
 
-          <div className="DAT_Table_Infor" style={{ cursor: "pointer" }}>
+          <div className="DAT_Table_Infor">
             <div className="DAT_Table_Infor_Name">{row.plantname}</div>
             <div className="DAT_Table_Infor_Addr">{row.addr}</div>
           </div>
