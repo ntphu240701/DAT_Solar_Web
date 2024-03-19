@@ -131,15 +131,13 @@ export default function Home(props) {
           style={{ cursor: "pointer" }}
           onClick={(e) => {
             handleInfo(e);
-            sidebartab.value = "Monitor";
-            sidebartabli.value = "/Project"
           }}
         >
           {row.plantname}
         </div>
       ),
       sortable: true,
-      minWidth: "300px",
+      minWidth: "180px",
       style: {
         justifyContent: "left",
       },
