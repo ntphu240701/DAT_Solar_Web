@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
 import { ruleInfor, Token, partnerInfor, userInfor } from "../../App";
 import { useIntl } from "react-intl";
-import { FaStar  } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import { FaCheckCircle, FaRegFileAlt } from "react-icons/fa";
 import { MdOutlineError, MdEdit, MdDelete, MdAddchart } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
@@ -218,6 +218,8 @@ export default function Project(props) {
           onClick={(e) => {
             projectwarnfilter.value = e.currentTarget.id;
             warnfilter.value = {};
+            sidebartab.value = "Monitor";
+            sidebartabli.value = "/Warn";
             navigate("/Warn");
           }}
         >
@@ -350,7 +352,7 @@ export default function Project(props) {
             )}
           </div>
           <div className="DAT_TableMark">
-            <FaStar 
+            <FaStar
               id="icon"
               style={{
                 cursor: "pointer",
