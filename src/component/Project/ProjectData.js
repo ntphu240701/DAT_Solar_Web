@@ -3136,8 +3136,8 @@ const Production = (props) => {
 
   const keyframes = `
     @keyframes plant {
-      0% { background-position: -1200px ${parseFloat(per)}px, -800px ${per}px, -400px ${per}px; }
-      100% { background-position: 200px ${parseFloat(per)}px;, 100x ${per}px, 0px ${per}px; }
+      0% { background-position: -1200px ${parseFloat(per)}px, -800px ${per}px, -400px ${per}px}
+      100% { background-position: 200px ${parseFloat(per)}px;, 100x ${per}px, 0px ${per}px}
     }`;
 
   const divStyle = {
@@ -3145,7 +3145,6 @@ const Production = (props) => {
     animationDuration: '30s',
     animationTimingFunction: 'linear',
     animationIterationCount: 'infinite',
-
   };
 
   return (

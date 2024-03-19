@@ -6,8 +6,8 @@ import { isMobile } from "../Navigation/Navigation";
 import ProjectData from "./ProjectData";
 import EditProject from "./EditProject";
 import AddProject from "./AddProject";
+import { sidebartab, sidebartabli } from "../Sidenar/Sidenar";
 import Popup from "./Popup";
-// import { lowerCase } from "lodash";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { useSelector } from "react-redux";
@@ -26,7 +26,7 @@ import { FiEdit } from "react-icons/fi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export const tab = signal("total");
+export const projtab = signal("total");
 const tabLable = signal("");
 const tabMobile = signal(false);
 const online = signal([]);
@@ -190,7 +190,12 @@ export default function Project(props) {
         <div
           style={{ cursor: "pointer" }}
           id={row.plantname}
-          onClick={(e) => { connectval.value = e.currentTarget.id; navigate("/Device")}}
+          onClick={(e) => {
+            connectval.value = e.currentTarget.id;
+            sidebartab.value = "Monitor";
+            sidebartabli.value = "/Device";
+            navigate("/Device");
+          }}
         >
           {row.state === 1 ? (
             <FaCheckCircle size={20} color="green" />
@@ -204,7 +209,11 @@ export default function Project(props) {
     {
       name: dataLang.formatMessage({ id: "warn" }),
       selector: (row) => (
-        <div style={{ cursor: "pointer" }} id={row.plantname} onClick={(e) => {navigate("/Warn")}}>
+        <div style={{ cursor: "pointer" }} id={row.plantname} onClick={(e) => {
+          sidebartab.value = "Monitor";
+          sidebartabli.value = "/Warn";
+          navigate("/Warn")
+        }}>
           {row.warn === 1 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
@@ -226,8 +235,8 @@ export default function Project(props) {
         parseFloat(dailyProduction[row.plantid]).toFixed(2) === "NaN"
           ? 0 + " kWh"
           : Number(
-              parseFloat(dailyProduction[row.plantid]).toFixed(2)
-            ).toLocaleString("en-US") + " kWh",
+            parseFloat(dailyProduction[row.plantid]).toFixed(2)
+          ).toLocaleString("en-US") + " kWh",
       sortable: true,
       width: "180px",
     },
@@ -237,10 +246,10 @@ export default function Project(props) {
         parseFloat(power[row.plantid]).toFixed(2) === "NaN"
           ? 0 + " %"
           : Number(
-              parseFloat(
-                (power[row.plantid] / 1000 / row.capacity) * 100
-              ).toFixed(2)
-            ).toLocaleString("en-US") + " %",
+            parseFloat(
+              (power[row.plantid] / 1000 / row.capacity) * 100
+            ).toFixed(2)
+          ).toLocaleString("en-US") + " %",
       sortable: true,
       width: "180px",
     },
@@ -270,7 +279,7 @@ export default function Project(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify == true ||
-          ruleInfor.value.setting.project.remove == true ? (
+            ruleInfor.value.setting.project.remove == true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.plantid + "_MORE"}
@@ -365,7 +374,7 @@ export default function Project(props) {
 
   const handleTabMobile = (e) => {
     const id = e.currentTarget.id;
-    tab.value = id;
+    projtab.value = id;
     const newLabel = listTab.find((item) => item.id == id);
     tabLable.value = newLabel.name;
   };
@@ -376,30 +385,30 @@ export default function Project(props) {
     } else {
       const t = e.target.value;
       const db = dataproject.value.filter((row) =>
-        // item.name.includes(t)
-        {
-          switch (type) {
-            // case "name":
-            //   return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
-            // return (console.log(row.plantname.includes(t) || row.plantname.toLowerCase().includes(t)));
-            case "inCapacity":
-              return String(row.capacity) == t;
-            case "production":
-              return String(row.production) == t;
-            case "power":
-              return String(row.power) == t;
-            // case "lastupdate":
-            //   return String(row.lastupdate) == t;
-            // case "createdate":
-            //   return String(row.createdate) == t;
-            default:
-              return (
-                row.plantname.includes(t) ||
-                row.plantname.toLowerCase().includes(t)
-              );
-            // return row.name.toLowerCase().includes(t);
-          }
+      // item.name.includes(t)
+      {
+        switch (type) {
+          // case "name":
+          //   return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
+          // return (console.log(row.plantname.includes(t) || row.plantname.toLowerCase().includes(t)));
+          case "inCapacity":
+            return String(row.capacity) == t;
+          case "production":
+            return String(row.production) == t;
+          case "power":
+            return String(row.power) == t;
+          // case "lastupdate":
+          //   return String(row.lastupdate) == t;
+          // case "createdate":
+          //   return String(row.createdate) == t;
+          default:
+            return (
+              row.plantname.includes(t) ||
+              row.plantname.toLowerCase().includes(t)
+            );
+          // return row.name.toLowerCase().includes(t);
         }
+      }
       );
       console.log(db);
       setDatafilter(db);
@@ -792,7 +801,7 @@ export default function Project(props) {
           </div>
 
           {(() => {
-            switch (tab.value) {
+            switch (projtab.value) {
               case "total":
                 return (
                   <>
@@ -823,7 +832,7 @@ export default function Project(props) {
 
                                 <div className="DAT_ProjectMobile_Content_Top_Info_Name_Right">
                                   {ruleInfor.value.setting.project.modify ===
-                                  true ? (
+                                    true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
                                       id={item.plantid}
@@ -835,7 +844,7 @@ export default function Project(props) {
                                     <div></div>
                                   )}
                                   {ruleInfor.value.setting.project.modify ===
-                                  true ? (
+                                    true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
                                       id={item.plantid}
@@ -1502,7 +1511,7 @@ export default function Project(props) {
         <div className="DAT_Project">
           <div className="DAT_Toollist_Tab">
             {listTab.map((item, i) => {
-              return tab.value === item.id ? (
+              return projtab.value === item.id ? (
                 <div key={"tab_" + i} className="DAT_Toollist_Tab_main">
                   <p className="DAT_Toollist_Tab_main_left"></p>
                   <span
@@ -1513,7 +1522,7 @@ export default function Project(props) {
                       color: "black",
                       borderRadius: "10px 10px 0 0",
                     }}
-                    onClick={(e) => (tab.value = item.id)}
+                    onClick={(e) => (projtab.value = item.id)}
                   >
                     {item.name}
                   </span>
@@ -1525,7 +1534,7 @@ export default function Project(props) {
                   key={"tab_" + i}
                   id={item.id}
                   style={{ backgroundColor: "#dadada" }}
-                  onClick={(e) => (tab.value = item.id)}
+                  onClick={(e) => (projtab.value = item.id)}
                 >
                   {item.name}
                 </span>
@@ -1535,7 +1544,7 @@ export default function Project(props) {
 
           <div className="DAT_Project_Content">
             {(() => {
-              switch (tab.value) {
+              switch (projtab.value) {
                 case "total":
                   return (
                     <DataTable
