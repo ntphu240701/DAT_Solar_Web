@@ -3138,8 +3138,7 @@ const Production = (props) => {
     @keyframes plant {
       0% { background-position: -1200px ${parseFloat(per)}px, -800px ${per}px, -400px ${per}px; }
       100% { background-position: 200px ${parseFloat(per)}px;, 100x ${per}px, 0px ${per}px; }
-    }
-  `;
+    }`;
 
   const divStyle = {
     animationName: 'plant',
@@ -3148,8 +3147,6 @@ const Production = (props) => {
     animationIterationCount: 'infinite',
 
   };
-
-
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Production">
