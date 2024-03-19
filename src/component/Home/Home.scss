@@ -19,11 +19,9 @@
         align-items: center;
         gap: 5px;
     }
-
 }
 
 .DAT_Home {
-
     width: 100%;
     // height: 100vh;
     margin: auto;
@@ -50,7 +48,6 @@
         overflow: hidden;
 
         &-Head {
-
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
@@ -70,7 +67,6 @@
                 font-size: 14px;
                 color: gray;
             }
-
         }
 
         &-Main {
@@ -79,7 +75,6 @@
             border-bottom: solid 1px gray;
             display: flex;
             flex-wrap: wrap;
-
 
             &-Percent {
                 flex: 1;
@@ -93,17 +88,22 @@
                 /* Firefox, other Gecko */
                 box-sizing: border-box;
 
-
                 &-Item {
                     width: 100px;
                     height: 100px;
                     border-radius: 50%;
-                    background-color: white;
+                    // background-color: white;
                     border: solid 1px #6495ed;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     font-size: 25px;
+
+                    background: url("../../../public/dat_picture/wave.png"),
+                        url("../../../public/dat_picture/wave3.png"), url("../../../public/dat_picture/wave2.png");
+                    background-size: 120px 100px;
+                    background-repeat: repeat-x;
+                    box-shadow: 0 0 3px 5px rgba(193, 193, 193, 0.5);
 
                     &-value {
                         width: 100%;
@@ -125,16 +125,13 @@
                             color: gray;
                         }
                     }
-
                 }
             }
-
 
             &-Value {
                 flex: 1;
 
                 &-Item {
-
                     //border: solid 1px #6495ed;
                     padding: 10px;
                     -webkit-box-sizing: border-box;
@@ -150,9 +147,7 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                     }
-
                 }
-
             }
         }
 
@@ -192,7 +187,6 @@
                 }
             }
         }
-
     }
 
     &_History {
@@ -205,7 +199,6 @@
         box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
 
         &-Head {
-
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
@@ -246,9 +239,7 @@
                     border: solid 1.5px gray;
                 }
             }
-
         }
-
 
         &-Chart {
             width: 100%;
@@ -278,7 +269,6 @@
                     display: flex;
                     justify-content: center;
                 }
-
             }
 
             &-Content {
@@ -291,8 +281,6 @@
                 /* Firefox, other Gecko */
                 box-sizing: border-box;
             }
-
-
         }
     }
 
@@ -304,7 +292,6 @@
         box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
 
         &-Title {
-
             display: flex;
             align-items: center;
             padding: 15px;
@@ -317,7 +304,6 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-
         }
 
         &-Total {
@@ -388,10 +374,8 @@
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
-
             }
         }
-
     }
 
     &_Distribution {
@@ -403,7 +387,6 @@
         position: relative;
 
         &-Title {
-
             display: flex;
             align-items: center;
             padding: 15px;
@@ -416,7 +399,6 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-
         }
 
         &-Map {
@@ -433,7 +415,6 @@
             box-sizing: border-box;
 
             overflow: hidden;
-
         }
     }
 
@@ -446,7 +427,6 @@
         position: relative;
 
         &-Head {
-
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
@@ -487,13 +467,11 @@
                     border: solid 1.5px gray;
                 }
             }
-
         }
 
         &-Content {
             padding: 10px;
         }
-
     }
 
     &_Benefit {
@@ -505,7 +483,6 @@
         position: relative;
 
         &-Head {
-
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
@@ -531,7 +508,6 @@
                     border: solid 1.5px gray;
                 }
             }
-
         }
 
         &_Content {
@@ -546,13 +522,8 @@
                 text-align: center;
                 min-width: 150px;
             }
-
         }
-
-
-
     }
-
 }
 
 .DAT_marker {
@@ -571,15 +542,13 @@
         margin-bottom: 10px;
     }
 
-
     &-lb {
         font-size: 15px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         font-weight: 800;
         color: rgb(28, 28, 28);
     }
 }
-
 
 @media (max-width: 900px) {
     .DAT_Home {

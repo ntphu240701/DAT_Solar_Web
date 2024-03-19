@@ -28,7 +28,7 @@ const messageNav = signal(false);
 const messageContent = signal([]);
 const messageOption = signal("default");
 
-export const warnfilter = signal({});
+export const warnfilter = signal({warnid: ""});
 export const isMobile = signal(false);
 export const notifNav = signal(false);
 export const message = signal([
@@ -202,7 +202,6 @@ export default function Navigation(props) {
     warnfilter.value = dataWarn.value.find(
       (item) => item.warnid == e.currentTarget.id
     );
-
     notifNav.value = false;
     console.log(warnfilter.value);
   };

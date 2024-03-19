@@ -6,7 +6,7 @@ import Config from "./Config";
 import Popup from "./Popup";
 import DataTable from "react-data-table-component";
 import { signal } from "@preact/signals-react";
-import { Empty } from "../Project/Project";
+import { Empty, connectval } from "../Project/Project";
 import { isMobile } from "../Navigation/Navigation";
 import { useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
@@ -124,9 +124,8 @@ export default function Device(props) {
   ];
 
   const columnDevice = [
-
     {
-      name: dataLang.formatMessage({ id: 'ordinalNumber' }),
+      name: dataLang.formatMessage({ id: "ordinalNumber" }),
       selector: (row, i) => i + 1,
       sortable: true,
       width: "80px",
@@ -157,7 +156,7 @@ export default function Device(props) {
       },
     },
     {
-      name: dataLang.formatMessage({ id: 'project' }),
+      name: dataLang.formatMessage({ id: "project" }),
       selector: (row) => row.plant,
       sortable: true,
       minWidth: "350px",
@@ -203,7 +202,7 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
-            ruleInfor.value.setting.device.delete === true ? (
+          ruleInfor.value.setting.device.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.id + "_MORE"}
@@ -239,9 +238,8 @@ export default function Device(props) {
   ];
 
   const columnRemote = [
-
     {
-      name: dataLang.formatMessage({ id: 'ordinalNumber' }),
+      name: dataLang.formatMessage({ id: "ordinalNumber" }),
       selector: (row, i) => i + 1,
       sortable: true,
       width: "80px",
@@ -271,7 +269,7 @@ export default function Device(props) {
       },
     },
     {
-      name: dataLang.formatMessage({ id: 'project' }),
+      name: dataLang.formatMessage({ id: "project" }),
       selector: (row) => row.pplantname,
       sortable: true,
       minWidth: "350px",
@@ -304,7 +302,7 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
-            ruleInfor.value.setting.device.delete === true ? (
+          ruleInfor.value.setting.device.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.psn + "_MORE"}
@@ -323,7 +321,8 @@ export default function Device(props) {
             style={{ display: "none", marginTop: "2px" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            <div className="DAT_ModifyBox_Fix"
+            <div
+              className="DAT_ModifyBox_Fix"
               id={row.psn + "_" + row.pplantid + "_edit"}
               onClick={(e) => handleEdit(e)}
             >
@@ -331,7 +330,8 @@ export default function Device(props) {
               &nbsp;
               {dataLang.formatMessage({ id: "edits" })}
             </div>
-            <div className="DAT_ModifyBox_Remove"
+            <div
+              className="DAT_ModifyBox_Remove"
               id={row.psn + "_" + row.pplantid + "_remove"}
               onClick={(e) => handleRemove(e)}
             >
@@ -409,21 +409,26 @@ export default function Device(props) {
     tabLable.value = newLabel.name;
   };
 
-  const handleShowConfig = () => {
-    if (configState.value) {
-      configState.value = false;
-    } else {
-      configState.value = true;
-    }
-  };
+  // useEffect(() => {
+  //   if (connectval.value) {
+  //     const db = loggerList.value.filter(
+  //       (item) => item.pname == connectval.value
+  //     );
+  //   setDatafilter(db);
+  //   }
+  // }, [connectval.value]);
 
   const handleSearch = (e) => {
+    connectval.value = e.target.value;
     if (e.target.value == "") {
       setDatafilter(loggerList.value);
     } else {
       const t = e.target.value;
       const db = loggerList.value.filter((item) => {
         return (
+          item.pname.includes(t.toLowerCase()) ||
+          item.psn.includes(t.toLowerCase()) ||
+          item.pplantname.includes(t.toLowerCase()) ||
           item.pname.toLowerCase().includes(t.toLowerCase()) ||
           item.psn.toLowerCase().includes(t.toLowerCase()) ||
           item.pplantname.toLowerCase().includes(t.toLowerCase())
@@ -434,8 +439,21 @@ export default function Device(props) {
   };
 
   useEffect(() => {
-    setDatafilter(loggerList.value);
-  }, [loggerList.value])
+    if (connectval.value) {
+      console.log(connectval.value, loggerList.value);
+      let filter = loggerList.value.filter(
+        (item) =>
+          item.pplantname.includes(connectval.value) ||
+          item.pplantname.toLowerCase().includes(connectval.value)
+      );
+      // console.log(filter)
+      setDatafilter([...filter]);
+      let d = document.getElementById("search");
+      d.value = connectval.value;
+    } else {
+      setDatafilter(loggerList.value);
+    }
+  }, [loggerList.value, connectval.value]);
 
   useEffect(() => {
     tabLable.value = listTab[0].name;
@@ -497,7 +515,9 @@ export default function Device(props) {
             <div className="DAT_DeviceHeader_Filter">
               <input
                 type="text"
+                id="search"
                 placeholder={dataLang.formatMessage({ id: "enterDev" })}
+                // value={connectval.value}
                 onChange={(e) => handleSearch(e)}
               />
               <CiSearch color="gray" size={20} />
@@ -570,7 +590,7 @@ export default function Device(props) {
 
                             <div className="DAT_DeviceMobile_Content_Top_Right">
                               {ruleInfor.value.setting.device.modify ===
-                                true ? (
+                              true ? (
                                 <div className="DAT_DeviceMobile_Content_Top_Right_Item">
                                   <MdEdit size={20} color="#216990" />
                                 </div>
@@ -578,7 +598,7 @@ export default function Device(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.device.delete ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_DeviceMobile_Content_Top_Right_Item"
                                   id={item.psn + "_" + item.pplantid}
@@ -656,7 +676,7 @@ export default function Device(props) {
 
                             <div className="DAT_DeviceMobile_Content_Top_Right">
                               {ruleInfor.value.setting.device.modify ===
-                                true ? (
+                              true ? (
                                 <div className="DAT_DeviceMobile_Content_Top_Right_Item">
                                   <MdEdit size={20} color="#216990" />
                                 </div>
@@ -664,7 +684,7 @@ export default function Device(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.device.remove ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_DeviceMobile_Content_Top_Right_Item"
                                   id={item.psn + "_" + item.pplantid}
