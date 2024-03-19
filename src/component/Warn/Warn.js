@@ -14,11 +14,10 @@ import { LuMailWarning } from "react-icons/lu";
 import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
 import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
-import { RiMailSettingsLine } from "react-icons/ri";
-import { useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
 import { partnerInfor, phuhosting, ruleInfor, userInfor } from "../../App";
-import { IoTrashOutline } from "react-icons/io5";
+import { IoClose, IoTrashOutline } from "react-icons/io5";
+import Info from "./Info";
 
 const tab = signal("all");
 const tabMobile = signal(false);
@@ -29,6 +28,8 @@ export const warnState = signal("default");
 export const temp = signal([]);
 export const deletewarnState = signal(false);
 export const idDel = signal();
+export const infowarnState = signal(false);
+export const idInfo = signal();
 
 export const dataWarn = signal([]);
 // const datafilter = signal([]);
@@ -37,6 +38,7 @@ export default function Warn(props) {
   const [filter, setFilter] = useState(false);
   const [type, setType] = useState('project');
   const [datafilter, setDatafilter] = useState([]);
+  const [boxid, setBoxid] = useState("");
 
   const listTab = [
     { id: "all", name: dataLang.formatMessage({ id: "total" }) },
@@ -60,7 +62,10 @@ export default function Warn(props) {
     {
       name: dataLang.formatMessage({ id: "errcode" }),
       selector: (row) =>
-        <div style={{ cursor: "pointer" }}>
+        <div style={{ cursor: "pointer" }}
+          onClick={(e) => handleInfo(e)}
+          id={row.boxid}
+        >
           {dataLang.formatMessage({ id: row.boxid })}
         </div>,
       sortable: true,
@@ -178,6 +183,16 @@ export default function Warn(props) {
     },
   ];
 
+  const handleInfo = (e) => {
+    infowarnState.value = true;
+    const id = e.currentTarget.id;
+    const idArr = id.split("_");
+    dataWarn.value.find((item) => item.boxid == idArr[0]);
+    setBoxid(id)
+
+    console.log(id);
+  };
+
   const handleDeleteWarn = (e) => {
     deletewarnState.value = true;
     idDel.value = e.currentTarget.id;
@@ -202,24 +217,24 @@ export default function Warn(props) {
     tabLable.value = newLabel.name;
   };
 
-  const changeData = (e) => {
-    if (e.target.value == ' ') {
-      setDatafilter(dataWarn.value);
-    } else {
-      const t = e.target.value
-      const df = dataWarn.value.filter((item) => {
-        switch (type) {
-          case 'code':
-            return item.boxid.includes(t) || item.boxid.toLowerCase().includes(t);
-          case 'device':
-            return item.device.includes(t) || item.device.toLowerCase().includes(t);
-          default:
-            return item.plant.includes(t) || item.plant.toLowerCase().includes(t);
-        }
-      })
-      setDatafilter(df)
-    }
-  };
+  // const changeData = (e) => {
+  //   if (e.target.value == ' ') {
+  //     setDatafilter(dataWarn.value);
+  //   } else {
+  //     const t = e.target.value
+  //     const df = dataWarn.value.filter((item) => {
+  //       switch (type) {
+  //         case 'code':
+  //           return item.boxid.includes(t) || item.boxid.toLowerCase().includes(t);
+  //         case 'device':
+  //           return item.device.includes(t) || item.device.toLowerCase().includes(t);
+  //         default:
+  //           return item.plant.includes(t) || item.plant.toLowerCase().includes(t);
+  //       }
+  //     })
+  //     setDatafilter(df)
+  //   }
+  // };
 
   // by Mr Loc
   const handleSearch = (e) => {
@@ -677,6 +692,12 @@ export default function Warn(props) {
         <div className="DAT_ReportPopup">
           <RaiseBox></RaiseBox>
         </div>
+      ) : (
+        <></>
+      )}
+
+      {infowarnState.value ? (
+        <Info boxid={boxid}></Info>
       ) : (
         <></>
       )}

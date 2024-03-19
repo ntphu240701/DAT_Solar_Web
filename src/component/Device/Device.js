@@ -202,7 +202,7 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
-          ruleInfor.value.setting.device.delete === true ? (
+            ruleInfor.value.setting.device.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.id + "_MORE"}
@@ -302,7 +302,7 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
-          ruleInfor.value.setting.device.delete === true ? (
+            ruleInfor.value.setting.device.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.psn + "_MORE"}
@@ -590,7 +590,7 @@ export default function Device(props) {
 
                             <div className="DAT_DeviceMobile_Content_Top_Right">
                               {ruleInfor.value.setting.device.modify ===
-                              true ? (
+                                true ? (
                                 <div className="DAT_DeviceMobile_Content_Top_Right_Item">
                                   <MdEdit size={20} color="#216990" />
                                 </div>
@@ -598,7 +598,7 @@ export default function Device(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.device.delete ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_DeviceMobile_Content_Top_Right_Item"
                                   id={item.psn + "_" + item.pplantid}
@@ -676,7 +676,7 @@ export default function Device(props) {
 
                             <div className="DAT_DeviceMobile_Content_Top_Right">
                               {ruleInfor.value.setting.device.modify ===
-                              true ? (
+                                true ? (
                                 <div className="DAT_DeviceMobile_Content_Top_Right_Item">
                                   <MdEdit size={20} color="#216990" />
                                 </div>
@@ -684,7 +684,7 @@ export default function Device(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.device.remove ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_DeviceMobile_Content_Top_Right_Item"
                                   id={item.psn + "_" + item.pplantid}

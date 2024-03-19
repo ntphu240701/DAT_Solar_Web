@@ -1,7 +1,7 @@
 import React from "react";
 import "./Warn.scss";
 
-import { dataWarn, deletewarnState, idDel } from "./Warn";
+import { dataWarn, deletewarnState, idDel, infowarnState } from "./Warn";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 
@@ -64,7 +64,6 @@ export default function RaiseBox(props) {
           </div>
         </div>
       </div>
-
       <div className="DAT_PopupReport_Box_Body">
         <p>{dataLang.formatMessage({ id: "delWarnmess" })}</p>
       </div>
