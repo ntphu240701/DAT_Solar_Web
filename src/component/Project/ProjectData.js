@@ -1094,7 +1094,10 @@ export default function ProjectData(props) {
               )}
               <div
                 className="DAT_ProjectData_Header_Right_Close"
-                onClick={() => (plantState.value = "default")}
+                onClick={() => {
+                  (plantState.value = "default");
+                  (dropState.value = false);
+                }}
               >
                 <RxCross2 size={20} color="white" />
               </div>
@@ -1280,7 +1283,7 @@ export default function ProjectData(props) {
                               setDropConfig(!dropConfig);
                             }}
                           >
-                            {dataLang.formatMessage({ id: 'choosePara' })}
+                            {configname}
                           </button>
                         </div>
 

@@ -58,6 +58,18 @@ export default function Warn(props) {
       width: "80px",
     },
     {
+      name: dataLang.formatMessage({ id: "errcode" }),
+      selector: (row) =>
+        <div style={{ cursor: "pointer" }}>
+          {dataLang.formatMessage({ id: row.boxid })}
+        </div>,
+      sortable: true,
+      width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
       name: dataLang.formatMessage({ id: "project" }),
       selector: (row) => row.plant,
       sortable: true,
@@ -67,28 +79,19 @@ export default function Warn(props) {
       },
     },
     {
-      name: dataLang.formatMessage({ id: "errcode" }),
-      selector: (row) => dataLang.formatMessage({ id: row.boxid }),
-      sortable: true,
-      minWidth: "200px",
-      style: {
-        justifyContent: "left",
-      },
-    },
-    {
       name: dataLang.formatMessage({ id: "device" }),
       selector: (row) => row.device,
       sortable: true,
-      minWidth: "200px",
+      width: "140px",
       style: {
         justifyContent: "left",
       },
     },
-    {
-      name: "ID",
-      selector: (row) => row.warnid,
-      sortable: true,
-    },
+    // {
+    //   name: "ID",
+    //   selector: (row) => row.warnid,
+    //   sortable: true,
+    // },
     {
       name: dataLang.formatMessage({ id: "level" }),
       selector: (row) => (
@@ -105,19 +108,19 @@ export default function Warn(props) {
         </>
       ),
       sortable: true,
-      minWidth: "120px",
+      width: "120px",
     },
     {
       name: dataLang.formatMessage({ id: "openWarnTime" }),
       selector: (row) => row.opentime,
       sortable: true,
-      width: "200px",
+      width: "180px",
     },
     {
       name: dataLang.formatMessage({ id: "closeWarnTime" }),
       selector: (row) => row.closedtime,
       sortable: true,
-      width: "200px",
+      width: "180px",
     },
     {
       name: dataLang.formatMessage({ id: "setting" }),

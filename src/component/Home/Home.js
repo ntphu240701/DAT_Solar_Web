@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
+import ProjectData from "../Project/ProjectData";
 import { Empty, plantState, projectData, tab } from "../Project/Project";
 import DataTable from "react-data-table-component";
 import { useSelector } from "react-redux";
@@ -89,11 +90,11 @@ export default function Home(props) {
   const keyframes = `
   @keyframes home {
     0% { background-position: -1200px ${parseFloat(
-      per
-    )}px, -800px ${per}px, -400px ${per}px; }
+    per
+  )}px, -800px ${per}px, -400px ${per}px; }
     100% { background-position: 200px ${parseFloat(
-      per
-    )}px;, 100x ${per}px, 0px ${per}px; }
+    per
+  )}px;, 100x ${per}px, 0px ${per}px; }
   }
 `;
 
@@ -116,7 +117,7 @@ export default function Home(props) {
       name: dataLang.formatMessage({ id: "ordinalNumber" }),
       selector: (row, i) => i + 1,
       sortable: true,
-      minWidth: "80px",
+      width: "80px",
       style: {
         justifyContent: "center",
       },
@@ -153,8 +154,8 @@ export default function Home(props) {
         parseFloat(sun[row.plantid]).toFixed(2) === "NaN"
           ? 0
           : Number(
-              parseFloat(sun[row.plantid] / row.capacity).toFixed(2)
-            ).toLocaleString("en-US"),
+            parseFloat(sun[row.plantid] / row.capacity).toFixed(2)
+          ).toLocaleString("en-US"),
       sortable: true,
       width: "120px",
     },
@@ -178,8 +179,8 @@ export default function Home(props) {
   const handleInfo = (e) => {
     const newPlant = project.find((item) => item.plantid == e.currentTarget.id);
     projectData.value = newPlant;
-    console.log(newPlant);
-    navigate("/project");
+    // console.log(newPlant);
+    // navigate("/project");
     plantState.value = "info";
   };
 
@@ -198,7 +199,7 @@ export default function Home(props) {
       });
       markerElement.addListener("click", () => {
         //console.log(item)
-        navigate("/project");
+        // navigate("/project");
         plantState.value = "info";
         projectData.value = item;
       });
@@ -622,8 +623,8 @@ export default function Home(props) {
                     ).toLocaleString("en-US") === "NaN"
                       ? "--"
                       : Number(
-                          parseFloat((production / capacity) * 100).toFixed(2)
-                        ).toLocaleString("en-US")}
+                        parseFloat((production / capacity) * 100).toFixed(2)
+                      ).toLocaleString("en-US")}
                   </div>
 
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">
@@ -878,7 +879,7 @@ export default function Home(props) {
                           ...datamonth.map(
                             (item) =>
                               item[
-                                dataLang.formatMessage({ id: "monthOutput" })
+                              dataLang.formatMessage({ id: "monthOutput" })
                               ]
                           )
                         ),
@@ -1171,6 +1172,21 @@ export default function Home(props) {
           </div>
         </div>
       </div>
+
+      {(() => {
+        switch (plantState.value) {
+          case "info":
+            return (
+              <div className="DAT_PlantHome">
+                <ProjectData />
+              </div>
+            )
+          default:
+            return (
+              <></>
+            )
+        }
+      })()}
     </>
   );
 }
