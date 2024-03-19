@@ -327,7 +327,6 @@
                     }
                 }
             }
-
         }
 
         &_LeftDevice {
@@ -556,7 +555,6 @@
                 border-radius: 5px;
                 overflow: hidden;
 
-
                 // &_Right {
                 //     width: 60%;
 
@@ -679,7 +677,8 @@
                                 display: flex;
                             }
 
-                            &_B {}
+                            &_B {
+                            }
                         }
 
                         &_Grid {
@@ -713,7 +712,8 @@
 
                         // background-color: #3e80fb;
 
-                        &_P {}
+                        &_P {
+                        }
                     }
 
                     &_SingleLine {
@@ -725,7 +725,6 @@
                         gap: 10px;
                         padding: 20px;
                         box-sizing: border-box;
-
 
                         &_Solar {
                             & img {
@@ -757,8 +756,6 @@
                             display: flex;
                             justify-content: center;
 
-                          
-
                             &_Data {
                                 border-radius: 50%;
                                 border: solid 2px rgb(103, 179, 255);
@@ -769,6 +766,16 @@
                                 align-items: center;
                                 justify-content: center;
                                 flex-wrap: wrap;
+                                background-color: #3e80fb;
+                                position: relative;
+                                overflow: hidden;
+
+                                background: url("../../../public/dat_picture/wave2.png"),
+                                    url("../../../public/dat_picture/wave3.png"),
+                                    url("../../../public/dat_picture/wave4.png");
+                                background-size: 220px 200px;
+                                background-repeat: repeat-x;
+                                box-shadow: 0 0 3px 5px rgba(193, 193, 193, 0.5);
 
                                 &_value {
                                     width: 100%;
@@ -977,7 +984,6 @@
                                 display: flex;
                                 align-items: center;
                                 min-width: 70px;
-
                             }
 
                             &_Data {
@@ -1052,7 +1058,6 @@
                                     display: flex;
                                     justify-content: center;
                                     gap: 2px;
-
                                 }
 
                                 &_Describe {
@@ -1062,7 +1067,7 @@
                                     // padding-left: 10px;
                                     overflow: hidden;
                                     color: gray;
-                                    white-space: nowrap
+                                    white-space: nowrap;
                                 }
                             }
 
@@ -1463,8 +1468,6 @@
                             }
                         }
                     }
-
-
                 }
             }
 
@@ -1629,8 +1632,6 @@
                             }
                         }
 
-
-
                         // &_Data {
                         //     width: 100%;
                         //     display: flex;
@@ -1670,7 +1671,8 @@
                         justify-content: center;
                         gap: 5px;
 
-                        &_Item {}
+                        &_Item {
+                        }
                     }
                 }
             }
@@ -1688,7 +1690,9 @@
             box-sizing: border-box;
             border-radius: 5px;
             // background-color: rgb(255, 255, 255, 0.95);
-            box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4), -2px -2px 5px rgba(198, 197, 197, 0.4);
+            box-shadow:
+                2px 2px 5px rgba(198, 197, 197, 0.4),
+                -2px -2px 5px rgba(198, 197, 197, 0.4);
 
             &_Content {
                 padding: 10px;
@@ -2445,7 +2449,6 @@
                     }
                 }
             }
-
         }
     }
 }
@@ -3037,7 +3040,6 @@
                     }
                 }
             }
-
         }
     }
 }
@@ -3576,7 +3578,6 @@
                                 }
                             }
                         }
-
                     }
 
                     &_Consumption {
@@ -3620,9 +3621,11 @@
                 }
             }
 
-            &_History {}
+            &_History {
+            }
 
-            &_More {}
+            &_More {
+            }
         }
 
         &_Device {
