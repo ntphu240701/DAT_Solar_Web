@@ -73,7 +73,7 @@ export default function Filter(props) {
                     <div className="DAT_Filter_Dropdown_Bot">
                         <button
                             style={{ backgroundColor: "white", color: "black" }}
-                            onClick={(e) => handleReset(e)}
+                            onClick={(e) => {handleReset(e); props.handleReset();}}
                         >
                             Reset
                         </button>
