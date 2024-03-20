@@ -6,8 +6,6 @@ import {
   Empty,
   plantState,
   projectData,
-  deviceData,
-  Inverter,
   popupState,
 } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
@@ -31,7 +29,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { Token, ruleInfor } from "../../App";
+import { Token, ruleInfor, userInfor } from "../../App";
 import axios from "axios";
 import Popup from "./Popup";
 import { useIntl } from "react-intl";
@@ -64,6 +62,8 @@ import { useSelector } from "react-redux";
 import { FiEdit } from "react-icons/fi";
 
 import styled, { keyframes } from 'styled-components';
+import { info, infoState, loggerList, tab } from "../Device/Device";
+import Info from "../Device/Info";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -78,7 +78,7 @@ export const coalsave = signal({
 
 const tabMobile = signal(false);
 const tabLable = signal("");
-const tab = signal("logger");
+const tab_ = signal("logger");
 const tabMobileAlert = signal(false);
 const tabLableAlert = signal("");
 const tabAlert = signal("all");
@@ -93,21 +93,18 @@ const dataAlert = [];
 export default function ProjectData(props) {
   const dataLang = useIntl();
   const lang = useSelector((state) => state.admin.lang);
+  const user = useSelector((state) => state.admin.usr);
   // const [nav, setNav] = useState(projectData.value.plantmode === "grid" ? "production" : "graph");
   const [nav, setNav] = useState("production");
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
-  const [configname, setConfigname] = useState(
-    dataLang.formatMessage({ id: "choosePara" })
-  );
+  const [configname, setConfigname] = useState(dataLang.formatMessage({ id: "choosePara" }));
   const [dropConfig, setDropConfig] = useState(false);
-  const [tempInverter, setTempInverter] = useState({});
+  const [tempInverter, setTempInverter] = useState([]);
   const [dataDay, setDataDay] = useState([]);
   const [vDay, setVDay] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataMonth, setDataMonth] = useState([]);
-  const [vMonth, setVMonth] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
+  const [vMonth, setVMonth] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataYear, setDataYear] = useState([]);
   const [vYear, setVYear] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataTotal, setDataTotal] = useState([]);
@@ -152,13 +149,16 @@ export default function ProjectData(props) {
     {
       name: dataLang.formatMessage({ id: "name" }),
       selector: (row) => (
-        <div>
+        <div
+          onClick={(e) => handleInfoInverter(e)}
+          style={{ cursor: "pointer" }}
+        >
           <div>{row.name}</div>
-          <div>{row.SN}</div>
+          <div style={{ color: "grey" }}>{row.sn}</div>
         </div>
       ),
       sortable: true,
-      // minWidth: "350px",
+      minWidth: "350px",
       style: {
         justifyContent: "left",
       },
@@ -167,37 +167,32 @@ export default function ProjectData(props) {
       name: dataLang.formatMessage({ id: "status" }),
       selector: (row) => (
         <>
-          {row.status ? (
+          {invt[row.logger_]?.[row.data.status] == 2 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
             <MdOutlineError size={22} color="red" />
           )}
         </>
       ),
-      // width: "110px",
+      width: "110px",
     },
     {
-      name: "Sản lượng(kW)",
+      name: dataLang.formatMessage({ id: "production" }),
       selector: (row) => row.production,
       sortable: true,
-      // width: "140px",
+      width: "300px",
     },
     {
-      name: "SL tức thời(kWh)",
+      name: dataLang.formatMessage({ id: "daily" }),
       selector: (row) => row.dailyproduction,
       sortable: true,
-      // width: "150px",
+      width: "300px",
     },
     {
-      name: "Hiệu suất",
-      selector: (row) => "--",
+      name: dataLang.formatMessage({ id: "ogLog" }),
+      selector: (row) => row.logger_,
       sortable: true,
-    },
-    {
-      name: "Lần cập nhật cuối",
-      selector: (row) => row.updated,
-      sortable: true,
-      // width: "180px",
+      width: "300px",
     },
   ];
 
@@ -258,7 +253,10 @@ export default function ProjectData(props) {
     {
       name: dataLang.formatMessage({ id: "name" }),
       selector: (row) => (
-        <div>
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={(e) => handleInfoLogger(e)}
+        >
           <div>{row.name}</div>
           <div style={{ color: "grey" }}>{row.sn}</div>
         </div>
@@ -398,6 +396,34 @@ export default function ProjectData(props) {
     },
   ];
 
+  const handleInfoLogger = (e) => {
+    infoState.value = true;
+    tab.value = "logger";
+    let plantname = projectData.value.plantname;
+    info.value = {
+      psn: temp.value[0].sn,
+      pname: temp.value[0].name,
+      pplantname: plantname,
+      pstate: temp.value[0].state,
+      pversion: temp.value[0].version
+    };
+  };
+
+  const handleInfoInverter = (e) => {
+    infoState.value = true;
+    tab.value = "inverter";
+    let plantname = projectData.value.plantname;
+    info.value = {
+      psn: tempInverter[0].sn,
+      pname: tempInverter[0].name,
+      pplantname: plantname,
+      pdata: tempInverter[0].data,
+    };
+    info.value.invt = invt[tempInverter[0].logger_];
+    // console.log(info.value)
+    // console.log(tempInverter)
+  };
+
   const invtCloud = async (data, token) => {
     var reqData = {
       data: data,
@@ -455,7 +481,7 @@ export default function ProjectData(props) {
 
   const handleTabMobileDevice = (e) => {
     const id = e.currentTarget.id;
-    tab.value = id;
+    tab_.value = id;
     const newLabel = listDeviceTab.find((item) => item.id == id);
     tabLable.value = newLabel.name;
   };
@@ -476,8 +502,8 @@ export default function ProjectData(props) {
           date: moment(date).format("MM/DD/YYYY"),
         });
         setDataDay([]);
-        console.log(projectData.value.plantid)
-        console.log(d)
+        // console.log(projectData.value.plantid)
+        // console.log(d)
         if (d.status) {
           // console.log(d.data);
           let vDay_ = dataLang.formatMessage({ id: "production" });
@@ -634,13 +660,6 @@ export default function ProjectData(props) {
     tabLableAlert.value = listAlertTab[0].name;
     tabLable.value = listDeviceTab[0].name;
 
-    // data InverterTable
-    setTempInverter([]);
-    deviceData.value.map((item) => {
-      const db = Inverter.value.find((data) => data.SN == item.inverterSN);
-      setTempInverter((old) => [...old, db]);
-    });
-
     // data Day
     const getDaily = async () => {
       const d = await callApi("post", host.DATA + "/getChart", {
@@ -784,6 +803,7 @@ export default function ProjectData(props) {
       let d = await callApi("post", host.DATA + "/getLogger", {
         plantid: projectData.value.plantid,
       });
+      // console.log(d);
       temp.value = d;
       d.map(async (item) => {
         const res = await invtCloud(
@@ -794,9 +814,18 @@ export default function ProjectData(props) {
         if (res.ret === 0) {
           //console.log(res.data)
           setInvt((pre) => ({ ...pre, [item.sn]: res.data }));
+          const decimalArray = JSON.parse(item.setting.sn)
+          const hexString = decimalArray.map((num) => parseInt(res.data[num]).toString(16)).join('');
+          const asciiString = hexString.match(/.{2}/g).map(byte => String.fromCharCode(parseInt(byte, 16))).join('');
+          // console.log(asciiString);
         } else {
           setInvt((pre) => ({ ...pre, [item.sn]: {} }));
         }
+
+        let inverter = await callApi("post", host.DATA + "/getInverter", {
+          loggerid: item.sn,
+        });
+        setTempInverter([...inverter]);
       });
     };
     getLogger();
@@ -2015,7 +2044,7 @@ export default function ProjectData(props) {
                       </div>
 
                       {(() => {
-                        switch (tab.value) {
+                        switch (tab_.value) {
                           case "logger":
                             return (
                               <>
@@ -2304,7 +2333,7 @@ export default function ProjectData(props) {
                     <div className="DAT_ProjectData_Device_Table">
                       <div className="DAT_Toollist_Tab">
                         {listDeviceTab.map((item, i) => {
-                          return tab.value === item.id ? (
+                          return tab_.value === item.id ? (
                             <div
                               className="DAT_Toollist_Tab_main"
                               key={"tab_" + i}
@@ -2318,7 +2347,7 @@ export default function ProjectData(props) {
                                   color: "black",
                                   borderRadius: "10px 10px 0 0",
                                 }}
-                                onClick={(e) => (tab.value = item.id)}
+                                onClick={(e) => (tab_.value = item.id)}
                               >
                                 {item.name}
                               </span>
@@ -2330,7 +2359,7 @@ export default function ProjectData(props) {
                               key={"tab_" + i}
                               id={item.id}
                               style={{ backgroundColor: "#dadada" }}
-                              onClick={(e) => (tab.value = item.id)}
+                              onClick={(e) => (tab_.value = item.id)}
                             >
                               {item.name}
                             </span>
@@ -2340,7 +2369,7 @@ export default function ProjectData(props) {
 
                       <div className="DAT_ProjectData_Device_Table_Content">
                         {(() => {
-                          switch (tab.value) {
+                          switch (tab_.value) {
                             case "inverter":
                               return (
                                 <DataTable
@@ -2611,6 +2640,13 @@ export default function ProjectData(props) {
           )}
         </>
       )}
+
+      <div className="DAT_DeviceInfor"
+        style={{ height: infoState.value ? "100%" : "0px", transition: "0.5s" }}
+      >
+        {infoState.value ? <Info /> : <></>}
+      </div>
+
     </div>
   );
 }
@@ -3368,7 +3404,7 @@ const Production = (props) => {
     //-10        130
     //100%       0%
     let result = parseFloat(((props.cal?.pro_1 || 0) / projectData.value.capacity) * 100)
-    console.log(result)
+    // console.log(result)
     setPer(mapValue(result, in_min, in_max, out_min, out_max))
   }, [props.cal.pro_1])
 
@@ -3609,7 +3645,7 @@ const Grid = (props) => {
           <img src="/dat_picture/grid.png" alt="" />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Data">
-          <span>{dataLang.formatMessage({ id: "grid" })}</span>
+          <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
             {Number(props.cal?.grid_1 || 0).toLocaleString("en-US")}
@@ -3779,17 +3815,18 @@ const Battery = (props) => {
               gap: "4px",
             }}
           >
-            <span>{dataLang.formatMessage({ id: "charge" })}</span>
+            <span>SoC:</span>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
               {Number(props.cal?.bat_2 || 0).toLocaleString("en-US")}
             </span>
             <span style={{ fontSize: "12px", color: "grey" }}>%</span>
           </div>
           <LiaLongArrowAltLeftSolid size={30} />
+          <span style={{ fontSize: "13px" }}>{dataLang.formatMessage({ id: "charge" })}</span>
         </div>
 
         <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Data">
-          <span>{dataLang.formatMessage({ id: "batteryData" })}</span>
+          <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
             {Number(props.cal?.bat_1 || 0).toLocaleString("en-US")}

@@ -207,7 +207,7 @@ export default function Project(props) {
           )}
         </div>
       ),
-      width: "80px",
+      width: "100px",
     },
     {
       name: dataLang.formatMessage({ id: "warn" }),
@@ -230,7 +230,7 @@ export default function Project(props) {
           )}
         </div>
       ),
-      width: "80px",
+      width: "100px",
     },
     {
       name: dataLang.formatMessage({ id: "inCapacity" }),
@@ -253,12 +253,12 @@ export default function Project(props) {
       name: dataLang.formatMessage({ id: "power" }),
       selector: (row) =>
         parseFloat(power[row.plantid]).toFixed(2) === "NaN"
-          ? 0 + " %"
+          ? 0 + " kW"
           : Number(
             parseFloat(
-              (power[row.plantid] / 1000 / row.capacity) * 100
+              (power[row.plantid] / 1000)
             ).toFixed(2)
-          ).toLocaleString("en-US") + " %",
+          ).toLocaleString("en-US") + " kW",
       sortable: true,
       width: "160px",
     },
@@ -491,8 +491,8 @@ export default function Project(props) {
 
   const handleCloseFilter = (min, max, location) => {
     setDisplay(false);
-    console.log(min, max, location);
-    console.log(dataproject.value);
+    // console.log(min, max, location);
+    // console.log(dataproject.value);
     const temp = dataproject.value.filter((item) => {
       return (
         parseFloat(item.capacity) >= parseFloat(min) &&
@@ -500,7 +500,7 @@ export default function Project(props) {
         item.addr.includes(location)
       );
     });
-    console.log(temp);
+    // console.log(temp);
     setDatafilter(temp);
   };
 
@@ -520,7 +520,7 @@ export default function Project(props) {
         type: userInfor.value.type,
       });
       if (d.status === true) {
-        console.log(d.data);
+        // console.log(d.data);
         dataproject.value = d.data;
       }
     };

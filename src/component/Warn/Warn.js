@@ -18,6 +18,8 @@ import { callApi } from "../Api/Api";
 import { partnerInfor, phuhosting, ruleInfor, userInfor } from "../../App";
 import { IoClose, IoTrashOutline } from "react-icons/io5";
 import Info from "./Info";
+import { FiFilter } from "react-icons/fi";
+import Filter from "../Project/Filter";
 
 const tab = signal("all");
 const tabMobile = signal(false);
@@ -39,6 +41,7 @@ export default function Warn(props) {
   const [type, setType] = useState("project");
   const [datafilter, setDatafilter] = useState([]);
   const [boxid, setBoxid] = useState("");
+  const [display, setDisplay] = useState(false);
 
   const listTab = [
     { id: "all", name: dataLang.formatMessage({ id: "total" }) },
@@ -132,7 +135,7 @@ export default function Warn(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.warn.modify === true ||
-          ruleInfor.value.setting.warn.remove === true ? (
+            ruleInfor.value.setting.warn.remove === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.boxid + "" + row.warnid + "_MORE"}
@@ -255,6 +258,26 @@ export default function Warn(props) {
     }
   };
 
+  const handleResetFilter = () => {
+    setDisplay(false);
+    setDatafilter(dataWarn.value);
+  };
+
+  const handleCloseFilter = (warn, notice) => {
+    setDisplay(false);
+    console.log(warn, notice);
+    // console.log(dataproject.value);
+    // const temp = dataproject.value.filter((item) => {
+    //   return (
+    //     parseFloat(item.capacity) >= parseFloat(min) &&
+    //     parseFloat(item.capacity) <= parseFloat(max) &&
+    //     item.addr.includes(location)
+    //   );
+    // });
+    // console.log(temp);
+    // setDatafilter(temp);
+  };
+
   // by Mr Loc
   useEffect(() => {
     // console.log(warnfilter.value);
@@ -344,7 +367,7 @@ export default function Warn(props) {
                 <input
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterWarn" })}
-                  // onChange={(e) => handlefilterwarn(e)}
+                // onChange={(e) => handlefilterwarn(e)}
                 />
                 <div
                   className="DAT_Modify_Filter_Close"
@@ -637,6 +660,18 @@ export default function Warn(props) {
                 </span>
               );
             })}
+
+            <div className="DAT_Warn_Filter"
+              onClick={(e) => setDisplay(!display)}
+            >
+              <FiFilter />
+              <IoIosArrowDown
+                style={{
+                  transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+                  transition: "0.5s",
+                }}
+              />
+            </div>
           </div>
 
           <div className="DAT_Warn_Content">
@@ -682,6 +717,13 @@ export default function Warn(props) {
                   return <></>;
               }
             })()}
+
+            <Filter
+              type="warn"
+              display={display}
+              handleClose={handleCloseFilter}
+              handleReset={handleResetFilter}
+            />
           </div>
         </div>
       )}

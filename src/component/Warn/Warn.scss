@@ -58,7 +58,6 @@
 }
 
 .DAT_Warn {
-
     width: 98%;
     //height: 80vh;
     margin: auto;
@@ -104,6 +103,22 @@
         -moz-box-sizing: border-box;
         /* Firefox, other Gecko */
         box-sizing: border-box;
+        position: relative;
+    }
+
+    &_Filter {
+        cursor: pointer;
+        max-width: 350px;
+        font-size: 14px;
+        color: rgb(80, 80, 80);
+        background-color: #dadada;
+        padding: 10px 25px 10px 25px;
+        margin-top: 2px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: flex;
+        gap: 2px;
     }
 }
 
