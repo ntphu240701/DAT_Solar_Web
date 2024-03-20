@@ -41,6 +41,9 @@ export default function Warn(props) {
   const [type, setType] = useState("project");
   const [datafilter, setDatafilter] = useState([]);
   const [boxid, setBoxid] = useState("");
+  const [level, setLevel] = useState("");
+  const [plant, setPlant] = useState("");
+  const [device, setDevice] = useState("");
   const [display, setDisplay] = useState(false);
 
   const listTab = [
@@ -67,7 +70,7 @@ export default function Warn(props) {
       selector: (row) =>
         <div style={{ cursor: "pointer" }}
           onClick={(e) => handleInfo(e)}
-          id={row.boxid}
+          id={row.boxid + "_" + row.level + "_" + row.plant + "_" + row.device}
         >
           {dataLang.formatMessage({ id: row.boxid })}
         </div>,
@@ -188,12 +191,21 @@ export default function Warn(props) {
 
   const handleInfo = (e) => {
     infowarnState.value = true;
-    const id = e.currentTarget.id;
-    const idArr = id.split("_");
-    dataWarn.value.find((item) => item.boxid == idArr[0]);
-    setBoxid(id)
+    const temp = e.currentTarget.id.split("_");
+    const id = temp[0];
+    const level = temp[1];
+    const plant = temp[2];
+    const device = temp[3];
 
-    console.log(id);
+    setBoxid(id)
+    setLevel(level)
+    setPlant(plant)
+    setDevice(device)
+
+    console.log(id)
+    console.log(level)
+    console.log(plant)
+    console.log(device)
   };
 
   const handleDeleteWarn = (e) => {
@@ -754,7 +766,7 @@ export default function Warn(props) {
       )}
 
       {infowarnState.value ? (
-        <Info boxid={boxid}></Info>
+        <Info boxid={boxid} level={level} plant={plant} device={device}></Info>
       ) : (
         <></>
       )}
