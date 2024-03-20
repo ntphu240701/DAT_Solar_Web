@@ -33,6 +33,15 @@ import { GiCoalWagon } from "react-icons/gi";
 import { FaMoneyBill } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { VscDashboard } from "react-icons/vsc";
+import { CiCircleQuestion } from "react-icons/ci";
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Popper from '@mui/material/Popper';
+import PopupState, { bindToggle, bindPopper, bindHover } from 'material-ui-popup-state';
+import Fade from '@mui/material/Fade';
+import Paper from '@mui/material/Paper';
+import { Icon, Popover } from "@mui/material";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const plant = signal([]);
 const logger = signal([]);
@@ -76,6 +85,11 @@ export default function Home(props) {
   );
   const [datayear, setDatayear] = useState([]);
   const navigate = useNavigate();
+  const [showDetail, setShowDetail] = useState(false);
+
+  const toggleDetail = () => {
+    setShowDetail(!showDetail);
+  };
 
   const [per, setPer] = useState(0);
   const in_max = 100;
@@ -105,6 +119,9 @@ export default function Home(props) {
     animationTimingFunction: "linear",
     animationIterationCount: "infinite",
   };
+
+  //POPUP DETAIL
+
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: "row" }),
@@ -617,10 +634,9 @@ export default function Home(props) {
           <div className="DAT_Home_Overview-Main">
             <div className="DAT_Home_Overview-Main-Percent">
               <style>{keyframes}</style>
-              <div
-                className="DAT_Home_Overview-Main-Percent-Item"
-                style={{ animation: "home 30s linear infinite" }}
-              >
+
+              <div className="DAT_Home_Overview-Main-Percent-Item"
+                style={{ animation: "home 30s linear infinite" }}>
                 <div className="DAT_Home_Overview-Main-Percent-Item-value">
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_num">
                     {Number(
@@ -631,11 +647,48 @@ export default function Home(props) {
                         parseFloat((production / capacity) * 100).toFixed(2)
                       ).toLocaleString("en-US")}
                   </div>
-
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">
                     %
                   </div>
                 </div>
+              </div>
+
+              <div className="DAT_Home_Overview-Main-Percent-Icon" style={{ cursor: 'pointer' }}>
+                <PopupState variant="popper" popupId="demo-popup-popper">
+                  {(popupState) => (
+                    <div style={{ cursor: 'pointer' }}>
+                      <HelpOutlineIcon
+                        {...bindHover(popupState)}
+                        color="action"
+                        fontSize="9px" />
+                      <Popper {...bindPopper(popupState)} transition modifiers={{
+                        preventOverflow:
+                        {
+                          enabled: true,
+                          escapeWithReference: true,
+                          boundariesElement: 'viewport'
+                        }
+                      }
+                      } >
+                        {({ TransitionProps }) => (
+                          <Fade {...TransitionProps} timeout={350}>
+                            <Paper sx={{ width: '400px', marginLeft: '435px', p: 2 }}>
+                              <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                                {dataLang.formatMessage({ id: 'overview1' })}
+                              </Typography>
+                              <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                                {dataLang.formatMessage({ id: 'overview2' })}
+                              </Typography>
+                              <Typography sx={{ fontSize: '12px', textAlign: 'justify' }}>
+                                {dataLang.formatMessage({ id: 'overview3' })}
+                              </Typography>
+                            </Paper>
+                          </Fade>
+                        )}
+                      </Popper>
+                    </div>
+                  )}
+                </PopupState>
               </div>
             </div>
 
@@ -1095,6 +1148,45 @@ export default function Home(props) {
           <div className="DAT_Home_Benefit-Head">
             <div className="DAT_Home_Benefit-Head-Title">
               {dataLang.formatMessage({ id: "environment" })}
+              &nbsp;
+              <PopupState variant="popper" popupId="demo-popup-popper">
+                {(popupState) => (
+                  <div>
+                    <HelpOutlineIcon
+                      {...bindHover(popupState)}
+                      color="action"
+                      fontSize="9px" />
+                    <Popper {...bindPopper(popupState)} transition modifiers={{
+                      preventOverflow:
+                      {
+                        enabled: true,
+                        escapeWithReference: true,
+                        boundariesElement: 'viewport'
+                      }
+                    }
+                    }>
+                      {({ TransitionProps }) => (
+                        <Fade {...TransitionProps} timeout={350}>
+                          <Paper sx={{ width: '400px', marginTop: '10px', marginLeft: '335px', p: 2 }}>
+                            <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                              - {dataLang.formatMessage({ id: 'environment1' })}
+                            </Typography>
+                            <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                              - {dataLang.formatMessage({ id: 'environment2' })}
+                            </Typography>
+                            <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                              - {dataLang.formatMessage({ id: 'environment3' })}
+                            </Typography>
+                            <Typography sx={{ fontSize: '12px', textAlign: 'justify' }}>
+                              - {dataLang.formatMessage({ id: 'environment4' })}
+                            </Typography>
+                          </Paper>
+                        </Fade>
+                      )}
+                    </Popper>
+                  </div>
+                )}
+              </PopupState>
             </div>
           </div>
 
