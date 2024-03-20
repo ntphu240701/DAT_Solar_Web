@@ -497,7 +497,12 @@ export default function Project(props) {
       return (
         parseFloat(item.capacity) >= parseFloat(min) &&
         parseFloat(item.capacity) <= parseFloat(max) &&
-        item.addr.includes(location)
+        item.addr.toLowerCase().includes(location.toLowerCase()) || 
+        (
+          parseFloat(item.capacity) >= parseFloat(min) &&
+          parseFloat(item.capacity) <= parseFloat(max)   
+        ) || 
+        item.addr.toLowerCase().includes(location.toLowerCase())
       );
     });
     console.log(temp);

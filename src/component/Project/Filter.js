@@ -48,9 +48,9 @@ export default function Filter(props) {
                                     </th>
                                     <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
                                         <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                            <input type="number" id="min" ref={min} required />
+                                            <input type="number" id="min" ref={min}  />
                                             ~
-                                            <input type="number" id="max" ref={max} required />
+                                            <input type="number" id="max" ref={max}  />
                                         </div>
                                     </td>
                                 </tr>
@@ -62,7 +62,7 @@ export default function Filter(props) {
                                     </th>
                                     <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
                                         <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                            <input type="text" id="location" ref={location} required />
+                                            <input type="text" id="location" ref={location}  />
                                         </div>
                                     </td>
                                 </tr>

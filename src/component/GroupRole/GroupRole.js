@@ -26,11 +26,9 @@ import { AiOutlineUserAdd, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 
 //DATA TEMP
-export const group = signal([
-]);
+export const group = signal([]);
 
-export const groupUser = signal([
-]);
+export const groupUser = signal([]);
 
 //CONST SIGNALS
 export const createState = signal(false);
@@ -42,6 +40,8 @@ export const groupID = signal(0);
 export const groupDelID = signal();
 export const userDel = signal();
 export const groupEdit = signal();
+
+const datafilter = signal();
 
 const GroupUsers = () => {
   const dataLang = useIntl();
@@ -118,9 +118,10 @@ const GroupUsers = () => {
       name: dataLang.formatMessage({ id: "setting" }),
       selector: (user) => (
         <>
-          {user.type_ === "master"
-            ? <></>
-            : <div
+          {user.type_ === "master" ? (
+            <></>
+          ) : (
+            <div
               className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Delete"
               id={user.id_}
               onClick={(e) => handleDeleteUser(e)}
@@ -128,10 +129,8 @@ const GroupUsers = () => {
             >
               <MdDelete size={20} color="red" />
             </div>
-
-          }
+          )}
         </>
-
       ),
       width: "100px",
     },
@@ -146,6 +145,7 @@ const GroupUsers = () => {
       // console.log(getUser)
       if (getUser.status) {
         groupUser.value = getUser.data.sort((a, b) => a.id_ - b.id_);
+        datafilter.value = groupUser.value;
       }
     };
     checkApi();
@@ -273,7 +273,7 @@ const GroupUsers = () => {
             <DataTable
               className="DAT_Table_GroupRole"
               columns={columnGroupRole}
-              data={groupUser.value}
+              data={datafilter.value}
               pagination
               paginationComponentOptions={paginationComponentOptions}
               fixedHeader={true}
@@ -291,23 +291,17 @@ export default function GroupRole(props) {
   const [filter, setFilter] = useState(false);
 
   const handleFilter = (e) => {
-    setFilter(e.target.value);
-    if (filter !== "") {
-      for (const group of groupUser.value) {
-        for (const user of group.users) {
-          if (user.username.includes(filter)) {
-            const t = groupUser.value.find(
-              (item) => item.groupid === group.groupid
-            );
-            console.log(t);
-          } else {
-            // console.log("khong tim thay");
-          }
-        }
-        // console.log(group);
-      }
-    } else {
-      groupUser.value = groupUser.value;
+    const t = e.currentTarget.value.toLowerCase();
+    if (groupID.value !== 0) {
+      datafilter.value = groupUser.value.filter((item) => {
+        return (
+          item.mail_.toLowerCase().includes(t) ||
+          item.name_.toLowerCase().includes(t) ||
+          item.phone_.toLowerCase().includes(t) ||
+          item.usr_.toLowerCase().includes(t)
+        );
+      });
+      console.log(datafilter.value);
     }
   };
 
@@ -320,8 +314,6 @@ export default function GroupRole(props) {
     };
     checkApi();
   }, []);
-
-
 
   return (
     <>
@@ -349,8 +341,15 @@ export default function GroupRole(props) {
             </div>
 
             {filter ? (
-              <div className="DAT_Modify_Filter">
+              <div
+                className="DAT_Modify_Filter"
+                style={{
+                  backgroundColor:
+                    groupID.value === 0 ? "rgba(233, 233, 233, 0.5)" : "white",
+                }}
+              >
                 <input
+                  disabled={groupID.value === 0 ? true : false}
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterInfo" })}
                   value={filter}
@@ -369,8 +368,15 @@ export default function GroupRole(props) {
           </>
         ) : (
           <>
-            <div className="DAT_GRHeader_Filter">
+            <div
+              className="DAT_GRHeader_Filter"
+              style={{
+                backgroundColor:
+                  groupID.value === 0 ? "rgba(233, 233, 233, 0.5)" : "white",
+              }}
+            >
               <input
+                disabled={groupID.value === 0 ? true : false}
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterInfo" })}
                 onChange={(e) => handleFilter(e)}
@@ -453,8 +459,3 @@ export default function GroupRole(props) {
     </>
   );
 }
-
-
-
-
-
