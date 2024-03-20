@@ -434,7 +434,7 @@ export const messages = {
     role: "Người dùng",
     rule: "Quyền",
     partner: "Đối tác",
-    rushhour: "Giờ cao điểm",
+    rushhour: "Giờ nắng đỉnh",
     environment: "Môi trường và lợi ích kinh tế",
     envi: "Môi trường",
     weather: "Thời tiết",

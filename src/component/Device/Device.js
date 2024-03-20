@@ -23,6 +23,7 @@ import { RxCross2 } from "react-icons/rx";
 import { FiEdit, FiFilter } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
 import { lowerCase } from "lodash";
+import Filter from "../Project/Filter";
 
 export const tab = signal("logger");
 export const infoState = signal(false);
@@ -822,40 +823,12 @@ export default function Device(props) {
               }
             })()}
 
-            <div className="DAT_Device_Content_FilterSub"
-              style={{
-                height: display ? "567px" : "0px",
-                transition: "0.5s",
-              }}
-            >
-              {display ? (
-                <div className="DAT_Device_Content_FilterSub_Dropdown"
-                  style={{
-                    height: display ? "200px" : "0px",
-                    transition: "0.5s",
-                  }}
-                >
-                  <div className="DAT_Device_Content_FilterSub_Dropdown_Item">
-                    <table className="DAT_Device_Content_FilterSub_Dropdown_Item_Table">
-                      <tbody>
-                        <tr className="DAT_Device_Content_FilterSub_Dropdown_Item_Table_Tr">
-                          <th className="DAT_Device_Content_FilterSub_Dropdown_Item_Table_Tr_Th">
-                            {dataLang.formatMessage({ id: "project" })}:
-                          </th>
-                          <td className="DAT_Device_Content_FilterSub_Dropdown_Item_Table_Tr_Td">
-                            <div className="DAT_Device_Content_FilterSub_Dropdown_Item_Table_Tr_Td_Checkbox">
-                              <input />
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              ) : (
-                <></>
-              )}
-            </div>
+            <Filter
+              type="device"
+              display={display}
+            // handleClose={handleCloseFilter}
+            // handleReset={handleResetFilter}
+            />
           </div>
         </div>
       )}

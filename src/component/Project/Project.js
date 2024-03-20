@@ -484,9 +484,24 @@ export default function Project(props) {
     }
   };
 
+  const handleResetFilter = () => {
+    setDisplay(false);
+    setDatafilter(dataproject.value);
+  };
+
   const handleCloseFilter = (min, max, location) => {
     setDisplay(false);
     console.log(min, max, location);
+    console.log(dataproject.value);
+    const temp = dataproject.value.filter((item) => {
+      return (
+        parseFloat(item.capacity) >= parseFloat(min) &&
+        parseFloat(item.capacity) <= parseFloat(max) &&
+        item.addr.includes(location)
+      );
+    });
+    console.log(temp);
+    setDatafilter(temp);
   };
 
   useEffect(() => {
@@ -814,7 +829,6 @@ export default function Project(props) {
                     </div>
                   );
                 })}
-
               </div>
             ) : (
               <></>
@@ -1562,7 +1576,8 @@ export default function Project(props) {
               );
             })}
 
-            <div className="DAT_Project_Filter"
+            <div
+              className="DAT_Project_Filter"
               onClick={(e) => setDisplay(!display)}
             >
               <FiFilter />
@@ -1643,13 +1658,18 @@ export default function Project(props) {
               }
             })()}
 
-            <Filter display={display} handleClose={handleCloseFilter} />
+            <Filter
+              type="project"
+              display={display}
+              handleClose={handleCloseFilter}
+              handleReset={handleResetFilter}
+            />
           </div>
-        </div >
-      )
-      }
+        </div>
+      )}
 
-      <div className="DAT_ProjectInfor"
+      <div
+        className="DAT_ProjectInfor"
         style={{
           height: plantState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",
@@ -1669,20 +1689,18 @@ export default function Project(props) {
         })()}
       </div>
 
-      {
-        popupState.value ? (
-          <div className="DAT_DevicePopup">
-            <Popup
-              plantid={projectData.value.plantid}
-              func="remove"
-              type="plant"
-              usr={user}
-            />
-          </div>
-        ) : (
-          <></>
-        )
-      }
+      {popupState.value ? (
+        <div className="DAT_DevicePopup">
+          <Popup
+            plantid={projectData.value.plantid}
+            func="remove"
+            type="plant"
+            usr={user}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 }
