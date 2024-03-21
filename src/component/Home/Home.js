@@ -661,15 +661,7 @@ export default function Home(props) {
                         {...bindHover(popupState)}
                         color="action"
                         fontSize="9px" />
-                      <Popper {...bindPopper(popupState)} transition modifiers={{
-                        preventOverflow:
-                        {
-                          enabled: true,
-                          escapeWithReference: true,
-                          boundariesElement: 'viewport'
-                        }
-                      }
-                      } >
+                      <Popper {...bindPopper(popupState)} transition >
                         {({ TransitionProps }) => (
                           <Fade {...TransitionProps} timeout={350}>
                             <Paper sx={{ width: '400px', marginLeft: '435px', p: 2 }}>
@@ -1156,15 +1148,7 @@ export default function Home(props) {
                       {...bindHover(popupState)}
                       color="action"
                       fontSize="9px" />
-                    <Popper {...bindPopper(popupState)} transition modifiers={{
-                      preventOverflow:
-                      {
-                        enabled: true,
-                        escapeWithReference: true,
-                        boundariesElement: 'viewport'
-                      }
-                    }
-                    }>
+                    <Popper {...bindPopper(popupState)} transition>
                       {({ TransitionProps }) => (
                         <Fade {...TransitionProps} timeout={350}>
                           <Paper sx={{ width: '400px', marginTop: '10px', marginLeft: '335px', p: 2 }}>

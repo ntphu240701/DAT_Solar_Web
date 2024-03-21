@@ -1498,6 +1498,10 @@
                 border-radius: 5px;
                 padding: 16px;
 
+                &_Tit {
+                    display: flex;
+                }
+
                 &_Content {
                     &_Col {
                         padding: 16px;

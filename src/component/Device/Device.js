@@ -179,7 +179,7 @@ export default function Device(props) {
           ) : (
             <MdOutlineError size={22} color="red" />
           )} */}
-          {invt[row.plogger]?.[row.pdata.status] == 2 || invt[row.plogger]?.[row.pdata.status] == 5 ? (
+          {invt[row.plogger]?.[row.pdata.status] == 2 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
             <MdOutlineError size={22} color="red" />
@@ -188,15 +188,13 @@ export default function Device(props) {
       ),
       width: "100px",
     },
-
     {
       name: dataLang.formatMessage({ id: "production" }),
       selector: (row) => {
-
-        let d = JSON.parse(row.pdata.total.register)
+        let d = JSON.parse(row.pdata.total?.register || "[]")
         return (
           <div>
-            {convertToDoublewordAndFloat([invt[row.plogger]?.[d[0]], invt[row.plogger]?.[d[1]]], "int")} kW
+            {parseFloat((convertToDoublewordAndFloat([invt[row.plogger]?.[d[0]], invt[row.plogger]?.[d[1]]], "int") * row.pdata.total?.cal) / 1000).toFixed(2)} kW
           </div>
         );
       },
@@ -207,7 +205,7 @@ export default function Device(props) {
       name: dataLang.formatMessage({ id: "daily" }),
       selector: (row) =>
         <>
-          {parseFloat(invt[row.plogger]?.[row.pdata.daily.register] * row.pdata.daily.cal).toFixed(2)} kWh
+          {row.pdata.daily?.register ? parseFloat(invt[row.plogger][row.pdata.daily?.register] * row.pdata.daily?.cal).toFixed(2) : 0} kWh
         </>,
       sortable: true,
       width: "160px",
@@ -558,6 +556,10 @@ export default function Device(props) {
       }
     };
     getAllInverter();
+
+    return () => {
+      tab.value = "logger";
+    };
   }, []);
 
   return (
