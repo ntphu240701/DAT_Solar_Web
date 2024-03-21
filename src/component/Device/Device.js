@@ -22,7 +22,6 @@ import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
 import { FiEdit, FiFilter } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
-import { lowerCase } from "lodash";
 import Filter from "../Project/Filter";
 import axios from "axios";
 
