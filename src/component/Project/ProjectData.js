@@ -302,7 +302,7 @@ export default function ProjectData(props) {
       // width: "180px",
     },
     {
-      name: dataLang.formatMessage({ id: "setting" }),
+      name: dataLang.formatMessage({ id: "edit" }),
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify === true ||
@@ -331,7 +331,7 @@ export default function ProjectData(props) {
             >
               <FiEdit size={14} />
               &nbsp;
-              {dataLang.formatMessage({ id: "edit" })}
+              {dataLang.formatMessage({ id: "change" })}
             </div>
             <div className="DAT_ModifyBox_Remove"
               id={row.sn + "_remove"}

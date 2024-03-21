@@ -133,7 +133,7 @@ export default function Role(props) {
             >
               <FiEdit size={14} />
               &nbsp;
-              {dataLang.formatMessage({ id: "edit" })}
+              {dataLang.formatMessage({ id: "change" })}
             </div>
             <div
               className="DAT_ModifyBox_Remove"

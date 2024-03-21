@@ -328,7 +328,7 @@ export default function Project(props) {
               >
                 <FiEdit size={14} />
                 &nbsp;
-                {dataLang.formatMessage({ id: "edits" })}
+                {dataLang.formatMessage({ id: "change" })}
               </div>
             ) : (
               <div></div>
