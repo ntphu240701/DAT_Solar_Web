@@ -358,9 +358,9 @@ export default function Project(props) {
               style={{
                 // color: like ? "yellow" : "grey",
                 cursor: "pointer",
-                color: "grey"
+                // color: "grey"
               }}
-              onClick={(e) => handleLike(e)}
+              // onClick={(e) => handleLike(e)}
               size={17}
             />
           </div>
@@ -535,19 +535,8 @@ export default function Project(props) {
         type: userInfor.value.type,
       });
       if (d.status === true) {
-
-
-        let temp = d.data;
-
-        temp = temp.map((item) => {
-          item.mark = false
-        })
-        console.log(temp);
-
+        // console.log(d.data);
         dataproject.value = d.data;
-
-
-
       }
     };
     getPlant();
