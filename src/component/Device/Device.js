@@ -205,7 +205,7 @@ export default function Device(props) {
       name: dataLang.formatMessage({ id: "daily" }),
       selector: (row) =>
         <>
-          {row.pdata.daily?.register ? parseFloat(invt[row.plogger][row.pdata.daily?.register] * row.pdata.daily?.cal).toFixed(2) : 0} kWh
+          {row.pdata.daily?.register ? parseFloat(invt[row.plogger]?.[row.pdata.daily.register] * row.pdata.daily?.cal).toFixed(2) : 0} kWh
         </>,
       sortable: true,
       width: "160px",

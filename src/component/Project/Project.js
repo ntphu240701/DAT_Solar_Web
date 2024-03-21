@@ -143,6 +143,7 @@ export default function Project(props) {
   const [power, setPower] = useState([]);
   const [dailyProduction, setDailyProduction] = useState([]);
   const [display, setDisplay] = useState(false);
+  const [like, setLike] = useState(false);
   const navigate = useNavigate();
 
   const listTab = [
@@ -355,9 +356,11 @@ export default function Project(props) {
             <FaStar
               id="icon"
               style={{
+                color: like ? "yellow" : "grey",
                 cursor: "pointer",
                 // color: "grey"
               }}
+              onClick={(e) => handleLike(e)}
               size={17}
             />
           </div>
@@ -397,6 +400,10 @@ export default function Project(props) {
       (item) => item.plantid == e.currentTarget.id
     );
     projectData.value = newPlant;
+  };
+
+  const handleLike = (e) => {
+    setLike(!like);
   };
 
   const handleModify = (e, type) => {
