@@ -632,7 +632,7 @@ export default function Device(props) {
               <input
                 type="text"
                 id="search"
-                placeholder={dataLang.formatMessage({ id: "enterDev" })}
+                placeholder={tab.value == "logger" ? dataLang.formatMessage({ id: "enterLogger" }) : dataLang.formatMessage({ id: "enterInverter" })}
                 // value={connectval.value}
                 onChange={(e) => handleSearch(e)}
               />
