@@ -52,7 +52,7 @@ import {
   MdOutlineError,
   MdPermDataSetting,
 } from "react-icons/md";
-import { FaCheckCircle, FaTree } from "react-icons/fa";
+import { FaCheckCircle, FaMoneyBill, FaTree } from "react-icons/fa";
 import { RiMoneyCnyCircleFill } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -64,6 +64,11 @@ import { FiEdit } from "react-icons/fi";
 import styled, { keyframes } from 'styled-components';
 import { info, infoState, loggerList, tab } from "../Device/Device";
 import Info from "../Device/Info";
+import { GiCoalWagon } from "react-icons/gi";
+import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
+import PopupState, { bindHover, bindPopper } from "material-ui-popup-state";
+import { Fade, Paper, Popper, Typography } from "@mui/material";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -178,13 +183,23 @@ export default function ProjectData(props) {
     },
     {
       name: dataLang.formatMessage({ id: "production" }),
-      selector: (row) => row.production,
+      selector: (row) => {
+        let d = JSON.parse(row.data.total?.register || "[]")
+        return (
+          <div>
+            {parseFloat((convertToDoublewordAndFloat([invt[row.logger_]?.[d[0]], invt[row.logger_]?.[d[1]]], "int") * row.data.total?.cal) / 1000).toFixed(2)} kW
+          </div>
+        )
+      },
       sortable: true,
       width: "300px",
     },
     {
       name: dataLang.formatMessage({ id: "daily" }),
-      selector: (row) => row.dailyproduction,
+      selector: (row) =>
+        <>
+          {row.data.daily?.register ? parseFloat(invt[row.logger_]?.[row.data.daily.register] * row.data.daily?.cal).toFixed(2) : 0} kWh
+        </>,
       sortable: true,
       width: "300px",
     },
@@ -452,6 +467,18 @@ export default function ProjectData(props) {
     }
   };
 
+  const convertToDoublewordAndFloat = (word, type) => {
+    var doubleword = (word[1] << 16) | word[0];
+    var buffer = new ArrayBuffer(4);
+    var intView = new Int32Array(buffer);
+    var floatView = new Float32Array(buffer);
+    intView[0] = doubleword;
+    var float_value = floatView[0];
+    return type === "int"
+      ? parseFloat(doubleword).toFixed(2)
+      : parseFloat(float_value).toFixed(2) || 0;
+  };
+
   const handleNav = (e) => {
     var id = e.currentTarget.id;
     setNav(id);
@@ -631,6 +658,7 @@ export default function ProjectData(props) {
     const mod = document.getElementById(arr[0] + "_Modify");
     mod.style.display = type;
   };
+
   const handleOutsideUser = (e) => {
     // if(!box.current.contains(e.target)){
     //   plantState.value = "default";
@@ -832,6 +860,7 @@ export default function ProjectData(props) {
 
     return () => {
       cal.value = {};
+      tab_.value = "logger";
     };
 
     // eslint-disable-next-line
@@ -1896,13 +1925,44 @@ export default function ProjectData(props) {
                     <div className="DAT_ProjectData_Dashboard_More_Right">
                       <div className="DAT_ProjectData_Dashboard_More_Right_Tit">
                         {dataLang.formatMessage({ id: "environment" })}
+                        &nbsp;
+                        <PopupState variant="popper" popupId="demo-popup-popper">
+                          {(popupState) => (
+                            <div style={{ cursor: "pointer" }}>
+                              <HelpOutlineIcon
+                                {...bindHover(popupState)}
+                                color="action"
+                                fontSize="9px" />
+                              <Popper {...bindPopper(popupState)} transition>
+                                {({ TransitionProps }) => (
+                                  <Fade {...TransitionProps} timeout={350}>
+                                    <Paper sx={{ width: '400px', marginTop: '10px', marginLeft: '335px', p: 2 }}>
+                                      <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                                        1. {dataLang.formatMessage({ id: 'environment1' })}
+                                      </Typography>
+                                      <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                                        2. {dataLang.formatMessage({ id: 'environment2' })}
+                                      </Typography>
+                                      <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                                        3. {dataLang.formatMessage({ id: 'environment3' })}
+                                      </Typography>
+                                      <Typography sx={{ fontSize: '12px', textAlign: 'justify' }}>
+                                        4. {dataLang.formatMessage({ id: 'environment4' })}
+                                      </Typography>
+                                    </Paper>
+                                  </Fade>
+                                )}
+                              </Popper>
+                            </div>
+                          )}
+                        </PopupState>
                       </div>
 
                       <div className="DAT_ProjectData_Dashboard_More_Right_Content">
                         <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col">
                           <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item">
                             <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item_Icon">
-                              <MdPermDataSetting size={24} color="#6495ed" />
+                              <GiCoalWagon size={24} color="#6495ed" />
                             </div>
                             <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item_Tit">
                               <div style={{ fontSize: "14px", color: "grey" }}>
@@ -1974,7 +2034,7 @@ export default function ProjectData(props) {
                           </div>
                           <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item">
                             <div className="DAT_ProjectData_Dashboard_More_Right_Content_Col_Item_Icon">
-                              <RiMoneyCnyCircleFill size={24} color="#6495ed" />
+                              <FaMoneyBill size={24} color="#6495ed" />
                             </div>
                             <div>
                               <div style={{ fontSize: "14px", color: "grey" }}>
@@ -2674,357 +2734,47 @@ const Graph = (props) => {
 };
 
 const GraphGrid = (props) => {
-  const LineA = (props) => {
-    return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        verssion="1.1"
-      >
-        <path
-          className="path"
-          d="M 117.276 2.1 L 118.337 142.757"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
-            strokeLinecap: "round",
-            overflow: "hidden",
-          }}
-        />
-        <path
-          className="path"
-          d="M 5.885 145.361 L 229.076 145.361"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: "#6495ed",
-            strokeWidth: "5",
-            strokeLinecap: "round",
-            overflow: "hidden",
-          }}
-        />
-        {projectData.value.state ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 117.276 2.1 L 118.337 142.757"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-      </svg>
-    );
-  };
 
-  // const LineB = (props) => {
-  //   return (
-  //     <svg
-  //       width={`${props.width}px`}
-  //       height={`${props.height}px`}
-  //       version="1.1"
-  //     >
-  //       <path
-  //         d="M 35 7 L 35 35"
-  //         style={{
-  //           width: "100%",
-  //           height: "100%",
-  //           fill: "none",
-  //           stroke: "rgb(107, 107, 107,0.4)",
-  //           strokeWidth: "5",
-  //           strokeLinecap: "round",
-  //           overflow: "hidden",
-  //         }}
-  //       />
-  //       {projectData.value.state
-  //         ? <circle
-  //           r={4}
-  //           style={{
-  //             fill: "none",
-  //             stroke: "#3e80fb",
-  //             strokeWidth: "3",
-  //             position: "absolute",
-  //             top: "0",
-  //             left: "0",
-  //           }}
-  //         >
-  //           <animateMotion
-  //             path="M 35 7 L 35 35"
-  //             dur={props.dur}
-  //             repeatCount="indefinite"
-  //           ></animateMotion>
-  //         </circle>
-  //         : <></>}
-  //     </svg>
-  //   );
-  // };
+  const [lineA_, setLinA] = useState(false)
+  const [lineB_, setLinB] = useState(false)
+  const [lineC_, setLinC] = useState('Default')
+  const [lineD_, setLinD] = useState('Default')
 
-  const ImgGrid = (props) => {
-    return (
-      <img
-        src="/dat_picture/grid.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
+  useEffect(() => {
+    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
+    if ((props.cal?.pro_1) > 0) {
+      console.log("A")
+      setLinA(true)
+    }
+    if (parseFloat(props.cal?.con_1) > 0) {
+      console.log("B")
+      setLinB(true)
+    }
 
-  const ImgSolar = (props) => {
-    return (
-      <img
-        src="/dat_picture/solar-panel.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
-  const ImgLoad = (props) => {
-    return (
-      <img
-        src="/dat_picture/load.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
+    if (parseFloat(props.cal?.bat_1) > 0) {
+      console.log("D")
+      setLinC('In')
+    } else if (parseFloat(props.cal?.bat_1) < 0) {
+      console.log("D")
+      setLinC('Out')
+    } else {
+      console.log("D")
+      setLinC('default')
+    }
 
-  return (
-    <div
-      style={{ scale: isMobile.value ? "0.8" : "1" }}
-    >
-      <div>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
-          <ImgSolar width="70" height="70" />
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", minwidth: "120px" }}>
-            {Number(props.cal?.pro_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>kW</span>
-          </div>
-        </div>
-      </div>
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-end" }} >
-        <ImgLoad width="80" height="80" />
-        <LineA width="232" height="152" />
-        <ImgGrid width="80" height="120" />
-      </div>
-    </div>
-  );
-};
+    if (parseFloat(props.cal?.grid_1) > 0) {
+      console.log("D")
+      setLinD('In')
+    } else if (parseFloat(props.cal?.grid_1) < 0) {
+      console.log("D")
+      setLinD('Out')
+    } else {
+      console.log("D")
+      setLinD('default')
+    }
 
-const GraphConsumption = (props) => {
-  const LineA = (props) => {
-    return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        verssion="1.1"
-      >
-        <path
-          className="path"
-          d="M 6 6 L 210 6"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
-            strokeLinecap: "round",
-            overflow: "hidden",
-          }}
-        />
+  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1])
 
-        <path
-          d="M 20 0 L 0 0"
-          style={{
-            position: "absolute",
-            zIndex: "20",
-            top: "0",
-            left: "0",
-            stroke: "rgb(103, 179, 255)",
-            strokeWidth: "5",
-            strokeLinecap: "round",
-          }}
-        >
-          <animateMotion
-            path="M 190 6 L 6 6"
-            dur={props.dur}
-            repeatCount="indefinite"
-          ></animateMotion>
-        </path>
-
-      </svg>
-    );
-  };
-  const LineB = (props) => {
-    return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
-        <path
-          d="M 35 7 L 35 35"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
-            strokeLinecap: "round",
-            overflow: "hidden",
-          }}
-        />
-        {projectData.value.state ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 35 7 L 35 35"
-              dur={props.dur}
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-      </svg>
-    );
-  };
-  const LineC = (props) => {
-    return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
-        <path
-          d="M 10.011 12.517 L 233.708 12.443 C 249.946 12.253 267.392 16.822 267.772 42.404 L 267.468 130"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
-            strokeLinecap: "round",
-            overflow: "hidden",
-          }}
-        />
-        {projectData.value.state ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 10.011 12.517 L 233.708 12.443 C 249.946 12.253 267.392 16.822 267.772 42.404 L 267.468 130"
-              dur={props.dur}
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-      </svg>
-    );
-  };
-
-  const ImgGrid = (props) => {
-    return (
-      <img
-        src="/dat_picture/grid.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
-
-  const ImgSolar = (props) => {
-    return (
-      <img
-        src="/dat_picture/solar-panel.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
-  const ImgLoad = (props) => {
-    return (
-      <img
-        src="/dat_picture/load.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
-  return (
-    <div
-      style={{ scale: isMobile.value ? "0.8" : "1" }}
-    >
-      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <div >
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <ImgSolar width="80" height="100" />
-            <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
-              {Number((props.cal?.pro_1) || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>kW</span>
-            </div>
-          </div>
-
-          <LineB width="80" height="40" dur="1s" />
-        </div>
-        <div>
-          <LineC width="320" height="140" dur="2s" />
-        </div>
-      </div>
-      <div style={{ width: "100%", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <ImgLoad width="80" height="80" />
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
-            {Number(props.cal?.con_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>kw</span>
-          </div>
-        </div>
-
-
-        <LineA width="220" height="25" dur="1.5s" />
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "center" }} >
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold" }}>
-            {Number(props.cal?.grid_1 || 0).toLocaleString("en-US")} <span style={{ color: "gray", fontSize: "14px" }}>kw</span>
-          </div>
-          <ImgGrid width="100" height="120" />
-        </div>
-
-      </div>
-    </div>
-  );
-}
-
-const GraphFull = (props) => {
   const LineA = (props) => {
     return (
       <svg
@@ -3034,7 +2784,7 @@ const GraphFull = (props) => {
       >
         <path
           className="path"
-          d="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
+          d="M 7 7 L 82 7 C 90 7 100 13 100 21 L 100 36"
           style={{
             width: "100%",
             height: "100%",
@@ -3045,7 +2795,7 @@ const GraphFull = (props) => {
             overflow: "hidden",
           }}
         />
-        {projectData.value.state
+        {lineA_
           ? <circle
             r={4}
             style={{
@@ -3058,7 +2808,7 @@ const GraphFull = (props) => {
             }}
           >
             <animateMotion
-              path="M 105 7 L 25 7 C 14 7 7 14 7 25 L 7 155"
+              path="M 7 7 L 82 7 C 90 7 100 13 100 21 L 100 36"
               dur={props.dur}
               repeatCount="indefinite"
             ></animateMotion>
@@ -3077,18 +2827,18 @@ const GraphFull = (props) => {
         version="1.1"
       >
         <path
-          d="M 35 7 L 35 35"
+          d="M 6.937 36.079 L 6.773 21.015 C 6.409 15.004 13.083 6.389 24.215 6.94 L 101.159 6.932"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
+            stroke: "#3e80fb",
             strokeWidth: "5",
             strokeLinecap: "round",
             overflow: "hidden",
           }}
         />
-        {projectData.value.state
+        {/* {lineB_
           ? <circle
             r={4}
             style={{
@@ -3101,59 +2851,18 @@ const GraphFull = (props) => {
             }}
           >
             <animateMotion
-              path="M 35 7 L 35 35"
+              path="M 6.937 36.079 L 6.773 21.015 C 6.409 15.004 13.083 6.389 24.215 6.94 L 101.159 6.932"
               dur={props.dur}
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>}
+          : <></>} */}
       </svg>
     );
   };
+
 
   const LineC = (props) => {
-    return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
-        <path
-          d="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
-            strokeLinecap: "round",
-            overflow: "hidden",
-          }}
-        />
-        {projectData.value.state
-          ? <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 10 7 L 90 7 C 101 7 109 14 109 25 L 109 155"
-              dur={props.dur}
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-          : <></>}
-      </svg>
-    );
-  };
-
-  const LineD = (props) => {
     return (
       <svg
         width={`${props.width}px`}
@@ -3173,7 +2882,26 @@ const GraphFull = (props) => {
             overflow: "hidden",
           }}
         />
-        {projectData.value.state
+        {lineC_ === 'In'
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 109.252 7.267 L 109.551 21.913 C 109.55 29.017 99.114 36.291 89.94 36.029 L 10.004 36.152"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>}
+        {lineC_ === 'Out'
           ? <circle
             r={4}
             style={{
@@ -3196,7 +2924,7 @@ const GraphFull = (props) => {
     );
   };
 
-  const LineE = (props) => {
+  const LineD = (props) => {
     return (
       <svg
         width={`${props.width}px`}
@@ -3209,13 +2937,13 @@ const GraphFull = (props) => {
             width: "100%",
             height: "100%",
             fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
+            stroke: "#3e80fb",
             strokeWidth: "5",
             strokeLinecap: "round",
             overflow: "hidden",
           }}
         />
-        {projectData.value.state
+        {/* {lineD_ === 'In'
           ? <circle
             r={4}
             style={{
@@ -3235,31 +2963,7 @@ const GraphFull = (props) => {
           </circle>
           : <></>
         }
-      </svg>
-    );
-  };
-
-  const LineF = (props) => {
-    return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        verssion="1.1"
-      >
-        <path
-          className="path"
-          d="M 220 7 L 14 7"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
-            strokeLinecap: "round",
-            overflow: "hidden",
-          }}
-        />
-        {projectData.value.state
+           {lineD_ === 'Out'
           ? <circle
             r={4}
             style={{
@@ -3267,20 +2971,22 @@ const GraphFull = (props) => {
               stroke: "#3e80fb",
               strokeWidth: "3",
               position: "absolute",
-              top: "0",
+              top: "0", 
               left: "0",
             }}
           >
             <animateMotion
-              path="M 220 7 L 14 7"
+              path="M 7.023 6.84 L 7.258 23.056 C 8.368 31.282 15.33 35.948 25.037 36.062 L 105.077 36.005"
               dur="2s"
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>}
+          : <></>
+        } */}
       </svg>
     );
   };
+
 
   const ImgSolar = (props) => {
     return (
@@ -3324,56 +3030,415 @@ const GraphFull = (props) => {
 
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
 
-        <LineA width="120" height="160" dur="2s" />
 
-        <div style={{ width: "150px" }} >
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
-            <ImgSolar width="70" height="70" />
-            <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
-              <div>
-                {Number(props.cal?.pro_1 || 0).toLocaleString("en-US")}
-              </div>
-              <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
-            </div>
-          </div>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-
-            <LineB width="70" height="40" dur="1s" />
-          </div>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <ImgLoad width="70" height="70" />
-            <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
-              <div>
-                {Number(props.cal?.con_1 || 0).toLocaleString("en-US")}
-              </div>
-              <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
-            </div>
-          </div>
-
-        </div>
-
-        <LineC width="120" height="160" dur="2s" />
-
-      </div>
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
-          <ImgBat width="70" height="70" />
+          <ImgSolar width="70" height="70" />
           <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
             <div>
-              {Number(props.cal?.bat_1 || 0).toLocaleString("en-US")}
+              {Number(props.cal?.pro_1 || 0).toLocaleString("en-US")}
             </div>
-            <span style={{ color: "gray", fontSize: "13px" }}>W</span>
+            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
           </div>
         </div>
-        <div >
-          <div >
-            <LineD width="120" height="45" />
-            <LineE width="110" height="45" />
-          </div>
-          <LineF width="230" height="25" />
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <LineA width="110" height="45" dur="2s" />
+          <LineB width="110" height="45" dur="2s" />
         </div>
+        {/* <LineF width="230" height="25" /> */}
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+
+          </div>
+          <ImgLoad width="70" height="70" />
+        </div>
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "70px" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "70px", height: "70px", backgroundColor: "white", borderRadius: "5px", border: "1px solid gray" }}>
+          DC/AC
+        </div>
+      </div>
+
+
+
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
+          <div style={{ width: "60px", height: "70px" }}></div>
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <div style={{ width: "120px", height: "45px" }}></div>
+          <LineD width="120" height="45" />
+        </div>
+        {/* <LineF width="230" height="25" /> */}
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+
+          </div>
+          <ImgGrid width="60" height="70" />
+        </div>
+      </div>
+    </>
+  );
+};
+
+const GraphConsumption = (props) => {
+
+  const [lineA_, setLinA] = useState(false)
+  const [lineB_, setLinB] = useState(false)
+  const [lineC_, setLinC] = useState('Default')
+  const [lineD_, setLinD] = useState('Default')
+
+  useEffect(() => {
+    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
+    if ((props.cal?.pro_1) > 0) {
+      console.log("A")
+      setLinA(true)
+    }
+    if (parseFloat(props.cal?.con_1) > 0) {
+      console.log("B")
+      setLinB(true)
+    }
+
+    if (parseFloat(props.cal?.bat_1) > 0) {
+      console.log("D")
+      setLinC('In')
+    } else if (parseFloat(props.cal?.bat_1) < 0) {
+      console.log("D")
+      setLinC('Out')
+    } else {
+      console.log("D")
+      setLinC('default')
+    }
+
+    if (parseFloat(props.cal?.grid_1) > 0) {
+      console.log("D")
+      setLinD('In')
+    } else if (parseFloat(props.cal?.grid_1) < 0) {
+      console.log("D")
+      setLinD('Out')
+    } else {
+      console.log("D")
+      setLinD('default')
+    }
+
+  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1])
+
+  const LineA = (props) => {
+    return (
+      <svg
+        width={`${props.width}px`}
+        height={`${props.height}px`}
+        version="1.1"
+      >
+        <path
+          className="path"
+          d="M 7 7 L 82 7 C 90 7 100 13 100 21 L 100 36"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        {lineA_
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 7 7 L 82 7 C 90 7 100 13 100 21 L 100 36"
+              dur={props.dur}
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>
+        }
+      </svg>
+    );
+  };
+
+  const LineB = (props) => {
+    return (
+      <svg
+        width={`${props.width}px`}
+        height={`${props.height}px`}
+        version="1.1"
+      >
+        <path
+          d="M 6.937 36.079 L 6.773 21.015 C 6.409 15.004 13.083 6.389 24.215 6.94 L 101.159 6.932"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        {lineB_
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 6.937 36.079 L 6.773 21.015 C 6.409 15.004 13.083 6.389 24.215 6.94 L 101.159 6.932"
+              dur={props.dur}
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>}
+      </svg>
+    );
+  };
+
+
+  const LineC = (props) => {
+    return (
+      <svg
+        width={`${props.width}px`}
+        height={`${props.height}px`}
+        version="1.1"
+      >
+        <path
+          className="path"
+          d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        {lineC_ === 'In'
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 109.252 7.267 L 109.551 21.913 C 109.55 29.017 99.114 36.291 89.94 36.029 L 10.004 36.152"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>}
+        {lineC_ === 'Out'
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>}
+      </svg>
+    );
+  };
+
+  const LineD = (props) => {
+    return (
+      <svg
+        width={`${props.width}px`}
+        height={`${props.height}px`}
+        version="1.1"
+      >
+        <path
+          d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        {lineD_ === 'In'
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>
+        }
+        {lineD_ === 'Out'
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 7.023 6.84 L 7.258 23.056 C 8.368 31.282 15.33 35.948 25.037 36.062 L 105.077 36.005"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>
+        }
+      </svg>
+    );
+  };
+
+
+  const ImgSolar = (props) => {
+    return (
+      <img
+        src="/dat_picture/solar-panel.png"
+        style={{ width: `${props.width}px`, height: `${props.height}px` }}
+        alt=""
+      />
+    );
+  };
+
+  const ImgGrid = (props) => {
+    return (
+      <img
+        src="/dat_picture/grid.png"
+        style={{ width: `${props.width}px`, height: `${props.height}px` }}
+        alt=""
+      />
+    );
+  };
+
+  const ImgLoad = (props) => {
+    return (
+      <img
+        src="/dat_picture/load.png"
+        style={{ width: `${props.width}px`, height: `${props.height}px` }}
+        alt=""
+      />
+    );
+  };
+
+  const ImgBat = (props) => {
+    return (
+      <img
+        src="/dat_picture/battery.png"
+        style={{ width: `${props.width}px`, height: `${props.height}px` }}
+        alt=""
+      />
+    );
+  };
+
+  return (
+    <>
+
+
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
+          <ImgSolar width="70" height="70" />
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+            <div>
+              {Number(props.cal?.pro_1 || 0).toLocaleString("en-US")}
+            </div>
+            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <LineA width="110" height="45" dur="2s" />
+          <LineB width="110" height="45" dur="2s" />
+        </div>
+        {/* <LineF width="230" height="25" /> */}
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+            <div>
+              {Number(props.cal?.con_1 || 0).toLocaleString("en-US")}
+            </div>
+            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
+          </div>
+          <ImgLoad width="70" height="70" />
+        </div>
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "70px" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "70px", height: "70px", backgroundColor: "white", borderRadius: "5px", border: "1px solid gray" }}>
+          DC/AC
+        </div>
+      </div>
+
+
+
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
+          <div style={{ width: "60px", height: "70px" }}></div>
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <div style={{ width: "120px", height: "45px" }}></div>
+          <LineD width="120" height="45" />
+        </div>
+        {/* <LineF width="230" height="25" /> */}
+
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
           <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
             <div>
@@ -3381,7 +3446,373 @@ const GraphFull = (props) => {
             </div>
             <span style={{ color: "gray", fontSize: "13px" }}>W</span>
           </div>
-          <ImgGrid width="70" height="70" />
+          <ImgGrid width="60" height="70" />
+        </div>
+      </div>
+    </>
+  );
+};
+
+const GraphFull = (props) => {
+
+  const [lineA_, setLinA] = useState(false)
+  const [lineB_, setLinB] = useState(false)
+  const [lineC_, setLinC] = useState('Default')
+  const [lineD_, setLinD] = useState('Default')
+
+  useEffect(() => {
+    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
+    if ((props.cal?.pro_1) > 0) {
+      console.log("A")
+      setLinA(true)
+    }
+    if (parseFloat(props.cal?.con_1) > 0) {
+      console.log("B")
+      setLinB(true)
+    }
+
+    if (parseFloat(props.cal?.bat_1) > 0) {
+      console.log("D")
+      setLinC('In')
+    } else if (parseFloat(props.cal?.bat_1) < 0) {
+      console.log("D")
+      setLinC('Out')
+    } else {
+      console.log("D")
+      setLinC('default')
+    }
+
+    if (parseFloat(props.cal?.grid_1) > 0) {
+      console.log("D")
+      setLinD('In')
+    } else if (parseFloat(props.cal?.grid_1) < 0) {
+      console.log("D")
+      setLinD('Out')
+    } else {
+      console.log("D")
+      setLinD('default')
+    }
+
+  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1])
+
+  const LineA = (props) => {
+    return (
+      <svg
+        width={`${props.width}px`}
+        height={`${props.height}px`}
+        version="1.1"
+      >
+        <path
+          className="path"
+          d="M 7 7 L 82 7 C 90 7 100 13 100 21 L 100 36"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        {lineA_
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 7 7 L 82 7 C 90 7 100 13 100 21 L 100 36"
+              dur={props.dur}
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>
+        }
+      </svg>
+    );
+  };
+
+  const LineB = (props) => {
+    return (
+      <svg
+        width={`${props.width}px`}
+        height={`${props.height}px`}
+        version="1.1"
+      >
+        <path
+          d="M 6.937 36.079 L 6.773 21.015 C 6.409 15.004 13.083 6.389 24.215 6.94 L 101.159 6.932"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        {lineB_
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 6.937 36.079 L 6.773 21.015 C 6.409 15.004 13.083 6.389 24.215 6.94 L 101.159 6.932"
+              dur={props.dur}
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>}
+      </svg>
+    );
+  };
+
+
+  const LineC = (props) => {
+    return (
+      <svg
+        width={`${props.width}px`}
+        height={`${props.height}px`}
+        version="1.1"
+      >
+        <path
+          className="path"
+          d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        {lineC_ === 'In'
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 109.252 7.267 L 109.551 21.913 C 109.55 29.017 99.114 36.291 89.94 36.029 L 10.004 36.152"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>}
+        {lineC_ === 'Out'
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>}
+      </svg>
+    );
+  };
+
+  const LineD = (props) => {
+    return (
+      <svg
+        width={`${props.width}px`}
+        height={`${props.height}px`}
+        version="1.1"
+      >
+        <path
+          d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+          style={{
+            width: "100%",
+            height: "100%",
+            fill: "none",
+            stroke: "rgb(107, 107, 107,0.4)",
+            strokeWidth: "5",
+            strokeLinecap: "round",
+            overflow: "hidden",
+          }}
+        />
+        {lineD_ === 'In'
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>
+        }
+        {lineD_ === 'Out'
+          ? <circle
+            r={4}
+            style={{
+              fill: "none",
+              stroke: "#3e80fb",
+              strokeWidth: "3",
+              position: "absolute",
+              top: "0",
+              left: "0",
+            }}
+          >
+            <animateMotion
+              path="M 7.023 6.84 L 7.258 23.056 C 8.368 31.282 15.33 35.948 25.037 36.062 L 105.077 36.005"
+              dur="2s"
+              repeatCount="indefinite"
+            ></animateMotion>
+          </circle>
+          : <></>
+        }
+      </svg>
+    );
+  };
+
+
+  const ImgSolar = (props) => {
+    return (
+      <img
+        src="/dat_picture/solar-panel.png"
+        style={{ width: `${props.width}px`, height: `${props.height}px` }}
+        alt=""
+      />
+    );
+  };
+
+  const ImgGrid = (props) => {
+    return (
+      <img
+        src="/dat_picture/grid.png"
+        style={{ width: `${props.width}px`, height: `${props.height}px` }}
+        alt=""
+      />
+    );
+  };
+
+  const ImgLoad = (props) => {
+    return (
+      <img
+        src="/dat_picture/load.png"
+        style={{ width: `${props.width}px`, height: `${props.height}px` }}
+        alt=""
+      />
+    );
+  };
+
+  const ImgBat = (props) => {
+    return (
+      <img
+        src="/dat_picture/battery.png"
+        style={{ width: `${props.width}px`, height: `${props.height}px` }}
+        alt=""
+      />
+    );
+  };
+
+  return (
+    <>
+
+
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
+          <ImgSolar width="70" height="70" />
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+            <div>
+              {Number(props.cal?.pro_1 || 0).toLocaleString("en-US")}
+            </div>
+            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <LineA width="110" height="45" dur="2s" />
+          <LineB width="110" height="45" dur="2s" />
+        </div>
+        {/* <LineF width="230" height="25" /> */}
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+            <div>
+              {Number(props.cal?.con_1 || 0).toLocaleString("en-US")}
+            </div>
+            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
+          </div>
+          <ImgLoad width="70" height="70" />
+        </div>
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "70px" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "70px", height: "70px", backgroundColor: "white", borderRadius: "5px", border: "1px solid gray" }}>
+          DC/AC
+        </div>
+      </div>
+
+
+
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
+          <ImgBat width="60" height="70" />
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+            <div>
+              {Number(props.cal?.bat_1 || 0).toLocaleString("en-US")}{ }
+            </div>
+            <span style={{ color: "gray", fontSize: "13px" }}>W</span>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <LineC width="120" height="45" />
+          <LineD width="120" height="45" />
+        </div>
+        {/* <LineF width="230" height="25" /> */}
+
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
+          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+            <div>
+              {Number(props.cal?.grid_1 || 0).toLocaleString("en-US")}
+            </div>
+            <span style={{ color: "gray", fontSize: "13px" }}>W</span>
+          </div>
+          <ImgGrid width="60" height="70" />
         </div>
       </div>
     </>
@@ -3443,6 +3874,36 @@ const Production = (props) => {
                 %
               </div>
             </div>
+          </div>
+
+          <div className="DAT_Home_Overview-Main-Percent-Icon" style={{ cursor: 'pointer' }}>
+            <PopupState variant="popper" popupId="demo-popup-popper">
+              {(popupState) => (
+                <div style={{ cursor: 'pointer' }}>
+                  <HelpOutlineIcon
+                    {...bindHover(popupState)}
+                    color="action"
+                    fontSize="9px" />
+                  <Popper {...bindPopper(popupState)} transition >
+                    {({ TransitionProps }) => (
+                      <Fade {...TransitionProps} timeout={350}>
+                        <Paper sx={{ width: '400px', marginLeft: '235px', p: 2 }}>
+                          <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                            {dataLang.formatMessage({ id: 'overview1' })}
+                          </Typography>
+                          <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                            {dataLang.formatMessage({ id: 'overview2' })}
+                          </Typography>
+                          <Typography sx={{ fontSize: '12px', textAlign: 'justify' }}>
+                            {dataLang.formatMessage({ id: 'overview3' })}
+                          </Typography>
+                        </Paper>
+                      </Fade>
+                    )}
+                  </Popper>
+                </div>
+              )}
+            </PopupState>
           </div>
         </div>
 
@@ -3798,6 +4259,17 @@ const Grid = (props) => {
 
 const Battery = (props) => {
   const dataLang = useIntl();
+  const [state, setState] = useState(false)
+
+  useEffect(() => {
+
+    if (parseFloat(props.cal?.bat_1) > 0) {
+      setState(true)
+    } else {
+      setState(false)
+    }
+
+  }, [props.cal.bat_1])
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Battery">
@@ -3821,8 +4293,8 @@ const Battery = (props) => {
             </span>
             <span style={{ fontSize: "12px", color: "grey" }}>%</span>
           </div>
-          <LiaLongArrowAltLeftSolid size={30} />
-          <span style={{ fontSize: "13px" }}>{dataLang.formatMessage({ id: "charge" })}</span>
+          {state ? <FaArrowLeftLong color="green" size={30} /> : <FaArrowRightLong color="red" size={25} />}
+          <span style={{ fontSize: "13px" }}>{state ? dataLang.formatMessage({ id: "charge" }) : dataLang.formatMessage({ id: "discharge" })}</span>
         </div>
 
         <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Data">
