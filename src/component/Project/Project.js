@@ -354,11 +354,11 @@ export default function Project(props) {
           </div>
           <div className="DAT_TableMark">
             <FaStar
-              id="icon"
+              id={row.plantid}
               style={{
-                color: like ? "yellow" : "grey",
+                // color: like ? "yellow" : "grey",
                 cursor: "pointer",
-                // color: "grey"
+                color: "grey"
               }}
               onClick={(e) => handleLike(e)}
               size={17}
@@ -403,7 +403,15 @@ export default function Project(props) {
   };
 
   const handleLike = (e) => {
-    setLike(!like);
+    console.log(e.currentTarget.id);
+    let d = document.getElementById(e.currentTarget.id);
+    if (like) {
+      setLike(false);
+      d.style.color = "grey";
+    } else {
+      setLike(true);
+      d.style.color = "yellow";
+    }
   };
 
   const handleModify = (e, type) => {
@@ -527,8 +535,19 @@ export default function Project(props) {
         type: userInfor.value.type,
       });
       if (d.status === true) {
-        // console.log(d.data);
+
+
+        let temp = d.data;
+
+        temp = temp.map((item) => {
+          item.mark = false
+        })
+        console.log(temp);
+
         dataproject.value = d.data;
+
+
+
       }
     };
     getPlant();
