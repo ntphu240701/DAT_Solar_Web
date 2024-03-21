@@ -861,6 +861,7 @@ export default function ProjectData(props) {
     return () => {
       cal.value = {};
       tab_.value = "logger";
+      infoState.value = false;
     };
 
     // eslint-disable-next-line
@@ -1387,8 +1388,7 @@ export default function ProjectData(props) {
                       }
                     })()}
 
-                    <div
-                      className="DAT_ProjectData_Dashboard_History_SubConfig"
+                    <div className="DAT_ProjectData_Dashboard_History_SubConfig"
                       style={{
                         height: dropConfig ? "500px" : "0px",
                         transition: "0.5s",
@@ -2706,7 +2706,6 @@ export default function ProjectData(props) {
       >
         {infoState.value ? <Info /> : <></>}
       </div>
-
     </div>
   );
 }
@@ -2741,35 +2740,35 @@ const GraphGrid = (props) => {
   const [lineD_, setLinD] = useState('Default')
 
   useEffect(() => {
-    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
+    // console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
     if ((props.cal?.pro_1) > 0) {
-      console.log("A")
+      // console.log("A")
       setLinA(true)
     }
     if (parseFloat(props.cal?.con_1) > 0) {
-      console.log("B")
+      // console.log("B")
       setLinB(true)
     }
 
     if (parseFloat(props.cal?.bat_1) > 0) {
-      console.log("D")
+      // console.log("D")
       setLinC('In')
     } else if (parseFloat(props.cal?.bat_1) < 0) {
-      console.log("D")
+      // console.log("D")
       setLinC('Out')
     } else {
-      console.log("D")
+      // console.log("D")
       setLinC('default')
     }
 
     if (parseFloat(props.cal?.grid_1) > 0) {
-      console.log("D")
+      // console.log("D")
       setLinD('In')
     } else if (parseFloat(props.cal?.grid_1) < 0) {
-      console.log("D")
+      // console.log("D")
       setLinD('Out')
     } else {
-      console.log("D")
+      // console.log("D")
       setLinD('default')
     }
 
@@ -3098,35 +3097,35 @@ const GraphConsumption = (props) => {
   const [lineD_, setLinD] = useState('Default')
 
   useEffect(() => {
-    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
+    // console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
     if ((props.cal?.pro_1) > 0) {
-      console.log("A")
+      // console.log("A")
       setLinA(true)
     }
     if (parseFloat(props.cal?.con_1) > 0) {
-      console.log("B")
+      // console.log("B")
       setLinB(true)
     }
 
     if (parseFloat(props.cal?.bat_1) > 0) {
-      console.log("D")
+      // console.log("D")
       setLinC('In')
     } else if (parseFloat(props.cal?.bat_1) < 0) {
-      console.log("D")
+      // console.log("D")
       setLinC('Out')
     } else {
-      console.log("D")
+      // console.log("D")
       setLinC('default')
     }
 
     if (parseFloat(props.cal?.grid_1) > 0) {
-      console.log("D")
+      // console.log("D")
       setLinD('In')
     } else if (parseFloat(props.cal?.grid_1) < 0) {
-      console.log("D")
+      // console.log("D")
       setLinD('Out')
     } else {
-      console.log("D")
+      // console.log("D")
       setLinD('default')
     }
 
@@ -3461,35 +3460,35 @@ const GraphFull = (props) => {
   const [lineD_, setLinD] = useState('Default')
 
   useEffect(() => {
-    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
+    // console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
     if ((props.cal?.pro_1) > 0) {
-      console.log("A")
+      // console.log("A")
       setLinA(true)
     }
     if (parseFloat(props.cal?.con_1) > 0) {
-      console.log("B")
+      // console.log("B")
       setLinB(true)
     }
 
     if (parseFloat(props.cal?.bat_1) > 0) {
-      console.log("D")
+      // console.log("D")
       setLinC('In')
     } else if (parseFloat(props.cal?.bat_1) < 0) {
-      console.log("D")
+      // console.log("D")
       setLinC('Out')
     } else {
-      console.log("D")
+      // console.log("D")
       setLinC('default')
     }
 
     if (parseFloat(props.cal?.grid_1) > 0) {
-      console.log("D")
+      // console.log("D")
       setLinD('In')
     } else if (parseFloat(props.cal?.grid_1) < 0) {
-      console.log("D")
+      // console.log("D")
       setLinD('Out')
     } else {
-      console.log("D")
+      // console.log("D")
       setLinD('default')
     }
 

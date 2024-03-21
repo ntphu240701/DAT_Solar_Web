@@ -183,7 +183,7 @@ export default function Project(props) {
         </div>
       ),
       sortable: true,
-      minWidth: "350px",
+      minWidth: "380px",
       style: {
         justifyContent: "left",
       },
@@ -796,6 +796,7 @@ export default function Project(props) {
                   dataLang.formatMessage({ id: "enter" }) +
                   dataLang.formatMessage({ id: "project" })
                 }
+                autoComplete="off"
                 onChange={(e) => handleSearch(e)}
               />
               <CiSearch color="gray" size={20} />

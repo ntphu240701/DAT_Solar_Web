@@ -440,7 +440,7 @@ export default function Home(props) {
   useEffect(() => {
     let a = { is: 1 };
 
-    console.log(JSON.stringify(a));
+    // console.log(JSON.stringify(a));
 
     const getPlant = async () => {
       let d = await callApi("post", host.DATA + "/getPlant", {
@@ -606,7 +606,7 @@ export default function Home(props) {
     setProduction(cal?.pro_1 || 0);
     setDailyProduction(cal?.pro_2 || 0);
     setTotalProduction(cal?.pro_3 || 0);
-    setPer(mapValue(13, in_min, in_max, out_min, out_max));
+    setPer(mapValue(cal?.pro_1 * 100 / capacity, in_min, in_max, out_min, out_max));
 
     coalsave.value = {
       ...coalsave.value,

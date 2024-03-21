@@ -8,8 +8,8 @@ export default function Filter(props) {
     const max = useRef(100);
     const location = useRef("hello");
 
-    const warn = useRef("warn");
-    const notice = useRef("notice");
+    const warn = useRef();
+    const notice = useRef();
 
     const handleReset = (e) => {
         let min = document.getElementById("min");
@@ -21,15 +21,26 @@ export default function Filter(props) {
     };
 
     const handleResetWarn = (e) => {
-        // console.log(e.currentTarget.id);
-        // console.log(e.currentTarget.checked);
+        e.preventDefault();
+        if (document.getElementById("warn").checked) {
+            document.getElementById("warn").checked = false;
+        }
+        if (document.getElementById("notice").checked) {
+            document.getElementById("notice").checked = false;
+        }
     };
 
     const handleSelect = (e) => {
-        // warn.value = e.currentTarget.id;
-        // notice.value = e.currentTarget.id;
-        console.log(warn.value, notice.value);
-        // console.log(e.currentTarget.checked);
+        if (document.getElementById("warn").checked) {
+            warn.value = "warn";
+        } else {
+            warn.value = "";
+        }
+        if (document.getElementById("notice").checked) {
+            notice.value = "notice";
+        } else {
+            notice.value = "";
+        }
     };
 
     const handleClose = (e) => {
@@ -47,7 +58,7 @@ export default function Filter(props) {
                         return (
                             <div className="DAT_Filter"
                                 style={{
-                                    height: props.display ? "567px" : "0px",
+                                    height: props.display ? "calc(100vh - 180px)" : "0px",
                                     transition: "0.5s",
                                 }}
                             >
@@ -113,7 +124,7 @@ export default function Filter(props) {
                         return (
                             <div className="DAT_Filter"
                                 style={{
-                                    height: props.display ? "567px" : "0px",
+                                    height: props.display ? "calc(100vh - 180px)" : "0px",
                                     transition: "0.5s",
                                 }}
                             >
@@ -177,13 +188,13 @@ export default function Filter(props) {
                         return (
                             <div className="DAT_Filter"
                                 style={{
-                                    height: props.display ? "567px" : "0px",
+                                    height: props.display ? "calc(100vh - 180px)" : "0px",
                                     transition: "0.5s",
                                 }}
                             >
                                 {props.display ? (
                                     <form className="DAT_Filter_Dropdown"
-                                        onSubmit={() => props.handleClose(warn.current.value, notice.current.value)}
+
                                         style={{
                                             height: props.display ? "180px" : "0px",
                                             transition: "0.5s",
@@ -199,7 +210,6 @@ export default function Filter(props) {
                                                         <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
                                                             <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                 <input id="warn" type="checkbox"
-                                                                    // ref={warn} 
                                                                     onChange={(e) => handleSelect(e)}
                                                                 />
                                                                 <label htmlFor="warn">
@@ -212,7 +222,6 @@ export default function Filter(props) {
                                                         <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
                                                             <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                 <input id="notice" type="checkbox"
-                                                                    // ref={notice} 
                                                                     onChange={(e) => handleSelect(e)}
                                                                 />
                                                                 <label htmlFor="notice">
@@ -254,6 +263,7 @@ export default function Filter(props) {
                                             </button>
                                             <button
                                                 style={{ backgroundColor: "#048FFF", color: "white" }}
+                                                onClick={() => props.handleClose(warn.value, notice.value)}
                                             >
                                                 {dataLang.formatMessage({ id: 'confirm' })}
                                             </button>

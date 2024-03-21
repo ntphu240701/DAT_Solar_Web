@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Warn.scss";
 
 import DataTable from "react-data-table-component";
@@ -20,6 +20,7 @@ import { IoClose, IoTrashOutline } from "react-icons/io5";
 import Info from "./Info";
 import { FiFilter } from "react-icons/fi";
 import Filter from "../Project/Filter";
+import { RiMailSettingsLine } from "react-icons/ri";
 
 const tab = signal("all");
 const tabMobile = signal(false);
@@ -45,6 +46,8 @@ export default function Warn(props) {
   const [plant, setPlant] = useState("");
   const [device, setDevice] = useState("");
   const [display, setDisplay] = useState(false);
+  const warn = useRef();
+  const notice = useRef();
 
   const listTab = [
     { id: "all", name: dataLang.formatMessage({ id: "total" }) },
@@ -264,30 +267,25 @@ export default function Warn(props) {
         (item) => item.plant.toLowerCase().includes(searchTerm)
         // item.device.toLowerCase().includes(searchTerm)
       );
-      console.log(temp);
+      // console.log(temp);
       setDatafilter([...temp]);
       warnfilter.value = {};
     }
   };
 
   const handleResetFilter = () => {
-    setDisplay(false);
+    // setDisplay(false);
     setDatafilter(dataWarn.value);
   };
 
   const handleCloseFilter = (warn, notice) => {
     setDisplay(false);
-    console.log(warn, notice);
-    // console.log(dataproject.value);
-    // const temp = dataproject.value.filter((item) => {
-    //   return (
-    //     parseFloat(item.capacity) >= parseFloat(min) &&
-    //     parseFloat(item.capacity) <= parseFloat(max) &&
-    //     item.addr.includes(location)
-    //   );
-    // });
-    // console.log(temp);
-    // setDatafilter(temp);
+    const newdb = dataWarn.value.filter((item) => {
+      return (
+        (item.level == warn) || (item.level == notice)
+      );
+    });
+    setDatafilter(newdb);
   };
 
   // by Mr Loc
@@ -317,12 +315,12 @@ export default function Warn(props) {
   // by Mr Loc
   useEffect(() => {
     tabLable.value = listTab[0].name;
-    console.log(warnfilter.value.device, projectwarnfilter.value);
+    // console.log(warnfilter.value.device, projectwarnfilter.value);
     if (
       warnfilter.value.device === undefined &&
       Number(projectwarnfilter.value) === 0
     ) {
-      console.log("ok");
+      // console.log("ok");
       setDatafilter([...dataWarn.value]);
     }
   }, [dataWarn.value]);
@@ -404,6 +402,7 @@ export default function Warn(props) {
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterWarn" })}
                 id="warnsearch"
+                autoComplete="off"
                 // id={warnfilter.value.warnid}
                 // value={warnfilter.value.warnid}
                 onChange={(e) => handleSearch(e)}
@@ -733,6 +732,8 @@ export default function Warn(props) {
             <Filter
               type="warn"
               display={display}
+              warn={warn}
+              notice={notice}
               handleClose={handleCloseFilter}
               handleReset={handleResetFilter}
             />

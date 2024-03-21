@@ -372,6 +372,7 @@ export default function GroupRole(props) {
             <div className="DAT_GRHeader_Filter">
               <input
                 type="text"
+                autoComplete="off"
                 placeholder={dataLang.formatMessage({ id: "enterInfo" })}
                 onChange={(e) => handleFilter(e)}
               />

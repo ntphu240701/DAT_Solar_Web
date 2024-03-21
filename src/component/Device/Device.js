@@ -426,6 +426,10 @@ export default function Device(props) {
     // }
   };
 
+  const handleShowConfig = (e) => {
+    configState.value = true;
+  };
+
   const invtCloud = async (data, token) => {
     var reqData = {
       data: data,
@@ -577,7 +581,7 @@ export default function Device(props) {
         partnerid: userInfor.value.partnerid,
         type: userInfor.value.type,
       });
-      console.log(d);
+      // console.log(d);
       if (d.status === true) {
         inverterList.value = d.data;
       }
@@ -633,6 +637,7 @@ export default function Device(props) {
                 type="text"
                 id="search"
                 placeholder={tab.value == "logger" ? dataLang.formatMessage({ id: "enterLogger" }) : dataLang.formatMessage({ id: "enterInverter" })}
+                autoComplete="off"
                 // value={connectval.value}
                 onChange={(e) => handleSearch(e)}
               />
