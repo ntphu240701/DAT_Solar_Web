@@ -22,7 +22,6 @@ import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
 import { FiEdit, FiFilter } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
-import { lowerCase } from "lodash";
 import Filter from "../Project/Filter";
 import axios from "axios";
 
@@ -47,6 +46,7 @@ export default function Device(props) {
   const [plantid, setPlantid] = useState("");
   const [snlogger, setSnlogger] = useState("");
   const [datafilter, setDatafilter] = useState([]);
+  const [datafilerInvert, setDatafilterInvert] = useState([]);
   const [display, setDisplay] = useState(false);
   const [invt, setInvt] = useState({})
 
@@ -479,20 +479,45 @@ export default function Device(props) {
 
   const handleSearch = (e) => {
     const searchTerm = e.currentTarget.value.toLowerCase();
-    if (searchTerm == "") {
-      setDatafilter(loggerList.value);
-    } else {
-      const db = loggerList.value.filter((item) => {
-        return (
-          item.pname.toLowerCase().includes(searchTerm) ||
-          item.psn.toLowerCase().includes(searchTerm) ||
-          item.pplantname.toLowerCase().includes(searchTerm) ||
-          item.pname.toLowerCase().toLowerCase().includes(searchTerm) ||
-          item.psn.toLowerCase().toLowerCase().includes(searchTerm) ||
-          item.pplantname.toLowerCase().includes(searchTerm)
-        );
-      });
-      setDatafilter([...db]);
+    switch (tab.value) {
+      case "logger":
+        if (searchTerm == "") {
+          setDatafilter(loggerList.value);
+        } else {
+          const db = loggerList.value.filter((item) => {
+            return (
+              item.pname.toLowerCase().includes(searchTerm) ||
+              item.psn.toLowerCase().includes(searchTerm) ||
+              item.pplantname.toLowerCase().includes(searchTerm) ||
+              item.pname.toLowerCase().toLowerCase().includes(searchTerm) ||
+              item.psn.toLowerCase().toLowerCase().includes(searchTerm) ||
+              item.pplantname.toLowerCase().includes(searchTerm)
+            );
+          });
+          setDatafilter([...db]);
+        }
+        break;
+      case "inverter":
+        if (searchTerm == "") {
+          setDatafilterInvert(inverterList.value);
+        } else {
+          const dbInvert = inverterList.value.filter((item) => {
+            return (
+              item.psn.toLowerCase().includes(searchTerm) ||
+              item.psn.toLowerCase().toLowerCase().includes(searchTerm) ||
+              item.pname.toLowerCase().includes(searchTerm) ||
+              item.pname.toLowerCase().toLowerCase().includes(searchTerm) ||
+              item.plogger.toLowerCase().includes(searchTerm) ||
+              item.plogger.toLowerCase().toLowerCase().includes(searchTerm) ||
+              item.pplantname.toLowerCase().includes(searchTerm) ||
+              item.pplantname.toLowerCase().includes(searchTerm)
+            );
+          });
+          setDatafilterInvert([...dbInvert]);
+        }
+        break;
+      default:
+        break;
     }
   };
 
@@ -509,6 +534,8 @@ export default function Device(props) {
     } else {
       setDatafilter(loggerList.value);
     }
+
+    setDatafilterInvert(inverterList.value)
   }, [loggerList.value, connectval.value]);
 
   useEffect(() => {
@@ -876,7 +903,7 @@ export default function Device(props) {
                     <DataTable
                       className="DAT_Table_Container"
                       columns={columnDevice}
-                      data={inverterList.value}
+                      data={datafilerInvert}
                       pagination
                       paginationComponentOptions={paginationComponentOptions}
                       fixedHeader={true}
