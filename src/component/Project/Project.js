@@ -183,7 +183,7 @@ export default function Project(props) {
         </div>
       ),
       sortable: true,
-      minWidth: "350px",
+      minWidth: "380px",
       style: {
         justifyContent: "left",
       },
@@ -328,7 +328,7 @@ export default function Project(props) {
               >
                 <FiEdit size={14} />
                 &nbsp;
-                {dataLang.formatMessage({ id: "edits" })}
+                {dataLang.formatMessage({ id: "change" })}
               </div>
             ) : (
               <div></div>

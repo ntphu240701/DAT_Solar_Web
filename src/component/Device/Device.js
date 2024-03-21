@@ -217,7 +217,7 @@ export default function Device(props) {
       width: "180px",
     },
     {
-      name: dataLang.formatMessage({ id: "setting" }),
+      name: dataLang.formatMessage({ id: "edit" }),
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
@@ -317,7 +317,7 @@ export default function Device(props) {
     //   width: "180px",
     // },
     {
-      name: dataLang.formatMessage({ id: "setting" }),
+      name: dataLang.formatMessage({ id: "edit" }),
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
@@ -347,7 +347,7 @@ export default function Device(props) {
             >
               <FiEdit size={14} />
               &nbsp;
-              {dataLang.formatMessage({ id: "edits" })}
+              {dataLang.formatMessage({ id: "change" })}
             </div>
             <div
               className="DAT_ModifyBox_Remove"

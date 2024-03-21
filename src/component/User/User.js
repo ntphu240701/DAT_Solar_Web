@@ -34,7 +34,7 @@ export default function User(props) {
               (popupStateUser.value = true), (editType.value = "avatar")
             )}
           >
-            {dataLang.formatMessage({ id: 'edit' })}
+            {dataLang.formatMessage({ id: 'edits' })}
           </span>
         </div>
 
@@ -44,7 +44,7 @@ export default function User(props) {
             <div className="DAT_Usr_Item_Content_Label">{userInfor.value.name}</div>
           </div>
           <span onClick={() => (popupStateUser.value = true, editType.value = "name")}>
-            {dataLang.formatMessage({ id: 'edit' })}
+            {dataLang.formatMessage({ id: 'edits' })}
           </span>
         </div>
 
@@ -56,7 +56,7 @@ export default function User(props) {
             </div>
           </div>
           <span onClick={() => (popupStateUser.value = true, editType.value = "phone")}>
-            {dataLang.formatMessage({ id: 'edit' })}
+            {dataLang.formatMessage({ id: 'edits' })}
           </span>
         </div>
 
@@ -68,7 +68,7 @@ export default function User(props) {
             </div>
           </div>
           <span onClick={() => (popupStateUser.value = true, editType.value = "addr")}>
-            {dataLang.formatMessage({ id: 'edit' })}
+            {dataLang.formatMessage({ id: 'edits' })}
           </span>
         </div>
 
@@ -78,7 +78,7 @@ export default function User(props) {
             <div className="DAT_Usr_Item_Content_Label">********</div>
           </div>
           <span onClick={() => (popupStateUser.value = true, editType.value = "password")}>
-            {dataLang.formatMessage({ id: 'edit' })}
+            {dataLang.formatMessage({ id: 'editPassword' })}
           </span>
         </div>
       </div>

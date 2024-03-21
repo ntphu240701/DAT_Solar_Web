@@ -14,7 +14,7 @@ export default function ConfirmDeleteRule(props) {
   const dataLang = useIntl();
   const [del, setDel] = useState(true);
 
-  const handleDeleteReport = async (e) => {
+  const handleDeleteRule = async (e) => {
     // console.log(props.id);
     const delRule = await callApi("post", host.DATA + "/removeRule", {
       partnerid: userInfor.value.partnerid,
@@ -96,7 +96,7 @@ export default function ConfirmDeleteRule(props) {
             </button> */}
             <button
               style={{ backgroundColor: "#048FFF", color: "white" }}
-              onClick={(e) => handleDeleteReport(e)}
+              onClick={(e) => handleDeleteRule(e)}
             >
               {dataLang.formatMessage({ id: "confirm" })}
             </button>
