@@ -3,13 +3,17 @@ import { useIntl } from "react-intl";
 import "./Project.scss";
 
 export default function Filter(props) {
-  const dataLang = useIntl();
-  const min = useRef(0);
-  const max = useRef(100);
-  const location = useRef("hello");
+    const dataLang = useIntl();
+    const [warnChecked, setWarnChecked] = useState(false);
+    const [noticeChecked, setNoticeChecked] = useState(false);
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
-  const warn = useRef();
-  const notice = useRef();
+    const opentime = useRef();
+    const closetime = useRef();
+    const min = useRef(0);
+    const max = useRef(100);
+    const location = useRef("hello");
 
   const handleReset = (e) => {
     let min = document.getElementById("min");
@@ -20,28 +24,38 @@ export default function Filter(props) {
     location.value = "";
   };
 
-  const handleResetWarn = (e) => {
-    e.preventDefault();
-    if (document.getElementById("warn").checked) {
-      document.getElementById("warn").checked = false;
-    }
-    if (document.getElementById("notice").checked) {
-      document.getElementById("notice").checked = false;
-    }
-  };
+    const handleResetWarn = () => {
+        setWarnChecked(false);
+        setNoticeChecked(false);
+        setStartDate("");
+        setEndDate("");
+    };
 
-  const handleSelect = (e) => {
-    if (document.getElementById("warn").checked) {
-      warn.value = "warn";
-    } else {
-      warn.value = "";
-    }
-    if (document.getElementById("notice").checked) {
-      notice.value = "notice";
-    } else {
-      notice.value = "";
-    }
-  };
+    const handleSelect = (e) => {
+        if (document.getElementById("warn").checked) {
+            props.warn.value = "warn";
+            setWarnChecked(true);
+            console.log(props.warn.value)
+        } else {
+            document.getElementById("warn").checked = false
+            props.warn.value = {};
+            setWarnChecked(false);
+        }
+        if (document.getElementById("notice").checked) {
+            props.notice.value = "notice";
+            console.log(props.notice.value)
+            setNoticeChecked(true)
+        } else {
+            document.getElementById("notice").checked = false;
+            props.notice.value = {};
+        }
+    };
+
+    const handleDate = (e) => {
+        const abc = e.currenttarget.value;
+        setStartDate(abc);
+        console.log(abc)
+    };
 
   const handleClose = (e) => {
     let min = document.getElementById("min");

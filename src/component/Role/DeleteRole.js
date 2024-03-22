@@ -18,15 +18,18 @@ export default function DeleteRole(props) {
   };
 
   const handleDelete = async () => {
-    // console.log(props.user);
     const d = await callApi("post", host.DATA + "/removeUser", {
-      usr: "qweqwe",
+      usr: props.user,
     });
     if (d.status === true) {
-      let abc = Usr_.value.filter((d) => d.usr_ != props.user)
-      Usr_.value = abc;
+      Usr_.value = Usr_.value.filter((d) => d.usr_ !== props.user)
+      console.log(Usr_.value)
       popupState.value = "default";
-      alertDispatch(dataLang.formatMessage({ id: 'alert_26' }))
+      alertDispatch(dataLang.formatMessage({ id: 'alert_45' }))
+    }
+    else {
+      // popupState.value = "default";
+      alertDispatch(dataLang.formatMessage({ id: 'alert_46' }))
     }
   };
 
@@ -73,7 +76,7 @@ export default function DeleteRole(props) {
         </button> */}
         <button
           style={{ backgroundColor: "#048FFF", color: "white" }}
-          onClick={() => handleDelete()}
+          onClick={(e) => handleDelete(e)}
         >
           {dataLang.formatMessage({ id: "confirm" })}
         </button>

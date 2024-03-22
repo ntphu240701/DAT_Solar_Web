@@ -5,7 +5,7 @@ import { dataproject, popupState, projectData } from "./Project";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
-import { temp } from "./ProjectData";
+import { inverterDB, temp } from "./ProjectData";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
 
@@ -55,6 +55,7 @@ export default function Popup(props) {
           });
           if (d.status === true) {
             temp.value = temp.value.filter((item) => item.sn != props.sn);
+            inverterDB.value = inverterDB.value.filter((item) => item.logger_ != props.sn);
             alertDispatch(dataLang.formatMessage({ id: 'alert_25' }))
             popupState.value = false;
           } else if (d.number == 0) {

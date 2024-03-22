@@ -8,6 +8,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { FaCheckCircle, FaSave } from "react-icons/fa";
 import { MdOutlineError } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const BasicInformation = (props) => {
   const dataLang = useIntl();
@@ -128,17 +129,17 @@ const VersionInformation = (props) => {
                     <>
                       <div className="DAT_Info_Databox_Content_Column">
                         <p>
-                          {dataLang.formatMessage({ id: 'masterVersion' })}: {`${info.value.invt[info.value.pdata.masterver.register][0]}.${info.value.invt[info.value.pdata.masterver.register][1]}.${info.value.invt[info.value.pdata.masterver.register][2]}`}
+                          {dataLang.formatMessage({ id: 'masterVersion' })}: {`${info.value.invt[info.value.pdata.masterver.register]?.[0] || 0}.${info.value.invt[info.value.pdata.masterver.register]?.[1] || 0}.${info.value.invt[info.value.pdata.masterver.register]?.[2] || 0}`}
                         </p>
                       </div>
                       <div className="DAT_Info_Databox_Content_Column">
                         <p>
-                          {dataLang.formatMessage({ id: 'viceVersion' })}: {`${info.value.invt[info.value.pdata.vicever.register][0]}.${info.value.invt[info.value.pdata.vicever.register][1]}.${info.value.invt[info.value.pdata.vicever.register][2]}`}
+                          {dataLang.formatMessage({ id: 'viceVersion' })}: {`${info.value.invt[info.value.pdata.vicever.register]?.[0] || 0}.${info.value.invt[info.value.pdata.vicever.register]?.[1] || 0}.${info.value.invt[info.value.pdata.vicever.register]?.[2] || 0}`}
                         </p>
                       </div>
                       <div className="DAT_Info_Databox_Content_Column">
                         <p>
-                          {dataLang.formatMessage({ id: 'hmiVersion' })}: {`${info.value.invt[info.value.pdata.hmiver.register][0]}.${info.value.invt[info.value.pdata.hmiver.register][1]}.${info.value.invt[info.value.pdata.hmiver.register][2]}`}
+                          {dataLang.formatMessage({ id: 'hmiVersion' })}: {`${info.value.invt[info.value.pdata.hmiver.register]?.[0] || 0}.${info.value.invt[info.value.pdata.hmiver.register]?.[1] || 0}.${info.value.invt[info.value.pdata.hmiver.register]?.[2] || 0}`}
                         </p>
                       </div>
                     </>
@@ -823,6 +824,8 @@ const HistoricalData = (props) => {
 
 export default function Info(props) {
   const dataLang = useIntl();
+  const [dropState, setDropState] = useState(false);
+  const [view, setView] = useState("detail");
 
   return (
     <div className="DAT_Info">
@@ -871,14 +874,44 @@ export default function Info(props) {
             <FaSave size={20} color="white" />
             <span>{dataLang.formatMessage({ id: 'save' })} </span>
           </div> */}
-          <div className="DAT_Info_Header_Right_Close" onClick={() => {
-            infoState.value = false;
-          }}>
-            <RxCross2
-              size={20}
-              color="white"
-            />
-          </div>
+          {(() => {
+            switch (tab.value) {
+              case 'logger':
+                return (
+                  <div className="DAT_Info_Header_Right_Close" onClick={() => {
+                    infoState.value = false;
+                  }}>
+                    <RxCross2
+                      size={20}
+                      color="white"
+                    />
+                  </div>
+                )
+              case 'inverter':
+                return (
+                  <>
+                    <div className="DAT_Info_Header_Right_More">
+                      <BsThreeDotsVertical
+                        size={20}
+                        color="#9e9e9e"
+                        onClick={() => setDropState(!dropState)}
+                      />
+                    </div>
+
+                    <div className="DAT_Info_Header_Right_Close" onClick={() => {
+                      infoState.value = false;
+                    }}>
+                      <RxCross2
+                        size={20}
+                        color="white"
+                      />
+                    </div>
+                  </>
+                )
+              default:
+                return <></>
+            }
+          })()}
         </div>
       </div>
 
@@ -887,16 +920,31 @@ export default function Info(props) {
           case "inverter":
             return (
               <>
-                <BasicInformation />
-                <VersionInformation />
-                <ElectricityGeneration />
-                {/* <PowerGrid /> */}
-                {/* <ElectricityConsumption /> */}
-                <Temperature />
-                {/* <Other /> */}
-                <State />
-                {/* <Control /> */}
-                {/* <HistoricalData /> */}
+                {(() => {
+                  switch (view) {
+                    case "control":
+                      return (
+                        <>
+                          <PowerGrid />
+                        </>
+                      )
+                    default:
+                      return (
+                        <>
+                          <BasicInformation />
+                          <VersionInformation />
+                          <ElectricityGeneration />
+                          {/* <PowerGrid /> */}
+                          {/* <ElectricityConsumption /> */}
+                          <Temperature />
+                          {/* <Other /> */}
+                          <State />
+                          {/* <Control /> */}
+                          <HistoricalData />
+                        </>
+                      )
+                  }
+                })()}
               </>
             );
           case "meter":
@@ -918,6 +966,22 @@ export default function Info(props) {
             return <></>;
         }
       })()}
+
+      {dropState ? (
+        <div className="DAT_InfoDrop">
+          {view == "detail" ? (
+            <div className="DAT_InfoDrop_Item" onClick={() => { setView("control"); setDropState(false) }}>
+              Dieu khien
+            </div>
+          ) : (
+            <div className="DAT_InfoDrop_Item" onClick={() => { setView("detail"); setDropState(false) }}>
+              Thong so
+            </div>
+          )}
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

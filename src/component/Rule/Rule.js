@@ -341,6 +341,7 @@ export default function Rule() {
     const id = e.currentTarget.id;
     setIdDel(id);
     confirmDeleteState.value = "delete";
+    console.log(id);
   };
 
   const handleModify = (e, type) => {
