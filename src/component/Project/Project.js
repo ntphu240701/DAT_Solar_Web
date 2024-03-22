@@ -573,7 +573,7 @@ export default function Project(props) {
 
     return () => {
       plantState.value = "default";
-      projtab.value = "total";
+      // projtab.value = "total";
     };
   }, []);
 
