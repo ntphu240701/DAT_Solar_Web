@@ -244,8 +244,8 @@ export default function Project(props) {
         parseFloat(dailyProduction[row.plantid]).toFixed(2) === "NaN"
           ? 0 + " kWh"
           : Number(
-              parseFloat(dailyProduction[row.plantid]).toFixed(2)
-            ).toLocaleString("en-US") + " kWh",
+            parseFloat(dailyProduction[row.plantid]).toFixed(2)
+          ).toLocaleString("en-US") + " kWh",
       sortable: true,
       width: "160px",
     },
@@ -255,10 +255,10 @@ export default function Project(props) {
         parseFloat(power[row.plantid]).toFixed(2) === "NaN"
           ? 0 + " %"
           : Number(
-              parseFloat(
-                (power[row.plantid] / 1000 / row.capacity) * 100
-              ).toFixed(2)
-            ).toLocaleString("en-US") + " %",
+            parseFloat(
+              (power[row.plantid] / 1000 / row.capacity) * 100
+            ).toFixed(2)
+          ).toLocaleString("en-US") + " %",
       sortable: true,
       width: "160px",
     },
@@ -295,7 +295,7 @@ export default function Project(props) {
           }}
         >
           {ruleInfor.value.setting.project.modify == true ||
-          ruleInfor.value.setting.project.remove == true ? (
+            ruleInfor.value.setting.project.remove == true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.plantid + "_MORE"}
@@ -427,30 +427,30 @@ export default function Project(props) {
     } else {
       const t = e.target.value;
       const db = dataproject.value.filter((row) =>
-        // item.name.includes(t)
-        {
-          switch (type) {
-            // case "name":
-            //   return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
-            // return (console.log(row.plantname.includes(t) || row.plantname.toLowerCase().includes(t)));
-            case "inCapacity":
-              return String(row.capacity) == t;
-            case "production":
-              return String(row.production) == t;
-            case "power":
-              return String(row.power) == t;
-            // case "lastupdate":
-            //   return String(row.lastupdate) == t;
-            // case "createdate":
-            //   return String(row.createdate) == t;
-            default:
-              return (
-                row.plantname.includes(t) ||
-                row.plantname.toLowerCase().includes(t)
-              );
-            // return row.name.toLowerCase().includes(t);
-          }
+      // item.name.includes(t)
+      {
+        switch (type) {
+          // case "name":
+          //   return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
+          // return (console.log(row.plantname.includes(t) || row.plantname.toLowerCase().includes(t)));
+          case "inCapacity":
+            return String(row.capacity) == t;
+          case "production":
+            return String(row.production) == t;
+          case "power":
+            return String(row.power) == t;
+          // case "lastupdate":
+          //   return String(row.lastupdate) == t;
+          // case "createdate":
+          //   return String(row.createdate) == t;
+          default:
+            return (
+              row.plantname.includes(t) ||
+              row.plantname.toLowerCase().includes(t)
+            );
+          // return row.name.toLowerCase().includes(t);
         }
+      }
       );
       setDatafilter(db);
     }
@@ -497,12 +497,12 @@ export default function Project(props) {
       return (
         parseFloat(item.capacity) >= parseFloat(min) &&
         parseFloat(item.capacity) <= parseFloat(max) &&
-        item.addr.toLowerCase().includes(location.toLowerCase()) || 
-        (
-          parseFloat(item.capacity) >= parseFloat(min) &&
-          parseFloat(item.capacity) <= parseFloat(max)   
-        ) || 
-        item.addr.toLowerCase().includes(location.toLowerCase())
+        item.addr.toLowerCase().includes(location.toLowerCase())  
+        // (
+        //   parseFloat(item.capacity) >= parseFloat(min) &&
+        //   parseFloat(item.capacity) <= parseFloat(max)   
+        // ) || 
+        // item.addr.toLowerCase().includes(location.toLowerCase())
       );
     });
     console.log(temp);
@@ -872,7 +872,7 @@ export default function Project(props) {
 
                                 <div className="DAT_ProjectMobile_Content_Top_Info_Name_Right">
                                   {ruleInfor.value.setting.project.modify ===
-                                  true ? (
+                                    true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
                                       id={item.plantid}
@@ -884,7 +884,7 @@ export default function Project(props) {
                                     <div></div>
                                   )}
                                   {ruleInfor.value.setting.project.modify ===
-                                  true ? (
+                                    true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
                                       id={item.plantid}
@@ -1664,6 +1664,7 @@ export default function Project(props) {
             })()}
 
             <Filter
+              type="project"
               display={display}
               handleClose={handleCloseFilter}
               handleReset={handleResetFilter}
