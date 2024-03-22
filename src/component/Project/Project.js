@@ -540,7 +540,7 @@ export default function Project(props) {
         type: userInfor.value.type,
       });
       if (d.status === true) {
-        console.log(d.data);
+        // console.log(d.data);
         dataproject.value = d.data;
       }
     };

@@ -274,7 +274,7 @@ export default function Warn(props) {
   };
 
   const handleResetFilter = () => {
-    // setDisplay(false);
+    setDisplay(false);
     setDatafilter(dataWarn.value);
   };
 

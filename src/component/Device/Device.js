@@ -224,7 +224,7 @@ export default function Device(props) {
             ruleInfor.value.setting.device.delete === true ? (
             <div className="DAT_TableEdit">
               <span
-                id={row.id + "_MORE"}
+                id={row.psn + "_MORE"}
                 onClick={(e) => handleModify(e, "block")}
               >
                 <IoMdMore size={20} />
@@ -235,12 +235,21 @@ export default function Device(props) {
           )}
           <div
             className="DAT_ModifyBox"
-            id={row.id + "_Modify"}
+            id={row.psn + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             {/* <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div> */}
             <div
+              className="DAT_ModifyBox_Fix"
+              id={row.psn + "_" + tab.value + "_" + row.plogger}
+            // onClick={(e) => handleEdit(e)}
+            >
+              <FiEdit size={14} />
+              &nbsp;
+              {dataLang.formatMessage({ id: "change" })}
+            </div>
+            {/* <div
               className="DAT_ModifyBox_Remove"
               id={row.id + "_" + tab.value}
               onClick={(e) => handleRemove(e)}
@@ -248,7 +257,7 @@ export default function Device(props) {
               <IoTrashOutline size={16} />
               &nbsp;
               {dataLang.formatMessage({ id: "remove" })}
-            </div>
+            </div> */}
           </div>
         </>
       ),
@@ -581,7 +590,7 @@ export default function Device(props) {
         partnerid: userInfor.value.partnerid,
         type: userInfor.value.type,
       });
-      // console.log(d);
+      console.log(d);
       if (d.status === true) {
         inverterList.value = d.data;
       }

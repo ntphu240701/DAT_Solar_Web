@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import "./Device.scss"
 
-import { loggerList, popupState } from "./Device";
+import { inverterList, loggerList, popupState } from "./Device";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
@@ -30,6 +30,7 @@ export default function Popup(props) {
       let d = await callApi('post', host.DATA + '/dropLogger', { plantid: props.plantid, sn: props.sn });
       if (d.status === true) {
         loggerList.value = loggerList.value.filter((item) => item.psn != props.sn);
+        inverterList.value = inverterList.value.filter((item) => item.plogger != props.sn);
         alertDispatch(dataLang.formatMessage({ id: "alert_25" }))
         popupState.value = false;
       } else if (d.number == 0) {

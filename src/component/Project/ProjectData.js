@@ -44,6 +44,7 @@ import {
   IoAddOutline,
   IoArrowForward,
   IoCalendarOutline,
+  IoSyncOutline,
   IoTrashOutline,
 } from "react-icons/io5";
 import {
@@ -74,6 +75,7 @@ export const dropState = signal(false);
 export const popupAddGateway = signal(false);
 export const popupAddSubsystem = signal(false);
 export const temp = signal([]);
+export const inverterDB = signal([]);
 export const coalsave = signal({
   value: 1,
   ef: 0.7221,
@@ -105,7 +107,7 @@ export default function ProjectData(props) {
   const [view, setView] = useState("dashboard");
   const [configname, setConfigname] = useState(dataLang.formatMessage({ id: "choosePara" }));
   const [dropConfig, setDropConfig] = useState(false);
-  const [tempInverter, setTempInverter] = useState([]);
+  // const [tempInverter, setTempInverter] = useState([]);
   const [dataDay, setDataDay] = useState([]);
   const [vDay, setVDay] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataMonth, setDataMonth] = useState([]);
@@ -325,6 +327,14 @@ export default function ProjectData(props) {
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
+            {/* <div className="DAT_ModifyBox_Fix"
+              id={row.sn + "_sync"}
+              onClick={(e) => handleSync(e)}
+            >
+              <IoSyncOutline size={14} />
+              &nbsp;
+              Dong bo
+            </div> */}
             <div className="DAT_ModifyBox_Fix"
               id={row.sn + "_edit"}
               onClick={(e) => handleEdit(e)}
@@ -429,14 +439,36 @@ export default function ProjectData(props) {
     tab.value = "inverter";
     let plantname = projectData.value.plantname;
     info.value = {
-      psn: tempInverter[0].sn,
-      pname: tempInverter[0].name,
+      psn: inverterDB.value[0].sn,
+      pname: inverterDB.value[0].name,
       pplantname: plantname,
-      pdata: tempInverter[0].data,
+      pdata: inverterDB.value[0].data,
     };
-    info.value.invt = invt[tempInverter[0].logger_];
+    info.value.invt = invt[inverterDB.value[0].logger_];
     // console.log(info.value)
     // console.log(tempInverter)
+  };
+
+  const handleSync = async (e) => {
+    // console.log(e.currentTarget.id);
+    // console.log(temp.value);
+    const arr = e.currentTarget.id.split("_");
+    const newdata = temp.value.find((item) => item.sn == arr[0]);
+    const decimalArray = JSON.parse(newdata.setting.sn)
+    const hexString = decimalArray.map((num) => parseInt(invt[arr[0]]?.[num]).toString(16)).join('');
+    const invertersn = hexString.match(/.{2}/g).map(byte => String.fromCharCode(parseInt(byte, 16))).join('');
+    // console.log(invertersn, arr[0], projectData.value.plantid_, newdata.type);
+
+    let async_ = await callApi("post", host.DATA + "/addInverter", {
+      loggersn: arr[0],
+      invertersn: invertersn,
+      type: newdata.type,
+      plantid: projectData.value.plantid_,
+    });
+    console.log(async_);
+    if (async_.status) {
+      inverterDB.value = [...inverterDB.value, async_.data];
+    }
   };
 
   const invtCloud = async (data, token) => {
@@ -681,6 +713,21 @@ export default function ProjectData(props) {
     setType(idArr[1]);
   };
 
+  const handleInvt = async (sn) => {
+    console.log(sn)
+
+    const res = await invtCloud(
+      '{"deviceCode":"' + sn + '"}',
+      Token.value.token
+    );
+    // console.log(res)
+    if (res.ret === 0) {
+      //console.log(res.data)
+      setInvt((pre) => ({ ...pre, [sn]: res.data }));
+
+    }
+  }
+
   useEffect(() => {
     // filter data AlertTable
     open.value = dataAlert.filter((item) => item.status == true);
@@ -827,11 +874,24 @@ export default function ProjectData(props) {
     getTotal();
 
     //data Logger
+
+
+    return () => {
+      cal.value = {};
+      tab_.value = "logger";
+      infoState.value = false;
+    };
+
+    // eslint-disable-next-line
+  }, [lang]);
+
+
+  useEffect(() => {
     const getLogger = async () => {
       let d = await callApi("post", host.DATA + "/getLogger", {
         plantid: projectData.value.plantid_,
       });
-      // console.log(d);
+      console.log(d);
       temp.value = d;
       d.map(async (item) => {
         const res = await invtCloud(
@@ -846,6 +906,7 @@ export default function ProjectData(props) {
           const hexString = decimalArray.map((num) => parseInt(res.data[num]).toString(16)).join('');
           const asciiString = hexString.match(/.{2}/g).map(byte => String.fromCharCode(parseInt(byte, 16))).join('');
           // console.log(asciiString);
+
         } else {
           setInvt((pre) => ({ ...pre, [item.sn]: {} }));
         }
@@ -853,19 +914,20 @@ export default function ProjectData(props) {
         let inverter = await callApi("post", host.DATA + "/getInverter", {
           loggerid: item.sn,
         });
-        setTempInverter([...inverter]);
+        console.log(inverter);
+        if (inverter.length > 0) {
+          inverterDB.value = [...inverter];
+        } else {
+          inverterDB.value = [];
+        }
       });
     };
     getLogger();
-
     return () => {
-      cal.value = {};
-      tab_.value = "logger";
-      infoState.value = false;
-    };
-
-    // eslint-disable-next-line
-  }, [lang]);
+      temp.value = [];
+      inverterDB.value = [];
+    }
+  }, []);
 
   useEffect(() => {
     var num_ = {
@@ -2202,101 +2264,13 @@ export default function ProjectData(props) {
                           case "inverter":
                             return (
                               <>
-                                {tempInverter.value?.map((item, i) => {
-                                  return (
-                                    <div
-                                      key={i}
-                                      className="DAT_ProjectData_Device_TableMobile_Content"
-                                    >
-                                      <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
-                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left">
-                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Name">
-                                            {dataLang.formatMessage({
-                                              id: "name",
-                                            })}
-                                            : {item.name}
-                                          </div>
 
-                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Sn">
-                                            SN: {item.sn}
-                                          </div>
-                                        </div>
-
-                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right">
-                                          {ruleInfor.value.setting.device
-                                            .modify === true ? (
-                                            <div
-                                              className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
-                                              onClick={(e) => handleEdit(e)}
-                                            >
-                                              <MdEdit
-                                                size={20}
-                                                color="#216990"
-                                              />
-                                            </div>
-                                          ) : (
-                                            <div></div>
-                                          )}
-                                          {ruleInfor.value.setting.device
-                                            .remove === true ? (
-                                            <div
-                                              className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
-                                              id={item.sn}
-                                              onClick={(e) => handleDelete(e)}
-                                            >
-                                              <MdDelete size={20} color="red" />
-                                            </div>
-                                          ) : (
-                                            <div></div>
-                                          )}
-                                        </div>
-                                      </div>
-
-                                      <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom">
-                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_State">
-                                          {item.state ? (
-                                            <>
-                                              <FaCheckCircle
-                                                size={20}
-                                                color="green"
-                                              />
-                                              <span>
-                                                {dataLang.formatMessage({
-                                                  id: "online",
-                                                })}
-                                              </span>
-                                            </>
-                                          ) : (
-                                            <>
-                                              <MdOutlineError
-                                                size={22}
-                                                color="red"
-                                              />
-                                              <span>
-                                                {dataLang.formatMessage({
-                                                  id: "offline",
-                                                })}
-                                              </span>
-                                            </>
-                                          )}
-                                        </div>
-
-                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_Type">
-                                          {dataLang.formatMessage({
-                                            id: "type",
-                                          })}
-                                          : {item.type}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  );
-                                })}
                               </>
                             );
                           case "meter":
                             return (
                               <>
-                                {tempInverter.value?.map((item, i) => {
+                                {/* {tempInverter.value?.map((item, i) => {
                                   return (
                                     <div
                                       key={i}
@@ -2381,7 +2355,7 @@ export default function ProjectData(props) {
                                       </div>
                                     </div>
                                   );
-                                })}
+                                })} */}
                               </>
                             );
                           default:
@@ -2435,7 +2409,7 @@ export default function ProjectData(props) {
                                 <DataTable
                                   className="DAT_Table_Device"
                                   columns={columnInverter}
-                                  data={tempInverter}
+                                  data={inverterDB.value}
                                   pagination
                                   paginationComponentOptions={
                                     paginationComponentOptions
@@ -2621,7 +2595,7 @@ export default function ProjectData(props) {
 
       {popupAddGateway.value ? (
         <div className="DAT_AddGatewayPopup">
-          <AddGateway data={temp.value} />
+          <AddGateway data={temp.value} handleInvt={handleInvt} />
         </div>
       ) : (
         <></>

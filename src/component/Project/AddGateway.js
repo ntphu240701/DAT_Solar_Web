@@ -3,19 +3,48 @@ import "./Project.scss";
 
 import { projectData, } from "./Project";
 import { useIntl } from "react-intl";
-import { popupAddGateway, temp } from "./ProjectData";
+import { inverterDB, popupAddGateway, temp } from "./ProjectData";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
 
 import { IoClose } from "react-icons/io5";
 
+import axios from "axios";
+import { Token } from "../../App";
+
 export default function AddGateway(props) {
   const dataLang = useIntl();
   const sn = useRef();
   const name = useRef();
   const type = useRef();
+  const invtCloud = async (data, token) => {
+    var reqData = {
+      data: data,
+      token: token,
+    };
 
+    try {
+      const response = await axios({
+        url: host.CLOUD,
+        method: "post",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data: Object.keys(reqData)
+          .map(function (key) {
+            return (
+              encodeURIComponent(key) + "=" + encodeURIComponent(reqData[key])
+            );
+          })
+          .join("&"),
+      });
+
+      return response.data;
+    } catch (e) {
+      return { ret: 1, msg: "cloud err" };
+    }
+  };
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
@@ -37,13 +66,38 @@ export default function AddGateway(props) {
       alertDispatch(dataLang.formatMessage({ id: "alert_22" }))
     } else {
       const d = await callApi("post", host.DATA + "/addLogger", {
-        plantid: projectData.value.plantid,
+        plantid: projectData.value.plantid_,
         sn: sn.current.value,
         name: name.current.value,
         type: type.current.value,
       });
+      console.log(d);
       if (d.status) {
         temp.value = [...temp.value, d.data];
+        props.handleInvt(sn.current.value)
+        const res = await invtCloud(
+          '{"deviceCode":"' + sn.current.value + '"}',
+          Token.value.token
+        );
+        // console.log(res)
+        if (res.ret === 0) {
+          //console.log(res.data)
+
+          const decimalArray = JSON.parse(d.data.setting.sn)
+          const hexString = decimalArray.map((num) => parseInt(res.data[num]).toString(16)).join('');
+          const invertersn = hexString.match(/.{2}/g).map(byte => String.fromCharCode(parseInt(byte, 16))).join('');
+
+          let async_ = await callApi("post", host.DATA + "/addInverter", {
+            loggersn: sn.current.value,
+            invertersn: invertersn,
+            type: d.data.type,
+            plantid: projectData.value.plantid_,
+          });
+          console.log(async_);
+          if (async_.status) {
+            inverterDB.value = [...inverterDB.value, async_.data];
+          }
+        }
         popupAddGateway.value = false;
       }
       if (d.status === true) {
