@@ -525,11 +525,11 @@ export default function ProjectData(props) {
       setD({ ...d, date: moment(date).format("DD/MM/YYYY") });
       const getDaily = async () => {
         const d = await callApi("post", host.DATA + "/getChart", {
-          plantid: projectData.value.plantid,
+          plantid: projectData.value.plantid_,
           date: moment(date).format("MM/DD/YYYY"),
         });
         setDataDay([]);
-        // console.log(projectData.value.plantid)
+        // console.log(projectData.value.plantid_)
         // console.log(d)
         if (d.status) {
           // console.log(d.data);
@@ -576,7 +576,7 @@ export default function ProjectData(props) {
 
       const getMonth = async () => {
         const d = await callApi("post", host.DATA + "/getMonthChart", {
-          plantid: projectData.value.plantid,
+          plantid: projectData.value.plantid_,
           month: moment(date).format("MM/YYYY"),
         });
         if (d.status) {
@@ -617,7 +617,7 @@ export default function ProjectData(props) {
 
       const getYear = async () => {
         const d = await callApi("post", host.DATA + "/getYearChart", {
-          plantid: projectData.value.plantid,
+          plantid: projectData.value.plantid_,
           year: moment(date).format("YYYY"),
         });
         if (d.status) {
@@ -691,7 +691,7 @@ export default function ProjectData(props) {
     // data Day
     const getDaily = async () => {
       const d = await callApi("post", host.DATA + "/getChart", {
-        plantid: projectData.value.plantid,
+        plantid: projectData.value.plantid_,
         date: moment(new Date()).format("MM/DD/YYYY"),
       });
       setDataDay([]);
@@ -721,7 +721,7 @@ export default function ProjectData(props) {
     //data Month
     const getMonth = async () => {
       const d = await callApi("post", host.DATA + "/getMonthChart", {
-        plantid: projectData.value.plantid,
+        plantid: projectData.value.plantid_,
         month: moment(new Date()).format("MM/YYYY"),
       });
       if (d.status) {
@@ -761,7 +761,7 @@ export default function ProjectData(props) {
     //data Year
     const getYear = async () => {
       const d = await callApi("post", host.DATA + "/getYearChart", {
-        plantid: projectData.value.plantid,
+        plantid: projectData.value.plantid_,
         year: moment(new Date()).format("YYYY"),
       });
       //console.log(d)
@@ -798,7 +798,7 @@ export default function ProjectData(props) {
     //data Total
     const getTotal = async () => {
       const d = await callApi("post", host.DATA + "/getTotalChart", {
-        plantid: projectData.value.plantid,
+        plantid: projectData.value.plantid_,
       });
       setDataTotal([]);
       if (d.status) {
@@ -829,7 +829,7 @@ export default function ProjectData(props) {
     //data Logger
     const getLogger = async () => {
       let d = await callApi("post", host.DATA + "/getLogger", {
-        plantid: projectData.value.plantid,
+        plantid: projectData.value.plantid_,
       });
       // console.log(d);
       temp.value = d;
@@ -2629,7 +2629,7 @@ export default function ProjectData(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup plantid={projectData.value.plantid} type="logger" sn={snlogger} data={temp.value} func={type} />
+          <Popup plantid={projectData.value.plantid_} type="logger" sn={snlogger} data={temp.value} func={type} />
         </div>
       ) : (
         <> </>

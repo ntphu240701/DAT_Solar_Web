@@ -144,7 +144,7 @@ export default function Home(props) {
       name: dataLang.formatMessage({ id: "name" }),
       selector: (row) => (
         <div
-          id={row.plantid}
+          id={row.plantid_}
           style={{ cursor: "pointer" }}
           onClick={(e) => {
             handleInfo(e);
@@ -171,10 +171,10 @@ export default function Home(props) {
     {
       name: "kWh/kWp(h)",
       selector: (row) =>
-        parseFloat(sun[row.plantid]).toFixed(2) === "NaN"
+        parseFloat(sun[row.plantid_]).toFixed(2) === "NaN"
           ? 0
           : Number(
-            parseFloat(sun[row.plantid] / row.capacity).toFixed(2)
+            parseFloat(sun[row.plantid_] / row.capacity).toFixed(2)
           ).toLocaleString("en-US"),
       sortable: true,
       width: "120px",
@@ -197,7 +197,7 @@ export default function Home(props) {
   });
 
   const handleInfo = (e) => {
-    const newPlant = project.find((item) => item.plantid == e.currentTarget.id);
+    const newPlant = project.find((item) => item.plantid_ == e.currentTarget.id);
     projectData.value = newPlant;
     // console.log(newPlant);
     // navigate("/project");
@@ -308,11 +308,11 @@ export default function Home(props) {
     data.map(async (item, i) => {
       cap[i] = item.capacity;
       let chart = await callApi("post", host.DATA + "/getMonthChart", {
-        plantid: item.plantid,
+        plantid: item.plantid_,
         month: moment(new Date()).format("MM/YYYY"),
       });
       let chartY = await callApi("post", host.DATA + "/getYearChart", {
-        plantid: item.plantid,
+        plantid: item.plantid_,
         year: moment(new Date()).format("YYYY"),
       });
 
@@ -457,7 +457,7 @@ export default function Home(props) {
         setOffline(d.data.filter((data) => data.state == 0).length);
         setWarn(d.data.filter((data) => data.warn == 0).length);
         plant.value = d.data;
-        plant.value = plant.value.sort((a, b) => a.plantid - b.plantid);
+        plant.value = plant.value.sort((a, b) => a.plantid_ - b.plantid_);
       }
     };
 
