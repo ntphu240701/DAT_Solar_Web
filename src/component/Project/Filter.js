@@ -4,12 +4,16 @@ import "./Project.scss";
 
 export default function Filter(props) {
     const dataLang = useIntl();
+    const [warnChecked, setWarnChecked] = useState(false);
+    const [noticeChecked, setNoticeChecked] = useState(false);
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+
+    const opentime = useRef();
+    const closetime = useRef();
     const min = useRef(0);
     const max = useRef(100);
     const location = useRef("hello");
-
-    const warn = useRef();
-    const notice = useRef();
 
     const handleReset = (e) => {
         let min = document.getElementById("min");
@@ -20,27 +24,37 @@ export default function Filter(props) {
         location.value = "";
     };
 
-    const handleResetWarn = (e) => {
-        e.preventDefault();
-        if (document.getElementById("warn").checked) {
-            document.getElementById("warn").checked = false;
-        }
-        if (document.getElementById("notice").checked) {
-            document.getElementById("notice").checked = false;
-        }
+    const handleResetWarn = () => {
+        setWarnChecked(false);
+        setNoticeChecked(false);
+        setStartDate("");
+        setEndDate("");
     };
 
     const handleSelect = (e) => {
         if (document.getElementById("warn").checked) {
-            warn.value = "warn";
+            props.warn.value = "warn";
+            setWarnChecked(true);
+            console.log(props.warn.value)
         } else {
-            warn.value = "";
+            document.getElementById("warn").checked = false
+            props.warn.value = {};
+            setWarnChecked(false);
         }
         if (document.getElementById("notice").checked) {
-            notice.value = "notice";
+            props.notice.value = "notice";
+            console.log(props.notice.value)
+            setNoticeChecked(true)
         } else {
-            notice.value = "";
+            document.getElementById("notice").checked = false;
+            props.notice.value = {};
         }
+    };
+
+    const handleDate = (e) => {
+        const abc = e.currenttarget.value;
+        setStartDate(abc);
+        console.log(abc)
     };
 
     const handleClose = (e) => {
@@ -210,6 +224,7 @@ export default function Filter(props) {
                                                         <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
                                                             <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                 <input id="warn" type="checkbox"
+                                                                    checked={warnChecked}
                                                                     onChange={(e) => handleSelect(e)}
                                                                 />
                                                                 <label htmlFor="warn">
@@ -222,6 +237,7 @@ export default function Filter(props) {
                                                         <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
                                                             <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                 <input id="notice" type="checkbox"
+                                                                    checked={noticeChecked}
                                                                     onChange={(e) => handleSelect(e)}
                                                                 />
                                                                 <label htmlFor="notice">
@@ -241,9 +257,9 @@ export default function Filter(props) {
                                                         </th>
                                                         <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
                                                             <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                                                <input type="date" />
-                                                                ~
-                                                                <input type="date" />
+                                                                <input type="date" ref={opentime} />
+                                                                <span>~</span>
+                                                                <input type="date" ref={closetime} />
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -263,7 +279,7 @@ export default function Filter(props) {
                                             </button>
                                             <button
                                                 style={{ backgroundColor: "#048FFF", color: "white" }}
-                                                onClick={() => props.handleClose(warn.value, notice.value)}
+                                                onClick={() => props.handleClose(opentime.current.value, closetime.current.value)}
                                             >
                                                 {dataLang.formatMessage({ id: 'confirm' })}
                                             </button>
