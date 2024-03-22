@@ -21,6 +21,7 @@ import Info from "./Info";
 import { FiFilter } from "react-icons/fi";
 import Filter from "../Project/Filter";
 import { RiMailSettingsLine } from "react-icons/ri";
+import moment from "moment-timezone";
 
 const warntab = signal("all");
 const tabMobile = signal(false);
@@ -274,17 +275,18 @@ export default function Warn(props) {
   };
 
   const handleResetFilter = () => {
-    // setDisplay(false);
+    setDisplay(false);
     setDatafilter(dataWarn.value);
   };
 
-  const handleCloseFilter = (warn, notice) => {
-    setDisplay(false);
+  const handleCloseFilter = (opentime, closetime) => {
+    setDisplay(false)
     const newdb = dataWarn.value.filter((item) => {
       return (
-        (item.level == warn) || (item.level == notice)
+        (item.level == warn.value) || (item.level == notice.value)
       );
     });
+    console.log(moment(opentime).format("MM/DD/YYYY"), moment(closetime).format("MM/DD/YYYY"))
     setDatafilter(newdb);
   };
 
