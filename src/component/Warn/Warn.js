@@ -22,7 +22,7 @@ import { FiFilter } from "react-icons/fi";
 import Filter from "../Project/Filter";
 import { RiMailSettingsLine } from "react-icons/ri";
 
-const tab = signal("all");
+const warntab = signal("all");
 const tabMobile = signal(false);
 export const tabLable = signal("");
 export const open = signal([]);
@@ -230,7 +230,7 @@ export default function Warn(props) {
 
   const handleTabMobile = (e) => {
     const id = e.currentTarget.id;
-    tab.value = id;
+    warntab.value = id;
     const newLabel = listTab.find((item) => item.id == id);
     tabLable.value = newLabel.name;
   };
@@ -322,6 +322,9 @@ export default function Warn(props) {
     ) {
       // console.log("ok");
       setDatafilter([...dataWarn.value]);
+    }
+    return () => {
+      warntab.value = "all";
     }
   }, [dataWarn.value]);
 
@@ -455,7 +458,7 @@ export default function Warn(props) {
           </div>
 
           {(() => {
-            switch (tab.value) {
+            switch (warntab.value) {
               case "all":
                 return (
                   <>
@@ -642,7 +645,7 @@ export default function Warn(props) {
         <div className="DAT_Warn">
           <div className="DAT_Toollist_Tab">
             {listTab.map((item, i) => {
-              return tab.value === item.id ? (
+              return warntab.value === item.id ? (
                 <div key={i} className="DAT_Toollist_Tab_main">
                   <p className="DAT_Toollist_Tab_main_left"></p>
                   <span
@@ -653,7 +656,7 @@ export default function Warn(props) {
                       color: "black",
                       borderRadius: "10px 10px 0 0",
                     }}
-                    onClick={(e) => (tab.value = item.id)}
+                    onClick={(e) => (warntab.value = item.id)}
                   >
                     {item.name}
                   </span>
@@ -665,7 +668,7 @@ export default function Warn(props) {
                   key={i}
                   id={item.id}
                   style={{ backgroundColor: "#dadada" }}
-                  onClick={(e) => (tab.value = item.id)}
+                  onClick={(e) => (warntab.value = item.id)}
                 >
                   {item.name}
                 </span>
@@ -687,7 +690,7 @@ export default function Warn(props) {
 
           <div className="DAT_Warn_Content">
             {(() => {
-              switch (tab.value) {
+              switch (warntab.value) {
                 case "all":
                   return (
                     <DataTable

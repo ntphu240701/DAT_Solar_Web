@@ -154,7 +154,7 @@ export default function Role(props) {
   const handleDelete_ = (e) => {
     popupState.value = "delete";
     setTemp(e.currentTarget.id);
-    console.log(e.currentTarget.id);
+    console.log(e.currentTarget.id)
   };
 
   const handleEdit = (e) => {
@@ -217,6 +217,10 @@ export default function Role(props) {
     };
     getRule();
   }, [partnerInfor.value.partnerid]);
+
+  useEffect(() => {
+    setdatafilter(Usr_.value)
+  }, [Usr_.value])
 
   return (
     <>
