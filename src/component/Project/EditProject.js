@@ -572,7 +572,7 @@ export default function EditProject(props) {
     } else {
       const editProject = async () => {
         let d = await callApi('post', host.DATA + '/editPlant', {
-          plantid: projectData.value.plantid,
+          plantid: projectData.value.plantid_,
           usr: props.usr,
           name: projectData.value.plantname,
           company: projectData.value.company,

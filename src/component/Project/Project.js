@@ -26,6 +26,7 @@ import { RxCross2 } from "react-icons/rx";
 import { FiEdit, FiFilter } from "react-icons/fi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { CarRentalSharp } from "@mui/icons-material";
 
 export const projtab = signal("total");
 const tabLable = signal("");
@@ -34,6 +35,7 @@ const online = signal([]);
 const offline = signal([]);
 const warn = signal([]);
 const demo = signal([]);
+const care = signal([]);
 export const connectval = signal();
 export const plantState = signal("default");
 export const plantEdit = signal(false);
@@ -151,6 +153,7 @@ export default function Project(props) {
     { id: "online", name: dataLang.formatMessage({ id: "online" }) },
     { id: "offline", name: dataLang.formatMessage({ id: "offline" }) },
     { id: "warn", name: dataLang.formatMessage({ id: "warn" }) },
+    { id: "care", name: dataLang.formatMessage({ id: "care" }) },
     { id: "demo", name: dataLang.formatMessage({ id: "demo" }) },
   ];
 
@@ -167,7 +170,7 @@ export default function Project(props) {
       selector: (row) => (
         <div
           className="DAT_Table"
-          id={row.plantid}
+          id={row.plantid_}
           style={{ cursor: "pointer" }}
           onClick={(e) => handlePlant(e)}
         >
@@ -215,7 +218,7 @@ export default function Project(props) {
       selector: (row) => (
         <div
           style={{ cursor: "pointer" }}
-          id={row.plantid}
+          id={row.plantid_}
           onClick={(e) => {
             projectwarnfilter.value = e.currentTarget.id;
             warnfilter.value = {};
@@ -242,10 +245,10 @@ export default function Project(props) {
     {
       name: dataLang.formatMessage({ id: "daily" }),
       selector: (row) =>
-        parseFloat(dailyProduction[row.plantid]).toFixed(2) === "NaN"
+        parseFloat(dailyProduction[row.plantid_]).toFixed(2) === "NaN"
           ? 0 + " kWh"
           : Number(
-            parseFloat(dailyProduction[row.plantid]).toFixed(2)
+            parseFloat(dailyProduction[row.plantid_]).toFixed(2)
           ).toLocaleString("en-US") + " kWh",
       sortable: true,
       width: "160px",
@@ -253,11 +256,11 @@ export default function Project(props) {
     {
       name: dataLang.formatMessage({ id: "power" }),
       selector: (row) =>
-        parseFloat(power[row.plantid]).toFixed(2) === "NaN"
+        parseFloat(power[row.plantid_]).toFixed(2) === "NaN"
           ? 0 + " kW"
           : Number(
             parseFloat(
-              (power[row.plantid] / 1000)
+              (power[row.plantid_] / 1000)
             ).toFixed(2)
           ).toLocaleString("en-US") + " kW",
       sortable: true,
@@ -299,7 +302,7 @@ export default function Project(props) {
             ruleInfor.value.setting.project.remove == true ? (
             <div className="DAT_TableEdit">
               <span
-                id={row.plantid + "_MORE"}
+                id={row.plantid_ + "_MORE"}
                 // onMouseEnter={(e) => handleModify(e, "block")}
                 onClick={(e) => handleModify(e, "block")}
               >
@@ -311,14 +314,14 @@ export default function Project(props) {
           )}
           <div
             className="DAT_ModifyBox"
-            id={row.plantid + "_Modify"}
+            id={row.plantid_ + "_Modify"}
             style={{ display: "none", marginTop: "3px", marginRight: "3px" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             {ruleInfor.value.setting.project.modify === true ? (
               <div
                 className="DAT_ModifyBox_Fix"
-                id={row.plantid}
+                id={row.plantid_}
                 style={{
                   display: "flex",
                   justifyContent: "flex-start",
@@ -336,7 +339,7 @@ export default function Project(props) {
             {ruleInfor.value.setting.project.remove === true ? (
               <div
                 className="DAT_ModifyBox_Remove"
-                id={row.plantid}
+                id={row.plantid_}
                 style={{
                   display: "flex",
                   justifyContent: "flex-start",
@@ -354,9 +357,9 @@ export default function Project(props) {
           </div>
           <div className="DAT_TableMark">
             <FaStar
-              id={row.plantid}
+              id={row.plantid_}
               style={{
-                // color: like ? "yellow" : "grey",
+                color: row.mark ? "rgb(255, 233, 39)" : "rgb(190, 190, 190)",
                 cursor: "pointer",
                 // color: "grey"
               }}
@@ -375,13 +378,14 @@ export default function Project(props) {
 
   const handlePlant = (e) => {
     plantState.value = "info";
+    // console.log(dataproject.value);
     const newPlant = dataproject.value.find(
-      (item) => item.plantid == e.currentTarget.id
+      (item) => item.plantid_ == e.currentTarget.id
     );
     projectData.value = newPlant;
 
     // const newDevicePlant = devicePlant.value.filter(
-    //   (item) => item.plantId == e.currentTarget.id
+    //   (item) => item.plantid_ == e.currentTarget.id
     // );
     // deviceData.value = newDevicePlant;
   };
@@ -389,7 +393,7 @@ export default function Project(props) {
   const handleEdit = (e) => {
     plantState.value = "edit";
     const newPlant = dataproject.value.find(
-      (item) => item.plantid == e.currentTarget.id
+      (item) => item.plantid_ == e.currentTarget.id
     );
     projectData.value = newPlant;
   };
@@ -397,7 +401,7 @@ export default function Project(props) {
   const handleDelete = (e) => {
     popupState.value = true;
     const newPlant = dataproject.value.find(
-      (item) => item.plantid == e.currentTarget.id
+      (item) => item.plantid_ == e.currentTarget.id
     );
     projectData.value = newPlant;
   };
@@ -523,6 +527,7 @@ export default function Project(props) {
     online.value = dataproject.value.filter((item) => item.state == 1);
     offline.value = dataproject.value.filter((item) => item.state == 0);
     warn.value = dataproject.value.filter((item) => item.warn == 0);
+    care.value = dataproject.value.filter((item) => item.mark == 1);
     tabLable.value = listTab[0].name;
     setDatafilter(dataproject.value);
   }, [dataproject.value]);
@@ -535,7 +540,7 @@ export default function Project(props) {
         type: userInfor.value.type,
       });
       if (d.status === true) {
-        // console.log(d.data);
+        console.log(d.data);
         dataproject.value = d.data;
       }
     };
@@ -876,7 +881,7 @@ export default function Project(props) {
                               <div className="DAT_ProjectMobile_Content_Top_Info_Name">
                                 <div
                                   className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
-                                  id={item.plantid}
+                                  id={item.plantid_}
                                   onClick={(e) => handlePlant(e)}
                                 >
                                   {item.plantname}
@@ -887,7 +892,7 @@ export default function Project(props) {
                                     true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
-                                      id={item.plantid}
+                                      id={item.plantid_}
                                       onClick={(e) => handleEdit(e)}
                                     >
                                       <MdEdit size={20} color="#216990" />
@@ -899,7 +904,7 @@ export default function Project(props) {
                                     true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
-                                      id={item.plantid}
+                                      id={item.plantid_}
                                       onClick={(e) => handleDelete(e)}
                                     >
                                       <MdDelete size={20} color="red" />
@@ -1010,7 +1015,7 @@ export default function Project(props) {
                         <div key={i} className="DAT_ProjectMobile_Content">
                           <div
                             className="DAT_ProjectMobile_Content_Top"
-                            id={item.plantid}
+                            id={item.plantid_}
                             onClick={(e) => handlePlant(e)}
                           >
                             <div className="DAT_ProjectMobile_Content_Top_Avatar">
@@ -1148,7 +1153,7 @@ export default function Project(props) {
                         <div key={i} className="DAT_ProjectMobile_Content">
                           <div
                             className="DAT_ProjectMobile_Content_Top"
-                            id={item.plantid}
+                            id={item.plantid_}
                             onClick={(e) => handlePlant(e)}
                           >
                             <div className="DAT_ProjectMobile_Content_Top_Avatar">
@@ -1286,7 +1291,7 @@ export default function Project(props) {
                         <div key={i} className="DAT_ProjectMobile_Content">
                           <div
                             className="DAT_ProjectMobile_Content_Top"
-                            id={item.plantid}
+                            id={item.plantid_}
                             onClick={(e) => handlePlant(e)}
                           >
                             <div className="DAT_ProjectMobile_Content_Top_Avatar">
@@ -1424,7 +1429,7 @@ export default function Project(props) {
                         <div key={i} className="DAT_ProjectMobile_Content">
                           <div
                             className="DAT_ProjectMobile_Content_Top"
-                            id={item.plantid}
+                            id={item.plantid_}
                             onClick={(e) => handlePlant(e)}
                           >
                             <div className="DAT_ProjectMobile_Content_Top_Avatar">
@@ -1670,6 +1675,18 @@ export default function Project(props) {
                       noDataComponent={<Empty />}
                     />
                   );
+                case "care":
+                  return (
+                    <DataTable
+                      className="DAT_Table_Container"
+                      columns={columnproject}
+                      data={care.value}
+                      pagination
+                      paginationComponentOptions={paginationComponentOptions}
+                      fixedHeader={true}
+                      noDataComponent={<Empty />}
+                    />
+                  );
                 default:
                   return <></>;
               }
@@ -1709,7 +1726,7 @@ export default function Project(props) {
       {popupState.value ? (
         <div className="DAT_DevicePopup">
           <Popup
-            plantid={projectData.value.plantid}
+            plantid={projectData.value.plantid_}
             func="remove"
             type="plant"
             usr={user}
