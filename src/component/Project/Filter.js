@@ -8,6 +8,9 @@ export default function Filter(props) {
   const max = useRef(100);
   const location = useRef("hello");
 
+  const warn = useRef();
+  const notice = useRef();
+
   const handleReset = (e) => {
     let min = document.getElementById("min");
     let max = document.getElementById("max");
@@ -17,6 +20,29 @@ export default function Filter(props) {
     location.value = "";
   };
 
+  const handleResetWarn = (e) => {
+    e.preventDefault();
+    if (document.getElementById("warn").checked) {
+      document.getElementById("warn").checked = false;
+    }
+    if (document.getElementById("notice").checked) {
+      document.getElementById("notice").checked = false;
+    }
+  };
+
+  const handleSelect = (e) => {
+    if (document.getElementById("warn").checked) {
+      warn.value = "warn";
+    } else {
+      warn.value = "";
+    }
+    if (document.getElementById("notice").checked) {
+      notice.value = "notice";
+    } else {
+      notice.value = "";
+    }
+  };
+
   const handleClose = (e) => {
     let min = document.getElementById("min");
     let max = document.getElementById("max");
@@ -24,22 +50,15 @@ export default function Filter(props) {
     console.log(min.value, max.value, location.value);
   };
 
-  const [deviceF, setDeviceF] = useState({
-    online: true,
-    offline: true,
-  });
+  const [deviceF, setDeviceF] = useState("all");
 
   useEffect(() => {
     console.log(deviceF);
   }, [deviceF]);
 
   const filterdevice = (e) => {
-    const arr = e.currentTarget.id + "_" + e.currentTarget.checked;
-    const t = arr.split("_");
-    setDeviceF({
-      ...deviceF,
-      [t[0]]: t[1] === "true" ? true : false,
-    });
+    // console.log(e.target.id);
+    setDeviceF(e.target.id);
   };
 
   return (
@@ -166,9 +185,12 @@ export default function Filter(props) {
                               <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
                                 <input
                                   id="online"
-                                  type="checkbox"
-                                  defaultChecked={true}
-                                  onChange={(e) => filterdevice(e)}
+                                  type="radio"
+                                  name="option"
+                                  defaultChecked={
+                                    deviceF === "online" ? true : false
+                                  }
+                                  onClick={(e) => filterdevice(e)}
                                 />
                                 <label
                                   htmlFor="online"
@@ -182,15 +204,39 @@ export default function Filter(props) {
                               <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
                                 <input
                                   id="offline"
-                                  type="checkbox"
-                                  defaultChecked={true}
-                                  onChange={(e) => filterdevice(e)}
+                                  type="radio"
+                                  name="option"
+                                  value={"offline"}
+                                  defaultChecked={
+                                    deviceF === "offline" ? true : false
+                                  }
+                                  onClick={(e) => filterdevice(e)}
                                 />
                                 <label
                                   htmlFor="offline"
                                   style={{ cursor: "pointer" }}
                                 >
                                   {dataLang.formatMessage({ id: "offline" })}
+                                </label>
+                              </div>
+                            </td>
+                            <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
+                              <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                <input
+                                  id="all"
+                                  type="radio"
+                                  name="option"
+                                  value={"all"}
+                                  defaultChecked={
+                                    deviceF === "all" ? true : false
+                                  }
+                                  onClick={(e) => filterdevice(e)}
+                                />
+                                <label
+                                  htmlFor="all"
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  {dataLang.formatMessage({ id: "all" })}
                                 </label>
                               </div>
                             </td>
@@ -203,7 +249,7 @@ export default function Filter(props) {
                       <button
                         style={{ backgroundColor: "white", color: "black" }}
                         onClick={(e) => {
-                          handleReset(e);
+                          // handleReset(e);
                           props.handleReset();
                         }}
                       >

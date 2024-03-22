@@ -41,7 +41,7 @@ export default function Popup(props) {
             alertDispatch(dataLang.formatMessage({ id: 'alert_24' }));
 
             dataproject.value = dataproject.value.filter(
-              (item) => item.plantid != props.plantid
+              (item) => item.plantid_ != props.plantid
             );
             popupState.value = false;
           }

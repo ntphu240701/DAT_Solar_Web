@@ -9,81 +9,8 @@ import { FaCheckCircle, FaSave } from "react-icons/fa";
 import { MdOutlineError } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 
-const dataAC = [
-  {
-    ac: "R",
-    voltage: "312.50V",
-    current: "10.37A",
-    frequency: "49.94 Hz",
-  },
-  {
-    ac: "S",
-    voltage: "396.50V",
-    current: "10.00A",
-    frequency: "--",
-  },
-  {
-    ac: "T",
-    voltage: "396.50V",
-    current: "10.00A",
-    frequency: "--",
-  },
-];
-
-const dataTemp = [
-  {
-    dc: "PV1",
-    voltage: "312.50V",
-    current: "1.75A",
-    power: "1.26263 kW",
-  },
-  {
-    dc: "PV2",
-    voltage: "741.50V",
-    current: "1.75A",
-    power: "1.26263 kW",
-  },
-  {
-    dc: "PV3",
-    voltage: "141.50V",
-    current: "2.75A",
-    power: "1.3763 kW",
-  },
-  {
-    dc: "PV4",
-    voltage: "141.50V",
-    current: "2.75A",
-    power: "1.3763 kW",
-  },
-  {
-    dc: "PV5",
-    voltage: "141.50V",
-    current: "2.75A",
-    power: "1.3763 kW",
-  },
-  {
-    dc: "PV6",
-    voltage: "141.50V",
-    current: "2.75A",
-    power: "1.3763 kW",
-  },
-  {
-    dc: "PV7",
-    voltage: "141.50V",
-    current: "2.75A",
-    power: "1.3763 kW",
-  },
-  {
-    dc: "PV8",
-    voltage: "141.50V",
-    current: "2.75A",
-    power: "1.3763 kW",
-  },
-];
-
 const BasicInformation = (props) => {
   const dataLang = useIntl();
-
   const [display, setDisplay] = useState(true);
 
   return (
@@ -131,14 +58,14 @@ const BasicInformation = (props) => {
                   return (
                     <>
                       <div className="DAT_Info_Databox_Content_Column">
-                        <p>SN: {info.value.SN}</p>
+                        <p>SN: {info.value.psn}</p>
                         {/* <p>Sản lượng hàng ngày: {info.value.dailyproduction}</p> */}
                       </div>
                       <div className="DAT_Info_Databox_Content_Column">
-                        <p>{dataLang.formatMessage({ id: 'name' })}: {info.value.name}</p>
+                        <p>{dataLang.formatMessage({ id: 'name' })}: {info.value.pname}</p>
                       </div>
                       <div className="DAT_Info_Databox_Content_Column">
-                        <p>{dataLang.formatMessage({ id: 'project' })}: {info.value.plant}</p>
+                        <p>{dataLang.formatMessage({ id: 'project' })}: {info.value.pplantname}</p>
                         {/* <p>Sản lượng: {info.value.production}</p> */}
                         {/* <p>Cập nhật mới nhất: {info.value.updated}</p> */}
                       </div>
@@ -186,11 +113,41 @@ const VersionInformation = (props) => {
       >
         {display ? (
           <div className="DAT_Info_Databox_Content">
-            <div className="DAT_Info_Databox_Content_Column">
-              <p>
-                {dataLang.formatMessage({ id: 'moduleVersion' })}: V1.0
-              </p>
-            </div>
+            {(() => {
+              switch (tab.value) {
+                case 'logger':
+                  return (
+                    <div className="DAT_Info_Databox_Content_Column">
+                      <p>
+                        {dataLang.formatMessage({ id: 'moduleVersion' })}: {info.value.pversion}
+                      </p>
+                    </div>
+                  )
+                case 'inverter':
+                  return (
+                    <>
+                      <div className="DAT_Info_Databox_Content_Column">
+                        <p>
+                          {dataLang.formatMessage({ id: 'masterVersion' })}: {`${info.value.invt[info.value.pdata.masterver.register][0]}.${info.value.invt[info.value.pdata.masterver.register][1]}.${info.value.invt[info.value.pdata.masterver.register][2]}`}
+                        </p>
+                      </div>
+                      <div className="DAT_Info_Databox_Content_Column">
+                        <p>
+                          {dataLang.formatMessage({ id: 'viceVersion' })}: {`${info.value.invt[info.value.pdata.vicever.register][0]}.${info.value.invt[info.value.pdata.vicever.register][1]}.${info.value.invt[info.value.pdata.vicever.register][2]}`}
+                        </p>
+                      </div>
+                      <div className="DAT_Info_Databox_Content_Column">
+                        <p>
+                          {dataLang.formatMessage({ id: 'hmiVersion' })}: {`${info.value.invt[info.value.pdata.hmiver.register][0]}.${info.value.invt[info.value.pdata.hmiver.register][1]}.${info.value.invt[info.value.pdata.hmiver.register][2]}`}
+                        </p>
+                      </div>
+                    </>
+                  )
+                default:
+                  <></>
+              }
+            })()}
+
           </div>
         ) : (
           <></>
@@ -250,12 +207,85 @@ const OperationInformation = (props) => {
 };
 
 const ElectricityGeneration = (props) => {
+  const dataLang = useIntl()
   const [display, setDisplay] = useState(true);
+
+  const dataAC = [
+    {
+      ac: "R",
+      voltage: parseFloat(info.value.invt[info.value.pdata.pha.voltage.register] * info.value.pdata.pha.voltage.cal).toFixed(2) + " V",
+      current: parseFloat(info.value.invt[info.value.pdata.pha.current.register] * info.value.pdata.pha.current.cal).toFixed(2) + " A",
+      frequency: parseFloat(info.value.invt[info.value.pdata.fre.register] * info.value.pdata.fre.cal).toFixed(2) + " Hz",
+    },
+    {
+      ac: "S",
+      voltage: parseFloat(info.value.invt[info.value.pdata.phb.voltage.register] * info.value.pdata.phb.voltage.cal).toFixed(2) + " V",
+      current: parseFloat(info.value.invt[info.value.pdata.phb.current.register] * info.value.pdata.phb.current.cal).toFixed(2) + " A",
+      frequency: "--",
+    },
+    {
+      ac: "T",
+      voltage: parseFloat(info.value.invt[info.value.pdata.phc.voltage.register] * info.value.pdata.phc.voltage.cal).toFixed(2) + " V",
+      current: parseFloat(info.value.invt[info.value.pdata.phc.current.register] * info.value.pdata.phc.current.cal).toFixed(2) + " A",
+      frequency: "--",
+    },
+  ];
+
+  const dataTemp = [
+    {
+      dc: "PV1",
+      voltage: parseFloat(info.value.invt[info.value.pdata.pv1.voltage.register] * info.value.pdata.pv1.voltage.cal).toFixed(2) + " V",
+      current: parseFloat(info.value.invt[info.value.pdata.pv1.current.register] * info.value.pdata.pv1.current.cal).toFixed(2) + " A",
+      power: parseFloat(((info.value.invt[info.value.pdata.pv1.voltage.register] * info.value.pdata.pv1.voltage.cal) * (info.value.invt[info.value.pdata.pv1.current.register] * info.value.pdata.pv1.current.cal)) / 1000).toFixed(2) + " kW",
+    },
+    {
+      dc: "PV2",
+      voltage: parseFloat(info.value.invt[info.value.pdata.pv2.voltage.register] * info.value.pdata.pv2.voltage.cal).toFixed(2) + " V",
+      current: parseFloat(info.value.invt[info.value.pdata.pv2.current.register] * info.value.pdata.pv2.current.cal).toFixed(2) + " A",
+      power: parseFloat(((info.value.invt[info.value.pdata.pv2.voltage.register] * info.value.pdata.pv2.voltage.cal) * (info.value.invt[info.value.pdata.pv2.current.register] * info.value.pdata.pv2.current.cal)) / 1000).toFixed(2) + " kW",
+    },
+    {
+      dc: "PV3",
+      voltage: parseFloat(info.value.invt[info.value.pdata.pv3.voltage.register] * info.value.pdata.pv3.voltage.cal).toFixed(2) + " V",
+      current: parseFloat(info.value.invt[info.value.pdata.pv3.current.register] * info.value.pdata.pv3.current.cal).toFixed(2) + " A",
+      power: parseFloat(((info.value.invt[info.value.pdata.pv3.voltage.register] * info.value.pdata.pv3.voltage.cal) * (info.value.invt[info.value.pdata.pv3.current.register] * info.value.pdata.pv3.current.cal)) / 1000).toFixed(2) + " kW",
+    },
+    {
+      dc: "PV4",
+      voltage: parseFloat(info.value.invt[info.value.pdata.pv4.voltage.register] * info.value.pdata.pv4.voltage.cal).toFixed(2) + " V",
+      current: parseFloat(info.value.invt[info.value.pdata.pv4.current.register] * info.value.pdata.pv4.current.cal).toFixed(2) + " A",
+      power: parseFloat(((info.value.invt[info.value.pdata.pv4.voltage.register] * info.value.pdata.pv4.voltage.cal) * (info.value.invt[info.value.pdata.pv4.current.register] * info.value.pdata.pv4.current.cal)) / 1000).toFixed(2) + " kW",
+    },
+    // {
+    //   dc: "PV5",
+    //   voltage: "0 V",
+    //   current: "0 A",
+    //   power: "1.3763 kW",
+    // },
+    // {
+    //   dc: "PV6",
+    //   voltage: "0 V",
+    //   current: "0 A",
+    //   power: "1.3763 kW",
+    // },
+    // {
+    //   dc: "PV7",
+    //   voltage: "0 V",
+    //   current: "0 A",
+    //   power: "1.3763 kW",
+    // },
+    // {
+    //   dc: "PV8",
+    //   voltage: "0 V",
+    //   current: "0 A",
+    //   power: "1.3763 kW",
+    // },
+  ];
 
   return (
     <div className="DAT_Info_Databox" id="Electricity Generation">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Điện năng tái tạo</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'ElectricityGeneration' })}</div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -278,9 +308,9 @@ const ElectricityGeneration = (props) => {
               <div className="DAT_Info_Databox_Content_ColumnElec">
                 <div className="DAT_Info_Databox_Content_ColumnElec_Head">
                   <p>DC</p>
-                  <p>Voltage</p>
-                  <p>Current</p>
-                  <p>Power</p>
+                  <p>{dataLang.formatMessage({ id: 'voltage' })}</p>
+                  <p>{dataLang.formatMessage({ id: 'current' })}</p>
+                  <p>{dataLang.formatMessage({ id: 'powerFactor' })}</p>
                 </div>
                 {dataTemp.map((item, index) => {
                   return (
@@ -305,9 +335,9 @@ const ElectricityGeneration = (props) => {
               <div className="DAT_Info_Databox_Content_ColumnElec">
                 <div className="DAT_Info_Databox_Content_ColumnElec_Head">
                   <p>AC</p>
-                  <p>Voltage</p>
-                  <p>Current</p>
-                  <p>Frequency</p>
+                  <p>{dataLang.formatMessage({ id: 'voltage' })}</p>
+                  <p>{dataLang.formatMessage({ id: 'current' })}</p>
+                  <p>{dataLang.formatMessage({ id: 'frequencyInv' })}</p>
                 </div>
                 {dataAC.map((item, index) => {
                   return (
@@ -448,12 +478,17 @@ const ElectricityConsumption = (props) => {
 };
 
 const Temperature = (props) => {
+  const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
 
   return (
     <div className="DAT_Info_Databox" id="Temperature">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Nhiệt độ</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'temperatureInverter' })}: &nbsp;
+          <span style={{ color: "grey", fontSize: "14px" }}>
+            {parseFloat(info.value.invt[info.value.pdata.temp.register] * info.value.pdata.temp.cal).toFixed(2)} °C
+          </span>
+        </div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -467,27 +502,27 @@ const Temperature = (props) => {
         </div>
       </div>
 
-      <div className="Animation"
+      {/* <div className="Animation"
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
           <div className="DAT_Info_Databox_Content">
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Nhiệt độ Radiator: 37.70°C</p>
-              {/* <p>Nhiệt độ Module Pha S của Inverter: 39.80°C</p> */}
+              <p>Nhiệt độ Radiator: {parseFloat(info.value.invt[info.value.pdata.temp.register] * info.value.pdata.temp.cal).toFixed(2)} °C</p>
+              <p>Nhiệt độ Module Pha S của Inverter: 39.80°C</p>
             </div>
             <div className="DAT_Info_Databox_Content_Column">
               <p>Nhiệt độ - tăng cường: 51.40°C</p>
-              {/* <p>Nhiệt độ mô-đun pha T của biến tần: 39.90°C</p> */}
+              <p>Nhiệt độ mô-đun pha T của biến tần: 39.90°C</p>
             </div>
             <div className="DAT_Info_Databox_Content_Column">
-              {/* <p>Mô-đun pha R biến tần Nhiệt độ: 38,80°C</p> */}
+              <p>Mô-đun pha R biến tần Nhiệt độ: 38,80°C</p>
             </div>
           </div>
         ) : (
           <></>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
@@ -603,12 +638,56 @@ const Other = (props) => {
 };
 
 const State = (props) => {
+  const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
 
   return (
     <div className="DAT_Info_Databox" id="State">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Trạng thái</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'stateInverter' })}: &nbsp;
+          {(() => {
+            switch (parseInt(info.value.invt[info.value.pdata.status])) {
+              case 0:
+                return (
+                  <span style={{ color: "grey", fontSize: "14px" }}>
+                    {dataLang.formatMessage({ id: 'initialization' })}
+                  </span>
+                )
+              case 1:
+                return (
+                  <span style={{ color: "grey", fontSize: "14px" }}>
+                    {dataLang.formatMessage({ id: 'wait' })}
+                  </span>
+                )
+              case 2:
+                return (
+                  <span style={{ color: "grey", fontSize: "14px" }}>
+                    {dataLang.formatMessage({ id: 'gridconnection' })}
+                  </span>
+                )
+              case 3:
+                return (
+                  <span style={{ color: "grey", fontSize: "14px" }}>
+                    {dataLang.formatMessage({ id: 'failure' })}
+                  </span>
+                )
+              case 4:
+                return (
+                  <span style={{ color: "grey", fontSize: "14px" }}>
+                    {dataLang.formatMessage({ id: 'burn' })}
+                  </span>
+                )
+              case 5:
+                return (
+                  <span style={{ color: "grey", fontSize: "14px" }}>
+                    {dataLang.formatMessage({ id: 'offgrid' })}
+                  </span>
+                )
+              default:
+                <></>
+            }
+          })()}
+        </div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -620,27 +699,6 @@ const State = (props) => {
             }}
           />
         </div>
-      </div>
-
-      <div className="Animation"
-        style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
-      >
-        {display ? (
-          <div className="DAT_Info_Databox_Content">
-            <div className="DAT_Info_Databox_Content_Column">
-              <p>Nhiệt độ - tăng cường: 51.40°C</p>
-              <p>Nhiệt độ mô-đun pha T của biến tần: 39.90°C</p>
-            </div>
-            <div className="DAT_Info_Databox_Content_Column">
-              <p>Điện trở cách điện DC: 301 Kohm</p>
-            </div>
-            <div className="DAT_Info_Databox_Content_Column">
-              <p>Trạng thái quét VI: Dừng</p>
-            </div>
-          </div>
-        ) : (
-          <></>
-        )}
       </div>
     </div>
   );
@@ -711,12 +769,13 @@ const Control = (props) => {
 };
 
 const HistoricalData = (props) => {
+  const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
 
   return (
     <div className="DAT_Info_Databox" id="HistoricalData">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Lịch sử dữ liệu</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'historyInverter' })}</div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -737,16 +796,16 @@ const HistoricalData = (props) => {
           <div className="DAT_Info_Databox_HistoriccalData">
             <div className="DAT_Info_Databox_HistoricalData_Picker">
               <div className="DAT_Info_Databox_HistoricalData_Picker_Type">
-                <p>Day</p>
-                <p>Week</p>
-                <p>Month</p>
-                <p>Year</p>
+                <p>{dataLang.formatMessage({ id: "day" })}</p>
+                <p>{dataLang.formatMessage({ id: "month" })}</p>
+                <p>{dataLang.formatMessage({ id: "year" })}</p>
+                <p>{dataLang.formatMessage({ id: "total" })}</p>
               </div>
               <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
                 <div>Select Parameters</div>
               </div>
               <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
-                <div>Export</div>
+                <div>{dataLang.formatMessage({ id: "export" })}</div>
               </div>
               <div className="DAT_Info_Databox_HistoricalData_Picker_DatePicker">
                 <input type="date"></input>
@@ -762,7 +821,7 @@ const HistoricalData = (props) => {
   );
 };
 
-export default function Info() {
+export default function Info(props) {
   const dataLang = useIntl();
 
   return (
@@ -790,13 +849,13 @@ export default function Info() {
                 return (
                   <>
                     <p style={{ fontWeight: "bold" }}>
-                      {info.value.name}: {info.value.SN}
+                      {info.value.pname}: {info.value.psn}
                     </p>
                     <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      {info.value.status ? (
+                      {info.value.invt?.[info.value.pdata.status] == 2 ? (
                         <FaCheckCircle size={20} color="green" />
                       ) : (
-                        <MdOutlineError size={20} color="red" />
+                        <MdOutlineError size={22} color="red" />
                       )}
                     </p>
                   </>
@@ -837,7 +896,7 @@ export default function Info() {
                 {/* <Other /> */}
                 <State />
                 {/* <Control /> */}
-                <HistoricalData />
+                {/* <HistoricalData /> */}
               </>
             );
           case "meter":

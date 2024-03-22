@@ -378,6 +378,7 @@ export default function GroupRole(props) {
               <input
                 disabled={groupID.value === 0 ? true : false}
                 type="text"
+                autoComplete="off"
                 placeholder={dataLang.formatMessage({ id: "enterInfo" })}
                 onChange={(e) => handleFilter(e)}
               />

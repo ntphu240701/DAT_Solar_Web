@@ -9,6 +9,7 @@ import { IoClose } from "react-icons/io5";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { userInfor } from "../../App";
+import { alertDispatch } from "../Alert/Alert";
 
 export default function Popup() {
   const dataLang = useIntl();
@@ -29,6 +30,7 @@ export default function Popup() {
       const newDB = ReportData.value.filter(
         (item) => item.id !== parseInt(idReport.value)
       );
+      alertDispatch(dataLang.formatMessage({ id: "alert_42" }));
       console.log(newDB);
       ReportData.value = newDB;
     }

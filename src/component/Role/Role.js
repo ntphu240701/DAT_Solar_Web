@@ -133,7 +133,7 @@ export default function Role(props) {
             >
               <FiEdit size={14} />
               &nbsp;
-              {dataLang.formatMessage({ id: "edit" })}
+              {dataLang.formatMessage({ id: "change" })}
             </div>
             <div
               className="DAT_ModifyBox_Remove"
@@ -266,6 +266,7 @@ export default function Role(props) {
             <div className="DAT_RoleHeader_Filter">
               <input
                 type="text"
+                autoComplete="off"
                 placeholder={dataLang.formatMessage({ id: "enterName" })}
                 onChange={(e) => handleFilter(e)}
               />

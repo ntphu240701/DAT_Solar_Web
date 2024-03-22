@@ -38,7 +38,7 @@ export default function Contact(props) {
               {ruleInfor.value.setting.contact.edit === false
                 ? <div></div>
                 : <div onClick={() => (contactState.value = "editRegisterInf")}>
-                  {dataLang.formatMessage({ id: 'edit' })}
+                  {dataLang.formatMessage({ id: 'edits' })}
                 </div>
               }
             </div>
@@ -72,7 +72,7 @@ export default function Contact(props) {
               {ruleInfor.value.setting.contact.edit === false
                 ? <div></div>
                 : <div onClick={() => (contactState.value = "editContactInf")}>
-                  {dataLang.formatMessage({ id: 'edit' })}
+                  {dataLang.formatMessage({ id: 'edits' })}
                 </div>
               }
             </div>
@@ -99,7 +99,7 @@ export default function Contact(props) {
               {ruleInfor.value.setting.contact.edit === false
                 ? <div></div>
                 : <div onClick={() => (popupStateContact.value = true)}>
-                  {dataLang.formatMessage({ id: 'edit' })}
+                  {dataLang.formatMessage({ id: 'edits' })}
                 </div>
               }
             </div>

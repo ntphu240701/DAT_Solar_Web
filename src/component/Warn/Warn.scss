@@ -58,7 +58,6 @@
 }
 
 .DAT_Warn {
-
     width: 98%;
     //height: 80vh;
     margin: auto;
@@ -104,6 +103,22 @@
         -moz-box-sizing: border-box;
         /* Firefox, other Gecko */
         box-sizing: border-box;
+        position: relative;
+    }
+
+    &_Filter {
+        cursor: pointer;
+        max-width: 350px;
+        font-size: 14px;
+        color: rgb(80, 80, 80);
+        background-color: #dadada;
+        padding: 10px 25px 10px 25px;
+        margin-top: 2px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: flex;
+        gap: 2px;
     }
 }
 
@@ -642,6 +657,87 @@
             border-radius: 4px;
             border: 1px solid;
             cursor: pointer;
+        }
+    }
+}
+
+// INFO BOX IN WARN SECTION
+.DAT_PopupReportInfo_Box {
+    position: relative;
+    margin-top: -100px;
+    height: 430px;
+    width: 600px;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow:
+        2px 2px 5px rgb(73, 73, 73, 0.2),
+        -2px -2px 5px rgb(67, 67, 67, 0.2);
+    box-sizing: border-box;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &_Head {
+        display: flex;
+        background-color: rgba(182, 182, 182, 0.3);
+        padding: 20px;
+
+        &_Left {
+            flex: 10;
+            display: flex;
+
+            &_TableWarning {
+                font-size: 17px;
+                border-left: solid 4px rgba(254, 9, 9, 0.8);
+                padding-left: 10px;
+            }
+
+            &_TableNotice {
+                font-size: 17px;
+                border-left: solid 4px rgb(253, 193, 39, 0.9);
+                padding-left: 10px;
+            }
+
+            & p {
+                margin: 0;
+            }
+        }
+
+        &_Right {
+            display: flex;
+            justify-content: flex-end;
+
+            &_Icon {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &_Body {
+        margin-top: -10px;
+        font-size: 13px;
+        padding: 16px;
+        color: #505050;
+        // border-bottom: 0.5px solid rgb(194, 194, 194);
+
+        &_Item {
+            display: flex;
+            align-items: center;
+        }
+
+        & input {
+            padding: 20px;
+            width: 91%;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        
+        & input:disabled {
+            // background-color: white;
+            // color: black;
         }
     }
 }

@@ -248,6 +248,10 @@ export default function Rule() {
     getRule();
   }, [partnerInfor.value.partnerid]);
 
+  useEffect(() => {
+    setdatafilter(datarule.value)
+  }, [datarule.value])
+
   // '{"plant":{"option":{"1":{"lang": "edits","status":true},"2":{"lang":"delete","status":true},"3":{"lang":"createNew","status":true}}}}'
   //
   const columnrule = [
@@ -273,7 +277,7 @@ export default function Rule() {
     //   width: "100px",
     // },
     {
-      name: dataLang.formatMessage({ id: "edit" }),
+      name: dataLang.formatMessage({ id: "setting" }),
       selector: (row) => (
         <>
           {row.ruleid_ == 1 ? (
@@ -303,7 +307,7 @@ export default function Rule() {
             >
               <FiEdit size={14} />
               &nbsp;
-              {dataLang.formatMessage({ id: "edit" })}
+              {dataLang.formatMessage({ id: "edits" })}
             </div>
             <div
               className="DAT_ModifyBox_Remove"

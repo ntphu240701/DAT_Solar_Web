@@ -37,7 +37,7 @@ export default function AddGateway(props) {
       alertDispatch(dataLang.formatMessage({ id: "alert_22" }))
     } else {
       const d = await callApi("post", host.DATA + "/addLogger", {
-        plantid: projectData.value.plantid,
+        plantid: projectData.value.plantid_,
         sn: sn.current.value,
         name: name.current.value,
         type: type.current.value,

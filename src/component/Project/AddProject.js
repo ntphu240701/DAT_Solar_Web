@@ -263,7 +263,7 @@ const SystemInfo = (props) => {
                   <option value="grid">{dataLang.formatMessage({ id: 'gridType' })}</option>
                   <option value="consumption">{dataLang.formatMessage({ id: 'consumptionType' })}</option>
                   <option value="hybrid">{dataLang.formatMessage({ id: 'hybridType' })}</option>
-                  <option value="ESS">{dataLang.formatMessage({ id: 'ESS' })}</option>
+                  {/* <option value="ESS">{dataLang.formatMessage({ id: 'ESS' })}</option> */}
                   {/* <option value="pump">Hệ thống solar pump</option> */}
                 </select>
               </div>
@@ -604,6 +604,7 @@ export default function AddProject(props) {
             state: 0,
             warn: 0,
           };
+          console.log(d.data)
         }
       };
 

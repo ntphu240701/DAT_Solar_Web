@@ -33,6 +33,15 @@ import { GiCoalWagon } from "react-icons/gi";
 import { FaMoneyBill } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { VscDashboard } from "react-icons/vsc";
+import { CiCircleQuestion } from "react-icons/ci";
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Popper from '@mui/material/Popper';
+import PopupState, { bindToggle, bindPopper, bindHover } from 'material-ui-popup-state';
+import Fade from '@mui/material/Fade';
+import Paper from '@mui/material/Paper';
+import { Icon, Popover } from "@mui/material";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const plant = signal([]);
 const logger = signal([]);
@@ -76,6 +85,11 @@ export default function Home(props) {
   );
   const [datayear, setDatayear] = useState([]);
   const navigate = useNavigate();
+  const [showDetail, setShowDetail] = useState(false);
+
+  const toggleDetail = () => {
+    setShowDetail(!showDetail);
+  };
 
   const [per, setPer] = useState(0);
   const in_max = 100;
@@ -106,6 +120,9 @@ export default function Home(props) {
     animationIterationCount: "infinite",
   };
 
+  //POPUP DETAIL
+
+
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: "row" }),
     rangeSeparatorText: dataLang.formatMessage({ id: "to" }),
@@ -127,7 +144,7 @@ export default function Home(props) {
       name: dataLang.formatMessage({ id: "name" }),
       selector: (row) => (
         <div
-          id={row.plantid}
+          id={row.plantid_}
           style={{ cursor: "pointer" }}
           onClick={(e) => {
             handleInfo(e);
@@ -154,10 +171,10 @@ export default function Home(props) {
     {
       name: "kWh/kWp(h)",
       selector: (row) =>
-        parseFloat(sun[row.plantid]).toFixed(2) === "NaN"
+        parseFloat(sun[row.plantid_]).toFixed(2) === "NaN"
           ? 0
           : Number(
-            parseFloat(sun[row.plantid] / row.capacity).toFixed(2)
+            parseFloat(sun[row.plantid_] / row.capacity).toFixed(2)
           ).toLocaleString("en-US"),
       sortable: true,
       width: "120px",
@@ -180,7 +197,7 @@ export default function Home(props) {
   });
 
   const handleInfo = (e) => {
-    const newPlant = project.find((item) => item.plantid == e.currentTarget.id);
+    const newPlant = project.find((item) => item.plantid_ == e.currentTarget.id);
     projectData.value = newPlant;
     // console.log(newPlant);
     // navigate("/project");
@@ -291,11 +308,11 @@ export default function Home(props) {
     data.map(async (item, i) => {
       cap[i] = item.capacity;
       let chart = await callApi("post", host.DATA + "/getMonthChart", {
-        plantid: item.plantid,
+        plantid: item.plantid_,
         month: moment(new Date()).format("MM/YYYY"),
       });
       let chartY = await callApi("post", host.DATA + "/getYearChart", {
-        plantid: item.plantid,
+        plantid: item.plantid_,
         year: moment(new Date()).format("YYYY"),
       });
 
@@ -423,7 +440,7 @@ export default function Home(props) {
   useEffect(() => {
     let a = { is: 1 };
 
-    console.log(JSON.stringify(a));
+    // console.log(JSON.stringify(a));
 
     const getPlant = async () => {
       let d = await callApi("post", host.DATA + "/getPlant", {
@@ -440,7 +457,7 @@ export default function Home(props) {
         setOffline(d.data.filter((data) => data.state == 0).length);
         setWarn(d.data.filter((data) => data.warn == 0).length);
         plant.value = d.data;
-        plant.value = plant.value.sort((a, b) => a.plantid - b.plantid);
+        plant.value = plant.value.sort((a, b) => a.plantid_ - b.plantid_);
       }
     };
 
@@ -589,7 +606,7 @@ export default function Home(props) {
     setProduction(cal?.pro_1 || 0);
     setDailyProduction(cal?.pro_2 || 0);
     setTotalProduction(cal?.pro_3 || 0);
-    setPer(mapValue(13, in_min, in_max, out_min, out_max));
+    setPer(mapValue(cal?.pro_1 * 100 / capacity, in_min, in_max, out_min, out_max));
 
     coalsave.value = {
       ...coalsave.value,
@@ -617,10 +634,9 @@ export default function Home(props) {
           <div className="DAT_Home_Overview-Main">
             <div className="DAT_Home_Overview-Main-Percent">
               <style>{keyframes}</style>
-              <div
-                className="DAT_Home_Overview-Main-Percent-Item"
-                style={{ animation: "home 30s linear infinite" }}
-              >
+
+              <div className="DAT_Home_Overview-Main-Percent-Item"
+                style={{ animation: "home 30s linear infinite" }}>
                 <div className="DAT_Home_Overview-Main-Percent-Item-value">
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_num">
                     {Number(
@@ -631,11 +647,40 @@ export default function Home(props) {
                         parseFloat((production / capacity) * 100).toFixed(2)
                       ).toLocaleString("en-US")}
                   </div>
-
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">
                     %
                   </div>
                 </div>
+              </div>
+
+              <div className="DAT_Home_Overview-Main-Percent-Icon" style={{ cursor: 'pointer' }}>
+                <PopupState variant="popper" popupId="demo-popup-popper">
+                  {(popupState) => (
+                    <div style={{ cursor: 'pointer' }}>
+                      <HelpOutlineIcon
+                        {...bindHover(popupState)}
+                        color="action"
+                        fontSize="9px" />
+                      <Popper {...bindPopper(popupState)} transition >
+                        {({ TransitionProps }) => (
+                          <Fade {...TransitionProps} timeout={350}>
+                            <Paper sx={{ width: '400px', marginLeft: '435px', p: 2 }}>
+                              <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                                {dataLang.formatMessage({ id: 'overview1' })}
+                              </Typography>
+                              <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                                {dataLang.formatMessage({ id: 'overview2' })}
+                              </Typography>
+                              <Typography sx={{ fontSize: '12px', textAlign: 'justify' }}>
+                                {dataLang.formatMessage({ id: 'overview3' })}
+                              </Typography>
+                            </Paper>
+                          </Fade>
+                        )}
+                      </Popper>
+                    </div>
+                  )}
+                </PopupState>
               </div>
             </div>
 
@@ -1095,6 +1140,37 @@ export default function Home(props) {
           <div className="DAT_Home_Benefit-Head">
             <div className="DAT_Home_Benefit-Head-Title">
               {dataLang.formatMessage({ id: "environment" })}
+              &nbsp;
+              <PopupState variant="popper" popupId="demo-popup-popper">
+                {(popupState) => (
+                  <div style={{ cursor: "pointer" }}>
+                    <HelpOutlineIcon
+                      {...bindHover(popupState)}
+                      color="action"
+                      fontSize="9px" />
+                    <Popper {...bindPopper(popupState)} transition>
+                      {({ TransitionProps }) => (
+                        <Fade {...TransitionProps} timeout={350}>
+                          <Paper sx={{ width: '400px', marginTop: '10px', marginLeft: '335px', p: 2 }}>
+                            <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                              1. {dataLang.formatMessage({ id: 'environment1' })}
+                            </Typography>
+                            <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                              2. {dataLang.formatMessage({ id: 'environment2' })}
+                            </Typography>
+                            <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                              3. {dataLang.formatMessage({ id: 'environment3' })}
+                            </Typography>
+                            <Typography sx={{ fontSize: '12px', textAlign: 'justify' }}>
+                              4. {dataLang.formatMessage({ id: 'environment4' })}
+                            </Typography>
+                          </Paper>
+                        </Fade>
+                      )}
+                    </Popper>
+                  </div>
+                )}
+              </PopupState>
             </div>
           </div>
 

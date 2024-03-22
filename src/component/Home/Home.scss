@@ -79,7 +79,7 @@
             &-Percent {
                 flex: 1;
                 display: flex;
-                align-items: center;
+                // align-items: center;
                 justify-content: center;
                 padding: 15px;
                 -webkit-box-sizing: border-box;
@@ -501,6 +501,12 @@
             text-overflow: ellipsis;
             //margin-bottom: 50px;
 
+            &-Title{ 
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
             &-Datetime {
                 & input {
                     padding: 4px;
@@ -526,7 +532,6 @@
             }
         }
     }
-
 }
 
 .DAT_PlantHome {
