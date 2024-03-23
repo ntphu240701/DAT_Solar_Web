@@ -306,7 +306,7 @@ export default function Home(props) {
     let sum_month = [];
     let sum_year = [];
     data.map(async (item_plant, i) => {
-      console.log(item_plant.plantname, item_plant.state)
+      // console.log(item_plant.plantname, item_plant.state)
 
 
 
@@ -366,7 +366,7 @@ export default function Home(props) {
 
 
       if (i == plant.value.length - 1) {
-        console.log(sum_month, sum_year)
+        // console.log(sum_month, sum_year)
 
         let total_month = parseFloat(
           sum_month.reduce((a, b) => Number(a) + Number(b), 0)
@@ -395,7 +395,7 @@ export default function Home(props) {
 
     data.map((itemplant, index) => {
       var sum_logger = [];
-      let logger_ = logger.filter((data) => data.pplantid == itemplant.plantid);
+      let logger_ = logger.filter((data) => data.pplantid == itemplant.plantid_);
       //console.log(logger_)
       logger_.map((item, i) => {
         const type = item.pdata.pro_3.type;
@@ -1293,7 +1293,7 @@ export default function Home(props) {
                   )}
                   &nbsp;
                   <span style={{ color: "grey", fontSize: "12px" }}>
-                    k{plant.value.currency}
+                    kVND
                   </span>
                 </div>
               </div>

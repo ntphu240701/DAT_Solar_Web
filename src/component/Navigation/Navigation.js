@@ -21,31 +21,17 @@ import { FaRegMessage } from "react-icons/fa6";
 import { plantState, projectwarnfilter } from "../Project/Project";
 import { IoLogInOutline } from "react-icons/io5";
 import { PiUserCircle } from "react-icons/pi";
+import { BiMessageAltX, BiMessageCheck } from "react-icons/bi";
 
 const userNav = signal(false);
 const langNav = signal(false);
 const langStateNav = signal([false, false]);
-const messageNav = signal(false);
 const messageContent = signal([]);
 const messageOption = signal("default");
 
 export const warnfilter = signal({ warnid: "" });
 export const isMobile = signal(false);
 export const notifNav = signal(false);
-export const message = signal([
-  {
-    boxid: "E01",
-    total: 0,
-  },
-  {
-    boxid: "E02",
-    total: 0,
-  },
-  {
-    boxid: "E03",
-    total: 0,
-  },
-]);
 
 export default function Navigation(props) {
   const dataLang = useIntl();
@@ -101,48 +87,42 @@ export default function Navigation(props) {
     sidenar.value = !sidenar.value;
   };
 
-  const handleMessage = (e) => {
-    setCode(e.currentTarget.id);
-    const checkApi = async () => {
-      const warn = await callApi("post", host.DATA + "/updateWarn", {
-        partnerid: partnerInfor.value.partnerid,
-        boxid: e.currentTarget.id,
-        type: userInfor.value.type,
-      });
+  // const handleMessage = (e) => {
+  //   setCode(e.currentTarget.id);
+  //   const checkApi = async () => {
+  //     const warn = await callApi("post", host.DATA + "/updateWarn", {
+  //       partnerid: partnerInfor.value.partnerid,
+  //       boxid: e.currentTarget.id,
+  //       type: userInfor.value.type,
+  //     });
 
-      console.log(warn);
-    };
-    checkApi();
+  //     console.log(warn);
+  //   };
+  //   checkApi();
 
-    let warnid = [];
-    messageContent.value = dataWarn.value.filter((item, i) => {
-      if (item.boxid == e.currentTarget.id) {
-        warnid.push(item.warnid);
-        return item;
-      }
-    });
+  //   let warnid = [];
+  //   messageContent.value = dataWarn.value;
 
-    warnid.map((item_) => {
-      let index = dataWarn.value.findIndex((item, i) => item.warnid == item_);
-      dataWarn.value[index] = {
-        ...dataWarn.value[index],
-        state: 0,
-      };
-    });
+  //   // warnid.map((item_) => {
+  //   //   let index = dataWarn.value.findIndex((item, i) => item.warnid == item_);
+  //   //   dataWarn.value[index] = {
+  //   //     ...dataWarn.value[index],
+  //   //     state: 0,
+  //   //   };
+  //   // });
 
-    message.value.map((item) => {
-      let data = dataWarn.value.filter((item_) => item_.boxid == item.boxid);
-      item.total = data.filter((item) => item.state == 1).length;
-    });
+  //   message.value.map((item) => {
+  //     let data = dataWarn.value.filter((item_) => item_.boxid == item.boxid);
+  //     item.total = data.filter((item) => item.state == 1).length;
+  //   });
 
-    warnid = [];
-    console.log(dataWarn.value);
-    console.log(messageContent.value);
-    messageNav.value = true;
-    if (isMobile.value) {
-      messageOption.value = "content";
-    }
-  };
+  //   warnid = [];
+  //   console.log(dataWarn.value);
+  //   console.log(messageContent.value);
+  //   if (isMobile.value) {
+  //     messageOption.value = "content";
+  //   }
+  // };
 
   useEffect(function () {
     if (window.innerWidth >= 900) {
@@ -164,7 +144,7 @@ export default function Navigation(props) {
   }, []);
 
   useEffect(() => {
-    // console.log(partnerInfor.value.partnerid, dataWarn.value.boxid, userInfor.value.type);
+    console.log(dataWarn.value);
   });
 
   let logout = function () {
@@ -191,13 +171,6 @@ export default function Navigation(props) {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
   };
-
-  useEffect(() => {
-    message.value.map((item) => {
-      let data = dataWarn.value.filter((item_) => item_.boxid == item.boxid);
-      item.total = data.filter((item) => item.state == 1).length;
-    });
-  }, [dataWarn.value]);
 
   const handleFilterWarn = (e) => {
     projectwarnfilter.value = 0;
@@ -243,8 +216,7 @@ export default function Navigation(props) {
           <button
             className="DAT_Navigation_right-item"
             id="notif"
-            onClick={() =>
-              (notifNav.value = !notifNav.value)}
+            onClick={() => (notifNav.value = !notifNav.value)}
             ref={notif_icon}
           >
             <IoIosNotificationsOutline color="white" size={22} />
@@ -358,82 +330,68 @@ export default function Navigation(props) {
         <div className="DAT_NavNotif-content">
           {(() => {
             switch (messageOption.value) {
-              case "mess":
-                return (
-                  <div className="DAT_NavNotif-content-message">
-                    {message.value.map((item, index) => (
-                      <div
-                        className="DAT_NavNotif-content-message-group"
-                        id={item.boxid}
-                        key={item.boxid}
-                        onClick={(e) => handleMessage(e)}
-                      >
-                        <div className="DAT_NavNotif-content-message-group-tit">
-                          <span>{item.boxid}</span>
-                          {item.total === 0 ? <></> : <span>{item.total}</span>}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                );
               case "content":
                 return (
                   <div className="DAT_NavNotif-content-main">
-                    {messageNav.value ? (
-                      <>
-                        {messageContent.value.map((item, index) => (
+                    {dataWarn.value.map((item, index) => (
+                      <div
+                        className="DAT_NavNotif-content-main-group"
+                        key={index}
+                      >
+                        <div className="DAT_NavNotif-content-main-group-datetime">
+                          {item.opentime}
+                        </div>
+                        <Link to="/Warn" style={{ textDecoration: "none" }}>
                           <div
-                            className="DAT_NavNotif-content-main-group"
-                            key={index}
+                            className="DAT_NavNotif-content-main-group-content"
+                            style={{
+                              backgroundColor:
+                                item.state == 0
+                                  ? "rgb(201, 201, 201, 0.3)"
+                                  : "white",
+                            }}
                           >
-                            <div className="DAT_NavNotif-content-main-group-datetime">
-                              {item.opentime}
+                            <div className="DAT_NavNotif-content-main-group-content-tit">
+                              {dataLang.formatMessage({ id: item.boxid })}
+                              &nbsp;
+                              {dataLang.formatMessage({ id: "at" })}
+                              &nbsp;
+                              {item.plant}
                             </div>
-                            <div className="DAT_NavNotif-content-main-group-content">
-                              <div className="DAT_NavNotif-content-main-group-content-tit">
-                                {dataLang.formatMessage({ id: item.boxid })}
-                                &nbsp;
-                                {dataLang.formatMessage({ id: "at" })}
-                                &nbsp;
-                                {item.plant}
-                              </div>
-                              <div className="DAT_NavNotif-content-main-group-content-device">
-                                {dataLang.formatMessage({ id: "device" })}:
-                                &nbsp;
-                                <span style={{ color: "black" }}>
-                                  {item.device}
-                                </span>
-                              </div>
-                              <div className="DAT_NavNotif-content-main-group-content-level">
-                                {dataLang.formatMessage({ id: "level" })}:
-                                &nbsp;
-                                <span
-                                  style={{
-                                    color: "black",
-                                    textTransform: "capitalize",
-                                  }}
-                                >
-                                  {item.level}
-                                </span>
-                              </div>
-                              <div className="DAT_NavNotif-content-main-group-content-status">
-                                {dataLang.formatMessage({ id: "remindAlert" })}
-                              </div>
+                            <div className="DAT_NavNotif-content-main-group-content-device">
+                              {dataLang.formatMessage({ id: "device" })}: &nbsp;
+                              <span style={{ color: "black" }}>
+                                {item.device}
+                              </span>
+                            </div>
+                            <div className="DAT_NavNotif-content-main-group-content-level">
+                              {dataLang.formatMessage({ id: "level" })}: &nbsp;
+                              <span
+                                style={{
+                                  color: "black",
+                                  textTransform: "capitalize",
+                                }}
+                              >
+                                {item.level}
+                              </span>
+                            </div>
+                            <div className="DAT_NavNotif-content-main-group-content-status">
+                              {dataLang.formatMessage({ id: "remindAlert" })}
                             </div>
                           </div>
-                        ))}
-                      </>
-                    ) : (
-                      <div className="DAT_NavNotif-content-main-empty">
-                        <FaRegMessage size={60} color="gray" />
+                        </Link>
                       </div>
-                    )}
+                    ))}
+
+                    <div className="DAT_NavNotif-content-main-empty">
+                      <FaRegMessage size={60} color="gray" />
+                    </div>
                   </div>
                 );
               default:
                 return (
                   <>
-                    <div className="DAT_NavNotif-content-message">
+                    {/* <div className="DAT_NavNotif-content-message">
                       {message.value.map((item, index) => (
                         <div
                           className="DAT_NavNotif-content-message-group"
@@ -459,11 +417,11 @@ export default function Navigation(props) {
                           </div>
                         </div>
                       ))}
-                    </div>
+                    </div> */}
                     <div className="DAT_NavNotif-content-main">
-                      {messageNav.value ? (
+                      {dataWarn.value.length !== 0 ? (
                         <>
-                          {messageContent.value.map((item, index) => (
+                          {dataWarn.value.map((item, index) => (
                             <div
                               className="DAT_NavNotif-content-main-group"
                               key={index}
@@ -473,15 +431,24 @@ export default function Navigation(props) {
                               </div>
                               <Link
                                 to="/Warn"
-                                style={{ textDecoration: "none" }}
+                                style={{
+                                  textDecoration: "none",
+                                }}
                               >
                                 <div
                                   className="DAT_NavNotif-content-main-group-content"
                                   id={item.warnid}
+                                  style={{
+                                    textDecoration: "none",
+                                    backgroundColor:
+                                      parseInt(item.state) == 0
+                                        ? "rgb(201, 201, 201, 0.3)"
+                                        : "white",
+                                  }}
                                   onClick={(e) => {
                                     handleFilterWarn(e);
                                     sidebartab.value = "Monitor";
-                                    sidebartabli.value = "/Warn"
+                                    sidebartabli.value = "/Warn";
                                   }}
                                 >
                                   <div className="DAT_NavNotif-content-main-group-content-tit">
@@ -514,6 +481,23 @@ export default function Navigation(props) {
                                     {dataLang.formatMessage({
                                       id: "remindAlert",
                                     })}
+                                    <div className="DAT_NavNotif-content-main-group-content-status-read">
+                                      {item.state == 0 ? (
+                                        <div
+                                          style={{ color: "grey", gap: "10px" }}
+                                        >
+                                          Read
+                                          <BiMessageCheck />
+                                        </div>
+                                      ) : (
+                                        <div
+                                          style={{ color: "blue", gap: "10px" }}
+                                        >
+                                          Unread
+                                          <BiMessageAltX />
+                                        </div>
+                                      )}
+                                    </div>
                                   </div>
                                 </div>
                               </Link>

@@ -186,10 +186,25 @@ export default function ProjectData(props) {
     {
       name: dataLang.formatMessage({ id: "production" }),
       selector: (row) => {
+        // console.log(row.data.mode)
+        let power = 0
         let d = JSON.parse(row.data.total?.register || "[]")
+
+        if(row.data.mode === "HYBRID"){
+            let num = []
+            // console.log(invt[row.logger_])
+            d.map((item,i) => {
+                  num[i] = invt[row.logger_]?.[item]
+            })
+            power = parseFloat(num.reduce((a, b) => Number(a) + Number(b), 0) * row.data.total?.cal).toFixed(2)
+        }
+        if(row.data.mode === "GRID"){
+          power = (convertToDoublewordAndFloat([invt[row.logger_]?.[d[0]], invt[row.logger_]?.[d[1]]], "int") * row.data.total?.cal) 
+        }
+
         return (
           <div>
-            {parseFloat((convertToDoublewordAndFloat([invt[row.logger_]?.[d[0]], invt[row.logger_]?.[d[1]]], "int") * row.data.total?.cal) / 1000).toFixed(2)} kW
+            {parseFloat(power/ 1000).toFixed(2)} kW
           </div>
         )
       },

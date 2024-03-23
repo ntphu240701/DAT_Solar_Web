@@ -191,20 +191,28 @@ export default function Device(props) {
     {
       name: dataLang.formatMessage({ id: "production" }),
       selector: (row) => {
+        let power = 0;
         let d = JSON.parse(row.pdata.total?.register || "[]");
-        return (
-          <div>
-            {parseFloat(
-              (convertToDoublewordAndFloat(
-                [invt[row.plogger]?.[d[0]], invt[row.plogger]?.[d[1]]],
-                "int"
-              ) *
-                row.pdata.total?.cal) /
-                1000
-            ).toFixed(2)}{" "}
-            kW
-          </div>
-        );
+        // console.log(row)
+        if (row.pdata.mode === "HYBRID") {
+          let num = [];
+          // console.log(invt[row.logger_])
+          d.map((item, i) => {
+            num[i] = invt[row.plogger]?.[item];
+          });
+          power = parseFloat(
+            num.reduce((a, b) => Number(a) + Number(b), 0) *
+              row.pdata.total?.cal
+          ).toFixed(2);
+        }
+        if (row.pdata.mode === "GRID") {
+          power =
+            convertToDoublewordAndFloat(
+              [invt[row.plogger]?.[d[0]], invt[row.plogger]?.[d[1]]],
+              "int"
+            ) * row.pdata.total?.cal;
+        }
+        return <div>{parseFloat(power / 1000).toFixed(2)} kW</div>;
       },
       sortable: true,
       width: "160px",

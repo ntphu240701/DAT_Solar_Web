@@ -398,7 +398,6 @@
 
                 &-content {
                     padding: 15px;
-                    background-color: white;
                     border-radius: 5px;
                     box-shadow:
                         3px 3px 5px rgba(198, 197, 197, 0.4),
@@ -427,6 +426,14 @@
                         border-top: solid 1px rgb(164, 164, 164, 0.5);
                         color: black;
                         font-size: 14px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        &-read {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
                     }
                     &:hover {
                         background-color: rgb(201, 201, 201, 0.7);
