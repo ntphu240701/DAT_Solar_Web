@@ -249,8 +249,8 @@ export default function Project(props) {
         parseFloat(dailyProduction[row.plantid_]).toFixed(2) === "NaN"
           ? 0 + " kWh"
           : Number(
-              parseFloat(dailyProduction[row.plantid_]).toFixed(2)
-            ).toLocaleString("en-US") + " kWh",
+            parseFloat(dailyProduction[row.plantid_]).toFixed(2)
+          ).toLocaleString("en-US") + " kWh",
       sortable: true,
       width: "160px",
     },
@@ -260,8 +260,8 @@ export default function Project(props) {
         parseFloat(power[row.plantid_]).toFixed(2) === "NaN"
           ? 0 + " kW"
           : Number(
-              parseFloat(power[row.plantid_] / 1000).toFixed(2)
-            ).toLocaleString("en-US") + " kW",
+            parseFloat(power[row.plantid_] / 1000).toFixed(2)
+          ).toLocaleString("en-US") + " kW",
       sortable: true,
       width: "160px",
     },
@@ -298,7 +298,7 @@ export default function Project(props) {
           }}
         >
           {ruleInfor.value.setting.project.modify == true ||
-          ruleInfor.value.setting.project.remove == true ? (
+            ruleInfor.value.setting.project.remove == true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.plantid_ + "_MORE"}
@@ -469,30 +469,30 @@ export default function Project(props) {
     } else {
       const t = e.target.value;
       const db = dataproject.value.filter((row) =>
-        // item.name.includes(t)
-        {
-          switch (type) {
-            // case "name":
-            //   return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
-            // return (console.log(row.plantname.includes(t) || row.plantname.toLowerCase().includes(t)));
-            case "inCapacity":
-              return String(row.capacity) == t;
-            case "production":
-              return String(row.production) == t;
-            case "power":
-              return String(row.power) == t;
-            // case "lastupdate":
-            //   return String(row.lastupdate) == t;
-            // case "createdate":
-            //   return String(row.createdate) == t;
-            default:
-              return (
-                row.plantname.includes(t) ||
-                row.plantname.toLowerCase().includes(t)
-              );
-            // return row.name.toLowerCase().includes(t);
-          }
+      // item.name.includes(t)
+      {
+        switch (type) {
+          // case "name":
+          //   return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
+          // return (console.log(row.plantname.includes(t) || row.plantname.toLowerCase().includes(t)));
+          case "inCapacity":
+            return String(row.capacity) == t;
+          case "production":
+            return String(row.production) == t;
+          case "power":
+            return String(row.power) == t;
+          // case "lastupdate":
+          //   return String(row.lastupdate) == t;
+          // case "createdate":
+          //   return String(row.createdate) == t;
+          default:
+            return (
+              row.plantname.includes(t) ||
+              row.plantname.toLowerCase().includes(t)
+            );
+          // return row.name.toLowerCase().includes(t);
         }
+      }
       );
       setDatafilter(db);
     }
@@ -633,20 +633,17 @@ export default function Project(props) {
         switch (value.type) {
           case "sum":
             let inum = [];
-            let cal_ = JSON.parse(value.cal);
+            let register_ = JSON.parse(value.register);
+            // console.log(register_);
+            register_.map((reg, j) => {
+              inum[j] = parseFloat(invt[item.psn]?.[reg] || 0)
+            })
 
-            Object.entries(value.register).map(([key, value]) => {
-              let n = JSON.parse(value);
-              inum[key] =
-                parseFloat(invt[item.psn]?.[n[0]] || 0) *
-                parseFloat(cal_[0]) *
-                parseFloat(invt[item.psn]?.[n[1]] || 0) *
-                parseFloat(cal_[1]);
-            });
 
             num_[key][i] = inum.reduce((accumulator, currentValue) => {
               return Number(accumulator) + Number(currentValue);
             }, 0);
+
             if (key == "pro_1") {
               if (invt[item.psn]?.enabled == "1") {
                 power_[item.pplantid] = inum.reduce(
@@ -654,19 +651,58 @@ export default function Project(props) {
                     return Number(accumulator) + Number(currentValue);
                   },
                   0
-                );
+                ) * parseFloat(value.cal);
               } else {
                 power_[item.pplantid] = 0;
               }
             }
 
+
             if (i == logger.value.length - 1) {
+
+              // if (invt[item.psn]?.enabled == 1) {
               cal[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
-                }, 0) / 1000
+                }, 0) * parseFloat(value.cal)
               ).toFixed(2);
+              console.log(cal[key]);
             }
+            // let inum = [];
+            // let cal_ = JSON.parse(value.cal);
+
+            // Object.entries(value.register).map(([key, value]) => {
+            //   let n = JSON.parse(value);
+            //   inum[key] =
+            //     parseFloat(invt[item.psn]?.[n[0]] || 0) *
+            //     parseFloat(cal_[0]) *
+            //     parseFloat(invt[item.psn]?.[n[1]] || 0) *
+            //     parseFloat(cal_[1]);
+            // });
+
+            // num_[key][i] = inum.reduce((accumulator, currentValue) => {
+            //   return Number(accumulator) + Number(currentValue);
+            // }, 0);
+            // if (key == "pro_1") {
+            //   if (invt[item.psn]?.enabled == "1") {
+            //     power_[item.pplantid] = inum.reduce(
+            //       (accumulator, currentValue) => {
+            //         return Number(accumulator) + Number(currentValue);
+            //       },
+            //       0
+            //     );
+            //   } else {
+            //     power_[item.pplantid] = 0;
+            //   }
+            // }
+
+            // if (i == logger.value.length - 1) {
+            //   cal[key] = parseFloat(
+            //     num_[key].reduce((accumulator, currentValue) => {
+            //       return Number(accumulator) + Number(currentValue);
+            //     }, 0) / 1000
+            //   ).toFixed(2);
+            // }
             break;
           case "word":
             let d = JSON.parse(value.register);
@@ -686,6 +722,14 @@ export default function Project(props) {
             };
 
             num_[key][i] = convertToDoublewordAndFloat(e, "int");
+
+            if (key == "pro_1") {
+              if (invt[item.psn]?.enabled == "1") {
+                power_[item.pplantid] = convertToDoublewordAndFloat(e, "int") * parseFloat(value.cal);
+              } else {
+                power_[item.pplantid] = 0;
+              }
+            }
 
             if (i == logger.value.length - 1) {
               cal[key] = parseFloat(
@@ -920,7 +964,7 @@ export default function Project(props) {
 
                                 <div className="DAT_ProjectMobile_Content_Top_Info_Name_Right">
                                   {ruleInfor.value.setting.project.modify ===
-                                  true ? (
+                                    true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
                                       id={item.plantid_}
@@ -932,7 +976,7 @@ export default function Project(props) {
                                     <div></div>
                                   )}
                                   {ruleInfor.value.setting.project.modify ===
-                                  true ? (
+                                    true ? (
                                     <div
                                       className="DAT_ProjectMobile_Content_Top_Info_Name_Right_Item"
                                       id={item.plantid_}

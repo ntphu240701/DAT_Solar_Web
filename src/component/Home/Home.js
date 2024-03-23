@@ -305,53 +305,68 @@ export default function Home(props) {
     let cap = [];
     let sum_month = [];
     let sum_year = [];
-    data.map(async (item, i) => {
-      cap[i] = item.capacity;
+    data.map(async (item_plant, i) => {
+      console.log(item_plant.plantname, item_plant.state)
+
+
+
+
+      cap[i] = item_plant.capacity;
       let chart = await callApi("post", host.DATA + "/getMonthChart", {
-        plantid: item.plantid_,
+        plantid: item_plant.plantid_,
         month: moment(new Date()).format("MM/YYYY"),
       });
       let chartY = await callApi("post", host.DATA + "/getYearChart", {
-        plantid: item.plantid_,
+        plantid: item_plant.plantid_,
         year: moment(new Date()).format("YYYY"),
       });
 
       if (chart.status) {
-        sum_month[i] = chart.data.data
-          .map((item) => item.value)
-          .reduce((a, b) => Number(a) + Number(b), 0);
-        chart.data.data.map((item, j) => {
-          let index = datamonth_.findIndex((d) => d.date == item.date);
-          datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })] =
-            parseFloat(
-              Number(
-                datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })]
-              ) + Number(item.value)
-            ).toFixed(2);
-        });
+        if (item_plant.state === 1) {
+
+          sum_month[i] = chart.data.data
+            .map((item) => item.value)
+            .reduce((a, b) => Number(a) + Number(b), 0);
+          chart.data.data.map((item, j) => {
+            let index = datamonth_.findIndex((d) => d.date == item.date);
+            datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })] =
+              parseFloat(
+                Number(
+                  datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })]
+                ) + Number(item.value)
+              ).toFixed(2);
+          });
+        } else {
+          sum_month[i] = 0
+        }
       } else {
         sum_month[i] = 0;
       }
 
       if (chartY.status) {
-        sum_year[i] = chartY.data.data
-          .map((item) => item.value)
-          .reduce((a, b) => Number(a) + Number(b), 0);
-        chartY.data.data.map((item, j) => {
-          let index = datayear_.findIndex((d) => d.month == item.month);
-          datayear_[index][dataLang.formatMessage({ id: "yearOutput" })] =
-            parseFloat(
-              Number(
-                datayear_[index][dataLang.formatMessage({ id: "yearOutput" })]
-              ) + Number(item.value)
-            ).toFixed(2);
-        });
+        if (item_plant.state === 1) {
+          sum_year[i] = chartY.data.data
+            .map((item) => item.value)
+            .reduce((a, b) => Number(a) + Number(b), 0);
+          chartY.data.data.map((item, j) => {
+            let index = datayear_.findIndex((d) => d.month == item.month);
+            datayear_[index][dataLang.formatMessage({ id: "yearOutput" })] =
+              parseFloat(
+                Number(
+                  datayear_[index][dataLang.formatMessage({ id: "yearOutput" })]
+                ) + Number(item.value)
+              ).toFixed(2);
+          });
+        } else {
+          sum_year[i] = 0
+        }
       } else {
         sum_year[i] = 0;
       }
 
+
       if (i == plant.value.length - 1) {
-        // console.log(datamonth_, datayear_)
+        console.log(sum_month, sum_year)
 
         let total_month = parseFloat(
           sum_month.reduce((a, b) => Number(a) + Number(b), 0)
@@ -371,6 +386,7 @@ export default function Home(props) {
         setDatamonth(datamonth_);
         setDatayear(datayear_);
       }
+
     });
   };
 
@@ -520,32 +536,56 @@ export default function Home(props) {
         switch (value.type) {
           case "sum":
             let inum = [];
-            let cal_ = JSON.parse(value.cal);
-
-            Object.entries(value.register).map(([key, value]) => {
-              let n = JSON.parse(value);
-              inum[key] =
-                parseFloat(invt[item.psn]?.[n[0]] || 0) *
-                parseFloat(cal_[0]) *
-                parseFloat(invt[item.psn]?.[n[1]] || 0) *
-                parseFloat(cal_[1]);
-            });
+            let register_ = JSON.parse(value.register);
+            // console.log(register_);
+            register_.map((reg, j) => {
+              inum[j] = parseFloat(invt[item.psn]?.[reg] || 0)
+            })
+            // console.log(inum);
 
             num_[key][i] = inum.reduce((accumulator, currentValue) => {
               return Number(accumulator) + Number(currentValue);
             }, 0);
+
 
             if (i == logger.value.length - 1) {
               // if (invt[item.psn]?.enabled == 1) {
               cal[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
-                }, 0) / 1000
+                }, 0) * parseFloat(value.cal)
               ).toFixed(2);
-              // } else {
-              // cal[key] = 0
-              // }
             }
+
+
+
+            // let inum = [];
+            // let cal_ = JSON.parse(value.cal);
+
+            // Object.entries(value.register).map(([key, value]) => {
+            //   let n = JSON.parse(value);
+            //   inum[key] =
+            //     parseFloat(invt[item.psn]?.[n[0]] || 0) *
+            //     parseFloat(cal_[0]) *
+            //     parseFloat(invt[item.psn]?.[n[1]] || 0) *
+            //     parseFloat(cal_[1]);
+            // });
+
+            // num_[key][i] = inum.reduce((accumulator, currentValue) => {
+            //   return Number(accumulator) + Number(currentValue);
+            // }, 0);
+
+            // if (i == logger.value.length - 1) {
+            //   // if (invt[item.psn]?.enabled == 1) {
+            //   cal[key] = parseFloat(
+            //     num_[key].reduce((accumulator, currentValue) => {
+            //       return Number(accumulator) + Number(currentValue);
+            //     }, 0) / 1000
+            //   ).toFixed(2);
+            // } else {
+            // cal[key] = 0
+            // }
+            //}
             break;
           case "word":
             //console.log(key, value)
@@ -606,7 +646,7 @@ export default function Home(props) {
     setProduction(cal?.pro_1 || 0);
     setDailyProduction(cal?.pro_2 || 0);
     setTotalProduction(cal?.pro_3 || 0);
-    setPer(mapValue(cal?.pro_1 * 100 / capacity, in_min, in_max, out_min, out_max));
+    setPer(mapValue(cal?.pro_1 / 1000 * 100 / capacity, in_min, in_max, out_min, out_max));
 
     coalsave.value = {
       ...coalsave.value,
@@ -640,11 +680,11 @@ export default function Home(props) {
                 <div className="DAT_Home_Overview-Main-Percent-Item-value">
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_num">
                     {Number(
-                      parseFloat((production / capacity) * 100).toFixed(2)
+                      parseFloat((production / 1000 / capacity) * 100).toFixed(2)
                     ).toLocaleString("en-US") === "NaN"
                       ? "--"
                       : Number(
-                        parseFloat((production / capacity) * 100).toFixed(2)
+                        parseFloat((production / 1000 / capacity) * 100).toFixed(2)
                       ).toLocaleString("en-US")}
                   </div>
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">
@@ -698,7 +738,7 @@ export default function Home(props) {
                       fontFamily: "sans-serif",
                     }}
                   >
-                    {Number(production).toLocaleString("en-US")}
+                    {Number(parseFloat(production / 1000).toFixed(2)).toLocaleString("en-US")}
                   </span>
                   &nbsp;
                   <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
@@ -767,7 +807,7 @@ export default function Home(props) {
                     fontFamily: "sans-serif",
                   }}
                 >
-                  {Number(monthlyproduction).toLocaleString("en-US")}
+                  {Number(parseFloat(monthlyproduction).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
@@ -790,7 +830,7 @@ export default function Home(props) {
                     fontFamily: "sans-serif",
                   }}
                 >
-                  {Number(yearlyproduction).toLocaleString("en-US")}
+                  {Number(parseFloat(yearlyproduction).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
@@ -813,7 +853,7 @@ export default function Home(props) {
                     fontFamily: "sans-serif",
                   }}
                 >
-                  {Number(totalproduction).toLocaleString("en-US")}
+                  {Number(parseFloat(totalproduction).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
