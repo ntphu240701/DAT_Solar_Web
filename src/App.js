@@ -227,7 +227,9 @@ export default function App() {
       });
       if (warn.status) {
         console.log("Warn", warn.data);
-        warn.data.map((item, index) => {
+        let newdb = warn.data.sort((a, b) => b.warnid_ - a.warnid_);
+        console.log(newdb);
+        newdb.map((item, index) => {
           dataWarn.value = [
             ...dataWarn.value,
             {
