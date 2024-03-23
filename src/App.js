@@ -83,7 +83,6 @@ export const partnerInfor = signal({
   logo: "",
 });
 
-
 const Arr = signal([
   { id: 1, name: "Lộc" }, // 0
   { id: 3, name: "Phú" }, // 1
@@ -91,6 +90,38 @@ const Arr = signal([
   { id: 12, name: "Hưng" }
 
 ])
+
+export const convertUnit = (value) => {
+  if (value >= 1000000000) {
+    return (value / 1000000000).toFixed(2);
+  } else if (value >= 1000000) {
+    return (value / 1000000).toFixed(2);
+  } else if (value >= 1000) {
+    return (value / 1000).toFixed(2);
+  } else {
+    return value;
+  }
+};
+
+export const showUnit = (value) => {
+  if (value >= 1000000000) {
+    return "G";
+  } else if (value >= 1000000) {
+    return "M";
+  } else {
+    return "k";
+  }
+};
+
+export const showUnitk = (value) => {
+  if (value >= 1000000) {
+    return "G";
+  } else if (value >= 1000) {
+    return "M";
+  } else {
+    return "k";
+  }
+};
 
 export default function App() {
   const dataLang = useIntl();

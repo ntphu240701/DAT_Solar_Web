@@ -191,28 +191,27 @@ export default function Device(props) {
     {
       name: dataLang.formatMessage({ id: "production" }),
       selector: (row) => {
-        let power = 0;
-        let d = JSON.parse(row.pdata.total?.register || "[]");
+
+        let power = 0
+        let d = JSON.parse(row.pdata.total?.register || "[]")
         // console.log(row)
         if (row.pdata.mode === "HYBRID") {
-          let num = [];
+          let num = []
           // console.log(invt[row.logger_])
           d.map((item, i) => {
-            num[i] = invt[row.plogger]?.[item];
-          });
-          power = parseFloat(
-            num.reduce((a, b) => Number(a) + Number(b), 0) *
-              row.pdata.total?.cal
-          ).toFixed(2);
+            num[i] = invt[row.plogger]?.[item]
+          })
+          power = parseFloat(num.reduce((a, b) => Number(a) + Number(b), 0) * row.pdata.total?.cal).toFixed(2)
         }
         if (row.pdata.mode === "GRID") {
-          power =
-            convertToDoublewordAndFloat(
-              [invt[row.plogger]?.[d[0]], invt[row.plogger]?.[d[1]]],
-              "int"
-            ) * row.pdata.total?.cal;
+          power = (convertToDoublewordAndFloat([invt[row.plogger]?.[d[0]], invt[row.plogger]?.[d[1]]], "int") * row.pdata.total?.cal)
         }
-        return <div>{parseFloat(power / 1000).toFixed(2)} kW</div>;
+        return (
+          <div>
+            {parseFloat(power / 1000).toFixed(2)}{" "}
+            kW
+          </div>
+        );
       },
       sortable: true,
       width: "160px",
@@ -223,9 +222,9 @@ export default function Device(props) {
         <>
           {row.pdata.daily?.register
             ? parseFloat(
-                invt[row.plogger]?.[row.pdata.daily.register] *
-                  row.pdata.daily?.cal
-              ).toFixed(2)
+              invt[row.plogger]?.[row.pdata.daily.register] *
+              row.pdata.daily?.cal
+            ).toFixed(2)
             : 0}{" "}
           kWh
         </>
@@ -244,7 +243,7 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
-          ruleInfor.value.setting.device.delete === true ? (
+            ruleInfor.value.setting.device.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.psn + "_MORE"}
@@ -353,7 +352,7 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
-          ruleInfor.value.setting.device.delete === true ? (
+            ruleInfor.value.setting.device.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.psn + "_MORE"}
@@ -798,7 +797,7 @@ export default function Device(props) {
 
                             <div className="DAT_DeviceMobile_Content_Top_Right">
                               {ruleInfor.value.setting.device.modify ===
-                              true ? (
+                                true ? (
                                 <div className="DAT_DeviceMobile_Content_Top_Right_Item">
                                   <MdEdit size={20} color="#216990" />
                                 </div>
@@ -806,7 +805,7 @@ export default function Device(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.device.delete ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_DeviceMobile_Content_Top_Right_Item"
                                   id={item.psn + "_" + item.pplantid}
@@ -884,7 +883,7 @@ export default function Device(props) {
 
                             <div className="DAT_DeviceMobile_Content_Top_Right">
                               {ruleInfor.value.setting.device.modify ===
-                              true ? (
+                                true ? (
                                 <div className="DAT_DeviceMobile_Content_Top_Right_Item">
                                   <MdEdit size={20} color="#216990" />
                                 </div>
@@ -892,7 +891,7 @@ export default function Device(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.device.remove ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_DeviceMobile_Content_Top_Right_Item"
                                   id={item.psn + "_" + item.pplantid}
@@ -1037,8 +1036,8 @@ export default function Device(props) {
               display={display}
               handlefilterdevice={handleFilterDevice}
               handleReset={handleReset}
-              // handleClose={handleCloseFilter}
-              // handleReset={handleResetFilter}
+            // handleClose={handleCloseFilter}
+            // handleReset={handleResetFilter}
             />
           </div>
         </div>
