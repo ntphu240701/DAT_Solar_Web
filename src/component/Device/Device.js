@@ -258,7 +258,7 @@ export default function Device(props) {
             <div
               className="DAT_ModifyBox_Fix"
               id={row.psn + "_" + tab.value + "_" + row.plogger}
-            // onClick={(e) => handleEdit(e)}
+              // onClick={(e) => handleEdit(e)}
             >
               <FiEdit size={14} />
               &nbsp;
@@ -596,7 +596,12 @@ export default function Device(props) {
     };
     getAllLogger();
 
-    // get inverter
+    return () => {
+      tab.value = "logger";
+    };
+  }, []);
+  //API INVERTER
+  useEffect(() => {
     const getAllInverter = async () => {
       let d = await callApi("post", host.DATA + "/getallInverter", {
         usr: user,
@@ -606,25 +611,23 @@ export default function Device(props) {
       console.log(d);
       if (d.status === true) {
         inverterList.value = d.data;
+        setDatafilterInvert(d.data);
       }
     };
-    getAllInverter();
-
-    return () => {
-      tab.value = "logger";
-    };
-  }, []);
+    if (tab.value == "inverter") {
+      getAllInverter();
+    }
+  }, [tab.value]);
 
   const handleFilterDevice = (deviceF) => {
     setDisplay(false);
     // console.log(deviceF);
-    console.log(tab.value);
+    // console.log(tab.value);
     console.log(loggerList.value);
-    let tL = 2;
-    let tI = 2;
 
     switch (tab.value) {
       case "logger":
+        let tL = 2;
         if (deviceF === "online") {
           tL = 1;
         } else if (deviceF === "offline") {
@@ -633,30 +636,27 @@ export default function Device(props) {
           tL = 2;
         }
         console.log(tL);
-        // console.log(temp);
         if (tL == 2) {
           setDatafilter(loggerList.value);
         } else {
           const temp = loggerList.value.filter((item) => item.pstate === tL);
+          console.log(temp);
           setDatafilter(temp);
         }
         break;
       case "inverter":
         if (deviceF === "online") {
-          tI = 1;
+          const db = inverterList.value.filter(
+            (item) => parseInt(invt[item.plogger][item.pdata.status]) === 2
+          );
+          setDatafilterInvert(db);
         } else if (deviceF === "offline") {
-          tI = 0;
-        } else {
-          tI = 2;
-        }
-        console.log(tI);
-        // console.log(temp);
-        if (tI == 2) {
+          const db = inverterList.value.filter(
+            (item) => parseInt(invt[item.plogger][item.pdata.status]) !== 2
+          );
+          setDatafilterInvert(db);
+        } else if (deviceF === "all") {
           setDatafilterInvert(inverterList.value);
-        } else {
-          const newdb = inverterList.value.filter((item) => item.pstate === tI);
-          // console.log(newdb);
-          setDatafilterInvert(newdb);
         }
         break;
       default:

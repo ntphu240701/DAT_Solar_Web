@@ -71,7 +71,7 @@ export default function Filter(props) {
   }, [deviceF]);
 
   const filterdevice = (e) => {
-    // console.log(e.target.id);
+    console.log(e.target.id);
     setDeviceF(e.target.id);
   };
 
