@@ -18,7 +18,7 @@ import { Empty, plantState, projectData, projtab } from "../Project/Project";
 import { sidebartab, sidebartabli } from "../Sidenar/Sidenar";
 import DataTable from "react-data-table-component";
 import { useSelector } from "react-redux";
-import { Token, partnerInfor, userInfor } from "../../App";
+import { Token, convertUnit, partnerInfor, showUnit, showUnitk, userInfor } from "../../App";
 import { host } from "../Lang/Contant";
 import { callApi } from "../Api/Api";
 import { signal } from "@preact/signals-react";
@@ -306,7 +306,7 @@ export default function Home(props) {
     let sum_month = [];
     let sum_year = [];
     data.map(async (item_plant, i) => {
-      console.log(item_plant.plantname, item_plant.state)
+      // console.log(item_plant.plantname, item_plant.state)
 
 
 
@@ -366,7 +366,7 @@ export default function Home(props) {
 
 
       if (i == plant.value.length - 1) {
-        console.log(sum_month, sum_year)
+        // console.log(sum_month, sum_year)
 
         let total_month = parseFloat(
           sum_month.reduce((a, b) => Number(a) + Number(b), 0)
@@ -395,7 +395,7 @@ export default function Home(props) {
 
     data.map((itemplant, index) => {
       var sum_logger = [];
-      let logger_ = logger.filter((data) => data.pplantid == itemplant.plantid);
+      let logger_ = logger.filter((data) => data.pplantid == itemplant.plantid_);
       //console.log(logger_)
       logger_.map((item, i) => {
         const type = item.pdata.pro_3.type;
@@ -738,10 +738,10 @@ export default function Home(props) {
                       fontFamily: "sans-serif",
                     }}
                   >
-                    {Number(parseFloat(production / 1000).toFixed(2)).toLocaleString("en-US")}
+                    {Number(parseFloat(convertUnit(production)).toFixed(2)).toLocaleString("en-US")}
                   </span>
                   &nbsp;
-                  <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
+                  <span style={{ color: "gray", fontSize: "13px" }}>{showUnit(production)}W</span>
                 </div>
               </div>
 
@@ -758,18 +758,17 @@ export default function Home(props) {
                       fontFamily: "sans-serif",
                     }}
                   >
-                    {Number(capacity).toLocaleString("en-US")}
+                    {Number(parseFloat(convertUnit(capacity)).toFixed(2)).toLocaleString("en-US")}
                   </span>
                   &nbsp;
-                  <span style={{ color: "gray", fontSize: "13px" }}>kWp</span>
+                  <span style={{ color: "gray", fontSize: "13px" }}>{showUnitk(capacity)}Wp</span>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="DAT_Home_Overview-Sub">
-            <div
-              className="DAT_Home_Overview-Sub-Item"
+            <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
@@ -784,15 +783,14 @@ export default function Home(props) {
                     fontFamily: "sans-serif",
                   }}
                 >
-                  {Number(dailyproduction).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(dailyproduction)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
+                <span style={{ color: "gray", fontSize: "13px" }}>{showUnitk(dailyproduction)}Wh</span>
               </div>
             </div>
 
-            <div
-              className="DAT_Home_Overview-Sub-Item"
+            <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
@@ -807,15 +805,14 @@ export default function Home(props) {
                     fontFamily: "sans-serif",
                   }}
                 >
-                  {Number(parseFloat(monthlyproduction).toFixed(2)).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(monthlyproduction)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
+                <span style={{ color: "gray", fontSize: "13px" }}>{showUnitk(monthlyproduction)}Wh</span>
               </div>
             </div>
 
-            <div
-              className="DAT_Home_Overview-Sub-Item"
+            <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
@@ -830,15 +827,14 @@ export default function Home(props) {
                     fontFamily: "sans-serif",
                   }}
                 >
-                  {Number(parseFloat(yearlyproduction).toFixed(2)).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(yearlyproduction)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
+                <span style={{ color: "gray", fontSize: "13px" }}>{showUnitk(yearlyproduction)}Wh</span>
               </div>
             </div>
 
-            <div
-              className="DAT_Home_Overview-Sub-Item"
+            <div className="DAT_Home_Overview-Sub-Item"
               style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
             >
               <div className="DAT_Home_Overview-Sub-Item-Title">
@@ -853,10 +849,10 @@ export default function Home(props) {
                     fontFamily: "sans-serif",
                   }}
                 >
-                  {Number(parseFloat(totalproduction).toFixed(2)).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(totalproduction)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ color: "gray", fontSize: "13px" }}>kwh</span>
+                <span style={{ color: "gray", fontSize: "13px" }}>{showUnitk(totalproduction)}Wh</span>
               </div>
             </div>
           </div>
@@ -917,8 +913,17 @@ export default function Home(props) {
               <div className="DAT_Home_History-Chart-label-Label">
                 {chart === "year"
                   ? dataLang.formatMessage({ id: "yearOutput" })
-                  : dataLang.formatMessage({ id: "monthOutput" })}
-                : {chart === "year" ? yearlyproduction : monthlyproduction} kWh
+                  : dataLang.formatMessage({ id: "monthOutput" })
+                }
+                : {chart === "year"
+                  ? Number(parseFloat(convertUnit(yearlyproduction)).toFixed(2)).toLocaleString("en-US")
+                  : Number(parseFloat(convertUnit(monthlyproduction)).toFixed(2)).toLocaleString("en-US")
+                }
+                &nbsp;
+                {chart === "year"
+                  ? <span style={{ color: "gray", fontSize: "13px" }}>{showUnitk(yearlyproduction)}Wh</span>
+                  : <span style={{ color: "gray", fontSize: "13px" }}>{showUnitk(monthlyproduction)}Wh</span>
+                }
               </div>
             </div>
             <div className="DAT_Home_History-Chart-Content">
@@ -1224,11 +1229,7 @@ export default function Home(props) {
                   {dataLang.formatMessage({ id: "coalSave" })}
                 </div>
                 <div>
-                  {Number(
-                    parseFloat(
-                      coalsave.value.value * coalsave.value.ef
-                    ).toFixed(2)
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(coalsave.value.value * coalsave.value.ef).toFixed(2)).toLocaleString("en-US")}
                   &nbsp;
                   <span style={{ color: "grey", fontSize: "12px" }}>t</span>
                 </div>
@@ -1244,11 +1245,7 @@ export default function Home(props) {
                   {dataLang.formatMessage({ id: "cropYield" })}
                 </div>
                 <div>
-                  {Number(
-                    parseFloat(
-                      coalsave.value.value * coalsave.value.tree
-                    ).toFixed(2)
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(coalsave.value.value * coalsave.value.tree).toFixed(2)).toLocaleString("en-US")}
                   &nbsp;
                   <span style={{ color: "grey", fontSize: "12px" }}>
                     {dataLang.formatMessage({ id: "tree" })}
@@ -1268,11 +1265,7 @@ export default function Home(props) {
                   {dataLang.formatMessage({ id: "C02" })}
                 </div>
                 <div>
-                  {Number(
-                    parseFloat(
-                      coalsave.value.value * coalsave.value.avr
-                    ).toFixed(2)
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(coalsave.value.value * coalsave.value.avr).toFixed(2)).toLocaleString("en-US")}
                   &nbsp;
                   <span style={{ color: "grey", fontSize: "12px" }}>t</span>
                 </div>
@@ -1288,13 +1281,9 @@ export default function Home(props) {
                   {dataLang.formatMessage({ id: "totalRevenue" })}
                 </div>
                 <div>
-                  {Number(parseFloat(price / 1000).toFixed(2)).toLocaleString(
-                    "en-US"
-                  )}
+                  {Number(parseFloat(price / 1000).toFixed(2)).toLocaleString("en-US")}
                   &nbsp;
-                  <span style={{ color: "grey", fontSize: "12px" }}>
-                    k{plant.value.currency}
-                  </span>
+                  <span style={{ color: "grey", fontSize: "12px" }}>kVND</span>
                 </div>
               </div>
             </div>

@@ -186,10 +186,25 @@ export default function ProjectData(props) {
     {
       name: dataLang.formatMessage({ id: "production" }),
       selector: (row) => {
+        // console.log(row.data.mode)
+        let power = 0
         let d = JSON.parse(row.data.total?.register || "[]")
+
+        if (row.data.mode === "HYBRID") {
+          let num = []
+          // console.log(invt[row.logger_])
+          d.map((item, i) => {
+            num[i] = invt[row.logger_]?.[item]
+          })
+          power = parseFloat(num.reduce((a, b) => Number(a) + Number(b), 0) * row.data.total?.cal).toFixed(2)
+        }
+        if (row.data.mode === "GRID") {
+          power = (convertToDoublewordAndFloat([invt[row.logger_]?.[d[0]], invt[row.logger_]?.[d[1]]], "int") * row.data.total?.cal)
+        }
+
         return (
           <div>
-            {parseFloat((convertToDoublewordAndFloat([invt[row.logger_]?.[d[0]], invt[row.logger_]?.[d[1]]], "int") * row.data.total?.cal) / 1000).toFixed(2)} kW
+            {parseFloat(power / 1000).toFixed(2)} kW
           </div>
         )
       },
@@ -885,7 +900,6 @@ export default function ProjectData(props) {
     // eslint-disable-next-line
   }, [lang]);
 
-
   useEffect(() => {
     const getLogger = async () => {
       let d = await callApi("post", host.DATA + "/getLogger", {
@@ -954,8 +968,8 @@ export default function ProjectData(props) {
           case "sum":
             let inum = [];
             let register_ = JSON.parse(value.register);
-           // console.log(register_);
-            register_.map((reg,j) => {
+            // console.log(register_);
+            register_.map((reg, j) => {
               inum[j] = parseFloat(invt[item.sn]?.[reg] || 0)
             })
             console.log(inum);
@@ -971,9 +985,9 @@ export default function ProjectData(props) {
               cal.value[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
-                }, 0 )* parseFloat(value.cal)
+                }, 0) * parseFloat(value.cal)
               ).toFixed(2);
-            } 
+            }
             // let inum = [];
             // let cal_ = JSON.parse(value.cal);
             // Object.entries(value.register).map(([key, value]) => {
@@ -2730,7 +2744,6 @@ const Graph = (props) => {
 };
 
 const GraphGrid = (props) => {
-
   const [lineA_, setLinA] = useState(false)
   const [lineB_, setLinB] = useState(false)
   const [lineC_, setLinC] = useState('Default')
@@ -3033,7 +3046,7 @@ const GraphGrid = (props) => {
           <ImgSolar width="70" height="70" />
           <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
             <div>
-              {Number(props.cal?.pro_1/1000 || 0).toLocaleString("en-US")}
+              {Number(props.cal?.pro_1 / 1000 || 0).toLocaleString("en-US")}
             </div>
             <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
           </div>
@@ -3087,7 +3100,6 @@ const GraphGrid = (props) => {
 };
 
 const GraphConsumption = (props) => {
-
   const [lineA_, setLinA] = useState(false)
   const [lineB_, setLinB] = useState(false)
   const [lineC_, setLinC] = useState('Default')
@@ -3390,7 +3402,7 @@ const GraphConsumption = (props) => {
           <ImgSolar width="70" height="70" />
           <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
             <div>
-              {Number(props.cal?.pro_1/1000 || 0).toLocaleString("en-US")}
+              {Number(props.cal?.pro_1 / 1000 || 0).toLocaleString("en-US")}
             </div>
             <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
           </div>
@@ -3450,7 +3462,6 @@ const GraphConsumption = (props) => {
 };
 
 const GraphFull = (props) => {
-
   const [lineA_, setLinA] = useState(false)
   const [lineB_, setLinB] = useState(false)
   const [lineC_, setLinC] = useState('Default')
@@ -3753,7 +3764,7 @@ const GraphFull = (props) => {
           <ImgSolar width="70" height="70" />
           <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
             <div>
-              {Number(props.cal?.pro_1/1000 || 0).toLocaleString("en-US")}
+              {Number(props.cal?.pro_1 / 1000 || 0).toLocaleString("en-US")}
             </div>
             <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
           </div>
@@ -3830,7 +3841,7 @@ const Production = (props) => {
   useEffect(() => {
     //-10        130
     //100%       0%
-    let result = parseFloat(((props.cal?.pro_1/1000 || 0) / projectData.value.capacity) * 100)
+    let result = parseFloat(((props.cal?.pro_1 / 1000 || 0) / projectData.value.capacity) * 100)
     // console.log(result)
     setPer(mapValue(result, in_min, in_max, out_min, out_max))
   }, [props.cal.pro_1])
@@ -3862,7 +3873,7 @@ const Production = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_num">
                 {Number(
                   parseFloat(
-                    ((props.cal?.pro_1/1000 || 0) / projectData.value.capacity) * 100
+                    ((props.cal?.pro_1 / 1000 || 0) / projectData.value.capacity) * 100
                   ).toFixed(2)
                 ).toLocaleString("en-US")}
               </div>
@@ -3909,7 +3920,7 @@ const Production = (props) => {
           </div>
           <div style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(props.cal?.pro_1/1000 || 0).toLocaleString("en-US")}
+              {Number(props.cal?.pro_1 / 1000 || 0).toLocaleString("en-US")}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>kW</span>
@@ -4504,7 +4515,7 @@ const Day = (props) => {
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           {/* {props.v}: {cal.value.pro_1} kW */}
-          {dataLang.formatMessage({ id: "production" })}: {parseFloat(cal.value.pro_1/1000).toFixed(2)} kW
+          {dataLang.formatMessage({ id: "production" })}: {parseFloat(cal.value.pro_1 / 1000).toFixed(2)} kW
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
