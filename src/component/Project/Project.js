@@ -414,14 +414,16 @@ export default function Project(props) {
       (item) => item.plantid_ == e.currentTarget.id
     );
     let newData = dataproject.value;
+    // console.log(newData[i]);
 
     const markplant = await callApi("post", host.DATA + "/setMark", {
       usr: usr,
       plantid: e.currentTarget.id,
       action: newData[i].mark ? "unmark" : "mark",
+      partnerid: userInfor.value.partnerid,
     });
-    // console.log(markplant);
-    if ((markplant.status = true)) {
+    console.log(markplant);
+    if (markplant.status == true) {
       if (newData[i].mark) {
         newData[i] = {
           ...newData[i],
