@@ -87,43 +87,6 @@ export default function Navigation(props) {
     sidenar.value = !sidenar.value;
   };
 
-  // const handleMessage = (e) => {
-  //   setCode(e.currentTarget.id);
-  //   const checkApi = async () => {
-  //     const warn = await callApi("post", host.DATA + "/updateWarn", {
-  //       partnerid: partnerInfor.value.partnerid,
-  //       boxid: e.currentTarget.id,
-  //       type: userInfor.value.type,
-  //     });
-
-  //     console.log(warn);
-  //   };
-  //   checkApi();
-
-  //   let warnid = [];
-  //   messageContent.value = dataWarn.value;
-
-  //   // warnid.map((item_) => {
-  //   //   let index = dataWarn.value.findIndex((item, i) => item.warnid == item_);
-  //   //   dataWarn.value[index] = {
-  //   //     ...dataWarn.value[index],
-  //   //     state: 0,
-  //   //   };
-  //   // });
-
-  //   message.value.map((item) => {
-  //     let data = dataWarn.value.filter((item_) => item_.boxid == item.boxid);
-  //     item.total = data.filter((item) => item.state == 1).length;
-  //   });
-
-  //   warnid = [];
-  //   console.log(dataWarn.value);
-  //   console.log(messageContent.value);
-  //   if (isMobile.value) {
-  //     messageOption.value = "content";
-  //   }
-  // };
-
   useEffect(function () {
     if (window.innerWidth >= 900) {
       isMobile.value = false;
@@ -172,13 +135,28 @@ export default function Navigation(props) {
     }
   };
 
-  const handleFilterWarn = (e) => {
+  const handleFilterWarn = async (e) => {
+    // console.log(e.currentTarget.id);
     projectwarnfilter.value = 0;
-    warnfilter.value = dataWarn.value.find(
-      (item) => item.warnid == e.currentTarget.id
+
+    console.log(dataWarn.value);
+    let newdata = dataWarn.value.find(
+      (item) => item.warnid == parseInt(e.currentTarget.id)
     );
+    console.log(newdata);
+
+    warnfilter.value = newdata;
     notifNav.value = false;
-    console.log(warnfilter.value);
+
+    const state = await callApi("post", host.DATA + "/updateWarn", {
+      id: e.currentTarget.id,
+    });
+    console.log(state);
+    if (state.status) {
+      notifNav.value = false;
+    }
+
+    // console.log(warnfilter.value);
   };
   return (
     <>
@@ -315,7 +293,7 @@ export default function Navigation(props) {
         <div className="DAT_NavNotif-title">
           <span>{dataLang.formatMessage({ id: "notification" })}</span>
 
-          {isMobile.value && messageOption.value === "content" ? (
+          {/* {isMobile.value && messageOption.value === "content" ? (
             <div
               className="DAT_NavNotif-title-close"
               onClick={() => (messageOption.value = "mess")}
@@ -324,196 +302,92 @@ export default function Navigation(props) {
             </div>
           ) : (
             <></>
-          )}
+          )} */}
         </div>
 
         <div className="DAT_NavNotif-content">
-          {(() => {
-            switch (messageOption.value) {
-              case "content":
-                return (
-                  <div className="DAT_NavNotif-content-main">
-                    {dataWarn.value.map((item, index) => (
+          <div className="DAT_NavNotif-content-main">
+            {dataWarn.value.length !== 0 ? (
+              <>
+                {dataWarn.value.map((item, index) => (
+                  <div className="DAT_NavNotif-content-main-group" key={index}>
+                    <div className="DAT_NavNotif-content-main-group-datetime">
+                      {item.opentime}
+                    </div>
+                    <Link
+                      to="/Warn"
+                      style={{
+                        textDecoration: "none",
+                      }}
+                    >
                       <div
-                        className="DAT_NavNotif-content-main-group"
-                        key={index}
+                        className="DAT_NavNotif-content-main-group-content"
+                        id={item.warnid}
+                        style={{
+                          textDecoration: "none",
+                          backgroundColor:
+                            parseInt(item.state) == 0
+                              ? "rgb(201, 201, 201, 0.3)"
+                              : "white",
+                        }}
+                        onClick={(e) => {
+                          handleFilterWarn(e);
+                          sidebartab.value = "Monitor";
+                          sidebartabli.value = "/Warn";
+                          item.state = 0;
+                        }}
                       >
-                        <div className="DAT_NavNotif-content-main-group-datetime">
-                          {item.opentime}
+                        <div className="DAT_NavNotif-content-main-group-content-tit">
+                          {dataLang.formatMessage({ id: item.boxid })}
+                          &nbsp;
+                          {dataLang.formatMessage({ id: "at" })}
+                          &nbsp;
+                          {item.plant}
                         </div>
-                        <Link to="/Warn" style={{ textDecoration: "none" }}>
-                          <div
-                            className="DAT_NavNotif-content-main-group-content"
+                        <div className="DAT_NavNotif-content-main-group-content-device">
+                          {dataLang.formatMessage({ id: "device" })}: &nbsp;
+                          <span style={{ color: "black" }}>{item.device}</span>
+                        </div>
+                        <div className="DAT_NavNotif-content-main-group-content-level">
+                          {dataLang.formatMessage({ id: "level" })}: &nbsp;
+                          <span
                             style={{
-                              backgroundColor:
-                                item.state == 0
-                                  ? "rgb(201, 201, 201, 0.3)"
-                                  : "white",
+                              color: "black",
+                              textTransform: "capitalize",
                             }}
                           >
-                            <div className="DAT_NavNotif-content-main-group-content-tit">
-                              {dataLang.formatMessage({ id: item.boxid })}
-                              &nbsp;
-                              {dataLang.formatMessage({ id: "at" })}
-                              &nbsp;
-                              {item.plant}
-                            </div>
-                            <div className="DAT_NavNotif-content-main-group-content-device">
-                              {dataLang.formatMessage({ id: "device" })}: &nbsp;
-                              <span style={{ color: "black" }}>
-                                {item.device}
-                              </span>
-                            </div>
-                            <div className="DAT_NavNotif-content-main-group-content-level">
-                              {dataLang.formatMessage({ id: "level" })}: &nbsp;
-                              <span
-                                style={{
-                                  color: "black",
-                                  textTransform: "capitalize",
-                                }}
-                              >
-                                {item.level}
-                              </span>
-                            </div>
-                            <div className="DAT_NavNotif-content-main-group-content-status">
-                              {dataLang.formatMessage({ id: "remindAlert" })}
-                            </div>
-                          </div>
-                        </Link>
-                      </div>
-                    ))}
-
-                    <div className="DAT_NavNotif-content-main-empty">
-                      <FaRegMessage size={60} color="gray" />
-                    </div>
-                  </div>
-                );
-              default:
-                return (
-                  <>
-                    {/* <div className="DAT_NavNotif-content-message">
-                      {message.value.map((item, index) => (
-                        <div
-                          className="DAT_NavNotif-content-message-group"
-                          id={item.boxid}
-                          key={item.boxid}
-                          onClick={(e) => handleMessage(e)}
-                          style={{
-                            backgroundColor:
-                              code === item.boxid
-                                ? "rgba(159, 155, 155, 0.2)"
-                                : "white",
-                          }}
-                        >
-                          <div className="DAT_NavNotif-content-message-group-tit">
-                            <span>
-                              {dataLang.formatMessage({ id: item.boxid })}
-                            </span>
-                            {item.total === 0 ? (
-                              <></>
+                            {item.level}
+                          </span>
+                        </div>
+                        <div className="DAT_NavNotif-content-main-group-content-status">
+                          {dataLang.formatMessage({
+                            id: "remindAlert",
+                          })}
+                          <div className="DAT_NavNotif-content-main-group-content-status-read">
+                            {item.state == 0 ? (
+                              <div style={{ color: "grey", gap: "10px" }}>
+                                Read
+                                <BiMessageCheck />
+                              </div>
                             ) : (
-                              <span>{item.total}</span>
+                              <div style={{ color: "blue", gap: "10px" }}>
+                                Unread
+                                <BiMessageAltX />
+                              </div>
                             )}
                           </div>
                         </div>
-                      ))}
-                    </div> */}
-                    <div className="DAT_NavNotif-content-main">
-                      {dataWarn.value.length !== 0 ? (
-                        <>
-                          {dataWarn.value.map((item, index) => (
-                            <div
-                              className="DAT_NavNotif-content-main-group"
-                              key={index}
-                            >
-                              <div className="DAT_NavNotif-content-main-group-datetime">
-                                {item.opentime}
-                              </div>
-                              <Link
-                                to="/Warn"
-                                style={{
-                                  textDecoration: "none",
-                                }}
-                              >
-                                <div
-                                  className="DAT_NavNotif-content-main-group-content"
-                                  id={item.warnid}
-                                  style={{
-                                    textDecoration: "none",
-                                    backgroundColor:
-                                      parseInt(item.state) == 0
-                                        ? "rgb(201, 201, 201, 0.3)"
-                                        : "white",
-                                  }}
-                                  onClick={(e) => {
-                                    handleFilterWarn(e);
-                                    sidebartab.value = "Monitor";
-                                    sidebartabli.value = "/Warn";
-                                  }}
-                                >
-                                  <div className="DAT_NavNotif-content-main-group-content-tit">
-                                    {dataLang.formatMessage({ id: item.boxid })}
-                                    &nbsp;
-                                    {dataLang.formatMessage({ id: "at" })}
-                                    &nbsp;
-                                    {item.plant}
-                                  </div>
-                                  <div className="DAT_NavNotif-content-main-group-content-device">
-                                    {dataLang.formatMessage({ id: "device" })}:
-                                    &nbsp;
-                                    <span style={{ color: "black" }}>
-                                      {item.device}
-                                    </span>
-                                  </div>
-                                  <div className="DAT_NavNotif-content-main-group-content-level">
-                                    {dataLang.formatMessage({ id: "level" })}:
-                                    &nbsp;
-                                    <span
-                                      style={{
-                                        color: "black",
-                                        textTransform: "capitalize",
-                                      }}
-                                    >
-                                      {item.level}
-                                    </span>
-                                  </div>
-                                  <div className="DAT_NavNotif-content-main-group-content-status">
-                                    {dataLang.formatMessage({
-                                      id: "remindAlert",
-                                    })}
-                                    <div className="DAT_NavNotif-content-main-group-content-status-read">
-                                      {item.state == 0 ? (
-                                        <div
-                                          style={{ color: "grey", gap: "10px" }}
-                                        >
-                                          Read
-                                          <BiMessageCheck />
-                                        </div>
-                                      ) : (
-                                        <div
-                                          style={{ color: "blue", gap: "10px" }}
-                                        >
-                                          Unread
-                                          <BiMessageAltX />
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-                              </Link>
-                            </div>
-                          ))}
-                        </>
-                      ) : (
-                        <div className="DAT_NavNotif-content-main-empty">
-                          <FaRegMessage size={60} color="gray" />
-                        </div>
-                      )}
-                    </div>
-                  </>
-                );
-            }
-          })()}
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div className="DAT_NavNotif-content-main-empty">
+                <FaRegMessage size={60} color="gray" />
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

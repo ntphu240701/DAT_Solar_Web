@@ -2,61 +2,20 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { WiStrongWind } from "react-icons/wi";
 import { WiHumidity } from "react-icons/wi";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, } from "recharts";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { PacmanLoader } from "react-spinners";
 import { projectData } from "./Project";
-
-const temp = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
+import { useSelector } from "react-redux";
+import { useIntl } from "react-intl";
 
 export default function Weather() {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const dataLang = useIntl();
 
-  const v = "Nhiệt độ";
+  const v = dataLang.formatMessage({ id: "temperature" });
 
+  const lang = useSelector((state) => state.admin.lang);
   const lat = projectData.value.lat;
   const lon = projectData.value.long;
   const q = lat + "," + lon;
@@ -66,7 +25,8 @@ export default function Weather() {
     APIkey +
     "&q=" +
     q +
-    "&days=7&aqi=no&alerts=no&lang=vi";
+    "&days=7&aqi=no&alerts=no&lang=" +
+    lang;
 
   // CALL DATA BY FETCH()
   //   useEffect(() => {
@@ -160,12 +120,12 @@ export default function Weather() {
           <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit">
             {data.location.name},{/* {data.location.country} */}
             <div>{data.location.localtime}</div>
-            <div>Mô tả: {data.current.condition.text}</div>
+            <div>
+              {dataLang.formatMessage({ id: "description" })}:{" "}
+              {data.current.condition.text}
+            </div>
           </div>
         </div>
-
-
-
       </div>
       <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Describe">
         <div style={{ display: "flex", alignItems: "center" }}>
