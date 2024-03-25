@@ -803,7 +803,7 @@ const HistoricalData = (props) => {
                 <p>{dataLang.formatMessage({ id: "total" })}</p>
               </div>
               <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
-                <div>Select Parameters</div>
+                <div>{dataLang.formatMessage({ id: "choosePara" })}</div>
               </div>
               <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
                 <div>{dataLang.formatMessage({ id: "export" })}</div>
@@ -971,11 +971,11 @@ export default function Info(props) {
         <div className="DAT_InfoDrop">
           {view == "detail" ? (
             <div className="DAT_InfoDrop_Item" onClick={() => { setView("control"); setDropState(false) }}>
-              Dieu khien
+              {dataLang.formatMessage({ id: 'device' })}
             </div>
           ) : (
             <div className="DAT_InfoDrop_Item" onClick={() => { setView("detail"); setDropState(false) }}>
-              Thong so
+              {dataLang.formatMessage({ id: 'monitor' })}
             </div>
           )}
         </div>

@@ -68,6 +68,9 @@ export const Empty = (props) => {
         <div className="DAT_TableEmpty_Group_Text">
           {dataLang.formatMessage({ id: "empty" })}
         </div>
+        <div className="DAT_TableEmpty_Group_Text">
+          {dataLang.formatMessage({ id: "enterMore" })}
+        </div>
       </div>
     </div>
   );

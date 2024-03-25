@@ -265,7 +265,7 @@ export default function Device(props) {
             <div
               className="DAT_ModifyBox_Fix"
               id={row.psn + "_" + tab.value + "_" + row.plogger}
-              // onClick={(e) => handleEdit(e)}
+            // onClick={(e) => handleEdit(e)}
             >
               <FiEdit size={14} />
               &nbsp;
@@ -983,6 +983,7 @@ export default function Device(props) {
                   transform: display ? "rotate(-180deg)" : "rotate(0deg)",
                   transition: "0.5s",
                 }}
+                onClick={() => handleFilterDevice()}
               />
             </div>
           </div>
