@@ -76,13 +76,9 @@ export default function Home(props) {
   const dataLang = useIntl();
   const [sun, setSun] = useState([]);
   const [chart, setChart] = useState("year");
-  const [vmonth, setVmonth] = useState(
-    dataLang.formatMessage({ id: "monthOutput" })
-  );
+  const [vmonth, setVmonth] = useState(dataLang.formatMessage({ id: "monthOutput" }));
   const [datamonth, setDatamonth] = useState([]);
-  const [vyear, setVyear] = useState(
-    dataLang.formatMessage({ id: "yearOutput" })
-  );
+  const [vyear, setVyear] = useState(dataLang.formatMessage({ id: "yearOutput" }));
   const [datayear, setDatayear] = useState([]);
   const navigate = useNavigate();
   const [showDetail, setShowDetail] = useState(false);
@@ -311,12 +307,12 @@ export default function Home(props) {
 
 
 
-      if(item_plant.state){
+      if (item_plant.state) {
         cap[i] = item_plant.capacity;
-      }else{
+      } else {
         cap[i] = 0
       }
-      
+
       let chart = await callApi("post", host.DATA + "/getMonthChart", {
         plantid: item_plant.plantid_,
         month: moment(new Date()).format("MM/YYYY"),
@@ -425,9 +421,9 @@ export default function Home(props) {
                 ? parseFloat(doubleword).toFixed(2)
                 : parseFloat(float_value).toFixed(2) || 0;
             };
-            if(item.pstate){
+            if (item.pstate) {
               sum_logger[i] = convertToDoublewordAndFloat(e, "int");
-            }else{
+            } else {
               sum_logger[i] = 0
             }
 
@@ -539,7 +535,7 @@ export default function Home(props) {
     };
     let sun_ = {};
     logger.value.map((item, i) => {
-      console.log(item)
+      // console.log(item)
       Object.entries(item.pdata).map(([key, value]) => {
         switch (value.type) {
           case "sum":
@@ -706,13 +702,9 @@ export default function Home(props) {
                 style={{ animation: "home 30s linear infinite" }}>
                 <div className="DAT_Home_Overview-Main-Percent-Item-value">
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_num">
-                    {Number(
-                      parseFloat((production / 1000 / capacity) * 100).toFixed(2)
-                    ).toLocaleString("en-US") === "NaN"
+                    {Number(parseFloat((production / 1000 / capacity) * 100).toFixed(2)).toLocaleString("en-US") === "NaN"
                       ? "--"
-                      : Number(
-                        parseFloat((production / 1000 / capacity) * 100).toFixed(2)
-                      ).toLocaleString("en-US")}
+                      : Number(parseFloat((production / 1000 / capacity) * 100).toFixed(2)).toLocaleString("en-US")}
                   </div>
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">
                     %

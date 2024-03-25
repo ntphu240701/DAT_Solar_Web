@@ -144,7 +144,7 @@ export default function Navigation(props) {
   }, []);
 
   useEffect(() => {
-    console.log(dataWarn.value);
+    // console.log(dataWarn.value);
   });
 
   let logout = function () {

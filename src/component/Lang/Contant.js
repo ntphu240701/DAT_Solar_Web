@@ -355,9 +355,10 @@ export const messages = {
     overview1: "1. Power generation ratio is an important parameter to evaluate the power generation ability of a solar energy system.",
     overview2: "2. Power generation ratio = Power generation/installed capacity.",
     overview3: "3. For example: The power generation ratio is 80%, which means the system is generating power at 80% of its rated Power generation (installed capacity).",
+    control: "Control",
   },
   vi: {
-    all : "Tất cả",
+    all: "Tất cả",
     account: "Tài khoản",
     username: "Tên tài khoản",
     password: "Mật khẩu",
@@ -706,5 +707,6 @@ export const messages = {
     overview1: "1. Tỉ số phát điện là 1 thông số quan trọng để đánh giá khả năng phát điện của hệ thống năng lượng mặt trời.",
     overview2: "2. Tỉ số phát điện = Công suất phát/công suất lắp đặt.",
     overview3: "3. Ví dụ: Tỉ số phát điện là 80%, nghĩa là hệ thống đang phát điện ở mức 80% công suất định mức (công suất lắp đặt).",
+    control: "Điều khiển",
   },
 };

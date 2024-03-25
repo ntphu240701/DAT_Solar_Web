@@ -13,7 +13,7 @@ import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
-import { ruleInfor, Token, partnerInfor, userInfor } from "../../App";
+import { ruleInfor, Token, partnerInfor, userInfor, convertUnit, showUnitk, showUnit } from "../../App";
 import { useIntl } from "react-intl";
 import { FaStar } from "react-icons/fa";
 import { FaCheckCircle, FaRegFileAlt } from "react-icons/fa";
@@ -239,7 +239,12 @@ export default function Project(props) {
     },
     {
       name: dataLang.formatMessage({ id: "inCapacity" }),
-      selector: (row) => row.capacity + " kWp",
+      selector: (row) =>
+        <>
+          {Number(parseFloat(convertUnit(row.capacity)).toFixed(2)).toLocaleString("en-US")}
+          &nbsp;
+          {showUnitk(row.capacity)}Wp
+        </>,
       sortable: true,
       width: "160px",
     },
@@ -247,10 +252,18 @@ export default function Project(props) {
       name: dataLang.formatMessage({ id: "daily" }),
       selector: (row) =>
         parseFloat(dailyProduction[row.plantid_]).toFixed(2) === "NaN"
-          ? 0 + " kWh"
-          : Number(
-            parseFloat(dailyProduction[row.plantid_]).toFixed(2)
-          ).toLocaleString("en-US") + " kWh",
+          ?
+          <>
+            0
+            &nbsp;
+            {showUnitk(dailyProduction[row.plantid_])}Wh
+          </>
+          :
+          <>
+            {Number(parseFloat(convertUnit(dailyProduction[row.plantid_])).toFixed(2)).toLocaleString("en-US")}
+            &nbsp;
+            {showUnitk(dailyProduction[row.plantid_])}Wh
+          </>,
       sortable: true,
       width: "160px",
     },
@@ -258,10 +271,18 @@ export default function Project(props) {
       name: dataLang.formatMessage({ id: "power" }),
       selector: (row) =>
         parseFloat(power[row.plantid_]).toFixed(2) === "NaN"
-          ? 0 + " kW"
-          : Number(
-            parseFloat(power[row.plantid_] / 1000).toFixed(2)
-          ).toLocaleString("en-US") + " kW",
+          ?
+          <>
+            0
+            &nbsp;
+            {showUnitk(power[row.plantid_])}W
+          </>
+          :
+          <>
+            {Number(parseFloat(convertUnit(power[row.plantid_] / 1000)).toFixed(2)).toLocaleString("en-US")}
+            &nbsp;
+            {showUnit(power[row.plantid_])}W
+          </>,
       sortable: true,
       width: "160px",
     },
@@ -1777,8 +1798,7 @@ export default function Project(props) {
         </div>
       )}
 
-      <div
-        className="DAT_ProjectInfor"
+      <div className="DAT_ProjectInfor"
         style={{
           height: plantState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",

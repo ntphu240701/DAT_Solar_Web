@@ -822,6 +822,312 @@ const HistoricalData = (props) => {
   );
 };
 
+const GridStartSettings = (props) => {
+  const dataLang = useIntl();
+  const [display, setDisplay] = useState(true);
+
+  return (
+    <div className="DAT_Info_Databox" id="GridStartSettings">
+      <div className="DAT_Info_Databox_Title">
+        <div className="DAT_Info_Databox_Title_Left">Grid Start Settings</div>
+        <div className="DAT_Info_Databox_Title_Right"
+          onClick={() => setDisplay(!display)}
+        >
+          <IoIosArrowDown
+            size={20}
+            style={{
+              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transition: "0.5s",
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="Animation"
+        style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
+      >
+        {display ? (
+          <div className="DAT_Info_Databox_GridStartSettings">
+            <div className="DAT_Info_Databox_GridStartSettings_Content">
+              <div className="DAT_Info_Databox_GridStartSettings_Content_Left">
+                <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Tit">
+                    AC Start High Volt:
+                  </div>
+                  <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Content">
+                    <input />
+                    V
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item">
+                  <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Tit">
+                    AC Start Low Freq:
+                  </div>
+                  <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Content">
+                    <input />
+                    Hz
+                  </div>
+                </div>
+              </div>
+              <div className="DAT_Info_Databox_GridStartSettings_Content_Center">
+                <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item">
+                  <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item_Tit">
+                    AC Start Low Volt:
+                  </div>
+                  <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item_Content">
+                    <input />
+                    V
+                  </div>
+                </div>
+              </div>
+              <div className="DAT_Info_Databox_GridStartSettings_Content_Right">
+                <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item">
+                  <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item_Tit">
+                    AC Start High Freq:
+                  </div>
+                  <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item_Content">
+                    <input />
+                    Hz
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="DAT_Info_Databox_GridStartSettings_Foot">
+              <button>Read</button>
+              <button>Setup</button>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const GridVolt = (props) => {
+  const dataLang = useIntl();
+  const [display, setDisplay] = useState(true);
+
+  return (
+    <div className="DAT_Info_Databox" id="GridVolt">
+      <div className="DAT_Info_Databox_Title">
+        <div className="DAT_Info_Databox_Title_Left">Grid Volt/Freq Protect</div>
+        <div className="DAT_Info_Databox_Title_Right"
+          onClick={() => setDisplay(!display)}
+        >
+          <IoIosArrowDown
+            size={20}
+            style={{
+              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transition: "0.5s",
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="Animation"
+        style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
+      >
+        {display ? (
+          <div className="DAT_Info_Databox_GridVolt">
+            <div className="DAT_Info_Databox_GridVolt_Content">
+              <div className="DAT_Info_Databox_GridVolt_Content_Left">
+                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
+                    AC Under Volt 1:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
+                    <input />
+                    V
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
+                    AC Over Volt 1 Time:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
+                    <input />
+                    ms
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
+                    AC Under Volt 2 Time:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
+                    <input />
+                    ms
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
+                    AC Under Volt 3 Time:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
+                    <input />
+                    ms
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
+                    AC Under Freq 1 Time:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
+                    <input />
+                    ms
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
+                    AC Over Freq 2 Time:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
+                    <input />
+                    ms
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item">
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
+                    Frequency Setting:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
+                    <select>
+                      <option>Please Select</option>
+                      <option>a</option>
+                      <option>a</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className="DAT_Info_Databox_GridVolt_Content_Center">
+                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
+                    AC Over Volt 1:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
+                    <input />
+                    V
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
+                    AC Under Volt 2:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
+                    <input />
+                    V
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
+                    AC Over Volt 2 Time:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
+                    <input />
+                    ms
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
+                    AC Under Freq 1:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
+                    <input />
+                    Hz
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
+                    AC Over Freq 1 Time:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
+                    <input />
+                    ms
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
+                    AC Under Freq 2 Time:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
+                    <input />
+                    ms
+                  </div>
+                </div>
+              </div>
+              <div className="DAT_Info_Databox_GridVolt_Content_Right">
+                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
+                    AC Under Volt 1 Time:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
+                    <input />
+                    ms
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
+                    AC Over Volt 2:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
+                    <input />
+                    V
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
+                    AC Under Volt 3:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
+                    <input />
+                    V
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
+                    AC Over Freq 1:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
+                    <input />
+                    Hz
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
+                    AC Under Freq 2:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
+                    <input />
+                    Hz
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
+                    AC Over Freq 2 Time:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
+                    <input />
+                    ms
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="DAT_Info_Databox_GridVolt_Foot">
+              <button>Read</button>
+              <button>Setup</button>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+    </div>
+  );
+};
+
 export default function Info(props) {
   const dataLang = useIntl();
   const [dropState, setDropState] = useState(false);
@@ -831,49 +1137,44 @@ export default function Info(props) {
     <div className="DAT_Info">
       <div className="DAT_Info_Header">
         <div className="DAT_Info_Header_Left">
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "16px" }}>
+            <p style={{ fontWeight: "bold" }}>
+              {info.value.pname}: {info.value.psn}
+            </p>
+            <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              {info.value.invt?.[info.value.pdata.status] == 2 ? (
+                <FaCheckCircle size={20} color="green" />
+              ) : (
+                <MdOutlineError size={22} color="red" />
+              )}
+            </p>
+          </div>
           {(() => {
-            switch (tab.value) {
-              case 'logger':
+            switch (view) {
+              case "control":
                 return (
-                  <>
-                    <p style={{ fontWeight: "bold" }}>
-                      {info.value.pname}: {info.value.psn}
-                    </p>
-                    <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      {info.value.pstate == 1 ? (
-                        <FaCheckCircle size={20} color="green" />
-                      ) : (
-                        <MdOutlineError size={20} color="red" />
-                      )}
-                    </p>
-                  </>
-                )
-              case 'inverter':
-                return (
-                  <>
-                    <p style={{ fontWeight: "bold" }}>
-                      {info.value.pname}: {info.value.psn}
-                    </p>
-                    <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      {info.value.invt?.[info.value.pdata.status] == 2 ? (
-                        <FaCheckCircle size={20} color="green" />
-                      ) : (
-                        <MdOutlineError size={22} color="red" />
-                      )}
-                    </p>
-                  </>
+                  <div style={{ display: "flex", alignItems: "center", gap: "20px", paddingLeft: "16px" }}>
+                    <button className="DAT_Info_Header_Left_Item">
+                      Batch Command
+                    </button>
+                    <button className="DAT_Info_Header_Left_Item">
+                      Single Command
+                    </button>
+                    <button className="DAT_Info_Header_Left_Item">
+                      Customized Command
+                    </button>
+                    <button className="DAT_Info_Header_Left_Item">
+                      Control Log
+                    </button>
+                  </div>
                 )
               default:
-                return <></>;
+                return <></>
             }
           })()}
         </div>
 
         <div className="DAT_Info_Header_Right">
-          {/* <div className="DAT_Info_Header_Right_Save">
-            <FaSave size={20} color="white" />
-            <span>{dataLang.formatMessage({ id: 'save' })} </span>
-          </div> */}
           {(() => {
             switch (tab.value) {
               case 'logger':
@@ -925,7 +1226,8 @@ export default function Info(props) {
                     case "control":
                       return (
                         <>
-                          <PowerGrid />
+                          <GridStartSettings />
+                          <GridVolt />
                         </>
                       )
                     default:
@@ -970,13 +1272,29 @@ export default function Info(props) {
       {dropState ? (
         <div className="DAT_InfoDrop">
           {view == "detail" ? (
-            <div className="DAT_InfoDrop_Item" onClick={() => { setView("control"); setDropState(false) }}>
-              Dieu khien
-            </div>
+            <>
+              <div className="DAT_InfoDrop_Item"
+                style={{ borderBottom: "1px solid #e0e0e0" }}
+                onClick={() => { setView("control"); setDropState(false) }}
+              >
+                {dataLang.formatMessage({ id: 'control' })}
+              </div>
+              <div className="DAT_InfoDrop_Item" onClick={() => { setDropState(false) }}>
+                update
+              </div>
+            </>
           ) : (
-            <div className="DAT_InfoDrop_Item" onClick={() => { setView("detail"); setDropState(false) }}>
-              Thong so
-            </div>
+            <>
+              <div className="DAT_InfoDrop_Item"
+                style={{ borderBottom: "1px solid #e0e0e0" }}
+                onClick={() => { setView("detail"); setDropState(false) }}
+              >
+                {dataLang.formatMessage({ id: 'monitor' })}
+              </div>
+              <div className="DAT_InfoDrop_Item" onClick={() => { setDropState(false) }}>
+                update
+              </div>
+            </>
           )}
         </div>
       ) : (
