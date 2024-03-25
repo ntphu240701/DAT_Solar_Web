@@ -803,7 +803,7 @@ const HistoricalData = (props) => {
                 <p>{dataLang.formatMessage({ id: "total" })}</p>
               </div>
               <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
-                <div>Select Parameters</div>
+                <div>{dataLang.formatMessage({ id: "choosePara" })}</div>
               </div>
               <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
                 <div>{dataLang.formatMessage({ id: "export" })}</div>

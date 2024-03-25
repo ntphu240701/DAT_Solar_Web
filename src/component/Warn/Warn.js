@@ -11,7 +11,7 @@ import { useIntl } from "react-intl";
 import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { LuMailWarning } from "react-icons/lu";
-import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore } from "react-icons/io";
 import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
 import { callApi } from "../Api/Api";
@@ -265,7 +265,7 @@ export default function Warn(props) {
       projectwarnfilter.value = 0;
     } else {
       let temp = dataWarn.value.filter(
-        (item) => item.plant.toLowerCase().includes(searchTerm)
+        (item) => item.plant.toLowerCase().includes(searchTerm) || item.device.toLowerCase().includes(searchTerm)
         // item.device.toLowerCase().includes(searchTerm)
       );
       // console.log(temp);
@@ -280,13 +280,30 @@ export default function Warn(props) {
   };
 
   const handleCloseFilter = (opentime, closetime) => {
+    //Bật tắt filter layout
     setDisplay(false)
+
+    //Gọi biến thời gian nhập vào
+    const openInput = moment(opentime).format("MM/DD/YYYY");
+    const closeInput = moment(closetime).format("MM/DD/YYYY");
+    // console.log('openINPUT', openInput, closeInput);
+
     const newdb = dataWarn.value.filter((item) => {
-      return (
-        (item.level == warn.value) || (item.level == notice.value)
-      );
+      // Gọi biến thời gian trong dataWarn
+      const openData = moment(item.opentime).format("MM/DD/YYYY");
+      const closeData = moment(item.closetime).format("MM/DD/YYYY");
+      // console.log('openDATA', openData, closeData);
+
+      // Nếu người dùng không check type warning thì vẫn chạy điều kiện thời gian
+      if (warn.value == null && notice.value == null) {
+        const timeChange = (openData >= openInput && openData <= closeInput) || (closeData >= openInput && closeData < closeInput);
+        return timeChange
+      } else {
+        const levelChange = item.level == warn.value || item.level == notice.value
+        const timeChange = (openData >= openInput && openData <= closeInput) || (closeData >= openInput && closeData < closeInput);
+        return levelChange && timeChange;
+      }
     });
-    console.log(moment(opentime).format("MM/DD/YYYY"), moment(closetime).format("MM/DD/YYYY"))
     setDatafilter(newdb);
   };
 
@@ -681,9 +698,9 @@ export default function Warn(props) {
               onClick={(e) => setDisplay(!display)}
             >
               <FiFilter />
-              <IoIosArrowDown
+              <IoIosArrowUp
                 style={{
-                  transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+                  transform: display ? "rotate(180deg)" : "rotate(0deg)",
                   transition: "0.5s",
                 }}
               />
