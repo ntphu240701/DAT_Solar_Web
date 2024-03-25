@@ -311,7 +311,12 @@ export default function Home(props) {
 
 
 
-      cap[i] = item_plant.capacity;
+      if(item_plant.state){
+        cap[i] = item_plant.capacity;
+      }else{
+        cap[i] = 0
+      }
+      
       let chart = await callApi("post", host.DATA + "/getMonthChart", {
         plantid: item_plant.plantid_,
         month: moment(new Date()).format("MM/YYYY"),
@@ -420,8 +425,11 @@ export default function Home(props) {
                 ? parseFloat(doubleword).toFixed(2)
                 : parseFloat(float_value).toFixed(2) || 0;
             };
-
-            sum_logger[i] = convertToDoublewordAndFloat(e, "int");
+            if(item.pstate){
+              sum_logger[i] = convertToDoublewordAndFloat(e, "int");
+            }else{
+              sum_logger[i] = 0
+            }
 
             if (i == logger_.length - 1) {
               let total = parseFloat(
@@ -531,7 +539,7 @@ export default function Home(props) {
     };
     let sun_ = {};
     logger.value.map((item, i) => {
-      // console.log(item)
+      console.log(item)
       Object.entries(item.pdata).map(([key, value]) => {
         switch (value.type) {
           case "sum":
@@ -542,20 +550,23 @@ export default function Home(props) {
               inum[j] = parseFloat(invt[item.psn]?.[reg] || 0)
             })
             // console.log(inum);
-
-            num_[key][i] = inum.reduce((accumulator, currentValue) => {
-              return Number(accumulator) + Number(currentValue);
-            }, 0);
-
+            if (item.pstate) {
+              num_[key][i] = inum.reduce((accumulator, currentValue) => {
+                return Number(accumulator) + Number(currentValue);
+              }, 0);
+            } else {
+              num_[key][i] = 0
+            }
 
             if (i == logger.value.length - 1) {
-              // if (invt[item.psn]?.enabled == 1) {
+
               cal[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
                 }, 0) * parseFloat(value.cal)
               ).toFixed(2);
             }
+
 
 
 
@@ -604,34 +615,50 @@ export default function Home(props) {
                 ? parseFloat(doubleword).toFixed(2)
                 : parseFloat(float_value).toFixed(2) || 0;
             };
-
-            num_[key][i] = convertToDoublewordAndFloat(e, "int");
+            if (item.pstate) {
+              num_[key][i] = convertToDoublewordAndFloat(e, "int");
+            } else {
+              num_[key][i] = 0
+            }
 
             if (i == logger.value.length - 1) {
               //console.log(num_)
+
               cal[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
                 }, 0) * parseFloat(value.cal)
               ).toFixed(2);
             }
+
             break;
           default:
-            num_[key][i] =
-              parseFloat(invt[item.psn]?.[value.register] || 0) *
-              parseFloat(value.cal);
-            if (key == "pro_2") {
-              sun_[item.pplantid] =
-                parseFloat(invt[item.psn]?.[value.register]) *
+            if (item.pstate) {
+              num_[key][i] =
+                parseFloat(invt[item.psn]?.[value.register] || 0) *
                 parseFloat(value.cal);
+              if (key == "pro_2") {
+                sun_[item.pplantid] =
+                  parseFloat(invt[item.psn]?.[value.register]) *
+                  parseFloat(value.cal);
+              }
+
+            } else {
+              num_[key][i] = 0
+              sun_[item.pplantid] = 0
+
             }
+
+
             if (i == logger.value.length - 1) {
+
               cal[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return accumulator + currentValue;
                 })
               ).toFixed(2);
             }
+
             break;
         }
       });
@@ -738,10 +765,10 @@ export default function Home(props) {
                       fontFamily: "sans-serif",
                     }}
                   >
-                    {Number(parseFloat(convertUnit(production)).toFixed(2)).toLocaleString("en-US")}
+                    {Number(parseFloat(convertUnit(production / 1000)).toFixed(2)).toLocaleString("en-US")}
                   </span>
                   &nbsp;
-                  <span style={{ color: "gray", fontSize: "13px" }}>{showUnit(production)}W</span>
+                  <span style={{ color: "gray", fontSize: "13px" }}>{showUnit(production / 1000)}W</span>
                 </div>
               </div>
 
