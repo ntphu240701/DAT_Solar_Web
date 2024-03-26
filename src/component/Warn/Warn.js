@@ -145,8 +145,7 @@ export default function Warn(props) {
             ruleInfor.value.setting.warn.remove === true ? (
             <div className="DAT_TableEdit">
               <span
-                id={row.boxid + "" + row.warnid + "_MORE"}
-                // onMouseEnter={(e) => handleModify(e, "block")}
+                id={row.boxid + "_" + row.warnid + "_MORE"}
                 onClick={(e) => handleModify(e, "block")}
               >
                 <IoMdMore size={20} />
@@ -158,7 +157,7 @@ export default function Warn(props) {
 
           <div
             className="DAT_ModifyBox"
-            id={row.boxid + "" + row.warnid + "_Modify"}
+            id={row.boxid + "_" + row.warnid + "_Modify"}
             style={{
               display: "none",
               marginTop: "12px",
@@ -222,7 +221,7 @@ export default function Warn(props) {
   const handleModify = (e, type) => {
     const id = e.currentTarget.id;
     var arr = id.split("_");
-    const mod = document.getElementById(arr[0] + "_Modify");
+    const mod = document.getElementById(`${arr[0]}_${arr[1]}_${arr[2]}_${arr[3]}_Modify`);
     mod.style.display = type;
   };
 
