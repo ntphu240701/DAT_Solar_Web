@@ -29,6 +29,7 @@ export default function Filter(props) {
     setWarnChecked(false);
     setNoticeChecked(false);
     setStartDate("");
+    setEndDate("");
   };
 
   const handleSelect = (e) => {
@@ -71,8 +72,6 @@ export default function Filter(props) {
   const [deviceF, setDeviceF] = useState("all");
 
   useEffect(() => {
-    // Hiển thị ngày tháng năm trong input placeholder 
-    setEndDate(moment().format('YYYY-MM-DD'));
     console.log(deviceF);
   }, [deviceF]);
 
@@ -80,6 +79,9 @@ export default function Filter(props) {
     console.log(e.target.id);
     setDeviceF(e.target.id);
   };
+
+  const today = new Date();
+  const todayString = today.toISOString().split('T')[0];
 
   return (
     <>
@@ -359,6 +361,7 @@ export default function Filter(props) {
                                   value={endDate}
                                   onChange={handleEndDateChange}
                                   min={startDate}
+                                  max={todayString}
                                 />
                               </div>
                             </td>

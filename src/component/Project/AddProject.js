@@ -604,7 +604,6 @@ export default function AddProject(props) {
             state: 0,
             warn: 0,
           };
-          console.log(d.data)
         }
       };
 

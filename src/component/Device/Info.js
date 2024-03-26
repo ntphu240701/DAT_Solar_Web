@@ -9,6 +9,39 @@ import { FaCheckCircle, FaSave } from "react-icons/fa";
 import { MdOutlineError } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import PopupState, { bindHover, bindPopper } from "material-ui-popup-state";
+import { Fade, Paper, Popper, Typography } from "@mui/material";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import DataTable from "react-data-table-component";
+import { Empty } from "../Project/Project";
+
+const data = [
+  {
+    //   senttime: "2021-09-01 00:00:00",
+    //   name: "Grid Start Settings",
+    //   type: "Setting",
+    //   input: "--",
+    //   result: "264.5 V",
+    //   state: "Succeeded",
+    //   reason: "--",
+    //   operator: "Datsolar",
+    //   feedbacktime: "2021-09-01 00:00:00",
+  },
+];
+
+const data_ = [
+  {
+    //   upgradedtime: "2021-09-01 00:00:00",
+    //   package: "Grid Start Settings",
+    //   target: "Setting",
+    //   related: "--",
+    //   state: "Succeeded",
+    //   result: "264.5 V",
+    //   reason: "--",
+    //   operator: "Datsolar",
+    //   feedbacktime: "2021-09-01 00:00:00",
+  },
+];
 
 const BasicInformation = (props) => {
   const dataLang = useIntl();
@@ -1128,10 +1161,887 @@ const GridVolt = (props) => {
   );
 };
 
+const ExportPowerSettings = (props) => {
+  const dataLang = useIntl();
+  const [display, setDisplay] = useState(true);
+
+  return (
+    <div className="DAT_Info_Databox" id="ExportPowerSettings">
+      <div className="DAT_Info_Databox_Title">
+        <div className="DAT_Info_Databox_Title_Left">Export Power Settings</div>
+        <div className="DAT_Info_Databox_Title_Right"
+          onClick={() => setDisplay(!display)}
+        >
+          <IoIosArrowDown
+            size={20}
+            style={{
+              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transition: "0.5s",
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="Animation"
+        style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
+      >
+        {display ? (
+          <div className="DAT_Info_Databox_ExportPowerSettings">
+            <div className="DAT_Info_Databox_ExportPowerSettings_Content">
+              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left">
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
+                    Export Limitter Enable:
+                  </div>
+                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
+                    <select>
+                      <option>Enable</option>
+                      <option>Disable</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item">
+                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
+                    Export Power Limit:
+                  </div>
+                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
+                    <input />
+                    kW
+                  </div>
+                </div>
+              </div>
+              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center">
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
+                    Multi ExportLimit:
+                  </div>
+                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
+                    <select>
+                      <option>Enable</option>
+                      <option>Disable</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item">
+                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
+                    ExportLimit Way:
+                  </div>
+                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
+                    <select>
+                      <option>Limit Single-Phase Power</option>
+                      <option>Limit Three-Phase Power</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right">
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
+                    Meter Type:
+                  </div>
+                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
+                    <select>
+                      <option>CT</option>
+                      <option>Tandardel Meter</option>
+                      <option>DFUN Meter</option>
+                      <option>Eastron Meter</option>
+                      <option>Chint Meter</option>
+                      <option>Gridbox2</option>
+                      <option>Anti-Rejection Box</option>
+                      <option>Yada Meter</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="DAT_Info_Databox_ExportPowerSettings_Foot">
+              <button>Read</button>
+              <button>Setup</button>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const DeviceSettings = (props) => {
+  const dataLang = useIntl();
+  const [display, setDisplay] = useState(true);
+
+  return (
+    <div className="DAT_Info_Databox" id="DeviceSettings">
+      <div className="DAT_Info_Databox_Title">
+        <div className="DAT_Info_Databox_Title_Left">Device Settings</div>
+        <div className="DAT_Info_Databox_Title_Right"
+          onClick={() => setDisplay(!display)}
+        >
+          <IoIosArrowDown
+            size={20}
+            style={{
+              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transition: "0.5s",
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="Animation"
+        style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
+      >
+        {display ? (
+          <div className="DAT_Info_Databox_DeviceSettings">
+            <div className="DAT_Info_Databox_DeviceSettings_Content">
+              <div className="DAT_Info_Databox_DeviceSettings_Content_Left">
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
+                    Remote Control:
+                  </div>
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Content">
+                    <select>
+                      <option>Power On</option>
+                      <option>Power Off</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
+                    Safety Setting:
+                  </div>
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Content">
+                    <select>
+                      <option>CQC2013</option>
+                      <option>SKYWORTH</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item">
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
+                    AC High-Voltage Load Limit:
+                  </div>
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Content">
+                    <select>
+                      <option>Enable</option>
+                      <option>Disable</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className="DAT_Info_Databox_DeviceSettings_Content_Center">
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Tit">
+                    Active Power Setting:
+                  </div>
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Content">
+                    <input />
+                    %
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item">
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Tit">
+                    Virtual Zero Line Enable:
+                  </div>
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Content">
+                    <select>
+                      <option>Enable</option>
+                      <option>Disable</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div className="DAT_Info_Databox_DeviceSettings_Content_Right">
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item_Tit">
+                    Reactive Power Control Way:
+                  </div>
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item_Content">
+                    <select>
+                      <option>Power Factor Control</option>
+                      <option>Reactive Power Percentage Control</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item">
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item_Tit">
+                    Input Mode Settings:
+                  </div>
+                  <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item_Content">
+                    <select>
+                      <option>Independent Mode</option>
+                      <option>Parallel Mode</option>
+                      <option>DC Source Mode</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="DAT_Info_Databox_DeviceSettings_Foot">
+              <button>Read</button>
+              <button>Setup</button>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const GridInfo = (props) => {
+  const dataLang = useIntl();
+  const [display, setDisplay] = useState(true);
+
+  return (
+    <div className="DAT_Info_Databox" id="GridInfo">
+      <div className="DAT_Info_Databox_Title">
+        <div className="DAT_Info_Databox_Title_Left">Grid Infomation</div>
+        <div className="DAT_Info_Databox_Title_Right"
+          onClick={() => setDisplay(!display)}
+        >
+          <IoIosArrowDown
+            size={20}
+            style={{
+              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transition: "0.5s",
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="Animation"
+        style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
+      >
+        {display ? (
+          <div className="DAT_Info_Databox_GridInfo">
+            <div className="DAT_Info_Databox_GridInfo_Content">
+              <div className="DAT_Info_Databox_GridInfo_Content_Left">
+                <div className="DAT_Info_Databox_GridInfo_Content_Left_Item">
+                  <div className="DAT_Info_Databox_GridInfo_Content_Left_Item_Tit">
+                    Inerter Status:
+                  </div>
+                  <div className="DAT_Info_Databox_GridInfo_Content_Left_Item_Content">
+                    <select>
+                      <option>Init</option>
+                      <option>Wait</option>
+                      <option>On Grid</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="DAT_Info_Databox_GridInfo_Foot">
+              <button>Read</button>
+              <button>Setup</button>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const LastCommandRecord = (props) => {
+  const dataLang = useIntl();
+
+  return (
+    <div className="DAT_Info_Databox" id="LastCommandRecord">
+      <div className="DAT_Info_Databox_Title">
+        <div className="DAT_Info_Databox_Title_Left">Last Command Record</div>
+      </div>
+
+      <div className="DAT_Info_Databox_LastCommandRecord">
+        <div className="DAT_Info_Databox_LastCommandRecord_Content">
+          <div className="DAT_Info_Databox_LastCommandRecord_Content_Left">
+            <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item" style={{ marginBottom: "24px" }}>
+              <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item_Tit">
+                Inerter Status:
+              </div>
+              <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item_Content">
+                Read AC Start High Volt
+              </div>
+            </div>
+            <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item">
+              <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item_Tit">
+                Read Result:
+              </div>
+              <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item_Content">
+                264.5 V
+              </div>
+            </div>
+          </div>
+          <div className="DAT_Info_Databox_LastCommandRecord_Content_Center">
+            <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item" style={{ marginBottom: "24px" }}>
+              <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item_Tit">
+                Command Type:
+              </div>
+              <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item_Content">
+                Read
+              </div>
+            </div>
+            <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item">
+              <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item_Tit">
+                Send time:
+              </div>
+              <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item_Content">
+                2024/03/25 10:30:49 UTC+07:00
+              </div>
+            </div>
+          </div>
+          <div className="DAT_Info_Databox_LastCommandRecord_Content_Right">
+            <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item" style={{ marginBottom: "24px" }}>
+              <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item_Tit">
+                Command State:
+              </div>
+              <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item_Content">
+                <FaCheckCircle size={16} color="green" />
+                <span style={{ color: "green" }}>
+                  Succeeded
+                </span>
+              </div>
+            </div>
+            <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item">
+              <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item_Tit">
+                Feedback Time:
+              </div>
+              <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item_Content">
+                2024/03/25 10:30:50 UTC+07:00
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SelectCommand = (props) => {
+  const dataLang = useIntl();
+  const [display, setDisplay] = useState(true);
+
+  return (
+    <div className="DAT_Info_Databox" id="SelectCommand">
+      <div className="DAT_Info_Databox_Title">
+        <div className="DAT_Info_Databox_Title_Left">Select Command</div>
+      </div>
+
+      <div className="DAT_Info_Databox_SelectCommand">
+        <div className="DAT_Info_Databox_SelectCommand_Content">
+          <div className="DAT_Info_Databox_SelectCommand_Content_Left">
+            <div className="DAT_Info_Databox_SelectCommand_Content_Left_Item">
+              <div className="DAT_Info_Databox_SelectCommand_Content_Left_Item_Tit">
+                Inerter Status:
+              </div>
+              <div className="DAT_Info_Databox_SelectCommand_Content_Left_Item_Content">
+                <select>
+                  <option>Init</option>
+                  <option>Wait</option>
+                  <option>On Grid</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="DAT_Info_Databox_SelectCommand_Foot">
+          <div className="DAT_Info_Databox_SelectCommand_Foot_Item">
+            <span>
+              Timeout:
+            </span>
+            <input />
+            <span>Minute</span>
+
+            <div className="DAT_Home_Overview-Main-Percent-Icon" style={{ cursor: 'pointer' }}>
+              <PopupState variant="popper" popupId="demo-popup-popper">
+                {(popupState) => (
+                  <div style={{ cursor: 'pointer' }}>
+                    <HelpOutlineIcon
+                      {...bindHover(popupState)}
+                      color="action"
+                      fontSize="9px" />
+                    <Popper {...bindPopper(popupState)} transition >
+                      {({ TransitionProps }) => (
+                        <Fade {...TransitionProps} timeout={350}>
+                          <Paper sx={{ width: '400px', marginLeft: '200px', p: 2 }}>
+                            <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                              {dataLang.formatMessage({ id: 'overview1' })}
+                            </Typography>
+                          </Paper>
+                        </Fade>
+                      )}
+                    </Popper>
+                  </div>
+                )}
+              </PopupState>
+            </div>
+          </div>
+          <button>Send Command</button>
+        </div>
+      </div >
+    </div >
+  );
+};
+
+const CustomizedCommand = (props) => {
+  const dataLang = useIntl();
+
+  return (
+    <>
+      <div className="DAT_Info_Databox" id="CustomizedCommand">
+        <div className="DAT_Info_Databox_CustomizedCommand">
+          <div className="DAT_Info_Databox_CustomizedCommand_Content" style={{ height: "300px" }}>
+          </div>
+        </div>
+      </div>
+
+      <div className="DAT_Info_Databox" id="CustomizedCommand">
+        <div className="DAT_Info_Databox_CustomizedCommand">
+          <div className="DAT_Info_Databox_CustomizedCommand_Foot">
+            <div className="DAT_Info_Databox_CustomizedCommand_Foot_Func">
+              <select>
+                <option>3 minutes timeout</option>
+                <option>3 minutes timeout</option>
+                <option>3 minutes timeout</option>
+              </select>
+              <button>Click Calculate CRC</button>
+            </div>
+            <textarea />
+            <div className="DAT_Info_Databox_CustomizedCommand_Foot_Button">
+              <button>Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const ControlLog = (props) => {
+  const dataLang = useIntl();
+
+  const paginationComponentOptions = {
+    rowsPerPageText: dataLang.formatMessage({ id: "row" }),
+    rangeSeparatorText: dataLang.formatMessage({ id: "to" }),
+    selectAllRowsItem: true,
+    selectAllRowsItemText: dataLang.formatMessage({ id: "showAll" }),
+  };
+
+  const columnLog = [
+    {
+      name: "Sent Time",
+      selector: (row) => row.senttime,
+      sortable: true,
+      // width: "80px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Command Name",
+      selector: (row) => row.name,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Command Type",
+      selector: (row) => row.type,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Inputs",
+      selector: (row) => row.input,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Return Result(s)",
+      selector: (row) => row.result,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Command State",
+      selector: (row) => row.state,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Reason of Failure",
+      selector: (row) => row.reason,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Operator",
+      selector: (row) => row.operator,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Feedback Time",
+      selector: (row) => row.feedbacktime,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+  ];
+
+  return (
+    <div className="DAT_Info_Databox" id="ControlLog">
+      <div className="DAT_Info_Databox_Title">
+        <div className="DAT_Info_Databox_Title_Left">
+          <select>
+            <option>Command State</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="DAT_Info_Databox_ControlLog">
+        <DataTable
+          className="DAT_Table_Device"
+          columns={columnLog}
+          data={data}
+          pagination
+          paginationComponentOptions={paginationComponentOptions}
+          fixedHeader={true}
+          noDataComponent={<Empty />}
+        />
+      </div>
+    </div>
+  );
+};
+
+const FirmwareUpgrade = (props) => {
+  const dataLang = useIntl();
+
+  return (
+    <>
+      <div className="DAT_Info_Databox" id="FirmwareUpgrade">
+        <div className="DAT_Info_Databox_Title">
+          <div className="DAT_Info_Databox_Title_Left">Current Version Info</div>
+        </div>
+
+        <div className="DAT_Info_Databox_FirmwareUpgrade">
+          <div className="DAT_Info_Databox_FirmwareUpgrade_Current">
+            <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left">
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left_Item">
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left_Item_Tit">
+                  Certification Version Number:
+                </div>
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left_Item_Content">
+                  GAA
+                </div>
+              </div>
+            </div>
+            <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center">
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center_Item">
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center_Item_Tit">
+                  Internal Software Version Number:
+                </div>
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center_Item_Content">
+                  1110-0-0-203
+                </div>
+              </div>
+            </div>
+            <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right">
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right_Item">
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right_Item_Tit">
+                  Upgrade Flag Bit:
+                </div>
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right_Item_Content">
+                  2
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="DAT_Info_Databox" id="FirmwareUpgrade">
+        <div className="DAT_Info_Databox_Title">
+          <div className="DAT_Info_Databox_Title_Left">Last Upgrade Record</div>
+        </div>
+
+        <div className="DAT_Info_Databox_FirmwareUpgrade">
+          <div className="DAT_Info_Databox_FirmwareUpgrade_Last">
+            <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left">
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item_Tit">
+                  Target Version:
+                </div>
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item_Content">
+                  XG5-10KTL_arm_203_Vietnam
+                </div>
+              </div>
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item">
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item_Tit">
+                  Upgrade phase:
+                </div>
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item_Content">
+                  <FaCheckCircle size={16} color="green" />
+                  <span style={{ color: "green" }}>
+                    Succeeded
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center">
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item_Tit">
+                  Related Version:
+                </div>
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item_Content">
+                  Internal Software Version Number
+                </div>
+              </div>
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item">
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item_Tit">
+                  Feedback Time:
+                </div>
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item_Content">
+                  2024/03/11 08:50:17 UTC+07:00
+                </div>
+              </div>
+            </div>
+            <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Right">
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Right_Item">
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Right_Item_Tit">
+                  Upgraded Time:
+                </div>
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Right_Item_Content">
+                  2024/03/11 08:48:18 UTC+07:00
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="DAT_Info_Databox" id="FirmwareUpgrade">
+        <div className="DAT_Info_Databox_Title">
+          <div className="DAT_Info_Databox_Title_Left">Upgrade operation</div>
+          <div className="DAT_Info_Databox_Title_Right">
+            <span>Logger download methods:</span>
+            <select>
+              <option>IP Download</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="DAT_Info_Databox_FirmwareUpgrade">
+          <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade">
+            <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left">
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item_Tit">
+                  Select Firmware Package:
+                </div>
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item_Content">
+                  <button>
+                    Click Select Firmware Package
+                  </button>
+                </div>
+              </div>
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item">
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item_Tit">
+                  Timeout:
+
+                  <div className="DAT_Home_Overview-Main-Percent-Icon" style={{ cursor: 'pointer' }}>
+                    <PopupState variant="popper" popupId="demo-popup-popper">
+                      {(popupState) => (
+                        <div style={{ cursor: 'pointer' }}>
+                          <HelpOutlineIcon
+                            {...bindHover(popupState)}
+                            color="action"
+                            fontSize="9px" />
+                          <Popper {...bindPopper(popupState)} transition >
+                            {({ TransitionProps }) => (
+                              <Fade {...TransitionProps} timeout={350}>
+                                <Paper sx={{ width: '400px', marginLeft: '200px', p: 2 }}>
+                                  <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
+                                    {dataLang.formatMessage({ id: 'overview1' })}
+                                  </Typography>
+                                </Paper>
+                              </Fade>
+                            )}
+                          </Popper>
+                        </div>
+                      )}
+                    </PopupState>
+                  </div>
+                </div>
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item_Content">
+                  <input />
+                  <span>Minute</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="DAT_Info_Databox_FirmwareUpgrade_Foot">
+            <button>Start upgrading</button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const UpgradelLog = (props) => {
+  const dataLang = useIntl();
+
+  const paginationComponentOptions = {
+    rowsPerPageText: dataLang.formatMessage({ id: "row" }),
+    rangeSeparatorText: dataLang.formatMessage({ id: "to" }),
+    selectAllRowsItem: true,
+    selectAllRowsItemText: dataLang.formatMessage({ id: "showAll" }),
+  };
+
+  const columnLog = [
+    {
+      name: "Upgraded Time",
+      selector: (row) => row.upgradedtime,
+      sortable: true,
+      // width: "80px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Firmware Package",
+      selector: (row) => row.package,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Target Version",
+      selector: (row) => row.target,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Related Version",
+      selector: (row) => row.related,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Upgrade State",
+      selector: (row) => row.state,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Parse Result",
+      selector: (row) => row.result,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Reason of Failure",
+      selector: (row) => row.reason,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Operator",
+      selector: (row) => row.operator,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+    {
+      name: "Feedback Time",
+      selector: (row) => row.feedbacktime,
+      sortable: true,
+      // width: "180px",
+      style: {
+        justifyContent: "left",
+      },
+    },
+  ];
+
+  return (
+    <div className="DAT_Info_Databox" id="ControlLog">
+      <div className="DAT_Info_Databox_Title">
+        <div className="DAT_Info_Databox_Title_Left">
+          <select>
+            <option>Upgrade State</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="DAT_Info_Databox_ControlLog">
+        <DataTable
+          className="DAT_Table_Device"
+          columns={columnLog}
+          data={data_}
+          pagination
+          paginationComponentOptions={paginationComponentOptions}
+          fixedHeader={true}
+          noDataComponent={<Empty />}
+        />
+      </div>
+    </div>
+  );
+};
+
 export default function Info(props) {
   const dataLang = useIntl();
   const [dropState, setDropState] = useState(false);
   const [view, setView] = useState("detail");
+  const [nav, setNav] = useState("batch");
+  const [nav_, setNav_] = useState("firmware");
 
   return (
     <div className="DAT_Info">
@@ -1142,11 +2052,22 @@ export default function Info(props) {
               {info.value.pname}: {info.value.psn}
             </p>
             <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              {info.value.invt?.[info.value.pdata.status] == 2 ? (
-                <FaCheckCircle size={20} color="green" />
-              ) : (
-                <MdOutlineError size={22} color="red" />
-              )}
+              {tab.value == "logger"
+                ? <>
+                  {info.value.pstate == 1 ? (
+                    <FaCheckCircle size={20} color="green" />
+                  ) : (
+                    <MdOutlineError size={22} color="red" />
+                  )}
+                </>
+                : <>
+                  {info.value.invt?.[info.value.pdata.status] == 2 ? (
+                    <FaCheckCircle size={20} color="green" />
+                  ) : (
+                    <MdOutlineError size={22} color="red" />
+                  )}
+                </>
+              }
             </p>
           </div>
           {(() => {
@@ -1154,17 +2075,52 @@ export default function Info(props) {
               case "control":
                 return (
                   <div style={{ display: "flex", alignItems: "center", gap: "20px", paddingLeft: "16px" }}>
-                    <button className="DAT_Info_Header_Left_Item">
+                    <button className="DAT_Info_Header_Left_Item"
+                      id="batch"
+                      onClick={() => { setNav("batch") }}
+                      style={{ color: nav === "batch" ? "#6495ed" : "gray", borderBottom: nav === "batch" ? "solid 2px #6495ed" : "solid 2px white" }}
+                    >
                       Batch Command
                     </button>
-                    <button className="DAT_Info_Header_Left_Item">
+                    <button className="DAT_Info_Header_Left_Item"
+                      id="single"
+                      onClick={() => { setNav("single") }}
+                      style={{ color: nav === "single" ? "#6495ed" : "gray", borderBottom: nav === "single" ? "solid 2px #6495ed" : "solid 2px white" }}
+                    >
                       Single Command
                     </button>
-                    <button className="DAT_Info_Header_Left_Item">
+                    <button className="DAT_Info_Header_Left_Item"
+                      id="customized"
+                      onClick={() => { setNav("customized") }}
+                      style={{ color: nav === "customized" ? "#6495ed" : "gray", borderBottom: nav === "customized" ? "solid 2px #6495ed" : "solid 2px white" }}
+                    >
                       Customized Command
                     </button>
-                    <button className="DAT_Info_Header_Left_Item">
+                    <button className="DAT_Info_Header_Left_Item"
+                      id="log"
+                      onClick={() => { setNav("log") }}
+                      style={{ color: nav === "log" ? "#6495ed" : "gray", borderBottom: nav === "log" ? "solid 2px #6495ed" : "solid 2px white" }}
+                    >
                       Control Log
+                    </button>
+                  </div>
+                )
+              case "update":
+                return (
+                  <div style={{ display: "flex", alignItems: "center", gap: "20px", paddingLeft: "16px" }}>
+                    <button className="DAT_Info_Header_Left_Item"
+                      id="firmware"
+                      onClick={() => { setNav_("firmware") }}
+                      style={{ color: nav_ === "firmware" ? "#6495ed" : "gray", borderBottom: nav_ === "firmware" ? "solid 2px #6495ed" : "solid 2px white" }}
+                    >
+                      Firmware Upgrade
+                    </button>
+                    <button className="DAT_Info_Header_Left_Item"
+                      id="upgrade"
+                      onClick={() => { setNav_("upgrade") }}
+                      style={{ color: nav_ === "upgrade" ? "#6495ed" : "gray", borderBottom: nav_ === "upgrade" ? "solid 2px #6495ed" : "solid 2px white" }}
+                    >
+                      Upgrade Log
                     </button>
                   </div>
                 )
@@ -1179,9 +2135,7 @@ export default function Info(props) {
             switch (tab.value) {
               case 'logger':
                 return (
-                  <div className="DAT_Info_Header_Right_Close" onClick={() => {
-                    infoState.value = false;
-                  }}>
+                  <div className="DAT_Info_Header_Right_Close" onClick={() => { infoState.value = false; }}>
                     <RxCross2
                       size={20}
                       color="white"
@@ -1199,9 +2153,7 @@ export default function Info(props) {
                       />
                     </div>
 
-                    <div className="DAT_Info_Header_Right_Close" onClick={() => {
-                      infoState.value = false;
-                    }}>
+                    <div className="DAT_Info_Header_Right_Close" onClick={() => { infoState.value = false; }}>
                       <RxCross2
                         size={20}
                         color="white"
@@ -1226,8 +2178,60 @@ export default function Info(props) {
                     case "control":
                       return (
                         <>
-                          <GridStartSettings />
-                          <GridVolt />
+                          {(() => {
+                            switch (nav) {
+                              case "single":
+                                return (
+                                  <>
+                                    <LastCommandRecord />
+                                    <SelectCommand />
+                                  </>
+                                )
+                              case "customized":
+                                return (
+                                  <>
+                                    <CustomizedCommand />
+                                  </>
+                                )
+                              case "log":
+                                return (
+                                  <>
+                                    <ControlLog />
+                                  </>
+                                )
+                              default:
+                                return (
+                                  <>
+                                    <GridStartSettings />
+                                    <GridVolt />
+                                    <ExportPowerSettings />
+                                    <DeviceSettings />
+                                    <GridInfo />
+                                  </>
+                                )
+                            }
+                          })()}
+                        </>
+                      )
+                    case "update":
+                      return (
+                        <>
+                          {(() => {
+                            switch (nav_) {
+                              case "upgrade":
+                                return (
+                                  <>
+                                    <UpgradelLog />
+                                  </>
+                                )
+                              default:
+                                return (
+                                  <>
+                                    <FirmwareUpgrade />
+                                  </>
+                                )
+                            }
+                          })()}
                         </>
                       )
                     default:
@@ -1271,18 +2275,26 @@ export default function Info(props) {
 
       {dropState ? (
         <div className="DAT_InfoDrop">
-          {view == "detail" ? (
-            <>
-              <div className="DAT_InfoDrop_Item"
-                style={{ borderBottom: "1px solid #e0e0e0" }}
-                onClick={() => { setView("control"); setDropState(false) }}
-              >
-                {dataLang.formatMessage({ id: 'control' })}
-              </div>
-              <div className="DAT_InfoDrop_Item" onClick={() => { setDropState(false) }}>
-                update
-              </div>
-            </>
+          {/* {view == "detail" ? (
+            <> */}
+          <div className="DAT_InfoDrop_Item"
+            style={{ borderBottom: "1px solid #e0e0e0" }}
+            onClick={() => { setView("detail"); setDropState(false) }}
+          >
+            {dataLang.formatMessage({ id: 'monitor' })}
+          </div>
+          <div className="DAT_InfoDrop_Item"
+            style={{ borderBottom: "1px solid #e0e0e0" }}
+            onClick={() => { setView("control"); setDropState(false) }}
+          >
+            {dataLang.formatMessage({ id: 'control' })}
+          </div>
+          <div className="DAT_InfoDrop_Item"
+            onClick={() => { setView("update"); setDropState(false) }}
+          >
+            {dataLang.formatMessage({ id: 'update' })}
+          </div>
+          {/* </>
           ) : (
             <>
               <div className="DAT_InfoDrop_Item"
@@ -1291,11 +2303,11 @@ export default function Info(props) {
               >
                 {dataLang.formatMessage({ id: 'monitor' })}
               </div>
-              <div className="DAT_InfoDrop_Item" onClick={() => { setDropState(false) }}>
+              <div className="DAT_InfoDrop_Item" onClick={() => { setView("update"); setDropState(false) }}>
                 update
               </div>
             </>
-          )}
+          )} */}
         </div>
       ) : (
         <></>
