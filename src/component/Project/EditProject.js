@@ -589,8 +589,8 @@ export default function EditProject(props) {
           angle: projectData.value.angle,
           currency: projectData.value.currency,
           price: projectData.value.price,
-          production: projectData.value.production,
-          power: projectData.value.power,
+          production: "0",
+          power: "0",
           partnerid: userInfor.value.partnerid,
           usrtype: userInfor.value.type,
           img: projectData.value.img ? projectData.value.img : "/dat_picture/solar_panel.png"

@@ -72,6 +72,7 @@ import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import PopupState, { bindHover, bindPopper } from "material-ui-popup-state";
 import { Fade, Paper, Popper, Typography } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import { filter } from "lodash";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -99,6 +100,84 @@ const dataMeter = [];
 
 const dataAlert = [];
 
+const filterchart = signal({
+  grid: {
+    date: {
+      productionData: true,
+    },
+    month: {
+      productionData: true,
+    },
+    year: {
+      productionData: true,
+    },
+    total: {
+      productionData: true,
+    },
+  },
+  consumption: {
+    date: {
+      productionData: true,
+      gridData: true,
+      consumptionData: true,
+      
+    },
+    month: {
+      productionData: true,
+      consumptionData: true,
+      dailygridin: true,
+      dailygridout: true,
+      
+    },
+    year: {
+      productionData: true,
+      consumptionData: true,
+      dailygridin: true,
+      dailygridout: true,
+     
+    },
+    total: {
+      productionData: true,
+      consumptionData: true,
+      dailygridin: true,
+      dailygridout: true,
+     
+    },
+  },
+  hybrid: {
+    date: {
+      productionData: true,
+      gridData: true,
+      consumptionData: true,
+      batteryData: true,
+    },
+    month: {
+      productionData: true,
+      consumptionData: true,
+      dailygridin: true,
+      dailygridout: true,
+      charge: true,
+      discharge: true,
+    },
+    year: {
+      productionData: true,
+      consumptionData: true,
+      dailygridin: true,
+      dailygridout: true,
+      charge: true,
+      discharge: true,
+    },
+    total: {
+      productionData: true,
+      consumptionData: true,
+      dailygridin: true,
+      dailygridout: true,
+      charge: true,
+      discharge: true,
+    },
+  },
+});
+
 export default function ProjectData(props) {
   const dataLang = useIntl();
   const lang = useSelector((state) => state.admin.lang);
@@ -119,7 +198,8 @@ export default function ProjectData(props) {
   const [vDay4, setVDay4] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataMonth, setDataMonth] = useState([]);
 
-  const [vMonth, setVMonth] = useState(dataLang.formatMessage({ id: "unknown" })
+  const [vMonth, setVMonth] = useState(
+    dataLang.formatMessage({ id: "unknown" })
   );
   const [vMonth2, setVMonth2] = useState(
     dataLang.formatMessage({ id: "unknown" })
@@ -139,18 +219,40 @@ export default function ProjectData(props) {
 
   const [dataYear, setDataYear] = useState([]);
   const [vYear, setVYear] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vYear2, setVYear2] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vYear3, setVYear3] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vYear4, setVYear4] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vYear5, setVYear5] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vYear6, setVYear6] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear2, setVYear2] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vYear3, setVYear3] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vYear4, setVYear4] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vYear5, setVYear5] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vYear6, setVYear6] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
   const [dataTotal, setDataTotal] = useState([]);
-  const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vTotal2, setVTotal2] = useState(dataLang.formatMessage({ id: "unknown" }))
-  const [vTotal3, setVTotal3] = useState(dataLang.formatMessage({ id: "unknown" }))
-  const [vTotal4, setVTotal4] = useState(dataLang.formatMessage({ id: "unknown" }))
-  const [vTotal5, setVTotal5] = useState(dataLang.formatMessage({ id: "unknown" }))
-  const [vTotal6, setVTotal6] = useState(dataLang.formatMessage({ id: "unknown" }))
+  const [vTotal, setVTotal] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vTotal2, setVTotal2] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vTotal3, setVTotal3] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vTotal4, setVTotal4] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vTotal5, setVTotal5] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vTotal6, setVTotal6] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
   const [snlogger, setSnlogger] = useState(
     dataLang.formatMessage({ id: "unknown" })
   );
@@ -256,9 +358,9 @@ export default function ProjectData(props) {
         <>
           {row.data.daily?.register
             ? parseFloat(
-              invt[row.logger_]?.[row.data.daily.register] *
-              row.data.daily?.cal
-            ).toFixed(2)
+                invt[row.logger_]?.[row.data.daily.register] *
+                  row.data.daily?.cal
+              ).toFixed(2)
             : 0}{" "}
           kWh
         </>
@@ -366,7 +468,7 @@ export default function ProjectData(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify === true ||
-            ruleInfor.value.setting.project.delete === true ? (
+          ruleInfor.value.setting.project.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.sn + "_MORE"}
@@ -583,6 +685,7 @@ export default function ProjectData(props) {
 
   const handleDate = (e) => {
     var id = e.currentTarget.id;
+    setDropConfig(false);
     setDateType(id);
   };
 
@@ -827,7 +930,15 @@ export default function ProjectData(props) {
           for (let i = 1; i <= 12; i++) {
             datayear_ = [
               ...datayear_,
-              { month: i < 10 ? `0${i}` : `${i}`, [vYear]: 0, [vYear2]: 0, [vYear3]: 0, [vYear4]: 0, [vYear5]: 0, [vYear6]: 0 },
+              {
+                month: i < 10 ? `0${i}` : `${i}`,
+                [vYear]: 0,
+                [vYear2]: 0,
+                [vYear3]: 0,
+                [vYear4]: 0,
+                [vYear5]: 0,
+                [vYear6]: 0,
+              },
             ];
           }
           d.data.data.map((item, i) => {
@@ -850,19 +961,19 @@ export default function ProjectData(props) {
               ).toFixed(2);
               cal.value["con_year"] = parseFloat(
                 sum_year2.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2)
+              ).toFixed(2);
               cal.value["grid_in_year"] = parseFloat(
                 sum_year3.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2)
+              ).toFixed(2);
               cal.value["grid_out_year"] = parseFloat(
                 sum_year4.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2)
+              ).toFixed(2);
               cal.value["bat_in_year"] = parseFloat(
                 sum_year5.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2)
+              ).toFixed(2);
               cal.value["bat_out_year"] = parseFloat(
                 sum_year6.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2)
+              ).toFixed(2);
             }
           });
           setVYear(vYear);
@@ -1139,7 +1250,15 @@ export default function ProjectData(props) {
         for (let i = 1; i <= 12; i++) {
           datayear_ = [
             ...datayear_,
-            { month: i < 10 ? `0${i}` : `${i}`, [vYear]: 0, [vYear2]: 0, [vYear3]: 0, [vYear4]: 0, [vYear5]: 0, [vYear6]: 0 },
+            {
+              month: i < 10 ? `0${i}` : `${i}`,
+              [vYear]: 0,
+              [vYear2]: 0,
+              [vYear3]: 0,
+              [vYear4]: 0,
+              [vYear5]: 0,
+              [vYear6]: 0,
+            },
           ];
         }
         d.data.data.map((item, i) => {
@@ -1162,19 +1281,19 @@ export default function ProjectData(props) {
             ).toFixed(2);
             cal.value["con_year"] = parseFloat(
               sum_year2.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2)
+            ).toFixed(2);
             cal.value["grid_in_year"] = parseFloat(
               sum_year3.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2)
+            ).toFixed(2);
             cal.value["grid_out_year"] = parseFloat(
               sum_year4.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2)
+            ).toFixed(2);
             cal.value["bat_in_year"] = parseFloat(
               sum_year5.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2)
+            ).toFixed(2);
             cal.value["bat_out_year"] = parseFloat(
               sum_year6.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2)
+            ).toFixed(2);
           }
         });
         setVYear(vYear);
@@ -1204,12 +1323,12 @@ export default function ProjectData(props) {
       setDataTotal([]);
       if (d.status) {
         //console.log(d.data)
-        let vTotal = dataLang.formatMessage({ id: 'yearproduction' });
-        let vTotal2 = dataLang.formatMessage({ id: 'yearconsumption' });
-        let vTotal3 = dataLang.formatMessage({ id: 'yeargridin' });
-        let vTotal4 = dataLang.formatMessage({ id: 'yeargridout' });
-        let vTotal5 = dataLang.formatMessage({ id: 'yearbatteryin' });
-        let vTotal6 = dataLang.formatMessage({ id: 'yearbatteryout' });
+        let vTotal = dataLang.formatMessage({ id: "yearproduction" });
+        let vTotal2 = dataLang.formatMessage({ id: "yearconsumption" });
+        let vTotal3 = dataLang.formatMessage({ id: "yeargridin" });
+        let vTotal4 = dataLang.formatMessage({ id: "yeargridout" });
+        let vTotal5 = dataLang.formatMessage({ id: "yearbatteryin" });
+        let vTotal6 = dataLang.formatMessage({ id: "yearbatteryout" });
 
         let sum_total = [];
         let sum_total2 = [];
@@ -1459,6 +1578,186 @@ export default function ProjectData(props) {
       document.removeEventListener("mousedown", handleOutsideUser);
     };
   }, [invt]);
+
+  const handlefilterchart = (e) => {
+    const state = e.currentTarget.checked;
+    const chartfield = e.currentTarget.id.split("_");
+    console.log(chartfield);
+    const temp = filterchart.value;
+    temp[chartfield[1]][dateType][chartfield[0]] = state;
+    filterchart.value = temp;
+    console.log(filterchart.value);
+  };
+
+  const Checkboxfilter = (props) => {
+    return (
+      <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+        <tbody>
+          <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+            <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+              {dataLang.formatMessage({
+                id: "production",
+              })}
+            </th>
+            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                <input
+                  id={"productionData_" + projectData.value.plantmode}
+                  type="checkbox"
+                  defaultChecked={
+                    filterchart.value[projectData.value.plantmode][dateType]
+                      .productionData
+                  }
+                  onChange={(e) => {
+                    handlefilterchart(e);
+                  }}
+                />
+                <label
+                  htmlFor={"productionData_" + projectData.value.plantmode}
+                >
+                  {dataLang.formatMessage({
+                    id: "production",
+                  })}
+                </label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <tbody>
+          <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+            <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+              {dataLang.formatMessage({
+                id: "consumption",
+              })}
+            </th>
+            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                <input
+                  id={"consumptionData_" + projectData.value.plantmode}
+                  type="checkbox"
+                  defaultChecked={
+                    filterchart.value[projectData.value.plantmode][dateType]
+                      .consumptionData
+                  }
+                  onChange={(e) => {
+                    handlefilterchart(e);
+                  }}
+                />
+                <label
+                  htmlFor={"consumptionData_" + projectData.value.plantmode}
+                >
+                  {dataLang.formatMessage({
+                    id: "consumption",
+                  })}
+                </label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <tbody>
+          <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+            <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+              {dataLang.formatMessage({
+                id: "grid",
+              })}
+            </th>
+            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                <input
+                  id={"dailygridin_" + projectData.value.plantmode}
+                  type="checkbox"
+                  defaultChecked={
+                    filterchart.value[projectData.value.plantmode][dateType]
+                      .dailygridin
+                  }
+                  onChange={(e) => {
+                    handlefilterchart(e);
+                  }}
+                />
+                <label htmlFor={"dailygridin_" + projectData.value.plantmode}>
+                  {dataLang.formatMessage({
+                    id: "gridfeed",
+                  })}
+                </label>
+              </div>
+            </td>
+            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                <input
+                  id={"dailygridout_" + projectData.value.plantmode}
+                  type="checkbox"
+                  defaultChecked={
+                    filterchart.value[projectData.value.plantmode][dateType]
+                      .dailygridout
+                  }
+                  onChange={(e) => {
+                    handlefilterchart(e);
+                  }}
+                />
+                <label htmlFor={"dailygridout_" + projectData.value.plantmode}>
+                  {dataLang.formatMessage({
+                    id: "purchaseE",
+                  })}
+                </label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <tbody>
+          <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+            <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+              {dataLang.formatMessage({
+                id: "batteryData",
+              })}
+            </th>
+            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                <input
+                  id={"charge_" + projectData.value.plantmode}
+                  type="checkbox"
+                  defaultChecked={
+                    filterchart.value[projectData.value.plantmode][dateType]
+                      .charge
+                  }
+                  onChange={(e) => {
+                    handlefilterchart(e);
+                  }}
+                />
+                <label htmlFor={"charge_" + projectData.value.plantmode}>
+                  {dataLang.formatMessage({
+                    id: "charge",
+                  })}
+                </label>
+              </div>
+            </td>
+            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                <input
+                  id={"discharge_" + projectData.value.plantmode}
+                  type="checkbox"
+                  defaultChecked={
+                    filterchart.value[projectData.value.plantmode][dateType]
+                      .discharge
+                  }
+                  onChange={(e) => {
+                    handlefilterchart(e);
+                  }}
+                />
+                <label htmlFor={"discharge_" + projectData.value.plantmode}>
+                  {dataLang.formatMessage({
+                    id: "discharge",
+                  })}
+                </label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  };
 
   return (
     <div ref={box}>
@@ -1717,7 +2016,7 @@ export default function ProjectData(props) {
                             color: nav === "battery" ? color.cur : color.pre,
                             display:
                               projectData.value.plantmode === "grid" ||
-                                projectData.value.plantmode === "consumption"
+                              projectData.value.plantmode === "consumption"
                                 ? "none"
                                 : "block",
                           }}
@@ -1892,6 +2191,7 @@ export default function ProjectData(props) {
                           return (
                             <Day
                               data={dataDay}
+                              dateType={dateType}
                               v={vDay}
                               v2={vDay2}
                               v3={vDay3}
@@ -1902,6 +2202,7 @@ export default function ProjectData(props) {
                           return (
                             <Month
                               data={dataMonth}
+                              dateType={dateType}
                               v={vMonth}
                               v2={vMonth2}
                               v3={vMonth3}
@@ -1911,9 +2212,31 @@ export default function ProjectData(props) {
                             />
                           );
                         case "year":
-                          return <Year data={dataYear} v={vYear} v2={vYear2} v3={vYear3} v4={vYear4} v5={vYear5} v6={vYear6} />;
+                          return (
+                            <Year
+                              data={dataYear}
+                              dateType={dateType}
+                              v={vYear}
+                              v2={vYear2}
+                              v3={vYear3}
+                              v4={vYear4}
+                              v5={vYear5}
+                              v6={vYear6}
+                            />
+                          );
                         case "total":
-                          return <Total data={dataTotal} v={vTotal} v2={vTotal2} v3={vTotal3} v4={vTotal4} v5={vTotal5} v6={vTotal6} />;
+                          return (
+                            <Total
+                              data={dataTotal}
+                              dateType={dateType}
+                              v={vTotal}
+                              v2={vTotal2}
+                              v3={vTotal3}
+                              v4={vTotal4}
+                              v5={vTotal5}
+                              v6={vTotal6}
+                            />
+                          );
                         default:
                           <></>;
                       }
@@ -1938,239 +2261,519 @@ export default function ProjectData(props) {
                             {(() => {
                               switch (projectData.value.plantmode) {
                                 case "consumption":
-                                  return (
-                                    <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
-                                      <tbody>
-                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({
-                                              id: "production",
-                                            })}
-                                          </th>
-                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input
-                                                id="Production"
-                                                type="checkbox"
-                                              />
-                                              <label htmlFor="Production">
+                                  // return (
+                                  //   <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                                  //     <tbody>
+                                  //       <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                  //         <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                  //           {dataLang.formatMessage({
+                                  //             id: "production",
+                                  //           })}
+                                  //         </th>
+                                  //         <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                  //           <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  //             <input
+                                  //               id={
+                                  //                 "productionData_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //               type="checkbox"
+                                  //               defaultChecked={
+                                  //                 filterchart.value[
+                                  //                   projectData.value.plantmode
+                                  //                 ][dateType].production
+                                  //               }
+                                  //               onChange={(e) => {
+                                  //                 handlefilterchart(e);
+                                  //               }}
+                                  //             />
+                                  //             <label
+                                  //               htmlFor={
+                                  //                 "productionData_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //             >
+                                  //               {dataLang.formatMessage({
+                                  //                 id: "production",
+                                  //               })}
+                                  //             </label>
+                                  //           </div>
+                                  //         </td>
+                                  //       </tr>
+                                  //     </tbody>
+
+                                  //     <tbody>
+                                  //       <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                  //         <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                  //           {dataLang.formatMessage({
+                                  //             id: "consumption",
+                                  //           })}
+                                  //         </th>
+                                  //         <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                  //           <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  //             <input
+                                  //               id={
+                                  //                 "consumptionData_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //               type="checkbox"
+                                  //               defaultChecked={
+                                  //                 filterchart.value[
+                                  //                   projectData.value.plantmode
+                                  //                 ][dateType].consumption
+                                  //               }
+                                  //               onChange={(e) => {
+                                  //                 handlefilterchart(e);
+                                  //               }}
+                                  //             />
+                                  //             <label
+                                  //               htmlFor={
+                                  //                 "consumptionData_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //             >
+                                  //               {dataLang.formatMessage({
+                                  //                 id: "consumption",
+                                  //               })}
+                                  //             </label>
+                                  //           </div>
+                                  //         </td>
+                                  //       </tr>
+                                  //     </tbody>
+
+                                  //     <tbody>
+                                  //       <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                  //         <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                  //           {dataLang.formatMessage({
+                                  //             id: "grid",
+                                  //           })}
+                                  //         </th>
+                                  //         <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                  //           <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  //             <input
+                                  //               id={
+                                  //                 "dailygridin_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //               type="checkbox"
+                                  //               defaultChecked={
+                                  //                 filterchart.value[
+                                  //                   projectData.value.plantmode
+                                  //                 ][dateType].gridfeed
+                                  //               }
+                                  //               onChange={(e) => {
+                                  //                 handlefilterchart(e);
+                                  //               }}
+                                  //             />
+                                  //             <label
+                                  //               htmlFor={
+                                  //                 "dailygridin_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //             >
+                                  //               {dataLang.formatMessage({
+                                  //                 id: "gridfeed",
+                                  //               })}
+                                  //             </label>
+                                  //           </div>
+                                  //         </td>
+                                  //         <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                  //           <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  //             <input
+                                  //               id={
+                                  //                 "dailygridout_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //               type="checkbox"
+                                  //               defaultChecked={
+                                  //                 filterchart.value[
+                                  //                   projectData.value.plantmode
+                                  //                 ][dateType].purchasee
+                                  //               }
+                                  //               onChange={(e) => {
+                                  //                 handlefilterchart(e);
+                                  //               }}
+                                  //             />
+                                  //             <label
+                                  //               htmlFor={
+                                  //                 "dailygridout_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //             >
+                                  //               {dataLang.formatMessage({
+                                  //                 id: "purchaseE",
+                                  //               })}
+                                  //             </label>
+                                  //           </div>
+                                  //         </td>
+                                  //       </tr>
+                                  //     </tbody>
+                                  //   </table>
+                                  // );
+                                  switch (dateType) {
+                                    case "date":
+                                      return (
+                                        <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                                          <tbody>
+                                            <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                              <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
                                                 {dataLang.formatMessage({
                                                   id: "production",
                                                 })}
-                                              </label>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      </tbody>
+                                              </th>
+                                              <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                  <input
+                                                    id={
+                                                      "productionData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                    type="checkbox"
+                                                    defaultChecked={
+                                                      filterchart.value[
+                                                        projectData.value
+                                                          .plantmode
+                                                      ][dateType].productionData
+                                                    }
+                                                    onChange={(e) => {
+                                                      handlefilterchart(e);
+                                                    }}
+                                                  />
+                                                  <label
+                                                    htmlFor={
+                                                      "productionData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                  >
+                                                    {dataLang.formatMessage({
+                                                      id: "production",
+                                                    })}
+                                                  </label>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
 
-                                      <tbody>
-                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({
-                                              id: "consumption",
-                                            })}
-                                          </th>
-                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input
-                                                id="Production"
-                                                type="checkbox"
-                                              />
-                                              <label htmlFor="Production">
+                                          <tbody>
+                                            <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                              <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
                                                 {dataLang.formatMessage({
                                                   id: "consumption",
                                                 })}
-                                              </label>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      </tbody>
+                                              </th>
+                                              <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                  <input
+                                                    id={
+                                                      "consumptionData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                    type="checkbox"
+                                                    defaultChecked={
+                                                      filterchart.value[
+                                                        projectData.value
+                                                          .plantmode
+                                                      ][dateType]
+                                                        .consumptionData
+                                                    }
+                                                    onChange={(e) => {
+                                                      handlefilterchart(e);
+                                                    }}
+                                                  />
+                                                  <label
+                                                    htmlFor={
+                                                      "consumptionData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                  >
+                                                    {dataLang.formatMessage({
+                                                      id: "consumption",
+                                                    })}
+                                                  </label>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
 
-                                      <tbody>
-                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({
-                                              id: "grid",
-                                            })}
-                                          </th>
-                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input
-                                                id="Production"
-                                                type="checkbox"
-                                              />
-                                              <label htmlFor="Production">
-                                                {dataLang.formatMessage({
-                                                  id: "gridfeed",
-                                                })}
-                                              </label>
-                                            </div>
-                                          </td>
-                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input
-                                                id="Production"
-                                                type="checkbox"
-                                              />
-                                              <label htmlFor="Production">
-                                                {dataLang.formatMessage({
-                                                  id: "purchaseE",
-                                                })}
-                                              </label>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  );
-                                case "hybrid":
-                                  return (
-                                    <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
-                                      <tbody>
-                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({
-                                              id: "production",
-                                            })}
-                                          </th>
-                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input
-                                                id="Production"
-                                                type="checkbox"
-                                              />
-                                              <label htmlFor="Production">
-                                                {dataLang.formatMessage({
-                                                  id: "production",
-                                                })}
-                                              </label>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-
-                                      <tbody>
-                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({
-                                              id: "consumption",
-                                            })}
-                                          </th>
-                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input
-                                                id="Production"
-                                                type="checkbox"
-                                              />
-                                              <label htmlFor="Production">
-                                                {dataLang.formatMessage({
-                                                  id: "consumption",
-                                                })}
-                                              </label>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-
-                                      <tbody>
-                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({
-                                              id: "grid",
-                                            })}
-                                          </th>
-                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input
-                                                id="Production"
-                                                type="checkbox"
-                                              />
-                                              <label htmlFor="Production">
+                                          <tbody>
+                                            <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                              <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
                                                 {dataLang.formatMessage({
                                                   id: "grid",
                                                 })}
-                                              </label>
-                                            </div>
-                                          </td>
-                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input
-                                                id="Production"
-                                                type="checkbox"
-                                              />
-                                              <label htmlFor="Production">
-                                                {dataLang.formatMessage({
-                                                  id: "gridfeed",
-                                                })}
-                                              </label>
-                                            </div>
-                                          </td>
-                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input
-                                                id="Production"
-                                                type="checkbox"
-                                              />
-                                              <label htmlFor="Production">
-                                                {dataLang.formatMessage({
-                                                  id: "purchaseE",
-                                                })}
-                                              </label>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      </tbody>
+                                              </th>
+                                              <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                  <input
+                                                    id={
+                                                      "gridData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                    type="checkbox"
+                                                    defaultChecked={
+                                                      filterchart.value[
+                                                        projectData.value
+                                                          .plantmode
+                                                      ][dateType].gridData
+                                                    }
+                                                    onChange={(e) => {
+                                                      handlefilterchart(e);
+                                                    }}
+                                                  />
+                                                  <label
+                                                    htmlFor={
+                                                      "gridData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                  >
+                                                    {dataLang.formatMessage({
+                                                      id: "grid",
+                                                    })}
+                                                  </label>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
 
-                                      <tbody>
-                                        <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-                                          <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({
-                                              id: "batteryData",
-                                            })}
-                                          </th>
-                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input
-                                                id="Production"
-                                                type="checkbox"
-                                              />
-                                              <label htmlFor="Production">
+                                          {/* <tbody>
+                                            <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                              <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
                                                 {dataLang.formatMessage({
                                                   id: "batteryData",
                                                 })}
-                                              </label>
-                                            </div>
-                                          </td>
-                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input
-                                                id="Production"
-                                                type="checkbox"
-                                              />
-                                              <label htmlFor="Production">
+                                              </th>
+                                              <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                  <input
+                                                    id={
+                                                      "batteryData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                    type="checkbox"
+                                                    defaultChecked={
+                                                      filterchart.value[
+                                                        projectData.value
+                                                          .plantmode
+                                                      ][dateType].batteryData
+                                                    }
+                                                    onChange={(e) => {
+                                                      handlefilterchart(e);
+                                                    }}
+                                                  />
+                                                  <label
+                                                    htmlFor={
+                                                      "batteryData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                  >
+                                                    {dataLang.formatMessage({
+                                                      id: "batteryData",
+                                                    })}
+                                                  </label>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody> */}
+                                        </table>
+                                      );
+                                    case "month":
+                                      return <Checkboxfilter></Checkboxfilter>;
+                                    case "year":
+                                      return <Checkboxfilter></Checkboxfilter>;
+                                    case "total":
+                                      return <Checkboxfilter></Checkboxfilter>;
+                                  }
+                                case "hybrid":
+                                  switch (dateType) {
+                                    case "date":
+                                      return (
+                                        <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                                          <tbody>
+                                            <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                              <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
                                                 {dataLang.formatMessage({
-                                                  id: "charge",
+                                                  id: "production",
                                                 })}
-                                              </label>
-                                            </div>
-                                          </td>
-                                          <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-                                            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input
-                                                id="Production"
-                                                type="checkbox"
-                                              />
-                                              <label htmlFor="Production">
+                                              </th>
+                                              <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                  <input
+                                                    id={
+                                                      "productionData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                    type="checkbox"
+                                                    defaultChecked={
+                                                      filterchart.value[
+                                                        projectData.value
+                                                          .plantmode
+                                                      ][dateType].productionData
+                                                    }
+                                                    onChange={(e) => {
+                                                      handlefilterchart(e);
+                                                    }}
+                                                  />
+                                                  <label
+                                                    htmlFor={
+                                                      "productionData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                  >
+                                                    {dataLang.formatMessage({
+                                                      id: "production",
+                                                    })}
+                                                  </label>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+
+                                          <tbody>
+                                            <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                              <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
                                                 {dataLang.formatMessage({
-                                                  id: "discharge",
+                                                  id: "consumption",
                                                 })}
-                                              </label>
-                                            </div>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  );
+                                              </th>
+                                              <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                  <input
+                                                    id={
+                                                      "consumptionData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                    type="checkbox"
+                                                    defaultChecked={
+                                                      filterchart.value[
+                                                        projectData.value
+                                                          .plantmode
+                                                      ][dateType]
+                                                        .consumptionData
+                                                    }
+                                                    onChange={(e) => {
+                                                      handlefilterchart(e);
+                                                    }}
+                                                  />
+                                                  <label
+                                                    htmlFor={
+                                                      "consumptionData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                  >
+                                                    {dataLang.formatMessage({
+                                                      id: "consumption",
+                                                    })}
+                                                  </label>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+
+                                          <tbody>
+                                            <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                              <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                                {dataLang.formatMessage({
+                                                  id: "grid",
+                                                })}
+                                              </th>
+                                              <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                  <input
+                                                    id={
+                                                      "gridData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                    type="checkbox"
+                                                    defaultChecked={
+                                                      filterchart.value[
+                                                        projectData.value
+                                                          .plantmode
+                                                      ][dateType].gridData
+                                                    }
+                                                    onChange={(e) => {
+                                                      handlefilterchart(e);
+                                                    }}
+                                                  />
+                                                  <label
+                                                    htmlFor={
+                                                      "gridData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                  >
+                                                    {dataLang.formatMessage({
+                                                      id: "grid",
+                                                    })}
+                                                  </label>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+
+                                          <tbody>
+                                            <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                              <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                                {dataLang.formatMessage({
+                                                  id: "batteryData",
+                                                })}
+                                              </th>
+                                              <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                                <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                  <input
+                                                    id={
+                                                      "batteryData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                    type="checkbox"
+                                                    defaultChecked={
+                                                      filterchart.value[
+                                                        projectData.value
+                                                          .plantmode
+                                                      ][dateType].batteryData
+                                                    }
+                                                    onChange={(e) => {
+                                                      handlefilterchart(e);
+                                                    }}
+                                                  />
+                                                  <label
+                                                    htmlFor={
+                                                      "batteryData_" +
+                                                      projectData.value
+                                                        .plantmode
+                                                    }
+                                                  >
+                                                    {dataLang.formatMessage({
+                                                      id: "batteryData",
+                                                    })}
+                                                  </label>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      );
+                                    case "month":
+                                      return <Checkboxfilter></Checkboxfilter>;
+                                    case "year":
+                                      return <Checkboxfilter></Checkboxfilter>;
+                                    case "total":
+                                      return <Checkboxfilter></Checkboxfilter>;
+                                  }
+
                                 case "ESS":
                                   return (
                                     <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
@@ -2184,10 +2787,26 @@ export default function ProjectData(props) {
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                               <input
-                                                id="Production"
+                                                id={
+                                                  "productionData_" +
+                                                  projectData.value.plantmode
+                                                }
                                                 type="checkbox"
+                                                defaultChecked={
+                                                  filterchart.value[
+                                                    projectData.value.plantmode
+                                                  ][dateType].production
+                                                }
+                                                onChange={(e) => {
+                                                  handlefilterchart(e);
+                                                }}
                                               />
-                                              <label htmlFor="Production">
+                                              <label
+                                                htmlFor={
+                                                  "productionData_" +
+                                                  projectData.value.plantmode
+                                                }
+                                              >
                                                 {dataLang.formatMessage({
                                                   id: "production",
                                                 })}
@@ -2207,10 +2826,26 @@ export default function ProjectData(props) {
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                               <input
-                                                id="Production"
+                                                id={
+                                                  "consumptionData_" +
+                                                  projectData.value.plantmode
+                                                }
                                                 type="checkbox"
+                                                defaultChecked={
+                                                  filterchart.value[
+                                                    projectData.value.plantmode
+                                                  ][dateType].consumption
+                                                }
+                                                onChange={(e) => {
+                                                  handlefilterchart(e);
+                                                }}
                                               />
-                                              <label htmlFor="Production">
+                                              <label
+                                                htmlFor={
+                                                  "consumptionData_" +
+                                                  projectData.value.plantmode
+                                                }
+                                              >
                                                 {dataLang.formatMessage({
                                                   id: "consumption",
                                                 })}
@@ -2230,10 +2865,26 @@ export default function ProjectData(props) {
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                               <input
-                                                id="Production"
+                                                id={
+                                                  "grid_" +
+                                                  projectData.value.plantmode
+                                                }
                                                 type="checkbox"
+                                                defaultChecked={
+                                                  filterchart.value[
+                                                    projectData.value.plantmode
+                                                  ][dateType].grid
+                                                }
+                                                onChange={(e) => {
+                                                  handlefilterchart(e);
+                                                }}
                                               />
-                                              <label htmlFor="Production">
+                                              <label
+                                                htmlFor={
+                                                  "grid_" +
+                                                  projectData.value.plantmode
+                                                }
+                                              >
                                                 {dataLang.formatMessage({
                                                   id: "grid",
                                                 })}
@@ -2243,10 +2894,26 @@ export default function ProjectData(props) {
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                               <input
-                                                id="Production"
+                                                id={
+                                                  "dailygridin_" +
+                                                  projectData.value.plantmode
+                                                }
                                                 type="checkbox"
+                                                defaultChecked={
+                                                  filterchart.value[
+                                                    projectData.value.plantmode
+                                                  ][dateType].gridfeed
+                                                }
+                                                onChange={(e) => {
+                                                  handlefilterchart(e);
+                                                }}
                                               />
-                                              <label htmlFor="Production">
+                                              <label
+                                                htmlFor={
+                                                  "dailygridin_" +
+                                                  projectData.value.plantmode
+                                                }
+                                              >
                                                 {dataLang.formatMessage({
                                                   id: "gridfeed",
                                                 })}
@@ -2256,10 +2923,26 @@ export default function ProjectData(props) {
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                               <input
-                                                id="Production"
+                                                id={
+                                                  "dailygridout_" +
+                                                  projectData.value.plantmode
+                                                }
                                                 type="checkbox"
+                                                defaultChecked={
+                                                  filterchart.value[
+                                                    projectData.value.plantmode
+                                                  ][dateType].purchasee
+                                                }
+                                                onChange={(e) => {
+                                                  handlefilterchart(e);
+                                                }}
                                               />
-                                              <label htmlFor="Production">
+                                              <label
+                                                htmlFor={
+                                                  "dailygridout_" +
+                                                  projectData.value.plantmode
+                                                }
+                                              >
                                                 {dataLang.formatMessage({
                                                   id: "purchaseE",
                                                 })}
@@ -2279,10 +2962,26 @@ export default function ProjectData(props) {
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                               <input
-                                                id="Production"
+                                                id={
+                                                  "batteryData_" +
+                                                  projectData.value.plantmode
+                                                }
                                                 type="checkbox"
+                                                defaultChecked={
+                                                  filterchart.value[
+                                                    projectData.value.plantmode
+                                                  ][dateType].batterydata
+                                                }
+                                                onChange={(e) => {
+                                                  handlefilterchart(e);
+                                                }}
                                               />
-                                              <label htmlFor="Production">
+                                              <label
+                                                htmlFor={
+                                                  "batteryData_" +
+                                                  projectData.value.plantmode
+                                                }
+                                              >
                                                 {dataLang.formatMessage({
                                                   id: "batteryData",
                                                 })}
@@ -2292,10 +2991,26 @@ export default function ProjectData(props) {
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                               <input
-                                                id="Production"
+                                                id={
+                                                  "charge_" +
+                                                  projectData.value.plantmode
+                                                }
                                                 type="checkbox"
+                                                defaultChecked={
+                                                  filterchart.value[
+                                                    projectData.value.plantmode
+                                                  ][dateType].charge
+                                                }
+                                                onChange={(e) => {
+                                                  handlefilterchart(e);
+                                                }}
                                               />
-                                              <label htmlFor="Production">
+                                              <label
+                                                htmlFor={
+                                                  "charge_" +
+                                                  projectData.value.plantmode
+                                                }
+                                              >
                                                 {dataLang.formatMessage({
                                                   id: "charge",
                                                 })}
@@ -2305,10 +3020,26 @@ export default function ProjectData(props) {
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                               <input
-                                                id="Production"
+                                                id={
+                                                  "discharge_" +
+                                                  projectData.value.plantmode
+                                                }
                                                 type="checkbox"
+                                                defaultChecked={
+                                                  filterchart.value[
+                                                    projectData.value.plantmode
+                                                  ][dateType].discharge
+                                                }
+                                                onChange={(e) => {
+                                                  handlefilterchart(e);
+                                                }}
                                               />
-                                              <label htmlFor="Production">
+                                              <label
+                                                htmlFor={
+                                                  "discharge_" +
+                                                  projectData.value.plantmode
+                                                }
+                                              >
                                                 {dataLang.formatMessage({
                                                   id: "discharge",
                                                 })}
@@ -2332,10 +3063,26 @@ export default function ProjectData(props) {
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                               <input
-                                                id="Production"
+                                                id={
+                                                  "productionData_" +
+                                                  projectData.value.plantmode
+                                                }
                                                 type="checkbox"
+                                                defaultChecked={
+                                                  filterchart.value[
+                                                    projectData.value.plantmode
+                                                  ][dateType].productionData
+                                                }
+                                                onChange={(e) => {
+                                                  handlefilterchart(e);
+                                                }}
                                               />
-                                              <label htmlFor="Production">
+                                              <label
+                                                htmlFor={
+                                                  "productionData_" +
+                                                  projectData.value.plantmode
+                                                }
+                                              >
                                                 {dataLang.formatMessage({
                                                   id: "production",
                                                 })}
@@ -2743,7 +3490,7 @@ export default function ProjectData(props) {
                                   parseFloat(
                                     (coalsave.value.value *
                                       projectData.value.price) /
-                                    1000
+                                      1000
                                   ).toFixed(2)
                                 ).toLocaleString("en-US")}
                                 &nbsp;
@@ -4670,7 +5417,7 @@ const GraphFull = (props) => {
           >
             <div>
               {Number(props.cal?.bat_1 || 0).toLocaleString("en-US")}
-              { }
+              {}
             </div>
             <span style={{ color: "gray", fontSize: "13px" }}>W</span>
           </div>
@@ -4741,11 +5488,11 @@ const Production = (props) => {
   const keyframes = `
     @keyframes plant {
       0% { background-position: -1200px ${parseFloat(
-    per
-  )}px, -800px ${per}px, -400px ${per}px}
+        per
+      )}px, -800px ${per}px, -400px ${per}px}
       100% { background-position: 200px ${parseFloat(
-    per
-  )}px;, 100x ${per}px, 0px ${per}px}
+        per
+      )}px;, 100x ${per}px, 0px ${per}px}
     }`;
 
   const divStyle = {
@@ -4770,7 +5517,7 @@ const Production = (props) => {
                   parseFloat(
                     ((props.cal?.pro_1 / 1000 || 0) /
                       projectData.value.capacity) *
-                    100
+                      100
                   ).toFixed(2)
                 ).toLocaleString("en-US")}
               </div>
@@ -5529,6 +6276,10 @@ const Battery = (props) => {
 const Day = (props) => {
   const dataLang = useIntl();
 
+  useEffect(() => {
+    console.log(props.dateType);
+  }, []);
+
   return (
     <div className="DAT_ProjectData_Dashboard_History_Day">
       <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
@@ -5542,12 +6293,10 @@ const Day = (props) => {
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-
         {(() => {
           switch (projectData.value.plantmode) {
             case "grid":
               return (
-
                 <ResponsiveContainer
                   style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                 >
@@ -5559,7 +6308,11 @@ const Day = (props) => {
                           stopColor="rgb(4,143,255)"
                           stopOpacity={0.7}
                         />
-                        <stop offset="90%" stopColor="rgb(4,143,255)" stopOpacity={0} />
+                        <stop
+                          offset="90%"
+                          stopColor="rgb(4,143,255)"
+                          stopOpacity={0}
+                        />
                       </linearGradient>
                     </defs>
                     <XAxis dataKey="time" axisLine={false} tickLine={false} />
@@ -5570,7 +6323,7 @@ const Day = (props) => {
                         props.data.reduce((min, item) => {
                           // console.log(item)
                           const values = Object.values({
-                            x: item[props.v]
+                            x: item[props.v],
                           });
                           const currentMin = Math.min(...values.map(Number));
                           // console.log(currentMax)
@@ -5579,7 +6332,7 @@ const Day = (props) => {
                         props.data.reduce((max, item) => {
                           // console.log(item)/
                           const values = Object.values({
-                            x: item[props.v]
+                            x: item[props.v],
                           });
                           const currentMax = Math.max(...values.map(Number));
                           // console.log(currentMax)
@@ -5589,24 +6342,25 @@ const Day = (props) => {
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
-                    <Area
-                      type="monotone"
-                      dataKey={props.v}
-                      stroke="rgb(4,143,255)"
-                      fillOpacity={1}
-                      fill="url(#colorday)"
-                    />
-
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].productionData ? (
+                      <Area
+                        type="monotone"
+                        dataKey={props.v}
+                        stroke="rgb(4,143,255)"
+                        fillOpacity={1}
+                        fill="url(#colorday)"
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </AreaChart>
                 </ResponsiveContainer>
-              )
+              );
             case "consumption":
+             
               return (
-                <></>
-              )
-            case "hybrid":
-              return (
-
                 <ResponsiveContainer
                   style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                 >
@@ -5618,18 +6372,44 @@ const Day = (props) => {
                           stopColor="rgb(4,143,255)"
                           stopOpacity={0.7}
                         />
-                        <stop offset="90%" stopColor="rgb(4,143,255)" stopOpacity={0} />
+                        <stop
+                          offset="90%"
+                          stopColor="rgb(4,143,255)"
+                          stopOpacity={0}
+                        />
                       </linearGradient>
-                      <linearGradient id="colorday2" x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient
+                        id="colorday2"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
                         <stop offset="5%" stopColor="red" stopOpacity={0.7} />
                         <stop offset="90%" stopColor="red" stopOpacity={0} />
                       </linearGradient>
-                      <linearGradient id="colorday3" x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient
+                        id="colorday3"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
                         <stop offset="5%" stopColor="green" stopOpacity={0.7} />
                         <stop offset="90%" stopColor="green" stopOpacity={0} />
                       </linearGradient>
-                      <linearGradient id="colorday4" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="purple" stopOpacity={0.7} />
+                      <linearGradient
+                        id="colorday4"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="purple"
+                          stopOpacity={0.7}
+                        />
                         <stop offset="90%" stopColor="purple" stopOpacity={0} />
                       </linearGradient>
                     </defs>
@@ -5666,39 +6446,209 @@ const Day = (props) => {
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
-                    <Area
-                      type="monotone"
-                      dataKey={props.v}
-                      stroke="rgb(4,143,255)"
-                      fillOpacity={1}
-                      fill="url(#colorday)"
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey={props.v2}
-                      stroke="red"
-                      fillOpacity={2}
-                      fill="url(#colorday2)"
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey={props.v3}
-                      stroke="green"
-                      fillOpacity={2}
-                      fill="url(#colorday3)"
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey={props.v4}
-                      stroke="purple"
-                      fillOpacity={2}
-                      fill="url(#colorday4)"
-                    />
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].productionData ? (
+                      <Area
+                        type="monotone"
+                        dataKey={props.v}
+                        stroke="rgb(4,143,255)"
+                        fillOpacity={1}
+                        fill="url(#colorday)"
+                      />
+                    ) : (
+                      <></>
+                    )}
+
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].consumptionData ? (
+                      <Area
+                        type="monotone"
+                        dataKey={props.v2}
+                        stroke="red"
+                        fillOpacity={2}
+                        fill="url(#colorday2)"
+                      />
+                    ) : (
+                      <></>
+                    )}
+
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].gridData ? (
+                      <Area
+                        type="monotone"
+                        dataKey={props.v3}
+                        stroke="green"
+                        fillOpacity={2}
+                        fill="url(#colorday3)"
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].batteryData ? (
+                      <Area
+                        type="monotone"
+                        dataKey={props.v4}
+                        stroke="purple"
+                        fillOpacity={2}
+                        fill="url(#colorday4)"
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </AreaChart>
                 </ResponsiveContainer>
-              )
+              );
+            case "hybrid":
+              return (
+                <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <AreaChart width={100} height={500} data={props.data}>
+                    <defs>
+                      <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
+                        <stop
+                          offset="5%"
+                          stopColor="rgb(4,143,255)"
+                          stopOpacity={0.7}
+                        />
+                        <stop
+                          offset="90%"
+                          stopColor="rgb(4,143,255)"
+                          stopOpacity={0}
+                        />
+                      </linearGradient>
+                      <linearGradient
+                        id="colorday2"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop offset="5%" stopColor="red" stopOpacity={0.7} />
+                        <stop offset="90%" stopColor="red" stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient
+                        id="colorday3"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop offset="5%" stopColor="green" stopOpacity={0.7} />
+                        <stop offset="90%" stopColor="green" stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient
+                        id="colorday4"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor="purple"
+                          stopOpacity={0.7}
+                        />
+                        <stop offset="90%" stopColor="purple" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      domain={[
+                        props.data.reduce((min, item) => {
+                          // console.log(item)
+                          const values = Object.values({
+                            x: item[props.v],
+                            y: item[props.v2],
+                            z: item[props.v3],
+                            t: item[props.v4],
+                          });
+                          const currentMin = Math.min(...values.map(Number));
+                          // console.log(currentMax)
+                          return currentMin < min ? currentMin : min;
+                        }, Infinity),
+                        props.data.reduce((max, item) => {
+                          // console.log(item)/
+                          const values = Object.values({
+                            x: item[props.v],
+                            y: item[props.v2],
+                            z: item[props.v3],
+                            t: item[props.v4],
+                          });
+                          const currentMax = Math.max(...values.map(Number));
+                          // console.log(currentMax)
+                          return currentMax > max ? currentMax : max;
+                        }, -Infinity),
+                      ]}
+                    />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].productionData ? (
+                      <Area
+                        type="monotone"
+                        dataKey={props.v}
+                        stroke="rgb(4,143,255)"
+                        fillOpacity={1}
+                        fill="url(#colorday)"
+                      />
+                    ) : (
+                      <></>
+                    )}
+
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].consumptionData ? (
+                      <Area
+                        type="monotone"
+                        dataKey={props.v2}
+                        stroke="red"
+                        fillOpacity={2}
+                        fill="url(#colorday2)"
+                      />
+                    ) : (
+                      <></>
+                    )}
+
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].gridData ? (
+                      <Area
+                        type="monotone"
+                        dataKey={props.v3}
+                        stroke="green"
+                        fillOpacity={2}
+                        fill="url(#colorday3)"
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].batteryData ? (
+                      <Area
+                        type="monotone"
+                        dataKey={props.v4}
+                        stroke="purple"
+                        fillOpacity={2}
+                        fill="url(#colorday4)"
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </AreaChart>
+                </ResponsiveContainer>
+              );
             default:
-              return <></>
+              return <></>;
           }
         })()}
       </div>
@@ -5739,7 +6689,6 @@ const Month = (props) => {
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-
         {(() => {
           switch (projectData.value.plantmode) {
             case "grid":
@@ -5774,21 +6723,115 @@ const Month = (props) => {
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
                     <Legend />
-                    <Bar
-                      shape={<TriangleBar fill="rgb(4,143,255)" />}
-                      dataKey={props.v}
-                      fill="#6495ed"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "#6495ed" }}
-                    />
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].productionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        dataKey={props.v}
+                        fill="#6495ed"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "#6495ed" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </BarChart>
                 </ResponsiveContainer>
-              )
+              );
             case "consumption":
               return (
-                <></>
-              )
+                <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <BarChart width={150} height={200} data={props.data}>
+                    <XAxis dataKey="date" axisLine={false} tickLine={false} />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      // domain={[0, Math.max(...props.data.map((item) => item[props.v]))]}
+                      domain={[
+                        0,
+                        props.data.reduce((max, item) => {
+                          // console.log(item)/
+                          const values = Object.values({
+                            x: item[props.v],
+                            // y: item[props.v2],
+                            // z: item[props.v3],
+                            // t: item[props.v4],
+                            // o: item[props.v5],
+                            // p: item[props.v6],
+                          });
+                          const currentMax = Math.max(...values.map(Number));
+                          // console.log(currentMax)
+                          return currentMax > max ? currentMax : max;
+                        }, -Infinity),
+                      ]}
+                    />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    <Legend />
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].productionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        dataKey={props.v}
+                        fill="#6495ed"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "#6495ed" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].consumptionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="red" />}
+                        dataKey={props.v2}
+                        fill="red"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "red" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].dailygridin ? (
+                      <Bar
+                        shape={<TriangleBar fill="brown" />}
+                        dataKey={props.v3}
+                        fill="brown"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "brown" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].dailygridout ? (
+                      <Bar
+                        shape={<TriangleBar fill="green" />}
+                        dataKey={props.v4}
+                        fill="green"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "green" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+
+                  </BarChart>
+                </ResponsiveContainer>
+              );
             case "hybrid":
               return (
                 <ResponsiveContainer
@@ -5821,64 +6864,97 @@ const Month = (props) => {
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
                     <Legend />
-                    <Bar
-                      shape={<TriangleBar fill="rgb(4,143,255)" />}
-                      dataKey={props.v}
-                      fill="#6495ed"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "#6495ed" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="red" />}
-                      dataKey={props.v2}
-                      fill="red"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "red" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="brown" />}
-                      dataKey={props.v3}
-                      fill="brown"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "brown" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="green" />}
-                      dataKey={props.v4}
-                      fill="green"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "green" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="purple" />}
-                      dataKey={props.v5}
-                      fill="purple"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "purple" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="grey" />}
-                      dataKey={props.v6}
-                      fill="grey"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "grey" }}
-                    />
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].productionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        dataKey={props.v}
+                        fill="#6495ed"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "#6495ed" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].consumptionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="red" />}
+                        dataKey={props.v2}
+                        fill="red"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "red" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].dailygridin ? (
+                      <Bar
+                        shape={<TriangleBar fill="brown" />}
+                        dataKey={props.v3}
+                        fill="brown"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "brown" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].dailygridout ? (
+                      <Bar
+                        shape={<TriangleBar fill="green" />}
+                        dataKey={props.v4}
+                        fill="green"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "green" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].charge ? (
+                      <Bar
+                        shape={<TriangleBar fill="purple" />}
+                        dataKey={props.v5}
+                        fill="purple"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "purple" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].discharge ? (
+                      <Bar
+                        shape={<TriangleBar fill="grey" />}
+                        dataKey={props.v6}
+                        fill="grey"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "grey" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </BarChart>
                 </ResponsiveContainer>
-              )
+              );
             default:
-              return (
-                <></>
-              )
+              return <></>;
           }
         })()}
-
       </div>
     </div>
   );
@@ -5886,6 +6962,11 @@ const Month = (props) => {
 
 const Year = (props) => {
   const dataLang = useIntl();
+
+  useEffect(() => {
+    console.log(props.v)
+    console.log(projectData.value.plantmode)
+  },[])
 
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
@@ -5929,27 +7010,108 @@ const Year = (props) => {
                     <YAxis
                       axisLine={false}
                       tickLine={false}
-                      domain={[0, Math.max(...props.data.map((item) => item[props.v]))]}
+                      domain={[
+                        0,
+                        Math.max(...props.data.map((item) => item[props.v])),
+                      ]}
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
                     <Legend />
-                    <Bar
-                      shape={<TriangleBar fill="rgb(4,143,255)" />}
-                      dataKey={props.v}
-                      fill="#6495ed"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "#6495ed" }}
-                    />
-
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].productionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        dataKey={props.v}
+                        fill="#6495ed"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "#6495ed" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </BarChart>
                 </ResponsiveContainer>
-              )
-            case "comsumption":
+              );
+            case "consumption":
               return (
-                <></>
-              )
+                <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <BarChart width={150} height={200} data={props.data}>
+                    <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      domain={[
+                        0,
+                        Math.max(...props.data.map((item) => item[props.v])),
+                      ]}
+                    />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    <Legend />
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].productionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        dataKey={props.v}
+                        fill="#6495ed"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "#6495ed" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].consumptionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="red" />}
+                        dataKey={props.v2}
+                        fill="red"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "red" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].dailygridin ? (
+                      <Bar
+                        shape={<TriangleBar fill="brown" />}
+                        dataKey={props.v3}
+                        fill="brown"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "brown" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].dailygridout ? (
+                      <Bar
+                        shape={<TriangleBar fill="green" />}
+                        dataKey={props.v4}
+                        fill="green"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "green" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </BarChart>
+                </ResponsiveContainer>
+              );
             case "hybrid":
               return (
                 <ResponsiveContainer
@@ -5960,66 +7122,103 @@ const Year = (props) => {
                     <YAxis
                       axisLine={false}
                       tickLine={false}
-                      domain={[0, Math.max(...props.data.map((item) => item[props.v]))]}
+                      domain={[
+                        0,
+                        Math.max(...props.data.map((item) => item[props.v])),
+                      ]}
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
                     <Legend />
-                    <Bar
-                      shape={<TriangleBar fill="rgb(4,143,255)" />}
-                      dataKey={props.v}
-                      fill="#6495ed"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "#6495ed" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="red" />}
-                      dataKey={props.v2}
-                      fill="red"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "red" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="brown" />}
-                      dataKey={props.v3}
-                      fill="brown"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "brown" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="green" />}
-                      dataKey={props.v4}
-                      fill="green"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "green" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="purple" />}
-                      dataKey={props.v5}
-                      fill="purple"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "purple" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="grey" />}
-                      dataKey={props.v6}
-                      fill="grey"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "grey" }}
-                    />
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].productionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        dataKey={props.v}
+                        fill="#6495ed"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "#6495ed" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].consumptionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="red" />}
+                        dataKey={props.v2}
+                        fill="red"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "red" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].dailygridin ? (
+                      <Bar
+                        shape={<TriangleBar fill="brown" />}
+                        dataKey={props.v3}
+                        fill="brown"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "brown" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].dailygridout ? (
+                      <Bar
+                        shape={<TriangleBar fill="green" />}
+                        dataKey={props.v4}
+                        fill="green"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "green" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].charge ? (
+                      <Bar
+                        shape={<TriangleBar fill="purple" />}
+                        dataKey={props.v5}
+                        fill="purple"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "purple" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].discharge ? (
+                      <Bar
+                        shape={<TriangleBar fill="grey" />}
+                        dataKey={props.v6}
+                        fill="grey"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "grey" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </BarChart>
                 </ResponsiveContainer>
-              )
+              );
             default:
-              return (
-                <></>
-              )
+              return <></>;
           }
         })()}
       </div>
@@ -6055,8 +7254,7 @@ const Total = (props) => {
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           {/* {props.v}: {cal.value.pro_total} kWh */}
-          {props.v}: {cal.value.pro_total}{" "}
-          kWh
+          {props.v}: {cal.value.pro_total} kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
@@ -6074,32 +7272,106 @@ const Total = (props) => {
                       tickLine={false}
                       domain={[
                         0,
-                        Math.max(
-                          ...props.data.map(
-                            (item) =>
-                              item[props.v]
-                          )
-                        ),
+                        Math.max(...props.data.map((item) => item[props.v])),
                       ]}
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
                     <Legend />
-                    <Bar
-                      shape={<TriangleBar fill="rgb(4,143,255)" />}
-                      dataKey={props.v}
-                      fill="#6495ed"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "#6495ed" }}
-                    />
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].productionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        dataKey={props.v}
+                        fill="#6495ed"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "#6495ed" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </BarChart>
                 </ResponsiveContainer>
-              )
+              );
             case "consumption":
               return (
-                <></>
-              )
+                <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <BarChart width={150} height={200} data={props.data}>
+                    <XAxis dataKey="year" axisLine={false} tickLine={false} />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      domain={[
+                        0,
+                        Math.max(...props.data.map((item) => item[props.v])),
+                      ]}
+                    />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    <Legend />
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].productionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        dataKey={props.v}
+                        fill="#6495ed"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "#6495ed" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].consumptionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="red" />}
+                        dataKey={props.v2}
+                        fill="red"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "red" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].dailygridin ? (
+                      <Bar
+                        shape={<TriangleBar fill="brown" />}
+                        dataKey={props.v3}
+                        fill="brown"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "brown" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].dailygridout ? (
+                      <Bar
+                        shape={<TriangleBar fill="green" />}
+                        dataKey={props.v4}
+                        fill="green"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "green" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </BarChart>
+                </ResponsiveContainer>
+              );
             case "hybrid":
               return (
                 <ResponsiveContainer
@@ -6112,75 +7384,103 @@ const Total = (props) => {
                       tickLine={false}
                       domain={[
                         0,
-                        Math.max(
-                          ...props.data.map(
-                            (item) =>
-                              item[props.v]
-                          )
-                        ),
+                        Math.max(...props.data.map((item) => item[props.v])),
                       ]}
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
                     <Legend />
-                    <Bar
-                      shape={<TriangleBar fill="rgb(4,143,255)" />}
-                      dataKey={props.v}
-                      fill="#6495ed"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "#6495ed" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="red" />}
-                      dataKey={props.v2}
-                      fill="red"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "red" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="brown" />}
-                      dataKey={props.v3}
-                      fill="brown"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "brown" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="green" />}
-                      dataKey={props.v4}
-                      fill="green"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "green" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="purple" />}
-                      dataKey={props.v5}
-                      fill="purple"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "purple" }}
-                    />
-                    <Bar
-                      shape={<TriangleBar fill="grey" />}
-                      dataKey={props.v6}
-                      fill="grey"
-                      barSize={15}
-                      legendType="circle"
-                      style={{ fill: "grey" }}
-                    />
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].productionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        dataKey={props.v}
+                        fill="#6495ed"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "#6495ed" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].consumptionData ? (
+                      <Bar
+                        shape={<TriangleBar fill="red" />}
+                        dataKey={props.v2}
+                        fill="red"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "red" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].dailygridin ? (
+                      <Bar
+                        shape={<TriangleBar fill="brown" />}
+                        dataKey={props.v3}
+                        fill="brown"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "brown" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].dailygridout ? (
+                      <Bar
+                        shape={<TriangleBar fill="green" />}
+                        dataKey={props.v4}
+                        fill="green"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "green" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].charge ? (
+                      <Bar
+                        shape={<TriangleBar fill="purple" />}
+                        dataKey={props.v5}
+                        fill="purple"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "purple" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {filterchart.value[projectData.value.plantmode][
+                      props.dateType
+                    ].discharge ? (
+                      <Bar
+                        shape={<TriangleBar fill="grey" />}
+                        dataKey={props.v6}
+                        fill="grey"
+                        barSize={15}
+                        legendType="circle"
+                        style={{ fill: "grey" }}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </BarChart>
                 </ResponsiveContainer>
-              )
+              );
             default:
-              return (
-                <></>
-              )
+              return <></>;
           }
         })()}
-
       </div>
     </div>
   );
