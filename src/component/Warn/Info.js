@@ -95,8 +95,8 @@ export default function Info(props) {
             {dataLang.formatMessage({ id: "cause" })} :
           </p>
           {props.level == 'warn' ? (
-            <input placeholder="Quá nhiệt" disabled></input>) :
-            (<input placeholder="Quá tải" disabled></input>)}
+            <input placeholder="..." disabled></input>) :
+            (<input placeholder="..." disabled></input>)}
 
           <p>
             {dataLang.formatMessage({ id: "solution" })} :
