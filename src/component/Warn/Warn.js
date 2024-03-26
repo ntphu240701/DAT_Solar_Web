@@ -312,10 +312,7 @@ export default function Warn(props) {
 
   // by Mr Loc
   useEffect(() => {
-    console.log(warnfilter.value);
-    if(isMobile.value === false){
-      
-    
+    // console.log(warnfilter.value);
     if (warnfilter.value.device) {
       console.log(warnfilter.value);
       let d = document.getElementById("warnsearch");
@@ -335,7 +332,6 @@ export default function Warn(props) {
       setDatafilter([...t]);
     } else {
     }
-  }
   }, [dataWarn.value, warnfilter.value, projectwarnfilter.value]);
 
   // by Mr Loc
@@ -405,7 +401,6 @@ export default function Warn(props) {
               <div className="DAT_Modify_Filter">
                 <input
                   type="text"
-                  id="warnsearch"
                   placeholder={dataLang.formatMessage({ id: "enterWarn" })}
                 // onChange={(e) => handlefilterwarn(e)}
                 />
