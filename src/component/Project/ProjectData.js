@@ -2,12 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import "./Project.scss";
 
 import AddGateway from "./AddGateway";
-import {
-  Empty,
-  plantState,
-  projectData,
-  popupState,
-} from "./Project";
+import { Empty, plantState, projectData, popupState } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
 import {
   BarChart,
@@ -29,7 +24,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { Token, convertUnit, ruleInfor, showUnit, showUnitk, userInfor } from "../../App";
+import {
+  Token,
+  convertUnit,
+  ruleInfor,
+  showUnit,
+  showUnitk,
+  userInfor,
+} from "../../App";
 import axios from "axios";
 import Popup from "./Popup";
 import { useIntl } from "react-intl";
@@ -62,14 +64,14 @@ import { CiSearch } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import { FiEdit } from "react-icons/fi";
 
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 import { info, infoState, loggerList, tab } from "../Device/Device";
 import Info from "../Device/Info";
 import { GiCoalWagon } from "react-icons/gi";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import PopupState, { bindHover, bindPopper } from "material-ui-popup-state";
 import { Fade, Paper, Popper, Typography } from "@mui/material";
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -105,20 +107,55 @@ export default function ProjectData(props) {
   const [nav, setNav] = useState("production");
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
-  const [configname, setConfigname] = useState(dataLang.formatMessage({ id: "choosePara" }));
+  const [configname, setConfigname] = useState(
+    dataLang.formatMessage({ id: "choosePara" })
+  );
   const [dropConfig, setDropConfig] = useState(false);
   // const [tempInverter, setTempInverter] = useState([]);
   const [dataDay, setDataDay] = useState([]);
   const [vDay, setVDay] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vDay2, setVDay2] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vDay3, setVDay3] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vDay4, setVDay4] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataMonth, setDataMonth] = useState([]);
-  const [vMonth, setVMonth] = useState(dataLang.formatMessage({ id: "unknown" }));
+
+  const [vMonth, setVMonth] = useState(dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vMonth2, setVMonth2] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vMonth3, setVMonth3] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vMonth4, setVMonth4] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vMonth5, setVMonth5] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vMonth6, setVMonth6] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+
   const [dataYear, setDataYear] = useState([]);
   const [vYear, setVYear] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear2, setVYear2] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear3, setVYear3] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear4, setVYear4] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear5, setVYear5] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear6, setVYear6] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataTotal, setDataTotal] = useState([]);
-  const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: 'unknown' }));
-  const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: 'unknown' }));
+  const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal2, setVTotal2] = useState(dataLang.formatMessage({ id: "unknown" }))
+  const [vTotal3, setVTotal3] = useState(dataLang.formatMessage({ id: "unknown" }))
+  const [vTotal4, setVTotal4] = useState(dataLang.formatMessage({ id: "unknown" }))
+  const [vTotal5, setVTotal5] = useState(dataLang.formatMessage({ id: "unknown" }))
+  const [vTotal6, setVTotal6] = useState(dataLang.formatMessage({ id: "unknown" }))
+  const [snlogger, setSnlogger] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
   const [type, setType] = useState("");
-  const [invt, setInvt] = useState({})
+  const [invt, setInvt] = useState({});
   const box = useRef();
 
   const [d, setD] = useState({
@@ -187,36 +224,45 @@ export default function ProjectData(props) {
       name: dataLang.formatMessage({ id: "production" }),
       selector: (row) => {
         // console.log(row.data.mode)
-        let power = 0
-        let d = JSON.parse(row.data.total?.register || "[]")
+        let power = 0;
+        let d = JSON.parse(row.data.total?.register || "[]");
 
         if (row.data.mode === "HYBRID") {
-          let num = []
+          let num = [];
           // console.log(invt[row.logger_])
           d.map((item, i) => {
-            num[i] = invt[row.logger_]?.[item]
-          })
-          power = parseFloat(num.reduce((a, b) => Number(a) + Number(b), 0) * row.data.total?.cal).toFixed(2)
+            num[i] = invt[row.logger_]?.[item];
+          });
+          power = parseFloat(
+            num.reduce((a, b) => Number(a) + Number(b), 0) * row.data.total?.cal
+          ).toFixed(2);
         }
         if (row.data.mode === "GRID") {
-          power = (convertToDoublewordAndFloat([invt[row.logger_]?.[d[0]], invt[row.logger_]?.[d[1]]], "int") * row.data.total?.cal)
+          power =
+            convertToDoublewordAndFloat(
+              [invt[row.logger_]?.[d[0]], invt[row.logger_]?.[d[1]]],
+              "int"
+            ) * row.data.total?.cal;
         }
 
-        return (
-          <div>
-            {parseFloat(power / 1000).toFixed(2)} kW
-          </div>
-        )
+        return <div>{parseFloat(power / 1000).toFixed(2)} kW</div>;
       },
       sortable: true,
       width: "300px",
     },
     {
       name: dataLang.formatMessage({ id: "daily" }),
-      selector: (row) =>
+      selector: (row) => (
         <>
-          {row.data.daily?.register ? parseFloat(invt[row.logger_]?.[row.data.daily.register] * row.data.daily?.cal).toFixed(2) : 0} kWh
-        </>,
+          {row.data.daily?.register
+            ? parseFloat(
+              invt[row.logger_]?.[row.data.daily.register] *
+              row.data.daily?.cal
+            ).toFixed(2)
+            : 0}{" "}
+          kWh
+        </>
+      ),
       sortable: true,
       width: "300px",
     },
@@ -285,10 +331,7 @@ export default function ProjectData(props) {
     {
       name: dataLang.formatMessage({ id: "name" }),
       selector: (row) => (
-        <div
-          style={{ cursor: "pointer" }}
-          onClick={(e) => handleInfoLogger(e)}
-        >
+        <div style={{ cursor: "pointer" }} onClick={(e) => handleInfoLogger(e)}>
           <div>{row.name}</div>
           <div style={{ color: "grey" }}>{row.sn}</div>
         </div>
@@ -350,7 +393,8 @@ export default function ProjectData(props) {
               &nbsp;
               Dong bo
             </div> */}
-            <div className="DAT_ModifyBox_Fix"
+            <div
+              className="DAT_ModifyBox_Fix"
               id={row.sn + "_edit"}
               onClick={(e) => handleEdit(e)}
             >
@@ -358,7 +402,8 @@ export default function ProjectData(props) {
               &nbsp;
               {dataLang.formatMessage({ id: "change" })}
             </div>
-            <div className="DAT_ModifyBox_Remove"
+            <div
+              className="DAT_ModifyBox_Remove"
               id={row.sn + "_remove"}
               onClick={(e) => handleDelete(e)}
             >
@@ -445,7 +490,7 @@ export default function ProjectData(props) {
       pname: temp.value[0].name,
       pplantname: plantname,
       pstate: temp.value[0].state,
-      pversion: temp.value[0].version
+      pversion: temp.value[0].version,
     };
   };
 
@@ -469,9 +514,14 @@ export default function ProjectData(props) {
     // console.log(temp.value);
     const arr = e.currentTarget.id.split("_");
     const newdata = temp.value.find((item) => item.sn == arr[0]);
-    const decimalArray = JSON.parse(newdata.setting.sn)
-    const hexString = decimalArray.map((num) => parseInt(invt[arr[0]]?.[num]).toString(16)).join('');
-    const invertersn = hexString.match(/.{2}/g).map(byte => String.fromCharCode(parseInt(byte, 16))).join('');
+    const decimalArray = JSON.parse(newdata.setting.sn);
+    const hexString = decimalArray
+      .map((num) => parseInt(invt[arr[0]]?.[num]).toString(16))
+      .join("");
+    const invertersn = hexString
+      .match(/.{2}/g)
+      .map((byte) => String.fromCharCode(parseInt(byte, 16)))
+      .join("");
     // console.log(invertersn, arr[0], projectData.value.plantid_, newdata.type);
 
     let async_ = await callApi("post", host.DATA + "/addInverter", {
@@ -578,42 +628,75 @@ export default function ProjectData(props) {
         setDataDay([]);
         // console.log(projectData.value.plantid_)
         // console.log(d)
+        let x = [];
         if (d.status) {
-          // console.log(d.data);
-          let vDay_ = dataLang.formatMessage({ id: "production" });
-          if (moment(date).format("DD/MM/YYYY") === moment(new Date()).format("DD/MM/YYYY")) {
-            let x = [];
-            d.data.data.map((item) => {
+          let vDay_ = dataLang.formatMessage({ id: "productionData" });
+          let vDay2_ = dataLang.formatMessage({ id: "gridData" });
+          let vDay3_ = dataLang.formatMessage({ id: "consumptionData" });
+          let vDay4_ = dataLang.formatMessage({ id: "batteryData" });
+          d.data.data.map((item) => {
+            let arr = item.time.split(":");
+            // console.log(item);
+            // if (projectData.value.plantmode === "grid") {
+            //   x = [...x, { time: `${arr[0]}:${arr[1]}`, [vDay_]: item.value }];
+            // }
+            // if (projectData.value.plantmode === "hybrid") {
+            x = [
+              ...x,
+              {
+                time: `${arr[0]}:${arr[1]}`,
+                [vDay_]: item.value,
+                [vDay2_]: item.value2,
+                [vDay3_]: item.value3,
+                [vDay4_]: item.value4,
+              },
+            ];
+            // }
+          });
 
-              let arr = item.time.split(":");
-              x = [...x, { time: `${arr[0]}:${arr[1]}`, [vDay_]: item.value }];
-            });
+          // if (projectData.value.plantmode === "grid") {
+          //   for (let i = x.length; i < 287; i++) {
+          //     if (
+          //       moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
+          //     ) {
+          //       let nextTime = moment(x[x.length - 1].time, "HH:mm")
+          //         .add(5, "minutes")
+          //         .format("HH:mm");
+          //       x.push({ time: nextTime, [vDay_]: 0 });
+          //     }
+          //   }
+          // }
 
-            for (let i = x.length; i < 287; i++) {
-
-              if (moment(x[x.length - 1].time, 'HH:mm') < moment('23:55', 'HH:mm')) {
-
-                let nextTime = moment(x[x.length - 1].time, 'HH:mm').add(5, 'minutes').format('HH:mm');
-                x.push({ time: nextTime, [vDay_]: 0 });
-              }
-
+          // if (projectData.value.plantmode === "hybrid") {
+          for (let i = x.length; i < 287; i++) {
+            if (
+              moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
+            ) {
+              let nextTime = moment(x[x.length - 1].time, "HH:mm")
+                .add(5, "minutes")
+                .format("HH:mm");
+              x.push({
+                time: nextTime,
+                [vDay_]: 0,
+                [vDay2_]: 0,
+                [vDay3_]: 0,
+                [vDay4_]: 0,
+              });
             }
-            setDataDay(x);
-          } else {
-
-            d.data.data.map((item) => {
-              let arr = item.time.split(":");
-              setDataDay((old) => [
-                ...old,
-                { time: `${arr[0]}:${arr[1]}`, [vDay_]: item.value },
-              ]);
-            });
-            setVDay(vDay_);
           }
-
+          // }
+          // console.log(x)
+          setDataDay(x);
+          setVDay(dataLang.formatMessage({ id: "productionData" }));
+          setVDay2(dataLang.formatMessage({ id: "consumptionData" }));
+          setVDay3(dataLang.formatMessage({ id: "gridData" }));
+          setVDay4(dataLang.formatMessage({ id: "batteryData" }));
         } else {
           setDataDay([]);
           setVDay(dataLang.formatMessage({ id: "unknown" }));
+          setVDay2(dataLang.formatMessage({ id: "unknown" }));
+          setVDay3(dataLang.formatMessage({ id: "unknown" }));
+          setVDay4(dataLang.formatMessage({ id: "unknown" }));
         }
       };
 
@@ -627,9 +710,13 @@ export default function ProjectData(props) {
           month: moment(date).format("MM/YYYY"),
         });
         if (d.status) {
-          //console.log(d.data)
-          let vMonth = dataLang.formatMessage({ id: d.data.name });
-          const currentDate = new Date(date);
+          let vMonth = dataLang.formatMessage({ id: "dailyproduction" });
+          let vMonth2 = dataLang.formatMessage({ id: "dailyconsumption" });
+          let vMonth3 = dataLang.formatMessage({ id: "dailygridin" });
+          let vMonth4 = dataLang.formatMessage({ id: "dailygridout" });
+          let vMonth5 = dataLang.formatMessage({ id: "dailybatteryin" });
+          let vMonth6 = dataLang.formatMessage({ id: "dailybatteryout" });
+          const currentDate = new Date();
           const currentMonth = currentDate.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
           const currentYear = currentDate.getFullYear();
           const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
@@ -641,21 +728,75 @@ export default function ProjectData(props) {
             ];
           }
           let sum_month = [];
+          let sum_month2 = [];
+          let sum_month3 = [];
+          let sum_month4 = [];
+          let sum_month5 = [];
+          let sum_month6 = [];
           d.data.data.map((item, i) => {
             let index = datamonth_.findIndex((d) => d.date == item.date);
+            // if (projectData.value.plantmode === "grid") {
+            //   datamonth_[index][vMonth] = item.value;
+            //   sum_month[i] = item.value;
+            // }
+            // if (projectData.value.plantmode === "hybrid") {
             datamonth_[index][vMonth] = item.value;
+            datamonth_[index][vMonth2] = item.value2;
+            datamonth_[index][vMonth3] = item.value3;
+            datamonth_[index][vMonth4] = item.value4;
+            datamonth_[index][vMonth5] = item.value5;
+            datamonth_[index][vMonth6] = item.value6;
             sum_month[i] = item.value;
+            sum_month2[i] = item.value2;
+            sum_month3[i] = item.value3;
+            sum_month4[i] = item.value4;
+            sum_month5[i] = item.value5;
+            sum_month6[i] = item.value6;
+            // }
+
             if (i == d.data.data.length - 1) {
+              // if (projectData.value.plantmode === "grid") {
+              //   cal.value["pro_month"] = parseFloat(
+              //     sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+              //   ).toFixed(2);
+              // }
+              // if (projectData.value.plantmode === "hybrid") {
               cal.value["pro_month"] = parseFloat(
                 sum_month.reduce((a, b) => Number(a) + Number(b), 0)
               ).toFixed(2);
+              cal.value["con_month"] = parseFloat(
+                sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+              ).toFixed(2);
+              cal.value["grid_in_month"] = parseFloat(
+                sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+              ).toFixed(2);
+              cal.value["grid_out_month"] = parseFloat(
+                sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+              ).toFixed(2);
+              cal.value["bat_in_month"] = parseFloat(
+                sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+              ).toFixed(2);
+              cal.value["bat_out_month"] = parseFloat(
+                sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+              ).toFixed(2);
+              // }
             }
           });
           setVMonth(vMonth);
+          setVMonth2(vMonth2);
+          setVMonth3(vMonth3);
+          setVMonth4(vMonth4);
+          setVMonth5(vMonth5);
+          setVMonth6(vMonth6);
           setDataMonth(datamonth_);
         } else {
           setDataMonth([]);
           setVMonth(dataLang.formatMessage({ id: "unknown" }));
+          setVMonth2(dataLang.formatMessage({ id: "unknown" }));
+          setVMonth3(dataLang.formatMessage({ id: "unknown" }));
+          setVMonth4(dataLang.formatMessage({ id: "unknown" }));
+          setVMonth5(dataLang.formatMessage({ id: "unknown" }));
+          setVMonth6(dataLang.formatMessage({ id: "unknown" }));
         }
       };
       getMonth();
@@ -667,32 +808,78 @@ export default function ProjectData(props) {
           plantid: projectData.value.plantid_,
           year: moment(date).format("YYYY"),
         });
+
         if (d.status) {
           //console.log(d.data)
-          let vYear = dataLang.formatMessage({ id: d.data.name });
+          let vYear = dataLang.formatMessage({ id: "monthlyproduction" });
+          let vYear2 = dataLang.formatMessage({ id: "monthlyconsumption" });
+          let vYear3 = dataLang.formatMessage({ id: "monthlygridin" });
+          let vYear4 = dataLang.formatMessage({ id: "monthlygridout" });
+          let vYear5 = dataLang.formatMessage({ id: "monthlybatteryin" });
+          let vYear6 = dataLang.formatMessage({ id: "monthlybatteryout" });
           let sum_year = [];
+          let sum_year2 = [];
+          let sum_year3 = [];
+          let sum_year4 = [];
+          let sum_year5 = [];
+          let sum_year6 = [];
           let datayear_ = [];
           for (let i = 1; i <= 12; i++) {
             datayear_ = [
               ...datayear_,
-              { month: i < 10 ? `0${i}` : `${i}`, [vYear]: 0 },
+              { month: i < 10 ? `0${i}` : `${i}`, [vYear]: 0, [vYear2]: 0, [vYear3]: 0, [vYear4]: 0, [vYear5]: 0, [vYear6]: 0 },
             ];
           }
           d.data.data.map((item, i) => {
             let index = datayear_.findIndex((d) => d.month == item.month);
             datayear_[index][vYear] = item.value;
+            datayear_[index][vYear2] = item.value2;
+            datayear_[index][vYear3] = item.value3;
+            datayear_[index][vYear4] = item.value4;
+            datayear_[index][vYear5] = item.value5;
+            datayear_[index][vYear6] = item.value6;
             sum_year[i] = item.value;
+            sum_year2[i] = item.value2;
+            sum_year3[i] = item.value3;
+            sum_year4[i] = item.value4;
+            sum_year5[i] = item.value5;
+            sum_year6[i] = item.value6;
             if (i == d.data.data.length - 1) {
               cal.value["pro_year"] = parseFloat(
                 sum_year.reduce((a, b) => Number(a) + Number(b), 0)
               ).toFixed(2);
+              cal.value["con_year"] = parseFloat(
+                sum_year2.reduce((a, b) => Number(a) + Number(b), 0)
+              ).toFixed(2)
+              cal.value["grid_in_year"] = parseFloat(
+                sum_year3.reduce((a, b) => Number(a) + Number(b), 0)
+              ).toFixed(2)
+              cal.value["grid_out_year"] = parseFloat(
+                sum_year4.reduce((a, b) => Number(a) + Number(b), 0)
+              ).toFixed(2)
+              cal.value["bat_in_year"] = parseFloat(
+                sum_year5.reduce((a, b) => Number(a) + Number(b), 0)
+              ).toFixed(2)
+              cal.value["bat_out_year"] = parseFloat(
+                sum_year6.reduce((a, b) => Number(a) + Number(b), 0)
+              ).toFixed(2)
             }
           });
           setVYear(vYear);
+          setVYear2(vYear2);
+          setVYear3(vYear3);
+          setVYear4(vYear4);
+          setVYear5(vYear5);
+          setVYear6(vYear6);
           setDataYear(datayear_);
         } else {
           setDataYear([]);
           setVYear(dataLang.formatMessage({ id: "unknown" }));
+          setVYear2(dataLang.formatMessage({ id: "unknown" }));
+          setVYear3(dataLang.formatMessage({ id: "unknown" }));
+          setVYear4(dataLang.formatMessage({ id: "unknown" }));
+          setVYear5(dataLang.formatMessage({ id: "unknown" }));
+          setVYear6(dataLang.formatMessage({ id: "unknown" }));
         }
       };
       getYear();
@@ -729,7 +916,7 @@ export default function ProjectData(props) {
   };
 
   const handleInvt = async (sn) => {
-    console.log(sn)
+    console.log(sn);
 
     const res = await invtCloud(
       '{"deviceCode":"' + sn + '"}',
@@ -739,9 +926,8 @@ export default function ProjectData(props) {
     if (res.ret === 0) {
       //console.log(res.data)
       setInvt((pre) => ({ ...pre, [sn]: res.data }));
-
     }
-  }
+  };
 
   useEffect(() => {
     // filter data AlertTable
@@ -757,25 +943,75 @@ export default function ProjectData(props) {
         date: moment(new Date()).format("MM/DD/YYYY"),
       });
       setDataDay([]);
-      let x = []
+      let x = [];
       if (d.status) {
-        //console.log(d.data)
-        let vDay_ = dataLang.formatMessage({ id: "production" });
+        let vDay_ = dataLang.formatMessage({ id: "productionData" });
+        let vDay2_ = dataLang.formatMessage({ id: "gridData" });
+        let vDay3_ = dataLang.formatMessage({ id: "consumptionData" });
+        let vDay4_ = dataLang.formatMessage({ id: "batteryData" });
         d.data.data.map((item) => {
           let arr = item.time.split(":");
-          x = [...x, { time: `${arr[0]}:${arr[1]}`, [vDay_]: item.value }];
+          // console.log(item);
+          // if (projectData.value.plantmode === "grid") {
+          //   x = [...x, { time: `${arr[0]}:${arr[1]}`, [vDay_]: item.value }];
+          // }
+          // if (projectData.value.plantmode === "hybrid") {
+          x = [
+            ...x,
+            {
+              time: `${arr[0]}:${arr[1]}`,
+              [vDay_]: item.value,
+              [vDay2_]: item.value2,
+              [vDay3_]: item.value3,
+              [vDay4_]: item.value4,
+            },
+          ];
+          // }
         });
 
-        for (let i = x.length; i < 287; i++) {
-          if (moment(x[x.length - 1].time, 'HH:mm') < moment('23:55', 'HH:mm')) {
+        // if (projectData.value.plantmode === "grid") {
+        //   for (let i = x.length; i < 287; i++) {
+        //     if (
+        //       moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
+        //     ) {
+        //       let nextTime = moment(x[x.length - 1].time, "HH:mm")
+        //         .add(5, "minutes")
+        //         .format("HH:mm");
+        //       x.push({ time: nextTime, [vDay_]: 0 });
+        //     }
+        //   }
+        // }
 
-            let nextTime = moment(x[x.length - 1].time, 'HH:mm').add(5, 'minutes').format('HH:mm');
-            x.push({ time: nextTime, [vDay_]: 0 });
+        // if (projectData.value.plantmode === "hybrid") {
+        for (let i = x.length; i < 287; i++) {
+          if (
+            moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
+          ) {
+            let nextTime = moment(x[x.length - 1].time, "HH:mm")
+              .add(5, "minutes")
+              .format("HH:mm");
+            x.push({
+              time: nextTime,
+              [vDay_]: 0,
+              [vDay2_]: 0,
+              [vDay3_]: 0,
+              [vDay4_]: 0,
+            });
           }
         }
+        // }
         // console.log(x)
         setDataDay(x);
-        setVDay(dataLang.formatMessage({ id: "production" }));
+        setVDay(dataLang.formatMessage({ id: "productionData" }));
+        setVDay2(dataLang.formatMessage({ id: "consumptionData" }));
+        setVDay3(dataLang.formatMessage({ id: "gridData" }));
+        setVDay4(dataLang.formatMessage({ id: "batteryData" }));
+      } else {
+        setDataDay([]);
+        setVDay(dataLang.formatMessage({ id: "unknown" }));
+        setVDay2(dataLang.formatMessage({ id: "unknown" }));
+        setVDay3(dataLang.formatMessage({ id: "unknown" }));
+        setVDay4(dataLang.formatMessage({ id: "unknown" }));
       }
     };
     getDaily();
@@ -787,8 +1023,12 @@ export default function ProjectData(props) {
         month: moment(new Date()).format("MM/YYYY"),
       });
       if (d.status) {
-        //console.log(d.data)
-        let vMonth = dataLang.formatMessage({ id: d.data.name });
+        let vMonth = dataLang.formatMessage({ id: "dailyproduction" });
+        let vMonth2 = dataLang.formatMessage({ id: "dailyconsumption" });
+        let vMonth3 = dataLang.formatMessage({ id: "dailygridin" });
+        let vMonth4 = dataLang.formatMessage({ id: "dailygridout" });
+        let vMonth5 = dataLang.formatMessage({ id: "dailybatteryin" });
+        let vMonth6 = dataLang.formatMessage({ id: "dailybatteryout" });
         const currentDate = new Date();
         const currentMonth = currentDate.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
         const currentYear = currentDate.getFullYear();
@@ -801,21 +1041,75 @@ export default function ProjectData(props) {
           ];
         }
         let sum_month = [];
+        let sum_month2 = [];
+        let sum_month3 = [];
+        let sum_month4 = [];
+        let sum_month5 = [];
+        let sum_month6 = [];
         d.data.data.map((item, i) => {
           let index = datamonth_.findIndex((d) => d.date == item.date);
+          // if (projectData.value.plantmode === "grid") {
+          //   datamonth_[index][vMonth] = item.value;
+          //   sum_month[i] = item.value;
+          // }
+          // if (projectData.value.plantmode === "hybrid") {
           datamonth_[index][vMonth] = item.value;
-          sum_month[i] = item.value;
+          datamonth_[index][vMonth2] = item.value2;
+          datamonth_[index][vMonth3] = item.value3;
+          datamonth_[index][vMonth4] = item.value4;
+          datamonth_[index][vMonth5] = item.value5;
+          datamonth_[index][vMonth6] = item.value6;
+          sum_month[i] = item?.value || 0;
+          sum_month2[i] = item?.value2 || 0;
+          sum_month3[i] = item?.value3 || 0;
+          sum_month4[i] = item?.value4 || 0;
+          sum_month5[i] = item?.value5 || 0;
+          sum_month6[i] = item?.value6 || 0;
+          // }
+
           if (i == d.data.data.length - 1) {
+            // if (projectData.value.plantmode === "grid") {
+            //   cal.value["pro_month"] = parseFloat(
+            //     sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+            //   ).toFixed(2);
+            // }
+            // if (projectData.value.plantmode === "hybrid") {
             cal.value["pro_month"] = parseFloat(
               sum_month.reduce((a, b) => Number(a) + Number(b), 0)
             ).toFixed(2);
+            cal.value["con_month"] = parseFloat(
+              sum_month2.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["grid_in_month"] = parseFloat(
+              sum_month3.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["grid_out_month"] = parseFloat(
+              sum_month4.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["bat_in_month"] = parseFloat(
+              sum_month5.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["bat_out_month"] = parseFloat(
+              sum_month6.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            // }
           }
         });
         setVMonth(vMonth);
+        setVMonth2(vMonth2);
+        setVMonth3(vMonth3);
+        setVMonth4(vMonth4);
+        setVMonth5(vMonth5);
+        setVMonth6(vMonth6);
         setDataMonth(datamonth_);
       } else {
         setDataMonth([]);
         setVMonth(dataLang.formatMessage({ id: "unknown" }));
+        setVMonth2(dataLang.formatMessage({ id: "unknown" }));
+        setVMonth3(dataLang.formatMessage({ id: "unknown" }));
+        setVMonth4(dataLang.formatMessage({ id: "unknown" }));
+        setVMonth5(dataLang.formatMessage({ id: "unknown" }));
+        setVMonth6(dataLang.formatMessage({ id: "unknown" }));
       }
     };
     getMonth();
@@ -829,30 +1123,75 @@ export default function ProjectData(props) {
       //console.log(d)
       if (d.status) {
         //console.log(d.data)
-        let vYear = dataLang.formatMessage({ id: d.data.name });
+        let vYear = dataLang.formatMessage({ id: "monthlyproduction" });
+        let vYear2 = dataLang.formatMessage({ id: "monthlyconsumption" });
+        let vYear3 = dataLang.formatMessage({ id: "monthlygridin" });
+        let vYear4 = dataLang.formatMessage({ id: "monthlygridout" });
+        let vYear5 = dataLang.formatMessage({ id: "monthlybatteryin" });
+        let vYear6 = dataLang.formatMessage({ id: "monthlybatteryout" });
         let sum_year = [];
+        let sum_year2 = [];
+        let sum_year3 = [];
+        let sum_year4 = [];
+        let sum_year5 = [];
+        let sum_year6 = [];
         let datayear_ = [];
         for (let i = 1; i <= 12; i++) {
           datayear_ = [
             ...datayear_,
-            { month: i < 10 ? `0${i}` : `${i}`, [vYear]: 0 },
+            { month: i < 10 ? `0${i}` : `${i}`, [vYear]: 0, [vYear2]: 0, [vYear3]: 0, [vYear4]: 0, [vYear5]: 0, [vYear6]: 0 },
           ];
         }
         d.data.data.map((item, i) => {
           let index = datayear_.findIndex((d) => d.month == item.month);
           datayear_[index][vYear] = item.value;
-          sum_year[i] = item.value;
+          datayear_[index][vYear2] = item.value2;
+          datayear_[index][vYear3] = item.value3;
+          datayear_[index][vYear4] = item.value4;
+          datayear_[index][vYear5] = item.value5;
+          datayear_[index][vYear6] = item.value6;
+          sum_year[i] = item?.value || 0;
+          sum_year2[i] = item?.value2 || 0;
+          sum_year3[i] = item?.value3 || 0;
+          sum_year4[i] = item?.value4 || 0;
+          sum_year5[i] = item?.value5 || 0;
+          sum_year6[i] = item?.value6 || 0;
           if (i == d.data.data.length - 1) {
             cal.value["pro_year"] = parseFloat(
               sum_year.reduce((a, b) => Number(a) + Number(b), 0)
             ).toFixed(2);
+            cal.value["con_year"] = parseFloat(
+              sum_year2.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2)
+            cal.value["grid_in_year"] = parseFloat(
+              sum_year3.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2)
+            cal.value["grid_out_year"] = parseFloat(
+              sum_year4.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2)
+            cal.value["bat_in_year"] = parseFloat(
+              sum_year5.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2)
+            cal.value["bat_out_year"] = parseFloat(
+              sum_year6.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2)
           }
         });
         setVYear(vYear);
+        setVYear2(vYear2);
+        setVYear3(vYear3);
+        setVYear4(vYear4);
+        setVYear5(vYear5);
+        setVYear6(vYear6);
         setDataYear(datayear_);
       } else {
         setDataYear([]);
         setVYear(dataLang.formatMessage({ id: "unknown" }));
+        setVYear2(dataLang.formatMessage({ id: "unknown" }));
+        setVYear3(dataLang.formatMessage({ id: "unknown" }));
+        setVYear4(dataLang.formatMessage({ id: "unknown" }));
+        setVYear5(dataLang.formatMessage({ id: "unknown" }));
+        setVYear6(dataLang.formatMessage({ id: "unknown" }));
       }
     };
     getYear();
@@ -865,31 +1204,79 @@ export default function ProjectData(props) {
       setDataTotal([]);
       if (d.status) {
         //console.log(d.data)
-        // let vTotal = dataLang.formatMessage({ id: d.data.name });
+        let vTotal = dataLang.formatMessage({ id: 'yearproduction' });
+        let vTotal2 = dataLang.formatMessage({ id: 'yearconsumption' });
+        let vTotal3 = dataLang.formatMessage({ id: 'yeargridin' });
+        let vTotal4 = dataLang.formatMessage({ id: 'yeargridout' });
+        let vTotal5 = dataLang.formatMessage({ id: 'yearbatteryin' });
+        let vTotal6 = dataLang.formatMessage({ id: 'yearbatteryout' });
+
         let sum_total = [];
+        let sum_total2 = [];
+        let sum_total3 = [];
+        let sum_total4 = [];
+        let sum_total5 = [];
+        let sum_total6 = [];
         d.data.data.map((item, i) => {
           setDataTotal((old) => [
             ...old,
             {
               year: item.year,
-              [dataLang.formatMessage({ id: "totalOutput" })]: item.value,
+              [vTotal]: item.value,
+              [vTotal2]: item.value2,
+              [vTotal3]: item.value3,
+              [vTotal4]: item.value4,
+              [vTotal5]: item.value5,
+              [vTotal6]: item.value6,
             },
           ]);
-          sum_total[i] = item.value;
+          sum_total[i] = item?.value || 0;
+          sum_total2[i] = item?.value2 || 0;
+          sum_total3[i] = item?.value3 || 0;
+          sum_total4[i] = item?.value4 || 0;
+          sum_total5[i] = item?.value5 || 0;
+          sum_total6[i] = item?.value6 || 0;
           if (i == d.data.data.length - 1) {
             cal.value["pro_total"] = parseFloat(
               sum_total.reduce((a, b) => Number(a) + Number(b), 0)
             ).toFixed(2);
+            cal.value["con_total"] = parseFloat(
+              sum_total2.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["grid_in_total"] = parseFloat(
+              sum_total3.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["grid__out_total"] = parseFloat(
+              sum_total4.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["bat_in_total"] = parseFloat(
+              sum_total5.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["bat_out_total"] = parseFloat(
+              sum_total6.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
           }
         });
         // console.log(d.data.name);
-        setVTotal(dataLang.formatMessage({ id: d.data.name }));
+        setVTotal(vTotal);
+        setVTotal2(vTotal2);
+        setVTotal3(vTotal3);
+        setVTotal4(vTotal4);
+        setVTotal5(vTotal5);
+        setVTotal6(vTotal6);
+      } else {
+        setVTotal(dataLang.formatMessage({ id: "unknown" }));
+        setVTotal2(dataLang.formatMessage({ id: "unknown" }));
+        setVTotal3(dataLang.formatMessage({ id: "unknown" }));
+        setVTotal4(dataLang.formatMessage({ id: "unknown" }));
+        setVTotal5(dataLang.formatMessage({ id: "unknown" }));
+        setVTotal6(dataLang.formatMessage({ id: "unknown" }));
+        setDataYear([]);
       }
     };
     getTotal();
 
     //data Logger
-
 
     return () => {
       cal.value = {};
@@ -916,11 +1303,15 @@ export default function ProjectData(props) {
         if (res.ret === 0) {
           //console.log(res.data)
           setInvt((pre) => ({ ...pre, [item.sn]: res.data }));
-          const decimalArray = JSON.parse(item.setting.sn)
-          const hexString = decimalArray.map((num) => parseInt(res.data[num]).toString(16)).join('');
-          const asciiString = hexString.match(/.{2}/g).map(byte => String.fromCharCode(parseInt(byte, 16))).join('');
+          const decimalArray = JSON.parse(item.setting.sn);
+          const hexString = decimalArray
+            .map((num) => parseInt(res.data[num]).toString(16))
+            .join("");
+          const asciiString = hexString
+            .match(/.{2}/g)
+            .map((byte) => String.fromCharCode(parseInt(byte, 16)))
+            .join("");
           // console.log(asciiString);
-
         } else {
           setInvt((pre) => ({ ...pre, [item.sn]: {} }));
         }
@@ -940,7 +1331,7 @@ export default function ProjectData(props) {
     return () => {
       temp.value = [];
       inverterDB.value = [];
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -970,14 +1361,13 @@ export default function ProjectData(props) {
             let register_ = JSON.parse(value.register);
             // console.log(register_);
             register_.map((reg, j) => {
-              inum[j] = parseFloat(invt[item.sn]?.[reg] || 0)
-            })
+              inum[j] = parseFloat(invt[item.sn]?.[reg] || 0);
+            });
             console.log(inum);
 
             num_[key][i] = inum.reduce((accumulator, currentValue) => {
               return Number(accumulator) + Number(currentValue);
             }, 0);
-
 
             if (i == temp.value.length - 1) {
               // if (invt[item.psn]?.enabled == 1) {
@@ -1146,13 +1536,18 @@ export default function ProjectData(props) {
                 case "dashboard":
                   return (
                     <div className="DAT_ProjectData_Header_LeftDashboard">
-                      <div className="DAT_ProjectData_Header_LeftDashboard_Top" style={{ fontSize: 22 }}>
-                        <img src={
-                          projectData.value.img
-                            ? projectData.value.img
-                            : "/dat_picture/solar_panel.png"
-                        }
-                          alt="" />
+                      <div
+                        className="DAT_ProjectData_Header_LeftDashboard_Top"
+                        style={{ fontSize: 22 }}
+                      >
+                        <img
+                          src={
+                            projectData.value.img
+                              ? projectData.value.img
+                              : "/dat_picture/solar_panel.png"
+                          }
+                          alt=""
+                        />
                         <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content">
                           <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Name">
                             {projectData.value.plantname}
@@ -1175,7 +1570,6 @@ export default function ProjectData(props) {
                           </div> */}
                         </div>
                       </div>
-
                     </div>
                   );
                 case "device":
@@ -1184,13 +1578,18 @@ export default function ProjectData(props) {
                     //   <div style={{ fontSize: 22 }}>{tit[view]}</div>
                     // </div>
                     <div className="DAT_ProjectData_Header_LeftDashboard">
-                      <div className="DAT_ProjectData_Header_LeftDashboard_Top" style={{ fontSize: 22 }}>
-                        <img src={
-                          projectData.value.img
-                            ? projectData.value.img
-                            : "/dat_picture/solar_panel.png"
-                        }
-                          alt="" />
+                      <div
+                        className="DAT_ProjectData_Header_LeftDashboard_Top"
+                        style={{ fontSize: 22 }}
+                      >
+                        <img
+                          src={
+                            projectData.value.img
+                              ? projectData.value.img
+                              : "/dat_picture/solar_panel.png"
+                          }
+                          alt=""
+                        />
                         <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content">
                           <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Name">
                             {projectData.value.plantname}
@@ -1213,7 +1612,6 @@ export default function ProjectData(props) {
                           </div> */}
                         </div>
                       </div>
-
                     </div>
                   );
                 case "alert":
@@ -1253,8 +1651,8 @@ export default function ProjectData(props) {
               <div
                 className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => {
-                  (plantState.value = "default");
-                  (dropState.value = false);
+                  plantState.value = "default";
+                  dropState.value = false;
                 }}
               >
                 <RxCross2 size={20} color="white" />
@@ -1271,7 +1669,8 @@ export default function ProjectData(props) {
                   <div className="DAT_ProjectData_Dashboard_Data">
                     <div className="DAT_ProjectData_Dashboard_Data_Left">
                       <div className="DAT_ProjectData_Dashboard_Data_Left_Tit">
-                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
                           id="production"
                           style={{
                             color: nav === "production" ? color.cur : color.pre,
@@ -1281,10 +1680,12 @@ export default function ProjectData(props) {
                         >
                           {dataLang.formatMessage({ id: "productionData" })}
                         </div>
-                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
                           id="consumption"
                           style={{
-                            color: nav === "consumption" ? color.cur : color.pre,
+                            color:
+                              nav === "consumption" ? color.cur : color.pre,
                             // width: nav === "consumption" ? "150px" : "90px",
                             display:
                               projectData.value.plantmode === "grid"
@@ -1295,7 +1696,8 @@ export default function ProjectData(props) {
                         >
                           {dataLang.formatMessage({ id: "consumptionData" })}
                         </div>
-                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
                           id="grid"
                           style={{
                             color: nav === "grid" ? color.cur : color.pre,
@@ -1308,7 +1710,8 @@ export default function ProjectData(props) {
                         >
                           {dataLang.formatMessage({ id: "grid" })}
                         </div>
-                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
                           id="battery"
                           style={{
                             color: nav === "battery" ? color.cur : color.pre,
@@ -1346,28 +1749,39 @@ export default function ProjectData(props) {
                           {(() => {
                             switch (projectData.value.plantmode) {
                               case "consumption":
-                                return (<>
-                                  {dataLang.formatMessage({ id: 'consumptionType' })}
-                                </>)
+                                return (
+                                  <>
+                                    {dataLang.formatMessage({
+                                      id: "consumptionType",
+                                    })}
+                                  </>
+                                );
                               case "hybrid":
-                                return (<>
-                                  {dataLang.formatMessage({ id: 'hybridType' })}
-                                </>)
+                                return (
+                                  <>
+                                    {dataLang.formatMessage({
+                                      id: "hybridType",
+                                    })}
+                                  </>
+                                );
                               case "ESS":
-                                return (<>
-                                  {dataLang.formatMessage({ id: 'ESS' })}
-                                </>)
+                                return (
+                                  <>{dataLang.formatMessage({ id: "ESS" })}</>
+                                );
                               default:
                                 return (
                                   <>
-                                    {dataLang.formatMessage({ id: 'gridType' })}
+                                    {dataLang.formatMessage({ id: "gridType" })}
                                   </>
-                                )
+                                );
                             }
                           })()}
                         </div>
                       </div>
-                      <Graph type={projectData.value.plantmode} cal={cal.value} />
+                      <Graph
+                        type={projectData.value.plantmode}
+                        cal={cal.value}
+                      />
                     </div>
 
                     <div className="DAT_ProjectData_Dashboard_Data_Right">
@@ -1475,19 +1889,38 @@ export default function ProjectData(props) {
                     {(() => {
                       switch (dateType) {
                         case "date":
-                          return <Day data={dataDay} v={vDay} />;
+                          return (
+                            <Day
+                              data={dataDay}
+                              v={vDay}
+                              v2={vDay2}
+                              v3={vDay3}
+                              v4={vDay4}
+                            />
+                          );
                         case "month":
-                          return <Month data={dataMonth} v={vMonth} />;
+                          return (
+                            <Month
+                              data={dataMonth}
+                              v={vMonth}
+                              v2={vMonth2}
+                              v3={vMonth3}
+                              v4={vMonth4}
+                              v5={vMonth5}
+                              v6={vMonth6}
+                            />
+                          );
                         case "year":
-                          return <Year data={dataYear} v={vYear} />;
+                          return <Year data={dataYear} v={vYear} v2={vYear2} v3={vYear3} v4={vYear4} v5={vYear5} v6={vYear6} />;
                         case "total":
-                          return <Total data={dataTotal} v={vTotal} />;
+                          return <Total data={dataTotal} v={vTotal} v2={vTotal2} v3={vTotal3} v4={vTotal4} v5={vTotal5} v6={vTotal6} />;
                         default:
                           <></>;
                       }
                     })()}
 
-                    <div className="DAT_ProjectData_Dashboard_History_SubConfig"
+                    <div
+                      className="DAT_ProjectData_Dashboard_History_SubConfig"
                       style={{
                         height: dropConfig ? "500px" : "0px",
                         transition: "0.5s",
@@ -1510,13 +1943,20 @@ export default function ProjectData(props) {
                                       <tbody>
                                         <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                           <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({ id: "production" })}
+                                            {dataLang.formatMessage({
+                                              id: "production",
+                                            })}
                                           </th>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'production' })}
+                                                {dataLang.formatMessage({
+                                                  id: "production",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
@@ -1526,13 +1966,20 @@ export default function ProjectData(props) {
                                       <tbody>
                                         <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                           <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({ id: "consumption" })}
+                                            {dataLang.formatMessage({
+                                              id: "consumption",
+                                            })}
                                           </th>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'consumption' })}
+                                                {dataLang.formatMessage({
+                                                  id: "consumption",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
@@ -1542,41 +1989,60 @@ export default function ProjectData(props) {
                                       <tbody>
                                         <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                           <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({ id: "grid" })}
+                                            {dataLang.formatMessage({
+                                              id: "grid",
+                                            })}
                                           </th>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'gridfeed' })}
+                                                {dataLang.formatMessage({
+                                                  id: "gridfeed",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'purchaseE' })}
+                                                {dataLang.formatMessage({
+                                                  id: "purchaseE",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
                                         </tr>
                                       </tbody>
                                     </table>
-                                  )
+                                  );
                                 case "hybrid":
                                   return (
                                     <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
                                       <tbody>
                                         <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                           <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({ id: "production" })}
+                                            {dataLang.formatMessage({
+                                              id: "production",
+                                            })}
                                           </th>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'production' })}
+                                                {dataLang.formatMessage({
+                                                  id: "production",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
@@ -1586,13 +2052,20 @@ export default function ProjectData(props) {
                                       <tbody>
                                         <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                           <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({ id: "consumption" })}
+                                            {dataLang.formatMessage({
+                                              id: "consumption",
+                                            })}
                                           </th>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'consumption' })}
+                                                {dataLang.formatMessage({
+                                                  id: "consumption",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
@@ -1602,29 +2075,46 @@ export default function ProjectData(props) {
                                       <tbody>
                                         <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                           <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({ id: "grid" })}
+                                            {dataLang.formatMessage({
+                                              id: "grid",
+                                            })}
                                           </th>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'grid' })}
+                                                {dataLang.formatMessage({
+                                                  id: "grid",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'gridfeed' })}
+                                                {dataLang.formatMessage({
+                                                  id: "gridfeed",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'purchaseE' })}
+                                                {dataLang.formatMessage({
+                                                  id: "purchaseE",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
@@ -1634,49 +2124,73 @@ export default function ProjectData(props) {
                                       <tbody>
                                         <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                           <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({ id: "batteryData" })}
+                                            {dataLang.formatMessage({
+                                              id: "batteryData",
+                                            })}
                                           </th>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'batteryData' })}
+                                                {dataLang.formatMessage({
+                                                  id: "batteryData",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'charge' })}
+                                                {dataLang.formatMessage({
+                                                  id: "charge",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'discharge' })}
+                                                {dataLang.formatMessage({
+                                                  id: "discharge",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
                                         </tr>
                                       </tbody>
                                     </table>
-                                  )
+                                  );
                                 case "ESS":
                                   return (
                                     <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
                                       <tbody>
                                         <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                           <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({ id: "production" })}
+                                            {dataLang.formatMessage({
+                                              id: "production",
+                                            })}
                                           </th>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'production' })}
+                                                {dataLang.formatMessage({
+                                                  id: "production",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
@@ -1686,13 +2200,20 @@ export default function ProjectData(props) {
                                       <tbody>
                                         <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                           <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({ id: "consumption" })}
+                                            {dataLang.formatMessage({
+                                              id: "consumption",
+                                            })}
                                           </th>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'consumption' })}
+                                                {dataLang.formatMessage({
+                                                  id: "consumption",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
@@ -1702,29 +2223,46 @@ export default function ProjectData(props) {
                                       <tbody>
                                         <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                           <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({ id: "grid" })}
+                                            {dataLang.formatMessage({
+                                              id: "grid",
+                                            })}
                                           </th>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'grid' })}
+                                                {dataLang.formatMessage({
+                                                  id: "grid",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'gridfeed' })}
+                                                {dataLang.formatMessage({
+                                                  id: "gridfeed",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'purchaseE' })}
+                                                {dataLang.formatMessage({
+                                                  id: "purchaseE",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
@@ -1734,36 +2272,53 @@ export default function ProjectData(props) {
                                       <tbody>
                                         <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
                                           <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                            {dataLang.formatMessage({ id: "batteryData" })}
+                                            {dataLang.formatMessage({
+                                              id: "batteryData",
+                                            })}
                                           </th>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'batteryData' })}
+                                                {dataLang.formatMessage({
+                                                  id: "batteryData",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'charge' })}
+                                                {dataLang.formatMessage({
+                                                  id: "charge",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'discharge' })}
+                                                {dataLang.formatMessage({
+                                                  id: "discharge",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
                                         </tr>
                                       </tbody>
                                     </table>
-                                  )
+                                  );
                                 default:
                                   return (
                                     <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
@@ -1776,16 +2331,21 @@ export default function ProjectData(props) {
                                           </th>
                                           <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
                                             <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                              <input id="Production" type="checkbox" />
+                                              <input
+                                                id="Production"
+                                                type="checkbox"
+                                              />
                                               <label htmlFor="Production">
-                                                {dataLang.formatMessage({ id: 'production' })}
+                                                {dataLang.formatMessage({
+                                                  id: "production",
+                                                })}
                                               </label>
                                             </div>
                                           </td>
                                         </tr>
                                       </tbody>
                                     </table>
-                                  )
+                                  );
                               }
                             })()}
                           </div>
@@ -1841,11 +2401,12 @@ export default function ProjectData(props) {
                               {projectData.value.planttype === "industrial" ? (
                                 <>{dataLang.formatMessage({ id: "factory" })}</>
                               ) : (
-                                <>{dataLang.formatMessage({ id: "household" })}</>
+                                <>
+                                  {dataLang.formatMessage({ id: "household" })}
+                                </>
                               )}
                             </div>
                             {/* </div> */}
-
                           </div>
 
                           <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item">
@@ -1873,11 +2434,9 @@ export default function ProjectData(props) {
                           </div> */}
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Title">
                               {dataLang.formatMessage({ id: "companyName" })}:
-
                             </div>
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Content">
                               {projectData.value.business}
-
                             </div>
                           </div>
 
@@ -1940,14 +2499,10 @@ export default function ProjectData(props) {
                             {dataLang.formatMessage({ id: "complete" })}
                           </div> */}
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Title">
-
                               {dataLang.formatMessage({ id: "contactName" })}:
-
                             </div>
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Content">
-
                               {projectData.value.contact}
-
                             </div>
                           </div>
 
@@ -1976,11 +2531,9 @@ export default function ProjectData(props) {
                           </div> */}
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Title">
                               {dataLang.formatMessage({ id: "phone" })}:
-
                             </div>
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Content">
                               {projectData.value.phone}
-
                             </div>
                           </div>
 
@@ -2025,28 +2578,74 @@ export default function ProjectData(props) {
                       <div className="DAT_ProjectData_Dashboard_More_Right_Tit">
                         {dataLang.formatMessage({ id: "environment" })}
                         &nbsp;
-                        <PopupState variant="popper" popupId="demo-popup-popper">
+                        <PopupState
+                          variant="popper"
+                          popupId="demo-popup-popper"
+                        >
                           {(popupState) => (
                             <div style={{ cursor: "pointer" }}>
                               <HelpOutlineIcon
                                 {...bindHover(popupState)}
                                 color="action"
-                                fontSize="9px" />
+                                fontSize="9px"
+                              />
                               <Popper {...bindPopper(popupState)} transition>
                                 {({ TransitionProps }) => (
                                   <Fade {...TransitionProps} timeout={350}>
-                                    <Paper sx={{ width: '400px', marginTop: '10px', marginLeft: '335px', p: 2 }}>
-                                      <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
-                                        1. {dataLang.formatMessage({ id: 'environment1' })}
+                                    <Paper
+                                      sx={{
+                                        width: "400px",
+                                        marginTop: "10px",
+                                        marginLeft: "335px",
+                                        p: 2,
+                                      }}
+                                    >
+                                      <Typography
+                                        sx={{
+                                          fontSize: "12px",
+                                          textAlign: "justify",
+                                          marginBottom: 1.7,
+                                        }}
+                                      >
+                                        1.{" "}
+                                        {dataLang.formatMessage({
+                                          id: "environment1",
+                                        })}
                                       </Typography>
-                                      <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
-                                        2. {dataLang.formatMessage({ id: 'environment2' })}
+                                      <Typography
+                                        sx={{
+                                          fontSize: "12px",
+                                          textAlign: "justify",
+                                          marginBottom: 1.7,
+                                        }}
+                                      >
+                                        2.{" "}
+                                        {dataLang.formatMessage({
+                                          id: "environment2",
+                                        })}
                                       </Typography>
-                                      <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
-                                        3. {dataLang.formatMessage({ id: 'environment3' })}
+                                      <Typography
+                                        sx={{
+                                          fontSize: "12px",
+                                          textAlign: "justify",
+                                          marginBottom: 1.7,
+                                        }}
+                                      >
+                                        3.{" "}
+                                        {dataLang.formatMessage({
+                                          id: "environment3",
+                                        })}
                                       </Typography>
-                                      <Typography sx={{ fontSize: '12px', textAlign: 'justify' }}>
-                                        4. {dataLang.formatMessage({ id: 'environment4' })}
+                                      <Typography
+                                        sx={{
+                                          fontSize: "12px",
+                                          textAlign: "justify",
+                                        }}
+                                      >
+                                        4.{" "}
+                                        {dataLang.formatMessage({
+                                          id: "environment4",
+                                        })}
                                       </Typography>
                                     </Paper>
                                   </Fade>
@@ -2299,11 +2898,7 @@ export default function ProjectData(props) {
                               </>
                             );
                           case "inverter":
-                            return (
-                              <>
-
-                              </>
-                            );
+                            return <></>;
                           case "meter":
                             return (
                               <>
@@ -2640,7 +3235,13 @@ export default function ProjectData(props) {
 
       {popupState.value ? (
         <div className="DAT_DevicePopup">
-          <Popup plantid={projectData.value.plantid_} type="logger" sn={snlogger} data={temp.value} func={type} />
+          <Popup
+            plantid={projectData.value.plantid_}
+            type="logger"
+            sn={snlogger}
+            data={temp.value}
+            func={type}
+          />
         </div>
       ) : (
         <> </>
@@ -2712,7 +3313,8 @@ export default function ProjectData(props) {
         </>
       )}
 
-      <div className="DAT_DeviceInfor"
+      <div
+        className="DAT_DeviceInfor"
         style={{ height: infoState.value ? "100%" : "0px", transition: "0.5s" }}
       >
         {infoState.value ? <Info /> : <></>}
@@ -2744,45 +3346,44 @@ const Graph = (props) => {
 };
 
 const GraphGrid = (props) => {
-  const [lineA_, setLinA] = useState(false)
-  const [lineB_, setLinB] = useState(false)
-  const [lineC_, setLinC] = useState('Default')
-  const [lineD_, setLinD] = useState('Default')
+  const [lineA_, setLinA] = useState(false);
+  const [lineB_, setLinB] = useState(false);
+  const [lineC_, setLinC] = useState("Default");
+  const [lineD_, setLinD] = useState("Default");
 
   useEffect(() => {
     // console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
-    if ((props.cal?.pro_1) > 0) {
+    if (props.cal?.pro_1 > 0) {
       // console.log("A")
-      setLinA(true)
+      setLinA(true);
     }
     if (parseFloat(props.cal?.con_1) > 0) {
       // console.log("B")
-      setLinB(true)
+      setLinB(true);
     }
 
     if (parseFloat(props.cal?.bat_1) > 0) {
       // console.log("D")
-      setLinC('In')
+      setLinC("In");
     } else if (parseFloat(props.cal?.bat_1) < 0) {
       // console.log("D")
-      setLinC('Out')
+      setLinC("Out");
     } else {
       // console.log("D")
-      setLinC('default')
+      setLinC("default");
     }
 
     if (parseFloat(props.cal?.grid_1) > 0) {
       // console.log("D")
-      setLinD('In')
+      setLinD("In");
     } else if (parseFloat(props.cal?.grid_1) < 0) {
       // console.log("D")
-      setLinD('Out')
+      setLinD("Out");
     } else {
       // console.log("D")
-      setLinD('default')
+      setLinD("default");
     }
-
-  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1])
+  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1]);
 
   const LineA = (props) => {
     return (
@@ -2804,8 +3405,8 @@ const GraphGrid = (props) => {
             overflow: "hidden",
           }}
         />
-        {lineA_
-          ? <circle
+        {lineA_ ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -2822,8 +3423,9 @@ const GraphGrid = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>
-        }
+        ) : (
+          <></>
+        )}
       </svg>
     );
   };
@@ -2890,8 +3492,8 @@ const GraphGrid = (props) => {
             overflow: "hidden",
           }}
         />
-        {lineC_ === 'In'
-          ? <circle
+        {lineC_ === "In" ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -2908,9 +3510,11 @@ const GraphGrid = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>}
-        {lineC_ === 'Out'
-          ? <circle
+        ) : (
+          <></>
+        )}
+        {lineC_ === "Out" ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -2927,7 +3531,9 @@ const GraphGrid = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>}
+        ) : (
+          <></>
+        )}
       </svg>
     );
   };
@@ -3037,10 +3643,30 @@ const GraphGrid = (props) => {
 
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <ImgSolar width="70" height="70" />
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+          <div
+            style={{
+              color: "black",
+              fontSize: "20px",
+              fontWeight: "bold",
+              width: "40px",
+              fontSize: "14px",
+            }}
+          >
             <div>
               {Number(props.cal?.pro_1 / 1000 || 0).toLocaleString("en-US")}
             </div>
@@ -3048,38 +3674,117 @@ const GraphGrid = (props) => {
           </div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <LineA width="110" height="45" dur="2s" />
           <LineB width="110" height="45" dur="2s" />
         </div>
         {/* <LineF width="230" height="25" /> */}
 
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              color: "black",
+              fontSize: "20px",
+              fontWeight: "bold",
+              width: "40px",
+              fontSize: "14px",
+            }}
+          />
           <ImgLoad width="70" height="70" />
         </div>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "70px" }}>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "70px", height: "70px", backgroundColor: "white", borderRadius: "5px", border: "1px solid gray" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "70px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "70px",
+            height: "70px",
+            backgroundColor: "white",
+            borderRadius: "5px",
+            border: "1px solid gray",
+          }}
+        >
           DC/AC
         </div>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <div style={{ width: "60px", height: "70px" }} />
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }} />
+          <div
+            style={{
+              color: "black",
+              fontSize: "20px",
+              fontWeight: "bold",
+              width: "40px",
+              fontSize: "14px",
+            }}
+          />
         </div>
 
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <div style={{ width: "120px", height: "45px" }} />
           <LineD width="120" height="45" />
         </div>
         {/* <LineF width="230" height="25" /> */}
 
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              color: "black",
+              fontSize: "20px",
+              fontWeight: "bold",
+              width: "40px",
+              fontSize: "14px",
+            }}
+          />
           <ImgGrid width="60" height="70" />
         </div>
       </div>
@@ -3088,45 +3793,44 @@ const GraphGrid = (props) => {
 };
 
 const GraphConsumption = (props) => {
-  const [lineA_, setLinA] = useState(false)
-  const [lineB_, setLinB] = useState(false)
-  const [lineC_, setLinC] = useState('Default')
-  const [lineD_, setLinD] = useState('Default')
+  const [lineA_, setLinA] = useState(false);
+  const [lineB_, setLinB] = useState(false);
+  const [lineC_, setLinC] = useState("Default");
+  const [lineD_, setLinD] = useState("Default");
 
   useEffect(() => {
     // console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
-    if ((props.cal?.pro_1) > 0) {
+    if (props.cal?.pro_1 > 0) {
       // console.log("A")
-      setLinA(true)
+      setLinA(true);
     }
     if (parseFloat(props.cal?.con_1) > 0) {
       // console.log("B")
-      setLinB(true)
+      setLinB(true);
     }
 
     if (parseFloat(props.cal?.bat_1) > 0) {
       // console.log("D")
-      setLinC('In')
+      setLinC("In");
     } else if (parseFloat(props.cal?.bat_1) < 0) {
       // console.log("D")
-      setLinC('Out')
+      setLinC("Out");
     } else {
       // console.log("D")
-      setLinC('default')
+      setLinC("default");
     }
 
     if (parseFloat(props.cal?.grid_1) > 0) {
       // console.log("D")
-      setLinD('In')
+      setLinD("In");
     } else if (parseFloat(props.cal?.grid_1) < 0) {
       // console.log("D")
-      setLinD('Out')
+      setLinD("Out");
     } else {
       // console.log("D")
-      setLinD('default')
+      setLinD("default");
     }
-
-  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1])
+  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1]);
 
   const LineA = (props) => {
     return (
@@ -3148,8 +3852,8 @@ const GraphConsumption = (props) => {
             overflow: "hidden",
           }}
         />
-        {lineA_
-          ? <circle
+        {lineA_ ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -3166,8 +3870,9 @@ const GraphConsumption = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>
-        }
+        ) : (
+          <></>
+        )}
       </svg>
     );
   };
@@ -3191,8 +3896,8 @@ const GraphConsumption = (props) => {
             overflow: "hidden",
           }}
         />
-        {lineB_
-          ? <circle
+        {lineB_ ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -3209,11 +3914,12 @@ const GraphConsumption = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>}
+        ) : (
+          <></>
+        )}
       </svg>
     );
   };
-
 
   const LineC = (props) => {
     return (
@@ -3235,8 +3941,8 @@ const GraphConsumption = (props) => {
             overflow: "hidden",
           }}
         />
-        {lineC_ === 'In'
-          ? <circle
+        {lineC_ === "In" ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -3253,9 +3959,11 @@ const GraphConsumption = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>}
-        {lineC_ === 'Out'
-          ? <circle
+        ) : (
+          <></>
+        )}
+        {lineC_ === "Out" ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -3272,7 +3980,9 @@ const GraphConsumption = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>}
+        ) : (
+          <></>
+        )}
       </svg>
     );
   };
@@ -3296,8 +4006,8 @@ const GraphConsumption = (props) => {
             overflow: "hidden",
           }}
         />
-        {lineD_ === 'In'
-          ? <circle
+        {lineD_ === "In" ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -3314,10 +4024,11 @@ const GraphConsumption = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>
-        }
-        {lineD_ === 'Out'
-          ? <circle
+        ) : (
+          <></>
+        )}
+        {lineD_ === "Out" ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -3334,12 +4045,12 @@ const GraphConsumption = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>
-        }
+        ) : (
+          <></>
+        )}
       </svg>
     );
   };
-
 
   const ImgSolar = (props) => {
     return (
@@ -3383,12 +4094,30 @@ const GraphConsumption = (props) => {
 
   return (
     <>
-
-
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <ImgSolar width="70" height="70" />
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+          <div
+            style={{
+              color: "black",
+              fontSize: "20px",
+              fontWeight: "bold",
+              width: "40px",
+              fontSize: "14px",
+            }}
+          >
             <div>
               {Number(props.cal?.pro_1 / 1000 || 0).toLocaleString("en-US")}
             </div>
@@ -3396,50 +4125,121 @@ const GraphConsumption = (props) => {
           </div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <LineA width="110" height="45" dur="2s" />
           <LineB width="110" height="45" dur="2s" />
         </div>
         {/* <LineF width="230" height="25" /> */}
 
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
-            <div>
-              {Number(props.cal?.con_1 || 0).toLocaleString("en-US")}
-            </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              color: "black",
+              fontSize: "20px",
+              fontWeight: "bold",
+              width: "40px",
+              fontSize: "14px",
+            }}
+          >
+            <div>{Number(props.cal?.con_1 || 0).toLocaleString("en-US")}</div>
             <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
           </div>
           <ImgLoad width="70" height="70" />
         </div>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "70px" }}>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "70px", height: "70px", backgroundColor: "white", borderRadius: "5px", border: "1px solid gray" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "70px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "70px",
+            height: "70px",
+            backgroundColor: "white",
+            borderRadius: "5px",
+            border: "1px solid gray",
+          }}
+        >
           DC/AC
         </div>
       </div>
 
-
-
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <div style={{ width: "60px", height: "70px" }}></div>
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
-
-          </div>
+          <div
+            style={{
+              color: "black",
+              fontSize: "20px",
+              fontWeight: "bold",
+              width: "40px",
+              fontSize: "14px",
+            }}
+          ></div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <div style={{ width: "120px", height: "45px" }}></div>
           <LineD width="120" height="45" />
         </div>
         {/* <LineF width="230" height="25" /> */}
 
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
-            <div>
-              {Number(props.cal?.grid_1 || 0).toLocaleString("en-US")}
-            </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              color: "black",
+              fontSize: "20px",
+              fontWeight: "bold",
+              width: "40px",
+              fontSize: "14px",
+            }}
+          >
+            <div>{Number(props.cal?.grid_1 || 0).toLocaleString("en-US")}</div>
             <span style={{ color: "gray", fontSize: "13px" }}>W</span>
           </div>
           <ImgGrid width="60" height="70" />
@@ -3450,45 +4250,44 @@ const GraphConsumption = (props) => {
 };
 
 const GraphFull = (props) => {
-  const [lineA_, setLinA] = useState(false)
-  const [lineB_, setLinB] = useState(false)
-  const [lineC_, setLinC] = useState('Default')
-  const [lineD_, setLinD] = useState('Default')
+  const [lineA_, setLinA] = useState(false);
+  const [lineB_, setLinB] = useState(false);
+  const [lineC_, setLinC] = useState("Default");
+  const [lineD_, setLinD] = useState("Default");
 
   useEffect(() => {
     // console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
-    if ((props.cal?.pro_1) > 0) {
+    if (props.cal?.pro_1 > 0) {
       // console.log("A")
-      setLinA(true)
+      setLinA(true);
     }
     if (parseFloat(props.cal?.con_1) > 0) {
       // console.log("B")
-      setLinB(true)
+      setLinB(true);
     }
 
     if (parseFloat(props.cal?.bat_1) > 0) {
       // console.log("D")
-      setLinC('In')
+      setLinC("In");
     } else if (parseFloat(props.cal?.bat_1) < 0) {
       // console.log("D")
-      setLinC('Out')
+      setLinC("Out");
     } else {
       // console.log("D")
-      setLinC('default')
+      setLinC("default");
     }
 
     if (parseFloat(props.cal?.grid_1) > 0) {
       // console.log("D")
-      setLinD('In')
+      setLinD("In");
     } else if (parseFloat(props.cal?.grid_1) < 0) {
       // console.log("D")
-      setLinD('Out')
+      setLinD("Out");
     } else {
       // console.log("D")
-      setLinD('default')
+      setLinD("default");
     }
-
-  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1])
+  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1]);
 
   const LineA = (props) => {
     return (
@@ -3510,8 +4309,8 @@ const GraphFull = (props) => {
             overflow: "hidden",
           }}
         />
-        {lineA_
-          ? <circle
+        {lineA_ ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -3528,8 +4327,9 @@ const GraphFull = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>
-        }
+        ) : (
+          <></>
+        )}
       </svg>
     );
   };
@@ -3553,8 +4353,8 @@ const GraphFull = (props) => {
             overflow: "hidden",
           }}
         />
-        {lineB_
-          ? <circle
+        {lineB_ ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -3571,7 +4371,9 @@ const GraphFull = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>}
+        ) : (
+          <></>
+        )}
       </svg>
     );
   };
@@ -3596,8 +4398,8 @@ const GraphFull = (props) => {
             overflow: "hidden",
           }}
         />
-        {lineC_ === 'In'
-          ? <circle
+        {lineC_ === "In" ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -3614,9 +4416,11 @@ const GraphFull = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>}
-        {lineC_ === 'Out'
-          ? <circle
+        ) : (
+          <></>
+        )}
+        {lineC_ === "Out" ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -3633,7 +4437,9 @@ const GraphFull = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>}
+        ) : (
+          <></>
+        )}
       </svg>
     );
   };
@@ -3657,8 +4463,8 @@ const GraphFull = (props) => {
             overflow: "hidden",
           }}
         />
-        {lineD_ === 'In'
-          ? <circle
+        {lineD_ === "In" ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -3675,10 +4481,11 @@ const GraphFull = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>
-        }
-        {lineD_ === 'Out'
-          ? <circle
+        ) : (
+          <></>
+        )}
+        {lineD_ === "Out" ? (
+          <circle
             r={4}
             style={{
               fill: "none",
@@ -3695,8 +4502,9 @@ const GraphFull = (props) => {
               repeatCount="indefinite"
             ></animateMotion>
           </circle>
-          : <></>
-        }
+        ) : (
+          <></>
+        )}
       </svg>
     );
   };
@@ -3743,62 +4551,160 @@ const GraphFull = (props) => {
 
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <ImgSolar width="70" height="70" />
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+          <div
+            style={{
+              color: "black",
+              fontSize: "20px",
+              fontWeight: "bold",
+              width: "40px",
+              fontSize: "14px",
+            }}
+          >
             <div>
-              {Number(parseFloat(convertUnit(props.cal?.pro_1 / 1000)).toFixed(2) || 0).toLocaleString("en-US")}
+              {Number(
+                parseFloat(convertUnit(props.cal?.pro_1 / 1000)).toFixed(2) || 0
+              ).toLocaleString("en-US")}
             </div>
             <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
           </div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <LineA width="110" height="45" dur="2s" />
           <LineB width="110" height="45" dur="2s" />
         </div>
         {/* <LineF width="230" height="25" /> */}
 
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
-            <div>
-              {Number(props.cal?.con_1 || 0).toLocaleString("en-US")}
-            </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              color: "black",
+              fontSize: "20px",
+              fontWeight: "bold",
+              width: "40px",
+              fontSize: "14px",
+            }}
+          >
+            <div>{Number(props.cal?.con_1 || 0).toLocaleString("en-US")}</div>
             <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
           </div>
           <ImgLoad width="70" height="70" />
         </div>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "70px" }}>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "70px", height: "70px", backgroundColor: "white", borderRadius: "5px", border: "1px solid gray" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "70px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "70px",
+            height: "70px",
+            backgroundColor: "white",
+            borderRadius: "5px",
+            border: "1px solid gray",
+          }}
+        >
           DC/AC
         </div>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}  >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <ImgBat width="60" height="70" />
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
+          <div
+            style={{
+              color: "black",
+              fontSize: "20px",
+              fontWeight: "bold",
+              width: "40px",
+              fontSize: "14px",
+            }}
+          >
             <div>
-              {Number(props.cal?.bat_1 || 0).toLocaleString("en-US")}{ }
+              {Number(props.cal?.bat_1 || 0).toLocaleString("en-US")}
+              { }
             </div>
             <span style={{ color: "gray", fontSize: "13px" }}>W</span>
           </div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <LineC width="120" height="45" />
           <LineD width="120" height="45" />
         </div>
         {/* <LineF width="230" height="25" /> */}
 
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }} >
-          <div style={{ color: "black", fontSize: "20px", fontWeight: "bold", width: "40px", fontSize: "14px" }}>
-            <div>
-              {Number(props.cal?.grid_1 || 0).toLocaleString("en-US")}
-            </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              color: "black",
+              fontSize: "20px",
+              fontWeight: "bold",
+              width: "40px",
+              fontSize: "14px",
+            }}
+          >
+            <div>{Number(props.cal?.grid_1 || 0).toLocaleString("en-US")}</div>
             <span style={{ color: "gray", fontSize: "13px" }}>W</span>
           </div>
           <ImgGrid width="60" height="70" />
@@ -3810,48 +4716,63 @@ const GraphFull = (props) => {
 
 const Production = (props) => {
   const dataLang = useIntl();
-  const in_max = 100
-  const in_min = 0
-  const out_max = -10
-  const out_min = 140
-  const [per, setPer] = useState(0)
+  const in_max = 100;
+  const in_min = 0;
+  const out_max = -10;
+  const out_min = 140;
+  const [per, setPer] = useState(0);
 
   const mapValue = (data, in_min, in_max, out_min, out_max) => {
-    return ((data - in_min) * (out_max - out_min) / (in_max - in_min)) + out_min;
-  }
+    return (
+      ((data - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
+    );
+  };
 
   useEffect(() => {
     //-10        130
     //100%       0%
-    let result = parseFloat(((props.cal?.pro_1 / 1000 || 0) / projectData.value.capacity) * 100)
+    let result = parseFloat(
+      ((props.cal?.pro_1 / 1000 || 0) / projectData.value.capacity) * 100
+    );
     // console.log(result)
-    setPer(mapValue(result, in_min, in_max, out_min, out_max))
-  }, [props.cal.pro_1])
+    setPer(mapValue(result, in_min, in_max, out_min, out_max));
+  }, [props.cal.pro_1]);
 
   const keyframes = `
     @keyframes plant {
-      0% { background-position: -1200px ${parseFloat(per)}px, -800px ${per}px, -400px ${per}px}
-      100% { background-position: 200px ${parseFloat(per)}px;, 100x ${per}px, 0px ${per}px}
+      0% { background-position: -1200px ${parseFloat(
+    per
+  )}px, -800px ${per}px, -400px ${per}px}
+      100% { background-position: 200px ${parseFloat(
+    per
+  )}px;, 100x ${per}px, 0px ${per}px}
     }`;
 
   const divStyle = {
-    animationName: 'plant',
-    animationDuration: '30s',
-    animationTimingFunction: 'linear',
-    animationIterationCount: 'infinite',
+    animationName: "plant",
+    animationDuration: "30s",
+    animationTimingFunction: "linear",
+    animationIterationCount: "infinite",
   };
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Production">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart">
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data"
+          <div
+            className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data"
             style={divStyle}
           >
             <style>{keyframes}</style>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value">
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_num">
-                {Number(parseFloat(((props.cal?.pro_1 / 1000 || 0) / projectData.value.capacity) * 100).toFixed(2)).toLocaleString("en-US")}
+                {Number(
+                  parseFloat(
+                    ((props.cal?.pro_1 / 1000 || 0) /
+                      projectData.value.capacity) *
+                    100
+                  ).toFixed(2)
+                ).toLocaleString("en-US")}
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_unit">
                 %
@@ -3859,26 +4780,46 @@ const Production = (props) => {
             </div>
           </div>
 
-          <div className="DAT_Home_Overview-Main-Percent-Icon" style={{ cursor: 'pointer' }}>
+          <div
+            className="DAT_Home_Overview-Main-Percent-Icon"
+            style={{ cursor: "pointer" }}
+          >
             <PopupState variant="popper" popupId="demo-popup-popper">
               {(popupState) => (
-                <div style={{ cursor: 'pointer' }}>
+                <div style={{ cursor: "pointer" }}>
                   <HelpOutlineIcon
                     {...bindHover(popupState)}
                     color="action"
-                    fontSize="9px" />
-                  <Popper {...bindPopper(popupState)} transition >
+                    fontSize="9px"
+                  />
+                  <Popper {...bindPopper(popupState)} transition>
                     {({ TransitionProps }) => (
                       <Fade {...TransitionProps} timeout={350}>
-                        <Paper sx={{ width: '400px', marginLeft: '235px', p: 2 }}>
-                          <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
-                            {dataLang.formatMessage({ id: 'overview1' })}
+                        <Paper
+                          sx={{ width: "400px", marginLeft: "235px", p: 2 }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: "12px",
+                              textAlign: "justify",
+                              marginBottom: 1.7,
+                            }}
+                          >
+                            {dataLang.formatMessage({ id: "overview1" })}
                           </Typography>
-                          <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
-                            {dataLang.formatMessage({ id: 'overview2' })}
+                          <Typography
+                            sx={{
+                              fontSize: "12px",
+                              textAlign: "justify",
+                              marginBottom: 1.7,
+                            }}
+                          >
+                            {dataLang.formatMessage({ id: "overview2" })}
                           </Typography>
-                          <Typography sx={{ fontSize: '12px', textAlign: 'justify' }}>
-                            {dataLang.formatMessage({ id: 'overview3' })}
+                          <Typography
+                            sx={{ fontSize: "12px", textAlign: "justify" }}
+                          >
+                            {dataLang.formatMessage({ id: "overview3" })}
                           </Typography>
                         </Paper>
                       </Fade>
@@ -3896,10 +4837,14 @@ const Production = (props) => {
           </div>
           <div style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(parseFloat(convertUnit(props.cal?.pro_1 / 1000)).toFixed(2) || 0).toLocaleString("en-US")}
+              {Number(
+                parseFloat(convertUnit(props.cal?.pro_1 / 1000)).toFixed(2) || 0
+              ).toLocaleString("en-US")}
             </span>
             &nbsp;
-            <span style={{ fontSize: "12px", color: "grey" }}>{showUnit(props.cal?.pro_1 / 1000)}W</span>
+            <span style={{ fontSize: "12px", color: "grey" }}>
+              {showUnit(props.cal?.pro_1 / 1000)}W
+            </span>
           </div>
           <div
             style={{
@@ -3913,10 +4858,14 @@ const Production = (props) => {
           </div>
           <div>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(parseFloat(convertUnit(projectData.value.capacity)).toFixed(2)).toLocaleString("en-US")}
+              {Number(
+                parseFloat(convertUnit(projectData.value.capacity)).toFixed(2)
+              ).toLocaleString("en-US")}
             </span>
             &nbsp;
-            <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(projectData.value.capacity)}Wp</span>
+            <span style={{ fontSize: "12px", color: "grey" }}>
+              {showUnitk(projectData.value.capacity)}Wp
+            </span>
           </div>
         </div>
       </div>
@@ -3931,14 +4880,19 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(parseFloat(convertUnit(props.cal?.pro_2)).toFixed(2) || 0).toLocaleString("en-US")}
+              {Number(
+                parseFloat(convertUnit(props.cal?.pro_2)).toFixed(2) || 0
+              ).toLocaleString("en-US")}
             </span>
             &nbsp;
-            <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.pro_2)}Wh</span>
+            <span style={{ fontSize: "12px", color: "grey" }}>
+              {showUnitk(props.cal?.pro_2)}Wh
+            </span>
           </div>
         </div>
 
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
+        <div
+          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
           style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
@@ -3946,14 +4900,19 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(parseFloat(convertUnit(props.cal?.pro_month)) || 0).toLocaleString("en-US")}
+              {Number(
+                parseFloat(convertUnit(props.cal?.pro_month)) || 0
+              ).toLocaleString("en-US")}
             </span>
             &nbsp;
-            <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.pro_month)}Wh</span>
+            <span style={{ fontSize: "12px", color: "grey" }}>
+              {showUnitk(props.cal?.pro_month)}Wh
+            </span>
           </div>
         </div>
 
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
+        <div
+          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
           style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
@@ -3961,14 +4920,19 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(parseFloat(convertUnit(props.cal?.pro_year)) || 0).toLocaleString("en-US")}
+              {Number(
+                parseFloat(convertUnit(props.cal?.pro_year)) || 0
+              ).toLocaleString("en-US")}
             </span>
             &nbsp;
-            <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.pro_year)}Wh</span>
+            <span style={{ fontSize: "12px", color: "grey" }}>
+              {showUnitk(props.cal?.pro_year)}Wh
+            </span>
           </div>
         </div>
 
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
+        <div
+          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
           style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
         >
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
@@ -3976,10 +4940,14 @@ const Production = (props) => {
           </div>
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(parseFloat(convertUnit(props.cal?.pro_3)) || 0).toLocaleString("en-US")}
+              {Number(
+                parseFloat(convertUnit(props.cal?.pro_3)) || 0
+              ).toLocaleString("en-US")}
             </span>
             &nbsp;
-            <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.pro_3)}Wh</span>
+            <span style={{ fontSize: "12px", color: "grey" }}>
+              {showUnitk(props.cal?.pro_3)}Wh
+            </span>
           </div>
         </div>
       </div>
@@ -4000,10 +4968,14 @@ const Consumption = (props) => {
           <span>{dataLang.formatMessage({ id: "consumption" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(parseFloat(convertUnit(props.cal?.con_1)) || 0).toLocaleString("en-US")}
+            {Number(
+              parseFloat(convertUnit(props.cal?.con_1)) || 0
+            ).toLocaleString("en-US")}
           </span>
           &nbsp;
-          <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.con_1)}W</span>
+          <span style={{ fontSize: "12px", color: "grey" }}>
+            {showUnitk(props.cal?.con_1)}W
+          </span>
         </div>
       </div>
 
@@ -4018,10 +4990,14 @@ const Consumption = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(parseFloat(convertUnit(props.cal?.con_2)) || 0).toLocaleString("en-US")}
+                {Number(
+                  parseFloat(convertUnit(props.cal?.con_2)) || 0
+                ).toLocaleString("en-US")}
               </span>
               &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.con_2)}Wh</span>
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                {showUnitk(props.cal?.con_2)}Wh
+              </span>
             </div>
           </div>
 
@@ -4034,10 +5010,14 @@ const Consumption = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(parseFloat(convertUnit(props.cal?.con_year)) || 0).toLocaleString('en-US')}
+                {Number(
+                  parseFloat(convertUnit(props.cal?.con_year)) || 0
+                ).toLocaleString("en-US")}
               </span>
               &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.con_year)}Wh</span>
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                {showUnitk(props.cal?.con_year)}Wh
+              </span>
             </div>
           </div>
         </div>
@@ -4052,10 +5032,14 @@ const Consumption = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(parseFloat(convertUnit(props.cal?.con_month)) || 0).toLocaleString('en-US')}
+                {Number(
+                  parseFloat(convertUnit(props.cal?.con_month)) || 0
+                ).toLocaleString("en-US")}
               </span>
               &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.con_month)}Wh</span>
+              <span style={{ fontSize: "12px", color: "grey" }}>
+                {showUnitk(props.cal?.con_month)}Wh
+              </span>
             </div>
           </div>
 
@@ -4068,7 +5052,9 @@ const Consumption = (props) => {
             </div>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                0
+                {Number(
+                  parseFloat(convertUnit(props.cal?.con_total)) || 0
+                ).toLocaleString("en-US")}
               </span>
               &nbsp;
               <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
@@ -4093,25 +5079,32 @@ const Grid = (props) => {
           <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(parseFloat(convertUnit(props.cal?.grid_1 / 1000)) || 0).toLocaleString("en-US")}
+            {Number(
+              parseFloat(convertUnit(props.cal?.grid_1 / 1000)) || 0
+            ).toLocaleString("en-US")}
           </span>
           &nbsp;
-          <span style={{ fontSize: "12px", color: "grey" }}>{showUnit(props.cal?.grid_in_1)}W</span>
+          <span style={{ fontSize: "12px", color: "grey" }}>
+            {showUnit(props.cal?.grid_in_1)}W
+          </span>
         </div>
       </div>
 
       <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row">
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
+        <div
+          className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
           {isMobile.value ? (
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
+            <div
+              className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
               style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }}
             >
               {dataLang.formatMessage({ id: "gridfeed" })}
             </div>
           ) : (
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
+            <div
+              className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
               style={{ borderRight: "solid 1px rgb(231, 231, 231)" }}
             >
               {dataLang.formatMessage({ id: "gridfeed" })}
@@ -4125,10 +5118,14 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_in_1)) || 0).toLocaleString("en-US")}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.grid_in_1)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.grid_in_1)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.grid_in_1)}Wh
+                </span>
               </div>
             </div>
 
@@ -4138,10 +5135,14 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_in_month)) || 0).toLocaleString('en-US')}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.grid_in_month)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.grid_in_month)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.grid_in_month)}Wh
+                </span>
               </div>
             </div>
 
@@ -4151,10 +5152,14 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_in_year)) || 0).toLocaleString('en-US')}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.grid_in_year)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.grid_in_year)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.grid_in_year)}Wh
+                </span>
               </div>
             </div>
 
@@ -4164,26 +5169,33 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_in_2)) || 0).toLocaleString("en-US")}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.grid_in_2)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.grid_in_2)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.grid_in_2)}Wh
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
+        <div
+          className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
           {isMobile.value ? (
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
+            <div
+              className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
               style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }}
             >
               {dataLang.formatMessage({ id: "purchaseE" })}
             </div>
           ) : (
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
+            <div
+              className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
               style={{ borderRight: "solid 1px rgb(231, 231, 231)" }}
             >
               {dataLang.formatMessage({ id: "purchaseE" })}
@@ -4197,10 +5209,14 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_out_1)) || 0).toLocaleString("en-US")}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.grid_out_1)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.grid_out_1)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.grid_out_1)}Wh
+                </span>
               </div>
             </div>
 
@@ -4210,10 +5226,14 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_out_month)) || 0).toLocaleString('en-US')}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.grid_out_month)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.grid_out_month)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.grid_out_month)}Wh
+                </span>
               </div>
             </div>
 
@@ -4223,10 +5243,14 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_out_year)) || 0).toLocaleString('en-US')}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.grid_out_year)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.grid_out_year)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.grid_out_year)}Wh
+                </span>
               </div>
             </div>
 
@@ -4236,10 +5260,14 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_out_2)) || 0).toLocaleString("en-US")}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.grid_out_2)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.grid_out_2)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.grid_out_2)}Wh
+                </span>
               </div>
             </div>
           </div>
@@ -4251,17 +5279,15 @@ const Grid = (props) => {
 
 const Battery = (props) => {
   const dataLang = useIntl();
-  const [state, setState] = useState(false)
+  const [state, setState] = useState(false);
 
   useEffect(() => {
-
     if (parseFloat(props.cal?.bat_1) > 0) {
-      setState(true)
+      setState(true);
     } else {
-      setState(false)
+      setState(false);
     }
-
-  }, [props.cal.bat_1])
+  }, [props.cal.bat_1]);
 
   return (
     <div className="DAT_ProjectData_Dashboard_Data_Center_Battery">
@@ -4285,33 +5311,48 @@ const Battery = (props) => {
             </span>
             <span style={{ fontSize: "12px", color: "grey" }}>%</span>
           </div>
-          {state ? <FaArrowLeftLong color="green" size={30} /> : <FaArrowRightLong color="red" size={25} />}
-          <span style={{ fontSize: "13px" }}>{state ? dataLang.formatMessage({ id: "charge" }) : dataLang.formatMessage({ id: "discharge" })}</span>
+          {state ? (
+            <FaArrowLeftLong color="green" size={30} />
+          ) : (
+            <FaArrowRightLong color="red" size={25} />
+          )}
+          <span style={{ fontSize: "13px" }}>
+            {state
+              ? dataLang.formatMessage({ id: "charge" })
+              : dataLang.formatMessage({ id: "discharge" })}
+          </span>
         </div>
 
         <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Data">
           <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(parseFloat(convertUnit(props.cal?.bat_1 / 1000)) || 0).toLocaleString("en-US")}
+            {Number(
+              parseFloat(convertUnit(props.cal?.bat_1 / 1000)) || 0
+            ).toLocaleString("en-US")}
           </span>
           &nbsp;
-          <span style={{ fontSize: "12px", color: "grey" }}>{showUnit(props.cal?.bat_1)}W</span>
+          <span style={{ fontSize: "12px", color: "grey" }}>
+            {showUnit(props.cal?.bat_1)}W
+          </span>
         </div>
       </div>
 
       <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row">
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
+        <div
+          className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
           {isMobile.value ? (
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
+            <div
+              className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
               style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }}
             >
               {dataLang.formatMessage({ id: "charge" })}
             </div>
           ) : (
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
+            <div
+              className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
               style={{ borderRight: "solid 1px rgb(231, 231, 231)" }}
             >
               {dataLang.formatMessage({ id: "charge" })}
@@ -4325,22 +5366,31 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_in_1)) || 0).toLocaleString("en-US")}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.bat_in_1)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.bat_1)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.bat_1)}Wh
+                </span>
               </div>
             </div>
 
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">{dataLang.formatMessage({ id: 'month' })}
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
+                {dataLang.formatMessage({ id: "month" })}
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_in_month)) || 0).toLocaleString('en-US')}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.bat_in_month)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.bat_in_month)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.bat_in_month)}Wh
+                </span>
               </div>
             </div>
 
@@ -4350,10 +5400,14 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_in_year)) || 0).toLocaleString('en-US')}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.bat_in_year)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.bat_in_year)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.bat_in_year)}Wh
+                </span>
               </div>
             </div>
 
@@ -4363,26 +5417,33 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_in_total)) || 0).toLocaleString('en-US')}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.bat_in_total)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.bat_in_total)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.bat_in_total)}Wh
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
+        <div
+          className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
           style={{ backgroundColor: "rgb(245, 251, 255)" }}
         >
           {isMobile.value ? (
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
+            <div
+              className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
               style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }}
             >
               {dataLang.formatMessage({ id: "discharge" })}
             </div>
           ) : (
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
+            <div
+              className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
               style={{ borderRight: "solid 1px rgb(231, 231, 231)" }}
             >
               {dataLang.formatMessage({ id: "discharge" })}
@@ -4396,23 +5457,31 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_out_1)) || 0).toLocaleString("en-US")}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.bat_out_1)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.bat_out_1)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.bat_out_1)}Wh
+                </span>
               </div>
             </div>
 
             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: 'month' })}
+                {dataLang.formatMessage({ id: "month" })}
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_out_month)) || 0).toLocaleString('en-US')}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.bat_out_month)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.bat_out_month)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.bat_out_month)}Wh
+                </span>
               </div>
             </div>
 
@@ -4422,10 +5491,14 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_out_year)) || 0).toLocaleString('en-US')}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.bat_out_year)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.bat_out_year)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.bat_out_year)}Wh
+                </span>
               </div>
             </div>
 
@@ -4435,10 +5508,14 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_out_total)) || 0).toLocaleString('en-US')}
+                  {Number(
+                    parseFloat(convertUnit(props.cal?.bat_out_total)) || 0
+                  ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>{showUnitk(props.cal?.bat_out_total)}Wh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.bat_out_total)}Wh
+                </span>
               </div>
             </div>
           </div>
@@ -4460,37 +5537,170 @@ const Day = (props) => {
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           {/* {props.v}: {cal.value.pro_1} kW */}
-          {dataLang.formatMessage({ id: "production" })}: {parseFloat(cal.value.pro_1 / 1000).toFixed(2)} kW
+          {dataLang.formatMessage({ id: "production" })}:{" "}
+          {parseFloat(cal.value.pro_1 / 1000).toFixed(2)} kW
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-        <ResponsiveContainer
-          style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-        >
-          <AreaChart width={100} height={300} data={props.data}>
-            <defs>
-              <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <XAxis dataKey="time" axisLine={false} tickLine={false} />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              domain={[0, Math.max(...props.data.map((item) => item[props.v]))]}
-            />
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <Tooltip />
-            <Area
-              type="monotone"
-              dataKey={props.v}
-              stroke="#8884d8"
-              fillOpacity={1}
-              fill="url(#colorday)"
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+
+        {(() => {
+          switch (projectData.value.plantmode) {
+            case "grid":
+              return (
+
+                <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <AreaChart width={100} height={500} data={props.data}>
+                    <defs>
+                      <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
+                        <stop
+                          offset="5%"
+                          stopColor="rgb(4,143,255)"
+                          stopOpacity={0.7}
+                        />
+                        <stop offset="90%" stopColor="rgb(4,143,255)" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      domain={[
+                        props.data.reduce((min, item) => {
+                          // console.log(item)
+                          const values = Object.values({
+                            x: item[props.v]
+                          });
+                          const currentMin = Math.min(...values.map(Number));
+                          // console.log(currentMax)
+                          return currentMin < min ? currentMin : min;
+                        }, Infinity),
+                        props.data.reduce((max, item) => {
+                          // console.log(item)/
+                          const values = Object.values({
+                            x: item[props.v]
+                          });
+                          const currentMax = Math.max(...values.map(Number));
+                          // console.log(currentMax)
+                          return currentMax > max ? currentMax : max;
+                        }, -Infinity),
+                      ]}
+                    />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    <Area
+                      type="monotone"
+                      dataKey={props.v}
+                      stroke="rgb(4,143,255)"
+                      fillOpacity={1}
+                      fill="url(#colorday)"
+                    />
+
+                  </AreaChart>
+                </ResponsiveContainer>
+              )
+            case "consumption":
+              return (
+                <></>
+              )
+            case "hybrid":
+              return (
+
+                <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <AreaChart width={100} height={500} data={props.data}>
+                    <defs>
+                      <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
+                        <stop
+                          offset="5%"
+                          stopColor="rgb(4,143,255)"
+                          stopOpacity={0.7}
+                        />
+                        <stop offset="90%" stopColor="rgb(4,143,255)" stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id="colorday2" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="red" stopOpacity={0.7} />
+                        <stop offset="90%" stopColor="red" stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id="colorday3" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="green" stopOpacity={0.7} />
+                        <stop offset="90%" stopColor="green" stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id="colorday4" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="purple" stopOpacity={0.7} />
+                        <stop offset="90%" stopColor="purple" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      domain={[
+                        props.data.reduce((min, item) => {
+                          // console.log(item)
+                          const values = Object.values({
+                            x: item[props.v],
+                            y: item[props.v2],
+                            z: item[props.v3],
+                            t: item[props.v4],
+                          });
+                          const currentMin = Math.min(...values.map(Number));
+                          // console.log(currentMax)
+                          return currentMin < min ? currentMin : min;
+                        }, Infinity),
+                        props.data.reduce((max, item) => {
+                          // console.log(item)/
+                          const values = Object.values({
+                            x: item[props.v],
+                            y: item[props.v2],
+                            z: item[props.v3],
+                            t: item[props.v4],
+                          });
+                          const currentMax = Math.max(...values.map(Number));
+                          // console.log(currentMax)
+                          return currentMax > max ? currentMax : max;
+                        }, -Infinity),
+                      ]}
+                    />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    <Area
+                      type="monotone"
+                      dataKey={props.v}
+                      stroke="rgb(4,143,255)"
+                      fillOpacity={1}
+                      fill="url(#colorday)"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey={props.v2}
+                      stroke="red"
+                      fillOpacity={2}
+                      fill="url(#colorday2)"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey={props.v3}
+                      stroke="green"
+                      fillOpacity={2}
+                      fill="url(#colorday3)"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey={props.v4}
+                      stroke="purple"
+                      fillOpacity={2}
+                      fill="url(#colorday4)"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )
+            default:
+              return <></>
+          }
+        })()}
       </div>
     </div>
   );
@@ -4508,7 +5718,7 @@ const Month = (props) => {
         y={y}
         width={width}
         height={height}
-        fill={"rgb(4,143,255)"}
+        fill={props.fill}
         rx="3"
         ry="3"
         opacity="1"
@@ -4529,29 +5739,146 @@ const Month = (props) => {
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-        <ResponsiveContainer
-          style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-        >
-          <BarChart width={150} height={200} data={props.data}>
-            <XAxis dataKey="date" axisLine={false} tickLine={false} />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              domain={[0, Math.max(...props.data.map((item) => item[props.v]))]}
-            />
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <Tooltip />
-            <Legend />
-            <Bar
-              shape={<TriangleBar />}
-              dataKey={props.v}
-              fill="#6495ed"
-              barSize={15}
-              legendType="circle"
-              style={{ fill: "#6495ed" }}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+
+        {(() => {
+          switch (projectData.value.plantmode) {
+            case "grid":
+              return (
+                <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <BarChart width={150} height={200} data={props.data}>
+                    <XAxis dataKey="date" axisLine={false} tickLine={false} />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      // domain={[0, Math.max(...props.data.map((item) => item[props.v]))]}
+                      domain={[
+                        0,
+                        props.data.reduce((max, item) => {
+                          // console.log(item)/
+                          const values = Object.values({
+                            x: item[props.v],
+                            // y: item[props.v2],
+                            // z: item[props.v3],
+                            // t: item[props.v4],
+                            // o: item[props.v5],
+                            // p: item[props.v6],
+                          });
+                          const currentMax = Math.max(...values.map(Number));
+                          // console.log(currentMax)
+                          return currentMax > max ? currentMax : max;
+                        }, -Infinity),
+                      ]}
+                    />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      shape={<TriangleBar fill="rgb(4,143,255)" />}
+                      dataKey={props.v}
+                      fill="#6495ed"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "#6495ed" }}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              )
+            case "consumption":
+              return (
+                <></>
+              )
+            case "hybrid":
+              return (
+                <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <BarChart width={150} height={200} data={props.data}>
+                    <XAxis dataKey="date" axisLine={false} tickLine={false} />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      // domain={[0, Math.max(...props.data.map((item) => item[props.v]))]}
+                      domain={[
+                        0,
+                        props.data.reduce((max, item) => {
+                          // console.log(item)/
+                          const values = Object.values({
+                            x: item[props.v],
+                            // y: item[props.v2],
+                            // z: item[props.v3],
+                            // t: item[props.v4],
+                            // o: item[props.v5],
+                            // p: item[props.v6],
+                          });
+                          const currentMax = Math.max(...values.map(Number));
+                          // console.log(currentMax)
+                          return currentMax > max ? currentMax : max;
+                        }, -Infinity),
+                      ]}
+                    />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      shape={<TriangleBar fill="rgb(4,143,255)" />}
+                      dataKey={props.v}
+                      fill="#6495ed"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "#6495ed" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="red" />}
+                      dataKey={props.v2}
+                      fill="red"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "red" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="brown" />}
+                      dataKey={props.v3}
+                      fill="brown"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "brown" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="green" />}
+                      dataKey={props.v4}
+                      fill="green"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "green" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="purple" />}
+                      dataKey={props.v5}
+                      fill="purple"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "purple" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="grey" />}
+                      dataKey={props.v6}
+                      fill="grey"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "grey" }}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              )
+            default:
+              return (
+                <></>
+              )
+          }
+        })()}
+
       </div>
     </div>
   );
@@ -4569,7 +5896,7 @@ const Year = (props) => {
         y={y}
         width={width}
         height={height}
-        fill={"rgb(4,143,255)"}
+        fill={props.fill}
         rx="3"
         ry="3"
         opacity="1"
@@ -4590,29 +5917,111 @@ const Year = (props) => {
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-        <ResponsiveContainer
-          style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-        >
-          <BarChart width={150} height={200} data={props.data}>
-            <XAxis dataKey="month" axisLine={false} tickLine={false} />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              domain={[0, Math.max(...props.data.map((item) => item[props.v]))]}
-            />
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <Tooltip />
-            <Legend />
-            <Bar
-              shape={<TriangleBar />}
-              dataKey={props.v}
-              fill="#6495ed"
-              barSize={15}
-              legendType="circle"
-              style={{ fill: "#6495ed" }}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+        {(() => {
+          switch (projectData.value.plantmode) {
+            case "grid":
+              return (
+                <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <BarChart width={150} height={200} data={props.data}>
+                    <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      domain={[0, Math.max(...props.data.map((item) => item[props.v]))]}
+                    />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      shape={<TriangleBar fill="rgb(4,143,255)" />}
+                      dataKey={props.v}
+                      fill="#6495ed"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "#6495ed" }}
+                    />
+
+                  </BarChart>
+                </ResponsiveContainer>
+              )
+            case "comsumption":
+              return (
+                <></>
+              )
+            case "hybrid":
+              return (
+                <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <BarChart width={150} height={200} data={props.data}>
+                    <XAxis dataKey="month" axisLine={false} tickLine={false} />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      domain={[0, Math.max(...props.data.map((item) => item[props.v]))]}
+                    />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      shape={<TriangleBar fill="rgb(4,143,255)" />}
+                      dataKey={props.v}
+                      fill="#6495ed"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "#6495ed" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="red" />}
+                      dataKey={props.v2}
+                      fill="red"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "red" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="brown" />}
+                      dataKey={props.v3}
+                      fill="brown"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "brown" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="green" />}
+                      dataKey={props.v4}
+                      fill="green"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "green" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="purple" />}
+                      dataKey={props.v5}
+                      fill="purple"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "purple" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="grey" />}
+                      dataKey={props.v6}
+                      fill="grey"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "grey" }}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              )
+            default:
+              return (
+                <></>
+              )
+          }
+        })()}
       </div>
     </div>
   );
@@ -4630,7 +6039,7 @@ const Total = (props) => {
         y={y}
         width={width}
         height={height}
-        fill={"rgb(4,143,255)"}
+        fill={props.fill}
         rx="3"
         ry="3"
         opacity="1"
@@ -4646,41 +6055,132 @@ const Total = (props) => {
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           {/* {props.v}: {cal.value.pro_total} kWh */}
-          {dataLang.formatMessage({ id: "totalOutput" })}: {cal.value.pro_total}{" "}
+          {props.v}: {cal.value.pro_total}{" "}
           kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-        <ResponsiveContainer
-          style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-        >
-          <BarChart width={150} height={200} data={props.data}>
-            <XAxis dataKey="year" axisLine={false} tickLine={false} />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              domain={[
-                0,
-                Math.max(
-                  ...props.data.map(
-                    (item) =>
-                      item[dataLang.formatMessage({ id: "totalOutput" })]
-                  )
-                ),
-              ]}
-            />
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <Tooltip />
-            <Legend />
-            <Bar
-              shape={<TriangleBar />}
-              dataKey={dataLang.formatMessage({ id: "totalOutput" })}
-              fill="#6495ed"
-              barSize={15}
-              legendType="circle"
-            />
-          </BarChart>
-        </ResponsiveContainer>
+        {(() => {
+          switch (projectData.value.plantmode) {
+            case "grid":
+              return (
+                <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <BarChart width={150} height={200} data={props.data}>
+                    <XAxis dataKey="year" axisLine={false} tickLine={false} />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      domain={[
+                        0,
+                        Math.max(
+                          ...props.data.map(
+                            (item) =>
+                              item[props.v]
+                          )
+                        ),
+                      ]}
+                    />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      shape={<TriangleBar fill="rgb(4,143,255)" />}
+                      dataKey={props.v}
+                      fill="#6495ed"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "#6495ed" }}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              )
+            case "consumption":
+              return (
+                <></>
+              )
+            case "hybrid":
+              return (
+                <ResponsiveContainer
+                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                >
+                  <BarChart width={150} height={200} data={props.data}>
+                    <XAxis dataKey="year" axisLine={false} tickLine={false} />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      domain={[
+                        0,
+                        Math.max(
+                          ...props.data.map(
+                            (item) =>
+                              item[props.v]
+                          )
+                        ),
+                      ]}
+                    />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      shape={<TriangleBar fill="rgb(4,143,255)" />}
+                      dataKey={props.v}
+                      fill="#6495ed"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "#6495ed" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="red" />}
+                      dataKey={props.v2}
+                      fill="red"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "red" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="brown" />}
+                      dataKey={props.v3}
+                      fill="brown"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "brown" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="green" />}
+                      dataKey={props.v4}
+                      fill="green"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "green" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="purple" />}
+                      dataKey={props.v5}
+                      fill="purple"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "purple" }}
+                    />
+                    <Bar
+                      shape={<TriangleBar fill="grey" />}
+                      dataKey={props.v6}
+                      fill="grey"
+                      barSize={15}
+                      legendType="circle"
+                      style={{ fill: "grey" }}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              )
+            default:
+              return (
+                <></>
+              )
+          }
+        })()}
+
       </div>
     </div>
   );

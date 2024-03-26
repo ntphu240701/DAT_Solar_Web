@@ -2052,11 +2052,22 @@ export default function Info(props) {
               {info.value.pname}: {info.value.psn}
             </p>
             <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              {info.value.invt?.[info.value.pdata.status] == 2 ? (
-                <FaCheckCircle size={20} color="green" />
-              ) : (
-                <MdOutlineError size={22} color="red" />
-              )}
+              {tab.value == "logger"
+                ? <>
+                  {info.value.pstate == 1 ? (
+                    <FaCheckCircle size={20} color="green" />
+                  ) : (
+                    <MdOutlineError size={22} color="red" />
+                  )}
+                </>
+                : <>
+                  {info.value.invt?.[info.value.pdata.status] == 2 ? (
+                    <FaCheckCircle size={20} color="green" />
+                  ) : (
+                    <MdOutlineError size={22} color="red" />
+                  )}
+                </>
+              }
             </p>
           </div>
           {(() => {

@@ -11,7 +11,7 @@ import { isMobile } from "../Navigation/Navigation";
 import { useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { Token, ruleInfor, userInfor } from "../../App";
+import { Token, convertUnit, ruleInfor, userInfor } from "../../App";
 import { useIntl } from "react-intl";
 
 import { MdDelete, MdEdit, MdDevices, MdOutlineError } from "react-icons/md";
@@ -221,11 +221,9 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {row.pdata.daily?.register
-            ? parseFloat(
-              invt[row.plogger]?.[row.pdata.daily.register] *
-              row.pdata.daily?.cal
-            ).toFixed(2)
-            : 0}{" "}
+            ? Number(parseFloat(convertUnit(invt[row.plogger]?.[row.pdata.daily.register] * row.pdata.daily?.cal)).toFixed(2)).toLocaleString("en-US")
+            : 0
+          }
           kWh
         </>
       ),
@@ -615,7 +613,7 @@ export default function Device(props) {
         partnerid: userInfor.value.partnerid,
         type: userInfor.value.type,
       });
-      console.log(d);
+      // console.log(d);
       if (d.status === true) {
         inverterList.value = d.data;
         setDatafilterInvert(d.data);
