@@ -7,6 +7,7 @@ export const host = {
 export const messages = {
   en: {
     change: "Edit",
+    description: "Description",
     all: "All",
     account: "Account",
     username: "Username",
