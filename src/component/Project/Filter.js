@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import "./Project.scss";
 import moment from "moment-timezone";
-import { Button, DatePicker } from 'antd';
 
 export default function Filter(props) {
   const dataLang = useIntl();
@@ -73,7 +72,6 @@ export default function Filter(props) {
   const [deviceF, setDeviceF] = useState("all");
 
   useEffect(() => {
-    // Hiển thị ngày tháng năm trong input placeholder 
     console.log(deviceF);
   }, [deviceF]);
 
@@ -81,6 +79,9 @@ export default function Filter(props) {
     console.log(e.target.id);
     setDeviceF(e.target.id);
   };
+
+  const today = new Date();
+  const todayString = today.toISOString().split('T')[0];
 
   return (
     <>
@@ -360,6 +361,7 @@ export default function Filter(props) {
                                   value={endDate}
                                   onChange={handleEndDateChange}
                                   min={startDate}
+                                  max={todayString}
                                 />
                               </div>
                             </td>
