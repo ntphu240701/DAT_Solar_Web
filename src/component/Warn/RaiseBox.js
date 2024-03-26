@@ -22,13 +22,13 @@ export default function RaiseBox(props) {
     deletewarnState.value = false;
     const arr = idDel.value.split("_"); //['E02', 'T0623A000162']
     console.log(arr);
-    dataWarn.value = dataWarn.value.filter((item) => item.device != arr[1] || item.boxid != arr[0]);
+    dataWarn.value = dataWarn.value.filter((item) => item.device != arr[3] || item.boxid != `${arr[0]}_${arr[1]}_${arr[2]}`);
     alertDispatch(dataLang.formatMessage({ id: "alert_28" }));
     console.log(dataWarn.value);
     const checkApi = async () => {
       const warn = await callApi("post", host.DATA + "/removeWarn", {
-        sn: arr[1],
-        boxid: arr[0],
+        sn: arr[3],
+        boxid: `${arr[0]}_${arr[1]}_${arr[2]}`,
       });
       console.log(warn);
     };
