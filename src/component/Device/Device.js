@@ -582,7 +582,7 @@ export default function Device(props) {
         partnerid: userInfor.value.partnerid,
         type: userInfor.value.type,
       });
-      console.log(d);
+      // console.log(d);
       if (d.status === true) {
         loggerList.value = d.data;
 
