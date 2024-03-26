@@ -6,7 +6,7 @@ export const host = {
 
 export const messages = {
   en: {
-    change: "Edit",
+    description: "Description",
     all: "All",
     account: "Account",
     username: "Username",
@@ -208,6 +208,7 @@ export const messages = {
     errdetai: "Error detail",
     cause: "Caused by",
     solution: "Solution",
+    change: "Edit",
     edit: "Edit",
     edits: "Edit",
     editPassword: "Edit password",
@@ -564,7 +565,6 @@ export const messages = {
     A_7_1: "EPS Overload alarm",
   },
   vi: {
-    temperature: "Nhiệt độ",
     description: "Mô tả",
     all: "Tất cả",
     account: "Tài khoản",
