@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import "./Project.scss";
 import moment from "moment-timezone";
+import { Button, DatePicker } from 'antd';
 
 export default function Filter(props) {
   const dataLang = useIntl();
@@ -29,6 +30,7 @@ export default function Filter(props) {
     setWarnChecked(false);
     setNoticeChecked(false);
     setStartDate("");
+    setEndDate("");
   };
 
   const handleSelect = (e) => {
@@ -72,7 +74,6 @@ export default function Filter(props) {
 
   useEffect(() => {
     // Hiển thị ngày tháng năm trong input placeholder 
-    setEndDate(moment().format('YYYY-MM-DD'));
     console.log(deviceF);
   }, [deviceF]);
 
