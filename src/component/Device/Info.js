@@ -17,29 +17,29 @@ import { Empty } from "../Project/Project";
 
 const data = [
   {
-    senttime: "2021-09-01 00:00:00",
-    name: "Grid Start Settings",
-    type: "Setting",
-    input: "--",
-    result: "264.5 V",
-    state: "Succeeded",
-    reason: "--",
-    operator: "Datsolar",
-    feedbacktime: "2021-09-01 00:00:00",
+    //   senttime: "2021-09-01 00:00:00",
+    //   name: "Grid Start Settings",
+    //   type: "Setting",
+    //   input: "--",
+    //   result: "264.5 V",
+    //   state: "Succeeded",
+    //   reason: "--",
+    //   operator: "Datsolar",
+    //   feedbacktime: "2021-09-01 00:00:00",
   },
 ];
 
 const data_ = [
   {
-    upgradedtime: "2021-09-01 00:00:00",
-    package: "Grid Start Settings",
-    target: "Setting",
-    related: "--",
-    state: "Succeeded",
-    result: "264.5 V",
-    reason: "--",
-    operator: "Datsolar",
-    feedbacktime: "2021-09-01 00:00:00",
+    //   upgradedtime: "2021-09-01 00:00:00",
+    //   package: "Grid Start Settings",
+    //   target: "Setting",
+    //   related: "--",
+    //   state: "Succeeded",
+    //   result: "264.5 V",
+    //   reason: "--",
+    //   operator: "Datsolar",
+    //   feedbacktime: "2021-09-01 00:00:00",
   },
 ];
 
