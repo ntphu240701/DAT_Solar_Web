@@ -74,7 +74,7 @@ export default function Warn(props) {
       selector: (row) =>
         <div style={{ cursor: "pointer" }}
           onClick={(e) => handleInfo(e)}
-          id={row.boxid + "_" + row.level + "_" + row.plant + "_" + row.device} // E_1_3_warn....
+          id={row.boxid + "_" + row.level + "_" + row.plant + "_" + row.device}
         >
           {dataLang.formatMessage({ id: row.boxid })}
         </div>,
@@ -196,17 +196,20 @@ export default function Warn(props) {
   const handleInfo = (e) => {
     infowarnState.value = true;
     const temp = e.currentTarget.id.split("_");
-
-    const id = `${temp[0]}_${temp[1]}_${temp[2]}`; //temp[0];
-    const level = temp[3];
-    const plant = temp[4];
-    const device = temp[5];
+    const id = temp[0];
+    const level = temp[1];
+    const plant = temp[2];
+    const device = temp[3];
 
     setBoxid(id)
     setLevel(level)
     setPlant(plant)
     setDevice(device)
-    // console.log(temp)
+
+    console.log(id)
+    console.log(level)
+    console.log(plant)
+    console.log(device)
   };
 
   const handleDeleteWarn = (e) => {
@@ -283,25 +286,19 @@ export default function Warn(props) {
     //Gọi biến thời gian nhập vào
     const openInput = moment(opentime).format("MM/DD/YYYY");
     const closeInput = moment(closetime).format("MM/DD/YYYY");
-    console.log('openINPUT', openInput, closeInput);
+    // console.log('openINPUT', openInput, closeInput);
 
     const newdb = dataWarn.value.filter((item) => {
       // Gọi biến thời gian trong dataWarn
       const openData = moment(item.opentime).format("MM/DD/YYYY");
       const closeData = moment(item.closetime).format("MM/DD/YYYY");
-      console.log('openDATA', openData, closeData);
+      // console.log('openDATA', openData, closeData);
 
-      // Nếu người dùng không chỉnh ngày thì vẫn chạy điều kiện checkbox
-      if (openInput == "Invalid date" && closeInput == "Invalid date") {
-        const levelChange = item.level == warn.value || item.level == notice.value
-        return levelChange;
-      }
       // Nếu người dùng không check type warning thì vẫn chạy điều kiện thời gian
-      else if (warn.value == null && notice.value == null) {
+      if (warn.value == null && notice.value == null) {
         const timeChange = (openData >= openInput && openData <= closeInput) || (closeData >= openInput && closeData < closeInput);
-        return timeChange;
-      }
-      else {
+        return timeChange
+      } else {
         const levelChange = item.level == warn.value || item.level == notice.value
         const timeChange = (openData >= openInput && openData <= closeInput) || (closeData >= openInput && closeData < closeInput);
         return levelChange && timeChange;
