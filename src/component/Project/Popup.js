@@ -16,8 +16,8 @@ export default function Popup(props) {
   const name = useRef();
 
   const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
   };
 
   const handlePopup = (state) => {
@@ -121,7 +121,7 @@ export default function Popup(props) {
 
         <div className="DAT_Popup_Box_Foot">
           <button
-            style={{ backgroundColor: "#048FFF", color: "white" }}
+            style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
             onClick={(e) => handleDelete(e)}
           >
             {dataLang.formatMessage({ id: 'confirm' })}
@@ -151,7 +151,7 @@ export default function Popup(props) {
 
         <div className="DAT_Popup_Box_Foot">
           <button
-            style={{ backgroundColor: "#048FFF", color: "white" }}
+            style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
             onClick={(e) => handleUpdate(e)}
           >
             {dataLang.formatMessage({ id: 'confirm' })}

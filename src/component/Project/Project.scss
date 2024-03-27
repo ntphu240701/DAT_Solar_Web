@@ -3139,7 +3139,6 @@
 
 .DAT_AddGateway {
     position: relative;
-    // margin-top: -58px;
     width: 500px;
     background-color: white;
     border-radius: 10px;
@@ -3150,8 +3149,9 @@
 
     &_Head {
         display: flex;
-        background-color: rgba(182, 182, 182, 0.4);
+        background-color: COLOR.$Primary-color !important; //rgba(182, 182, 182, 0.4)
         padding: 16px;
+        color: white;
 
         &_Left {
             flex: 5;
