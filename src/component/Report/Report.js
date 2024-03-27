@@ -108,7 +108,7 @@ export default function Report(props) {
   };
 
   useEffect(() => {
-    // console.log(usr,userInfor.value.partnerid,userInfor.value.type);
+    console.log(usr, userInfor.value.partnerid, userInfor.value.type);
     const getReport = async () => {
       const d = await callApi("post", host.DATA + "/getReport", {
         usr: usr,

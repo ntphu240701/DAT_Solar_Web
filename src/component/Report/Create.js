@@ -252,7 +252,7 @@ export default function Create() {
         //BAT TAT TRANG
         createState.value = false;
 
-        console.log(newdata.value);
+        console.log(JSON.stringify(newdata.value));
         newdata.value = temp.value;
       }
     }
