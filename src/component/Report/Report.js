@@ -22,70 +22,7 @@ export const editData = signal({});
 export const idReport = signal(0);
 export const lastID = signal(2);
 
-export const ReportData = signal([
-  // {
-  //   id: 1,
-  //   name: "Mẫu số 1",
-  //   type: "Daily Data Report",
-  //   create: "Trí Trần",
-  //   date: "12/12/2022",
-  //   inf: {
-  //     1: { id: "projname", status: true },
-  //     2: { id: "address", status: false },
-  //     3: { id: "coord", status: true },
-  //     4: { id: "projType", status: true },
-  //     5: { id: "capacity", status: true },
-  //     6: { id: "tiltAngle", status: false },
-  //     7: { id: "electricType", status: false },
-  //     8: { id: "gridData", status: true },
-  //     9: { id: "currency", status: false },
-  //     10: { id: "unitPrice", status: false },
-  //     11: { id: "contactName", status: true },
-  //     12: { id: "phone", status: false },
-  //     13: { id: "companyName", status: true },
-  //   },
-  //   customdata: {
-  //     1: { id: "productionData", status: false },
-  //     2: { id: "consumptionData", status: true },
-  //     3: { id: "purchasedelectricity", status: false },
-  //     4: { id: "inchargeelectricity", status: false },
-  //     5: { id: "dischargedelectricity", status: true },
-  //     6: { id: "weatherinfo", status: true },
-  //     7: { id: "kWhonkWp", status: false },
-  //   },
-  // },
-  // {
-  //   id: 2,
-  //   name: "Mẫu số 2",
-  //   type: "Monthly Data Report",
-  //   create: "Tai Ngo",
-  //   date: "11/11/2023",
-  //   inf: {
-  //     1: { id: "projname", status: false },
-  //     2: { id: "address", status: false },
-  //     3: { id: "coord", status: false },
-  //     4: { id: "projType", status: true },
-  //     5: { id: "capacity", status: true },
-  //     6: { id: "tiltAngle", status: true },
-  //     7: { id: "electricType", status: true },
-  //     8: { id: "gridData", status: true },
-  //     9: { id: "currency", status: true },
-  //     10: { id: "unitPrice", status: false },
-  //     11: { id: "contactName", status: true },
-  //     12: { id: "phone", status: false },
-  //     13: { id: "companyName", status: true },
-  //   },
-  //   customdata: {
-  //     1: { id: "productionData", status: true },
-  //     2: { id: "consumptionData", status: true },
-  //     3: { id: "purchasedelectricity", status: false },
-  //     4: { id: "inchargeelectricity", status: false },
-  //     5: { id: "dischargedelectricity", status: false },
-  //     6: { id: "weatherinfo", status: false },
-  //     7: { id: "kWhonkWp", status: false },
-  //   },
-  // },
-]);
+export const ReportData = signal([]);
 
 export default function Report(props) {
   //DataLang
@@ -95,7 +32,6 @@ export default function Report(props) {
   const usr = useSelector((state) => state.admin.usr);
 
   const handleDeleteReport = (e) => {
-    console.log(e.currentTarget.id);
     popupStateReport.value = true;
     idReport.value = e.currentTarget.id;
   };
@@ -108,7 +44,6 @@ export default function Report(props) {
   };
 
   useEffect(() => {
-    console.log(usr, userInfor.value.partnerid, userInfor.value.type);
     const getReport = async () => {
       const d = await callApi("post", host.DATA + "/getReport", {
         usr: usr,
@@ -130,7 +65,7 @@ export default function Report(props) {
     <>
       <div className="DAT_ReportHeader">
         <div className="DAT_ReportHeader_Title">
-          <HiOutlineDocumentReport color="gray" size={25} />{" "}
+          <HiOutlineDocumentReport color="gray" size={25} />
           <span>{dataLang.formatMessage({ id: "report" })}</span>
         </div>
         {ruleInfor.value.setting.report.add ? (

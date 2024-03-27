@@ -143,7 +143,7 @@ export default function EditRule() {
             className="DAT_CreateRule_Header_Right_Save"
             onClick={() => handleSave()}
           >
-            <IoSaveOutline size={20} color="white" />
+            <IoSaveOutline size={20} color="rgba(11, 25, 103)" />
             <span>{dataLang.formatMessage({ id: "save" })}</span>
           </div>
           <div className="DAT_CreateRule_Header_Right_Close">
@@ -161,7 +161,7 @@ export default function EditRule() {
 
         <div className="DAT_CreateRule_Body_Item">
           <div className="DAT_CreateRule_Body_Item_Option">
-            <label style={{ margin: "0" }}>Tùy chọn cấp quyền</label>
+            <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: "ruleOptions" })}</label>
             {Object.entries(editruledata.value.setting).map(
               ([key, value], index) => (
                 <div

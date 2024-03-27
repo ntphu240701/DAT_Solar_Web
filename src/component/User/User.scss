@@ -1,3 +1,5 @@
+@use "../../index.scss" as COLOR;
+
 .DAT_UsrHeader {
     width: 98%;
     margin: auto;
@@ -16,6 +18,7 @@
         display: flex;
         align-items: center;
         gap: 5px;
+        color: COLOR.$Primary-color;
     }
 
     &_Filter {
@@ -68,6 +71,7 @@
         2px 2px 5px rgba(198, 197, 197, 0.4),
         -2px -2px 5px rgba(198, 197, 197, 0.4);
     padding: 20px;
+
     &_Item {
         display: flex;
         align-items: center;
@@ -75,25 +79,29 @@
         padding-top: 15px;
         padding-bottom: 15px;
         border-bottom: solid 1px rgb(156, 155, 155, 0.3);
+
         &_Content {
             &_Title {
                 font-size: 13px;
                 color: gray;
                 margin-bottom: 10px;
             }
+
             & img {
                 width: 45px;
                 height: 45px;
                 border-radius: 50%;
                 box-shadow: 0 0 0 3px rgb(213, 213, 213);
             }
+
             &_Label {
                 font-size: 15px;
                 color: black;
             }
         }
+
         & span {
-            color: #6495ed;
+            color: COLOR.$Primary-color;
             font-size: 14px;
             cursor: pointer;
         }
@@ -121,7 +129,6 @@
 
 .DAT_PopupUser_Box {
     position: relative;
-    // margin-top: -58px;
     width: 400px;
     background-color: white;
     border-radius: 10px;
@@ -132,8 +139,9 @@
 
     &_Head {
         display: flex;
-        background-color: rgba(182, 182, 182, 0.4);
+        background-color: COLOR.$Primary-color !important; //rgba(182, 182, 182, 0.4)
         padding: 16px;
+        color: white;
 
         &_Left {
             flex: 5;
@@ -147,6 +155,7 @@
             display: flex;
             justify-content: flex-end;
             flex: 5;
+
             &_Icon {
                 display: flex;
                 align-items: center;
@@ -198,11 +207,11 @@
                     justify-content: center;
                     align-items: center;
                     border-radius: 5px;
-                    
+
                     & label {
                         cursor: pointer;
                     }
-    
+
                     & input {
                         width: 100%;
                         padding: 7px;
@@ -225,6 +234,7 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+
             & input {
                 width: 0.1px;
                 height: 0.1px;
@@ -233,6 +243,7 @@
                 position: absolute;
                 z-index: -1;
             }
+
             & label {
                 background-color: rgb(128, 128, 128, 0.1);
                 cursor: pointer;
@@ -240,10 +251,12 @@
                 justify-content: center;
                 align-items: center;
                 padding: 5px;
+
                 :hover {
                     background-color: rgb(128, 128, 128, 0.7);
                 }
             }
+
             &_Cover {
                 background-color: rgb(197, 197, 197);
                 display: flex;

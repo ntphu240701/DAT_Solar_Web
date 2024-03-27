@@ -1,21 +1,20 @@
 import React from "react";
 import "./Warn.scss";
 
-import { dataWarn, deletewarnState, idDel, infowarnState } from "./Warn";
+import { dataWarn, deletewarnState, idDel } from "./Warn";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
 
 import { IoClose } from "react-icons/io5";
-import { callApi } from "../Api/Api";
-import { phuhosting } from "../../App";
-import { host } from "../Lang/Contant";
 
 export default function RaiseBox(props) {
   const dataLang = useIntl();
 
   const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
   };
 
   const handleDeleteReport = (e) => {
@@ -42,10 +41,6 @@ export default function RaiseBox(props) {
     popup.style.color = popup_state[state].color;
   };
 
-  // useEffect(() => {
-  //   console.log(idReport.value);
-  // },[idReport.value]);
-
   return (
     <div className="DAT_PopupReport_Box">
       <div className="DAT_PopupReport_Box_Head">
@@ -67,20 +62,9 @@ export default function RaiseBox(props) {
       <div className="DAT_PopupReport_Box_Body">
         <p>{dataLang.formatMessage({ id: "delWarnmess" })}</p>
       </div>
-
       <div className="DAT_PopupReport_Box_Foot">
-        {/* <button
-          style={{
-            border: "1px solid #505050",
-            backgroundColor: "white",
-            color: "#505050",
-          }}
-          onClick={() => (deletewarnState.value = false)}
-        >
-          {dataLang.formatMessage({ id: "cancel" })}
-        </button> */}
         <button
-          style={{ backgroundColor: "#048FFF", color: "white" }}
+          style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
           onClick={(e) => handleDeleteReport(e)}
         >
           {dataLang.formatMessage({ id: "confirm" })}

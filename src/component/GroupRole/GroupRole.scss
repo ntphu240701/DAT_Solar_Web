@@ -1,3 +1,5 @@
+@use "../../index.scss" as COLOR;
+
 .DAT_GRHeader {
     width: 98%;
     margin: auto;
@@ -16,6 +18,7 @@
         display: flex;
         align-items: center;
         gap: 5px;
+        color: COLOR.$Primary-color;
     }
 
     &_Filter {
@@ -40,13 +43,9 @@
         cursor: pointer;
         height: 35px;
         border: none;
-        background-color: #6495ed;
+        background-color: COLOR.$Primary-color;
         color: white;
         border-radius: 5px;
-
-        &:hover {
-            background-color: #3e80fb;
-        }
 
         & span {
             display: flex;
@@ -552,7 +551,6 @@
 
 .DAT_Popup_Box {
     position: relative;
-    // margin-top: -58px;
     width: 400px;
     background-color: white;
     border-radius: 5px;
@@ -563,8 +561,9 @@
 
     &_Head {
         display: flex;
-        background-color: rgba(182, 182, 182, 0.4);
+        background-color: COLOR.$Primary-color !important; //rgba(182, 182, 182, 0.4)
         padding: 16px;
+        color: white;
 
         &_Left {
             flex: 5;
@@ -611,7 +610,6 @@
 
 .DAT_AddUserPopup_Box {
     position: relative;
-    // margin-top: -58px;
     width: 400px;
     background-color: white;
     border-radius: 5px;
@@ -622,8 +620,9 @@
 
     &_Head {
         display: flex;
-        background-color: rgba(182, 182, 182, 0.4);
+        background-color: COLOR.$Primary-color !important; //rgba(182, 182, 182, 0.4)
         padding: 16px;
+        color: white;
 
         &_Left {
             flex: 5;
@@ -686,7 +685,6 @@
 
 .DAT_DeleteGroupPopup_Box {
     position: relative;
-    // margin-top: -58px;
     width: 400px;
     background-color: white;
     border-radius: 5px;
@@ -697,8 +695,9 @@
 
     &_Head {
         display: flex;
-        background-color: rgba(182, 182, 182, 0.4);
+        background-color: COLOR.$Primary-color !important; //rgba(182, 182, 182, 0.4)
         padding: 16px;
+        color: white;
 
         &_Left {
             flex: 5;

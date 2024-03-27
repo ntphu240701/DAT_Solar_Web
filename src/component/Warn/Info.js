@@ -1,20 +1,18 @@
 import React from "react";
 import "./Warn.scss";
 
-import { dataWarn, infowarnState, warnState } from "./Warn";
+import { infowarnState } from "./Warn";
 import { useIntl } from "react-intl";
 import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { sidebartab, sidebartabli } from "../Sidenar/Sidenar";
-import { connectval, projtab } from "../Project/Project";
 
 export default function Info(props) {
   const dataLang = useIntl();
   const navigate = useNavigate();
 
   const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
   };
 
   const handlePopup = (state) => {
@@ -32,14 +30,12 @@ export default function Info(props) {
             {props.level == 'warn' ? (
               <div className="DAT_PopupReportInfo_Box_Head_Left_TableWarning">
                 <p>
-                  {/* {dataLang.formatMessage({ id: "errdetai" })} */}
                   {dataLang.formatMessage({ id: props.boxid })}
                 </p>
               </div>
             ) : (
               <div className="DAT_PopupReportInfo_Box_Head_Left_TableNotice">
                 <p>
-                  {/* {dataLang.formatMessage({ id: "errdetai" })} */}
                   {dataLang.formatMessage({ id: props.boxid })}
                 </p>
               </div>
@@ -63,30 +59,17 @@ export default function Info(props) {
           <p>
             {dataLang.formatMessage({ id: "project" })} :
             &nbsp;
-            <span
-            // onClick={(e) => {
-            // sidebartab.value = "Monitor";
-            // sidebartabli.value = "/Project";
-            // projtab.value = "online";
-            // navigate("/Project");}}
-            >
+            <span>
               {props.plant}
             </span>
           </p>
-
 
           <div className="DAT_PopupReportInfo_Box_Body_Item">
             <p>
               {dataLang.formatMessage({ id: "device" })} :
               &nbsp;
             </p>
-            <span
-            // onClick={(e) => {
-            // connectval.value = e.currentTarget.id;
-            // sidebartab.value = "Monitor";
-            // sidebartabli.value = "/Device";
-            // navigate("/Device");}}
-            >
+            <span>
               {props.device}
             </span>
           </div>
@@ -94,10 +77,10 @@ export default function Info(props) {
           <p>
             {dataLang.formatMessage({ id: "cause" })} :
           </p>
-          {props.level == 'warn' ? (
-            <input placeholder="..." disabled></input>) :
-            (<input placeholder="..." disabled></input>)}
-
+          {props.level == 'warn'
+            ? <input placeholder="..." disabled />
+            : <input placeholder="..." disabled />
+          }
           <p>
             {dataLang.formatMessage({ id: "solution" })} :
           </p>

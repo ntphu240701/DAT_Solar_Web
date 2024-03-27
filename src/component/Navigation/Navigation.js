@@ -160,8 +160,7 @@ export default function Navigation(props) {
   };
   return (
     <>
-      <div
-        className="DAT_Navigation"
+      <div className="DAT_Navigation"
         onClick={() => (plantState.value = "default")}
       >
         <div className="DAT_Navigation-menu">
@@ -243,8 +242,7 @@ export default function Navigation(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_NavUser"
+      <div className="DAT_NavUser"
         style={{ display: userNav.value ? "block" : "none" }}
         ref={user_box}
       >
@@ -285,24 +283,12 @@ export default function Navigation(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_NavNotif"
+      <div className="DAT_NavNotif"
         style={{ display: notifNav.value ? "block" : "none" }}
         ref={notif_box}
       >
         <div className="DAT_NavNotif-title">
           <span>{dataLang.formatMessage({ id: "notification" })}</span>
-
-          {/* {isMobile.value && messageOption.value === "content" ? (
-            <div
-              className="DAT_NavNotif-title-close"
-              onClick={() => (messageOption.value = "mess")}
-            >
-              <IoMdClose size={15} color="white" />
-            </div>
-          ) : (
-            <></>
-          )} */}
         </div>
 
         <div className="DAT_NavNotif-content">
@@ -365,12 +351,12 @@ export default function Navigation(props) {
                           })}
                           <div className="DAT_NavNotif-content-main-group-content-status-read">
                             {item.state == 0 ? (
-                              <div style={{ color: "grey", gap: "10px" }}>
+                              <div style={{ color: "grey", display: "flex", gap: "4px" }}>
                                 Read
                                 <BiMessageCheck />
                               </div>
                             ) : (
-                              <div style={{ color: "blue", gap: "10px" }}>
+                              <div style={{ color: "blue", display: "flex", gap: "4px" }}>
                                 Unread
                                 <BiMessageAltX />
                               </div>
@@ -391,8 +377,7 @@ export default function Navigation(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_NavLang"
+      <div className="DAT_NavLang"
         style={{ display: langNav.value ? "block" : "none" }}
         onMouseEnter={() => {
           langStateNav.value = [true, true];
@@ -402,10 +387,9 @@ export default function Navigation(props) {
           langStateNav.value = [false, false];
         }}
       >
-        <div
-          className="DAT_NavLang-item"
+        <div className="DAT_NavLang-item"
           style={{
-            backgroundColor: lang === "vi" ? "rgba(41, 95, 255)" : "white",
+            backgroundColor: lang === "vi" ? "rgba(43, 195, 253)" : "white",
             color: lang === "vi" ? "white" : "black",
           }}
           onClick={() => {
@@ -414,10 +398,9 @@ export default function Navigation(props) {
         >
           <span>Tiếng Việt</span>
         </div>
-        <div
-          className="DAT_NavLang-item"
+        <div className="DAT_NavLang-item"
           style={{
-            backgroundColor: lang === "en" ? "rgba(41, 95, 255)" : "white",
+            backgroundColor: lang === "en" ? "rgba(43, 195, 253)" : "white",
             color: lang === "en" ? "white" : "black",
           }}
           onClick={() => {

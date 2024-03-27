@@ -79,7 +79,7 @@ export default function Analytics(props) {
           </span>
         </div>
 
-        <button className="DAT_AnaHeader_New"
+        {/* <button className="DAT_AnaHeader_New"
           onClick={() => (anaState.value = "create")}
         >
           <span>
@@ -87,7 +87,7 @@ export default function Analytics(props) {
             &nbsp;
             {dataLang.formatMessage({ id: 'createAnal' })}
           </span>
-        </button>
+        </button> */}
       </div>
 
       <div className="DAT_Ana">
