@@ -1,3 +1,5 @@
+@use "../../index.scss" as COLOR;
+
 .DAT_Navigation {
     position: fixed;
     top: 0;
@@ -5,7 +7,7 @@
     z-index: 10;
     width: 100%;
     height: 58px;
-    background-color: rgb(0, 130, 202, 1);
+    background-color: COLOR.$Primary-color; //rgb(0, 130, 202, 1);
     box-shadow: 5px 5px 10px rgba(158, 158, 158, 0.3);
     display: flex;
     padding: 8px 0px;
@@ -173,7 +175,6 @@
     top: 70px;
     width: 95%;
     margin: auto;
-
     border-radius: 5px;
     background-color: white;
     box-shadow:
@@ -258,10 +259,7 @@
     width: 95%;
     height: 88vh;
     margin: auto;
-
     border-radius: 5px;
-    background-color: white;
-    background-color: rgba(230, 230, 230, 1);
     box-shadow:
         3px 3px 5px rgba(198, 197, 197, 0.4),
         -3px -3px 5px rgba(198, 197, 197, 0.4);
@@ -271,43 +269,22 @@
     animation: animateright 0.6s;
 
     &-title {
+        font-size: 18px;
         padding: 10px;
         border-bottom: solid 1px rgb(164, 164, 164, 0.5);
-        background-color: rgba(255, 255, 255, 0.5);
-        color: rgb(0, 0, 0);
-        font-size: 18px;
+        background-color: COLOR.$Primary-color ; // rgba(255, 255, 255, 0.5)
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         -webkit-box-sizing: border-box;
         /* Safari/Chrome, other WebKit */
         -moz-box-sizing: border-box;
         /* Firefox, other Gecko */
         box-sizing: border-box;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        &-close {
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            background-color: rgb(255, 108, 108);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-
-            &:hover {
-                background-color: rgb(255, 179, 179);
-            }
-        }
     }
 
     &-content {
-        // padding: 10px;
-        // -webkit-box-sizing: border-box;
-        // /* Safari/Chrome, other WebKit */
-        // -moz-box-sizing: border-box;
-        // /* Firefox, other Gecko */
-        // box-sizing: border-box;
         display: flex;
         overflow: hidden;
 
@@ -371,8 +348,8 @@
 
         &-main {
             flex: 6;
-            height: 80vh;
-            //background-color: rgba(230, 230, 230, 0.5);
+            height: 100vh;
+            background-color: COLOR.$LightGray-color ; // rgba(255, 255, 255, 0.5)
             overflow-y: scroll;
             -ms-overflow-style: none;
             scrollbar-width: none;
@@ -397,7 +374,7 @@
                 }
 
                 &-content {
-                    padding: 15px;
+                    padding: 16px;
                     border-radius: 5px;
                     box-shadow:
                         3px 3px 5px rgba(198, 197, 197, 0.4),
@@ -406,35 +383,31 @@
                     &-tit {
                         font-size: 16px;
                         color: black;
-                        margin-bottom: 5px;
+                        margin-bottom: 8px !important;
                     }
 
                     &-device {
                         color: gray;
                         font-size: 14px;
-                        margin-bottom: 5px;
+                        margin-bottom: 8px !important;
                     }
 
                     &-level {
                         color: gray;
                         font-size: 14px;
-                        margin-bottom: 5px;
+                        margin-bottom: 8px !important;
                     }
 
                     &-status {
-                        margin-top: 5px;
+                        padding-top: 8px !important;
                         border-top: solid 1px rgb(164, 164, 164, 0.5);
                         color: black;
                         font-size: 14px;
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
-                        &-read {
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                        }
                     }
+
                     &:hover {
                         background-color: rgb(201, 201, 201, 0.7) !important;
                         transition: ease-in-out 0.2s;
@@ -461,9 +434,7 @@
     right: 10px;
     width: 120px;
     margin: auto;
-
     border-radius: 5px;
-    background-color: white;
     box-shadow:
         3px 3px 5px rgba(198, 197, 197, 0.4),
         -3px -3px 5px rgba(198, 197, 197, 0.4);
@@ -483,9 +454,9 @@
         /* Firefox, other Gecko */
         box-sizing: border-box;
 
-        &:hover {
-            background-color: rgba(41, 209, 255, 0.1);
-        }
+        // &:hover {
+        //     background-color: rgba(41, 209, 255, 0.1);
+        // }
     }
 }
 

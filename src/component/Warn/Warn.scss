@@ -1,3 +1,5 @@
+@use "../../index.scss" as COLOR;
+
 .DAT_WarnHeader {
     width: 98%;
     margin: auto;
@@ -76,7 +78,6 @@
     &_Nav {
         display: flex;
         gap: 10px;
-
         border-bottom: solid 1px rgb(199, 199, 199);
         padding: 15px;
 
@@ -92,7 +93,6 @@
                 color: #6495ed;
             }
         }
-
     }
 
     &_Content {
@@ -604,7 +604,6 @@
 
 .DAT_PopupReport_Box {
     position: relative;
-    // margin-top: -58px;
     width: 400px;
     background-color: white;
     border-radius: 5px;
@@ -615,8 +614,9 @@
 
     &_Head {
         display: flex;
-        background-color: rgba(182, 182, 182, 0.4);
+        background-color: COLOR.$Primary-color !important;
         padding: 16px;
+        color: white;
 
         &_Left {
             flex: 5;
@@ -680,8 +680,9 @@
 
     &_Head {
         display: flex;
-        background-color: rgba(182, 182, 182, 0.3);
+        background-color: COLOR.$Primary-color ; //rgba(182, 182, 182, 0.3)
         padding: 20px;
+        color: white;
 
         &_Left {
             flex: 10;
@@ -734,7 +735,7 @@
             border-radius: 10px;
             font-size: 14px;
         }
-        
+
         & input:disabled {
             // background-color: white;
             // color: black;

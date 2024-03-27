@@ -589,7 +589,7 @@ export const messages = {
     phone: "Số điện thoại",
     notification: "Thông báo",
     dashboard: "Bảng điều khiển",
-    maintain: "Vận hành và bảo trì",
+    maintain: "Vận hành-Bảo trì",
     analytic: "Phân tích",
     analyticsList: "Danh sách mẫu phân tích",
     overview: "Tổng quan dữ liệu phát điện",

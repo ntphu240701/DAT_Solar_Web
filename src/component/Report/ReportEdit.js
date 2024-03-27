@@ -6,7 +6,6 @@ import { signal } from "@preact/signals-react";
 import { isMobile } from "../Navigation/Navigation";
 import { useIntl } from "react-intl";
 
-import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { IoSaveOutline } from "react-icons/io5";
 import { callApi } from "../Api/Api";
@@ -255,7 +254,7 @@ export default function Create() {
             className="DAT_EditReport_Header_Right_Save"
             onClick={() => handleSaveData()}
           >
-            <IoSaveOutline size={20} color="white" />
+            <IoSaveOutline size={20} color="rgba(11, 25, 103)" />
             <span>{dataLang.formatMessage({ id: "save" })}</span>
           </div>
           <div className="DAT_EditReport_Header_Right_Close">

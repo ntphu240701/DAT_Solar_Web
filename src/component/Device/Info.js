@@ -3,9 +3,10 @@ import "./Device.scss";
 
 import { infoState, info, tab } from "./Device";
 import { useIntl } from "react-intl";
+import DatePicker from "react-datepicker";
 
 import { IoIosArrowDown } from "react-icons/io";
-import { FaCheckCircle, FaSave } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
 import { MdOutlineError } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -14,6 +15,8 @@ import { Fade, Paper, Popper, Typography } from "@mui/material";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import DataTable from "react-data-table-component";
 import { Empty } from "../Project/Project";
+import { IoCalendarOutline } from "react-icons/io5";
+import moment from "moment-timezone";
 
 const data = [
   {
@@ -805,6 +808,13 @@ const Control = (props) => {
 const HistoricalData = (props) => {
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
+  const [dateType, setDateType] = useState("date");
+  const [d, setD] = useState({
+    date: moment(new Date()).format("YYYY-MM-DD"),
+    month: moment(new Date()).format("YYYY-MM"),
+    year: moment(new Date()).format("YYYY"),
+    total: "Tổng",
+  });
 
   return (
     <div className="DAT_Info_Databox" id="HistoricalData">
@@ -829,21 +839,29 @@ const HistoricalData = (props) => {
         {display ? (
           <div className="DAT_Info_Databox_HistoriccalData">
             <div className="DAT_Info_Databox_HistoricalData_Picker">
-              <div className="DAT_Info_Databox_HistoricalData_Picker_Type">
+              {/* <div className="DAT_Info_Databox_HistoricalData_Picker_Type">
                 <p>{dataLang.formatMessage({ id: "day" })}</p>
                 <p>{dataLang.formatMessage({ id: "month" })}</p>
                 <p>{dataLang.formatMessage({ id: "year" })}</p>
                 <p>{dataLang.formatMessage({ id: "total" })}</p>
-              </div>
-              <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
+              </div> */}
+              {/* <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
                 <div>{dataLang.formatMessage({ id: "choosePara" })}</div>
               </div>
               <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
                 <div>{dataLang.formatMessage({ id: "export" })}</div>
-              </div>
-              <div className="DAT_Info_Databox_HistoricalData_Picker_DatePicker">
+              </div> */}
+              <DatePicker
+                customInput={
+                  <button className="DAT_CustomPicker">
+                    <span>{d[dateType]}</span>
+                    <IoCalendarOutline color="gray" />
+                  </button>
+                }
+              />
+              {/* <div className="DAT_Info_Databox_HistoricalData_Picker_DatePicker">
                 <input type="date"></input>
-              </div>
+              </div> */}
             </div>
             <div className="DAT_Info_Databox_HistoricalData_Chart"></div>
           </div>
@@ -2078,28 +2096,28 @@ export default function Info(props) {
                     <button className="DAT_Info_Header_Left_Item"
                       id="batch"
                       onClick={() => { setNav("batch") }}
-                      style={{ color: nav === "batch" ? "#6495ed" : "gray", borderBottom: nav === "batch" ? "solid 2px #6495ed" : "solid 2px white" }}
+                      style={{ color: nav === "batch" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "batch" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Batch Command
                     </button>
                     <button className="DAT_Info_Header_Left_Item"
                       id="single"
                       onClick={() => { setNav("single") }}
-                      style={{ color: nav === "single" ? "#6495ed" : "gray", borderBottom: nav === "single" ? "solid 2px #6495ed" : "solid 2px white" }}
+                      style={{ color: nav === "single" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "single" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Single Command
                     </button>
                     <button className="DAT_Info_Header_Left_Item"
                       id="customized"
                       onClick={() => { setNav("customized") }}
-                      style={{ color: nav === "customized" ? "#6495ed" : "gray", borderBottom: nav === "customized" ? "solid 2px #6495ed" : "solid 2px white" }}
+                      style={{ color: nav === "customized" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "customized" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Customized Command
                     </button>
                     <button className="DAT_Info_Header_Left_Item"
                       id="log"
                       onClick={() => { setNav("log") }}
-                      style={{ color: nav === "log" ? "#6495ed" : "gray", borderBottom: nav === "log" ? "solid 2px #6495ed" : "solid 2px white" }}
+                      style={{ color: nav === "log" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "log" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Control Log
                     </button>
@@ -2111,14 +2129,14 @@ export default function Info(props) {
                     <button className="DAT_Info_Header_Left_Item"
                       id="firmware"
                       onClick={() => { setNav_("firmware") }}
-                      style={{ color: nav_ === "firmware" ? "#6495ed" : "gray", borderBottom: nav_ === "firmware" ? "solid 2px #6495ed" : "solid 2px white" }}
+                      style={{ color: nav_ === "firmware" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav_ === "firmware" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Firmware Upgrade
                     </button>
                     <button className="DAT_Info_Header_Left_Item"
                       id="upgrade"
                       onClick={() => { setNav_("upgrade") }}
-                      style={{ color: nav_ === "upgrade" ? "#6495ed" : "gray", borderBottom: nav_ === "upgrade" ? "solid 2px #6495ed" : "solid 2px white" }}
+                      style={{ color: nav_ === "upgrade" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav_ === "upgrade" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Upgrade Log
                     </button>

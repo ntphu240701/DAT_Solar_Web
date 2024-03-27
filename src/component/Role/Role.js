@@ -14,7 +14,6 @@ import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 
 import { AiOutlineUserAdd } from "react-icons/ai";
-import { FaUserPlus } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
@@ -23,7 +22,6 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { LuUserSquare } from "react-icons/lu";
 import { datarule } from "../Rule/Rule";
 import { FiEdit } from "react-icons/fi";
-import { lowerCase } from "lodash";
 
 export const roleData = signal({});
 export const roleState = signal("default");
@@ -226,7 +224,7 @@ export default function Role(props) {
     <>
       <div className="DAT_RoleHeader">
         <div className="DAT_RoleHeader_Title">
-          <LuUserSquare color="gray" size={25} />{" "}
+          <LuUserSquare color="gray" size={25} />
           <span>{dataLang.formatMessage({ id: "role" })}</span>
         </div>
 

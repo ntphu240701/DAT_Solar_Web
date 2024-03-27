@@ -193,12 +193,12 @@ export default function Sidenar(props) {
 
           {Menu("Analytics", dataLang.formatMessage({ id: 'maintain' }))}
           {sidebartab.value === "Analytics" ? <>{MenuLi("Analytics")}</> : <></>}
-          {/* {Menu("Notif", "Thông báo")} */}
 
           {Menu("Setting", dataLang.formatMessage({ id: 'setting' }))}
           {sidebartab.value === "Setting" ? <>{MenuLi("Setting")}</> : <></>}
         </div>
       </div>
+
       <div className="DAT_User"
         style={sidenar.value ? { width: "200px" } : { width: "0px" }}
       >

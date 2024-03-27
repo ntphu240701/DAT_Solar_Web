@@ -14,8 +14,8 @@ export default function Popup(props) {
   const name = useRef();
 
   const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" }
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" }
   }
 
   const handlePopup = (state) => {
@@ -74,12 +74,11 @@ export default function Popup(props) {
               onMouseEnter={e => (handlePopup("new"))}
               onMouseLeave={e => (handlePopup("pre"))}
             >
-              <IoClose size={20}  ></IoClose>
+              <IoClose size={20} />
             </div>
           </div>
         </div>
         <div className="DAT_Popup_Box_Body">
-          {/* <p> */}
           <p>
             {dataLang.formatMessage({ id: 'delDevicemess' })}
             &nbsp;
@@ -87,19 +86,9 @@ export default function Popup(props) {
               {props.sn}
             </span>
           </p>
-          {/* </p> */}
         </div>
         <div className="DAT_Popup_Box_Foot">
-          {/* <button
-          style={{
-            border: "1px solid #505050", backgroundColor: "white",
-            color: "#505050"
-          }}
-          onClick={() => (popupState.value = false)}
-        >
-          {dataLang.formatMessage({ id: 'cancel' })}
-        </button> */}
-          <button style={{ backgroundColor: "#048FFF", color: "white" }}
+          <button style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
             onClick={(e) => handleDelete(e)}
           >
             {dataLang.formatMessage({ id: 'confirm' })}
@@ -125,26 +114,10 @@ export default function Popup(props) {
           </div>
         </div>
         <div className="DAT_Popup_Box_Body">
-          {/* <p>
-            {dataLang.formatMessage({ id: 'delDevicemess' })}
-            &nbsp;
-            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {props.sn}
-            </span>
-          </p> */}
           <input type="text" placeholder={dataLang.formatMessage({ id: 'name' })} ref={name} />
         </div>
         <div className="DAT_Popup_Box_Foot">
-          {/* <button
-          style={{
-            border: "1px solid #505050", backgroundColor: "white",
-            color: "#505050"
-          }}
-          onClick={() => (popupState.value = false)}
-        >
-          {dataLang.formatMessage({ id: 'cancel' })}
-        </button> */}
-          <button style={{ backgroundColor: "#048FFF", color: "white" }}
+          <button style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
             onClick={(e) => handleUpdate(e)}
           >
             {dataLang.formatMessage({ id: 'confirm' })}

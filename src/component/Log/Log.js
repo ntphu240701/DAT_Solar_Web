@@ -116,6 +116,7 @@ export default function Log(props) {
                     <input type="text" placeholder={dataLang.formatMessage({ id: 'enterDev' })} />
                     <CiSearch color="gray" size={20} />
                 </div>
+                <div></div>
             </div>
 
             <div className='DAT_Log'>

@@ -15,8 +15,8 @@ export default function Popup() {
   const dataLang = useIntl();
 
   const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
   };
 
   const handleDeleteReport = async (e) => {
@@ -45,10 +45,6 @@ export default function Popup() {
     popup.style.color = popup_state[state].color;
   };
 
-  // useEffect(() => {
-  //   console.log(idReport.value);
-  // },[idReport.value]);
-
   return (
     <div className="DAT_PopupReport_Box">
       <div className="DAT_PopupReport_Box_Head">
@@ -73,18 +69,8 @@ export default function Popup() {
       </div>
 
       <div className="DAT_PopupReport_Box_Foot">
-        {/* <button
-          style={{
-            border: "1px solid #505050",
-            backgroundColor: "white",
-            color: "#505050",
-          }}
-          onClick={() => (popupStateReport.value = false)}
-        >
-          {dataLang.formatMessage({ id: 'cancel' })}
-        </button> */}
         <button
-          style={{ backgroundColor: "#048FFF", color: "white" }}
+          style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
           onClick={(e) => handleDeleteReport(e)}
         >
           {dataLang.formatMessage({ id: "confirm" })}

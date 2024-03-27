@@ -8,10 +8,8 @@ import { partnerInfor } from "../../App";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 
-import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { IoSaveOutline } from "react-icons/io5";
-import { datarule } from "../Rule/Rule";
 
 export default function CreateRole(props) {
   const datalang = useIntl();
@@ -23,15 +21,6 @@ export default function CreateRole(props) {
   const phone = useRef();
   const role = useRef();
   const dataLang = useIntl();
-
-  // const validateEmail = (email) => {
-  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   return emailRegex.test(email);
-  // }
-  // const checkLength = (inputString, minLength, maxLength) => {
-  //   const length = inputString.length;
-  //   return length >= minLength && length <= maxLength;
-  // }
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -84,7 +73,7 @@ export default function CreateRole(props) {
 
         <div className="DAT_CreateRole_Header_Right">
           <button className="DAT_CreateRole_Header_Right_Save">
-            <IoSaveOutline size={20} color="white" />
+            <IoSaveOutline size={20} color="rgba(11, 25, 103)" />
             <span>{dataLang.formatMessage({ id: "save" })}</span>
           </button>
           <div
@@ -111,9 +100,9 @@ export default function CreateRole(props) {
                 ref={username}
                 minLength="6"
                 onChange={(e) =>
-                  (username.current.value = e.target.value
-                    .trim()
-                    .toLocaleLowerCase())
+                (username.current.value = e.target.value
+                  .trim()
+                  .toLocaleLowerCase())
                 }
                 required
               />
