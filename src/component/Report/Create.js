@@ -128,7 +128,7 @@ export const CheckBox = (props) => {
 export default function Create() {
   const dataLang = useIntl();
   const [widthCheckBox, setWidwidthCheckBox] = useState("");
-  const [reportType, setReportType] = useState("Daily Report");
+  const [reportType, setReportType] = useState("dailyReport");
   const reportnameRef = useRef("");
   //DAT_MASTER
   const usr = useSelector((state) => state.admin.usr);
@@ -146,7 +146,7 @@ export default function Create() {
         <div className="DAT_Create_Body_Item_Data">
           {(() => {
             switch (reportType) {
-              case "Daily Data Report":
+              case "dailyReport":
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
@@ -157,7 +157,7 @@ export default function Create() {
                     </p>
                   </>
                 );
-              case "Monthly Data Report":
+              case "monthlyReport":
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
@@ -168,7 +168,7 @@ export default function Create() {
                     </p>
                   </>
                 );
-              case "Yearly Data Report":
+              case "yearlyReport":
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
@@ -179,7 +179,7 @@ export default function Create() {
                     </p>
                   </>
                 );
-              case "Total Data Report":
+              case "totalReport":
                 return (
                   <>
                     <label style={{ fontWeight: "700", margin: "0" }}>
@@ -304,21 +304,21 @@ export default function Create() {
               <h4>{dataLang.formatMessage({ id: "reportType" })}</h4>
               <select
                 className="form-select form-select-sm mt-3"
-                defaultValue={"Daily Data Report"}
+                defaultValue={"dailyReport"}
                 onChange={(e) => {
                   handleDataType(e);
                 }}
               >
-                <option value={"Daily Data Report"}>
+                <option value={"monthlyReport"}>
                   {dataLang.formatMessage({ id: "dailyReport" })}
                 </option>
-                <option value={"Monthly Data Report"}>
+                <option value={"monthlyReport"}>
                   {dataLang.formatMessage({ id: "monthlyReport" })}
                 </option>
-                <option value={"Yearly Data Report"}>
+                <option value={"yearlyReport"}>
                   {dataLang.formatMessage({ id: "yearlyReport" })}
                 </option>
-                <option value={"Total Data Report"}>
+                <option value={"totalReport"}>
                   {dataLang.formatMessage({ id: "totalReport" })}
                 </option>
               </select>

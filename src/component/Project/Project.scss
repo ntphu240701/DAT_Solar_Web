@@ -571,7 +571,6 @@
                 border-radius: 5px;
                 overflow: hidden;
 
-
                 // &_Right {
                 //     width: 60%;
 
@@ -694,7 +693,8 @@
                                 display: flex;
                             }
 
-                            &_B {}
+                            &_B {
+                            }
                         }
 
                         &_Grid {
@@ -728,7 +728,8 @@
 
                         // background-color: #3e80fb;
 
-                        &_P {}
+                        &_P {
+                        }
                     }
 
                     &_SingleLine {
@@ -999,7 +1000,6 @@
                                 display: flex;
                                 align-items: center;
                                 min-width: 70px;
-
                             }
 
                             &_Data {
@@ -1046,21 +1046,29 @@
 
                         &_Current {
                             display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 20px;
 
                             &_Left {
-                                flex: 3.5;
+                                // flex: 3.5;
                                 display: flex;
                                 align-items: center;
                                 gap: 2px;
                                 // justify-content: space-between;
+                                color: gray !important;
                                 box-sizing: border-box;
                                 align-items: center;
                                 white-space: nowrap;
 
                                 &_Deg {
-                                    font-size: 24px;
+                                    // font-size: 24px;
                                     font-family: Arial, Helvetica, sans-serif;
-                                    font-weight: 550;
+                                    // font-weight: 550;
+                                    &_Des {
+                                        font-size: 12px;
+                                        color: gray;
+                                    }
                                 }
 
                                 &_PickType {
@@ -1068,13 +1076,12 @@
                                     font-weight: 500;
                                     font-size: 20px;
                                     cursor: pointer;
-                                    border-right: 1px solid gray;
+                                    // border-right: 1px solid gray;
                                     padding-right: 7px;
                                     height: 50px;
                                     display: flex;
                                     justify-content: center;
                                     gap: 2px;
-
                                 }
 
                                 &_Describe {
@@ -1089,7 +1096,8 @@
                             }
 
                             &_Right {
-                                flex: 2;
+                                // background-color: red;
+                                // flex: 2;
                                 // align-items: flex-end;
                                 display: flex;
                                 justify-content: flex-end;
@@ -1099,10 +1107,17 @@
 
                                 &_Tit {
                                     display: flex;
-                                    align-items: flex-end;
+                                    align-items: flex-start;
                                     flex-direction: column;
-                                    font-size: 12px;
-                                    color: gray;
+                                    
+                                    &_Temp {
+                                        font-size: 20px;
+                                        color: black;
+                                    }
+                                    &_Des {
+                                        font-size: 12px;
+                                        color: gray;
+                                    }
                                 }
                             }
                         }
@@ -1110,11 +1125,21 @@
                         &_Describe {
                             display: flex;
                             color: gray;
-                            font-size: 12px;
+                            font-size: 13px;
+                            justify-content: center;
+                            align-items: center;
                             gap: 5px;
+                            width: 100%;
+                            padding-top: 5px;
+                            // margin: auto;
+                        }
+
+                        &_Forecast {
+                            padding: 5px;
                         }
 
                         &_Bottom {
+                            padding: 0px 10px;
                             display: flex;
                             justify-content: space-between;
                             gap: 5px;
@@ -1148,19 +1173,21 @@
                             &_Box {
                                 min-width: 70px;
                                 max-width: 20%;
-                                height: 100px;
-                                background-color: rgba(248, 248, 248, 0.3);
-                                cursor: pointer;
+                                // height: 100px;
+                                // background-color: rgba(248, 248, 248, 0.3);
+                                // cursor: pointer;
+                                color: gray;
+                                font-size: 13px;
                                 display: flex;
                                 flex-direction: column;
                                 align-items: center;
-                                border-radius: 5px;
+                                // border-radius: 5px;
                                 justify-content: center;
                                 overflow: hidden;
 
-                                &:hover {
-                                    background-color: rgba(224, 224, 224, 0.8);
-                                }
+                                // &:hover {
+                                //     background-color: rgba(224, 224, 224, 0.8);
+                                // }
 
                                 // padding: 2px;
                             }
@@ -1487,8 +1514,6 @@
                             }
                         }
                     }
-
-
                 }
             }
 
@@ -1696,7 +1721,8 @@
                         justify-content: center;
                         gap: 5px;
 
-                        &_Item {}
+                        &_Item {
+                        }
                     }
                 }
             }
@@ -2473,7 +2499,6 @@
                     }
                 }
             }
-
         }
     }
 }
@@ -3065,7 +3090,6 @@
                     }
                 }
             }
-
         }
     }
 }
@@ -3604,7 +3628,6 @@
                                 }
                             }
                         }
-
                     }
 
                     &_Consumption {
@@ -3648,9 +3671,11 @@
                 }
             }
 
-            &_History {}
+            &_History {
+            }
 
-            &_More {}
+            &_More {
+            }
         }
 
         &_Device {

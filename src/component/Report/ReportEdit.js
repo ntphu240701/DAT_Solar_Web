@@ -118,7 +118,7 @@ const DataReport = (props) => {
       <div className="DAT_EditReport_Body_Item_Data">
         {(() => {
           switch (editData.value.type) {
-            case "Daily Data Report":
+            case "dailyReport":
               return (
                 <>
                   <label style={{ fontWeight: "700", margin: "0" }}>
@@ -129,7 +129,7 @@ const DataReport = (props) => {
                   </p>
                 </>
               );
-            case "Monthly Data Report":
+            case "monthlyReport":
               return (
                 <>
                   <label style={{ fontWeight: "700", margin: "0" }}>
@@ -140,7 +140,7 @@ const DataReport = (props) => {
                   </p>
                 </>
               );
-            case "Yearly Data Report":
+            case "yearlyReport":
               return (
                 <>
                   <label style={{ fontWeight: "700", margin: "0" }}>
@@ -151,7 +151,7 @@ const DataReport = (props) => {
                   </p>
                 </>
               );
-            case "Total Data Report":
+            case "totalReport":
               return (
                 <>
                   <label style={{ fontWeight: "700", margin: "0" }}>

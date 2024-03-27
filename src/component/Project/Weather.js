@@ -2,11 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { WiStrongWind } from "react-icons/wi";
 import { WiHumidity } from "react-icons/wi";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { PacmanLoader } from "react-spinners";
 import { projectData } from "./Project";
 import { useSelector } from "react-redux";
 import { useIntl } from "react-intl";
+import { IoLocation } from "react-icons/io5";
 
 export default function Weather() {
   const [data, setData] = useState({});
@@ -38,14 +39,36 @@ export default function Weather() {
 
   //CALL DATA BY AXIOS
   const [forecastdata, setForecastdata] = useState([]);
+
   useEffect(() => {
     axios.get(url).then((response) => {
       setData(response.data);
       setForecastdata([]);
-      // console.log(response.data);
+      console.log(response.data);
       response.data.forecast.forecastday.map((item) => {
         let dateObj = new Date(item.date);
-        let weekday = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+        let weekday = [];
+        if (lang === "en") {
+          weekday = [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+          ];
+        } else if (lang === "vi") {
+          weekday = [
+            "Chủ nhật",
+            "Thứ hai",
+            "Thứ ba",
+            "Thứ tư",
+            "Thứ năm",
+            "Thứ sáu",
+            "Thứ bảy",
+          ];
+        }
         let day = weekday[dateObj.getUTCDay()];
         const db = {
           name: day,
@@ -85,58 +108,29 @@ export default function Weather() {
       <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current">
         <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Left">
           <img
+            src={"/dat_picture/station.jpg"}
+            style={{ width: "140px", height: "80px" }}
+          ></img>
+        </div>
+        <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right">
+          <img
             src={"https:" + data.current.condition.icon}
             style={{ width: "70px", height: "70px" }}
             alt=""
           />
-          <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Left_Deg">
-            {type === "C" ? data.current.temp_c : data.current.temp_f}
-          </div>
-          <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Left_PickType">
-            <div
-              style={{
-                color: type === "C" ? "black" : "#b7b7b7",
-                fontWeight: "700",
-              }}
-              id="C"
-              onClick={(e) => handleChangeType(e)}
-            >
-              °C
-            </div>
-            <div style={{ color: "#b7b7b7" }}>|</div>
-            <div
-              style={{
-                fontWeight: "700",
-                color: type === "C" ? "#b7b7b7" : "black",
-              }}
-              id="F"
-              onClick={(e) => handleChangeType(e)}
-            >
-              °F
-            </div>
-          </div>
-        </div>
-        <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right">
           <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit">
-            {data.location.name},{/* {data.location.country} */}
-            <div>{data.location.localtime}</div>
-            <div>
-              {dataLang.formatMessage({ id: "description" })}:{" "}
+            <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit_Temp">
+              {data.current.temp_c}°C
+            </div>
+            <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit_Des">
               {data.current.condition.text}
             </div>
           </div>
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Describe">
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <WiHumidity />: {data.current.humidity} % |
-        </div>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <WiStrongWind size={20} />: {data.current.wind_kph} km/h |
-        </div>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          UV: {data.current.uv} nm
-        </div>
+        <IoLocation  color="rgba(97,88,194,0.8)" size={15}/>
+        {data.location.name},{data.location.country}, {data.location.localtime}
       </div>
       <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Forecast">
         <ResponsiveContainer width={"100%"} height={150}>
@@ -156,8 +150,8 @@ export default function Weather() {
                 x2="0"
                 y2="1"
               >
-                <stop offset="5%" stopColor="#FEB400" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#FEB400" stopOpacity={0} />
+                <stop offset="5%" stopColor="rgba(97,88,194,0.8)" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="rgba(97,88,194,0.8)" stopOpacity={0} />
               </linearGradient>
             </defs>
             <XAxis dataKey="name" hide={true} />
@@ -167,16 +161,32 @@ export default function Weather() {
             <Area
               type="monotone"
               dataKey={v}
-              stroke="#ff970f"
+              stroke="rgba(97,88,194,0.8)"
               fillOpacity={20}
               fill="url(#colorforecastdata)"
             />
           </AreaChart>
         </ResponsiveContainer>
       </div>
+      {/* <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Describe">
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <WiHumidity />: {data.current.humidity} % |
+        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <WiStrongWind size={20} />: {data.current.wind_kph} km/h |
+        </div>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          UV: {data.current.uv} nm
+        </div>
+      </div> */}
       <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom">
         {data.forecast.forecastday.map((item, index) => {
-          const weekdays = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+          let weekdays =[];
+          if(lang === "en"){
+            weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+          } else if(lang === "vi"){
+            weekdays = ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
+          }
           const dateObj = new Date(item.date);
           const weekday = weekdays[dateObj.getUTCDay()];
           return (
@@ -185,15 +195,13 @@ export default function Weather() {
               className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom_Box"
             >
               <div>{weekday}</div>
-              <div
-                style={{
-                  fontFamily: "Arial, Helvetica, sans-serif",
-                  fontWeight: "550",
-                }}
-              >
-                {item.day.avgtemp_c}°C
+              <div>
+                <img
+                  src={"https:" + item.day.condition.icon}
+                  style={{ width: "40px", height: "40px" }}
+                  alt=""
+                />
               </div>
-              <img src={"https:" + item.day.condition.icon} alt="" />
             </div>
           );
         })}
