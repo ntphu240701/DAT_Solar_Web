@@ -94,7 +94,7 @@ export default function EditContactInfo(props) {
 
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
                   <input type="text" id="businessmodel_input" defaultValue={partnerInfor.value.businessmodel} />
-                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id='businessmodel' onClick={(e) => handeUpdate(e)} >
+                  <span style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }} id='businessmodel' onClick={(e) => handeUpdate(e)} >
                     {dataLang.formatMessage({ id: 'save' })}
                   </span>
                 </div>
@@ -107,7 +107,7 @@ export default function EditContactInfo(props) {
 
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
                   <input type="text" id="businessname_input" defaultValue={partnerInfor.value.businessname} />
-                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id="businessname" onClick={(e) => handeUpdate(e)}>
+                  <span style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }} id="businessname" onClick={(e) => handeUpdate(e)}>
                     {dataLang.formatMessage({ id: 'save' })}</span>
                 </div>
               </div>
@@ -119,7 +119,7 @@ export default function EditContactInfo(props) {
 
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
                   <input type="text" id="area_input" defaultValue={partnerInfor.value.area} />
-                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id="area" onClick={(e) => handeUpdate(e)}>
+                  <span style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }} id="area" onClick={(e) => handeUpdate(e)}>
                     {dataLang.formatMessage({ id: 'save' })}
                   </span>
                 </div>
@@ -148,7 +148,7 @@ export default function EditContactInfo(props) {
                 </div>
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
                   <input type="text" id="name_input" defaultValue={partnerInfor.value.name} />
-                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id='name' onClick={(e) => handeUpdate(e)} >{dataLang.formatMessage({ id: 'save' })}</span>
+                  <span style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }} id='name' onClick={(e) => handeUpdate(e)} >{dataLang.formatMessage({ id: 'save' })}</span>
                 </div>
               </div>
 
@@ -159,7 +159,7 @@ export default function EditContactInfo(props) {
 
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
                   <input type="number" id="phone_input" defaultValue={partnerInfor.value.phone} />
-                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id="phone" onClick={(e) => handeUpdate(e)}>{dataLang.formatMessage({ id: 'save' })}</span>
+                  <span style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }} id="phone" onClick={(e) => handeUpdate(e)}>{dataLang.formatMessage({ id: 'save' })}</span>
                 </div>
               </div>
 
@@ -170,7 +170,7 @@ export default function EditContactInfo(props) {
 
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
                   <input type="mail" id="mail_input" defaultValue={partnerInfor.value.mail} />
-                  <span style={{ cursor: "pointer", color: "#00B0FF" }} id="mail" onClick={(e) => handeUpdate(e)}>{dataLang.formatMessage({ id: 'save' })}</span>
+                  <span style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }} id="mail" onClick={(e) => handeUpdate(e)}>{dataLang.formatMessage({ id: 'save' })}</span>
                 </div>
               </div>
             </div>

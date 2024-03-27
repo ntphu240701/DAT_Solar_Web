@@ -743,11 +743,12 @@ const State = (props) => {
 
 const Control = (props) => {
   const [display, setDisplay] = useState(true);
+  const datalang = useIntl();
 
   return (
     <div className="DAT_Info_Databox" id="Control">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Điều khiển</div>
+        <div className="DAT_Info_Databox_Title_Left">{datalang.formatMessage({ id: 'control' })}</div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -880,7 +881,7 @@ const GridStartSettings = (props) => {
   return (
     <div className="DAT_Info_Databox" id="GridStartSettings">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Grid Start Settings</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'Gridstartsettings' })}</div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -903,7 +904,7 @@ const GridStartSettings = (props) => {
               <div className="DAT_Info_Databox_GridStartSettings_Content_Left">
                 <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Tit">
-                    AC Start High Volt:
+                    {dataLang.formatMessage({ id: 'ACStartHighVoltage' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Content">
                     <input />
@@ -912,7 +913,7 @@ const GridStartSettings = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item">
                   <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Tit">
-                    AC Start Low Freq:
+                    {dataLang.formatMessage({ id: 'ACStartLowVoltage' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Content">
                     <input />
@@ -923,7 +924,7 @@ const GridStartSettings = (props) => {
               <div className="DAT_Info_Databox_GridStartSettings_Content_Center">
                 <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item">
                   <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item_Tit">
-                    AC Start Low Volt:
+                    {dataLang.formatMessage({ id: 'ACStartHighFrequency' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item_Content">
                     <input />
@@ -934,7 +935,7 @@ const GridStartSettings = (props) => {
               <div className="DAT_Info_Databox_GridStartSettings_Content_Right">
                 <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item">
                   <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item_Tit">
-                    AC Start High Freq:
+                    {dataLang.formatMessage({ id: 'ACStartLowFrequency' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item_Content">
                     <input />
@@ -945,8 +946,8 @@ const GridStartSettings = (props) => {
             </div>
 
             <div className="DAT_Info_Databox_GridStartSettings_Foot">
-              <button>Read</button>
-              <button>Setup</button>
+              <button>{dataLang.formatMessage({ id: 'read' })}</button>
+              <button>{dataLang.formatMessage({ id: 'setup' })}</button>
             </div>
           </div>
         ) : (
@@ -964,7 +965,7 @@ const GridVolt = (props) => {
   return (
     <div className="DAT_Info_Databox" id="GridVolt">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Grid Volt/Freq Protect</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'GridVFreqP' })}</div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -987,7 +988,7 @@ const GridVolt = (props) => {
               <div className="DAT_Info_Databox_GridVolt_Content_Left">
                 <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                    AC Under Volt 1:
+                    {dataLang.formatMessage({ id: 'ACUnderVolt1' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
                     <input />
@@ -996,7 +997,7 @@ const GridVolt = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                    AC Over Volt 1 Time:
+                    {dataLang.formatMessage({ id: 'ACUnderVolt1Time' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
                     <input />
@@ -1005,7 +1006,26 @@ const GridVolt = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                    AC Under Volt 2 Time:
+                    {dataLang.formatMessage({ id: 'ACUnderVolt2Time' })}:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
+                    <input />
+                    ms
+                  </div>
+                </div>
+                {/* <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
+                    {dataLang.formatMessage({ id: 'ACUnderVolt3Time' })}:
+                  </div>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
+                    <input />
+                    ms
+                  </div>
+                </div> */}
+                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
+                    {/* AC Under Freq 1 Time: */}
+                    {dataLang.formatMessage({ id: 'ACUnderFreq1Time' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
                     <input />
@@ -1014,25 +1034,8 @@ const GridVolt = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                    AC Under Volt 3 Time:
-                  </div>
-                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                    <input />
-                    ms
-                  </div>
-                </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
-                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                    AC Under Freq 1 Time:
-                  </div>
-                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                    <input />
-                    ms
-                  </div>
-                </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
-                  <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                    AC Over Freq 2 Time:
+                    {/* AC Over Freq 2 Time: */}
+                    {dataLang.formatMessage({ id: 'ACOverFreq2Time' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
                     <input />
@@ -1041,13 +1044,14 @@ const GridVolt = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_GridVolt_Content_Left_Item">
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                    Frequency Setting:
+                    {/* Frequency Setting: */}
+                    {dataLang.formatMessage({ id: 'FreqSetting' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
                     <select>
-                      <option>Please Select</option>
-                      <option>a</option>
-                      <option>a</option>
+                      <option>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
+                      <option>50Hz</option>
+                      <option>60Hz</option>
                     </select>
                   </div>
                 </div>
@@ -1055,7 +1059,8 @@ const GridVolt = (props) => {
               <div className="DAT_Info_Databox_GridVolt_Content_Center">
                 <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                    AC Over Volt 1:
+                    {/* AC Over Volt 1: */}
+                    {dataLang.formatMessage({ id: 'ACOverVolt1' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
                     <input />
@@ -1064,7 +1069,8 @@ const GridVolt = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                    AC Under Volt 2:
+                    {/* AC Under Volt 2: */}
+                    {dataLang.formatMessage({ id: 'ACUnderVolt2' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
                     <input />
@@ -1073,7 +1079,8 @@ const GridVolt = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                    AC Over Volt 2 Time:
+                    {/* AC Over Volt 2 Time: */}
+                    {dataLang.formatMessage({ id: 'ACOverVolt2Time' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
                     <input />
@@ -1082,7 +1089,8 @@ const GridVolt = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                    AC Under Freq 1:
+                    {/* AC Under Freq 1: */}
+                    {dataLang.formatMessage({ id: 'ACUnderFreq1' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
                     <input />
@@ -1091,7 +1099,8 @@ const GridVolt = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                    AC Over Freq 1 Time:
+                    {/* AC Over Freq 1 Time: */}
+                    {dataLang.formatMessage({ id: 'ACOverFreq1Time' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
                     <input />
@@ -1100,7 +1109,8 @@ const GridVolt = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                    AC Under Freq 2 Time:
+                    {/* AC Under Freq 2 Time: */}
+                    {dataLang.formatMessage({ id: 'ACUnderFreq2Time' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
                     <input />
@@ -1111,7 +1121,8 @@ const GridVolt = (props) => {
               <div className="DAT_Info_Databox_GridVolt_Content_Right">
                 <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                    AC Under Volt 1 Time:
+                    {/* AC Under Volt 1 Time: */}
+                    {dataLang.formatMessage({ id: 'ACUnderVolt1Time' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
                     <input />
@@ -1120,14 +1131,15 @@ const GridVolt = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                    AC Over Volt 2:
+                    {/* AC Over Volt 2: */}
+                    {dataLang.formatMessage({ id: 'ACOverVolt2' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
                     <input />
                     V
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                {/* <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
                     AC Under Volt 3:
                   </div>
@@ -1135,10 +1147,11 @@ const GridVolt = (props) => {
                     <input />
                     V
                   </div>
-                </div>
+                </div> */}
                 <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                    AC Over Freq 1:
+                    {/* AC Over Freq 1: */}
+                    {dataLang.formatMessage({ id: 'ACOverFreq1' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
                     <input />
@@ -1147,7 +1160,8 @@ const GridVolt = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                    AC Under Freq 2:
+                    {/* AC Under Freq 2: */}
+                    {dataLang.formatMessage({ id: 'ACUnderFreq2' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
                     <input />
@@ -1156,7 +1170,8 @@ const GridVolt = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                    AC Over Freq 2 Time:
+                    {/* AC Over Freq 2 Time: */}
+                    {dataLang.formatMessage({ id: 'ACOverFreq2Time' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
                     <input />
@@ -1167,8 +1182,12 @@ const GridVolt = (props) => {
             </div>
 
             <div className="DAT_Info_Databox_GridVolt_Foot">
-              <button>Read</button>
-              <button>Setup</button>
+              <button>
+                {dataLang.formatMessage({ id: 'read' })}
+              </button>
+              <button>
+                {dataLang.formatMessage({ id: 'setup' })}
+              </button>
             </div>
           </div>
         ) : (
@@ -1186,7 +1205,7 @@ const ExportPowerSettings = (props) => {
   return (
     <div className="DAT_Info_Databox" id="ExportPowerSettings">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Export Power Settings</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'ExportPSetting' })}</div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -1209,18 +1228,18 @@ const ExportPowerSettings = (props) => {
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left">
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    Export Limitter Enable:
+                    {dataLang.formatMessage({ id: 'ExportPEnable' })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <select>
-                      <option>Enable</option>
-                      <option>Disable</option>
+                      <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
                     </select>
                   </div>
                 </div>
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item">
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    Export Power Limit:
+                    {dataLang.formatMessage({ id: 'ExportPLimit' })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <input />
@@ -1229,25 +1248,27 @@ const ExportPowerSettings = (props) => {
                 </div>
               </div>
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center">
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                {/* <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
                     Multi ExportLimit:
+                    {dataLang.formatMessage({ id: 'MultiExportLimit' })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
                     <select>
-                      <option>Enable</option>
-                      <option>Disable</option>
+                      <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
                     </select>
                   </div>
-                </div>
+                </div> */}
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item">
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    ExportLimit Way:
+                    {/* ExportLimit Way: */}
+                    {dataLang.formatMessage({ id: 'ExportLimitWay' })} :
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
                     <select>
-                      <option>Limit Single-Phase Power</option>
-                      <option>Limit Three-Phase Power</option>
+                      <option>{dataLang.formatMessage({ id: 'LimitSinglePhase' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'LimitThreePhase' })}</option>
                     </select>
                   </div>
                 </div>
@@ -1255,7 +1276,8 @@ const ExportPowerSettings = (props) => {
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right">
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    Meter Type:
+                    {/* Meter Type: */}
+                    {dataLang.formatMessage({ id: 'MetterType' })} :
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
                     <select>
@@ -1274,8 +1296,12 @@ const ExportPowerSettings = (props) => {
             </div>
 
             <div className="DAT_Info_Databox_ExportPowerSettings_Foot">
-              <button>Read</button>
-              <button>Setup</button>
+              <button>
+                {dataLang.formatMessage({ id: 'read' })}
+              </button>
+              <button>
+                {dataLang.formatMessage({ id: 'setup' })}
+              </button>
             </div>
           </div>
         ) : (
@@ -1293,7 +1319,7 @@ const DeviceSettings = (props) => {
   return (
     <div className="DAT_Info_Databox" id="DeviceSettings">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Device Settings</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'DeviceSettings' })}</div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -1316,42 +1342,70 @@ const DeviceSettings = (props) => {
               <div className="DAT_Info_Databox_DeviceSettings_Content_Left">
                 <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
-                    Remote Control:
+                    {/* Remote Control: */}
+                    {dataLang.formatMessage({ id: 'RemoteControl' })}:
                   </div>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Content">
                     <select>
-                      <option>Power On</option>
-                      <option>Power Off</option>
+                      <option>{dataLang.formatMessage({ id: 'PowerOn' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'PowerOff' })}</option>
                     </select>
                   </div>
                 </div>
                 <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
-                    Safety Setting:
+                    {/* Safety Setting: */}
+                    {dataLang.formatMessage({ id: 'SafetySetting' })}:
                   </div>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Content">
                     <select>
+                      <option selected disabled>---{dataLang.formatMessage({ id: 'PleaseSel' })}---</option>
                       <option>CQC2013</option>
                       <option>SKYWORTH</option>
+                      <option>EN50549</option>
+                      <option>Brazil</option>
+                      <option>{dataLang.formatMessage({ id: 'Spain' })}</option>
+                      <option>Philippines</option>
+                      <option>{dataLang.formatMessage({ id: 'India' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'Belgium' })}</option>
+                      <option>EU EN50438</option>
+                      <option>{dataLang.formatMessage({ id: 'SouthAfrica' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'WestAustralia' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'Netherlands' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'Thailand' })}</option>
+                      <option>Bangkok</option>
+                      <option>China CQC2018</option>
+                      <option>{dataLang.formatMessage({ id: 'Greece' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'Norway' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'SouthKorea' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'Germany' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'France' })}</option>
+                      <option>Ireland</option>
+                      <option>{dataLang.formatMessage({ id: 'Turkey' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'Taiwan' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'Italy' })}</option>
+                      <option>Slovakia</option>
+                      <option>Romania 280V</option>
                     </select>
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item">
+                {/* <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item">
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
                     AC High-Voltage Load Limit:
                   </div>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Content">
                     <select>
-                      <option>Enable</option>
-                      <option>Disable</option>
+                      <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
                     </select>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="DAT_Info_Databox_DeviceSettings_Content_Center">
                 <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Tit">
-                    Active Power Setting:
+                    {/* Active Power Setting: */}
+                    {dataLang.formatMessage({ id: 'ActivePowerSetting' })}:
                   </div>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Content">
                     <input />
@@ -1359,38 +1413,40 @@ const DeviceSettings = (props) => {
                   </div>
                 </div>
                 <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item">
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Tit">
+                  {/* <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Tit">
                     Virtual Zero Line Enable:
                   </div>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Content">
                     <select>
-                      <option>Enable</option>
-                      <option>Disable</option>
+                      <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
                     </select>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="DAT_Info_Databox_DeviceSettings_Content_Right">
                 <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item" style={{ marginBottom: "24px" }}>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item_Tit">
-                    Reactive Power Control Way:
+                    {/* Reactive Power Control Way: */}
+                    {dataLang.formatMessage({ id: 'ReactivePowerSetting' })}:
                   </div>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item_Content">
                     <select>
-                      <option>Power Factor Control</option>
-                      <option>Reactive Power Percentage Control</option>
+                      <option>{dataLang.formatMessage({ id: 'PowerFactor' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'ReactivePPercentage' })}</option>
                     </select>
                   </div>
                 </div>
                 <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item">
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item_Tit">
-                    Input Mode Settings:
+                    {/* Input Mode Settings: */}
+                    {dataLang.formatMessage({ id: 'InputModeSetting' })}:
                   </div>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item_Content">
                     <select>
-                      <option>Independent Mode</option>
-                      <option>Parallel Mode</option>
-                      <option>DC Source Mode</option>
+                      <option>{dataLang.formatMessage({ id: 'IndependentMode' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'ParrallellMode' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'DCSourceMode' })}</option>
                     </select>
                   </div>
                 </div>
@@ -1398,8 +1454,12 @@ const DeviceSettings = (props) => {
             </div>
 
             <div className="DAT_Info_Databox_DeviceSettings_Foot">
-              <button>Read</button>
-              <button>Setup</button>
+              <button>
+                {dataLang.formatMessage({ id: 'read' })}
+              </button>
+              <button>
+                {dataLang.formatMessage({ id: 'setup' })}
+              </button>
             </div>
           </div>
         ) : (
@@ -1417,7 +1477,7 @@ const GridInfo = (props) => {
   return (
     <div className="DAT_Info_Databox" id="GridInfo">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Grid Infomation</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'GridInfor' })}</div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -1440,13 +1500,14 @@ const GridInfo = (props) => {
               <div className="DAT_Info_Databox_GridInfo_Content_Left">
                 <div className="DAT_Info_Databox_GridInfo_Content_Left_Item">
                   <div className="DAT_Info_Databox_GridInfo_Content_Left_Item_Tit">
-                    Inerter Status:
+                    {/* Inerter Status: */}
+                    {dataLang.formatMessage({ id: 'InverterStatus' })}:
                   </div>
                   <div className="DAT_Info_Databox_GridInfo_Content_Left_Item_Content">
                     <select>
-                      <option>Init</option>
-                      <option>Wait</option>
-                      <option>On Grid</option>
+                      <option>{dataLang.formatMessage({ id: 'StatusInit' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'StatusWait' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'StatusOnGrid' })}</option>
                     </select>
                   </div>
                 </div>
@@ -1454,8 +1515,12 @@ const GridInfo = (props) => {
             </div>
 
             <div className="DAT_Info_Databox_GridInfo_Foot">
-              <button>Read</button>
-              <button>Setup</button>
+              <button>
+                {dataLang.formatMessage({ id: 'read' })}
+              </button>
+              <button>
+                {dataLang.formatMessage({ id: 'setup' })}
+              </button>
             </div>
           </div>
         ) : (
@@ -2098,9 +2163,9 @@ export default function Info(props) {
                       onClick={() => { setNav("batch") }}
                       style={{ color: nav === "batch" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "batch" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
-                      Batch Command
+                      {dataLang.formatMessage({ id: "BatchCommand" })}
                     </button>
-                    <button className="DAT_Info_Header_Left_Item"
+                    {/* <button className="DAT_Info_Header_Left_Item"
                       id="single"
                       onClick={() => { setNav("single") }}
                       style={{ color: nav === "single" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "single" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
@@ -2120,7 +2185,7 @@ export default function Info(props) {
                       style={{ color: nav === "log" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "log" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Control Log
-                    </button>
+                    </button> */}
                   </div>
                 )
               case "update":

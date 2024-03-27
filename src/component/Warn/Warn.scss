@@ -690,7 +690,7 @@
 
             &_TableWarning {
                 font-size: 17px;
-                border-left: solid 4px rgba(254, 9, 9, 0.8);
+                border-left: solid 4px rgba(255, 0, 0);
                 padding-left: 10px;
             }
 
@@ -752,9 +752,6 @@
         &_Content {
             height: calc(100vh - 300px);
         }
-
-
-
     }
 
     .DAT_SettingWarn {

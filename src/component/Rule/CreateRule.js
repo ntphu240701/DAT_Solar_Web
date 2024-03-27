@@ -6,13 +6,11 @@ import { isMobile } from "../Navigation/Navigation";
 import { createruleState, datarule } from "./Rule";
 import { useIntl } from "react-intl";
 
-import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { IoSaveOutline } from "react-icons/io5";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { userInfor } from "../../App";
-import { json } from "react-router-dom";
 import { alertDispatch } from "../Alert/Alert";
 
 const temp = signal({
@@ -164,7 +162,7 @@ export default function CreateRule() {
               className="DAT_CreateRule_Header_Right_Save"
               onClick={() => handleCreate()}
             >
-              <IoSaveOutline size={20} color="white" />
+              <IoSaveOutline size={20} color="rgba(11, 25, 103)" />
               <span>{dataLang.formatMessage({ id: 'save' })}</span>
             </div>
             <div

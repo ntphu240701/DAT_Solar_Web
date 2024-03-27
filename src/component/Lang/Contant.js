@@ -269,6 +269,100 @@ export const messages = {
     companyName: "Company Name",
     imgInfo: "Avatar",
     chooseImg: "Select Picture",
+    //-----DATA PLATFORM-----
+    //TAB Settings
+    BatchCommand: 'Batch Command',
+    SingleCommand: 'Single Command',
+    CustomizedCommand: 'Customized Command',
+    ControlLog: 'Control Log',
+
+    //Grid Start Settings
+    Gridstartsettings: 'Grid start settings',
+    ACStartHighVoltage: 'AC Start High Volt',
+    ACStartLowVoltage: 'AC Start Low Volt',
+    ACStartHighFrequency: 'AC Start High Frequency',
+    ACStartLowFrequency: 'AC Start Low Frequency',
+    read: 'Read',
+    setup: 'Setup',
+    //Grid Voltage/Frequency Protection
+    //level 1
+    GridVFreqP: 'Grid Volt/Freq Protect',
+    ACUnderVolt1: 'AC Under Volt level 1',
+    ACOverVolt1: 'AC Over Volt level 1',
+    ACUnderVolt1Time: 'AC Under Volt 1 Time',
+    ACOverVolt1Time: 'AC Over Volt 1 Time',
+    ACUnderFreq1: 'AC Under Frequency level 1',
+    ACOverFreq1: 'AC Over Frequency level 1',
+    ACUnderFreq1Time: 'AC Under Frequency 1 Time',
+    ACOverFreq1Time: 'AC Over Frequency 1 Time',
+
+    //level 2
+    ACUnderVolt2: 'AC Under Volt level 2',
+    ACOverVolt2: 'AC Over Volt level 2',
+    ACUnderVolt2Time: 'AC Under Volt 2 Time',
+    ACOverVolt2Time: 'AC Over Volt 2 Time',
+    ACUnderFreq2: 'AC Under Frequency level 2',
+    ACOverFreq2: 'AC Over Frequency level 2',
+    ACUnderFreq2Time: 'AC Under Frequency 2 Time',
+    ACOverFreq2Time: 'AC Over Frequency 2 Time',
+
+    //level 3
+    ACUnderVolt3Time: 'AC Under Volt 3 Time',
+    ACUnderVolt3: 'AC Under Volt level 3',
+    FreqSetting: 'Frequency Setting',
+    PleaseSel: 'Please select',
+
+    //Export Power Setting
+    ExportPSetting: 'Export Power Setting',
+    ExportPEnable: 'Export power enable',
+    ExportPLimit: 'Export power limit',
+    ExportLimitWay: 'Export Limit Way',
+    MetterType: 'Metter Type',
+    MultiExportLimit: 'Multi-export limit',
+    Enable: 'Enable',
+    Disable: 'Disable',
+
+    //Device Setting
+    DeviceSettings: 'Device Settings',
+    RemoteControl: 'Remote control',
+    ActivePowerSetting: 'Active power setting',
+    ReactivePowerSetting: 'Reactive power setting',
+
+    InputModeSetting: 'Input mode setting',
+    IndependentMode: 'Independent Mode',
+    ParrallellMode: 'Parrallell Mode',
+    DCSourceMode: 'DC Source Mode',
+
+    SafetySetting: 'Safety setting',
+    PowerFactor: 'Power Factor Control',
+    ReactivePPercentage: 'Reactive power percentage control',
+    PowerOn: 'Power On',
+    PowerOff: 'Power Off',
+    //Country 
+    Spain: 'Spain',
+    India: 'India',
+    Beligum: 'Beligum',
+    SouthAfrica: 'South Africa NRS',
+    WestAustralia: 'Western Australia',
+    Netherlands: 'Netherlands',
+    Thailand: 'Thailand',
+    Greece: 'Greece',
+    Norway: 'Norway',
+    SouthKorea: 'South Korea',
+    Germany: 'Germany',
+    France: 'France',
+    Turkey: 'Turkey',
+    Taiwan: 'Taiwan',
+    Italy: 'Italy',
+
+    //Grid Infomation
+    GridInfor: 'Grid Information',
+    InverterStatus: 'Inverter Status',
+    StatusInit: 'Init',
+    StatusWait: 'Wait',
+    StatusOnGrid: 'On Grid',
+
+    //--------------------
     enter: "Enter ",
     enterMore: "Please enter or select more information",
     enterPr: " Enter project...",
@@ -563,6 +657,10 @@ export const messages = {
     A_6_2: "PV2 short circuit alarm",
     //Alert Type : Overload alarm
     A_7_1: "EPS Overload alarm",
+    //Alert Type : Battery charge
+    A_46_1: "Battery Full charge",
+    A_47_1: "Battery need be charge",
+    A_47_2: "Battery can be only charrge",
   },
   vi: {
     description: "Mô tả",
@@ -828,6 +926,103 @@ export const messages = {
     ruleOptions: "Tùy chọn cấp quyền",
     imgInfo: "Ảnh đại diện",
     chooseImg: "Chọn ảnh",
+    // DATA PLATFORM
+    //TAB Settings
+    BatchCommand: 'Cài đặt nhiều lệnh',
+    SingleCommand: 'Cài đặt lệnh đơn',
+    CustomizedCommand: 'Tùy chọn cài đặt  ',
+    ControlLog: 'Lịch sử cài đặt',
+
+    //---Cài đặt điện áp lưới khởi động---
+    Gridstartsettings: 'Cài đặt điện áp lưới khởi động',
+    ACStartHighVoltage: 'Điện áp khởi động ngưỡng trên',
+    ACStartLowVoltage: 'Điện áp khởi động ngưỡng dưới',
+    ACStartHighFrequency: 'Tần số khởi động ngưỡng trên',
+    ACStartLowFrequency: 'Tần số khởi động ngưỡng dưới',
+    read: 'Đọc',
+    setup: 'Thiết lập',
+    //---Bảo vệ điện áp/tần số---
+    //level 1
+    GridVFreqP: 'Bảo vệ điện áp/tần số',
+    ACUnderVolt1: 'Giá trị bảo vệ thiếu áp cấp 1',
+    ACOverVolt1: 'Giá trị bảo vệ quá áp cấp 1',
+    ACUnderVolt1Time: 'Thời gian bảo vệ thiếu áp cấp 1',
+    ACOverVolt1Time: 'Thời gian bảo vệ quá áp cấp 1',
+    ACUnderFreq1: 'Giá trị bảo vệ thiếu tần cấp 1',
+    ACOverFreq1: 'Giá trị bảo vệ quá tần cấp 1',
+    ACUnderFreq1Time: 'Thời gian bảo vệ thiếu tần cấp 1',
+    ACOverFreq1Time: 'Thời gian bảo vệ quá tần cấp 1',
+
+    //level 2
+    ACUnderVolt2: 'Giá trị bảo vệ thiếu áp cấp 2',
+    ACOverVolt2: 'Giá trị bảo vệ quá áp cấp 2',
+    ACUnderVolt2Time: 'Thời gian bảo vệ thiếu áp cấp 2',
+    ACOverVolt2Time: 'Thời gian bảo vệ quá áp cấp 2',
+    ACUnderFreq2: 'Giá trị bảo vệ thiếu tần cấp 2',
+    ACOverFreq2: 'Giá trị bảo vệ quá tần cấp 2',
+    ACUnderFreq2Time: 'Thời gian bảo vệ thiếu tần cấp 2',
+    ACOverFreq2Time: 'Thời gian bảo vệ quá tần cấp 2',
+
+    //level 3 
+    ACUnderVolt3Time: 'Thời gian bảo vệ thiếu áp cấp 3',
+    ACUnderVolt3: 'Giá trị bảo vệ thiếu áp cấp 3',
+    FreqSetting: 'Cài đặt tần cấp',
+    PleaseSel: 'Vui lòng chọn',
+
+    //Export Power Setting
+    ExportPSetting: 'Cài đặt công suất trả ngược',
+    ExportPEnable: 'Kích hoạt trả ngược công xuất',
+    ExportPLimit: 'Giá trị công suất trả ngược',
+    ExportLimitWay: 'Kiểu giới hạn trả ngược',
+    LimitSinglePhase: 'Giới hạn công suất theo từng pha',
+    LimitThreePhase: 'Giới hạn công suất trung bình 3 pha',
+    MetterType: 'Loại đồng hồ',
+    MultiExportLimit: 'Multi-export limit',
+    Enable: 'Kích hoạt',
+    Disable: 'Vô hiệu hóa',
+
+    //Device Setting
+    DeviceSettings: 'Cài đặt thiết bị',
+    RemoteControl: 'Điều khiển từ xa',
+    ActivePowerSetting: 'Cài đặt công suất tác dụng',
+    ReactivePowerSetting: 'Cài đặt công suất phản khác ',
+
+    InputModeSetting: 'Cài đặt chế độ đầu vào',
+    IndependentMode: 'Chế độ độc lập',
+    ParrallellMode: 'Chế độ song song',
+    DCSourceMode: 'Chế độ nguồn DC',
+
+    SafetySetting: 'Cài đặt an toàn',
+    PowerFactor: 'Hệ số công suất',
+    ReactivePPercentage: 'Điều khiển tỉ lệ công suất phản kháng',
+    PowerOn: 'Mở nguồn',
+    PowerOff: 'Tắt nguồn',
+
+    //Country 
+    Spain: 'Tây Ban Nha',
+    India: 'Ấn Độ',
+    Beligum: 'Bỉ',
+    SouthAfrica: 'Nam Phi',
+    WestAustralia: 'Tây Úc',
+    Netherlands: 'Hà Lan',
+    Thailand: 'Thái Lan',
+    Greece: 'Hy Lạp',
+    Norway: 'Na Uy',
+    SouthKorea: 'Hàn Quốc',
+    Germany: 'Đức',
+    France: 'Pháp',
+    Turkey: 'Thổ Nhĩ Kỳ',
+    Taiwan: 'Đài Loan',
+    Italy: 'Ý',
+
+    //Grid Infomation
+    GridInfor: 'Thông tin lưới điện',
+    InverterStatus: 'Trạng thái biến tần',
+    StatusInit: 'Khởi tạo',
+    StatusWait: 'Chờ',
+    StatusOnGrid: 'Trên lưới',
+
+    //--------------------
     enter: "Nhập ",
     enterMore: "Vui lòng nhập hoặc chọn thêm thông tin",
     enterPr: " Nhập tên dự án...",
@@ -1068,6 +1263,7 @@ export const messages = {
     E_44_1: "String Fault",
     //Fault Type E_45 ( Auxiliary power failure )
     E_45_1: "Auxiliary power loss",
+
     // ------------------ALERT FAULT TYPE--------------------- //
     //Alert Type : Low Fan Speed
     A_1_1: "Fan 1",
@@ -1120,5 +1316,9 @@ export const messages = {
     A_6_2: "PV2 short circuit alarm",
     //Alert Type : Overload alarm
     A_7_1: "EPS Overload alarm",
+    //Alert Type : Battery charge
+    A_46_1: "Battery Full charge",
+    A_47_1: "Battery need be charge",
+    A_47_2: "Battery can be only charrge",
   },
 };

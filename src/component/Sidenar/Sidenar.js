@@ -67,7 +67,7 @@ export default function Sidenar(props) {
   }
 
   const dataColor = {
-    cur: { color: "#0061f2" },
+    cur: { color: "rgba(11, 25, 103)" },
     pre: { color: "rgb(85, 85, 85)" },
   };
 
