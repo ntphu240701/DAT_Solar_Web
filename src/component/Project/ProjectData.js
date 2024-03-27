@@ -73,6 +73,7 @@ import PopupState, { bindHover, bindPopper } from "material-ui-popup-state";
 import { Fade, Paper, Popper, Typography } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { filter } from "lodash";
+import ExportData from "./ExportData";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -120,28 +121,28 @@ const filterchart = signal({
       productionData: true,
       gridData: true,
       consumptionData: true,
-
+      
     },
     month: {
       productionData: true,
       consumptionData: true,
       dailygridin: true,
       dailygridout: true,
-
+      
     },
     year: {
       productionData: true,
       consumptionData: true,
       dailygridin: true,
       dailygridout: true,
-
+     
     },
     total: {
       productionData: true,
       consumptionData: true,
       dailygridin: true,
       dailygridout: true,
-
+     
     },
   },
   hybrid: {
@@ -216,7 +217,6 @@ export default function ProjectData(props) {
   const [vMonth6, setVMonth6] = useState(
     dataLang.formatMessage({ id: "unknown" })
   );
-
   const [dataYear, setDataYear] = useState([]);
   const [vYear, setVYear] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vYear2, setVYear2] = useState(
@@ -256,6 +256,7 @@ export default function ProjectData(props) {
   const [snlogger, setSnlogger] = useState(
     dataLang.formatMessage({ id: "unknown" })
   );
+  const [exportReport, setExportReport] = useState(false);
   const [type, setType] = useState("");
   const [invt, setInvt] = useState({});
   const box = useRef();
@@ -358,9 +359,9 @@ export default function ProjectData(props) {
         <>
           {row.data.daily?.register
             ? parseFloat(
-              invt[row.logger_]?.[row.data.daily.register] *
-              row.data.daily?.cal
-            ).toFixed(2)
+                invt[row.logger_]?.[row.data.daily.register] *
+                  row.data.daily?.cal
+              ).toFixed(2)
             : 0}{" "}
           kWh
         </>
@@ -468,7 +469,7 @@ export default function ProjectData(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify === true ||
-            ruleInfor.value.setting.project.delete === true ? (
+          ruleInfor.value.setting.project.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.sn + "_MORE"}
@@ -1759,6 +1760,15 @@ export default function ProjectData(props) {
     );
   };
 
+  const handleExport = () => {
+    setExportReport(true);
+    // console.log(exportReport);
+  }
+
+  const handleClose = () => {
+    setExportReport(false);
+  }
+
   return (
     <div ref={box}>
       <div className="DAT_ProjectData">
@@ -2016,7 +2026,7 @@ export default function ProjectData(props) {
                             color: nav === "battery" ? color.cur : color.pre,
                             display:
                               projectData.value.plantmode === "grid" ||
-                                projectData.value.plantmode === "consumption"
+                              projectData.value.plantmode === "consumption"
                                 ? "none"
                                 : "block",
                           }}
@@ -2159,7 +2169,7 @@ export default function ProjectData(props) {
                         </div>
 
                         <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Export">
-                          <button>
+                          <button onClick={(e)=>handleExport(e)}>
                             {dataLang.formatMessage({ id: "export" })}
                           </button>
                         </div>
@@ -2261,6 +2271,155 @@ export default function ProjectData(props) {
                             {(() => {
                               switch (projectData.value.plantmode) {
                                 case "consumption":
+                                  // return (
+                                  //   <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+                                  //     <tbody>
+                                  //       <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                  //         <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                  //           {dataLang.formatMessage({
+                                  //             id: "production",
+                                  //           })}
+                                  //         </th>
+                                  //         <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                  //           <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  //             <input
+                                  //               id={
+                                  //                 "productionData_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //               type="checkbox"
+                                  //               defaultChecked={
+                                  //                 filterchart.value[
+                                  //                   projectData.value.plantmode
+                                  //                 ][dateType].production
+                                  //               }
+                                  //               onChange={(e) => {
+                                  //                 handlefilterchart(e);
+                                  //               }}
+                                  //             />
+                                  //             <label
+                                  //               htmlFor={
+                                  //                 "productionData_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //             >
+                                  //               {dataLang.formatMessage({
+                                  //                 id: "production",
+                                  //               })}
+                                  //             </label>
+                                  //           </div>
+                                  //         </td>
+                                  //       </tr>
+                                  //     </tbody>
+
+                                  //     <tbody>
+                                  //       <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                  //         <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                  //           {dataLang.formatMessage({
+                                  //             id: "consumption",
+                                  //           })}
+                                  //         </th>
+                                  //         <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                  //           <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  //             <input
+                                  //               id={
+                                  //                 "consumptionData_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //               type="checkbox"
+                                  //               defaultChecked={
+                                  //                 filterchart.value[
+                                  //                   projectData.value.plantmode
+                                  //                 ][dateType].consumption
+                                  //               }
+                                  //               onChange={(e) => {
+                                  //                 handlefilterchart(e);
+                                  //               }}
+                                  //             />
+                                  //             <label
+                                  //               htmlFor={
+                                  //                 "consumptionData_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //             >
+                                  //               {dataLang.formatMessage({
+                                  //                 id: "consumption",
+                                  //               })}
+                                  //             </label>
+                                  //           </div>
+                                  //         </td>
+                                  //       </tr>
+                                  //     </tbody>
+
+                                  //     <tbody>
+                                  //       <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+                                  //         <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                  //           {dataLang.formatMessage({
+                                  //             id: "grid",
+                                  //           })}
+                                  //         </th>
+                                  //         <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                  //           <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  //             <input
+                                  //               id={
+                                  //                 "dailygridin_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //               type="checkbox"
+                                  //               defaultChecked={
+                                  //                 filterchart.value[
+                                  //                   projectData.value.plantmode
+                                  //                 ][dateType].gridfeed
+                                  //               }
+                                  //               onChange={(e) => {
+                                  //                 handlefilterchart(e);
+                                  //               }}
+                                  //             />
+                                  //             <label
+                                  //               htmlFor={
+                                  //                 "dailygridin_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //             >
+                                  //               {dataLang.formatMessage({
+                                  //                 id: "gridfeed",
+                                  //               })}
+                                  //             </label>
+                                  //           </div>
+                                  //         </td>
+                                  //         <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                  //           <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  //             <input
+                                  //               id={
+                                  //                 "dailygridout_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //               type="checkbox"
+                                  //               defaultChecked={
+                                  //                 filterchart.value[
+                                  //                   projectData.value.plantmode
+                                  //                 ][dateType].purchasee
+                                  //               }
+                                  //               onChange={(e) => {
+                                  //                 handlefilterchart(e);
+                                  //               }}
+                                  //             />
+                                  //             <label
+                                  //               htmlFor={
+                                  //                 "dailygridout_" +
+                                  //                 projectData.value.plantmode
+                                  //               }
+                                  //             >
+                                  //               {dataLang.formatMessage({
+                                  //                 id: "purchaseE",
+                                  //               })}
+                                  //             </label>
+                                  //           </div>
+                                  //         </td>
+                                  //       </tr>
+                                  //     </tbody>
+                                  //   </table>
+                                  // );
                                   switch (dateType) {
                                     case "date":
                                       return (
@@ -2441,8 +2600,6 @@ export default function ProjectData(props) {
                                       return <Checkboxfilter></Checkboxfilter>;
                                     case "total":
                                       return <Checkboxfilter></Checkboxfilter>;
-                                    default:
-                                      return <></>;
                                   }
                                 case "hybrid":
                                   switch (dateType) {
@@ -2625,8 +2782,6 @@ export default function ProjectData(props) {
                                       return <Checkboxfilter></Checkboxfilter>;
                                     case "total":
                                       return <Checkboxfilter></Checkboxfilter>;
-                                    default:
-                                      return <></>;
                                   }
 
                                 case "ESS":
@@ -3345,7 +3500,7 @@ export default function ProjectData(props) {
                                   parseFloat(
                                     (coalsave.value.value *
                                       projectData.value.price) /
-                                    1000
+                                      1000
                                   ).toFixed(2)
                                 ).toLocaleString("en-US")}
                                 &nbsp;
@@ -3848,6 +4003,35 @@ export default function ProjectData(props) {
       ) : (
         <> </>
       )}
+
+      {exportReport ? (
+              <div className="DAT_RolePopup" style={{
+                height: exportReport === "default" ? "0px" : "100vh",
+              }}>
+                <ExportData handleClose={handleClose} typereport={dateType
+                  // ()=>{
+                  //   switch(dateType){
+                  //     case "date":
+                  //     return("dailyReport");
+                  //     break;
+                  //   case "month":
+                  //     return("monthlyReport");
+                  //     break;
+                  //   case "year":
+                  //     return("yearlyReport");
+                  //     break;
+                  //   case "total":
+                  //     return("totalReport");
+                  //     break;
+                  //   default:
+                  //     break;
+                  //   }
+                  // }
+                }/>
+              </div>
+            ) : (
+              <> </>
+            )}
 
       {isMobile.value ? (
         <>
@@ -4721,13 +4905,9 @@ const GraphConsumption = (props) => {
             }}
           >
             <div>
-              {Number(
-                parseFloat(convertUnit(props.cal?.pro_1 / 1000)).toFixed(2) || 0
-              ).toLocaleString("en-US")}
+              {Number(props.cal?.pro_1 / 1000 || 0).toLocaleString("en-US")}
             </div>
-            <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnit(props.cal?.pro_1)}W
-            </span>
+            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
           </div>
         </div>
 
@@ -4759,10 +4939,8 @@ const GraphConsumption = (props) => {
               fontSize: "14px",
             }}
           >
-            <div>{Number(parseFloat(convertUnit(props.cal?.con_1)).toFixed(2) || 0).toLocaleString("en-US")}</div>
-            <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnitk(props.cal?.con_1)}W
-            </span>
+            <div>{Number(props.cal?.con_1 || 0).toLocaleString("en-US")}</div>
+            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
           </div>
           <ImgLoad width="70" height="70" />
         </div>
@@ -4847,12 +5025,8 @@ const GraphConsumption = (props) => {
               fontSize: "14px",
             }}
           >
-            <div>{Number(
-              parseFloat(convertUnit(props.cal?.grid_1 / 1000)).toFixed(2) || 0
-            ).toLocaleString("en-US")}</div>
-            <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnit(props.cal?.grid_in_1)}W
-            </span>
+            <div>{Number(props.cal?.grid_1 || 0).toLocaleString("en-US")}</div>
+            <span style={{ color: "gray", fontSize: "13px" }}>W</span>
           </div>
           <ImgGrid width="60" height="70" />
         </div>
@@ -5192,9 +5366,7 @@ const GraphFull = (props) => {
                 parseFloat(convertUnit(props.cal?.pro_1 / 1000)).toFixed(2) || 0
               ).toLocaleString("en-US")}
             </div>
-            <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnit(props.cal?.pro_1)}W
-            </span>
+            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
           </div>
         </div>
 
@@ -5226,10 +5398,8 @@ const GraphFull = (props) => {
               fontSize: "14px",
             }}
           >
-            <div>{Number(parseFloat(convertUnit(props.cal?.con_1)).toFixed(2) || 0).toLocaleString("en-US")}</div>
-            <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnitk(props.cal?.con_1)}W
-            </span>
+            <div>{Number(props.cal?.con_1 || 0).toLocaleString("en-US")}</div>
+            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
           </div>
           <ImgLoad width="70" height="70" />
         </div>
@@ -5285,13 +5455,10 @@ const GraphFull = (props) => {
             }}
           >
             <div>
-              {Number(
-                parseFloat(convertUnit(props.cal?.bat_1 / 1000)).toFixed(2) || 0
-              ).toLocaleString("en-US")}
+              {Number(props.cal?.bat_1 || 0).toLocaleString("en-US")}
+              {}
             </div>
-            <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnit(props.cal?.bat_1)}W
-            </span>
+            <span style={{ color: "gray", fontSize: "13px" }}>W</span>
           </div>
         </div>
 
@@ -5323,12 +5490,8 @@ const GraphFull = (props) => {
               fontSize: "14px",
             }}
           >
-            <div>{Number(
-              parseFloat(convertUnit(props.cal?.grid_1 / 1000)).toFixed(2) || 0
-            ).toLocaleString("en-US")}</div>
-            <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnit(props.cal?.grid_in_1)}W
-            </span>
+            <div>{Number(props.cal?.grid_1 || 0).toLocaleString("en-US")}</div>
+            <span style={{ color: "gray", fontSize: "13px" }}>W</span>
           </div>
           <ImgGrid width="60" height="70" />
         </div>
@@ -5364,11 +5527,11 @@ const Production = (props) => {
   const keyframes = `
     @keyframes plant {
       0% { background-position: -1200px ${parseFloat(
-    per
-  )}px, -800px ${per}px, -400px ${per}px}
+        per
+      )}px, -800px ${per}px, -400px ${per}px}
       100% { background-position: 200px ${parseFloat(
-    per
-  )}px;, 100x ${per}px, 0px ${per}px}
+        per
+      )}px;, 100x ${per}px, 0px ${per}px}
     }`;
 
   const divStyle = {
@@ -5393,7 +5556,7 @@ const Production = (props) => {
                   parseFloat(
                     ((props.cal?.pro_1 / 1000 || 0) /
                       projectData.value.capacity) *
-                    100
+                      100
                   ).toFixed(2)
                 ).toLocaleString("en-US")}
               </div>
@@ -5466,7 +5629,7 @@ const Production = (props) => {
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnit(props.cal?.pro_1)}W
+              {showUnit(props.cal?.pro_1 / 1000)}W
             </span>
           </div>
           <div
@@ -5524,7 +5687,7 @@ const Production = (props) => {
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
               {Number(
-                parseFloat(convertUnit(props.cal?.pro_month)).toFixed(2) || 0
+                parseFloat(convertUnit(props.cal?.pro_month)) || 0
               ).toLocaleString("en-US")}
             </span>
             &nbsp;
@@ -5544,7 +5707,7 @@ const Production = (props) => {
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
               {Number(
-                parseFloat(convertUnit(props.cal?.pro_year)).toFixed(2) || 0
+                parseFloat(convertUnit(props.cal?.pro_year)) || 0
               ).toLocaleString("en-US")}
             </span>
             &nbsp;
@@ -5564,7 +5727,7 @@ const Production = (props) => {
           <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
               {Number(
-                parseFloat(convertUnit(props.cal?.pro_3)).toFixed(2) || 0
+                parseFloat(convertUnit(props.cal?.pro_3)) || 0
               ).toLocaleString("en-US")}
             </span>
             &nbsp;
@@ -5592,7 +5755,7 @@ const Consumption = (props) => {
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
             {Number(
-              parseFloat(convertUnit(props.cal?.con_1)).toFixed(2) || 0
+              parseFloat(convertUnit(props.cal?.con_1)) || 0
             ).toLocaleString("en-US")}
           </span>
           &nbsp;
@@ -5614,7 +5777,7 @@ const Consumption = (props) => {
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                 {Number(
-                  parseFloat(convertUnit(props.cal?.con_2)).toFixed(2) || 0
+                  parseFloat(convertUnit(props.cal?.con_2)) || 0
                 ).toLocaleString("en-US")}
               </span>
               &nbsp;
@@ -5634,7 +5797,7 @@ const Consumption = (props) => {
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                 {Number(
-                  parseFloat(convertUnit(props.cal?.con_year)).toFixed(2) || 0
+                  parseFloat(convertUnit(props.cal?.con_year)) || 0
                 ).toLocaleString("en-US")}
               </span>
               &nbsp;
@@ -5656,7 +5819,7 @@ const Consumption = (props) => {
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                 {Number(
-                  parseFloat(convertUnit(props.cal?.con_month)).toFixed(2) || 0
+                  parseFloat(convertUnit(props.cal?.con_month)) || 0
                 ).toLocaleString("en-US")}
               </span>
               &nbsp;
@@ -5676,7 +5839,7 @@ const Consumption = (props) => {
             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
               <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                 {Number(
-                  parseFloat(convertUnit(props.cal?.con_total)).toFixed(2) || 0
+                  parseFloat(convertUnit(props.cal?.con_total)) || 0
                 ).toLocaleString("en-US")}
               </span>
               &nbsp;
@@ -5703,7 +5866,7 @@ const Grid = (props) => {
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
             {Number(
-              parseFloat(convertUnit(props.cal?.grid_1 / 1000)).toFixed(2) || 0
+              parseFloat(convertUnit(props.cal?.grid_1 / 1000)) || 0
             ).toLocaleString("en-US")}
           </span>
           &nbsp;
@@ -5742,7 +5905,7 @@ const Grid = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.grid_in_1)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.grid_in_1)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -5759,7 +5922,7 @@ const Grid = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.grid_in_month)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.grid_in_month)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -5776,7 +5939,7 @@ const Grid = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.grid_in_year)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.grid_in_year)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -5793,7 +5956,7 @@ const Grid = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.grid_in_2)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.grid_in_2)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -5833,7 +5996,7 @@ const Grid = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.grid_out_1)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.grid_out_1)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -5850,7 +6013,7 @@ const Grid = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.grid_out_month)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.grid_out_month)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -5867,7 +6030,7 @@ const Grid = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.grid_out_year)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.grid_out_year)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -5884,7 +6047,7 @@ const Grid = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.grid_out_2)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.grid_out_2)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -5951,7 +6114,7 @@ const Battery = (props) => {
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
             {Number(
-              parseFloat(convertUnit(props.cal?.bat_1 / 1000)).toFixed(2) || 0
+              parseFloat(convertUnit(props.cal?.bat_1 / 1000)) || 0
             ).toLocaleString("en-US")}
           </span>
           &nbsp;
@@ -5990,7 +6153,7 @@ const Battery = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.bat_in_1)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.bat_in_1)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -6007,7 +6170,7 @@ const Battery = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.bat_in_month)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.bat_in_month)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -6024,7 +6187,7 @@ const Battery = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.bat_in_year)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.bat_in_year)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -6041,7 +6204,7 @@ const Battery = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.bat_in_total)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.bat_in_total)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -6081,7 +6244,7 @@ const Battery = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.bat_out_1)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.bat_out_1)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -6098,7 +6261,7 @@ const Battery = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.bat_out_month)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.bat_out_month)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -6115,7 +6278,7 @@ const Battery = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.bat_out_year)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.bat_out_year)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -6132,7 +6295,7 @@ const Battery = (props) => {
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
                   {Number(
-                    parseFloat(convertUnit(props.cal?.bat_out_total)).toFixed(2) || 0
+                    parseFloat(convertUnit(props.cal?.bat_out_total)) || 0
                   ).toLocaleString("en-US")}
                 </span>
                 &nbsp;
@@ -6235,7 +6398,7 @@ const Day = (props) => {
                 </ResponsiveContainer>
               );
             case "consumption":
-
+             
               return (
                 <ResponsiveContainer
                   style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
@@ -6838,11 +7001,6 @@ const Month = (props) => {
 
 const Year = (props) => {
   const dataLang = useIntl();
-
-  useEffect(() => {
-    console.log(props.v)
-    console.log(projectData.value.plantmode)
-  }, [])
 
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;

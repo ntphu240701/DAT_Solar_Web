@@ -340,7 +340,7 @@ export const messages = {
     alert_32: "New device added successfully!",
     alert_33: "Format error!",
     alert_34: "Device not found!",
-    alert_35: "Thís device already exists!",
+    alert_35: "This device already exists!",
     alert_36: "System error!",
     alert_37: "The user has been created!",
     alert_38: "User not found!",
@@ -353,6 +353,7 @@ export const messages = {
     alert_45: "Delete account successfully!",
     alert_46: "Delete account unsuccessful!",
     alert_47: "Please enter a value in the filter.",
+    alert_48: "Report not found.",
     sologon: "Energy solution platform",
     version: "Version",
     previous: "Back",
@@ -563,6 +564,9 @@ export const messages = {
     A_6_2: "PV2 short circuit alarm",
     //Alert Type : Overload alarm
     A_7_1: "EPS Overload alarm",
+    A_46_1: "Battery Full charge",
+    A_47_1: "Battery need be charge",
+    A_47_2: "Battery can be only charrge",
   },
   vi: {
     description: "Mô tả",
@@ -911,6 +915,7 @@ export const messages = {
     alert_45: "Xóa tài khoản thành công!",
     alert_46: "Xóa tài khoản không thành công!",
     alert_47: "Vui lòng nhập giá trị vào bộ lọc.",
+    alert_48: "Report not found.",
     version: "Phiên bản",
     sologon: "Nền tảng giải pháp năng lượng",
     previous: "Quay lại",
@@ -1120,5 +1125,8 @@ export const messages = {
     A_6_2: "PV2 short circuit alarm",
     //Alert Type : Overload alarm
     A_7_1: "EPS Overload alarm",
+    A_46_1: "Battery Full charge",
+    A_47_1: "Battery need be charge",
+    A_47_2: "Battery can be only charrge",
   },
 };

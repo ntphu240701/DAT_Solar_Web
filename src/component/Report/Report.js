@@ -122,6 +122,10 @@ export default function Report(props) {
     getReport()
   }, [])
 
+  useEffect(() => {
+    console.log(ReportData.value);
+  }, [ReportData.value]);
+
   return (
     <>
       <div className="DAT_ReportHeader">
@@ -151,7 +155,7 @@ export default function Report(props) {
               <div className="DAT_Report_List_Form" key={i}>
                 <div className="DAT_Report_List_Form_Title">{item.name}</div>
                 <div className="DAT_Report_List_Form_Type">
-                  {dataLang.formatMessage({ id: "type" })}: {item.type}
+                  {dataLang.formatMessage({ id: "type" })}: {dataLang.formatMessage({ id: item.type })}
                 </div>
                 <div className="DAT_Report_List_Form_Create">
                   {dataLang.formatMessage({ id: "createBy" })}: {item.createby}

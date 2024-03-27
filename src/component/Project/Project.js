@@ -406,7 +406,7 @@ export default function Project(props) {
       (item) => item.plantid_ == e.currentTarget.id
     );
     projectData.value = newPlant;
-
+      console.log(projectData.value);
     // const newDevicePlant = devicePlant.value.filter(
     //   (item) => item.plantid_ == e.currentTarget.id
     // );
