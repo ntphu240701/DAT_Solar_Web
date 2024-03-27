@@ -79,7 +79,7 @@ export default function Warn(props) {
       sortable: true,
       width: "180px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {

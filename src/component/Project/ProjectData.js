@@ -121,28 +121,28 @@ const filterchart = signal({
       productionData: true,
       gridData: true,
       consumptionData: true,
-      
+
     },
     month: {
       productionData: true,
       consumptionData: true,
       dailygridin: true,
       dailygridout: true,
-      
+
     },
     year: {
       productionData: true,
       consumptionData: true,
       dailygridin: true,
       dailygridout: true,
-     
+
     },
     total: {
       productionData: true,
       consumptionData: true,
       dailygridin: true,
       dailygridout: true,
-     
+
     },
   },
   hybrid: {
@@ -359,9 +359,9 @@ export default function ProjectData(props) {
         <>
           {row.data.daily?.register
             ? parseFloat(
-                invt[row.logger_]?.[row.data.daily.register] *
-                  row.data.daily?.cal
-              ).toFixed(2)
+              invt[row.logger_]?.[row.data.daily.register] *
+              row.data.daily?.cal
+            ).toFixed(2)
             : 0}{" "}
           kWh
         </>
@@ -469,7 +469,7 @@ export default function ProjectData(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify === true ||
-          ruleInfor.value.setting.project.delete === true ? (
+            ruleInfor.value.setting.project.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.sn + "_MORE"}
@@ -1978,57 +1978,38 @@ export default function ProjectData(props) {
                   <div className="DAT_ProjectData_Dashboard_Data">
                     <div className="DAT_ProjectData_Dashboard_Data_Left">
                       <div className="DAT_ProjectData_Dashboard_Data_Left_Tit">
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
                           id="production"
-                          style={{
-                            color: nav === "production" ? color.cur : color.pre,
-                            // width: nav === "production" ? "150px" : "90px",
-                          }}
+                          style={{ color: nav === "production" ? color.cur : color.pre, }}
                           onClick={(e) => handleNav(e)}
                         >
                           {dataLang.formatMessage({ id: "productionData" })}
                         </div>
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
                           id="consumption"
                           style={{
-                            color:
-                              nav === "consumption" ? color.cur : color.pre,
-                            // width: nav === "consumption" ? "150px" : "90px",
-                            display:
-                              projectData.value.plantmode === "grid"
-                                ? "none"
-                                : "block",
+                            color: nav === "consumption" ? color.cur : color.pre,
+                            display: projectData.value.plantmode === "grid" ? "none" : "block",
                           }}
                           onClick={(e) => handleNav(e)}
                         >
                           {dataLang.formatMessage({ id: "consumptionData" })}
                         </div>
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
                           id="grid"
                           style={{
                             color: nav === "grid" ? color.cur : color.pre,
-                            display:
-                              projectData.value.plantmode === "grid"
-                                ? "none"
-                                : "block",
+                            display: projectData.value.plantmode === "grid" ? "none" : "block",
                           }}
                           onClick={(e) => handleNav(e)}
                         >
                           {dataLang.formatMessage({ id: "grid" })}
                         </div>
-                        <div
-                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
                           id="battery"
                           style={{
                             color: nav === "battery" ? color.cur : color.pre,
-                            display:
-                              projectData.value.plantmode === "grid" ||
-                              projectData.value.plantmode === "consumption"
-                                ? "none"
-                                : "block",
+                            display: projectData.value.plantmode === "grid" || projectData.value.plantmode === "consumption" ? "none" : "block",
                           }}
                           onClick={(e) => handleNav(e)}
                         >
@@ -2169,7 +2150,7 @@ export default function ProjectData(props) {
                         </div>
 
                         <div className="DAT_ProjectData_Dashboard_History_Tit_Right_Export">
-                          <button onClick={(e)=>handleExport(e)}>
+                          <button onClick={(e) => handleExport(e)}>
                             {dataLang.formatMessage({ id: "export" })}
                           </button>
                         </div>
@@ -3500,7 +3481,7 @@ export default function ProjectData(props) {
                                   parseFloat(
                                     (coalsave.value.value *
                                       projectData.value.price) /
-                                      1000
+                                    1000
                                   ).toFixed(2)
                                 ).toLocaleString("en-US")}
                                 &nbsp;
@@ -4005,33 +3986,33 @@ export default function ProjectData(props) {
       )}
 
       {exportReport ? (
-              <div className="DAT_RolePopup" style={{
-                height: exportReport === "default" ? "0px" : "100vh",
-              }}>
-                <ExportData handleClose={handleClose} typereport={dateType
-                  // ()=>{
-                  //   switch(dateType){
-                  //     case "date":
-                  //     return("dailyReport");
-                  //     break;
-                  //   case "month":
-                  //     return("monthlyReport");
-                  //     break;
-                  //   case "year":
-                  //     return("yearlyReport");
-                  //     break;
-                  //   case "total":
-                  //     return("totalReport");
-                  //     break;
-                  //   default:
-                  //     break;
-                  //   }
-                  // }
-                }/>
-              </div>
-            ) : (
-              <> </>
-            )}
+        <div className="DAT_RolePopup" style={{
+          height: exportReport === "default" ? "0px" : "100vh",
+        }}>
+          <ExportData handleClose={handleClose} typereport={dateType
+            // ()=>{
+            //   switch(dateType){
+            //     case "date":
+            //     return("dailyReport");
+            //     break;
+            //   case "month":
+            //     return("monthlyReport");
+            //     break;
+            //   case "year":
+            //     return("yearlyReport");
+            //     break;
+            //   case "total":
+            //     return("totalReport");
+            //     break;
+            //   default:
+            //     break;
+            //   }
+            // }
+          } />
+        </div>
+      ) : (
+        <> </>
+      )}
 
       {isMobile.value ? (
         <>
@@ -4099,8 +4080,7 @@ export default function ProjectData(props) {
         </>
       )}
 
-      <div
-        className="DAT_DeviceInfor"
+      <div className="DAT_DeviceInfor"
         style={{ height: infoState.value ? "100%" : "0px", transition: "0.5s" }}
       >
         {infoState.value ? <Info /> : <></>}
@@ -5456,7 +5436,7 @@ const GraphFull = (props) => {
           >
             <div>
               {Number(props.cal?.bat_1 || 0).toLocaleString("en-US")}
-              {}
+              { }
             </div>
             <span style={{ color: "gray", fontSize: "13px" }}>W</span>
           </div>
@@ -5515,23 +5495,19 @@ const Production = (props) => {
   };
 
   useEffect(() => {
-    //-10        130
-    //100%       0%
-    let result = parseFloat(
-      ((props.cal?.pro_1 / 1000 || 0) / projectData.value.capacity) * 100
-    );
-    // console.log(result)
+    let result = parseFloat(((props.cal?.pro_1 / 1000 || 0) / projectData.value.capacity) * 100);
+
     setPer(mapValue(result, in_min, in_max, out_min, out_max));
   }, [props.cal.pro_1]);
 
   const keyframes = `
     @keyframes plant {
       0% { background-position: -1200px ${parseFloat(
-        per
-      )}px, -800px ${per}px, -400px ${per}px}
+    per
+  )}px, -800px ${per}px, -400px ${per}px}
       100% { background-position: 200px ${parseFloat(
-        per
-      )}px;, 100x ${per}px, 0px ${per}px}
+    per
+  )}px;, 100x ${per}px, 0px ${per}px}
     }`;
 
   const divStyle = {
@@ -5545,20 +5521,13 @@ const Production = (props) => {
     <div className="DAT_ProjectData_Dashboard_Data_Center_Production">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart">
-          <div
-            className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data"
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data"
             style={divStyle}
           >
             <style>{keyframes}</style>
             <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value">
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_num">
-                {Number(
-                  parseFloat(
-                    ((props.cal?.pro_1 / 1000 || 0) /
-                      projectData.value.capacity) *
-                      100
-                  ).toFixed(2)
-                ).toLocaleString("en-US")}
+                {Number(parseFloat(((props.cal?.pro_1 / 1000 || 0) / projectData.value.capacity) * 100).toFixed(2)).toLocaleString("en-US")}
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_unit">
                 %
@@ -5566,8 +5535,7 @@ const Production = (props) => {
             </div>
           </div>
 
-          <div
-            className="DAT_Home_Overview-Main-Percent-Icon"
+          <div className="DAT_Home_Overview-Main-Percent-Icon"
             style={{ cursor: "pointer" }}
           >
             <PopupState variant="popper" popupId="demo-popup-popper">
@@ -5623,9 +5591,7 @@ const Production = (props) => {
           </div>
           <div style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(
-                parseFloat(convertUnit(props.cal?.pro_1 / 1000)).toFixed(2) || 0
-              ).toLocaleString("en-US")}
+              {Number(parseFloat(convertUnit(props.cal?.pro_1 / 1000)).toFixed(2) || 0).toLocaleString("en-US")}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5644,9 +5610,7 @@ const Production = (props) => {
           </div>
           <div>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(
-                parseFloat(convertUnit(projectData.value.capacity)).toFixed(2)
-              ).toLocaleString("en-US")}
+              {Number(parseFloat(convertUnit(projectData.value.capacity)).toFixed(2)).toLocaleString("en-US")}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5657,83 +5621,95 @@ const Production = (props) => {
       </div>
 
       <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total">
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
-          style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
-        >
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: "today" })}
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item"
+            style={{ backgroundColor: "white" }}
+          >
+            <div>
+              <img src="/dat_icon/day.png" alt="" style={{ width: "35px", height: "35px" }} />
+            </div>
+            <div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Tit">
+                {dataLang.formatMessage({ id: "today" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(parseFloat(convertUnit(props.cal?.pro_2)).toFixed(2) || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.pro_2)}Wh
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(
-                parseFloat(convertUnit(props.cal?.pro_2)).toFixed(2) || 0
-              ).toLocaleString("en-US")}
-            </span>
-            &nbsp;
-            <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnitk(props.cal?.pro_2)}Wh
-            </span>
+
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item"
+            style={{ backgroundColor: "white" }}
+          >
+            <div>
+              <img src="/dat_icon/year.png" alt="" style={{ width: "35px", height: "35px" }} />
+            </div>
+            <div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Tit">
+                {dataLang.formatMessage({ id: "year" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(parseFloat(convertUnit(props.cal?.pro_year)) || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.pro_year)}Wh
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
-          style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
-        >
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: "month" })}
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right">
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item"
+            style={{ backgroundColor: "white" }}
+          >
+            <div>
+              <img src="/dat_icon/month.png" alt="" style={{ width: "35px", height: "35px" }} />
+            </div>
+            <div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Tit">
+                {dataLang.formatMessage({ id: "month" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(parseFloat(convertUnit(props.cal?.pro_month)) || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.pro_month)}Wh
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(
-                parseFloat(convertUnit(props.cal?.pro_month)) || 0
-              ).toLocaleString("en-US")}
-            </span>
-            &nbsp;
-            <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnitk(props.cal?.pro_month)}Wh
-            </span>
-          </div>
-        </div>
 
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
-          style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
-        >
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: "year" })}
-          </div>
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(
-                parseFloat(convertUnit(props.cal?.pro_year)) || 0
-              ).toLocaleString("en-US")}
-            </span>
-            &nbsp;
-            <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnitk(props.cal?.pro_year)}Wh
-            </span>
-          </div>
-        </div>
-
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item"
-          style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
-        >
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Tit">
-            {dataLang.formatMessage({ id: "total" })}
-          </div>
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Item_Data">
-            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(
-                parseFloat(convertUnit(props.cal?.pro_3)) || 0
-              ).toLocaleString("en-US")}
-            </span>
-            &nbsp;
-            <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnitk(props.cal?.pro_3)}Wh
-            </span>
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item"
+            style={{ backgroundColor: "white" }}
+          >
+            <div>
+              <img src="/dat_icon/total.png" alt="" style={{ width: "35px", height: "35px" }} />
+            </div>
+            <div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Tit">
+                {dataLang.formatMessage({ id: "total" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(parseFloat(convertUnit(props.cal?.pro_3)) || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.pro_3)}Wh
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -5767,83 +5743,91 @@ const Consumption = (props) => {
 
       <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left">
-          <div
-            className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item"
-            style={{ backgroundColor: "rgb(245, 251, 255)" }}
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item"
+            style={{ backgroundColor: "white" }}
           >
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
-              {dataLang.formatMessage({ id: "today" })}
+            <div>
+              <img src="/dat_icon/day.png" alt="" style={{ width: "35px", height: "35px" }} />
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(
-                  parseFloat(convertUnit(props.cal?.con_2)) || 0
-                ).toLocaleString("en-US")}
-              </span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>
-                {showUnitk(props.cal?.con_2)}Wh
-              </span>
+            <div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
+                {dataLang.formatMessage({ id: "today" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(parseFloat(convertUnit(props.cal?.con_2)) || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.con_2)}Wh
+                </span>
+              </div>
             </div>
           </div>
 
-          <div
-            className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item"
-            style={{ backgroundColor: "rgb(246, 245, 255)" }}
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item"
+            style={{ backgroundColor: "white" }}
           >
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
-              {dataLang.formatMessage({ id: "year" })}
+            <div>
+              <img src="/dat_icon/year.png" alt="" style={{ width: "35px", height: "35px" }} />
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(
-                  parseFloat(convertUnit(props.cal?.con_year)) || 0
-                ).toLocaleString("en-US")}
-              </span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>
-                {showUnitk(props.cal?.con_year)}Wh
-              </span>
+            <div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
+                {dataLang.formatMessage({ id: "year" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(parseFloat(convertUnit(props.cal?.con_year)) || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.con_year)}Wh
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right">
-          <div
-            className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
-            style={{ backgroundColor: "rgb(255, 248, 247)" }}
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
+            style={{ backgroundColor: "white" }}
           >
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
-              {dataLang.formatMessage({ id: "month" })}
+            <div>
+              <img src="/dat_icon/month.png" alt="" style={{ width: "35px", height: "35px" }} />
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(
-                  parseFloat(convertUnit(props.cal?.con_month)) || 0
-                ).toLocaleString("en-US")}
-              </span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>
-                {showUnitk(props.cal?.con_month)}Wh
-              </span>
+            <div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
+                {dataLang.formatMessage({ id: "month" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(parseFloat(convertUnit(props.cal?.con_month)) || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.con_month)}Wh
+                </span>
+              </div>
             </div>
           </div>
 
-          <div
-            className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
-            style={{ backgroundColor: "rgb(245, 250, 246)" }}
+          <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
+            style={{ backgroundColor: "white" }}
           >
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
-              {dataLang.formatMessage({ id: "total" })}
+            <div>
+              <img src="/dat_icon/total.png" alt="" style={{ width: "35px", height: "35px" }} />
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
-              <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                {Number(
-                  parseFloat(convertUnit(props.cal?.con_total)) || 0
-                ).toLocaleString("en-US")}
-              </span>
-              &nbsp;
-              <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+            <div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
+                {dataLang.formatMessage({ id: "total" })}
+              </div>
+              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
+                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+                  {Number(parseFloat(convertUnit(props.cal?.con_total)) || 0).toLocaleString("en-US")}
+                </span>
+                &nbsp;
+                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+              </div>
             </div>
           </div>
         </div>
@@ -5877,21 +5861,18 @@ const Grid = (props) => {
       </div>
 
       <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row">
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
-          style={{ backgroundColor: "rgb(245, 251, 255)" }}
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
+          style={{ backgroundColor: "white" }}
         >
           {isMobile.value ? (
-            <div
-              className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
-              style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
+              style={{ borderBottom: "solid 1px rgba(198, 197, 197, 0.5)" }}
             >
               {dataLang.formatMessage({ id: "gridfeed" })}
             </div>
           ) : (
-            <div
-              className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
-              style={{ borderRight: "solid 1px rgb(231, 231, 231)" }}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
+              style={{ borderRight: "solid 1px rgba(198, 197, 197, 0.5)" }}
             >
               {dataLang.formatMessage({ id: "gridfeed" })}
             </div>
@@ -5968,21 +5949,18 @@ const Grid = (props) => {
           </div>
         </div>
 
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
-          style={{ backgroundColor: "rgb(245, 251, 255)" }}
+        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
+          style={{ backgroundColor: "white" }}
         >
           {isMobile.value ? (
-            <div
-              className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
-              style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
+              style={{ borderBottom: "solid 1px rgba(198, 197, 197, 0.5)" }}
             >
               {dataLang.formatMessage({ id: "purchaseE" })}
             </div>
           ) : (
-            <div
-              className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
-              style={{ borderRight: "solid 1px rgb(231, 231, 231)" }}
+            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
+              style={{ borderRight: "solid 1px rgba(198, 197, 197, 0.5)" }}
             >
               {dataLang.formatMessage({ id: "purchaseE" })}
             </div>
@@ -6127,19 +6105,19 @@ const Battery = (props) => {
       <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row">
         <div
           className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
-          style={{ backgroundColor: "rgb(245, 251, 255)" }}
+          style={{ backgroundColor: "white" }}
         >
           {isMobile.value ? (
             <div
               className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
-              style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }}
+              style={{ borderBottom: "solid 1px rgba(198, 197, 197, 0.5)" }}
             >
               {dataLang.formatMessage({ id: "charge" })}
             </div>
           ) : (
             <div
               className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
-              style={{ borderRight: "solid 1px rgb(231, 231, 231)" }}
+              style={{ borderRight: "solid 1px rgba(198, 197, 197, 0.5)" }}
             >
               {dataLang.formatMessage({ id: "charge" })}
             </div>
@@ -6218,7 +6196,7 @@ const Battery = (props) => {
 
         <div
           className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
-          style={{ backgroundColor: "rgb(245, 251, 255)" }}
+          style={{ backgroundColor: "white" }}
         >
           {isMobile.value ? (
             <div
@@ -6398,7 +6376,7 @@ const Day = (props) => {
                 </ResponsiveContainer>
               );
             case "consumption":
-             
+
               return (
                 <ResponsiveContainer
                   style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
