@@ -192,7 +192,7 @@ export default function Project(props) {
       sortable: true,
       minWidth: "400px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -406,7 +406,7 @@ export default function Project(props) {
       (item) => item.plantid_ == e.currentTarget.id
     );
     projectData.value = newPlant;
-      console.log(projectData.value);
+    console.log(projectData.value);
     // const newDevicePlant = devicePlant.value.filter(
     //   (item) => item.plantid_ == e.currentTarget.id
     // );

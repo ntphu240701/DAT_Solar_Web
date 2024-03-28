@@ -157,7 +157,7 @@ export default function Device(props) {
       sortable: true,
       width: "180px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -312,7 +312,7 @@ export default function Device(props) {
       sortable: true,
       minWidth: "350px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {

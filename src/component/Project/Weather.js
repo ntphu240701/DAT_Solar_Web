@@ -109,7 +109,6 @@ export default function Weather() {
         <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Left">
           <img
             src={"/dat_picture/station.jpg"}
-            alt=""
             style={{ width: "140px", height: "80px" }}
           ></img>
         </div>
@@ -130,7 +129,7 @@ export default function Weather() {
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Describe">
-        <IoLocation color="rgba(97,88,194,0.8)" size={15} />
+        <IoLocation  color="rgba(97,88,194,0.8)" size={15}/>
         {data.location.name},{data.location.country}, {data.location.localtime}
       </div>
       <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Forecast">
@@ -182,10 +181,10 @@ export default function Weather() {
       </div> */}
       <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom">
         {data.forecast.forecastday.map((item, index) => {
-          let weekdays = [];
-          if (lang === "en") {
+          let weekdays =[];
+          if(lang === "en"){
             weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-          } else if (lang === "vi") {
+          } else if(lang === "vi"){
             weekdays = ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
           }
           const dateObj = new Date(item.date);
