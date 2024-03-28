@@ -4500,7 +4500,7 @@ const GraphFull = (props) => {
             strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
-            strokeDasharray: lineA_ === "Default" ? "0" : "20",
+            strokeDasharray: lineA_ === "Default" ? "0" : "30",
             animation: `${lineA_} ${props.dur} linear infinite`,
           }}
         />
@@ -4542,7 +4542,7 @@ const GraphFull = (props) => {
             strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
-            strokeDasharray: lineB_ === "Default" ? "0" : "20",
+            strokeDasharray: lineB_ === "Default" ? "0" : "30",
             animation: `${lineB_}  ${props.dur} linear infinite`,
 
           }}
@@ -4566,7 +4566,7 @@ const GraphFull = (props) => {
             strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
-            strokeDasharray: lineC_ === "Default" ? "0" : "20",
+            strokeDasharray: lineC_ === "Default" ? "0" : "30",
             animation: `${lineC_} ${props.dur} linear infinite`,
 
           }}
@@ -4589,7 +4589,7 @@ const GraphFull = (props) => {
             strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
-            strokeDasharray: lineD_ === "Default" ? "0" : "20",
+            strokeDasharray: lineD_ === "Default" ? "0" : "30",
             animation: `${lineD_} ${props.dur} linear infinite`,
           }}
         />
