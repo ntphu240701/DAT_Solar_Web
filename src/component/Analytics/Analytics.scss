@@ -1,3 +1,5 @@
+@use "../../index.scss" as COLOR;
+
 .DAT_AnaHeader {
     width: 98%;
     margin: auto;
@@ -85,9 +87,6 @@
         box-sizing: border-box;
     }
 }
-
-
-
 
 .DAT_AnaCreate {
     position: absolute;
@@ -197,7 +196,6 @@
     z-index: 30;
     overflow: hidden;
 }
-
 
 @media (max-width: 900px) {
     .DAT_Ana {

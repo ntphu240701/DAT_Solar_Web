@@ -1,3 +1,5 @@
+@use "../../index.scss" as COLOR;
+
 .DAT_HomeHeader {
     width: 100%;
     margin: auto;
@@ -18,12 +20,12 @@
         display: flex;
         align-items: center;
         gap: 5px;
+        color: COLOR.$Primary-color;
     }
 }
 
 .DAT_Home {
     width: 100%;
-    // height: 100vh;
     margin: auto;
     display: grid;
     grid-template-rows: repeat(2, 1fr);
@@ -42,9 +44,9 @@
     &_Overview {
         background-color: rgb(255, 255, 255);
         width: 100%;
-        //height: 300px;
-        border-radius: 7px;
-        box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+        border-radius: 3px;
+        // box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+        border: solid 1px rgba(198, 197, 197, 0.5);
         overflow: hidden;
 
         &-Head {
@@ -67,12 +69,16 @@
                 font-size: 14px;
                 color: gray;
             }
+
+            &-Title {
+                color: COLOR.$Primary-color;
+            }
         }
 
         &-Main {
             width: 100%;
             margin-bottom: 10px;
-            border-bottom: solid 1px gray;
+            border-bottom: solid 1px rgba(198, 197, 197, 0.5);
             display: flex;
             flex-wrap: wrap;
 
@@ -176,8 +182,12 @@
                 box-sizing: border-box;
                 //white-space: nowrap;
                 overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                border: solid 1px rgba(198, 197, 197, 0.5);
 
-                //text-overflow: ellipsis;
                 &-Title {
                     font-size: 13px;
                     color: gray;
@@ -190,13 +200,12 @@
     }
 
     &_History {
-        position: relative;
-        overflow: hidden;
         background-color: rgb(255, 255, 255);
         width: 100%;
-        //height: 300px;
-        border-radius: 7px;
-        box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+        border-radius: 3px;
+        // box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+        border: solid 1px rgba(198, 197, 197, 0.5);
+        overflow: hidden;
 
         &-Head {
             display: flex;
@@ -217,7 +226,6 @@
             &-Option {
                 cursor: pointer;
                 display: flex;
-
                 font-size: 15px;
 
                 & span {
@@ -230,21 +238,13 @@
                 }
             }
 
-            &-Datetime {
-                & input {
-                    padding: 4px;
-                    width: 120px;
-                    color: gray;
-                    border-radius: 3px;
-                    border: solid 1.5px gray;
-                }
+            &-Title {
+                color: COLOR.$Primary-color;
             }
         }
 
         &-Chart {
             width: 100%;
-            //height: 200px;
-            //height: 100%;
             padding: 10px;
             -webkit-box-sizing: border-box;
             /* Safari/Chrome, other WebKit */
@@ -287,9 +287,10 @@
     &_State {
         background-color: rgb(255, 255, 255);
         width: 100%;
-        //height: 300px;
-        border-radius: 7px;
-        box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+        border-radius: 3px;
+        // box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+        border: solid 1px rgba(198, 197, 197, 0.5);
+        overflow: hidden;
 
         &-Title {
             display: flex;
@@ -304,6 +305,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: COLOR.$Primary-color;
         }
 
         &-Total {
@@ -320,12 +322,12 @@
             box-sizing: border-box;
 
             &-Icon {
-                background-color: #8adeff;
+                background-color: white;
                 min-width: 40px;
                 min-height: 40px;
                 border-radius: 50%;
+                border: solid 1px rgba(198, 197, 197, 0.5);
                 display: flex;
-
                 align-items: center;
                 justify-content: center;
             }
@@ -339,9 +341,7 @@
 
         &-Content {
             width: 95%;
-            //height: 80px;
             margin: auto;
-            //margin-top: 20px;
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
@@ -351,7 +351,8 @@
             &-Item {
                 flex: 1;
                 min-width: 120px;
-                background-color: rgba(228, 228, 228, 0.5);
+                background-color: white;
+                border: solid 1px rgba(198, 197, 197, 0.5);
                 border-radius: 5px;
                 padding: 20px;
                 -webkit-box-sizing: border-box;
@@ -359,14 +360,13 @@
                 -moz-box-sizing: border-box;
                 /* Firefox, other Gecko */
                 box-sizing: border-box;
-                //white-space: nowrap;
                 overflow: hidden;
                 cursor: pointer;
-                
+
                 &:hover {
-                    background-color: #8adeff;
+                    background-color: rgba(228, 228, 228, 0.5);
+                    color: white;
                     transition: background-color 0.4s ease-in-out;
-                    box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
                 }
 
                 &-Title {
@@ -383,39 +383,20 @@
     &_Distribution {
         background-color: rgb(255, 255, 255);
         width: 100%;
-        min-height: 300px;
-        border-radius: 7px;
-        box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
-        position: relative;
-
-        &-Title {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            -webkit-box-sizing: border-box;
-            /* Safari/Chrome, other WebKit */
-            -moz-box-sizing: border-box;
-            /* Firefox, other Gecko */
-            box-sizing: border-box;
-            font-size: 17px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        border-radius: 3px;
+        // box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+        border: solid 1px rgba(198, 197, 197, 0.5);
+        overflow: hidden;
 
         &-Map {
-            // position: absolute;
-            // top: 0;
-            // left: 0;
             width: 100%;
             height: 100%;
-            padding: 4px;
+            // padding: 4px;
             -webkit-box-sizing: border-box;
             /* Safari/Chrome, other WebKit */
             -moz-box-sizing: border-box;
             /* Firefox, other Gecko */
             box-sizing: border-box;
-
             overflow: hidden;
         }
     }
@@ -423,10 +404,10 @@
     &_Rank {
         background-color: rgb(255, 255, 255);
         width: 100%;
-        min-height: 300px;
-        border-radius: 7px;
-        box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
-        position: relative;
+        border-radius: 3px;
+        // box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+        border: solid 1px rgba(198, 197, 197, 0.5);
+        overflow: hidden;
 
         &-Head {
             display: flex;
@@ -444,30 +425,8 @@
             overflow: hidden;
             text-overflow: ellipsis;
 
-            &-Option {
-                cursor: pointer;
-                display: flex;
-
-                font-size: 15px;
-
-                & span {
-                    padding: 4px;
-                    width: 40px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: 2px;
-                }
-            }
-
-            &-Datetime {
-                & input {
-                    padding: 4px;
-                    width: 120px;
-                    color: gray;
-                    border-radius: 3px;
-                    border: solid 1.5px gray;
-                }
+            &-Title {
+                color: COLOR.$Primary-color;
             }
         }
 
@@ -479,10 +438,10 @@
     &_Benefit {
         background-color: rgb(255, 255, 255);
         width: 100%;
-        min-height: 300px;
-        border-radius: 7px;
-        box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
-        position: relative;
+        border-radius: 3px;
+        // box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
+        border: solid 1px rgba(198, 197, 197, 0.5);
+        overflow: hidden;
 
         &-Head {
             display: flex;
@@ -501,20 +460,11 @@
             text-overflow: ellipsis;
             //margin-bottom: 50px;
 
-            &-Title{ 
+            &-Title {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-            }
-
-            &-Datetime {
-                & input {
-                    padding: 4px;
-                    width: 120px;
-                    color: gray;
-                    border-radius: 3px;
-                    border: solid 1.5px gray;
-                }
+                color: COLOR.$Primary-color;
             }
         }
 

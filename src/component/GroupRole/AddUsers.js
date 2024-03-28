@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./GroupRole.scss";
 
-import { addState, group, groupID, groupUser } from "./GroupRole";
+import { addState, groupID, groupUser } from "./GroupRole";
 import { signal } from "@preact/signals-react";
 import { useIntl } from "react-intl";
 
@@ -18,8 +18,8 @@ export default function AddUsers() {
   const [addUserState, setAddUserState] = useState("none");
 
   const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
   };
 
   const handlePopup = (state) => {
@@ -96,7 +96,7 @@ export default function AddUsers() {
     return (
       <div className="DAT_AddUserPopup_Box_Foot">
         <button
-          style={{ backgroundColor: "#048FFF", color: "white" }}
+          style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
           onClick={() => handleAddUser()}
         >
           {dataLang.formatMessage({ id: "confirm" })}

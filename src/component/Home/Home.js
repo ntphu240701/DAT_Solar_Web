@@ -11,7 +11,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
 import ProjectData from "../Project/ProjectData";
 import { Empty, plantState, projectData, projtab } from "../Project/Project";
@@ -33,28 +32,25 @@ import { GiCoalWagon } from "react-icons/gi";
 import { FaMoneyBill } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { VscDashboard } from "react-icons/vsc";
-import { CiCircleQuestion } from "react-icons/ci";
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Popper from '@mui/material/Popper';
-import PopupState, { bindToggle, bindPopper, bindHover } from 'material-ui-popup-state';
+import PopupState, { bindPopper, bindHover } from 'material-ui-popup-state';
 import Fade from '@mui/material/Fade';
 import Paper from '@mui/material/Paper';
-import { Icon, Popover } from "@mui/material";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const plant = signal([]);
 const logger = signal([]);
 const usd = signal(24700);
 
-const AnyReactComponent = ({ text }) => {
-  return (
-    <div className="DAT_marker">
-      <div className="DAT_marker-bg"></div>
-      <div className="DAT_marker-lb">{text}</div>
-    </div>
-  );
-};
+// const AnyReactComponent = ({ text }) => {
+//   return (
+//     <div className="DAT_marker">
+//       <div className="DAT_marker-bg"></div>
+//       <div className="DAT_marker-lb">{text}</div>
+//     </div>
+//   );
+// };
 
 export default function Home(props) {
   const usr = useSelector((state) => state.admin.usr);
@@ -76,16 +72,16 @@ export default function Home(props) {
   const dataLang = useIntl();
   const [sun, setSun] = useState([]);
   const [chart, setChart] = useState("year");
-  const [vmonth, setVmonth] = useState(dataLang.formatMessage({ id: "monthOutput" }));
+  // const [vmonth, setVmonth] = useState(dataLang.formatMessage({ id: "monthOutput" }));
   const [datamonth, setDatamonth] = useState([]);
-  const [vyear, setVyear] = useState(dataLang.formatMessage({ id: "yearOutput" }));
+  // const [vyear, setVyear] = useState(dataLang.formatMessage({ id: "yearOutput" }));
   const [datayear, setDatayear] = useState([]);
   const navigate = useNavigate();
-  const [showDetail, setShowDetail] = useState(false);
+  // const [showDetail, setShowDetail] = useState(false);
 
-  const toggleDetail = () => {
-    setShowDetail(!showDetail);
-  };
+  // const toggleDetail = () => {
+  //   setShowDetail(!showDetail);
+  // };
 
   const [per, setPer] = useState(0);
   const in_max = 100;
@@ -195,8 +191,6 @@ export default function Home(props) {
   const handleInfo = (e) => {
     const newPlant = project.find((item) => item.plantid_ == e.currentTarget.id);
     projectData.value = newPlant;
-    // console.log(newPlant);
-    // navigate("/project");
     plantState.value = "info";
   };
 
@@ -214,8 +208,6 @@ export default function Home(props) {
         title: item.plantname,
       });
       markerElement.addListener("click", () => {
-        //console.log(item)
-        // navigate("/project");
         plantState.value = "info";
         projectData.value = item;
         sidebartab.value = "Monitor";
@@ -302,11 +294,6 @@ export default function Home(props) {
     let sum_month = [];
     let sum_year = [];
     data.map(async (item_plant, i) => {
-      // console.log(item_plant.plantname, item_plant.state)
-
-
-
-
       if (item_plant.state) {
         cap[i] = item_plant.capacity;
       } else {
@@ -365,10 +352,7 @@ export default function Home(props) {
         sum_year[i] = 0;
       }
 
-
       if (i == plant.value.length - 1) {
-        // console.log(sum_month, sum_year)
-
         let total_month = parseFloat(
           sum_month.reduce((a, b) => Number(a) + Number(b), 0)
         ).toFixed(2);
@@ -387,7 +371,6 @@ export default function Home(props) {
         setDatamonth(datamonth_);
         setDatayear(datayear_);
       }
-
     });
   };
 
@@ -397,7 +380,6 @@ export default function Home(props) {
     data.map((itemplant, index) => {
       var sum_logger = [];
       let logger_ = logger.filter((data) => data.pplantid == itemplant.plantid_);
-      //console.log(logger_)
       logger_.map((item, i) => {
         const type = item.pdata.pro_3.type;
         const cal = JSON.parse(item.pdata.pro_3.cal);
@@ -460,8 +442,6 @@ export default function Home(props) {
   useEffect(() => {
     let a = { is: 1 };
 
-    // console.log(JSON.stringify(a));
-
     const getPlant = async () => {
       let d = await callApi("post", host.DATA + "/getPlant", {
         usr: usr,
@@ -494,9 +474,7 @@ export default function Home(props) {
             '{"deviceCode":"' + item.psn + '"}',
             Token.value.token
           );
-          // console.log(res)
           if (res.ret === 0) {
-            //console.log(res.data)
             setInvt((pre) => ({ ...pre, [item.psn]: res.data }));
           } else {
             setInvt((pre) => ({ ...pre, [item.psn]: {} }));
@@ -534,18 +512,17 @@ export default function Home(props) {
       pro_3: [],
     };
     let sun_ = {};
+
     logger.value.map((item, i) => {
-      // console.log(item)
       Object.entries(item.pdata).map(([key, value]) => {
         switch (value.type) {
           case "sum":
             let inum = [];
             let register_ = JSON.parse(value.register);
-            // console.log(register_);
             register_.map((reg, j) => {
               inum[j] = parseFloat(invt[item.psn]?.[reg] || 0)
             })
-            // console.log(inum);
+
             if (item.pstate) {
               num_[key][i] = inum.reduce((accumulator, currentValue) => {
                 return Number(accumulator) + Number(currentValue);
@@ -555,47 +532,14 @@ export default function Home(props) {
             }
 
             if (i == logger.value.length - 1) {
-
               cal[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
                 }, 0) * parseFloat(value.cal)
               ).toFixed(2);
             }
-
-
-
-
-            // let inum = [];
-            // let cal_ = JSON.parse(value.cal);
-
-            // Object.entries(value.register).map(([key, value]) => {
-            //   let n = JSON.parse(value);
-            //   inum[key] =
-            //     parseFloat(invt[item.psn]?.[n[0]] || 0) *
-            //     parseFloat(cal_[0]) *
-            //     parseFloat(invt[item.psn]?.[n[1]] || 0) *
-            //     parseFloat(cal_[1]);
-            // });
-
-            // num_[key][i] = inum.reduce((accumulator, currentValue) => {
-            //   return Number(accumulator) + Number(currentValue);
-            // }, 0);
-
-            // if (i == logger.value.length - 1) {
-            //   // if (invt[item.psn]?.enabled == 1) {
-            //   cal[key] = parseFloat(
-            //     num_[key].reduce((accumulator, currentValue) => {
-            //       return Number(accumulator) + Number(currentValue);
-            //     }, 0) / 1000
-            //   ).toFixed(2);
-            // } else {
-            // cal[key] = 0
-            // }
-            //}
             break;
           case "word":
-            //console.log(key, value)
             let d = JSON.parse(value.register);
             let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]] || 0];
 
@@ -611,6 +555,7 @@ export default function Home(props) {
                 ? parseFloat(doubleword).toFixed(2)
                 : parseFloat(float_value).toFixed(2) || 0;
             };
+
             if (item.pstate) {
               num_[key][i] = convertToDoublewordAndFloat(e, "int");
             } else {
@@ -618,15 +563,12 @@ export default function Home(props) {
             }
 
             if (i == logger.value.length - 1) {
-              //console.log(num_)
-
               cal[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
                 }, 0) * parseFloat(value.cal)
               ).toFixed(2);
             }
-
             break;
           default:
             if (item.pstate) {
@@ -638,38 +580,31 @@ export default function Home(props) {
                   parseFloat(invt[item.psn]?.[value.register]) *
                   parseFloat(value.cal);
               }
-
             } else {
               num_[key][i] = 0
               sun_[item.pplantid] = 0
-
             }
 
-
             if (i == logger.value.length - 1) {
-
               cal[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return accumulator + currentValue;
                 })
               ).toFixed(2);
             }
-
             break;
         }
       });
     });
-    // console.log(sun_)
     setSun(sun_);
-    // plant.value.map((item, i) => {
-    //   item.sun = sun_[i]?.value
-    // })
-    // console.log(sun_)
     getPrice(plant.value, logger.value);
     setProduction(cal?.pro_1 || 0);
     setDailyProduction(cal?.pro_2 || 0);
     setTotalProduction(cal?.pro_3 || 0);
-    setPer(mapValue(cal?.pro_1 / 1000 * 100 / capacity, in_min, in_max, out_min, out_max));
+
+    let x = (cal?.pro_1 / 1000 * 100 / capacity) || 0;
+
+    setPer(mapValue(x, in_min, in_max, out_min, out_max));
 
     coalsave.value = {
       ...coalsave.value,
@@ -681,7 +616,7 @@ export default function Home(props) {
     <>
       <div className="DAT_HomeHeader">
         <div className="DAT_HomeHeader_Title">
-          <VscDashboard color="gray" size={25} />{" "}
+          <VscDashboard color="gray" size={25} />
           <span>{dataLang.formatMessage({ id: "dashboard" })}</span>
         </div>
       </div>
@@ -788,90 +723,114 @@ export default function Home(props) {
 
           <div className="DAT_Home_Overview-Sub">
             <div className="DAT_Home_Overview-Sub-Item"
-              style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
+              // style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
+              style={{ backgroundColor: "white" }}
             >
-              <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: "today" })}
+              <div>
+                <img src="/dat_icon/day.png" alt="" style={{ width: "35px", height: "35px" }} />
               </div>
               <div>
-                <span
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    fontWeight: "650",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  {Number(parseFloat(convertUnit(dailyproduction)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ color: "gray", fontSize: "13px" }}>{showUnitk(dailyproduction)}Wh</span>
+                <div className="DAT_Home_Overview-Sub-Item-Title">
+                  {dataLang.formatMessage({ id: "today" })}
+                </div>
+                <div>
+                  <span
+                    style={{
+                      color: "black",
+                      fontSize: "16px",
+                      fontWeight: "650",
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    {Number(parseFloat(convertUnit(dailyproduction)).toFixed(2)).toLocaleString("en-US")}
+                  </span>
+                  &nbsp;
+                  <span style={{ color: "gray", fontSize: "12px" }}>{showUnitk(dailyproduction)}Wh</span>
+                </div>
               </div>
             </div>
 
             <div className="DAT_Home_Overview-Sub-Item"
-              style={{ backgroundColor: "rgb(255, 68, 68,0.2)" }}
+              // style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
+              style={{ backgroundColor: "white" }}
             >
-              <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: "month" })}
+              <div>
+                <img src="/dat_icon/month.png" alt="" style={{ width: "35px", height: "35px" }} />
               </div>
               <div>
-                <span
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    fontWeight: "650",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  {Number(parseFloat(convertUnit(monthlyproduction)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ color: "gray", fontSize: "13px" }}>{showUnitk(monthlyproduction)}Wh</span>
+                <div className="DAT_Home_Overview-Sub-Item-Title">
+                  {dataLang.formatMessage({ id: "month" })}
+                </div>
+                <div>
+                  <span
+                    style={{
+                      color: "black",
+                      fontSize: "16px",
+                      fontWeight: "650",
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    {Number(parseFloat(convertUnit(monthlyproduction)).toFixed(2)).toLocaleString("en-US")}
+                  </span>
+                  &nbsp;
+                  <span style={{ color: "gray", fontSize: "12px" }}>{showUnitk(monthlyproduction)}Wh</span>
+                </div>
               </div>
             </div>
 
             <div className="DAT_Home_Overview-Sub-Item"
-              style={{ backgroundColor: "rgba(87, 250, 46, 0.2)" }}
+              // style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
+              style={{ backgroundColor: "white" }}
             >
-              <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: "year" })}
+              <div>
+                <img src="/dat_icon/year.png" alt="" style={{ width: "35px", height: "35px" }} />
               </div>
               <div>
-                <span
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    fontWeight: "650",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  {Number(parseFloat(convertUnit(yearlyproduction)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ color: "gray", fontSize: "13px" }}>{showUnitk(yearlyproduction)}Wh</span>
+                <div className="DAT_Home_Overview-Sub-Item-Title">
+                  {dataLang.formatMessage({ id: "year" })}
+                </div>
+                <div>
+                  <span
+                    style={{
+                      color: "black",
+                      fontSize: "16px",
+                      fontWeight: "650",
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    {Number(parseFloat(convertUnit(yearlyproduction)).toFixed(2)).toLocaleString("en-US")}
+                  </span>
+                  &nbsp;
+                  <span style={{ color: "gray", fontSize: "12px" }}>{showUnitk(yearlyproduction)}Wh</span>
+                </div>
               </div>
             </div>
 
             <div className="DAT_Home_Overview-Sub-Item"
-              style={{ backgroundColor: "rgba(255, 248, 51, 0.2)" }}
+              // style={{ backgroundColor: "rgba(68, 186, 255, 0.2)" }}
+              style={{ backgroundColor: "white" }}
             >
-              <div className="DAT_Home_Overview-Sub-Item-Title">
-                {dataLang.formatMessage({ id: "total" })}
+              <div>
+                <img src="/dat_icon/total.png" alt="" style={{ width: "35px", height: "35px" }} />
               </div>
               <div>
-                <span
-                  style={{
-                    color: "black",
-                    fontSize: "20px",
-                    fontWeight: "650",
-                    fontFamily: "sans-serif",
-                  }}
-                >
-                  {Number(parseFloat(convertUnit(totalproduction)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ color: "gray", fontSize: "13px" }}>{showUnitk(totalproduction)}Wh</span>
+                <div className="DAT_Home_Overview-Sub-Item-Title">
+                  {dataLang.formatMessage({ id: "total" })}
+                </div>
+                <div>
+                  <span
+                    style={{
+                      color: "black",
+                      fontSize: "16px",
+                      fontWeight: "650",
+                      fontFamily: "sans-serif",
+                    }}
+                  >
+                    {Number(parseFloat(convertUnit(totalproduction)).toFixed(2)).toLocaleString("en-US")}
+                  </span>
+                  &nbsp;
+                  <span style={{ color: "gray", fontSize: "12px" }}>{showUnitk(totalproduction)}Wh</span>
+                </div>
               </div>
             </div>
           </div>
@@ -885,12 +844,12 @@ export default function Home(props) {
             <div className="DAT_Home_History-Head-Option">
               <span
                 style={{
-                  backgroundColor: chart === "year" ? "#8adeff" : "white",
+                  backgroundColor: chart === "year" ? "rgba(43, 195, 253)" : "white",
                   border:
                     chart === "year"
-                      ? "solid 1.5px rgb(6, 126, 255)"
+                      ? "solid 1.5px rgba(11, 25, 103)"
                       : "solid 1.5px gray",
-                  color: chart === "year" ? "rgb(6, 126, 255)" : "gray",
+                  color: chart === "year" ? "rgba(11, 25, 103)" : "gray",
                 }}
                 onClick={() => {
                   setChart("year");
@@ -900,12 +859,12 @@ export default function Home(props) {
               </span>
               <span
                 style={{
-                  backgroundColor: chart === "month" ? "#8adeff" : "white",
+                  backgroundColor: chart === "month" ? "rgba(43, 195, 253)" : "white",
                   border:
                     chart === "month"
-                      ? "solid 1.5px rgb(6, 126, 255)"
+                      ? "solid 1.5px rgba(11, 25, 103)"
                       : "solid 1.5px gray",
-                  color: chart === "month" ? "rgb(6, 126, 255)" : "gray",
+                  color: chart === "month" ? "rgba(11, 25, 103)" : "gray",
                 }}
                 onClick={() => {
                   setChart("month");
@@ -919,10 +878,6 @@ export default function Home(props) {
               {chart === "year"
                 ? moment(new Date()).format("YYYY")
                 : moment(new Date()).format("MM/YYYY")}
-              {/* <input
-                type="month"
-                defaultValue={moment(new Date()).format("YYYY-MM")}
-              ></input> */}
             </div>
           </div>
 
@@ -1023,7 +978,7 @@ export default function Home(props) {
           </div>
           <div className="DAT_Home_State-Total">
             <div className="DAT_Home_State-Total-Icon">
-              <FaSolarPanel color="#6495ed" />
+              <FaSolarPanel color="rgba(11, 25, 103)" />
             </div>
             <span style={{ color: "gray", fontSize: "13px" }}>
               {dataLang.formatMessage({ id: "projectTotal" })}
@@ -1041,8 +996,7 @@ export default function Home(props) {
           </div>
 
           <div className="DAT_Home_State-Content">
-            <div
-              className="DAT_Home_State-Content-Item"
+            <div className="DAT_Home_State-Content-Item"
               onClick={() => {
                 sidebartab.value = "Monitor";
                 sidebartabli.value = "/Project";
@@ -1050,7 +1004,9 @@ export default function Home(props) {
                 navigate("/Project");
               }}
             >
-              <div className="DAT_Home_State-Content-Item-Title">
+              <div className="DAT_Home_State-Content-Item-Title"
+                style={{ color: "rgba(0, 163, 0)" }}
+              >
                 {dataLang.formatMessage({ id: "online" })}
               </div>
               <div>
@@ -1067,8 +1023,7 @@ export default function Home(props) {
               </div>
             </div>
 
-            <div
-              className="DAT_Home_State-Content-Item"
+            <div className="DAT_Home_State-Content-Item"
               onClick={() => {
                 sidebartab.value = "Monitor";
                 sidebartabli.value = "/Project";
@@ -1076,7 +1031,9 @@ export default function Home(props) {
                 navigate("/Project");
               }}
             >
-              <div className="DAT_Home_State-Content-Item-Title">
+              <div className="DAT_Home_State-Content-Item-Title"
+                style={{ color: "rgba(255, 0, 0)" }}
+              >
                 {dataLang.formatMessage({ id: "offline" })}
               </div>
               <div>
@@ -1095,8 +1052,7 @@ export default function Home(props) {
           </div>
 
           <div className="DAT_Home_State-Content">
-            <div
-              className="DAT_Home_State-Content-Item"
+            <div className="DAT_Home_State-Content-Item"
               onClick={() => {
                 sidebartab.value = "Monitor";
                 sidebartabli.value = "/Project";
@@ -1121,8 +1077,7 @@ export default function Home(props) {
               </div>
             </div>
 
-            <div
-              className="DAT_Home_State-Content-Item"
+            <div className="DAT_Home_State-Content-Item"
               onClick={() => {
                 sidebartab.value = "Monitor";
                 sidebartabli.value = "/Project";
@@ -1130,7 +1085,9 @@ export default function Home(props) {
                 navigate("/Project");
               }}
             >
-              <div className="DAT_Home_State-Content-Item-Title">
+              <div className="DAT_Home_State-Content-Item-Title"
+                style={{ color: "rgba(247, 148, 29)" }}
+              >
                 {dataLang.formatMessage({ id: "projectWarn" })}
               </div>
               <div>
@@ -1150,27 +1107,8 @@ export default function Home(props) {
         </div>
 
         <div className="DAT_Home_Distribution">
-          {/* <div className='DAT_Home_Distribution-Title'>Vị trí</div> */}
           <div className="DAT_Home_Distribution-Map">
             <div id="map" style={{ width: "100%", height: "100%" }}></div>
-            {/* <GoogleMap
-              apiKey={process.env.REACT_APP_GGKEY}
-              defaultCenter={defaultProps.center}
-              defaultZoom={defaultProps.zoom}
-            //onGoogleApiLoaded={onGoogleApiLoaded}
-            >
-              {plant.value.map((item, index) => {
-                return (
-                  <AnyReactComponent
-                    key={item.plantid}
-                    lat={parseFloat(item.lat)}
-                    lng={parseFloat(item.long)}
-                    text={item.plantname}
-                    markerId={item.plantid}
-                  />
-                )
-              })}
-            </GoogleMap> */}
           </div>
         </div>
 
@@ -1178,12 +1116,6 @@ export default function Home(props) {
           <div className="DAT_Home_Rank-Head">
             <div className="DAT_Home_Rank-Head-Title">
               {dataLang.formatMessage({ id: "rushhour" })}
-            </div>
-            <div className="DAT_Home_Rank-Head-Datetime">
-              {/* <input
-                type="month"
-                defaultValue={moment(new Date()).format("YYYY-MM")}
-              ></input> */}
             </div>
           </div>
 
@@ -1241,7 +1173,7 @@ export default function Home(props) {
           <div className="DAT_Home_Benefit_Content">
             <div className="DAT_Home_Benefit_Content_Item">
               <div className="DAT_Home_Benefit_Content_Item_Icon">
-                <GiCoalWagon size={24} color="#6495ed" />
+                <GiCoalWagon size={24} color="rgba(43, 195, 253)" />
               </div>
               <div className="DAT_Home_Benefit_Content_Item_Detail">
                 <div style={{ fontSize: "14px", color: "grey" }}>
@@ -1257,7 +1189,7 @@ export default function Home(props) {
 
             <div className="DAT_Home_Benefit_Content_Item">
               <div className="DAT_Home_Benefit_Content_Item_Icon">
-                <FaTree size={24} color="#6495ed" />
+                <FaTree size={24} color="rgba(43, 195, 253)" />
               </div>
               <div className="DAT_Home_Benefit_Content_Item_Detail">
                 <div style={{ fontSize: "14px", color: "grey" }}>
@@ -1277,7 +1209,7 @@ export default function Home(props) {
           <div className="DAT_Home_Benefit_Content">
             <div className="DAT_Home_Benefit_Content_Item">
               <div className="DAT_Home_Benefit_Content_Item_Icon">
-                <IoIosCloud size={24} color="#6495ed" />
+                <IoIosCloud size={24} color="rgba(43, 195, 253)" />
               </div>
               <div className="DAT_Home_Benefit_Content_Item_Detail">
                 <div style={{ fontSize: "14px", color: "grey" }}>
@@ -1293,7 +1225,7 @@ export default function Home(props) {
 
             <div className="DAT_Home_Benefit_Content_Item">
               <div className="DAT_Home_Benefit_Content_Item_Icon">
-                <FaMoneyBill size={24} color="#6495ed" />
+                <FaMoneyBill size={24} color="rgba(43, 195, 253)" />
               </div>
               <div className="DAT_Home_Benefit_Content_Item_Detail">
                 <div style={{ fontSize: "14px", color: "grey" }}>

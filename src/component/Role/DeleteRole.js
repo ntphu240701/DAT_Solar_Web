@@ -13,8 +13,8 @@ export default function DeleteRole(props) {
   const dataLang = useIntl();
 
   const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
   };
 
   const handleDelete = async () => {
@@ -64,18 +64,8 @@ export default function DeleteRole(props) {
       </div>
 
       <div className="DAT_DeleteRole_Foot">
-        {/* <button
-          style={{
-            border: "1px solid #505050",
-            backgroundColor: "white",
-            color: "#505050",
-          }}
-          onClick={() => (popupState.value = "default")}
-        >
-          {dataLang.formatMessage({ id: 'cancel' })}
-        </button> */}
         <button
-          style={{ backgroundColor: "#048FFF", color: "white" }}
+          style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
           onClick={(e) => handleDelete(e)}
         >
           {dataLang.formatMessage({ id: "confirm" })}

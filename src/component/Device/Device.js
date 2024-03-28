@@ -18,7 +18,6 @@ import { MdDelete, MdEdit, MdDevices, MdOutlineError } from "react-icons/md";
 import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
-import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
 import { FiEdit, FiFilter } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
@@ -158,7 +157,7 @@ export default function Device(props) {
       sortable: true,
       width: "180px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -313,7 +312,7 @@ export default function Device(props) {
       sortable: true,
       minWidth: "350px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -677,7 +676,7 @@ export default function Device(props) {
     <>
       <div className="DAT_DeviceHeader">
         <div className="DAT_DeviceHeader_Title">
-          <MdDevices color="gray" size={25} />{" "}
+          <MdDevices color="gray" size={25} />
           <span>{dataLang.formatMessage({ id: "device" })}</span>
         </div>
 

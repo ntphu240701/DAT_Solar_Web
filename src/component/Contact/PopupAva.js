@@ -32,8 +32,8 @@ export default function PopupAva(props) {
     });
 
   const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
   };
 
   const handlePopup = (state) => {
@@ -118,20 +118,7 @@ export default function PopupAva(props) {
       </div>
 
       <div className="DAT_PopupAva_Foot">
-        {/* <button
-          style={{
-            border: "1px solid #505050",
-            backgroundColor: "white",
-            color: "#505050",
-          }}
-          onClick={() => {
-            popupStateContact.value = false;
-          }}
-        >
-          {dataLang.formatMessage({ id: 'cancel' })}
-
-        </button> */}
-        <button style={{ backgroundColor: "#048FFF", color: "white" }} onClick={() => { handleSave() }}>
+        <button style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }} onClick={() => { handleSave() }}>
           {dataLang.formatMessage({ id: 'save' })}
         </button>
       </div>

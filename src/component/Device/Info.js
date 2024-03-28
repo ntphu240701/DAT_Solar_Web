@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Device.scss";
 
 import { infoState, info, tab } from "./Device";
 import { useIntl } from "react-intl";
+import DatePicker from "react-datepicker";
 
 import { IoIosArrowDown } from "react-icons/io";
-import { FaCheckCircle, FaSave } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
 import { MdOutlineError } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -14,6 +15,22 @@ import { Fade, Paper, Popper, Typography } from "@mui/material";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import DataTable from "react-data-table-component";
 import { Empty } from "../Project/Project";
+import { IoCalendarOutline } from "react-icons/io5";
+import moment from "moment-timezone";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+} from "recharts";
 
 const data = [
   {
@@ -806,6 +823,290 @@ const Control = (props) => {
 const HistoricalData = (props) => {
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
+  const [chart, setChart] = useState([]);
+  const [acfre, setACFre] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [acrcur, setACRcur] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [acscur, setACScur] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [actcur, setACTcur] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [acrvolt, setACRvolt] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [acsvolt, setACSvolt] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [actvolt, setACTvolt] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [pv1cur, setPV1cur] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [pv2cur, setPV2cur] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [pv3cur, setPV3cur] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [pv4cur, setPV4cur] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [pv1volt, setPV1volt] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [pv2volt, setPV2volt] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [pv3volt, setPV3volt] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [pv4volt, setPV4volt] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [pv1power, setPV1pow] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [pv2power, setPV2pow] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [pv3power, setPV3pow] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [pv4power, setPV4pow] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [dateType, setDateType] = useState("date");
+  const [mode, setMode] = useState('ACVOLT');
+  const [d, setD] = useState({
+    date: moment(new Date()).format("YYYY-MM-DD"),
+    month: moment(new Date()).format("YYYY-MM"),
+    year: moment(new Date()).format("YYYY"),
+    total: "Tổng",
+  });
+
+
+
+  useEffect(() => {
+    // console.log(info.value.psn, moment(new Date()).format("MM/DD/YYYY"))
+    const getChart = async () => {
+      const req = await callApi("post", host.DATA + "/getInverterChart", {
+        sn: info.value.psn,
+        date: moment(new Date()).format("MM/DD/YYYY")
+      });
+      console.log(req);
+      if (req.status) {
+        console.log(req)
+        let vACFre_ = dataLang.formatMessage({ id: "acfre" });
+        let vACRcur_ = dataLang.formatMessage({ id: "acrcur" });
+        let vACScur_ = dataLang.formatMessage({ id: "acscur" });
+        let vACTcur_ = dataLang.formatMessage({ id: "actcur" });
+        let vACRvolt_ = dataLang.formatMessage({ id: "acrvolt" });
+        let vACSvolt_ = dataLang.formatMessage({ id: "acsvolt" });
+        let vACTvol_ = dataLang.formatMessage({ id: "actvolt" });
+        let vpv1cur_ = dataLang.formatMessage({ id: "pv1cur" });
+        let vpv2cur_ = dataLang.formatMessage({ id: "pv2cur" });
+        let vpv3cur_ = dataLang.formatMessage({ id: "pv3cur" });
+        let vpv4cur_ = dataLang.formatMessage({ id: "pv4cur" });
+        let vpv1volt_ = dataLang.formatMessage({ id: "pv1volt" });
+        let vpv2volt_ = dataLang.formatMessage({ id: "pv2volt" });
+        let vpv3volt_ = dataLang.formatMessage({ id: "pv3volt" });
+        let vpv4volt_ = dataLang.formatMessage({ id: "pv4volt" });
+        let vpv1pow_ = dataLang.formatMessage({ id: "pv1pow" });
+        let vpv2pow_ = dataLang.formatMessage({ id: "pv2pow" });
+        let vpv3pow_ = dataLang.formatMessage({ id: "pv3pow" });
+        let vpv4pow_ = dataLang.formatMessage({ id: "pv4pow" });
+        let x = []
+        req.data.data.map((item) => {
+          let arr = item.time.split(":");
+          x = [
+            ...x,
+            {
+              time: `${arr[0]}:${arr[1]}`,
+              [vACFre_]: item.acfre,
+              [vACRcur_]: item.acrcur,
+              [vACScur_]: item.acscur,
+              [vACTcur_]: item.actcur,
+              [vACRvolt_]: item.acrvolt,
+              [vACSvolt_]: item.acsvolt,
+              [vACTvol_]: item.actvolt,
+              [vpv1cur_]: item.pv1cur,
+              [vpv2cur_]: item.pv2cur,
+              [vpv3cur_]: item.pv3cur,
+              [vpv4cur_]: item.pv4cur,
+              [vpv1volt_]: item.pv1volt,
+              [vpv2volt_]: item.pv2volt,
+              [vpv3volt_]: item.pv3volt,
+              [vpv4volt_]: item.pv4volt,
+              [vpv1pow_]: item.pv1pow,
+              [vpv2pow_]: item.pv2pow,
+              [vpv3pow_]: item.pv3pow,
+              [vpv4pow_]: item.pv4pow,
+            }
+
+          ]
+        })
+
+        for (let i = x.length; i < 287; i++) {
+          if (
+            moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
+          ) {
+            let nextTime = moment(x[x.length - 1].time, "HH:mm")
+              .add(5, "minutes")
+              .format("HH:mm");
+            x.push({
+              time: nextTime,
+              [vACFre_]: 0,
+              [vACRcur_]: 0,
+              [vACScur_]: 0,
+              [vACTcur_]: 0,
+              [vACRvolt_]: 0,
+              [vACSvolt_]: 0,
+              [vACTvol_]: 0,
+              [vpv1cur_]: 0,
+              [vpv2cur_]: 0,
+              [vpv3cur_]: 0,
+              [vpv4cur_]: 0,
+              [vpv1volt_]: 0,
+              [vpv2volt_]: 0,
+              [vpv3volt_]: 0,
+              [vpv4volt_]: 0,
+              [vpv1pow_]: 0,
+              [vpv2pow_]: 0,
+              [vpv3pow_]: 0,
+              [vpv4pow_]: 0
+
+            });
+          }
+        }
+
+        setACFre(dataLang.formatMessage({ id: "acfre" }));
+        setACRcur(dataLang.formatMessage({ id: "acrcur" }));
+        setACScur(dataLang.formatMessage({ id: "acscur" }));
+        setACTcur(dataLang.formatMessage({ id: "actcur" }));
+        setACRvolt(dataLang.formatMessage({ id: "acrvolt" }));
+        setACSvolt(dataLang.formatMessage({ id: "acsvolt" }));
+        setACTvolt(dataLang.formatMessage({ id: "actvolt" }));
+        setPV1cur(dataLang.formatMessage({ id: "pv1cur" }));
+        setPV2cur(dataLang.formatMessage({ id: "pv2cur" }));
+        setPV3cur(dataLang.formatMessage({ id: "pv3cur" }));
+        setPV4cur(dataLang.formatMessage({ id: "pv4cur" }));
+        setPV1volt(dataLang.formatMessage({ id: "pv1volt" }));
+        setPV2volt(dataLang.formatMessage({ id: "pv2volt" }));
+        setPV3volt(dataLang.formatMessage({ id: "pv3volt" }));
+        setPV4volt(dataLang.formatMessage({ id: "pv4volt" }));
+        setPV1pow(dataLang.formatMessage({ id: "pv1pow" }));
+        setPV2pow(dataLang.formatMessage({ id: "pv2pow" }));
+        setPV3pow(dataLang.formatMessage({ id: "pv3pow" }));
+        setPV4pow(dataLang.formatMessage({ id: "pv4pow" }));
+        setChart([...x])
+      } else {
+        setChart([])
+      }
+
+
+    }
+
+    getChart()
+  }, [])
+
+  const handleChart = (date) => {
+    console.log(date)
+    const getChart = async () => {
+      const req = await callApi("post", host.DATA + "/getInverterChart", {
+        sn: info.value.psn,
+        date: moment(date).format("MM/DD/YYYY")
+      });
+      console.log(req);
+      if (req.status) {
+        console.log(req)
+        let vACFre_ = dataLang.formatMessage({ id: "acfre" });
+        let vACRcur_ = dataLang.formatMessage({ id: "acrcur" });
+        let vACScur_ = dataLang.formatMessage({ id: "acscur" });
+        let vACTcur_ = dataLang.formatMessage({ id: "actcur" });
+        let vACRvolt_ = dataLang.formatMessage({ id: "acrvolt" });
+        let vACSvolt_ = dataLang.formatMessage({ id: "acsvolt" });
+        let vACTvol_ = dataLang.formatMessage({ id: "actvolt" });
+        let vpv1cur_ = dataLang.formatMessage({ id: "pv1cur" });
+        let vpv2cur_ = dataLang.formatMessage({ id: "pv2cur" });
+        let vpv3cur_ = dataLang.formatMessage({ id: "pv3cur" });
+        let vpv4cur_ = dataLang.formatMessage({ id: "pv4cur" });
+        let vpv1volt_ = dataLang.formatMessage({ id: "pv1volt" });
+        let vpv2volt_ = dataLang.formatMessage({ id: "pv2volt" });
+        let vpv3volt_ = dataLang.formatMessage({ id: "pv3volt" });
+        let vpv4volt_ = dataLang.formatMessage({ id: "pv4volt" });
+        let vpv1pow_ = dataLang.formatMessage({ id: "pv1pow" });
+        let vpv2pow_ = dataLang.formatMessage({ id: "pv2pow" });
+        let vpv3pow_ = dataLang.formatMessage({ id: "pv3pow" });
+        let vpv4pow_ = dataLang.formatMessage({ id: "pv4pow" });
+        let x = []
+        req.data.data.map((item) => {
+          let arr = item.time.split(":");
+          x = [
+            ...x,
+            {
+              time: `${arr[0]}:${arr[1]}`,
+              [vACFre_]: item.acfre,
+              [vACRcur_]: item.acrcur,
+              [vACScur_]: item.acscur,
+              [vACTcur_]: item.actcur,
+              [vACRvolt_]: item.acrvolt,
+              [vACSvolt_]: item.acsvolt,
+              [vACTvol_]: item.actvolt,
+              [vpv1cur_]: item.pv1cur,
+              [vpv2cur_]: item.pv2cur,
+              [vpv3cur_]: item.pv3cur,
+              [vpv4cur_]: item.pv4cur,
+              [vpv1volt_]: item.pv1volt,
+              [vpv2volt_]: item.pv2volt,
+              [vpv3volt_]: item.pv3volt,
+              [vpv4volt_]: item.pv4volt,
+              [vpv1pow_]: item.pv1pow,
+              [vpv2pow_]: item.pv2pow,
+              [vpv3pow_]: item.pv3pow,
+              [vpv4pow_]: item.pv4pow,
+            }
+
+          ]
+        })
+
+        for (let i = x.length; i < 287; i++) {
+          if (
+            moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
+          ) {
+            let nextTime = moment(x[x.length - 1].time, "HH:mm")
+              .add(5, "minutes")
+              .format("HH:mm");
+            x.push({
+              time: nextTime,
+              [vACFre_]: 0,
+              [vACRcur_]: 0,
+              [vACScur_]: 0,
+              [vACTcur_]: 0,
+              [vACRvolt_]: 0,
+              [vACSvolt_]: 0,
+              [vACTvol_]: 0,
+              [vpv1cur_]: 0,
+              [vpv2cur_]: 0,
+              [vpv3cur_]: 0,
+              [vpv4cur_]: 0,
+              [vpv1volt_]: 0,
+              [vpv2volt_]: 0,
+              [vpv3volt_]: 0,
+              [vpv4volt_]: 0,
+              [vpv1pow_]: 0,
+              [vpv2pow_]: 0,
+              [vpv3pow_]: 0,
+              [vpv4pow_]: 0
+
+            });
+          }
+        }
+
+        setACFre(dataLang.formatMessage({ id: "acfre" }));
+        setACRcur(dataLang.formatMessage({ id: "acrcur" }));
+        setACScur(dataLang.formatMessage({ id: "acscur" }));
+        setACTcur(dataLang.formatMessage({ id: "actcur" }));
+        setACRvolt(dataLang.formatMessage({ id: "acrvolt" }));
+        setACSvolt(dataLang.formatMessage({ id: "acsvolt" }));
+        setACTvolt(dataLang.formatMessage({ id: "actvolt" }));
+        setPV1cur(dataLang.formatMessage({ id: "pv1cur" }));
+        setPV2cur(dataLang.formatMessage({ id: "pv2cur" }));
+        setPV3cur(dataLang.formatMessage({ id: "pv3cur" }));
+        setPV4cur(dataLang.formatMessage({ id: "pv4cur" }));
+        setPV1volt(dataLang.formatMessage({ id: "pv1volt" }));
+        setPV2volt(dataLang.formatMessage({ id: "pv2volt" }));
+        setPV3volt(dataLang.formatMessage({ id: "pv3volt" }));
+        setPV4volt(dataLang.formatMessage({ id: "pv4volt" }));
+        setPV1pow(dataLang.formatMessage({ id: "pv1pow" }));
+        setPV2pow(dataLang.formatMessage({ id: "pv2pow" }));
+        setPV3pow(dataLang.formatMessage({ id: "pv3pow" }));
+        setPV4pow(dataLang.formatMessage({ id: "pv4pow" }));
+        setChart([...x])
+      } else {
+        setChart([])
+      }
+
+
+    }
+
+    getChart()
+  }
+
+  const handleMode = () => {
+    if (mode === 'AC') {
+      setMode('DC')
+    } else {
+      setMode('AC')
+    }
+  }
 
   return (
     <div className="DAT_Info_Databox" id="HistoricalData">
@@ -830,23 +1131,1021 @@ const HistoricalData = (props) => {
         {display ? (
           <div className="DAT_Info_Databox_HistoriccalData">
             <div className="DAT_Info_Databox_HistoricalData_Picker">
-              <div className="DAT_Info_Databox_HistoricalData_Picker_Type">
+              <div></div>
+              {/* <div className="DAT_Info_Databox_HistoricalData_Picker_Type">
                 <p>{dataLang.formatMessage({ id: "day" })}</p>
                 <p>{dataLang.formatMessage({ id: "month" })}</p>
                 <p>{dataLang.formatMessage({ id: "year" })}</p>
                 <p>{dataLang.formatMessage({ id: "total" })}</p>
-              </div>
-              <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
+              </div> */}
+              {/* <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
                 <div>{dataLang.formatMessage({ id: "choosePara" })}</div>
               </div>
               <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
                 <div>{dataLang.formatMessage({ id: "export" })}</div>
-              </div>
-              <div className="DAT_Info_Databox_HistoricalData_Picker_DatePicker">
+              </div> */}
+              <DatePicker
+                onChange={(date) => handleChart(date)}
+
+                customInput={
+
+                  <button className="DAT_CustomPicker" >
+                    <span>{d[dateType]}</span>
+                    <IoCalendarOutline color="gray" />
+                  </button>
+                }
+              />
+              {/* <div className="DAT_Info_Databox_HistoricalData_Picker_DatePicker">
                 <input type="date"></input>
-              </div>
+              </div> */}
             </div>
-            <div className="DAT_Info_Databox_HistoricalData_Chart"></div>
+            <div className="DAT_Info_Databox_HistoricalData_Chart">
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "20px" }}>
+               
+                <div style={{ cursor: "pointer", color: mode === "ACVOLT" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACVOLT')}>AC Voltage(V)</div>
+                <div style={{ cursor: "pointer", color: mode === "ACCUR" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACCUR')}>AC Current(A)</div>
+                <div style={{ cursor: "pointer", color: mode === "ACFRE" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACFRE')}>AC frequency(Hz)</div>
+                <div style={{ cursor: "pointer", color: mode === "DCVOLT" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCVOLT')}>DC Voltage(V)</div>
+                <div style={{ cursor: "pointer", color: mode === "DCCUR" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCCUR')}>DC Current(A)</div>
+                <div style={{ cursor: "pointer", color: mode === "DCPOWER" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCPOWER')}>DC Power(kW)</div>
+              </div>
+              {(() => {
+                switch (mode) {
+                  case "ACFRE":
+                    return (
+                      <ResponsiveContainer
+                        style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                      >
+                        <AreaChart width={100} height={500} data={chart}>
+                          <defs>
+                            <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
+                              <stop
+                                offset="5%"
+                                stopColor="rgb(4,143,255)"
+                                stopOpacity={0.7}
+                              />
+                              <stop
+                                offset="90%"
+                                stopColor="rgb(4,143,255)"
+                                stopOpacity={0}
+                              />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday2"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop offset="5%" stopColor="red" stopOpacity={0.7} />
+                              <stop offset="90%" stopColor="red" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday3"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop offset="5%" stopColor="green" stopOpacity={0.7} />
+                              <stop offset="90%" stopColor="green" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday4"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="purple"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="purple" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday5"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="yellow"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="yellow" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday6"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="gray"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="gray" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday6"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="pink"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="pink" stopOpacity={0} />
+                            </linearGradient>
+
+                          </defs>
+                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                          <YAxis
+                            axisLine={false}
+                            tickLine={false}
+                          // domain={[
+                          //   props.data.reduce((min, item) => {
+                          //     // console.log(item)
+                          //     const values = Object.values({
+                          //       x: item[props.v],
+                          //       y: item[props.v2],
+                          //       z: item[props.v3],
+                          //       t: item[props.v4],
+                          //     });
+                          //     const currentMin = Math.min(...values.map(Number));
+                          //     // console.log(currentMax)
+                          //     return currentMin < min ? currentMin : min;
+                          //   }, Infinity),
+                          //   props.data.reduce((max, item) => {
+                          //     // console.log(item)/
+                          //     const values = Object.values({
+                          //       x: item[props.v],
+                          //       y: item[props.v2],
+                          //       z: item[props.v3],
+                          //       t: item[props.v4],
+                          //     });
+                          //     const currentMax = Math.max(...values.map(Number));
+                          //     // console.log(currentMax)
+                          //     return currentMax > max ? currentMax : max;
+                          //   }, -Infinity),
+                          // ]}
+                          />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                          <Tooltip />
+
+
+                          <Area
+                            type="monotone"
+                            dataKey={acfre}
+                            stroke="red"
+                            fillOpacity={1}
+                            fill="url(#colorday2)"
+                          />
+
+                         
+
+
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    )
+                  case "ACVOLT":
+                    return (
+                      <ResponsiveContainer
+                        style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                      >
+                        <AreaChart width={100} height={500} data={chart}>
+                          <defs>
+                            <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
+                              <stop
+                                offset="5%"
+                                stopColor="rgb(4,143,255)"
+                                stopOpacity={0.7}
+                              />
+                              <stop
+                                offset="90%"
+                                stopColor="rgb(4,143,255)"
+                                stopOpacity={0}
+                              />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday2"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop offset="5%" stopColor="red" stopOpacity={0.7} />
+                              <stop offset="90%" stopColor="red" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday3"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop offset="5%" stopColor="green" stopOpacity={0.7} />
+                              <stop offset="90%" stopColor="green" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday4"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="purple"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="purple" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday5"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="yellow"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="yellow" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday6"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="gray"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="gray" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday6"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="pink"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="pink" stopOpacity={0} />
+                            </linearGradient>
+
+                          </defs>
+                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                          <YAxis
+                            axisLine={false}
+                            tickLine={false}
+                          // domain={[
+                          //   props.data.reduce((min, item) => {
+                          //     // console.log(item)
+                          //     const values = Object.values({
+                          //       x: item[props.v],
+                          //       y: item[props.v2],
+                          //       z: item[props.v3],
+                          //       t: item[props.v4],
+                          //     });
+                          //     const currentMin = Math.min(...values.map(Number));
+                          //     // console.log(currentMax)
+                          //     return currentMin < min ? currentMin : min;
+                          //   }, Infinity),
+                          //   props.data.reduce((max, item) => {
+                          //     // console.log(item)/
+                          //     const values = Object.values({
+                          //       x: item[props.v],
+                          //       y: item[props.v2],
+                          //       z: item[props.v3],
+                          //       t: item[props.v4],
+                          //     });
+                          //     const currentMax = Math.max(...values.map(Number));
+                          //     // console.log(currentMax)
+                          //     return currentMax > max ? currentMax : max;
+                          //   }, -Infinity),
+                          // ]}
+                          />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                          <Tooltip />
+
+
+                          <Area
+                            type="monotone"
+                            dataKey={acrvolt}
+                            stroke="red"
+                            fillOpacity={1}
+                            fill="url(#colorday2)"
+                          />
+
+                          <Area
+                            type="monotone"
+                            dataKey={acsvolt}
+                            stroke="green"
+                            fillOpacity={1}
+                            fill="url(#colorday3)"
+                          />
+
+                          <Area
+                            type="monotone"
+                            dataKey={actvolt}
+                            stroke="purple"
+                            fillOpacity={1}
+                            fill="url(#colorday4)"
+                          />
+
+
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    )
+                  case "ACCUR":
+                    return (
+                      <ResponsiveContainer
+                        style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                      >
+                        <AreaChart width={100} height={500} data={chart}>
+                          <defs>
+                            <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
+                              <stop
+                                offset="5%"
+                                stopColor="rgb(4,143,255)"
+                                stopOpacity={0.7}
+                              />
+                              <stop
+                                offset="90%"
+                                stopColor="rgb(4,143,255)"
+                                stopOpacity={0}
+                              />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday2"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop offset="5%" stopColor="red" stopOpacity={0.7} />
+                              <stop offset="90%" stopColor="red" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday3"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop offset="5%" stopColor="green" stopOpacity={0.7} />
+                              <stop offset="90%" stopColor="green" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday4"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="purple"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="purple" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday5"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="yellow"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="yellow" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday6"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="gray"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="gray" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday6"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="pink"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="pink" stopOpacity={0} />
+                            </linearGradient>
+
+                          </defs>
+                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                          <YAxis
+                            axisLine={false}
+                            tickLine={false}
+                          // domain={[
+                          //   props.data.reduce((min, item) => {
+                          //     // console.log(item)
+                          //     const values = Object.values({
+                          //       x: item[props.v],
+                          //       y: item[props.v2],
+                          //       z: item[props.v3],
+                          //       t: item[props.v4],
+                          //     });
+                          //     const currentMin = Math.min(...values.map(Number));
+                          //     // console.log(currentMax)
+                          //     return currentMin < min ? currentMin : min;
+                          //   }, Infinity),
+                          //   props.data.reduce((max, item) => {
+                          //     // console.log(item)/
+                          //     const values = Object.values({
+                          //       x: item[props.v],
+                          //       y: item[props.v2],
+                          //       z: item[props.v3],
+                          //       t: item[props.v4],
+                          //     });
+                          //     const currentMax = Math.max(...values.map(Number));
+                          //     // console.log(currentMax)
+                          //     return currentMax > max ? currentMax : max;
+                          //   }, -Infinity),
+                          // ]}
+                          />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                          <Tooltip />
+
+
+
+                          <Area
+                            type="monotone"
+                            dataKey={acrcur}
+                            stroke="orange"
+                            fillOpacity={1}
+                            fill="url(#colorday5)"
+                          />
+                          <Area
+                            type="monotone"
+                            dataKey={acscur}
+                            stroke="gray"
+                            fillOpacity={1}
+                            fill="url(#colorday6)"
+                          />
+                          <Area
+                            type="monotone"
+                            dataKey={actcur}
+                            stroke="pink"
+                            fillOpacity={1}
+                            fill="url(#colorday7)"
+                          />
+
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    )
+                  case "DCCUR":
+                    return (
+                      <ResponsiveContainer
+                        style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                      >
+                        <AreaChart width={100} height={500} data={chart}>
+                          <defs>
+                            <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
+                              <stop
+                                offset="5%"
+                                stopColor="rgb(4,143,255)"
+                                stopOpacity={0.7}
+                              />
+                              <stop
+                                offset="90%"
+                                stopColor="rgb(4,143,255)"
+                                stopOpacity={0}
+                              />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday2"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop offset="5%" stopColor="red" stopOpacity={0.7} />
+                              <stop offset="90%" stopColor="red" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday3"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop offset="5%" stopColor="green" stopOpacity={0.7} />
+                              <stop offset="90%" stopColor="green" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday4"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="purple"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="purple" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday5"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="yellow"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="yellow" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday6"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="gray"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="gray" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday6"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="pink"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="pink" stopOpacity={0} />
+                            </linearGradient>
+
+                          </defs>
+                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                          <YAxis
+                            axisLine={false}
+                            tickLine={false}
+                          // domain={[
+                          //   props.data.reduce((min, item) => {
+                          //     // console.log(item)
+                          //     const values = Object.values({
+                          //       x: item[props.v],
+                          //       y: item[props.v2],
+                          //       z: item[props.v3],
+                          //       t: item[props.v4],
+                          //     });
+                          //     const currentMin = Math.min(...values.map(Number));
+                          //     // console.log(currentMax)
+                          //     return currentMin < min ? currentMin : min;
+                          //   }, Infinity),
+                          //   props.data.reduce((max, item) => {
+                          //     // console.log(item)/
+                          //     const values = Object.values({
+                          //       x: item[props.v],
+                          //       y: item[props.v2],
+                          //       z: item[props.v3],
+                          //       t: item[props.v4],
+                          //     });
+                          //     const currentMax = Math.max(...values.map(Number));
+                          //     // console.log(currentMax)
+                          //     return currentMax > max ? currentMax : max;
+                          //   }, -Infinity),
+                          // ]}
+                          />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                          <Tooltip />
+
+                          <Area
+                            type="monotone"
+                            dataKey={pv1cur}
+                            stroke="rgb(4,143,255)"
+                            fillOpacity={1}
+                            fill="url(#colorday)"
+                          />
+
+                          <Area
+                            type="monotone"
+                            dataKey={pv2cur}
+                            stroke="red"
+                            fillOpacity={1}
+                            fill="url(#colorday2)"
+                          />
+
+                          <Area
+                            type="monotone"
+                            dataKey={pv3cur}
+                            stroke="green"
+                            fillOpacity={1}
+                            fill="url(#colorday3)"
+                          />
+
+                          <Area
+                            type="monotone"
+                            dataKey={pv4cur}
+                            stroke="purple"
+                            fillOpacity={1}
+                            fill="url(#colorday4)"
+                          />
+
+
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    )
+                  case 'DCVOLT':
+                    return (
+                      <ResponsiveContainer
+                        style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                      >
+                        <AreaChart width={100} height={500} data={chart}>
+                          <defs>
+                            <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
+                              <stop
+                                offset="5%"
+                                stopColor="rgb(4,143,255)"
+                                stopOpacity={0.7}
+                              />
+                              <stop
+                                offset="90%"
+                                stopColor="rgb(4,143,255)"
+                                stopOpacity={0}
+                              />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday2"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop offset="5%" stopColor="red" stopOpacity={0.7} />
+                              <stop offset="90%" stopColor="red" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday3"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop offset="5%" stopColor="green" stopOpacity={0.7} />
+                              <stop offset="90%" stopColor="green" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday4"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="purple"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="purple" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday5"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="yellow"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="yellow" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday6"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="gray"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="gray" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday6"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="pink"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="pink" stopOpacity={0} />
+                            </linearGradient>
+
+                          </defs>
+                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                          <YAxis
+                            axisLine={false}
+                            tickLine={false}
+                          // domain={[
+                          //   props.data.reduce((min, item) => {
+                          //     // console.log(item)
+                          //     const values = Object.values({
+                          //       x: item[props.v],
+                          //       y: item[props.v2],
+                          //       z: item[props.v3],
+                          //       t: item[props.v4],
+                          //     });
+                          //     const currentMin = Math.min(...values.map(Number));
+                          //     // console.log(currentMax)
+                          //     return currentMin < min ? currentMin : min;
+                          //   }, Infinity),
+                          //   props.data.reduce((max, item) => {
+                          //     // console.log(item)/
+                          //     const values = Object.values({
+                          //       x: item[props.v],
+                          //       y: item[props.v2],
+                          //       z: item[props.v3],
+                          //       t: item[props.v4],
+                          //     });
+                          //     const currentMax = Math.max(...values.map(Number));
+                          //     // console.log(currentMax)
+                          //     return currentMax > max ? currentMax : max;
+                          //   }, -Infinity),
+                          // ]}
+                          />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                          <Tooltip />
+
+                          <Area
+                            type="monotone"
+                            dataKey={pv1volt}
+                            stroke="rgb(4,143,255)"
+                            fillOpacity={1}
+                            fill="url(#colorday)"
+                          />
+
+                          <Area
+                            type="monotone"
+                            dataKey={pv2volt}
+                            stroke="red"
+                            fillOpacity={1}
+                            fill="url(#colorday2)"
+                          />
+
+                          <Area
+                            type="monotone"
+                            dataKey={pv3volt}
+                            stroke="green"
+                            fillOpacity={1}
+                            fill="url(#colorday3)"
+                          />
+
+                          <Area
+                            type="monotone"
+                            dataKey={pv4volt}
+                            stroke="purple"
+                            fillOpacity={1}
+                            fill="url(#colorday4)"
+                          />
+
+
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    )
+                  case 'DCPOWER':
+                    return (
+                      <ResponsiveContainer
+                        style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                      >
+                        <AreaChart width={100} height={500} data={chart}>
+                          <defs>
+                            <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
+                              <stop
+                                offset="5%"
+                                stopColor="rgb(4,143,255)"
+                                stopOpacity={0.7}
+                              />
+                              <stop
+                                offset="90%"
+                                stopColor="rgb(4,143,255)"
+                                stopOpacity={0}
+                              />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday2"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop offset="5%" stopColor="red" stopOpacity={0.7} />
+                              <stop offset="90%" stopColor="red" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday3"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop offset="5%" stopColor="green" stopOpacity={0.7} />
+                              <stop offset="90%" stopColor="green" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday4"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="purple"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="purple" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday5"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="yellow"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="yellow" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday6"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="gray"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="gray" stopOpacity={0} />
+                            </linearGradient>
+                            <linearGradient
+                              id="colorday6"
+                              x1="0"
+                              y1="0"
+                              x2="0"
+                              y2="1"
+                            >
+                              <stop
+                                offset="5%"
+                                stopColor="pink"
+                                stopOpacity={0.7}
+                              />
+                              <stop offset="90%" stopColor="pink" stopOpacity={0} />
+                            </linearGradient>
+
+                          </defs>
+                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                          <YAxis
+                            axisLine={false}
+                            tickLine={false}
+                          // domain={[
+                          //   props.data.reduce((min, item) => {
+                          //     // console.log(item)
+                          //     const values = Object.values({
+                          //       x: item[props.v],
+                          //       y: item[props.v2],
+                          //       z: item[props.v3],
+                          //       t: item[props.v4],
+                          //     });
+                          //     const currentMin = Math.min(...values.map(Number));
+                          //     // console.log(currentMax)
+                          //     return currentMin < min ? currentMin : min;
+                          //   }, Infinity),
+                          //   props.data.reduce((max, item) => {
+                          //     // console.log(item)/
+                          //     const values = Object.values({
+                          //       x: item[props.v],
+                          //       y: item[props.v2],
+                          //       z: item[props.v3],
+                          //       t: item[props.v4],
+                          //     });
+                          //     const currentMax = Math.max(...values.map(Number));
+                          //     // console.log(currentMax)
+                          //     return currentMax > max ? currentMax : max;
+                          //   }, -Infinity),
+                          // ]}
+                          />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                          <Tooltip />
+
+                          <Area
+                            type="monotone"
+                            dataKey={pv1power}
+                            stroke="rgb(4,143,255)"
+                            fillOpacity={1}
+                            fill="url(#colorday)"
+                          />
+
+                          <Area
+                            type="monotone"
+                            dataKey={pv2power}
+                            stroke="red"
+                            fillOpacity={1}
+                            fill="url(#colorday2)"
+                          />
+
+                          <Area
+                            type="monotone"
+                            dataKey={pv3power}
+                            stroke="green"
+                            fillOpacity={1}
+                            fill="url(#colorday3)"
+                          />
+
+                          <Area
+                            type="monotone"
+                            dataKey={pv4power}
+                            stroke="purple"
+                            fillOpacity={1}
+                            fill="url(#colorday4)"
+                          />
+
+
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    )
+                  default:
+                    return <></>;
+                }
+              })()}
+
+
+
+
+            </div>
+
           </div>
         ) : (
           <></>
@@ -2143,28 +3442,28 @@ export default function Info(props) {
                     <button className="DAT_Info_Header_Left_Item"
                       id="batch"
                       onClick={() => { setNav("batch") }}
-                      style={{ color: nav === "batch" ? "#6495ed" : "gray", borderBottom: nav === "batch" ? "solid 2px #6495ed" : "solid 2px white" }}
+                      style={{ color: nav === "batch" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "batch" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       {dataLang.formatMessage({ id: "BatchCommand" })}
                     </button>
                     {/* <button className="DAT_Info_Header_Left_Item"
                       id="single"
                       onClick={() => { setNav("single") }}
-                      style={{ color: nav === "single" ? "#6495ed" : "gray", borderBottom: nav === "single" ? "solid 2px #6495ed" : "solid 2px white" }}
+                      style={{ color: nav === "single" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "single" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Single Command
                     </button>
                     <button className="DAT_Info_Header_Left_Item"
                       id="customized"
                       onClick={() => { setNav("customized") }}
-                      style={{ color: nav === "customized" ? "#6495ed" : "gray", borderBottom: nav === "customized" ? "solid 2px #6495ed" : "solid 2px white" }}
+                      style={{ color: nav === "customized" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "customized" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Customized Command
                     </button>
                     <button className="DAT_Info_Header_Left_Item"
                       id="log"
                       onClick={() => { setNav("log") }}
-                      style={{ color: nav === "log" ? "#6495ed" : "gray", borderBottom: nav === "log" ? "solid 2px #6495ed" : "solid 2px white" }}
+                      style={{ color: nav === "log" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "log" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Control Log
                     </button> */}
@@ -2176,14 +3475,14 @@ export default function Info(props) {
                     <button className="DAT_Info_Header_Left_Item"
                       id="firmware"
                       onClick={() => { setNav_("firmware") }}
-                      style={{ color: nav_ === "firmware" ? "#6495ed" : "gray", borderBottom: nav_ === "firmware" ? "solid 2px #6495ed" : "solid 2px white" }}
+                      style={{ color: nav_ === "firmware" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav_ === "firmware" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Firmware Upgrade
                     </button>
                     <button className="DAT_Info_Header_Left_Item"
                       id="upgrade"
                       onClick={() => { setNav_("upgrade") }}
-                      style={{ color: nav_ === "upgrade" ? "#6495ed" : "gray", borderBottom: nav_ === "upgrade" ? "solid 2px #6495ed" : "solid 2px white" }}
+                      style={{ color: nav_ === "upgrade" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav_ === "upgrade" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Upgrade Log
                     </button>

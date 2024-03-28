@@ -1,3 +1,5 @@
+@use "../../index.scss" as COLOR;
+
 .DAT_ContactHeader {
     width: 98%;
     margin: auto;
@@ -16,6 +18,7 @@
         display: flex;
         align-items: center;
         gap: 5px;
+        color: COLOR.$Primary-color;
     }
 
     &_Filter {
@@ -93,7 +96,7 @@
                 }
 
                 & div:nth-child(2) {
-                    color: #6495ed;
+                    color: COLOR.$Primary-color;
                     font-size: 14px;
                     cursor: pointer;
                 }
@@ -138,7 +141,7 @@
                 }
 
                 & div:nth-child(2) {
-                    color: #6495ed;
+                    color: COLOR.$Primary-color;
                     font-size: 14px;
                     cursor: pointer;
                 }
@@ -175,7 +178,7 @@
                 }
 
                 & div:nth-child(2) {
-                    color: #6495ed;
+                    color: COLOR.$Primary-color;
                     font-size: 14px;
                     cursor: pointer;
                 }
@@ -232,8 +235,9 @@
 
     &_Head {
         display: flex;
-        background-color: rgba(182, 182, 182, 0.4);
+        background-color: COLOR.$Primary-color !important; //rgba(182, 182, 182, 0.4)
         padding: 16px;
+        color: white;
 
         &_Left {
             flex: 5;
@@ -364,10 +368,12 @@
     background-color: rgb(231, 231, 231);
 
     &_Header {
-        background-color: white;
+        // background-color: white;
         display: flex;
         flex-wrap: wrap;
         overflow: hidden;
+        background-color: COLOR.$Primary-color;
+        color: white;
 
         &_Left {
             flex: 5;

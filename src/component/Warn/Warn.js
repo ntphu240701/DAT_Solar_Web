@@ -14,13 +14,11 @@ import { LuMailWarning } from "react-icons/lu";
 import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore } from "react-icons/io";
 import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
-import { callApi } from "../Api/Api";
-import { partnerInfor, phuhosting, ruleInfor, userInfor } from "../../App";
-import { IoClose, IoTrashOutline } from "react-icons/io5";
+import { ruleInfor } from "../../App";
+import { IoTrashOutline } from "react-icons/io5";
 import Info from "./Info";
 import { FiFilter } from "react-icons/fi";
 import Filter from "../Project/Filter";
-import { RiMailSettingsLine } from "react-icons/ri";
 import moment from "moment-timezone";
 
 const warntab = signal("all");
@@ -81,7 +79,7 @@ export default function Warn(props) {
       sortable: true,
       width: "180px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -417,33 +415,16 @@ export default function Warn(props) {
         ) : (
           <>
             <div className="DAT_WarnHeader_Filter">
-              {/* <select onChange={((e) => changeFilter(e))} style={{ border: 'none', outline: 'none' }}>
-                <option value={'project'}>{dataLang.formatMessage({ id: "project" })}</option>
-                <option value={'code'}>{dataLang.formatMessage({ id: "errcode" })}</option>
-                <option value={'device'}>{dataLang.formatMessage({ id: "device" })}</option>
-              </select> */}
               <input
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterWarn" })}
                 id="warnsearch"
                 autoComplete="off"
-                // id={warnfilter.value.warnid}
-                // value={warnfilter.value.warnid}
                 onChange={(e) => handleSearch(e)}
               />
               <CiSearch color="gray" size={20} />
             </div>
             <div></div>
-            {/* <button
-              className="DAT_WarnHeader_New"
-              onClick={(e) => handleSetting(e)}
-            >
-              <span>
-                <RiMailSettingsLine color="white" size={20} />
-                &nbsp;
-                {dataLang.formatMessage({ id: "setting" })}
-              </span>
-            </button> */}
           </>
         )}
       </div>
@@ -784,7 +765,7 @@ export default function Warn(props) {
 
       {deletewarnState.value ? (
         <div className="DAT_ReportPopup">
-          <RaiseBox></RaiseBox>
+          <RaiseBox />
         </div>
       ) : (
         <></>

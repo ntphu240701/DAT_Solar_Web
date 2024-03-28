@@ -190,9 +190,9 @@ export default function Project(props) {
         </div>
       ),
       sortable: true,
-      minWidth: "380px",
+      minWidth: "400px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -406,7 +406,7 @@ export default function Project(props) {
       (item) => item.plantid_ == e.currentTarget.id
     );
     projectData.value = newPlant;
-      console.log(projectData.value);
+    console.log(projectData.value);
     // const newDevicePlant = devicePlant.value.filter(
     //   (item) => item.plantid_ == e.currentTarget.id
     // );
@@ -690,7 +690,7 @@ export default function Project(props) {
                   return Number(accumulator) + Number(currentValue);
                 }, 0) * parseFloat(value.cal)
               ).toFixed(2);
-              console.log(cal[key]);
+              // console.log(cal[key]);
             }
             // let inum = [];
             // let cal_ = JSON.parse(value.cal);

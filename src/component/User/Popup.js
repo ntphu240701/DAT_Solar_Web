@@ -29,8 +29,8 @@ export default function Popup() {
   const addrRef = useRef(userInfor.value.addr);
 
   const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
   };
 
   const resizeFilAvatar = (file) =>
@@ -292,20 +292,8 @@ export default function Popup() {
       </div>
 
       <div className="DAT_PopupUser_Box_Foot">
-        {/* <button
-          style={{
-            border: "1px solid #505050",
-            backgroundColor: "white",
-            color: "#505050",
-          }}
-          onClick={() => {
-            popupStateUser.value = false;
-          }}
-        >
-          {dataLang.formatMessage({ id: 'cancel' })}
-        </button> */}
         <button
-          style={{ backgroundColor: "#048FFF", color: "white" }}
+          style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
           onClick={() => handleSave()}
         >
           {dataLang.formatMessage({ id: 'save' })}

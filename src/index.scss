@@ -1,8 +1,22 @@
+//SCSS Variables 
+$Primary-color: rgba(11, 25, 103);
+$Secondary-color: rgba(43, 195, 253);
+$DarkGreen-color: rgba(0, 163, 0);
+$Green-color: rgba(77, 255, 0);
+$DarkOrange-color: rgba(247, 148, 29);
+$Orange-color: rgba(254, 194, 14);
+$Gray-color: rgba(95, 95, 98);
+$Lightpurple-color: rgba(97,88,194,0.8);
+$LightGray-color: rgba(233, 233, 233, 0.5);
+$Warning-color: rgba(255, 0, 0);
+$Notice-color: rgba(255, 255, 0);
+
 body {
-  font-family: segoeui !important;
+  // font-family: segoeui !important;
+  font-family: Montserrat-Regular !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgba(233, 233, 233, 0.5);
+  background-color: rgba(240, 242, 245, 1);
   overscroll-behavior-x: none;
   overflow-x: hidden;
   -webkit-user-select: none;
@@ -919,4 +933,23 @@ iframe {
   src: url("../public/assets/fonts/metropolis/Metropolis-Thin.otf");
   font-weight: 400;
   font-style: normal;
+}
+
+@font-face {
+  font-family: "Montserrat-Regular";
+  src: url("../public/assets/fonts/montserrat/Montserrat-Regular.ttf");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@keyframes moveLtoR {
+  to {
+    stroke-dashoffset: 200;
+  }
+}
+
+@keyframes moveRtoL {
+  to {
+    stroke-dashoffset: -200;
+  }
 }
