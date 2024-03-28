@@ -43,15 +43,6 @@ const plant = signal([]);
 const logger = signal([]);
 const usd = signal(24700);
 
-// const AnyReactComponent = ({ text }) => {
-//   return (
-//     <div className="DAT_marker">
-//       <div className="DAT_marker-bg"></div>
-//       <div className="DAT_marker-lb">{text}</div>
-//     </div>
-//   );
-// };
-
 export default function Home(props) {
   const usr = useSelector((state) => state.admin.usr);
   const lang = useSelector((state) => state.admin.lang);
@@ -72,16 +63,9 @@ export default function Home(props) {
   const dataLang = useIntl();
   const [sun, setSun] = useState([]);
   const [chart, setChart] = useState("year");
-  // const [vmonth, setVmonth] = useState(dataLang.formatMessage({ id: "monthOutput" }));
   const [datamonth, setDatamonth] = useState([]);
-  // const [vyear, setVyear] = useState(dataLang.formatMessage({ id: "yearOutput" }));
   const [datayear, setDatayear] = useState([]);
   const navigate = useNavigate();
-  // const [showDetail, setShowDetail] = useState(false);
-
-  // const toggleDetail = () => {
-  //   setShowDetail(!showDetail);
-  // };
 
   const [per, setPer] = useState(0);
   const in_max = 100;
@@ -111,9 +95,6 @@ export default function Home(props) {
     animationTimingFunction: "linear",
     animationIterationCount: "infinite",
   };
-
-  //POPUP DETAIL
-
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: "row" }),
@@ -845,10 +826,7 @@ export default function Home(props) {
               <span
                 style={{
                   backgroundColor: chart === "year" ? "rgba(43, 195, 253)" : "white",
-                  border:
-                    chart === "year"
-                      ? "solid 1.5px rgba(11, 25, 103)"
-                      : "solid 1.5px gray",
+                  border: chart === "year" ? "solid 1.5px rgba(11, 25, 103)" : "solid 1.5px gray",
                   color: chart === "year" ? "rgba(11, 25, 103)" : "gray",
                 }}
                 onClick={() => {
@@ -860,10 +838,7 @@ export default function Home(props) {
               <span
                 style={{
                   backgroundColor: chart === "month" ? "rgba(43, 195, 253)" : "white",
-                  border:
-                    chart === "month"
-                      ? "solid 1.5px rgba(11, 25, 103)"
-                      : "solid 1.5px gray",
+                  border: chart === "month" ? "solid 1.5px rgba(11, 25, 103)" : "solid 1.5px gray",
                   color: chart === "month" ? COLOR.value.PrimaryColor : COLOR.value.grayText,
                 }}
                 onClick={() => {
@@ -980,7 +955,7 @@ export default function Home(props) {
             <div className="DAT_Home_State-Total-Icon">
               <FaSolarPanel color={COLOR.value.PrimaryColor} />
             </div>
-            <span style={{ color: "gray", fontSize: "13px" }}>
+            <span style={{ color: COLOR.value.grayText, fontSize: "13px" }}>
               {dataLang.formatMessage({ id: "projectTotal" })}
             </span>
             <span
