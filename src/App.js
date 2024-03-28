@@ -91,6 +91,21 @@ const Arr = signal([
 
 ])
 
+export const COLOR = signal({
+  PrimaryColor: "rgba(11, 25, 103)",
+  SecondaryColor: "rgba(43, 195, 253)",
+  DarkGreenColor: "rgba(0, 163, 0)",
+  GreenColor: "rgba(77, 255, 0)",
+  DarkOrangeColor: "rgba(247, 148, 29)",
+  OrangeColor: "rgba(254, 194, 14)",
+  GrayColor: "rgba(95, 95, 98)",
+  LightpurpleColor: "rgba(97,88,194,0.8)",
+  LightGrayColor: "rgba(233, 233, 233, 0.5)",
+  WarningColor: "rgba(255, 0, 0)",
+  NoticeColor: "rgba(255, 255, 0)",
+  grayText: "grey",
+});
+
 export const convertUnit = (value) => {
   if (value >= 1000000000) {
     return (value / 1000000000).toFixed(2);
