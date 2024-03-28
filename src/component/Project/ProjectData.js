@@ -4500,7 +4500,7 @@ const GraphFull = (props) => {
             strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
-            strokeDasharray: lineA_ === "Default" ? "0" : "20",
+            strokeDasharray: lineA_ === "Default" ? "0" : "30",
             animation: `${lineA_} ${props.dur} linear infinite`,
           }}
         />
@@ -4542,7 +4542,7 @@ const GraphFull = (props) => {
             strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
-            strokeDasharray: lineB_ === "Default" ? "0" : "20",
+            strokeDasharray: lineB_ === "Default" ? "0" : "30",
             animation: `${lineB_}  ${props.dur} linear infinite`,
 
           }}
@@ -4566,7 +4566,7 @@ const GraphFull = (props) => {
             strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
-            strokeDasharray: lineC_ === "Default" ? "0" : "20",
+            strokeDasharray: lineC_ === "Default" ? "0" : "30",
             animation: `${lineC_} ${props.dur} linear infinite`,
 
           }}
@@ -4589,7 +4589,7 @@ const GraphFull = (props) => {
             strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
-            strokeDasharray: lineD_ === "Default" ? "0" : "20",
+            strokeDasharray: lineD_ === "Default" ? "0" : "30",
             animation: `${lineD_} ${props.dur} linear infinite`,
           }}
         />
@@ -4773,7 +4773,7 @@ const Production = (props) => {
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnit(props.cal?.pro_1 || 0 / 1000)}W
+              {showUnit((props.cal?.pro_1 || 0) / 1000)}W
             </span>
           </div>
           <div
@@ -4931,11 +4931,11 @@ const Consumption = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.con_2)) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.con_2 || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.con_2)}Wh
+                  {showUnitk(props.cal?.con_2 || 0)}Wh
                 </span>
               </div>
             </div>
@@ -4953,11 +4953,11 @@ const Consumption = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.con_year)) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.con_year || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.con_year)}Wh
+                  {showUnitk(props.cal?.con_year || 0)}Wh
                 </span>
               </div>
             </div>
@@ -4977,11 +4977,11 @@ const Consumption = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.con_month)) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.con_month || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.con_month)}Wh
+                  {showUnitk(props.cal?.con_month || 0)}Wh
                 </span>
               </div>
             </div>
@@ -4999,10 +4999,12 @@ const Consumption = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.con_total)) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.con_total || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>kWh</span>
+                <span style={{ fontSize: "12px", color: "grey" }}>
+                  {showUnitk(props.cal?.con_total || 0)}Wh
+                </span>
               </div>
             </div>
           </div>
@@ -5025,11 +5027,11 @@ const Grid = (props) => {
           <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(parseFloat(convertUnit(props.cal?.grid_1 / 1000 || 0).toFixed(3))).toLocaleString("en-US")}
+            {Number(parseFloat(convertUnit((props.cal?.grid_1 || 0) / 1000).toFixed(3))).toLocaleString("en-US")}
           </span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
-            {showUnit(props.cal?.grid_in_1)}W
+            {showUnit(props.cal?.grid_1 || 0)}W
           </span>
         </div>
       </div>
@@ -5059,13 +5061,11 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.grid_in_1)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_in_1 || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_in_1)}Wh
+                  {showUnitk(props.cal?.grid_in_1 || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5076,13 +5076,11 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.grid_in_month)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_in_month || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_in_month)}Wh
+                  {showUnitk(props.cal?.grid_in_month || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5093,13 +5091,11 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.grid_in_year)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_in_year || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_in_year)}Wh
+                  {showUnitk(props.cal?.grid_in_year || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5110,13 +5106,11 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.grid_in_2)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_in_2 || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_in_2)}Wh
+                  {showUnitk(props.cal?.grid_in_2 || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5147,13 +5141,11 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.grid_out_1)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_out_1 || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_out_1)}Wh
+                  {showUnitk(props.cal?.grid_out_1 || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5164,13 +5156,11 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.grid_out_month)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_out_month || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_out_month)}Wh
+                  {showUnitk(props.cal?.grid_out_month || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5181,13 +5171,11 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.grid_out_year)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_out_year || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_out_year)}Wh
+                  {showUnitk(props.cal?.grid_out_year || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5198,13 +5186,11 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.grid_out_2)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_out_2 || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_out_2)}Wh
+                  {showUnitk(props.cal?.grid_out_2 || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5245,7 +5231,7 @@ const Battery = (props) => {
           >
             <span>SoC:</span>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(props.cal?.bat_2 || 0).toLocaleString("en-US")}
+              {Number(parseFloat(props.cal?.bat_2 || 0).toFixed(2)).toLocaleString("en-US")}
             </span>
             <span style={{ fontSize: "12px", color: "grey" }}>%</span>
           </div>
@@ -5265,13 +5251,11 @@ const Battery = (props) => {
           <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(
-              parseFloat(convertUnit(props.cal?.bat_1 / 1000 || 0)).toFixed(3) || 0
-            ).toLocaleString("en-US")}
+            {Number(parseFloat(convertUnit((props.cal?.bat_1 || 0) / 1000)).toFixed(3) || 0).toLocaleString("en-US")}
           </span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
-            {showUnit(props.cal?.bat_1)}W
+            {showUnit(props.cal?.bat_1 || 0)}W
           </span>
         </div>
       </div>
@@ -5304,13 +5288,11 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.bat_in_1)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.bat_in_1 || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_1)}Wh
+                  {showUnitk(props.cal?.bat_in_1 || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5321,13 +5303,11 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.bat_in_month)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.bat_in_month || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_in_month)}Wh
+                  {showUnitk(props.cal?.bat_in_month || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5338,13 +5318,11 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.bat_in_year)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.bat_in_year || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_in_year)}Wh
+                  {showUnitk(props.cal?.bat_in_year || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5355,13 +5333,11 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.bat_in_total)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.bat_in_total || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_in_total)}Wh
+                  {showUnitk(props.cal?.bat_in_total || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5395,13 +5371,11 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.bat_out_1)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.bat_out_1 || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_out_1)}Wh
+                  {showUnitk(props.cal?.bat_out_1 || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5412,13 +5386,11 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.bat_out_month)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.bat_out_month || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_out_month)}Wh
+                  {showUnitk(props.cal?.bat_out_month || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5429,13 +5401,11 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.bat_out_year)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.bat_out_year || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_out_year)}Wh
+                  {showUnitk(props.cal?.bat_out_year || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5446,13 +5416,11 @@ const Battery = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(
-                    parseFloat(convertUnit(props.cal?.bat_out_total)) || 0
-                  ).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.bat_out_total || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_out_total)}Wh
+                  {showUnitk(props.cal?.bat_out_total || 0)}Wh
                 </span>
               </div>
             </div>
