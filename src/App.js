@@ -83,14 +83,6 @@ export const partnerInfor = signal({
   logo: "",
 });
 
-const Arr = signal([
-  { id: 1, name: "Lộc" }, // 0
-  { id: 3, name: "Phú" }, // 1
-  { id: 8, name: "Tài", addr: "1" }, // 2
-  { id: 12, name: "Hưng" }
-
-])
-
 export const COLOR = signal({
   PrimaryColor: "rgba(11, 25, 103)",
   SecondaryColor: "rgba(43, 195, 253)",
