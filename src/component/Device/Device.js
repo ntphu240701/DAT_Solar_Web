@@ -236,7 +236,7 @@ export default function Device(props) {
       width: "180px",
     },
     {
-      name: dataLang.formatMessage({ id: "edit" }),
+      name: dataLang.formatMessage({ id: "edits" }),
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
@@ -345,7 +345,7 @@ export default function Device(props) {
     //   width: "180px",
     // },
     {
-      name: dataLang.formatMessage({ id: "edit" }),
+      name: dataLang.formatMessage({ id: "edits" }),
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||

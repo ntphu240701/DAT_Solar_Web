@@ -61,7 +61,7 @@ export default function EditRole() {
     <div className="DAT_EditRole">
       <div className="DAT_EditRole_Head">
         <div className="DAT_EditRole_Head_Left">
-          <p>{dataLang.formatMessage({ id: "edit" })}</p>
+          <p>{dataLang.formatMessage({ id: "edits" })}</p>
         </div>
 
         <div className="DAT_EditRole_Head_Right">

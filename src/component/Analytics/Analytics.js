@@ -50,7 +50,7 @@ export default function Analytics(props) {
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             <div className="DAT_ModifyBox_Fix">
-              {dataLang.formatMessage({ id: 'edit' })}
+              {dataLang.formatMessage({ id: 'edits' })}
             </div>
             <div className="DAT_ModifyBox_Remove">
               {dataLang.formatMessage({ id: 'remove' })}
