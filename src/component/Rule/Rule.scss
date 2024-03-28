@@ -47,6 +47,7 @@
         background-color: COLOR.$Primary-color;
         color: white;
         border-radius: 5px;
+        font-family: Montserrat-SemiBold;
 
         & span {
             display: flex;
@@ -163,6 +164,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-family: Montserrat-Bold;
 
             & p {
                 margin: 0;
@@ -187,6 +189,7 @@
                 border-radius: 5px;
                 border: solid 1px rgba(198, 197, 197, 0.5);
                 gap: 5px;
+                font-family: Montserrat-SemiBold;
 
                 & span {
                     color: COLOR.$Primary-color;
@@ -235,13 +238,14 @@
                 text-overflow: ellipsis;
 
                 &_Name {
-                    // margin-top: 20px;
                     gap: 20px;
                     display: flex;
                     align-items: center;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    color: COLOR.$Primary-color;
+                    font-family: Montserrat-SemiBold;
 
                     & input {
                         padding: 7px;
@@ -252,22 +256,24 @@
             }
 
             &_Option {
+                &_Title {
+                    color: COLOR.$Primary-color;
+                    font-family: Montserrat-SemiBold;
+                }
+
                 & p {
-                    // position: fixed;
                     margin: -32px 0 10px 10px;
                     background-color: white;
                     width: fit-content;
                     padding: 0 5px 0 5px;
                     position: block;
                     z-index: 2;
-                    // background-color: white;
                 }
 
                 &_Check {
                     border: 1px solid grey;
                     padding: 20px;
                     margin-top: 30px;
-                    // margin-bottom: px;
                     z-index: 1;
 
                     &_SingleCheck {

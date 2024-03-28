@@ -8,9 +8,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-
   Navigate,
-
 } from "react-router-dom";
 import { ClockLoader, PacmanLoader } from "react-spinners";
 import Login from "./component/Login/Login";
