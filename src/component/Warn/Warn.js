@@ -88,7 +88,7 @@ export default function Warn(props) {
       sortable: true,
       minWidth: "250px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {

@@ -21,8 +21,8 @@ export default function ExportData(props) {
   const [type, setType] = useState("dailyReport");
 
   const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "black" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "red" },
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
   };
 
   const handlePopup = (state) => {
@@ -82,7 +82,7 @@ export default function ExportData(props) {
     <div className="DAT_EditRole">
       <div className="DAT_EditRole_Head">
         <div className="DAT_EditRole_Head_Left">
-          <p>{dataLang.formatMessage({ id: "edit" })}</p>
+          <p>{dataLang.formatMessage({ id: "export" })}</p>
         </div>
 
         <div className="DAT_EditRole_Head_Right">
@@ -152,7 +152,7 @@ export default function ExportData(props) {
           Hủy
         </button> */}
         <button
-          style={{ backgroundColor: "#048FFF", color: "white" }}
+          style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
           onClick={(e) => {
             handleConfirm(e);
           }}

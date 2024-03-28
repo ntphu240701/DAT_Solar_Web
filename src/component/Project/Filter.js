@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 import "./Project.scss";
 import moment from "moment-timezone";
+import { signal } from "@preact/signals-react";
+
+export const filterProject = signal([]);
 
 export default function Filter(props) {
   const dataLang = useIntl();
@@ -9,12 +12,11 @@ export default function Filter(props) {
   const [noticeChecked, setNoticeChecked] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-
   const opentime = useRef();
   const closetime = useRef();
   const min = useRef(0);
-  const max = useRef(100);
-  const location = useRef("hello");
+  const max = useRef(0);
+  const location = useRef("");
 
   const handleReset = (e) => {
     let min = document.getElementById("min");
@@ -72,12 +74,20 @@ export default function Filter(props) {
   const [deviceF, setDeviceF] = useState("all");
 
   useEffect(() => {
-    console.log(deviceF);
-  }, [deviceF]);
+    console.log(props.data);
+  }, [props.data])
 
   const filterdevice = (e) => {
     console.log(e.target.id);
     setDeviceF(e.target.id);
+  };
+
+  const handleSubmit = () => {
+    props.handleClose(
+      min.current.value,
+      max.current.value,
+      location.current.value
+    );
   };
 
   const today = new Date();
@@ -97,15 +107,8 @@ export default function Filter(props) {
                 }}
               >
                 {props.display ? (
-                  <form
+                  <div
                     className="DAT_Filter_Dropdown"
-                    onSubmit={() =>
-                      props.handleClose(
-                        min.current.value,
-                        max.current.value,
-                        location.current.value
-                      )
-                    }
                     style={{
                       height: props.display ? "180px" : "0px",
                       transition: "0.5s",
@@ -121,9 +124,13 @@ export default function Filter(props) {
                             </th>
                             <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
                               <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                <input type="number" id="min" ref={min} />
+                                <input type="number" id="min" ref={min}
+                                  defaultValue={props.data.min !== 0 ? props.data.min : ""}
+                                />
                                 ~
-                                <input type="number" id="max" ref={max} />
+                                <input type="number" id="max" ref={max}
+                                  defaultValue={props.data.max !== 10000 ? props.data.max : ""}
+                                />
                               </div>
                             </td>
                           </tr>
@@ -138,6 +145,7 @@ export default function Filter(props) {
                                 <input
                                   type="text"
                                   id="location"
+                                  defaultValue={props.data.location !== "" ? props.data.location : ""}
                                   ref={location}
                                 />
                               </div>
@@ -150,8 +158,13 @@ export default function Filter(props) {
                     <div className="DAT_Filter_Dropdown_Bot">
                       <button
                         style={{ backgroundColor: "white", color: "black" }}
+                        onClick={() => props.handleCancel()}
+                      >
+                        {dataLang.formatMessage({ id: "cancel" })}
+                      </button>
+                      <button
+                        style={{ backgroundColor: "white", color: "black" }}
                         onClick={(e) => {
-                          handleReset(e);
                           props.handleReset();
                         }}
                       >
@@ -170,7 +183,7 @@ export default function Filter(props) {
                         {dataLang.formatMessage({ id: "confirm" })}
                       </button>
                     </div>
-                  </form>
+                  </div>
                 ) : (
                   <></>
                 )}
@@ -268,6 +281,11 @@ export default function Filter(props) {
                     </div>
 
                     <div className="DAT_Filter_Dropdown_Bot">
+                      <button
+                        style={{ backgroundColor: "white", color: "black" }}
+                      >
+                        {dataLang.formatMessage({ id: "cancel" })}
+                      </button>
                       <button
                         style={{ backgroundColor: "white", color: "black" }}
                         onClick={(e) => {
@@ -373,12 +391,17 @@ export default function Filter(props) {
                     <div className="DAT_Filter_Dropdown_Bot">
                       <button
                         style={{ backgroundColor: "white", color: "black" }}
+                      >
+                        {dataLang.formatMessage({ id: "cancel" })}
+                      </button>
+                      <button
+                        style={{ backgroundColor: "white", color: "black" }}
                         onClick={(e) => {
                           handleResetWarn(e);
                           props.handleReset();
                         }}
                       >
-                        Reset
+                        {dataLang.formatMessage({ id: "reset" })}
                       </button>
                       <button
                         style={{ backgroundColor: "#048FFF", color: "white" }}

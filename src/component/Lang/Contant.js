@@ -225,6 +225,7 @@ export const messages = {
     delRule: "Delete this Rule",
     addProj: "New Project",
     save: "Save",
+    reset: "Reset",
     add: "+Add",
     ADD: "Add",
     export: "Export",
@@ -356,7 +357,7 @@ export const messages = {
     Taiwan: 'Taiwan',
     Italy: 'Italy',
 
-    
+
     acfre: "AC frequency",
     acrcur: "AC R current",
     acrvolt: "AC R voltage",
@@ -366,16 +367,16 @@ export const messages = {
     actvolt: "AC T voltage",
     pv1cur: "PV1 current",
     pv1volt: "PV1 voltage",
-    pv1pow:  "PV1 power",
-    pv2cur:  "PV2 current",
+    pv1pow: "PV1 power",
+    pv2cur: "PV2 current",
     pv2volt: "PV2 voltage",
-    pv2pow:  "PV2 power",
-    pv3cur:  "PV3 current",
+    pv2pow: "PV2 power",
+    pv3cur: "PV3 current",
     pv3volt: "PV3 voltage",
-    pv3pow:  "PV3 power",
-    pv4cur:  "PV4 current",
+    pv3pow: "PV3 power",
+    pv4cur: "PV4 current",
     pv4volt: "PV4 voltage",
-    pv4pow:  "PV4 power",
+    pv4pow: "PV4 power",
 
     //Grid Infomation
     GridInfor: 'Grid Information',
@@ -902,6 +903,7 @@ export const messages = {
     delRule: "Xóa phân quyền người dùng",
     addProj: "Thêm dự án",
     save: "Lưu",
+    reset: "Đặt lại",
     add: "Thêm",
     ADD: "Thêm",
     export: "Xuất báo cáo",

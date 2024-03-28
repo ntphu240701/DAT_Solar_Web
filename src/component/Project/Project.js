@@ -6,7 +6,7 @@ import { isMobile, warnfilter } from "../Navigation/Navigation";
 import ProjectData from "./ProjectData";
 import EditProject from "./EditProject";
 import AddProject from "./AddProject";
-import Filter from "./Filter";
+import Filter, { filterData, filterProject } from "./Filter";
 import { sidebartab, sidebartabli } from "../Sidenar/Sidenar";
 import Popup from "./Popup";
 import { callApi } from "../Api/Api";
@@ -28,6 +28,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CarRentalSharp } from "@mui/icons-material";
 import { alertDispatch } from "../Alert/Alert";
+import { stepButtonClasses } from "@mui/material";
+import { min } from "lodash";
 
 export const projtab = signal("total");
 const tabLable = signal("");
@@ -151,6 +153,12 @@ export default function Project(props) {
   const [display, setDisplay] = useState(false);
   const [like, setLike] = useState(false);
   const navigate = useNavigate();
+  const [saveDataInputFilter, setSaveDataInputFilter] = useState({
+    min: 0,
+    max: 10000,
+    location: "",
+  });
+
 
   const listTab = [
     { id: "total", name: dataLang.formatMessage({ id: "total" }) },
@@ -550,31 +558,50 @@ export default function Project(props) {
     }
   };
 
+  const closeFilter = () => {
+    setDisplay(false);
+  }
+
   const handleResetFilter = () => {
+    setSaveDataInputFilter({
+      min: 0,
+      max: 10000,
+      location: ""
+    })
     setDisplay(false);
     setDatafilter(dataproject.value);
   };
 
-  const handleCloseFilter = (min, max, location) => {
-    // console.log(min, max, location);
-    // console.log(dataproject.value);
-    const temp = dataproject.value.filter((item) => {
-      // if (min == "" && max == "" && location == "") {
-      //   alertDispatch(dataLang.formatMessage({ id: "alert_43" }));
-      // }
-      if (min != "" && max != "" && location != "") {
-        setDisplay(false);
-        return (
-          parseFloat(item.capacity) >= parseFloat(min) &&
-          parseFloat(item.capacity) <= parseFloat(max) &&
-          item.addr.toLowerCase().includes(location.toLowerCase())
-        );
-      } else {
-        alertDispatch(dataLang.formatMessage({ id: "alert_43" }));
-      }
-    });
-    // console.log(temp);
+
+  const handleApproveFilter = (_min, _max, _location) => {
+    let temp = []
+    let min_ = _min === "" ? 0 : _min;
+    let max_ = _max === "" ? 10000 : _max;
+    setSaveDataInputFilter({
+      min: parseFloat(min_),
+      max: parseFloat(max_),
+      location: _location
+    })
+    console.log(_location.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+    if (_location) {
+      // console.log(min_, max_, _location)
+      dataproject.value.filter(item => {
+        if (parseFloat(item.capacity) >= parseFloat(min_) &&
+          parseFloat(item.capacity) <= parseFloat(max_) &&
+          item.addr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(_location.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())) {
+          temp = [...temp, item]
+        }
+      })
+    } else {
+      // console.log(min_, max_)
+      dataproject.value.filter(item => {
+        if (parseFloat(item.capacity) >= parseFloat(min_) && parseFloat(item.capacity) <= parseFloat(max_)) {
+          temp = [...temp, item]
+        }
+      })
+    }
     setDatafilter(temp);
+    setDisplay(false);
   };
 
   useEffect(() => {
@@ -1794,8 +1821,10 @@ export default function Project(props) {
             <Filter
               type="project"
               display={display}
-              handleClose={handleCloseFilter}
+              handleClose={handleApproveFilter}
               handleReset={handleResetFilter}
+              handleCancel={closeFilter}
+              data={saveDataInputFilter}
             />
           </div>
         </div>

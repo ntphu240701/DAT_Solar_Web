@@ -1173,7 +1173,9 @@
                             padding-right: 6px;
                             height: 25px;
                             cursor: pointer;
-
+                            display: flex;
+                            align-items: center;
+                            justify-self: center;
                             &:hover {
                                 color: #6495ed;
                             }
