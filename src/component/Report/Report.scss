@@ -19,6 +19,7 @@
         align-items: center;
         gap: 5px;
         color: COLOR.$Primary-color;
+        font-family: Montserrat-Bold;
     }
 
     &_Filter {
@@ -197,7 +198,6 @@
 
         &_Right {
             flex: 5;
-
             display: flex;
             justify-content: flex-end;
             gap: 10px;

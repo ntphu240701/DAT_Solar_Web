@@ -136,7 +136,7 @@ export default function Warn(props) {
       width: "180px",
     },
     {
-      name: dataLang.formatMessage({ id: "edit" }),
+      name: dataLang.formatMessage({ id: "edits" }),
       selector: (row) => (
         <>
           {ruleInfor.value.setting.warn.modify === true ||

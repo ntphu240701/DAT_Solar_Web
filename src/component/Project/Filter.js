@@ -110,7 +110,7 @@ export default function Filter(props) {
                   <div
                     className="DAT_Filter_Dropdown"
                     style={{
-                      height: props.display ? "180px" : "0px",
+                      height: props.display ? "200px" : "0px",
                       transition: "0.5s",
                     }}
                   >
@@ -168,7 +168,7 @@ export default function Filter(props) {
                           props.handleReset();
                         }}
                       >
-                        Reset
+                        {dataLang.formatMessage({ id: 'reset' })}
                       </button>
                       <button
                         style={{ backgroundColor: "#048FFF", color: "white" }}
@@ -293,7 +293,7 @@ export default function Filter(props) {
                           props.handleReset();
                         }}
                       >
-                        Reset
+                        {dataLang.formatMessage({ id: 'reset' })}
                       </button>
                       <button
                         style={{ backgroundColor: "#048FFF", color: "white" }}

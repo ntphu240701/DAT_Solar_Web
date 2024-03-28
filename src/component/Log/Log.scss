@@ -1,3 +1,5 @@
+@use "../../index.scss" as COLOR;
+
 .DAT_LogHeader {
     width: 98%;
     margin: auto;
@@ -16,6 +18,8 @@
         display: flex;
         align-items: center;
         gap: 5px;
+        color: COLOR.$Primary-color;
+        font-family: Montserrat-Bold;
     }
 
     &_Filter {
@@ -83,16 +87,17 @@
 @media (max-width: 900px) {
     .DAT_Log {
         width: 98%;
+
         //height: 68vh;
         // overflow: hidden;
-        &_Content{
+        &_Content {
             height: calc(100vh - 300px);
         }
 
 
 
     }
-    
+
 
 
 

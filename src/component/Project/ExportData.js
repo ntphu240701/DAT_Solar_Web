@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 
 export default function ExportData(props) {
   const dataLang = useIntl();
-    const idRef = useRef();
+  const idRef = useRef();
   //   const ruleidRef = useRef(0);
   const [type, setType] = useState("dailyReport");
 
@@ -70,11 +70,11 @@ export default function ExportData(props) {
   const handleConfirm = async (e) => {
     console.log(idRef.current.value)
     const t = ReportData.value.find((item) => item.id == idRef.current.value);
-    if(t){
-        console.log(t);
-        props.handleClose();
+    if (t) {
+      console.log(t);
+      props.handleClose();
     } else {
-        alertDispatch(dataLang.formatMessage({ id: "alert_48" }));
+      alertDispatch(dataLang.formatMessage({ id: "alert_48" }));
     }
   };
 

@@ -70,7 +70,7 @@ export default function EditContactInfo(props) {
   return (
     <div className="DAT_EditContactInfo">
       <div className="DAT_EditContactInfo_Header">
-        <div className="DAT_EditContactInfo_Header_Left">{dataLang.formatMessage({ id: 'edit' })}</div>
+        <div className="DAT_EditContactInfo_Header_Left">{dataLang.formatMessage({ id: 'edits' })}</div>
 
         <div className="DAT_EditContactInfo_Header_Right">
           <div className="DAT_EditContactInfo_Header_Right_Close">

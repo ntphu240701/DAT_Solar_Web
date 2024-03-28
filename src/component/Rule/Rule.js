@@ -27,198 +27,7 @@ export const ruleID = signal();
 export const editRuleState = signal(false);
 export const confirmDeleteState = signal(false);
 export const createruleState = signal(false);
-export const datarule = signal([
-  // {
-  //   ruleid_: 1,
-  //   rulename_: "Master",
-  //   setting: {
-  //     alert: {
-  //       lang: "notification",
-  //       option: {
-  //         1: { lang: "edit", status: true },
-  //         2: { lang: "remove", status: true },
-  //       },
-  //     },
-  //     device: {
-  //       lang: "device",
-  //       option: {
-  //         1: { lang: "Chỉnh sửa", status: true },
-  //         2: { lang: "Xóa", status: true },
-  //         3: { lang: "Tạo mới", status: true },
-  //       },
-  //     },
-  //     partner: {
-  //       lang: "partner",
-  //       option: {
-  //         1: { lang: "Chỉnh sửa", status: true },
-  //       },
-  //     },
-  //     plant: {
-  //       lang: "plant",
-  //       option: {
-  //         1: { lang: "Chỉnh sửa", status: true },
-  //         2: { lang: "Xóa", status: true },
-  //         3: { lang: "Tạo mới", status: true },
-  //       },
-  //     },
-  //     report: {
-  //       lang: "report",
-  //       option: {
-  //         1: { lang: "Chỉnh sửa", status: true },
-  //         2: { lang: "Xóa", status: true },
-  //         3: { lang: "Tạo mới", status: true },
-  //       },
-  //     },
-  //     rule: {
-  //       lang: "rule",
-  //       option: {
-  //         1: { lang: "Chỉnh sửa", status: true },
-  //         2: { lang: "Xóa", status: true },
-  //         3: { lang: "Thêm", status: true },
-  //         4: { lang: "Trạng thái", status: true },
-  //       },
-  //     },
-  //   },
-  // },
-  // {
-  //   ruleid_: 2,
-  //   rulename_: "Admin",
-  //   setting: {
-  //     alert: {
-  //       lang: "notification",
-  //       option: {
-  //         1: { lang: key.edit, status: true },
-  //         2: { lang: key.delete, status: true },
-  //       },
-  //     },
-  //     device: {
-  //       lang: "device",
-  //       option: {
-  //         1: { lang: key.edit, status: true },
-  //         2: { lang: key.delete, status: true },
-  //         3: { lang: key.create, status: true },
-  //       },
-  //     },
-  //     partner: {
-  //       lang: "partner",
-  //       option: {
-  //         1: { lang: key.edit, status: true },
-  //       },
-  //     },
-  //     plant: {
-  //       lang: "project",
-  //       option: {
-  //         1: { lang: key.edit, status: true },
-  //         2: { lang: key.delete, status: true },
-  //         3: { lang: key.create, status: true },
-  //       },
-  //     },
-  //     report: {
-  //       lang: "report",
-  //       option: {
-  //         1: { lang: key.edit, status: true },
-  //         2: { lang: key.delete, status: true },
-  //         3: { lang: key.create, status: true },
-  //       },
-  //     },
-  //     rule: {
-  //       lang: "rule",
-  //       option: {
-  //         1: { lang: key.edit, status: true },
-  //         2: { lang: key.delete, status: true },
-  //         3: { lang: key.create, status: true },
-  //         4: { lang: key.status, status: true },
-  //       },
-  //     },
-  //   },
-  // },
-  // {
-  //   ruleid_: 3,
-  //   rulename_: "User",
-  //   setting: {
-  //     alert: {
-  //       lang: "Thông báo",
-  //       option: {
-  //         1: { lang: "Chỉnh sửa", status: false },
-  //         2: { lang: "Xóa", status: false },
-  //       },
-  //     },
-  //     device: {
-  //       lang: "Thiết bị",
-  //       option: {
-  //         1: { lang: "Chỉnh sửa", status: false },
-  //         2: { lang: "Xóa", status: false },
-  //         3: { lang: "Tạo mới", status: false },
-  //       },
-  //     },
-  //     partner: {
-  //       lang: "Đối tác",
-  //       option: {
-  //         1: { lang: "Chỉnh sửa", status: false },
-  //       },
-  //     },
-  //     plant: {
-  //       lang: "Dự án",
-  //       option: {
-  //         1: { lang: "Chỉnh sửa", status: false },
-  //         2: { lang: "Xóa", status: false },
-  //         3: { lang: "Tạo mới", status: false },
-  //       },
-  //     },
-  //     report: {
-  //       lang: "Báo cáo",
-  //       option: {
-  //         1: { lang: "Chỉnh sửa", status: false },
-  //         2: { lang: "Xóa", status: false },
-  //         3: { lang: "Tạo mới", status: false },
-  //       },
-  //     },
-  //     rule: {
-  //       lang: "Phân quyền",
-  //       option: {
-  //         1: { lang: "Chỉnh sửa", status: false },
-  //         2: { lang: "Xóa", status: false },
-  //         3: { lang: "Thêm", status: false },
-  //         4: { lang: "Trạng thái", status: false },
-  //       },
-  //     },
-  //   },
-  // },
-  // {
-  //   ruleid_: 4,
-  //   rulename_: "Đối tác",
-  //   setting: {
-  //     alert: {
-  //       modify: true,
-  //       remove: true,
-  //     },
-  //     device: {
-  //       add: true,
-  //       modify: true,
-  //       remove: true,
-  //     },
-  //     partner: {
-  //       modify: true,
-  //     },
-  //     project: {
-  //       add: true,
-  //       modify: true,
-  //       remove: true,
-  //     },
-  //     report: {
-  //       add: true,
-  //       modify: true,
-  //       remove: true,
-  //     },
-  //     rule: {
-  //       active: true,
-  //       add: true,
-  //       modify: true,
-  //       remove: true,
-  //     },
-  //   },
-  // },
-]);
+export const datarule = signal([]);
 
 export default function Rule() {
   const dataLang = useIntl();
@@ -239,7 +48,6 @@ export default function Rule() {
         partnerid: partnerInfor.value.partnerid,
       });
       if (rule.status) {
-        console.log(rule.data);
         datarule.value = rule.data;
         datarule.value = datarule.value.sort((a, b) => a.ruleid_ - b.ruleid_);
         setdatafilter(rule.data);
@@ -252,8 +60,6 @@ export default function Rule() {
     setdatafilter(datarule.value)
   }, [datarule.value])
 
-  // '{"plant":{"option":{"1":{"lang": "edits","status":true},"2":{"lang":"delete","status":true},"3":{"lang":"createNew","status":true}}}}'
-  //
   const columnrule = [
     {
       name: dataLang.formatMessage({ id: "ordinalNumber" }),
@@ -270,12 +76,6 @@ export default function Rule() {
         justifyContent: "left",
       },
     },
-    // {
-    //   name: "ID",
-    //   selector: (row) => row.ruleid_,
-    //   sortable: true,
-    //   width: "100px",
-    // },
     {
       name: dataLang.formatMessage({ id: "setting" }),
       selector: (row) => (
@@ -286,7 +86,6 @@ export default function Rule() {
             <div className="DAT_TableEdit">
               <span
                 id={row.ruleid_ + "_MORE"}
-                // onMouseEnter={(e) => handleModify(e, "block")}
                 onClick={(e) => handleModify(e, "block")}
               >
                 <IoMdMore size={20} />
@@ -327,13 +126,11 @@ export default function Rule() {
 
   const handleEdit = (e) => {
     const id = parseInt(e.currentTarget.id);
-    // console.log(id);
     if (id == 1) {
       alertDispatch(dataLang.formatMessage({ id: "alert_20" }));
     } else {
       editRuleState.value = true;
       editruledata.value = datarule.value.find((data) => data.ruleid_ == id);
-      console.log(editruledata.value);
     }
   };
 
@@ -341,13 +138,11 @@ export default function Rule() {
     const id = e.currentTarget.id;
     setIdDel(id);
     confirmDeleteState.value = "delete";
-    console.log(id);
   };
 
   const handleModify = (e, type) => {
     const id = e.currentTarget.id;
     var arr = id.split("_");
-    // console.log(id);
     const mod = document.getElementById(arr[0] + "_Modify");
     mod.style.display = type;
   };
@@ -368,21 +163,19 @@ export default function Rule() {
     <>
       <div className="DAT_RuleHeader">
         <div className="DAT_RuleHeader_Title">
-          <MdOutlineAdminPanelSettings color="gray" size={25} />{" "}
+          <MdOutlineAdminPanelSettings color="gray" size={25} />
           <span>{dataLang.formatMessage({ id: "rule" })}</span>
         </div>
 
         {isMobile.value ? (
           <>
             <div className="DAT_Modify">
-              <div
-                className="DAT_Modify_Item"
+              <div className="DAT_Modify_Item"
                 onClick={() => setFilter(!filter)}
               >
                 <CiSearch color="white" size={20} />
               </div>
-              <div
-                className="DAT_Modify_Add"
+              <div className="DAT_Modify_Add"
                 onClick={() => (createruleState.value = true)}
               >
                 <IoAddOutline color="white" size={20} />
@@ -395,8 +188,7 @@ export default function Rule() {
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterName" })}
                 />
-                <div
-                  className="DAT_Modify_Filter_Close"
+                <div className="DAT_Modify_Filter_Close"
                   onClick={() => setFilter(!filter)}
                 >
                   <RxCross2 size={20} color="white" />
@@ -416,8 +208,7 @@ export default function Rule() {
               />
               <CiSearch color="gray" size={20} />
             </div>
-            <button
-              className="DAT_RuleHeader_New"
+            <button className="DAT_RuleHeader_New"
               onClick={() => (createruleState.value = true)}
             >
               <span>
@@ -473,13 +264,7 @@ export default function Rule() {
         </div>
       ) : (
         <div className="DAT_Rule">
-          <div
-            className="DAT_Rule_Header"
-            style={{
-              padding: "15px",
-              backgroundColor: "rgba(233, 233, 233, 0.5)",
-            }}
-          >
+          <div className="DAT_Rule_Header">
             {dataLang.formatMessage({ id: "ruleList" })}
           </div>
 
@@ -497,8 +282,7 @@ export default function Rule() {
         </div>
       )}
 
-      <div
-        className="DAT_RuleCreate"
+      <div className="DAT_RuleCreate"
         style={{
           height: editRuleState.value ? "100vh" : "0px",
           transition: "0.5s",
@@ -507,8 +291,7 @@ export default function Rule() {
         {editRuleState.value ? <EditRule /> : <></>}
       </div>
 
-      <div
-        className="DAT_RuleCreate"
+      <div className="DAT_RuleCreate"
         style={{
           height: createruleState.value ? "100vh" : "0px",
           transition: "0.5s",

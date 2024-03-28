@@ -97,7 +97,6 @@ export default function CreateRule() {
   const TypeReport = (props) => {
     const handerChangeReportName = (e) => {
       rulenameRef.current = e.target.value;
-      //   console.log(rulenameRef.current);
     };
 
     return (
@@ -120,14 +119,12 @@ export default function CreateRule() {
   };
 
   const handleCreate = async () => {
-    // console.log(rulenameRef.current,  userInfor.value.partnerid, JSON.stringify(newruledata.value.setting));
     if (rulenameRef.current !== "") {
       const createRule = await callApi("post", host.DATA + "/addRule", {
         name: rulenameRef.current,
         partnerid: userInfor.value.partnerid,
         setting: JSON.stringify(newruledata.value.setting),
       });
-      console.log(JSON.stringify(newruledata.value.setting))
       if (createRule.status) {
         datarule.value = [...datarule.value, createRule.data];
         createruleState.value = false;
@@ -135,7 +132,6 @@ export default function CreateRule() {
       } else {
         alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
       }
-
     }
   };
 
@@ -145,7 +141,6 @@ export default function CreateRule() {
     } else {
       setWidwidthCheckBox("25%");
     }
-    // console.log(isMobile.value);
   }, [isMobile.value]);
 
   return (
@@ -178,14 +173,15 @@ export default function CreateRule() {
           <TypeReport />
           <div className="DAT_CreateRule_Body_Item">
             <div className="DAT_CreateRule_Body_Item_Option">
-              <label style={{ margin: "0" }}>
+              <label className="DAT_CreateRule_Body_Item_Option_Title"
+                style={{ margin: "0" }}
+              >
                 {dataLang.formatMessage({ id: "ruleOptions" })}
               </label>
 
               {Object.entries(newruledata.value.setting).map(
                 ([key, value], index) => (
-                  <div
-                    className="DAT_CreateRule_Body_Item_Option_Check"
+                  <div className="DAT_CreateRule_Body_Item_Option_Check"
                     key={key}
                   >
                     <p style={{ color: "grey" }}>
