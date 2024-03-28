@@ -107,7 +107,7 @@ export default function Filter(props) {
                       )
                     }
                     style={{
-                      height: props.display ? "180px" : "0px",
+                      height: props.display ? "200px" : "0px",
                       transition: "0.5s",
                     }}
                   >
@@ -151,11 +151,23 @@ export default function Filter(props) {
                       <button
                         style={{ backgroundColor: "white", color: "black" }}
                         onClick={(e) => {
+                          props.handleClose(
+                            min.current.value,
+                            max.current.value,
+                            location.current.value
+                          )
+                        }}
+                      >
+                        {dataLang.formatMessage({ id: 'cancel' })}
+                      </button>
+                      <button
+                        style={{ backgroundColor: "white", color: "black" }}
+                        onClick={(e) => {
                           handleReset(e);
                           props.handleReset();
                         }}
                       >
-                        Reset
+                        {dataLang.formatMessage({ id: 'reset' })}
                       </button>
                       <button
                         style={{ backgroundColor: "#048FFF", color: "white" }}
@@ -275,7 +287,7 @@ export default function Filter(props) {
                           props.handleReset();
                         }}
                       >
-                        Reset
+                        {dataLang.formatMessage({ id: 'reset' })}
                       </button>
                       <button
                         style={{ backgroundColor: "#048FFF", color: "white" }}
@@ -378,7 +390,7 @@ export default function Filter(props) {
                           props.handleReset();
                         }}
                       >
-                        Reset
+                        {dataLang.formatMessage({ id: 'reset' })}
                       </button>
                       <button
                         style={{ backgroundColor: "#048FFF", color: "white" }}
