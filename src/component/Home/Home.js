@@ -601,7 +601,10 @@ export default function Home(props) {
     setProduction(cal?.pro_1 || 0);
     setDailyProduction(cal?.pro_2 || 0);
     setTotalProduction(cal?.pro_3 || 0);
-    setPer(mapValue(cal?.pro_1 / 1000 * 100 / capacity, in_min, in_max, out_min, out_max));
+
+    let x = (cal?.pro_1 / 1000 * 100 / capacity) || 0;
+
+    setPer(mapValue(x, in_min, in_max, out_min, out_max));
 
     coalsave.value = {
       ...coalsave.value,

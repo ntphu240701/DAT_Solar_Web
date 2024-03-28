@@ -585,6 +585,7 @@ export default function ProjectData(props) {
   ];
 
   const handleInfoLogger = (e) => {
+    dropState.value = false
     infoState.value = true;
     tab.value = "logger";
     let plantname = projectData.value.plantname;
@@ -598,6 +599,7 @@ export default function ProjectData(props) {
   };
 
   const handleInfoInverter = (e) => {
+    dropState.value = false
     infoState.value = true;
     tab.value = "inverter";
     let plantname = projectData.value.plantname;
@@ -1949,7 +1951,10 @@ export default function ProjectData(props) {
                 >
                   <button
                     id="add"
-                    onClick={() => (popupAddGateway.value = true)}
+                    onClick={() => {
+                      (popupAddGateway.value = true);
+                      (dropState.value = false)
+                    }}
                   >
                     <IoAddOutline size={20} color="white" />
                   </button>
@@ -4112,66 +4117,36 @@ const Graph = (props) => {
 };
 
 const GraphGrid = (props) => {
-  const [lineA_, setLinA] = useState(false);
-  const [lineB_, setLinB] = useState(false);
-  const [lineC_, setLinC] = useState("Default");
-  const [lineD_, setLinD] = useState("Default");
+  const [lineA_, setLinA] = useState("Default");
 
   useEffect(() => {
-    // console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
-    if (props.cal?.pro_1 > 0) {
-      // console.log("A")
-      setLinA(true);
-    }
-    if (parseFloat(props.cal?.con_1) > 0) {
-      // console.log("B")
-      setLinB(true);
-    }
-
-    if (parseFloat(props.cal?.bat_1) > 0) {
-      // console.log("D")
-      setLinC("In");
-    } else if (parseFloat(props.cal?.bat_1) < 0) {
-      // console.log("D")
-      setLinC("Out");
+    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1, props.cal?.bat_1)
+    if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
+      setLinA("moveLtoR");
     } else {
-      // console.log("D")
-      setLinC("default");
+      setLinA("Default");
     }
-
-    if (parseFloat(props.cal?.grid_1) > 0) {
-      // console.log("D")
-      setLinD("In");
-    } else if (parseFloat(props.cal?.grid_1) < 0) {
-      // console.log("D")
-      setLinD("Out");
-    } else {
-      // console.log("D")
-      setLinD("default");
-    }
-  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1]);
+  }, [props.cal.pro_1]);
 
   const LineA = (props) => {
     return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
+      <>
         <path
           className="path"
-          d="M 7 7 L 82 7 C 90 7 100 13 100 21 L 100 36"
+          d="M 196.271 98.625 L 196.396 16.86 L 72.511 17.177"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
+            stroke: lineA_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(43, 195, 253)",
+            strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
+            strokeDasharray: lineA_ === "Default" ? "0" : "20",
+            animation: `${lineA_} ${props.dur} linear infinite`,
           }}
         />
-        {lineA_ ? (
+        {/* {lineA_ ? (
           <circle
             r={4}
             style={{
@@ -4191,434 +4166,164 @@ const GraphGrid = (props) => {
           </circle>
         ) : (
           <></>
-        )}
-      </svg>
+        )} */}
+      </>
     );
   };
 
   const LineB = (props) => {
     return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
+      <>
         <path
-          d="M 6.937 36.079 L 6.773 21.015 C 6.409 15.004 13.083 6.389 24.215 6.94 L 101.159 6.932"
+          d="M 217.242 98.976 L 217.726 16.793 L 341.759 16.278"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
-            stroke: "#3e80fb",
-            strokeWidth: "5",
+            stroke: "rgba(43, 195, 253)",
+            strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
           }}
         />
-        {/* {lineB_
-          ? <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 6.937 36.079 L 6.773 21.015 C 6.409 15.004 13.083 6.389 24.215 6.94 L 101.159 6.932"
-              dur={props.dur}
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-          : <></>} */}
-      </svg>
-    );
-  };
 
-  const LineC = (props) => {
-    return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
-        <path
-          className="path"
-          d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
-            strokeLinecap: "round",
-            overflow: "hidden",
-          }}
-        />
-        {lineC_ === "In" ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 109.252 7.267 L 109.551 21.913 C 109.55 29.017 99.114 36.291 89.94 36.029 L 10.004 36.152"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-        {lineC_ === "Out" ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-      </svg>
+      </>
     );
   };
 
   const LineD = (props) => {
     return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
+      <>
         <path
-          d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+          d="M 219.85 174.188 L 220.334 254.116 L 344.367 254.616"
+          width="100%"
+          height="100%"
           style={{
-            width: "100%",
-            height: "100%",
             fill: "none",
-            stroke: "#3e80fb",
-            strokeWidth: "5",
+            stroke: "rgba(43, 195, 253)",
+            strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
           }}
         />
-        {/* {lineD_ === 'In'
-          ? <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-          : <></>
-        }
-           {lineD_ === 'Out'
-          ? <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0", 
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 7.023 6.84 L 7.258 23.056 C 8.368 31.282 15.33 35.948 25.037 36.062 L 105.077 36.005"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-          : <></>
-        } */}
-      </svg>
+
+      </>
     );
   };
 
-  const ImgSolar = (props) => {
+  const Solar = (props) => {
     return (
-      <img
-        src="/dat_picture/solar-panel.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
+      <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", gap: "10px", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px", padding: "5px", boxSizing: "border-box", backgroundColor: "white", overflow: "hidden" }}>
+        <img src={props.src} width={`${props.width}px`} height={`${props.height}px`} alt="" />
+        <div>
+          <div>
+            {props.val}
+          </div>
+          <span style={{ color: "gray", fontSize: "13px" }}>{props.unit}</span>
+        </div>
+      </div>
+    );
+  };
+  const SolarImg = (props) => {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "10px", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px", padding: "5px", boxSizing: "border-box", backgroundColor: "white", overflow: "hidden" }}>
+        <img src={props.src} width={`${props.width}px`} height={`${props.height}px`} alt="" />
+      </div>
     );
   };
 
-  const ImgGrid = (props) => {
-    return (
-      <img
-        src="/dat_picture/grid.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
 
-  const ImgLoad = (props) => {
-    return (
-      <img
-        src="/dat_picture/load.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
-
-  const ImgBat = (props) => {
-    return (
-      <img
-        src="/dat_picture/battery.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
 
   return (
     <>
-      <div
+      <svg
+        viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" width={"100%"} height={"100%"}
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          backgroundColor: "white"
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ImgSolar width="70" height="70" />
-          <div
-            style={{
-              color: "black",
-              fontSize: "20px",
-              fontWeight: "bold",
-              width: "40px",
-              fontSize: "14px",
-            }}
-          >
-            <div>
-              {Number(props.cal?.pro_1 / 1000 || 0).toLocaleString("en-US")}
-            </div>
-            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
+        <LineA dur="10s" />
+        <LineB dur="10s" />
+        <LineD dur="10s" />
+
+        <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+        </foreignObject>
+
+        <foreignObject x="295" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+          <SolarImg src="/dat_icon/consumption.png" width="30" height="30" />
+        </foreignObject>
+
+
+        <foreignObject x="295" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+          <SolarImg src="/dat_icon/grid.png" width="30" height="30" />
+        </foreignObject>
+
+        <foreignObject x="157.188" y="102.233" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px" }}>
+            DC/AC
           </div>
-        </div>
+        </foreignObject>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <LineA width="110" height="45" dur="2s" />
-          <LineB width="110" height="45" dur="2s" />
-        </div>
-        {/* <LineF width="230" height="25" /> */}
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              color: "black",
-              fontSize: "20px",
-              fontWeight: "bold",
-              width: "40px",
-              fontSize: "14px",
-            }}
-          />
-          <ImgLoad width="70" height="70" />
-        </div>
-      </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "70px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "70px",
-            height: "70px",
-            backgroundColor: "white",
-            borderRadius: "5px",
-            border: "1px solid gray",
-          }}
-        >
-          DC/AC
-        </div>
-      </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ width: "60px", height: "70px" }} />
-          <div
-            style={{
-              color: "black",
-              fontSize: "20px",
-              fontWeight: "bold",
-              width: "40px",
-              fontSize: "14px",
-            }}
-          />
-        </div>
+      </svg>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ width: "120px", height: "45px" }} />
-          <LineD width="120" height="45" />
-        </div>
-        {/* <LineF width="230" height="25" /> */}
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              color: "black",
-              fontSize: "20px",
-              fontWeight: "bold",
-              width: "40px",
-              fontSize: "14px",
-            }}
-          />
-          <ImgGrid width="60" height="70" />
-        </div>
-      </div>
     </>
   );
 };
 
 const GraphConsumption = (props) => {
-  const [lineA_, setLinA] = useState(false);
-  const [lineB_, setLinB] = useState(false);
-  const [lineC_, setLinC] = useState("Default");
+  const [lineA_, setLinA] = useState("Default");
+  const [lineB_, setLinB] = useState("Default");
   const [lineD_, setLinD] = useState("Default");
 
+
+
   useEffect(() => {
-    // console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
-    if (props.cal?.pro_1 > 0) {
-      // console.log("A")
-      setLinA(true);
-    }
-    if (parseFloat(props.cal?.con_1) > 0) {
-      // console.log("B")
-      setLinB(true);
+    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
+    if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
+      setLinA("moveLtoR");
+    } else {
+      setLinA("Default");
     }
 
-    if (parseFloat(props.cal?.bat_1) > 0) {
-      // console.log("D")
-      setLinC("In");
-    } else if (parseFloat(props.cal?.bat_1) < 0) {
-      // console.log("D")
-      setLinC("Out");
+
+    if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
+      setLinB("moveRtoL");
     } else {
-      // console.log("D")
-      setLinC("default");
+      setLinB("Default");
     }
 
-    if (parseFloat(props.cal?.grid_1) > 0) {
-      // console.log("D")
-      setLinD("In");
-    } else if (parseFloat(props.cal?.grid_1) < 0) {
-      // console.log("D")
-      setLinD("Out");
+    if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
+      setLinD("moveRtoL");
+    } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
+      setLinD("moveLtoR");
     } else {
-      // console.log("D")
-      setLinD("default");
+      setLinD("Default");
     }
   }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1]);
 
   const LineA = (props) => {
     return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
+      <>
         <path
           className="path"
-          d="M 7 7 L 82 7 C 90 7 100 13 100 21 L 100 36"
+          d="M 196.271 98.625 L 196.396 16.86 L 72.511 17.177"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
+            stroke: lineA_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(43, 195, 253)",
+            strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
+            strokeDasharray: lineA_ === "Default" ? "0" : "20",
+            animation: `${lineA_} ${props.dur} linear infinite`,
           }}
         />
-        {lineA_ ? (
+        {/* {lineA_ ? (
           <circle
             r={4}
             style={{
@@ -4638,444 +4343,167 @@ const GraphConsumption = (props) => {
           </circle>
         ) : (
           <></>
-        )}
-      </svg>
+        )} */}
+      </>
     );
   };
 
   const LineB = (props) => {
     return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
+      <>
         <path
-          d="M 6.937 36.079 L 6.773 21.015 C 6.409 15.004 13.083 6.389 24.215 6.94 L 101.159 6.932"
+          d="M 217.242 98.976 L 217.726 16.793 L 341.759 16.278"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
+            stroke: lineB_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(247, 148, 29)",
+            strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
+            strokeDasharray: lineB_ === "Default" ? "0" : "20",
+            animation: `${lineB_}  ${props.dur} linear infinite`,
+
           }}
         />
-        {lineB_ ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 6.937 36.079 L 6.773 21.015 C 6.409 15.004 13.083 6.389 24.215 6.94 L 101.159 6.932"
-              dur={props.dur}
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-      </svg>
+
+      </>
     );
   };
 
-  const LineC = (props) => {
-    return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
-        <path
-          className="path"
-          d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
-            strokeLinecap: "round",
-            overflow: "hidden",
-          }}
-        />
-        {lineC_ === "In" ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 109.252 7.267 L 109.551 21.913 C 109.55 29.017 99.114 36.291 89.94 36.029 L 10.004 36.152"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-        {lineC_ === "Out" ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-      </svg>
-    );
-  };
 
   const LineD = (props) => {
     return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
+      <>
         <path
-          d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+          d="M 219.85 174.188 L 220.334 254.116 L 344.367 254.616"
+          width="100%"
+          height="100%"
           style={{
-            width: "100%",
-            height: "100%",
             fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
+            stroke: lineD_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(0, 163, 0)",
+            strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
+            strokeDasharray: lineD_ === "Default" ? "0" : "20",
+            animation: `${lineD_} ${props.dur} linear infinite`,
           }}
         />
-        {lineD_ === "In" ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-        {lineD_ === "Out" ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 7.023 6.84 L 7.258 23.056 C 8.368 31.282 15.33 35.948 25.037 36.062 L 105.077 36.005"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-      </svg>
+
+      </>
     );
   };
 
-  const ImgSolar = (props) => {
+  const Solar = (props) => {
     return (
-      <img
-        src="/dat_picture/solar-panel.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
+      <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", gap: "10px", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px", padding: "5px", boxSizing: "border-box", backgroundColor: "white", overflow: "hidden" }}>
+        <img src={props.src} width={`${props.width}px`} height={`${props.height}px`} alt="" />
+        <div>
+          <div>
+            {props.val}
+          </div>
+          <span style={{ color: "gray", fontSize: "13px" }}>{props.unit}</span>
+        </div>
+      </div>
     );
   };
 
-  const ImgGrid = (props) => {
-    return (
-      <img
-        src="/dat_picture/grid.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
 
-  const ImgLoad = (props) => {
-    return (
-      <img
-        src="/dat_picture/load.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
-
-  const ImgBat = (props) => {
-    return (
-      <img
-        src="/dat_picture/battery.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
 
   return (
     <>
-      <div
+      <svg
+        viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" width={"100%"} height={"100%"}
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          backgroundColor: "white"
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ImgSolar width="70" height="70" />
-          <div
-            style={{
-              color: "black",
-              fontSize: "20px",
-              fontWeight: "bold",
-              width: "40px",
-              fontSize: "14px",
-            }}
-          >
-            <div>
-              {Number(props.cal?.pro_1 / 1000 || 0).toLocaleString("en-US")}
-            </div>
-            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
+        <LineA dur="10s" />
+        <LineB dur="10s" />
+        <LineD dur="10s" />
+
+        <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+        </foreignObject>
+
+        <foreignObject x="295" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+        </foreignObject>
+
+        <foreignObject x="295" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+        </foreignObject>
+
+        <foreignObject x="157.188" y="102.233" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px" }}>
+            DC/AC
           </div>
-        </div>
+        </foreignObject>
+      </svg>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <LineA width="110" height="45" dur="2s" />
-          <LineB width="110" height="45" dur="2s" />
-        </div>
-        {/* <LineF width="230" height="25" /> */}
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              color: "black",
-              fontSize: "20px",
-              fontWeight: "bold",
-              width: "40px",
-              fontSize: "14px",
-            }}
-          >
-            <div>{Number(props.cal?.con_1 || 0).toLocaleString("en-US")}</div>
-            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
-          </div>
-          <ImgLoad width="70" height="70" />
-        </div>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "70px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "70px",
-            height: "70px",
-            backgroundColor: "white",
-            borderRadius: "5px",
-            border: "1px solid gray",
-          }}
-        >
-          DC/AC
-        </div>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ width: "60px", height: "70px" }}></div>
-          <div
-            style={{
-              color: "black",
-              fontSize: "20px",
-              fontWeight: "bold",
-              width: "40px",
-              fontSize: "14px",
-            }}
-          ></div>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ width: "120px", height: "45px" }}></div>
-          <LineD width="120" height="45" />
-        </div>
-        {/* <LineF width="230" height="25" /> */}
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              color: "black",
-              fontSize: "20px",
-              fontWeight: "bold",
-              width: "40px",
-              fontSize: "14px",
-            }}
-          >
-            <div>{Number(props.cal?.grid_1 || 0).toLocaleString("en-US")}</div>
-            <span style={{ color: "gray", fontSize: "13px" }}>W</span>
-          </div>
-          <ImgGrid width="60" height="70" />
-        </div>
-      </div>
     </>
   );
 };
 
 const GraphFull = (props) => {
-  const [lineA_, setLinA] = useState(false);
-  const [lineB_, setLinB] = useState(false);
+  const [lineA_, setLinA] = useState("Default");
+  const [lineB_, setLinB] = useState("Default");
   const [lineC_, setLinC] = useState("Default");
   const [lineD_, setLinD] = useState("Default");
 
+
+
   useEffect(() => {
-    // console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
-    if (props.cal?.pro_1 > 0) {
-      // console.log("A")
-      setLinA(true);
-    }
-    if (parseFloat(props.cal?.con_1) > 0) {
-      // console.log("B")
-      setLinB(true);
+    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1, props.cal?.bat_1)
+    if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
+      setLinA("moveLtoR");
+    } else {
+      setLinA("Default");
     }
 
-    if (parseFloat(props.cal?.bat_1) > 0) {
-      // console.log("D")
-      setLinC("In");
-    } else if (parseFloat(props.cal?.bat_1) < 0) {
-      // console.log("D")
-      setLinC("Out");
+
+    if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
+      setLinB("moveRtoL");
     } else {
-      // console.log("D")
-      setLinC("default");
+      setLinB("Default");
     }
 
-    if (parseFloat(props.cal?.grid_1) > 0) {
-      // console.log("D")
-      setLinD("In");
-    } else if (parseFloat(props.cal?.grid_1) < 0) {
-      // console.log("D")
-      setLinD("Out");
+    if (parseFloat(props.cal?.bat_1 / 1000).toFixed(2) > 0) {
+      setLinC("moveRtoL");
+    } else if (parseFloat(props.cal?.bat_1 / 1000).toFixed(2) < 0) {
+      setLinC("moveLtoR");
     } else {
-      // console.log("D")
-      setLinD("default");
+      setLinC("Default");
     }
-  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1]);
+
+    if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
+      setLinD("moveRtoL");
+    } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
+      setLinD("moveLtoR");
+    } else {
+      setLinD("Default");
+    }
+  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1, props.cal.bat_1]);
 
   const LineA = (props) => {
     return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
+      <>
         <path
           className="path"
-          d="M 7 7 L 82 7 C 90 7 100 13 100 21 L 100 36"
+          d="M 196.271 98.625 L 196.396 16.86 L 72.511 17.177"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
+            stroke: lineA_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(43, 195, 253)",
+            strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
+            strokeDasharray: lineA_ === "Default" ? "0" : "20",
+            animation: `${lineA_} ${props.dur} linear infinite`,
           }}
         />
-        {lineA_ ? (
+        {/* {lineA_ ? (
           <circle
             r={4}
             style={{
@@ -5095,387 +4523,136 @@ const GraphFull = (props) => {
           </circle>
         ) : (
           <></>
-        )}
-      </svg>
+        )} */}
+      </>
     );
   };
 
   const LineB = (props) => {
     return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
+      <>
         <path
-          d="M 6.937 36.079 L 6.773 21.015 C 6.409 15.004 13.083 6.389 24.215 6.94 L 101.159 6.932"
+          d="M 217.242 98.976 L 217.726 16.793 L 341.759 16.278"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
+            stroke: lineB_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(247, 148, 29)",
+            strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
+            strokeDasharray: lineB_ === "Default" ? "0" : "20",
+            animation: `${lineB_}  ${props.dur} linear infinite`,
+
           }}
         />
-        {lineB_ ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 6.937 36.079 L 6.773 21.015 C 6.409 15.004 13.083 6.389 24.215 6.94 L 101.159 6.932"
-              dur={props.dur}
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-      </svg>
+
+      </>
     );
   };
 
   const LineC = (props) => {
     return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
+      <>
         <path
           className="path"
-          d="M 15 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
+          d="M 197.95 174.365 L 198.082 254.227 L 63.344 253.918"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
+            stroke: lineC_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(77, 255, 0)",
+            strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
+            strokeDasharray: lineC_ === "Default" ? "0" : "20",
+            animation: `${lineC_} ${props.dur} linear infinite`,
+
           }}
         />
-        {lineC_ === "In" ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 109.252 7.267 L 109.551 21.913 C 109.55 29.017 99.114 36.291 89.94 36.029 L 10.004 36.152"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-        {lineC_ === "Out" ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 10 36 L 90 36 C 101 36 109 29 109 22 L 109 7"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-      </svg>
+
+      </>
     );
   };
 
   const LineD = (props) => {
     return (
-      <svg
-        width={`${props.width}px`}
-        height={`${props.height}px`}
-        version="1.1"
-      >
+      <>
         <path
-          d="M 100 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
+          d="M 219.85 174.188 L 220.334 254.116 L 344.367 254.616"
+          width="100%"
+          height="100%"
           style={{
-            width: "100%",
-            height: "100%",
             fill: "none",
-            stroke: "rgb(107, 107, 107,0.4)",
-            strokeWidth: "5",
+            stroke: lineD_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(0, 163, 0)",
+            strokeWidth: "8",
             strokeLinecap: "round",
             overflow: "hidden",
+            strokeDasharray: lineD_ === "Default" ? "0" : "20",
+            animation: `${lineD_} ${props.dur} linear infinite`,
           }}
         />
-        {lineD_ === "In" ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 105 36 L 25 36 C 14 36 7 28 7 23 L 7 7"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-        {lineD_ === "Out" ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 7.023 6.84 L 7.258 23.056 C 8.368 31.282 15.33 35.948 25.037 36.062 L 105.077 36.005"
-              dur="2s"
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )}
-      </svg>
+
+      </>
     );
   };
 
-  const ImgSolar = (props) => {
+  const Solar = (props) => {
     return (
-      <img
-        src="/dat_picture/solar-panel.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
+      <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", gap: "10px", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px", padding: "5px", boxSizing: "border-box", backgroundColor: "white", overflow: "hidden" }}>
+        <img src={props.src} width={`${props.width}px`} height={`${props.height}px`} alt="" />
+        <div>
+          <div>
+            {props.val}
+          </div>
+          <span style={{ color: "gray", fontSize: "13px" }}>{props.unit}</span>
+        </div>
+      </div>
     );
   };
 
-  const ImgGrid = (props) => {
-    return (
-      <img
-        src="/dat_picture/grid.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
 
-  const ImgLoad = (props) => {
-    return (
-      <img
-        src="/dat_picture/load.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
-
-  const ImgBat = (props) => {
-    return (
-      <img
-        src="/dat_picture/battery.png"
-        style={{ width: `${props.width}px`, height: `${props.height}px` }}
-        alt=""
-      />
-    );
-  };
 
   return (
     <>
-      <div
+      <svg
+        viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" width={"100%"} height={"100%"}
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          backgroundColor: "white"
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ImgSolar width="70" height="70" />
-          <div
-            style={{
-              color: "black",
-              fontSize: "20px",
-              fontWeight: "bold",
-              width: "40px",
-              fontSize: "14px",
-            }}
-          >
-            <div>
-              {Number(
-                parseFloat(convertUnit(props.cal?.pro_1 / 1000)).toFixed(2) || 0
-              ).toLocaleString("en-US")}
-            </div>
-            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
+        <LineA dur="10s" />
+        <LineB dur="10s" />
+        <LineC dur="10s" />
+        <LineD dur="10s" />
+
+        <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+        </foreignObject>
+
+        <foreignObject x="295" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+        </foreignObject>
+
+        <foreignObject x="5" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+          <Solar src="/dat_icon/bat.png" width="20" height="30" val={Number(parseFloat(props.cal?.bat_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+        </foreignObject>
+
+        <foreignObject x="295" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+        </foreignObject>
+
+        <foreignObject x="157.188" y="102.233" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px" }}>
+            DC/AC
           </div>
-        </div>
+        </foreignObject>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <LineA width="110" height="45" dur="2s" />
-          <LineB width="110" height="45" dur="2s" />
-        </div>
-        {/* <LineF width="230" height="25" /> */}
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              color: "black",
-              fontSize: "20px",
-              fontWeight: "bold",
-              width: "40px",
-              fontSize: "14px",
-            }}
-          >
-            <div>{Number(props.cal?.con_1 || 0).toLocaleString("en-US")}</div>
-            <span style={{ color: "gray", fontSize: "13px" }}>kW</span>
-          </div>
-          <ImgLoad width="70" height="70" />
-        </div>
-      </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          height: "70px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "70px",
-            height: "70px",
-            backgroundColor: "white",
-            borderRadius: "5px",
-            border: "1px solid gray",
-          }}
-        >
-          DC/AC
-        </div>
-      </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ImgBat width="60" height="70" />
-          <div
-            style={{
-              color: "black",
-              fontSize: "20px",
-              fontWeight: "bold",
-              width: "40px",
-              fontSize: "14px",
-            }}
-          >
-            <div>
-              {Number(props.cal?.bat_1 || 0).toLocaleString("en-US")}
-              { }
-            </div>
-            <span style={{ color: "gray", fontSize: "13px" }}>W</span>
-          </div>
-        </div>
+      </svg>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <LineC width="120" height="45" />
-          <LineD width="120" height="45" />
-        </div>
-        {/* <LineF width="230" height="25" /> */}
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              color: "black",
-              fontSize: "20px",
-              fontWeight: "bold",
-              width: "40px",
-              fontSize: "14px",
-            }}
-          >
-            <div>{Number(props.cal?.grid_1 || 0).toLocaleString("en-US")}</div>
-            <span style={{ color: "gray", fontSize: "13px" }}>W</span>
-          </div>
-          <ImgGrid width="60" height="70" />
-        </div>
-      </div>
     </>
   );
 };
@@ -5591,11 +4768,11 @@ const Production = (props) => {
           </div>
           <div style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(parseFloat(convertUnit(props.cal?.pro_1 / 1000)).toFixed(2) || 0).toLocaleString("en-US")}
+              {Number(parseFloat(convertUnit((props.cal?.pro_1 || 0) / 1000)).toFixed(3)).toLocaleString("en-US")}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnit(props.cal?.pro_1 / 1000)}W
+              {showUnit(props.cal?.pro_1 || 0 / 1000)}W
             </span>
           </div>
           <div
@@ -5634,11 +4811,11 @@ const Production = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_2)).toFixed(2) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.pro_2 || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_2)}Wh
+                  {showUnitk(props.cal?.pro_2 || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5656,11 +4833,11 @@ const Production = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_year)) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.pro_year || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_year)}Wh
+                  {showUnitk(props.cal?.pro_year || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5680,11 +4857,11 @@ const Production = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_month)) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.pro_month || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_month)}Wh
+                  {showUnitk(props.cal?.pro_month || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5702,11 +4879,11 @@ const Production = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_3)) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.pro_3 || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_3)}Wh
+                  {showUnitk(props.cal?.pro_3 || 0)}Wh
                 </span>
               </div>
             </div>
@@ -5724,19 +4901,17 @@ const Consumption = (props) => {
     <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data_Img">
-          <img src="/dat_picture/load.png" alt="" />
+          <img src="/dat_icon/consumption.png" alt="" />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data_Data">
           <span>{dataLang.formatMessage({ id: "consumption" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(
-              parseFloat(convertUnit(props.cal?.con_1)) || 0
-            ).toLocaleString("en-US")}
+            {Number(parseFloat(convertUnit(props.cal?.con_1 || 0)).toFixed(3)).toLocaleString("en-US")}
           </span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
-            {showUnitk(props.cal?.con_1)}W
+            {showUnitk(props.cal?.con_1 || 0)}W
           </span>
         </div>
       </div>
@@ -5843,15 +5018,13 @@ const Grid = (props) => {
     <div className="DAT_ProjectData_Dashboard_Data_Center_Grid">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Img">
-          <img src="/dat_picture/grid.png" alt="" />
+          <img src="/dat_icon/grid.png" alt="" />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Data">
           <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(
-              parseFloat(convertUnit(props.cal?.grid_1 / 1000)) || 0
-            ).toLocaleString("en-US")}
+            {Number(parseFloat(convertUnit(props.cal?.grid_1 / 1000 || 0).toFixed(3))).toLocaleString("en-US")}
           </span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
@@ -6057,7 +5230,7 @@ const Battery = (props) => {
     <div className="DAT_ProjectData_Dashboard_Data_Center_Battery">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Img">
-          <img src="/dat_picture/battery.png" alt="" />
+          <img src="/dat_icon/bat.png" alt="" style={{ width: "25px", height: "35px" }} />
         </div>
 
         <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Status">
@@ -6092,7 +5265,7 @@ const Battery = (props) => {
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
             {Number(
-              parseFloat(convertUnit(props.cal?.bat_1 / 1000)) || 0
+              parseFloat(convertUnit(props.cal?.bat_1 / 1000 || 0)).toFixed(3) || 0
             ).toLocaleString("en-US")}
           </span>
           &nbsp;
