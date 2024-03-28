@@ -622,7 +622,7 @@ export default function AddProject(props) {
           <div className="DAT_AddProject_Header_Right_Save"
             onClick={() => handleSaveBasic()}
           >
-            <IoSaveOutline size={20} color="white" />
+            <IoSaveOutline size={20} color="rgba(11, 25, 103)" />
             <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
           <div className="DAT_AddProject_Header_Right_Close" onClick={() => (plantState.value = "default")}>

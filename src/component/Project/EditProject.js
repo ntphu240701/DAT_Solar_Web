@@ -607,13 +607,13 @@ export default function EditProject(props) {
   return (
     <div className="DAT_EditProject">
       <div className="DAT_EditProject_Header">
-        <div className="DAT_EditProject_Header_Left"> {dataLang.formatMessage({ id: 'edit' })} </div>
+        <div className="DAT_EditProject_Header_Left"> {dataLang.formatMessage({ id: 'edits' })} </div>
 
         <div className="DAT_EditProject_Header_Right">
           <div className="DAT_EditProject_Header_Right_Save"
             onClick={() => handleSave()}
           >
-            <IoSaveOutline size={20} color="white" />
+            <IoSaveOutline size={20} color="rgba(11, 25, 103)" />
             <span> {dataLang.formatMessage({ id: 'save' })}</span>
           </div>
           <div className="DAT_EditProject_Header_Right_Close">
