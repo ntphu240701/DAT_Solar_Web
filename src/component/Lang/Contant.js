@@ -210,7 +210,6 @@ export const messages = {
     cause: "Caused by",
     solution: "Solution",
     change: "Edit",
-    edit: "Edit",
     edits: "Edit",
     editPassword: "Edit password",
     delete: "Delete",
@@ -356,7 +355,7 @@ export const messages = {
     Taiwan: 'Taiwan',
     Italy: 'Italy',
 
-    
+
     acfre: "AC frequency",
     acrcur: "AC R current",
     acrvolt: "AC R voltage",
@@ -366,16 +365,16 @@ export const messages = {
     actvolt: "AC T voltage",
     pv1cur: "PV1 current",
     pv1volt: "PV1 voltage",
-    pv1pow:  "PV1 power",
-    pv2cur:  "PV2 current",
+    pv1pow: "PV1 power",
+    pv2cur: "PV2 current",
     pv2volt: "PV2 voltage",
-    pv2pow:  "PV2 power",
-    pv3cur:  "PV3 current",
+    pv2pow: "PV2 power",
+    pv3cur: "PV3 current",
     pv3volt: "PV3 voltage",
-    pv3pow:  "PV3 power",
-    pv4cur:  "PV4 current",
+    pv3pow: "PV3 power",
+    pv4cur: "PV4 current",
     pv4volt: "PV4 voltage",
-    pv4pow:  "PV4 power",
+    pv4pow: "PV4 power",
 
     //Grid Infomation
     GridInfor: 'Grid Information',
@@ -875,7 +874,6 @@ export const messages = {
     grouproleInfo: "Nhập thông tin nhóm mới và các chức năng trong nhóm",
     change: "Chỉnh sửa",
     edits: "Thay đổi",
-    edit: "Tùy chỉnh",
     editPassword: "Đổi mật khẩu",
     delete: "Xóa",
     editGroup: "Chỉnh sửa nhóm",

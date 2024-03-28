@@ -83,7 +83,7 @@ export default function PopupAva(props) {
     <div className="DAT_PopupAva">
       <div className="DAT_PopupAva_Head">
         <div className="DAT_PopupAva_Head_Left">
-          <p>{dataLang.formatMessage({ id: 'edit' })}</p>
+          <p>{dataLang.formatMessage({ id: 'edits' })}</p>
         </div>
 
         <div className="DAT_PopupAva_Head_Right">

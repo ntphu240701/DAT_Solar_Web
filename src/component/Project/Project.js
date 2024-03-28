@@ -311,7 +311,7 @@ export default function Project(props) {
       width: "180px",
     },
     {
-      name: dataLang.formatMessage({ id: "edit" }),
+      name: dataLang.formatMessage({ id: "edits" }),
       selector: (row) => (
         <div
           style={{
