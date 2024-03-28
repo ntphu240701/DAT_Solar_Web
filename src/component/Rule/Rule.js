@@ -73,7 +73,7 @@ export default function Rule() {
       sortable: true,
       minWidth: "200px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
