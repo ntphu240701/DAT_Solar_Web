@@ -122,6 +122,7 @@ const filterchart = signal({
       gridData: true,
       consumptionData: true,
 
+
     },
     month: {
       productionData: true,
@@ -585,6 +586,7 @@ export default function ProjectData(props) {
   ];
 
   const handleInfoLogger = (e) => {
+    dropState.value = false
     infoState.value = true;
     tab.value = "logger";
     let plantname = projectData.value.plantname;
@@ -598,6 +600,7 @@ export default function ProjectData(props) {
   };
 
   const handleInfoInverter = (e) => {
+    dropState.value = false
     infoState.value = true;
     tab.value = "inverter";
     let plantname = projectData.value.plantname;
@@ -1949,7 +1952,10 @@ export default function ProjectData(props) {
                 >
                   <button
                     id="add"
-                    onClick={() => (popupAddGateway.value = true)}
+                    onClick={() => {
+                      (popupAddGateway.value = true);
+                      (dropState.value = false)
+                    }}
                   >
                     <IoAddOutline size={20} color="white" />
                   </button>
@@ -4112,7 +4118,7 @@ const Graph = (props) => {
 };
 
 const GraphGrid = (props) => {
-  const [lineA_, setLinA] = useState("moveLtoR");
+  const [lineA_, setLinA] = useState("Default");
 
   useEffect(() => {
     console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1, props.cal?.bat_1)
@@ -4242,7 +4248,7 @@ const GraphGrid = (props) => {
         <LineD dur="10s" />
 
         <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="295" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
@@ -4270,9 +4276,9 @@ const GraphGrid = (props) => {
 };
 
 const GraphConsumption = (props) => {
-  const [lineA_, setLinA] = useState("moveLtoR");
-  const [lineB_, setLinB] = useState("moveRtoL");
-  const [lineD_, setLinD] = useState("moveLtoR");
+  const [lineA_, setLinA] = useState("Default");
+  const [lineB_, setLinB] = useState("Default");
+  const [lineD_, setLinD] = useState("Default");
 
 
 
@@ -4286,7 +4292,7 @@ const GraphConsumption = (props) => {
 
 
     if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
-      setLinB("moveLtoR");
+      setLinB("moveRtoL");
     } else {
       setLinB("Default");
     }
@@ -4418,15 +4424,15 @@ const GraphConsumption = (props) => {
         <LineD dur="10s" />
 
         <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="295" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="295" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="157.188" y="102.233" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
@@ -4441,10 +4447,10 @@ const GraphConsumption = (props) => {
 };
 
 const GraphFull = (props) => {
-  const [lineA_, setLinA] = useState("moveLtoR");
-  const [lineB_, setLinB] = useState("moveRtoL");
-  const [lineC_, setLinC] = useState("moveLtoR");
-  const [lineD_, setLinD] = useState("moveLtoR");
+  const [lineA_, setLinA] = useState("Default");
+  const [lineB_, setLinB] = useState("Default");
+  const [lineC_, setLinC] = useState("Default");
+  const [lineD_, setLinD] = useState("Default");
 
 
 
@@ -4458,7 +4464,7 @@ const GraphFull = (props) => {
 
 
     if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
-      setLinB("moveLtoR");
+      setLinB("moveRtoL");
     } else {
       setLinB("Default");
     }
@@ -4622,19 +4628,19 @@ const GraphFull = (props) => {
         <LineD dur="10s" />
 
         <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="295" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="5" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/bat.png" width="20" height="30" val={Number(parseFloat(props.cal?.bat_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/bat.png" width="20" height="30" val={Number(parseFloat(props.cal?.bat_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="295" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="157.188" y="102.233" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
@@ -4763,11 +4769,11 @@ const Production = (props) => {
           </div>
           <div style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(parseFloat(convertUnit(props.cal?.pro_1 / 1000)).toFixed(2) || 0).toLocaleString("en-US")}
+              {Number(parseFloat(convertUnit((props.cal?.pro_1 || 0) / 1000)).toFixed(3)).toLocaleString("en-US")}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnit(props.cal?.pro_1 / 1000)}W
+              {showUnit(props.cal?.pro_1 || 0 / 1000)}W
             </span>
           </div>
           <div
@@ -4806,11 +4812,11 @@ const Production = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_2)).toFixed(2) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.pro_2 || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_2)}Wh
+                  {showUnitk(props.cal?.pro_2 || 0)}Wh
                 </span>
               </div>
             </div>
@@ -4828,11 +4834,11 @@ const Production = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_year)) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.pro_year || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_year)}Wh
+                  {showUnitk(props.cal?.pro_year || 0)}Wh
                 </span>
               </div>
             </div>
@@ -4852,11 +4858,11 @@ const Production = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_month)) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.pro_month || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_month)}Wh
+                  {showUnitk(props.cal?.pro_month || 0)}Wh
                 </span>
               </div>
             </div>
@@ -4874,11 +4880,11 @@ const Production = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_3)) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.pro_3 || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_3)}Wh
+                  {showUnitk(props.cal?.pro_3 || 0)}Wh
                 </span>
               </div>
             </div>
@@ -4902,7 +4908,7 @@ const Consumption = (props) => {
           <span>{dataLang.formatMessage({ id: "consumption" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(parseFloat(convertUnit(props.cal?.con_1 || 0)).toFixed(2)).toLocaleString("en-US")}
+            {Number(parseFloat(convertUnit(props.cal?.con_1 || 0)).toFixed(3)).toLocaleString("en-US")}
           </span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5019,7 +5025,7 @@ const Grid = (props) => {
           <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(parseFloat(convertUnit(props.cal?.grid_1 / 1000 || 0).toFixed(2))).toLocaleString("en-US")}
+            {Number(parseFloat(convertUnit(props.cal?.grid_1 / 1000 || 0).toFixed(3))).toLocaleString("en-US")}
           </span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5225,7 +5231,7 @@ const Battery = (props) => {
     <div className="DAT_ProjectData_Dashboard_Data_Center_Battery">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Img">
-          <img src="/dat_icon/bat.png" alt="" style={{ width: "15px", height: "35px" }} />
+          <img src="/dat_icon/bat.png" alt="" style={{ width: "25px", height: "35px" }} />
         </div>
 
         <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Status">
@@ -5260,7 +5266,7 @@ const Battery = (props) => {
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
             {Number(
-              parseFloat(convertUnit(props.cal?.bat_1 / 1000 || 0)).toFixed(2) || 0
+              parseFloat(convertUnit(props.cal?.bat_1 / 1000 || 0)).toFixed(3) || 0
             ).toLocaleString("en-US")}
           </span>
           &nbsp;
