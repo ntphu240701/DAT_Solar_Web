@@ -122,6 +122,7 @@ const filterchart = signal({
       gridData: true,
       consumptionData: true,
 
+
     },
     month: {
       productionData: true,
@@ -585,6 +586,7 @@ export default function ProjectData(props) {
   ];
 
   const handleInfoLogger = (e) => {
+    dropState.value = false
     infoState.value = true;
     tab.value = "logger";
     let plantname = projectData.value.plantname;
@@ -598,6 +600,7 @@ export default function ProjectData(props) {
   };
 
   const handleInfoInverter = (e) => {
+    dropState.value = false
     infoState.value = true;
     tab.value = "inverter";
     let plantname = projectData.value.plantname;
@@ -1949,7 +1952,10 @@ export default function ProjectData(props) {
                 >
                   <button
                     id="add"
-                    onClick={() => (popupAddGateway.value = true)}
+                    onClick={() => {
+                      (popupAddGateway.value = true);
+                      (dropState.value = false)
+                    }}
                   >
                     <IoAddOutline size={20} color="white" />
                   </button>
@@ -4112,7 +4118,7 @@ const Graph = (props) => {
 };
 
 const GraphGrid = (props) => {
-  const [lineA_, setLinA] = useState("moveLtoR");
+  const [lineA_, setLinA] = useState("Default");
 
   useEffect(() => {
     console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1, props.cal?.bat_1)
@@ -4242,7 +4248,7 @@ const GraphGrid = (props) => {
         <LineD dur="10s" />
 
         <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="295" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
@@ -4259,6 +4265,10 @@ const GraphGrid = (props) => {
             DC/AC
           </div>
         </foreignObject>
+
+
+
+
       </svg>
 
     </>
@@ -4266,9 +4276,9 @@ const GraphGrid = (props) => {
 };
 
 const GraphConsumption = (props) => {
-  const [lineA_, setLinA] = useState("moveLtoR");
-  const [lineB_, setLinB] = useState("moveRtoL");
-  const [lineD_, setLinD] = useState("moveLtoR");
+  const [lineA_, setLinA] = useState("Default");
+  const [lineB_, setLinB] = useState("Default");
+  const [lineD_, setLinD] = useState("Default");
 
 
 
@@ -4414,15 +4424,15 @@ const GraphConsumption = (props) => {
         <LineD dur="10s" />
 
         <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="295" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="295" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="157.188" y="102.233" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
@@ -4437,10 +4447,10 @@ const GraphConsumption = (props) => {
 };
 
 const GraphFull = (props) => {
-  const [lineA_, setLinA] = useState("moveLtoR");
-  const [lineB_, setLinB] = useState("moveRtoL");
-  const [lineC_, setLinC] = useState("moveLtoR");
-  const [lineD_, setLinD] = useState("moveLtoR");
+  const [lineA_, setLinA] = useState("Default");
+  const [lineB_, setLinB] = useState("Default");
+  const [lineC_, setLinC] = useState("Default");
+  const [lineD_, setLinD] = useState("Default");
 
 
 
@@ -4454,7 +4464,7 @@ const GraphFull = (props) => {
 
 
     if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
-      setLinB("moveLtoR");
+      setLinB("moveRtoL");
     } else {
       setLinB("Default");
     }
@@ -4618,19 +4628,19 @@ const GraphFull = (props) => {
         <LineD dur="10s" />
 
         <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="295" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="5" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/bat.png" width="20" height="30" val={Number(parseFloat(props.cal?.bat_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/bat.png" width="20" height="30" val={Number(parseFloat(props.cal?.bat_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="295" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="157.188" y="102.233" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
@@ -4759,11 +4769,11 @@ const Production = (props) => {
           </div>
           <div style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(parseFloat(convertUnit(props.cal?.pro_1 / 1000)).toFixed(2) || 0).toLocaleString("en-US")}
+              {Number(parseFloat(convertUnit((props.cal?.pro_1 || 0) / 1000)).toFixed(3)).toLocaleString("en-US")}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnit(props.cal?.pro_1 / 1000)}W
+              {showUnit(props.cal?.pro_1 || 0 / 1000)}W
             </span>
           </div>
           <div
@@ -4802,11 +4812,11 @@ const Production = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_2)).toFixed(2) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.pro_2 || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_2)}Wh
+                  {showUnitk(props.cal?.pro_2 || 0)}Wh
                 </span>
               </div>
             </div>
@@ -4824,11 +4834,11 @@ const Production = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_year)) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.pro_year || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_year)}Wh
+                  {showUnitk(props.cal?.pro_year || 0)}Wh
                 </span>
               </div>
             </div>
@@ -4848,11 +4858,11 @@ const Production = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_month)) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.pro_month || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_month)}Wh
+                  {showUnitk(props.cal?.pro_month || 0)}Wh
                 </span>
               </div>
             </div>
@@ -4870,11 +4880,11 @@ const Production = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_3)) || 0).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.pro_3 || 0))).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_3)}Wh
+                  {showUnitk(props.cal?.pro_3 || 0)}Wh
                 </span>
               </div>
             </div>
@@ -4898,7 +4908,7 @@ const Consumption = (props) => {
           <span>{dataLang.formatMessage({ id: "consumption" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(parseFloat(convertUnit(props.cal?.con_1 || 0)).toFixed(2)).toLocaleString("en-US")}
+            {Number(parseFloat(convertUnit(props.cal?.con_1 || 0)).toFixed(3)).toLocaleString("en-US")}
           </span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5015,7 +5025,7 @@ const Grid = (props) => {
           <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(parseFloat(convertUnit(props.cal?.grid_1 / 1000 || 0).toFixed(2))).toLocaleString("en-US")}
+            {Number(parseFloat(convertUnit(props.cal?.grid_1 / 1000 || 0).toFixed(3))).toLocaleString("en-US")}
           </span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5256,7 +5266,7 @@ const Battery = (props) => {
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
             {Number(
-              parseFloat(convertUnit(props.cal?.bat_1 / 1000 || 0)).toFixed(2) || 0
+              parseFloat(convertUnit(props.cal?.bat_1 / 1000 || 0)).toFixed(3) || 0
             ).toLocaleString("en-US")}
           </span>
           &nbsp;
@@ -5486,12 +5496,12 @@ const Day = (props) => {
                       <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
                         <stop
                           offset="5%"
-                          stopColor="rgb(4,143,255)"
+                          stopColor="rgba(11,25,103)"
                           stopOpacity={0.7}
                         />
                         <stop
                           offset="90%"
-                          stopColor="rgb(4,143,255)"
+                          stopColor="rgba(11,25,103)"
                           stopOpacity={0}
                         />
                       </linearGradient>
@@ -5529,7 +5539,7 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v}
-                        stroke="rgb(4,143,255)"
+                        stroke="rgba(11,25,103)"
                         fillOpacity={1}
                         fill="url(#colorday)"
                       />
@@ -5550,12 +5560,12 @@ const Day = (props) => {
                       <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
                         <stop
                           offset="5%"
-                          stopColor="rgb(4,143,255)"
+                          stopColor="rgba(11,25,103)"
                           stopOpacity={0.7}
                         />
                         <stop
                           offset="90%"
-                          stopColor="rgb(4,143,255)"
+                          stopColor="rgba(11,25,103)"
                           stopOpacity={0}
                         />
                       </linearGradient>
@@ -5566,8 +5576,8 @@ const Day = (props) => {
                         x2="0"
                         y2="1"
                       >
-                        <stop offset="5%" stopColor="red" stopOpacity={0.7} />
-                        <stop offset="90%" stopColor="red" stopOpacity={0} />
+                        <stop offset="5%" stopColor="rgba(247, 148, 29)" stopOpacity={0.7} />
+                        <stop offset="90%" stopColor="rgba(247, 148, 29)" stopOpacity={0} />
                       </linearGradient>
                       <linearGradient
                         id="colorday3"
@@ -5576,8 +5586,8 @@ const Day = (props) => {
                         x2="0"
                         y2="1"
                       >
-                        <stop offset="5%" stopColor="green" stopOpacity={0.7} />
-                        <stop offset="90%" stopColor="green" stopOpacity={0} />
+                        <stop offset="5%" stopColor="rgba(0, 163, 0)" stopOpacity={0.7} />
+                        <stop offset="90%" stopColor="rgba(0, 163, 0)" stopOpacity={0} />
                       </linearGradient>
                       <linearGradient
                         id="colorday4"
@@ -5633,7 +5643,7 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v}
-                        stroke="rgb(4,143,255)"
+                        stroke="rgba(11,25,103)"
                         fillOpacity={1}
                         fill="url(#colorday)"
                       />
@@ -5647,7 +5657,7 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v2}
-                        stroke="red"
+                        stroke="rgba(247, 148, 29)"
                         fillOpacity={2}
                         fill="url(#colorday2)"
                       />
@@ -5661,7 +5671,7 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v3}
-                        stroke="green"
+                        stroke="rgba(0, 163, 0)"
                         fillOpacity={2}
                         fill="url(#colorday3)"
                       />
@@ -5694,12 +5704,12 @@ const Day = (props) => {
                       <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
                         <stop
                           offset="5%"
-                          stopColor="rgb(4,143,255)"
+                          stopColor="rgba(11,25,103)"
                           stopOpacity={0.7}
                         />
                         <stop
                           offset="90%"
-                          stopColor="rgb(4,143,255)"
+                          stopColor="rgba(11,25,103)"
                           stopOpacity={0}
                         />
                       </linearGradient>
@@ -5710,8 +5720,8 @@ const Day = (props) => {
                         x2="0"
                         y2="1"
                       >
-                        <stop offset="5%" stopColor="red" stopOpacity={0.7} />
-                        <stop offset="90%" stopColor="red" stopOpacity={0} />
+                        <stop offset="5%" stopColor="rgba(247, 148, 29)" stopOpacity={0.7} />
+                        <stop offset="90%" stopColor="rgba(247, 148, 29)" stopOpacity={0} />
                       </linearGradient>
                       <linearGradient
                         id="colorday3"
@@ -5720,8 +5730,8 @@ const Day = (props) => {
                         x2="0"
                         y2="1"
                       >
-                        <stop offset="5%" stopColor="green" stopOpacity={0.7} />
-                        <stop offset="90%" stopColor="green" stopOpacity={0} />
+                        <stop offset="5%" stopColor="rgba(0, 163, 0)" stopOpacity={0.7} />
+                        <stop offset="90%" stopColor="rgba(0, 163, 0)" stopOpacity={0} />
                       </linearGradient>
                       <linearGradient
                         id="colorday4"
@@ -5777,7 +5787,7 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v}
-                        stroke="rgb(4,143,255)"
+                        stroke="rgba(11,25,103)"
                         fillOpacity={1}
                         fill="url(#colorday)"
                       />
@@ -5791,7 +5801,7 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v2}
-                        stroke="red"
+                        stroke="rgba(247, 148, 29)"
                         fillOpacity={2}
                         fill="url(#colorday2)"
                       />
@@ -5805,7 +5815,7 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v3}
-                        stroke="green"
+                        stroke="rgba(0, 163, 0)"
                         fillOpacity={2}
                         fill="url(#colorday3)"
                       />
@@ -5908,12 +5918,12 @@ const Month = (props) => {
                       props.dateType
                     ].productionData ? (
                       <Bar
-                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        shape={<TriangleBar fill="rgba(11,25,103)" />}
                         dataKey={props.v}
-                        fill="#6495ed"
+                        fill="rgba(11,25,103)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "#6495ed" }}
+                        style={{ fill: "rgba(11,25,103)" }}
                       />
                     ) : (
                       <></>
@@ -5957,12 +5967,12 @@ const Month = (props) => {
                       props.dateType
                     ].productionData ? (
                       <Bar
-                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        shape={<TriangleBar fill="rgba(11,25,103)" />}
                         dataKey={props.v}
-                        fill="#6495ed"
+                        fill="rgba(11,25,103)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "#6495ed" }}
+                        style={{ fill: "rgba(11,25,103)" }}
                       />
                     ) : (
                       <></>
@@ -5971,12 +5981,12 @@ const Month = (props) => {
                       props.dateType
                     ].consumptionData ? (
                       <Bar
-                        shape={<TriangleBar fill="red" />}
+                        shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
                         dataKey={props.v2}
-                        fill="red"
+                        fill="rgba(97,88,194,0.8)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "red" }}
+                        style={{ fill: "rgba(97,88,194,0.8)" }}
                       />
                     ) : (
                       <></>
@@ -5985,12 +5995,12 @@ const Month = (props) => {
                       props.dateType
                     ].dailygridin ? (
                       <Bar
-                        shape={<TriangleBar fill="brown" />}
+                        shape={<TriangleBar fill="rgba(247, 148, 29)" />}
                         dataKey={props.v3}
-                        fill="brown"
+                        fill="rgba(247, 148, 29)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "brown" }}
+                        style={{ fill: "rgba(247, 148, 29)" }}
                       />
                     ) : (
                       <></>
@@ -5999,12 +6009,12 @@ const Month = (props) => {
                       props.dateType
                     ].dailygridout ? (
                       <Bar
-                        shape={<TriangleBar fill="green" />}
+                        shape={<TriangleBar fill="rgba(0, 163, 0)" />}
                         dataKey={props.v4}
-                        fill="green"
+                        fill="rgba(0, 163, 0)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "green" }}
+                        style={{ fill: "rgba(0, 163, 0)" }}
                       />
                     ) : (
                       <></>
@@ -6049,12 +6059,12 @@ const Month = (props) => {
                       props.dateType
                     ].productionData ? (
                       <Bar
-                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        shape={<TriangleBar fill="rgba(11,25,103)" />}
                         dataKey={props.v}
-                        fill="#6495ed"
+                        fill="rgba(11,25,103)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "#6495ed" }}
+                        style={{ fill: "rgba(11,25,103)" }}
                       />
                     ) : (
                       <></>
@@ -6063,12 +6073,12 @@ const Month = (props) => {
                       props.dateType
                     ].consumptionData ? (
                       <Bar
-                        shape={<TriangleBar fill="red" />}
+                        shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
                         dataKey={props.v2}
-                        fill="red"
+                        fill="rgba(97,88,194,0.8)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "red" }}
+                        style={{ fill: "rgba(97,88,194,0.8)" }}
                       />
                     ) : (
                       <></>
@@ -6077,12 +6087,12 @@ const Month = (props) => {
                       props.dateType
                     ].dailygridin ? (
                       <Bar
-                        shape={<TriangleBar fill="brown" />}
+                        shape={<TriangleBar fill="rgba(247, 148, 29)" />}
                         dataKey={props.v3}
-                        fill="brown"
+                        fill="rgba(247, 148, 29)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "brown" }}
+                        style={{ fill: "rgba(247, 148, 29)" }}
                       />
                     ) : (
                       <></>
@@ -6091,12 +6101,12 @@ const Month = (props) => {
                       props.dateType
                     ].dailygridout ? (
                       <Bar
-                        shape={<TriangleBar fill="green" />}
+                        shape={<TriangleBar fill="rgba(0, 163, 0)" />}
                         dataKey={props.v4}
-                        fill="green"
+                        fill="rgba(0, 163, 0)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "green" }}
+                        style={{ fill: "rgba(0, 163, 0)" }}
                       />
                     ) : (
                       <></>
@@ -6198,12 +6208,12 @@ const Year = (props) => {
                       props.dateType
                     ].productionData ? (
                       <Bar
-                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        shape={<TriangleBar fill="rgba(11,25,103)" />}
                         dataKey={props.v}
-                        fill="#6495ed"
+                        fill="rgba(11,25,103)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "#6495ed" }}
+                        style={{ fill: "rgba(11,25,103)" }}
                       />
                     ) : (
                       <></>
@@ -6233,12 +6243,12 @@ const Year = (props) => {
                       props.dateType
                     ].productionData ? (
                       <Bar
-                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        shape={<TriangleBar fill="rgba(11,25,103)" />}
                         dataKey={props.v}
-                        fill="#6495ed"
+                        fill="rgba(11,25,103)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "#6495ed" }}
+                        style={{ fill: "rgba(11,25,103)" }}
                       />
                     ) : (
                       <></>
@@ -6247,12 +6257,12 @@ const Year = (props) => {
                       props.dateType
                     ].consumptionData ? (
                       <Bar
-                        shape={<TriangleBar fill="red" />}
+                        shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
                         dataKey={props.v2}
-                        fill="red"
+                        fill="rgba(97,88,194,0.8)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "red" }}
+                        style={{ fill: "rgba(97,88,194,0.8)" }}
                       />
                     ) : (
                       <></>
@@ -6261,12 +6271,12 @@ const Year = (props) => {
                       props.dateType
                     ].dailygridin ? (
                       <Bar
-                        shape={<TriangleBar fill="brown" />}
+                        shape={<TriangleBar fill="rgba(247, 148, 29)" />}
                         dataKey={props.v3}
-                        fill="brown"
+                        fill="rgba(247, 148, 29)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "brown" }}
+                        style={{ fill: "rgba(247, 148, 29)" }}
                       />
                     ) : (
                       <></>
@@ -6275,12 +6285,12 @@ const Year = (props) => {
                       props.dateType
                     ].dailygridout ? (
                       <Bar
-                        shape={<TriangleBar fill="green" />}
+                        shape={<TriangleBar fill="rgba(0, 163, 0)" />}
                         dataKey={props.v4}
-                        fill="green"
+                        fill="rgba(0, 163, 0)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "green" }}
+                        style={{ fill: "rgba(0, 163, 0)" }}
                       />
                     ) : (
                       <></>
@@ -6310,12 +6320,12 @@ const Year = (props) => {
                       props.dateType
                     ].productionData ? (
                       <Bar
-                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        shape={<TriangleBar fill="rgba(11,25,103)" />}
                         dataKey={props.v}
-                        fill="#6495ed"
+                        fill="rgba(11,25,103)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "#6495ed" }}
+                        style={{ fill: "rgba(11,25,103)" }}
                       />
                     ) : (
                       <></>
@@ -6324,12 +6334,12 @@ const Year = (props) => {
                       props.dateType
                     ].consumptionData ? (
                       <Bar
-                        shape={<TriangleBar fill="red" />}
+                        shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
                         dataKey={props.v2}
-                        fill="red"
+                        fill="rgba(97,88,194,0.8)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "red" }}
+                        style={{ fill: "rgba(97,88,194,0.8)" }}
                       />
                     ) : (
                       <></>
@@ -6338,12 +6348,12 @@ const Year = (props) => {
                       props.dateType
                     ].dailygridin ? (
                       <Bar
-                        shape={<TriangleBar fill="brown" />}
+                        shape={<TriangleBar fill="rgba(247, 148, 29)" />}
                         dataKey={props.v3}
-                        fill="brown"
+                        fill="rgba(247, 148, 29)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "brown" }}
+                        style={{ fill: "rgba(247, 148, 29)" }}
                       />
                     ) : (
                       <></>
@@ -6352,12 +6362,12 @@ const Year = (props) => {
                       props.dateType
                     ].dailygridout ? (
                       <Bar
-                        shape={<TriangleBar fill="green" />}
+                        shape={<TriangleBar fill="rgba(0, 163, 0)" />}
                         dataKey={props.v4}
-                        fill="green"
+                        fill="rgba(0, 163, 0)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "green" }}
+                        style={{ fill: "rgba(0, 163, 0)" }}
                       />
                     ) : (
                       <></>
@@ -6458,12 +6468,12 @@ const Total = (props) => {
                       props.dateType
                     ].productionData ? (
                       <Bar
-                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        shape={<TriangleBar fill="rgba(11,25,103)" />}
                         dataKey={props.v}
-                        fill="#6495ed"
+                        fill="rgba(11,25,103)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "#6495ed" }}
+                        style={{ fill: "rgba(11,25,103)" }}
                       />
                     ) : (
                       <></>
@@ -6493,12 +6503,12 @@ const Total = (props) => {
                       props.dateType
                     ].productionData ? (
                       <Bar
-                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        shape={<TriangleBar fill="rgba(11,25,103)" />}
                         dataKey={props.v}
-                        fill="#6495ed"
+                        fill="rgba(11,25,103)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "#6495ed" }}
+                        style={{ fill: "rgba(11,25,103)" }}
                       />
                     ) : (
                       <></>
@@ -6507,12 +6517,12 @@ const Total = (props) => {
                       props.dateType
                     ].consumptionData ? (
                       <Bar
-                        shape={<TriangleBar fill="red" />}
+                        shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
                         dataKey={props.v2}
-                        fill="red"
+                        fill="rgba(97,88,194,0.8)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "red" }}
+                        style={{ fill: "rgba(97,88,194,0.8)" }}
                       />
                     ) : (
                       <></>
@@ -6521,12 +6531,12 @@ const Total = (props) => {
                       props.dateType
                     ].dailygridin ? (
                       <Bar
-                        shape={<TriangleBar fill="brown" />}
+                        shape={<TriangleBar fill="rgba(247, 148, 29)" />}
                         dataKey={props.v3}
-                        fill="brown"
+                        fill="rgba(247, 148, 29)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "brown" }}
+                        style={{ fill: "rgba(247, 148, 29)" }}
                       />
                     ) : (
                       <></>
@@ -6535,12 +6545,12 @@ const Total = (props) => {
                       props.dateType
                     ].dailygridout ? (
                       <Bar
-                        shape={<TriangleBar fill="green" />}
+                        shape={<TriangleBar fill="rgba(0, 163, 0)" />}
                         dataKey={props.v4}
-                        fill="green"
+                        fill="rgba(0, 163, 0)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "green" }}
+                        style={{ fill: "rgba(0, 163, 0)" }}
                       />
                     ) : (
                       <></>
@@ -6570,12 +6580,12 @@ const Total = (props) => {
                       props.dateType
                     ].productionData ? (
                       <Bar
-                        shape={<TriangleBar fill="rgb(4,143,255)" />}
+                        shape={<TriangleBar fill="rgba(11,25,103)" />}
                         dataKey={props.v}
-                        fill="#6495ed"
+                        fill="rgba(11,25,103)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "#6495ed" }}
+                        style={{ fill: "rgba(11,25,103)" }}
                       />
                     ) : (
                       <></>
@@ -6584,12 +6594,12 @@ const Total = (props) => {
                       props.dateType
                     ].consumptionData ? (
                       <Bar
-                        shape={<TriangleBar fill="red" />}
+                        shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
                         dataKey={props.v2}
-                        fill="red"
+                        fill="rgba(97,88,194,0.8)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "red" }}
+                        style={{ fill: "rgba(97,88,194,0.8)" }}
                       />
                     ) : (
                       <></>
@@ -6598,12 +6608,12 @@ const Total = (props) => {
                       props.dateType
                     ].dailygridin ? (
                       <Bar
-                        shape={<TriangleBar fill="brown" />}
+                        shape={<TriangleBar fill="rgba(247, 148, 29)" />}
                         dataKey={props.v3}
-                        fill="brown"
+                        fill="rgba(247, 148, 29)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "brown" }}
+                        style={{ fill: "rgba(247, 148, 29)" }}
                       />
                     ) : (
                       <></>
@@ -6612,12 +6622,12 @@ const Total = (props) => {
                       props.dateType
                     ].dailygridout ? (
                       <Bar
-                        shape={<TriangleBar fill="green" />}
+                        shape={<TriangleBar fill="rgba(0, 163, 0)" />}
                         dataKey={props.v4}
-                        fill="green"
+                        fill="rgba(0, 163, 0)"
                         barSize={15}
                         legendType="circle"
-                        style={{ fill: "green" }}
+                        style={{ fill: "rgba(0, 163, 0)" }}
                       />
                     ) : (
                       <></>
