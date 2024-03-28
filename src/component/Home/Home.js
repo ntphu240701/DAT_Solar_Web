@@ -254,7 +254,7 @@ export default function Home(props) {
         y={y}
         width={width}
         height={height}
-        fill={"rgb(4,143,255)"}
+        fill={"rgba(11, 25, 103)"}
         rx="3"
         ry="3"
         opacity="1"
@@ -926,10 +926,10 @@ export default function Home(props) {
                     <Bar
                       shape={<TriangleBar />}
                       dataKey={dataLang.formatMessage({ id: "yearOutput" })}
-                      fill="#6495ed"
+                      fill="rgba(11, 25, 103)"
                       barSize={15}
                       legendType="circle"
-                      style={{ fill: "#6495ed" }}
+                      style={{ fill: "rgba(11, 25, 103)" }}
                     />
                   </BarChart>
                 </ResponsiveContainer>
@@ -960,10 +960,10 @@ export default function Home(props) {
                     <Bar
                       shape={<TriangleBar />}
                       dataKey={dataLang.formatMessage({ id: "monthOutput" })}
-                      fill="#6495ed"
+                      fill="rgba(11, 25, 103)"
                       barSize={15}
                       legendType="circle"
-                      style={{ fill: "#6495ed" }}
+                      style={{ fill: "rgba(11, 25, 103)" }}
                     />
                   </BarChart>
                 </ResponsiveContainer>
