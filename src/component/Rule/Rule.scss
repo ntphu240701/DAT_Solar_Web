@@ -19,6 +19,7 @@
         align-items: center;
         gap: 5px;
         color: COLOR.$Primary-color;
+        font-family: Montserrat-Bold;
     }
 
     &_Filter {
@@ -72,6 +73,13 @@
     box-shadow:
         2px 2px 5px rgba(198, 197, 197, 0.4),
         -2px -2px 5px rgba(198, 197, 197, 0.4);
+
+    &_Header {
+        color: COLOR.$Primary-color;
+        font-family: Montserrat-SemiBold;
+        padding: 16px;
+        background-color: rgba(233, 233, 233, 0.5);
+    }
 
     &_Content {
         padding: 10px;
