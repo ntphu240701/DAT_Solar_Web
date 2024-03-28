@@ -6,7 +6,7 @@ $Green-color: rgba(77, 255, 0);
 $DarkOrange-color: rgba(247, 148, 29);
 $Orange-color: rgba(254, 194, 14);
 $Gray-color: rgba(95, 95, 98);
-$Lightpurple-color: rgba(97,88,194,0.8);
+$Lightpurple-color: rgba(97, 88, 194, 0.8);
 $LightGray-color: rgba(233, 233, 233, 0.5);
 $Warning-color: rgba(255, 0, 0);
 $Notice-color: rgba(255, 255, 0);
@@ -938,6 +938,27 @@ iframe {
 @font-face {
   font-family: "Montserrat-Regular";
   src: url("../public/assets/fonts/montserrat/Montserrat-Regular.ttf");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Montserrat-Bold";
+  src: url("../public/assets/fonts/montserrat/Montserrat-Bold.ttf");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Montserrat-SemiBold";
+  src: url("../public/assets/fonts/montserrat/Montserrat-SemiBold.ttf");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Montserrat-Medium";
+  src: url("../public/assets/fonts/montserrat/Montserrat-Medium.ttf");
   font-weight: 800;
   font-style: normal;
 }

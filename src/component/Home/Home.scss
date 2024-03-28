@@ -21,6 +21,7 @@
         align-items: center;
         gap: 5px;
         color: COLOR.$Primary-color;
+        font-family: Montserrat-Bold;
     }
 }
 
@@ -72,6 +73,7 @@
 
             &-Title {
                 color: COLOR.$Primary-color;
+                font-family: Montserrat-SemiBold;
             }
         }
 
@@ -230,7 +232,6 @@
 
                 & span {
                     padding: 4px;
-                    width: 40px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -240,6 +241,7 @@
 
             &-Title {
                 color: COLOR.$Primary-color;
+                font-family: Montserrat-SemiBold;
             }
         }
 
@@ -306,6 +308,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             color: COLOR.$Primary-color;
+            font-family: Montserrat-SemiBold;
         }
 
         &-Total {
@@ -427,6 +430,7 @@
 
             &-Title {
                 color: COLOR.$Primary-color;
+                font-family: Montserrat-SemiBold;
             }
         }
 
@@ -465,6 +469,7 @@
                 justify-content: center;
                 align-items: center;
                 color: COLOR.$Primary-color;
+                font-family: Montserrat-SemiBold;
             }
         }
 
