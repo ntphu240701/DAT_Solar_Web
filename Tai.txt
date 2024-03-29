@@ -1,2 +1,2 @@
-1. Đồng hồ đếm ngược data trả về sau 5p
-2. Sửa lại màu chart, bỏ gradient, để 1 màu và giảm opacity
+1. Filter Thiet bi nut Huy
+2. Filter Huy warn 
