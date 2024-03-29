@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./Contact.scss";
 
 import { contactState } from "./Contact";
-import { partnerInfor } from "../../App";
+import { COLOR, partnerInfor } from "../../App";
 import { signal } from "@preact/signals-react";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
@@ -26,7 +26,6 @@ export default function EditContactInfo(props) {
       if (key === e.target.id) {
         Type.value = { ...Type.value, [key]: { ...Type.value[key], checked: !Type.value[key].checked } }
         const d = await callApi('post', host.DATA + '/updatePartner', { code: partnerInfor.value.code, type: 'businesstype', data: key })
-        console.log(d)
         if (d.status) {
           alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
           partnerInfor.value = {
@@ -46,9 +45,7 @@ export default function EditContactInfo(props) {
     const id = e.currentTarget.id
     let data = document.getElementById(`${id}_input`).value
     if (data !== "") {
-      console.log(id, data)
       const d = await callApi('post', host.DATA + '/updatePartner', { code: partnerInfor.value.code, type: id, data: data })
-      console.log(d)
       if (d.status) {
         alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
         partnerInfor.value = {
@@ -70,7 +67,9 @@ export default function EditContactInfo(props) {
   return (
     <div className="DAT_EditContactInfo">
       <div className="DAT_EditContactInfo_Header">
-        <div className="DAT_EditContactInfo_Header_Left">{dataLang.formatMessage({ id: 'edits' })}</div>
+        <div className="DAT_EditContactInfo_Header_Left">
+          {dataLang.formatMessage({ id: 'edits' })}
+        </div>
 
         <div className="DAT_EditContactInfo_Header_Right">
           <div className="DAT_EditContactInfo_Header_Right_Close">
@@ -93,8 +92,16 @@ export default function EditContactInfo(props) {
                 </div>
 
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
-                  <input type="text" id="businessmodel_input" defaultValue={partnerInfor.value.businessmodel} />
-                  <span style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }} id='businessmodel' onClick={(e) => handeUpdate(e)} >
+                  <input
+                    type="text"
+                    id="businessmodel_input"
+                    defaultValue={partnerInfor.value.businessmodel}
+                  />
+                  <span
+                    style={{ cursor: "pointer", color: COLOR.value.PrimaryColor }}
+                    id='businessmodel'
+                    onClick={(e) => handeUpdate(e)}
+                  >
                     {dataLang.formatMessage({ id: 'save' })}
                   </span>
                 </div>
@@ -106,20 +113,38 @@ export default function EditContactInfo(props) {
                 </div>
 
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
-                  <input type="text" id="businessname_input" defaultValue={partnerInfor.value.businessname} />
-                  <span style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }} id="businessname" onClick={(e) => handeUpdate(e)}>
+                  <input
+                    type="text"
+                    id="businessname_input"
+                    defaultValue={partnerInfor.value.businessname}
+                  />
+                  <span
+                    style={{ cursor: "pointer", color: COLOR.value.PrimaryColor }}
+                    id="businessname"
+                    onClick={(e) => handeUpdate(e)}
+                  >
                     {dataLang.formatMessage({ id: 'save' })}</span>
                 </div>
               </div>
 
-              <div className="DAT_EditContactInfo_Body_Row2_Item">
+              <div className="DAT_EditContactInfo_Body_Row2_Item"
+                style={{ marginBottom: "0px" }}
+              >
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
                   {dataLang.formatMessage({ id: 'area' })}
                 </div>
 
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
-                  <input type="text" id="area_input" defaultValue={partnerInfor.value.area} />
-                  <span style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }} id="area" onClick={(e) => handeUpdate(e)}>
+                  <input
+                    type="text"
+                    id="area_input"
+                    defaultValue={partnerInfor.value.area}
+                  />
+                  <span
+                    style={{ cursor: "pointer", color: COLOR.value.PrimaryColor }}
+                    id="area"
+                    onClick={(e) => handeUpdate(e)}
+                  >
                     {dataLang.formatMessage({ id: 'save' })}
                   </span>
                 </div>
@@ -127,13 +152,22 @@ export default function EditContactInfo(props) {
             </div>
 
             <div className="DAT_EditContactInfo_Body_Row1">
-              <div className="DAT_EditContactInfo_Body_Row1_Tit">{dataLang.formatMessage({ id: 'businesstype' })}</div>
+              <div className="DAT_EditContactInfo_Body_Row1_Tit">
+                {dataLang.formatMessage({ id: 'businesstype' })}
+              </div>
               <div className="DAT_EditContactInfo_Body_Row1_Content">
                 {Object.keys(Type.value).map((key) => {
                   return (
                     <div className="DAT_EditContactInfo_Body_Row1_Content_Item" key={key}>
-                      <input type="radio" id={key} checked={Type.value[key].checked} onChange={(e) => handeTypeChange(e)} />
-                      <span>{dataLang.formatMessage({ id: Type.value[key].name })}</span>
+                      <input
+                        type="radio"
+                        id={key}
+                        checked={Type.value[key].checked}
+                        onChange={(e) => handeTypeChange(e)}
+                      />
+                      <span>
+                        {dataLang.formatMessage({ id: Type.value[key].name })}
+                      </span>
                     </div>
                   );
                 })}
