@@ -1861,7 +1861,7 @@ export default function ProjectData(props) {
               >
                 <IoClose
                   size={25}
-                  color="white"
+                  color="rgba(11, 25, 103)"
                   id="Popup"
                   onMouseEnter={(e) => handlePopup("new")}
                   onMouseLeave={(e) => handlePopup("pre")} />
@@ -1999,6 +1999,7 @@ export default function ProjectData(props) {
               >
                 <IoClose
                   size={25}
+                  color="rgba(11, 25, 103)"
                   id="Popup"
                   onMouseEnter={(e) => handlePopup("new")}
                   onMouseLeave={(e) => handlePopup("pre")}

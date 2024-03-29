@@ -30,13 +30,13 @@ export default function Info(props) {
             {props.level == 'warn' ? (
               <div className="DAT_PopupReportInfo_Box_Head_Left_TableWarning">
                 <p>
-                  {dataLang.formatMessage({ id: props.boxid })}
+                  {dataLang.formatMessage({ id: props.boxid, defaultMessage: props.boxid })}
                 </p>
               </div>
             ) : (
               <div className="DAT_PopupReportInfo_Box_Head_Left_TableNotice">
                 <p>
-                  {dataLang.formatMessage({ id: props.boxid })}
+                  {dataLang.formatMessage({ id: props.boxid, defaultMessage: props.boxid })}
                 </p>
               </div>
             )}
