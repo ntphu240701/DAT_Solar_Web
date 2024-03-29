@@ -4,7 +4,6 @@
     width: 98%;
     margin: auto;
     margin-top: 70px;
-    font-size: 18px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -427,6 +426,7 @@
                         box-sizing: border-box;
                         -webkit-box-sizing: border-box;
                         -moz-box-sizing: border-box;
+                        font-family: Montserrat-Regular;
                     }
 
                     & span {

@@ -4,15 +4,14 @@ import "./User.scss";
 import { popupStateUser, editType } from "./User";
 import { alertDispatch } from "../Alert/Alert";
 import Resizer from "react-image-file-resizer";
-import { userInfor } from "../../App";
+import { COLOR, userInfor } from "../../App";
 import { callApi } from "../Api/Api";
 import { useSelector } from "react-redux";
 import { host } from "../Lang/Contant";
 import { useIntl } from "react-intl";
 
 import { IoClose } from "react-icons/io5";
-import { LiaEyeSolid } from "react-icons/lia";
-import { LiaEyeSlashSolid } from "react-icons/lia";
+import { LiaEyeSolid, LiaEyeSlashSolid } from "react-icons/lia";
 
 export default function Popup() {
   const dataLang = useIntl();
@@ -58,7 +57,6 @@ export default function Popup() {
 
   const handleChooseAvatar = async (e) => {
     var reader = new FileReader();
-    console.log("old size", e.target.files[0].size)
     if (e.target.files[0].size > 50000) {
       const image = await resizeFilAvatar(e.target.files[0]);
       reader.readAsDataURL(image);
@@ -67,7 +65,6 @@ export default function Popup() {
       }
     } else {
       reader.readAsDataURL(e.target.files[0]);
-      console.log(e.target.files[0].size)
       reader.onload = () => {
         setAva(reader.result);
       };
@@ -93,7 +90,6 @@ export default function Popup() {
         if (oldpassRef.current.value !== "" && newpassRef.current.value !== "" && confirmpassRef.current.value !== "") {
           if (newpassRef.current.value === confirmpassRef.current.value) {
             let d = await callApi("post", host.AUTH + "/ChangePassword", { usr: user, type: "password", oldpass: oldpassRef.current.value, newpass: confirmpassRef.current.value });
-            console.log(d)
             if (d.status) {
               alertDispatch(dataLang.formatMessage({ id: "alert_1" }));
               popupStateUser.value = false;
@@ -192,30 +188,28 @@ export default function Popup() {
               return (
                 <div className="DAT_PopupUser_Box_Body_Avatar">
                   <div className="DAT_PopupUser_Box_Body_Avatar_Cover">
-                    <img src={ava} alt=""></img>
+                    <img src={ava} alt="" />
                   </div>
                   <input
                     type="file"
                     id="file"
                     accept="image/png, image/gif, image/jpeg"
                     onChange={(e) => handleChooseAvatar(e)}
-                  ></input>
-                  <label htmlFor="file" style={{ cursor: "pointer" }}>
-                    {dataLang.formatMessage({ id: 'chooseImg' })}
-                  </label>
+                  />
                 </div>
               );
             case "password":
               return (
                 <div className="DAT_PopupUser_Box_Body_Info">
-                  <label>{dataLang.formatMessage({ id: 'curr_pwd' })} </label>
+                  <label>
+                    {dataLang.formatMessage({ id: 'curr_pwd' })}
+                  </label>
                   <div className="DAT_PopupUser_Box_Body_Info_Input">
                     <div className="DAT_PopupUser_Box_Body_Info_Input_Pack">
                       <input
                         type={oldpass === true ? "password" : "text"}
                         ref={oldpassRef}
-
-                      ></input>
+                      />
                       <label onClick={() => setOldpass(!oldpass)}>
                         {oldpass === false ? (
                           <LiaEyeSolid size={20} />
@@ -225,14 +219,15 @@ export default function Popup() {
                       </label>
                     </div>
                   </div>
-                  <label>{dataLang.formatMessage({ id: 'new_pwd' })} </label>
+                  <label>
+                    {dataLang.formatMessage({ id: 'new_pwd' })}
+                  </label>
                   <div className="DAT_PopupUser_Box_Body_Info_Input">
                     <div className="DAT_PopupUser_Box_Body_Info_Input_Pack">
                       <input
                         type={newpass === true ? "password" : "text"}
                         ref={newpassRef}
-
-                      ></input>
+                      />
                       <label>
                         {newpass === false ? (
                           <LiaEyeSolid
@@ -248,14 +243,17 @@ export default function Popup() {
                       </label>
                     </div>
                   </div>
-                  <label>{dataLang.formatMessage({ id: 'auth_pwd' })}: </label>
-                  <div className="DAT_PopupUser_Box_Body_Info_Input">
+                  <label>
+                    {dataLang.formatMessage({ id: 'auth_pwd' })}:
+                  </label>
+                  <div className="DAT_PopupUser_Box_Body_Info_Input"
+                    style={{ marginBottom: "0px" }}
+                  >
                     <div className="DAT_PopupUser_Box_Body_Info_Input_Pack">
                       <input
                         type={confirmpass === true ? "password" : "text"}
                         ref={confirmpassRef}
-
-                      ></input>
+                      />
                       <label onClick={() => setConfirmpass(!confirmpass)}>
                         {confirmpass === false ? (
                           <LiaEyeSolid size={20} />
@@ -270,19 +268,40 @@ export default function Popup() {
             case "name":
               return (
                 <div className="DAT_PopupUser_Box_Body_Info">
-                  <input type="text" placeholder={dataLang.formatMessage({ id: 'name' })} defaultValue={userInfor.value.name} ref={renameRef}></input>
+                  <label>
+                    {dataLang.formatMessage({ id: 'name' })}
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={dataLang.formatMessage({ id: 'name' })}
+                    defaultValue={userInfor.value.name} ref={renameRef}
+                  />
                 </div>
               );
             case "phone":
               return (
                 <div className="DAT_PopupUser_Box_Body_Info">
-                  <input type="number" placeholder={dataLang.formatMessage({ id: 'phone' })} defaultValue={userInfor.value.phone} ref={phoneRef}></input>
+                  <label>
+                    {dataLang.formatMessage({ id: 'phone' })}
+                  </label>
+                  <input
+                    type="number"
+                    placeholder={dataLang.formatMessage({ id: 'phone' })}
+                    defaultValue={userInfor.value.phone} ref={phoneRef}
+                  />
                 </div>
               );
             case "addr":
               return (
                 <div className="DAT_PopupUser_Box_Body_Info">
-                  <input type="text" placeholder={dataLang.formatMessage({ id: 'address' })} defaultValue={userInfor.value.addr} ref={addrRef}></input>
+                  <label>
+                    {dataLang.formatMessage({ id: 'address' })}
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={dataLang.formatMessage({ id: 'address' })}
+                    defaultValue={userInfor.value.addr} ref={addrRef}
+                  />
                 </div>
               );
             default:
@@ -293,7 +312,6 @@ export default function Popup() {
 
       <div className="DAT_PopupUser_Box_Foot">
         <button
-          style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
           onClick={() => handleSave()}
         >
           {dataLang.formatMessage({ id: 'save' })}
