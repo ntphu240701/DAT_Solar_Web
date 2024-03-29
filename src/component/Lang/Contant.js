@@ -344,7 +344,7 @@ export const messages = {
     //Country 
     Spain: 'Spain',
     India: 'India',
-    Beligum: 'Beligum',
+    Belgium: 'Belgium',
     SouthAfrica: 'South Africa NRS',
     WestAustralia: 'Western Australia',
     Netherlands: 'Netherlands',
@@ -1032,7 +1032,7 @@ export const messages = {
     //Country 
     Spain: 'Tây Ban Nha',
     India: 'Ấn Độ',
-    Beligum: 'Bỉ',
+    Belgium: 'Bỉ',
     SouthAfrica: 'Nam Phi',
     WestAustralia: 'Tây Úc',
     Netherlands: 'Hà Lan',
