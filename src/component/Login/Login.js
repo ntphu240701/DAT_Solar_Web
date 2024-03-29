@@ -39,6 +39,9 @@ export default function Login(props) {
     const [lang, setLang] = useState('vi');
     //const status = useSelector((state) => state.admin.status)
 
+    const colorWhite = 'white'
+
+
     useEffect(function () {
         setOTP(generateOTP());
         rootDispatch(adminslice.actions.setlang(lang))
@@ -175,17 +178,20 @@ export default function Login(props) {
         <div className='DAT_Login' >
             <div className="DAT_Login_Head" >
                 <div className="DAT_Login_Head_Logo">
-                    <img src={"/dat_icon/logo-dat.png"} alt='' />
+                    <img src={"/dat_icon/Embody_APP_28.png"} alt='' />
                 </div>
 
                 <div className="DAT_Login_Head_Title">
-                    <div className="DAT_Login_Head_Title_Main" >EMBODY</div>
+                    <div className="DAT_Login_Head_Title_Main" >
+                        {/* <img src={"/dat_icon/Embody_APP_27.png"} width={'150px'} height={'30px'} alt='' ></img> */}
+                        AIOT Energy
+                    </div>
                     <div className="DAT_Login_Head_Title_Sub">{dataLang.formatMessage({ id: 'sologon' })} </div>
                 </div>
 
                 <div className="DAT_Login_Head_Lang" onClick={(e) => { handleLang(e) }}>
                     <span>{lang === 'vi' ? 'Vi' : 'En'}</span>
-                    <span><MdLanguage color='white' size={24} /></span>
+                    <span><MdLanguage color={colorWhite} size={24} /></span>
                 </div>
             </div>
 
@@ -196,20 +202,20 @@ export default function Login(props) {
                             <form className="DAT_Login_Form" onSubmit={handleRegister}>
                                 <p>{dataLang.formatMessage({ id: 'register' })}</p>
                                 <div className="DAT_Login_Form-input">
-                                    <CiMail color='gray' size={24} />
+                                    <CiMail color={colorWhite} size={24} />
                                     <input type="email" placeholder={dataLang.formatMessage({ id: 'email' })} required value={mail} onChange={(e) => { setMail(e.target.value) }} autoComplete="on" />
                                 </div>
 
                                 <div className="DAT_Login_Form-input">
-                                    <MdPassword color='gray' size={24} />
+                                    <MdPassword color={colorWhite} size={24} />
                                     <input type={(showpass) ? "text" : "password"} placeholder={dataLang.formatMessage({ id: 'password' })} required minLength="6" value={pass} onChange={(e) => { setPass(e.target.value.trim()) }} autoComplete="on" />
-                                    {(showpass) ? <FaRegEye color='gray' size={24} onClick={() => setShowpass(!showpass)} /> : <FaRegEyeSlash color='gray' size={24} onClick={() => setShowpass(!showpass)} />}
+                                    {(showpass) ? <FaRegEye color={colorWhite} size={24} onClick={() => setShowpass(!showpass)} /> : <FaRegEyeSlash color={colorWhite} size={24} onClick={() => setShowpass(!showpass)} />}
                                 </div>
 
                                 <div className="DAT_Login_Form-input">
-                                    <TbPasswordFingerprint color='gray' size={24} />
+                                    <TbPasswordFingerprint color={colorWhite} size={24} />
                                     <input type={(showpass2) ? "text" : "password"} placeholder={dataLang.formatMessage({ id: 'auth_pwd' })} required minLength="6" value={newpwd} onChange={(e) => { setNewpwd(e.target.value.trim()) }} autoComplete="on" />
-                                    {(showpass2) ? <FaRegEye color='gray' size={24} onClick={() => setShowpass2(!showpass2)} /> : <FaRegEyeSlash color='gray' size={24} onClick={() => setShowpass2(!showpass2)} />}
+                                    {(showpass2) ? <FaRegEye color={colorWhite} size={24} onClick={() => setShowpass2(!showpass2)} /> : <FaRegEyeSlash color={colorWhite} size={24} onClick={() => setShowpass2(!showpass2)} />}
                                 </div>
 
                                 <div className="DAT_Login_Form-box" style={{ marginBottom: join ? '10px' : '20px' }}>
@@ -225,7 +231,7 @@ export default function Login(props) {
 
                                 {join
                                     ? <div className="DAT_Login_Form-input">
-                                        <CiBarcode color='gray' size={24} />
+                                        <CiBarcode color={colorWhite} size={24} />
                                         <input type="text" placeholder={dataLang.formatMessage({ id: 'join' })} minLength={3} required={join} value={joinCode} onChange={(e) => { setJoinCode(e.target.value.trim()) }} autoComplete="on" />
                                     </div>
                                     : <></>
@@ -244,22 +250,22 @@ export default function Login(props) {
                             <form className="DAT_Login_Form" onSubmit={(e) => { e.preventDefault(); tab.value = 'register_2' }}>
                                 <p>{dataLang.formatMessage({ id: 'register' })}</p>
                                 <div className="DAT_Login_Form-input">
-                                    <CiUser color='gray' size={24} />
+                                    <CiUser color={colorWhite} size={24} />
                                     <input type="text" placeholder={dataLang.formatMessage({ id: 'username' })} minLength={4} required value={user} onChange={(e) => { setUser(e.target.value.trim().toLocaleLowerCase()) }} autoComplete="on" />
                                 </div>
 
                                 <div className="DAT_Login_Form-input">
-                                    <LuUserCheck color='gray' size={24} />
+                                    <LuUserCheck color={colorWhite} size={24} />
                                     <input type="text" placeholder={dataLang.formatMessage({ id: 'name' })} minLength={6} required value={name} onChange={(e) => { setName(e.target.value) }} autoComplete="on" />
                                 </div>
 
                                 <div className="DAT_Login_Form-input">
-                                    <BsTelephoneInbound color='gray' size={24} />
+                                    <BsTelephoneInbound color={colorWhite} size={24} />
                                     <input type="number" placeholder={dataLang.formatMessage({ id: 'phone' })} required value={phone} minLength={10} onChange={(e) => { setPhone(e.target.value) }} autoComplete="on" />
                                 </div>
 
                                 <div className="DAT_Login_Form-input">
-                                    <HiOutlineMapPin color='gray' size={24} />
+                                    <HiOutlineMapPin color={colorWhite} size={24} />
                                     <input type="text" placeholder={dataLang.formatMessage({ id: 'addr' })} minLength={6} required value={addr} onChange={(e) => { setAddr(e.target.value) }} autoComplete="on" />
                                 </div>
 
@@ -276,11 +282,11 @@ export default function Login(props) {
                             <form className="DAT_Login_Form" onSubmit={handleAuth}>
                                 <p>{dataLang.formatMessage({ id: 'confirm' })}</p>
                                 <div className="DAT_Login_Form-input">
-                                    <CiMail color='gray' size={24} />
+                                    <CiMail color={colorWhite} size={24} />
                                     <input type="email" placeholder={dataLang.formatMessage({ id: 'email' })} required value={mail} onChange={(e) => { setMail(e.target.value) }} autoComplete="on" />
                                 </div>
                                 <div className="DAT_Login_Form-input">
-                                    <CiBarcode color='gray' size={24} />
+                                    <CiBarcode color={colorWhite} size={24} />
                                     <input type="text" placeholder={"Mã OTP"} minLength={4} required value={joinOTP} onChange={(e) => { setJoinOTP(e.target.value.trim()) }} autoComplete="on" />
                                 </div>
 
@@ -301,7 +307,7 @@ export default function Login(props) {
                                 <p>{dataLang.formatMessage({ id: 'pwd' })}</p>
 
                                 <div className="DAT_Login_Form-input">
-                                    <MdPassword color='gray' size={24} />
+                                    <MdPassword color={colorWhite} size={24} />
                                     <input type={(showpass) ? "text" : "password"} placeholder={dataLang.formatMessage({ id: 'new_pwd' })} required minLength="6" value={pass} onChange={(e) => { setPass(e.target.value.trim()) }} autoComplete="on" />
                                     {(showpass) ? <FaRegEye color='gray' size={24} onClick={() => setShowpass(!showpass)} /> : <FaRegEyeSlash color='gray' size={24} onClick={() => setShowpass(!showpass)} />}
                                 </div>
@@ -309,7 +315,7 @@ export default function Login(props) {
                                 <div className="DAT_Login_Form-input">
                                     <TbPasswordFingerprint color='gray' size={24} />
                                     <input type={(showpass2) ? "text" : "password"} placeholder={dataLang.formatMessage({ id: 'auth_pwd' })} required minLength="6" value={newpwd} onChange={(e) => { setNewpwd(e.target.value.trim()) }} autoComplete="on" />
-                                    {(showpass2) ? <FaRegEye color='gray' size={24} onClick={() => setShowpass2(!showpass2)} /> : <FaRegEyeSlash color='gray' size={24} onClick={() => setShowpass2(!showpass2)} />}
+                                    {(showpass2) ? <FaRegEye color={colorWhite} size={24} onClick={() => setShowpass2(!showpass2)} /> : <FaRegEyeSlash color={colorWhite} size={24} onClick={() => setShowpass2(!showpass2)} />}
                                 </div>
 
                                 <button>{dataLang.formatMessage({ id: 'update' })}</button>
@@ -325,14 +331,14 @@ export default function Login(props) {
                             <form className="DAT_Login_Form" onSubmit={handleLogin}>
                                 <p>{dataLang.formatMessage({ id: 'login' })}</p>
                                 <div className="DAT_Login_Form-input">
-                                    <CiUser color='gray' size={24} />
+                                    <CiUser color={colorWhite} size={24} />
                                     <input type="text" placeholder={dataLang.formatMessage({ id: 'username' })} required minLength="4" value={user} onChange={(e) => { setUser(e.target.value.trim().toLocaleLowerCase()) }} autoComplete="on" />
                                 </div>
 
                                 <div className="DAT_Login_Form-input">
-                                    <MdPassword color='gray' size={24} />
+                                    <MdPassword color={colorWhite} size={24} />
                                     <input type={(showpass) ? "text" : "password"} placeholder={dataLang.formatMessage({ id: 'password' })} required minLength="4" value={pass} onChange={(e) => { setPass(e.target.value.trim()) }} autoComplete="on" />
-                                    {(showpass) ? <FaRegEye color='gray' size={24} onClick={() => setShowpass(!showpass)} /> : <FaRegEyeSlash color='gray' size={24} onClick={() => setShowpass(!showpass)} />}
+                                    {(showpass) ? <FaRegEye color={colorWhite} size={24} onClick={() => setShowpass(!showpass)} /> : <FaRegEyeSlash color={colorWhite} size={24} onClick={() => setShowpass(!showpass)} />}
                                 </div>
 
                                 <div className="DAT_Login_Form-box">
@@ -372,7 +378,7 @@ export default function Login(props) {
             <div className="DAT_Login_Footer" >
                 <div className='DAT_Login_Footer_Info'>
                     <span className="DAT_Login_Footer_Info_Version">
-                        {dataLang.formatMessage({ id: 'version' })}: 1.0
+                        {dataLang.formatMessage({ id: 'version' })}: 1.1
                     </span>
                     &nbsp;
                     <span className="DAT_Login_Footer_Info_Title">

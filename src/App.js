@@ -20,6 +20,7 @@ import { callApi } from "./component/Api/Api";
 import { signal } from "@preact/signals-react";
 import { closed, dataWarn, open } from "./component/Warn/Warn";
 import { useIntl } from "react-intl";
+import ErrorSetting from "./component/ErrorSetting/ErrorSetting";
 
 const Home = React.lazy(() => import("./component/Home/Home"));
 const Project = React.lazy(() => import("./component/Project/Project"));
@@ -536,6 +537,24 @@ export default function App() {
                             }
                           >
                             <Rule />
+                          </Suspense>
+                        }
+                      />
+                      <Route
+                        path="/ErrorSetting"
+                        element={
+                          <Suspense
+                            fallback={
+                              <div className="DAT_Loading">
+                                <ClockLoader
+                                  color="#007bff"
+                                  size={50}
+                                  loading={loading}
+                                />
+                              </div>
+                            }
+                          >
+                            <ErrorSetting />
                           </Suspense>
                         }
                       />
