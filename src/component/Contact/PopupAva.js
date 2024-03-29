@@ -45,7 +45,6 @@ export default function PopupAva(props) {
 
   const handleChooseAvatar = async (e) => {
     var reader = new FileReader();
-    console.log("old size", e.target.files[0].size)
 
     if (e.target.files[0].size > 100000) {
       const image = await resizeFile(e.target.files[0]);
@@ -56,7 +55,6 @@ export default function PopupAva(props) {
       };
     } else {
       reader.readAsDataURL(e.target.files[0]);
-      console.log(e.target.files[0].size)
       reader.onload = () => {
         setAva(reader.result);
       };
@@ -64,9 +62,7 @@ export default function PopupAva(props) {
   };
 
   const handleSave = async (e) => {
-    console.log(partnerInfor.value.code)
     const d = await callApi('post', host.DATA + '/updatePartner', { code: partnerInfor.value.code, type: 'logo', data: ava })
-    console.log(d)
     if (d.status) {
       alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
       partnerInfor.value = {
@@ -91,9 +87,7 @@ export default function PopupAva(props) {
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
-            onClick={() => {
-              popupStateContact.value = false;
-            }}
+            onClick={() => { popupStateContact.value = false; }}
           >
             <IoClose size={20} />
           </div>
@@ -118,7 +112,9 @@ export default function PopupAva(props) {
       </div>
 
       <div className="DAT_PopupAva_Foot">
-        <button style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }} onClick={() => { handleSave() }}>
+        <button
+          onClick={() => { handleSave() }}
+        >
           {dataLang.formatMessage({ id: 'save' })}
         </button>
       </div>

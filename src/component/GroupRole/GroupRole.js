@@ -11,13 +11,14 @@ import DataTable from "react-data-table-component";
 import { Empty } from "../Project/Project";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
+
 import { MdDelete } from "react-icons/md";
 import { IoMdMore } from "react-icons/io";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { PiUsersFour } from "react-icons/pi";
-import { callApi } from "../Api/Api";
-import { host } from "../Lang/Contant";
 import { CiSearch } from "react-icons/ci";
 import { AiOutlineUserAdd, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
@@ -101,15 +102,6 @@ const GroupUsers = () => {
         justifyContent: "left",
       },
     },
-    // {
-    //   name: "Rule ID",
-    //   selector: (user) => user.ruleid_,
-    //   sortable: true,
-    //   // width: "150px",
-    //   style: {
-    //     justifyContent: "left",
-    //   },
-    // },
     {
       name: dataLang.formatMessage({ id: "setting" }),
       selector: (user) => (
@@ -135,10 +127,7 @@ const GroupUsers = () => {
   const handleChangeGroup = (e) => {
     groupID.value = Number(e.currentTarget.id);
     const checkApi = async () => {
-      const getUser = await callApi("post", host.DATA + "/getallUser", {
-        partnerid: groupID.value,
-      });
-      // console.log(getUser)
+      const getUser = await callApi("post", host.DATA + "/getallUser", { partnerid: groupID.value, });
       if (getUser.status) {
         groupUser.value = getUser.data.sort((a, b) => a.id_ - b.id_);
         datafilter.value = groupUser.value;
@@ -187,8 +176,7 @@ const GroupUsers = () => {
 
         <div className="DAT_GR_Content_DevideTable_Left_ItemList">
           {group.value.map((item, index) => (
-            <div
-              className="DAT_GR_Content_DevideTable_Left_ItemList_Item"
+            <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item"
               key={index}
               id={item.id_}
               style={{
@@ -198,30 +186,26 @@ const GroupUsers = () => {
               onClick={(e) => handleChangeGroup(e)}
             >
               <div>
-                <div
-                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
+                <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
                   style={{ fontSize: "15px" }}
                 >
                   {item.name_}
                 </div>
 
-                <div
-                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
+                <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
                   style={{ fontSize: "13px", color: "grey", maxWidth: "100px" }}
                 >
                   {item.code_}
                 </div>
               </div>
-              <div
-                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Shortcut"
+              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Shortcut"
                 id={item.id_ + "_dot"}
                 onClick={(e) => handleShowFunction(e)}
               >
                 <IoMdMore size={20} color="grey" />
               </div>
 
-              <div
-                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More"
+              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More"
                 id={item.id_ + "_function"}
                 style={{ display: "none" }}
                 onMouseLeave={(e) => handleShowFunction(e)}
@@ -229,16 +213,14 @@ const GroupUsers = () => {
                 {item.id_ === 1 ? (
                   <></>
                 ) : (
-                  <div
-                    className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Delete"
+                  <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Delete"
                     id={item.id_}
                     onClick={(e) => handleDeleteGroup(e)}
                   >
                     <IoTrashOutline size={18} />
                   </div>
                 )}
-                <div
-                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Edit"
+                <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Edit"
                   style={{ right: "40px" }}
                   id={item.id_}
                   onClick={(e) => handleEditGroup(e)}
@@ -246,8 +228,7 @@ const GroupUsers = () => {
                   <FiEdit size={18} />
                 </div>
 
-                <div
-                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
+                <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
                   onClick={() => (addState.value = true)}
                 >
                   <AiOutlineUserAdd size={18} />
@@ -259,9 +240,6 @@ const GroupUsers = () => {
       </div>
 
       <div className="DAT_GR_Content_DevideTable_Right">
-        {/* <div className="DAT_GR_Content_DevideTable_Right_Head">
-          {dataLang.formatMessage({ id: "roleList" })}
-        </div> */}
         <div className="DAT_GR_Content_DevideTable_Right_ItemList">
           {groupID.value === 0 ? (
             <Empty />
@@ -297,7 +275,6 @@ export default function GroupRole(props) {
           item.usr_.toLowerCase().includes(t)
         );
       });
-      console.log(datafilter.value);
     }
   };
 
@@ -364,8 +341,7 @@ export default function GroupRole(props) {
           </>
         ) : (
           <>
-            <div
-              className="DAT_GRHeader_Filter"
+            <div className="DAT_GRHeader_Filter"
               style={{
                 backgroundColor:
                   groupID.value === 0 ? "rgba(233, 233, 233, 0.5)" : "white",
@@ -380,8 +356,7 @@ export default function GroupRole(props) {
               />
               <CiSearch color="gray" size={20} />
             </div>
-            <button
-              className="DAT_GRHeader_New"
+            <button className="DAT_GRHeader_New"
               onClick={() => (createState.value = true)}
             >
               <span>
@@ -395,16 +370,7 @@ export default function GroupRole(props) {
       </div>
 
       <div className="DAT_GR">
-        <div
-          className="DAT_GR_Header"
-          style={{
-            padding: "15px",
-            backgroundColor: "rgba(233, 233, 233, 0.5)",
-            borderBottom: "1px solid rgb(233, 233, 233, 0.4)",
-            boxShadow:
-              "0 2px 2px 0 rgba(198, 197, 197, 0.3), 0 6px 20px 0 rgba(198, 197, 197, 0.3)",
-          }}
-        >
+        <div className="DAT_GR_Header">
           {dataLang.formatMessage({ id: "grouproleList" })}
         </div>
         <div className="DAT_GR_Content">
@@ -412,8 +378,7 @@ export default function GroupRole(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_GroupCreate"
+      <div className="DAT_GroupCreate"
         style={{
           height: createState.value ? "100vh" : "0px",
           transition: "0.5s",

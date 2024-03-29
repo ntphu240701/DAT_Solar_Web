@@ -3,7 +3,7 @@ import "./Contact.scss";
 
 import PopupAvatar from "./PopupAva";
 import EditContactInfo from "./EditContactInfo";
-import { partnerInfor, ruleInfor, userInfor } from "../../App";
+import { partnerInfor, ruleInfor } from "../../App";
 import { signal } from "@preact/signals-react";
 import { useIntl } from "react-intl";
 
@@ -26,7 +26,10 @@ export default function Contact(props) {
     <>
       <div className="DAT_ContactHeader">
         <div className="DAT_ContactHeader_Title">
-          <MdOutlineContactPhone color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'contact' })}</span>
+          <MdOutlineContactPhone color="gray" size={25} />
+          <span>
+            {dataLang.formatMessage({ id: 'contact' })}
+          </span>
         </div>
       </div>
 
@@ -58,7 +61,9 @@ export default function Contact(props) {
               <div>{partnerInfor.value.area}</div>
             </div>
 
-            <div className="DAT_Contact_Item_Registation_Content">
+            <div className="DAT_Contact_Item_Registation_Content"
+              style={{ marginBottom: "0px" }}
+            >
               <div>{dataLang.formatMessage({ id: 'businesstype' })}</div>
               <div>{dataLang.formatMessage({ id: Type[partnerInfor.value.businesstype] })}</div>
             </div>
@@ -87,7 +92,9 @@ export default function Contact(props) {
               <div>{partnerInfor.value.phone}</div>
             </div>
 
-            <div className="DAT_Contact_Item_Contact_Content">
+            <div className="DAT_Contact_Item_Contact_Content"
+              style={{ marginBottom: "0px" }}
+            >
               <div>E-mail</div>
               <div>{partnerInfor.value.mail}</div>
             </div>
