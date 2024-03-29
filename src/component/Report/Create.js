@@ -10,7 +10,7 @@ import { useIntl } from "react-intl";
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import { IoSaveOutline } from "react-icons/io5";
+import { IoClose, IoSaveOutline } from "react-icons/io5";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { userInfor } from "../../App";
@@ -258,6 +258,18 @@ export default function Create() {
     }
   };
 
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
+
   const handleDataType = (e) => {
     // // console.log(e.currentTarget.value)
     setReportType(e.currentTarget.value);
@@ -286,14 +298,17 @@ export default function Create() {
               className="DAT_Create_Header_Right_Save"
               onClick={() => handleCreate()}
             >
-              <IoSaveOutline size={20} color="rgba(11, 25, 103)" />
+              <IoSaveOutline size={20} color="white" />
               <span>{dataLang.formatMessage({ id: "save" })}</span>
             </div>
             <div
               className="DAT_Create_Header_Right_Close"
+              id="Popup"
+              onMouseEnter={(e) => handlePopup("new")}
+              onMouseLeave={(e) => handlePopup("pre")}
               onClick={() => (createState.value = false)}
             >
-              <RxCross2 size={20} color="white" />
+              <IoClose size={25} />
             </div>
           </div>
         </div>

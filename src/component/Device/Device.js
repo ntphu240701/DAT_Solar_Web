@@ -166,7 +166,7 @@ export default function Device(props) {
       sortable: true,
       minWidth: "300px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {

@@ -447,13 +447,7 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
-
-                background-color: red;
                 cursor: pointer;
-
-                &:hover {
-                    background-color: rgb(252, 122, 122);
-                }
             }
         }
     }
@@ -747,8 +741,8 @@
                 gap: 10px;
 
                 & button {
-                    padding: 8px;
-                    border-radius: 4px;
+                    padding: 8px 16px;
+                    border-radius: 5px;
                     border: 1px solid;
                     background-color: COLOR.$Primary-color;
                     color: white;
@@ -863,8 +857,8 @@
                 gap: 10px;
 
                 & button {
-                    padding: 8px;
-                    border-radius: 4px;
+                    padding: 8px 16px;
+                    border-radius: 5px;
                     border: 1px solid;
                     background-color: COLOR.$Primary-color;
                     color: white;
@@ -997,8 +991,8 @@
                 gap: 10px;
 
                 & button {
-                    padding: 8px;
-                    border-radius: 4px;
+                    padding: 8px 16px;
+                    border-radius: 5px;
                     border: 1px solid;
                     background-color: COLOR.$Primary-color;
                     color: white;
@@ -1131,8 +1125,8 @@
                 gap: 10px;
 
                 & button {
-                    padding: 8px;
-                    border-radius: 4px;
+                    padding: 8px 16px;
+                    border-radius: 5px;
                     border: 1px solid;
                     background-color: COLOR.$Primary-color;
                     color: white;
@@ -1265,8 +1259,8 @@
                 gap: 10px;
 
                 & button {
-                    padding: 8px;
-                    border-radius: 4px;
+                    padding: 8px 16px;
+                    border-radius: 5px;
                     border: 1px solid;
                     background-color: COLOR.$Primary-color;
                     color: white;
@@ -1415,8 +1409,8 @@
                 gap: 10px;
 
                 & button {
-                    padding: 8px;
-                    border-radius: 4px;
+                    padding: 8px 16px;
+                    border-radius: 5px;
                     border: 1px solid;
                     background-color: COLOR.$Primary-color;
                     color: white;
@@ -1690,8 +1684,8 @@
                 gap: 10px;
 
                 & button {
-                    padding: 8px;
-                    border-radius: 4px;
+                    padding: 8px 16px;
+                    border-radius: 5px;
                     border: 1px solid;
                     background-color: COLOR.$Primary-color;
                     color: white;
@@ -1734,8 +1728,9 @@
     box-shadow: 3px 3px 10px rgba(193, 193, 193, 0.5);
 
     &_Header {
-        background-color: white;
         display: flex;
+        align-items: center;
+        background-color: white;
         left: 0px;
         align-items: center;
         padding: 20px;
@@ -1777,13 +1772,7 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
-
-                background-color: red;
                 cursor: pointer;
-
-                &:hover {
-                    background-color: rgb(252, 122, 122);
-                }
             }
         }
     }
@@ -1835,6 +1824,7 @@
 
     &_Head {
         display: flex;
+        align-items: center;
         background-color: COLOR.$Primary-color !important; //rgba(182, 182, 182, 0.4)
         padding: 16px;
         color: white;
@@ -1886,10 +1876,12 @@
         padding: 10px;
 
         & button {
-            padding: 5px 15px;
-            border-radius: 4px;
-            border: 1px solid;
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: none;
             cursor: pointer;
+            font-family: Montserrat-SemiBold;
+            color: white;
         }
     }
 }

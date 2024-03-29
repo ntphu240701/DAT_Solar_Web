@@ -4,10 +4,11 @@ import "./GroupRole.scss";
 import { groupID, groupUser, popupState, userDel } from "./GroupRole";
 import { useIntl } from "react-intl";
 import { alertDispatch } from "../Alert/Alert";
-
-import { IoClose } from "react-icons/io5";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { COLOR } from "../../App";
+
+import { IoClose } from "react-icons/io5";
 
 export default function Popup() {
   const dataLang = useIntl();
@@ -33,12 +34,10 @@ export default function Popup() {
       mail: groupUser.value[i].mail_,
       partnerid: String(groupID.value),
     });
-    console.log(d);
     if (d.status) {
       groupUser.value = groupUser.value.filter(
         (item) => item.id_ != parseInt(userDel.value)
       );
-      // groupID.value = 0;
       popupState.value = false;
       alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
     } else {
@@ -61,7 +60,7 @@ export default function Popup() {
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
           >
-            <IoClose size={20}></IoClose>
+            <IoClose size={25} />
           </div>
         </div>
       </div>
@@ -72,10 +71,8 @@ export default function Popup() {
 
       <div className="DAT_Popup_Box_Foot">
         <button
-          style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
-          onClick={() => {
-            handleDelete();
-          }}
+          style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
+          onClick={() => { handleDelete(); }}
         >
           {dataLang.formatMessage({ id: "confirm" })}
         </button>

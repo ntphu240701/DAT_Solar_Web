@@ -11,7 +11,7 @@ import { host } from "../Lang/Contant";
 import { COLOR, userInfor } from "../../App";
 
 import { RxCross2 } from "react-icons/rx";
-import { IoSaveOutline } from "react-icons/io5";
+import { IoClose, IoSaveOutline } from "react-icons/io5";
 
 const temp = signal({
   ruleid_: 0,
@@ -44,6 +44,17 @@ const temp = signal({
 });
 
 const newruledata = signal(temp.value);
+
+const popup_state = {
+  pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+  new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+};
+const handlePopup = (state) => {
+  const popup = document.getElementById("Popup");
+  popup.style.transform = popup_state[state].transform;
+  popup.style.transition = popup_state[state].transition;
+  popup.style.color = popup_state[state].color;
+};
 
 export const ruletitle = signal([
   "alert",
@@ -157,15 +168,16 @@ export default function CreateRule() {
           <div className="DAT_CreateRule_Header_Right_Save"
             onClick={() => handleCreate()}
           >
-            <IoSaveOutline size={20} color={COLOR.value.PrimaryColor} />
+            <IoSaveOutline size={20} color={'white'} />
             <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
-          <div className="DAT_CreateRule_Header_Right_Close">
-            <RxCross2
-              size={20}
-              color="white"
-              onClick={() => (createruleState.value = false)}
-            />
+          <div className="DAT_CreateRule_Header_Right_Close"
+            onClick={() => (createruleState.value = false)}
+            id="Popup"
+            onMouseEnter={(e) => handlePopup("new")}
+            onMouseLeave={(e) => handlePopup("pre")}
+          >
+            <IoClose size={25} />
           </div>
         </div>
       </div>

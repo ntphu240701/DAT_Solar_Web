@@ -89,7 +89,7 @@ export default function PopupAva(props) {
             onMouseLeave={(e) => handlePopup("pre")}
             onClick={() => { popupStateContact.value = false; }}
           >
-            <IoClose size={20} />
+            <IoClose size={25} />
           </div>
         </div>
       </div>

@@ -187,6 +187,7 @@
 
     &_Head {
         display: flex;
+        align-items: center;
         background-color: COLOR.$Primary-color !important; //rgba(182, 182, 182, 0.4)
         padding: 16px;
         color: white;
@@ -350,7 +351,7 @@
                 height: 30px;
                 padding: 0px 10px;
                 cursor: pointer;
-                background-color: #3e80fb;
+                background-color: COLOR.$Save-button;
                 border-radius: 5px;
                 gap: 5px;
 
@@ -368,12 +369,7 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
-                background-color: red;
                 cursor: pointer;
-
-                &:hover {
-                    background-color: rgb(252, 122, 122);
-                }
             }
         }
     }

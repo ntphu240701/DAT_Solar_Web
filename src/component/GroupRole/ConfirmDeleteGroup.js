@@ -1,14 +1,14 @@
 import React from "react";
 import "./GroupRole.scss";
 
-import { group, groupID, groupUser } from "./GroupRole";
-import { groupDelState } from "./GroupRole";
+import { group, groupID, groupUser, groupDelState } from "./GroupRole";
 import { useIntl } from "react-intl";
-
-import { IoClose } from "react-icons/io5";
 import { alertDispatch } from "../Alert/Alert";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { COLOR } from "../../App";
+
+import { IoClose } from "react-icons/io5";
 
 export default function ConfirmDeleteGroup() {
   const dataLang = useIntl();
@@ -27,18 +27,15 @@ export default function ConfirmDeleteGroup() {
 
   const handleDelete = async (e) => {
     groupDelState.value = false;
-    // console.log(groupID.value);
 
     let d_ = group.value.find(
       (item) => item.id_ == groupID.value
     );
-    // console.log(d_);
 
     let res = await callApi("post", host.DATA + "/removePartner", {
       code: d_.code_
     });
 
-    console.log(res);
     if (res.status) {
       group.value = group.value.filter(
         (item) => item.id_ != groupID.value
@@ -67,7 +64,7 @@ export default function ConfirmDeleteGroup() {
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
           >
-            <IoClose size={20}></IoClose>
+            <IoClose size={25} />
           </div>
         </div>
       </div>
@@ -80,10 +77,8 @@ export default function ConfirmDeleteGroup() {
 
       <div className="DAT_DeleteGroupPopup_Box_Foot">
         <button
-          style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
-          onClick={() => {
-            handleDelete();
-          }}
+          style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
+          onClick={() => { handleDelete(); }}
         >
           {dataLang.formatMessage({ id: 'confirm' })}
         </button>

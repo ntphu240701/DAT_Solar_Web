@@ -74,7 +74,7 @@ export default function Popup(props) {
               onMouseEnter={e => (handlePopup("new"))}
               onMouseLeave={e => (handlePopup("pre"))}
             >
-              <IoClose size={20} />
+              <IoClose size={25} />
             </div>
           </div>
         </div>
@@ -109,7 +109,7 @@ export default function Popup(props) {
               onMouseEnter={e => (handlePopup("new"))}
               onMouseLeave={e => (handlePopup("pre"))}
             >
-              <IoClose size={20}  ></IoClose>
+              <IoClose size={25}  ></IoClose>
             </div>
           </div>
         </div>

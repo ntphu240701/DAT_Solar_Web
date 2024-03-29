@@ -25,6 +25,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import {
+  COLOR,
   Token,
   convertUnit,
   ruleInfor,
@@ -46,6 +47,7 @@ import {
   IoAddOutline,
   IoArrowForward,
   IoCalendarOutline,
+  IoClose,
   IoSyncOutline,
   IoTrashOutline,
 } from "react-icons/io5";
@@ -1780,6 +1782,18 @@ export default function ProjectData(props) {
     setExportReport(false);
   }
 
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: 'rgba(11, 25, 103)' },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: 'rgba(11, 25, 103)' },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
+
   return (
     <div ref={box}>
       <div className="DAT_ProjectData">
@@ -1845,7 +1859,12 @@ export default function ProjectData(props) {
                 className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => (plantState.value = "default")}
               >
-                <RxCross2 size={20} color="white" />
+                <IoClose
+                  size={25}
+                  color="white"
+                  id="Popup"
+                  onMouseEnter={(e) => handlePopup("new")}
+                  onMouseLeave={(e) => handlePopup("pre")} />
               </div>
             </div>
           </div>
@@ -1978,7 +1997,12 @@ export default function ProjectData(props) {
                   dropState.value = false;
                 }}
               >
-                <RxCross2 size={20} color="white" />
+                <IoClose
+                  size={25}
+                  id="Popup"
+                  onMouseEnter={(e) => handlePopup("new")}
+                  onMouseLeave={(e) => handlePopup("pre")}
+                />
               </div>
             </div>
           </div>

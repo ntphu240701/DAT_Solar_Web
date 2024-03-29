@@ -16,7 +16,7 @@ import Resizer from "react-image-file-resizer";
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
-import { IoSaveOutline } from "react-icons/io5";
+import { IoClose, IoSaveOutline } from "react-icons/io5";
 
 const BasicInfo = (props) => {
   const dataLang = useIntl();
@@ -559,6 +559,18 @@ const ImgInfo = (props) => {
 export default function EditProject(props) {
   const dataLang = useIntl();
 
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
+
   const handleSave = () => {
     var check = 0;
     Object.entries(projectData.value).map(([key, value]) => {
@@ -613,13 +625,15 @@ export default function EditProject(props) {
           <div className="DAT_EditProject_Header_Right_Save"
             onClick={() => handleSave()}
           >
-            <IoSaveOutline size={20} color="rgba(11, 25, 103)" />
+            <IoSaveOutline size={20} color="white" />
             <span> {dataLang.formatMessage({ id: 'save' })}</span>
           </div>
           <div className="DAT_EditProject_Header_Right_Close">
-            <RxCross2
-              size={20}
-              color="white"
+            <IoClose
+              size={25}
+              id="Popup"
+              onMouseEnter={(e) => handlePopup("new")}
+              onMouseLeave={(e) => handlePopup("pre")}
               onClick={() => (plantState.value = "default")}
             />
           </div>

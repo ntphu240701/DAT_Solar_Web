@@ -15,7 +15,7 @@ import { Fade, Paper, Popper, Typography } from "@mui/material";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import DataTable from "react-data-table-component";
 import { Empty } from "../Project/Project";
-import { IoCalendarOutline } from "react-icons/io5";
+import { IoCalendarOutline, IoClose } from "react-icons/io5";
 import moment from "moment-timezone";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
@@ -1161,7 +1161,7 @@ const HistoricalData = (props) => {
             </div>
             <div className="DAT_Info_Databox_HistoricalData_Chart">
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "20px" }}>
-               
+
                 <div style={{ cursor: "pointer", color: mode === "ACVOLT" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACVOLT')}>AC Voltage(V)</div>
                 <div style={{ cursor: "pointer", color: mode === "ACCUR" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACCUR')}>AC Current(A)</div>
                 <div style={{ cursor: "pointer", color: mode === "ACFRE" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACFRE')}>AC frequency(Hz)</div>
@@ -1311,7 +1311,7 @@ const HistoricalData = (props) => {
                             fill="url(#colorday2)"
                           />
 
-                         
+
 
 
                         </AreaChart>
@@ -3407,6 +3407,18 @@ export default function Info(props) {
   const [nav, setNav] = useState("batch");
   const [nav_, setNav_] = useState("firmware");
 
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "rgba(11, 25, 103)" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "rgba(11, 25, 103)" },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
+
   return (
     <div className="DAT_Info">
       <div className="DAT_Info_Header">
@@ -3446,7 +3458,7 @@ export default function Info(props) {
                     >
                       {dataLang.formatMessage({ id: "BatchCommand" })}
                     </button>
-                    {/* <button className="DAT_Info_Header_Left_Item"
+                    <button className="DAT_Info_Header_Left_Item"
                       id="single"
                       onClick={() => { setNav("single") }}
                       style={{ color: nav === "single" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "single" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
@@ -3466,7 +3478,7 @@ export default function Info(props) {
                       style={{ color: nav === "log" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "log" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Control Log
-                    </button> */}
+                    </button>
                   </div>
                 )
               case "update":
@@ -3500,9 +3512,12 @@ export default function Info(props) {
               case 'logger':
                 return (
                   <div className="DAT_Info_Header_Right_Close" onClick={() => { infoState.value = false; }}>
-                    <RxCross2
-                      size={20}
-                      color="white"
+                    <IoClose
+                      id="Popup"
+                      onMouseEnter={(e) => handlePopup("new")}
+                      onMouseLeave={(e) => handlePopup("pre")}
+                      size={25}
+                      color="rgba(11, 25, 103)"
                     />
                   </div>
                 )
@@ -3518,9 +3533,12 @@ export default function Info(props) {
                     </div>
 
                     <div className="DAT_Info_Header_Right_Close" onClick={() => { infoState.value = false; }}>
-                      <RxCross2
-                        size={20}
-                        color="white"
+                      <IoClose
+                        id="Popup"
+                        onMouseEnter={(e) => handlePopup("new")}
+                        onMouseLeave={(e) => handlePopup("pre")}
+                        size={25}
+                        color="rgba(11, 25, 103)"
                       />
                     </div>
                   </>

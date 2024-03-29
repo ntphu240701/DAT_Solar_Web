@@ -171,7 +171,6 @@ export default function App() {
     const checkRule = async (id) => {
       const data = await callApi("post", host.AUTH + "/Rule", { ruleid: id });
       if (data.status) {
-        console.log("Rule", data.data);
         ruleInfor.value = {
           ruleid: data.data.ruleid,
           name: data.data.name,
@@ -185,7 +184,6 @@ export default function App() {
         partnerid: id,
       });
       if (data.status) {
-        console.log("Partner", data.data);
         partnerInfor.value = {
           partnerid: data.data.partnerid,
           code: data.data.code,
@@ -204,7 +202,6 @@ export default function App() {
     const checkToken = async () => {
       const d = await callApi("get", host.DATA + "/getToken");
       if (d.status) {
-        console.log("Token", d.data);
         Token.value = {
           token: d.data.token,
           date: d.data.date,
@@ -219,7 +216,6 @@ export default function App() {
       checkRule(userInfor.value.ruleid);
       checkPartner(userInfor.value.partnerid);
       checkToken();
-      console.log("Inf", userInfor.value);
     }
     checkApi();
   }, [status]);
@@ -232,9 +228,7 @@ export default function App() {
         type: type,
       });
       if (warn.status) {
-        console.log("Warn", warn.data);
         let newdb = warn.data.sort((a, b) => b.warnid_ - a.warnid_);
-        console.log(newdb);
         newdb.map((item, index) => {
           dataWarn.value = [
             ...dataWarn.value,
