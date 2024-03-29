@@ -1,21 +1,22 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Rule.scss";
 
 import { signal } from "@preact/signals-react";
 import { isMobile } from "../Navigation/Navigation";
 import { datarule, editRuleState } from "./Rule";
-import { ruletitle } from "./CreateRule";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
-
-import { FaSave } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { COLOR } from "../../App";
+
+import { RxCross2 } from "react-icons/rx";
 import { IoSaveOutline } from "react-icons/io5";
 
-export const editruledata = signal();
 const temp = signal();
+
+export const editruledata = signal();
+
 export const CheckBox = (props) => {
   const handleShow = (e) => {
     let arr = props.html.split("_");
@@ -24,17 +25,14 @@ export const CheckBox = (props) => {
       ...editruledata.value,
     };
     editruledata.value.setting[props.rights][props.custom] = e.target.checked;
-    console.log(editruledata.value);
   };
 
   return (
-    <div
-      className="DAT_CreateRule_Body_Item_Option_Check_SingleCheck"
+    <div className="DAT_CreateRule_Body_Item_Option_Check_SingleCheck"
       style={{ width: props.width }}
     >
       <div className="form-check">
-        <input
-          className="form-check-input"
+        <input className="form-check-input"
           type="checkbox"
           value=""
           id={props.html}
@@ -43,8 +41,7 @@ export const CheckBox = (props) => {
             handleShow(e);
           }}
         />
-        <label
-          className="form-check-label"
+        <label className="form-check-label"
           style={{ cursor: "pointer", fontSize: "15px", color: "grey" }}
           htmlFor={props.html}
         >
@@ -57,12 +54,14 @@ export const CheckBox = (props) => {
 
 export default function EditRule() {
   const dataLang = useIntl();
-  const [widthCheckBox, setWidwidthCheckBox] = React.useState("");
+  const [widthCheckBox, setWidwidthCheckBox] = useState("");
   const rulenameRef = useRef();
 
   const TypeReport = (props) => {
     return (
-      <div className="DAT_CreateRule_Body_Item">
+      <div className="DAT_CreateRule_Body_Item"
+        style={{ borderBottom: "dashed 1px rgba(198, 197, 197, 0.5)" }}
+      >
         <div className="DAT_CreateRule_Body_Item_Data">
           <div className="DAT_CreateRule_Body_Item_Data_Name">
             <label>{dataLang.formatMessage({ id: "ruleName" })}: </label>
@@ -81,10 +80,7 @@ export default function EditRule() {
   };
 
   const handleSave = async () => {
-    console.log(rulenameRef.current.value);
-
     if (rulenameRef.current.value !== "") {
-      console.log(rulenameRef.current.value);
       let d = await callApi("post", host.DATA + "/updateRule", {
         ruleid: editruledata.value.ruleid_,
         name: rulenameRef.current.value,
@@ -102,24 +98,6 @@ export default function EditRule() {
       } else {
         alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
       }
-
-      //   editruledata.value = {
-      //     ...temp.value,
-      //     rulename_: rulenameRef.current,
-      //   };
-      //   const i = datarule.value.findIndex(
-      //     (item) => item.ruleid_ === editruledata.value.ruleid_
-      //   );
-      //   datarule.value = [
-      //     ...datarule.value.slice(0, i),
-      //     editruledata.value,
-      //     ...datarule.value.slice(i + 1),
-      //   ];
-      //   editRuleState.value = false;
-      //   alertDispatch(dataLang.formatMessage({ id: "alert_21" }));
-      //   // console.log(datarule.value);
-      // } else {
-      //   alertDispatch(dataLang.formatMessage({ id: "alert_22" }));
     }
   };
 
@@ -129,21 +107,21 @@ export default function EditRule() {
     } else {
       setWidwidthCheckBox("25%");
     }
-    // console.log(isMobile.value);
   }, [isMobile.value]);
 
   return (
     <div className="DAT_CreateRule">
       <div className="DAT_CreateRule_Header">
         <div className="DAT_CreateRule_Header_Left">
-          <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: "editRule" })}</p>
+          <p style={{ fontSize: "20px" }}>
+            {dataLang.formatMessage({ id: "editRule" })}
+          </p>
         </div>
         <div className="DAT_CreateRule_Header_Right">
-          <div
-            className="DAT_CreateRule_Header_Right_Save"
+          <div className="DAT_CreateRule_Header_Right_Save"
             onClick={() => handleSave()}
           >
-            <IoSaveOutline size={20} color="rgba(11, 25, 103)" />
+            <IoSaveOutline size={20} color={COLOR.value.PrimaryColor} />
             <span>{dataLang.formatMessage({ id: "save" })}</span>
           </div>
           <div className="DAT_CreateRule_Header_Right_Close">
@@ -158,14 +136,17 @@ export default function EditRule() {
 
       <div className="DAT_CreateRule_Body">
         <TypeReport />
-
         <div className="DAT_CreateRule_Body_Item">
           <div className="DAT_CreateRule_Body_Item_Option">
-            <label style={{ margin: "0" }}>{dataLang.formatMessage({ id: "ruleOptions" })}</label>
+            <label className="DAT_CreateRule_Body_Item_Option_Title"
+              style={{ margin: "0" }}
+            >
+              {dataLang.formatMessage({ id: "ruleOptions" })}
+            </label>
+
             {Object.entries(editruledata.value.setting).map(
               ([key, value], index) => (
-                <div
-                  className="DAT_CreateRule_Body_Item_Option_Check"
+                <div className="DAT_CreateRule_Body_Item_Option_Check"
                   key={key}
                 >
                   <p style={{ color: "grey" }}>

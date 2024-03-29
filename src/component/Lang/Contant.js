@@ -226,7 +226,7 @@ export const messages = {
     addProj: "New Project",
     save: "Save",
     reset: "Reset",
-    add: "+Add",
+    add: "Add",
     ADD: "Add",
     export: "Export",
     reset: "Reset",

@@ -4,14 +4,14 @@ import "./Rule.scss";
 import { signal } from "@preact/signals-react";
 import { isMobile } from "../Navigation/Navigation";
 import { createruleState, datarule } from "./Rule";
+import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
+import { COLOR, userInfor } from "../../App";
 
 import { RxCross2 } from "react-icons/rx";
 import { IoSaveOutline } from "react-icons/io5";
-import { callApi } from "../Api/Api";
-import { host } from "../Lang/Contant";
-import { userInfor } from "../../App";
-import { alertDispatch } from "../Alert/Alert";
 
 const temp = signal({
   ruleid_: 0,
@@ -100,7 +100,9 @@ export default function CreateRule() {
     };
 
     return (
-      <div className="DAT_CreateRule_Body_Item">
+      <div className="DAT_CreateRule_Body_Item"
+        style={{ borderBottom: "dashed 1px rgba(198, 197, 197, 0.5)" }}
+      >
         <div className="DAT_CreateRule_Body_Item_Data">
           <div className="DAT_CreateRule_Body_Item_Data_Name">
             <label>{dataLang.formatMessage({ id: "ruleName" })}: </label>
@@ -111,7 +113,7 @@ export default function CreateRule() {
               id="reportname"
               defaultValue={rulenameRef.current}
               onChange={(e) => handerChangeReportName(e)}
-            ></input>
+            />
           </div>
         </div>
       </div>
@@ -144,64 +146,62 @@ export default function CreateRule() {
   }, [isMobile.value]);
 
   return (
-    <div>
-      <div className="DAT_CreateRule">
-        <div className="DAT_CreateRule_Header">
-          <div className="DAT_CreateRule_Header_Left">
-            <p style={{ fontSize: "20px" }}>
-              {dataLang.formatMessage({ id: "newRule" })}
-            </p>
+    <div className="DAT_CreateRule">
+      <div className="DAT_CreateRule_Header">
+        <div className="DAT_CreateRule_Header_Left">
+          <p style={{ fontSize: "20px" }}>
+            {dataLang.formatMessage({ id: "newRule" })}
+          </p>
+        </div>
+        <div className="DAT_CreateRule_Header_Right">
+          <div className="DAT_CreateRule_Header_Right_Save"
+            onClick={() => handleCreate()}
+          >
+            <IoSaveOutline size={20} color={COLOR.value.PrimaryColor} />
+            <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
-          <div className="DAT_CreateRule_Header_Right">
-            <div
-              className="DAT_CreateRule_Header_Right_Save"
-              onClick={() => handleCreate()}
-            >
-              <IoSaveOutline size={20} color="rgba(11, 25, 103)" />
-              <span>{dataLang.formatMessage({ id: 'save' })}</span>
-            </div>
-            <div
-              className="DAT_CreateRule_Header_Right_Close"
+          <div className="DAT_CreateRule_Header_Right_Close">
+            <RxCross2
+              size={20}
+              color="white"
               onClick={() => (createruleState.value = false)}
-            >
-              <RxCross2 size={20} color="white" />
-            </div>
+            />
           </div>
         </div>
+      </div>
 
-        <div className="DAT_CreateRule_Body">
-          <TypeReport />
-          <div className="DAT_CreateRule_Body_Item">
-            <div className="DAT_CreateRule_Body_Item_Option">
-              <label className="DAT_CreateRule_Body_Item_Option_Title"
-                style={{ margin: "0" }}
-              >
-                {dataLang.formatMessage({ id: "ruleOptions" })}
-              </label>
+      <div className="DAT_CreateRule_Body">
+        <TypeReport />
+        <div className="DAT_CreateRule_Body_Item">
+          <div className="DAT_CreateRule_Body_Item_Option">
+            <label className="DAT_CreateRule_Body_Item_Option_Title"
+              style={{ margin: "0" }}
+            >
+              {dataLang.formatMessage({ id: "ruleOptions" })}
+            </label>
 
-              {Object.entries(newruledata.value.setting).map(
-                ([key, value], index) => (
-                  <div className="DAT_CreateRule_Body_Item_Option_Check"
-                    key={key}
-                  >
-                    <p style={{ color: "grey" }}>
-                      {dataLang.formatMessage({ id: key })}
-                    </p>
-                    {Object.entries(value).map(([key_, value_], index_) => (
-                      <CheckBox
-                        key={index_}
-                        rights={key}
-                        custom={key_}
-                        status={value_}
-                        id={dataLang.formatMessage({ id: key_ })}
-                        html={index + "_" + index_}
-                        width={widthCheckBox}
-                      />
-                    ))}
-                  </div>
-                )
-              )}
-            </div>
+            {Object.entries(newruledata.value.setting).map(
+              ([key, value], index) => (
+                <div className="DAT_CreateRule_Body_Item_Option_Check"
+                  key={key}
+                >
+                  <p style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: key })}
+                  </p>
+                  {Object.entries(value).map(([key_, value_], index_) => (
+                    <CheckBox
+                      key={index_}
+                      rights={key}
+                      custom={key_}
+                      status={value_}
+                      id={dataLang.formatMessage({ id: key_ })}
+                      html={index + "_" + index_}
+                      width={widthCheckBox}
+                    />
+                  ))}
+                </div>
+              )
+            )}
           </div>
         </div>
       </div>
