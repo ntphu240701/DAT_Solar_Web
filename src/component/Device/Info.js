@@ -1161,7 +1161,7 @@ const HistoricalData = (props) => {
             </div>
             <div className="DAT_Info_Databox_HistoricalData_Chart">
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "20px" }}>
-               
+
                 <div style={{ cursor: "pointer", color: mode === "ACVOLT" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACVOLT')}>AC Voltage(V)</div>
                 <div style={{ cursor: "pointer", color: mode === "ACCUR" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACCUR')}>AC Current(A)</div>
                 <div style={{ cursor: "pointer", color: mode === "ACFRE" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACFRE')}>AC frequency(Hz)</div>
@@ -1311,7 +1311,7 @@ const HistoricalData = (props) => {
                             fill="url(#colorday2)"
                           />
 
-                         
+
 
 
                         </AreaChart>
@@ -3446,7 +3446,7 @@ export default function Info(props) {
                     >
                       {dataLang.formatMessage({ id: "BatchCommand" })}
                     </button>
-                    {/* <button className="DAT_Info_Header_Left_Item"
+                    <button className="DAT_Info_Header_Left_Item"
                       id="single"
                       onClick={() => { setNav("single") }}
                       style={{ color: nav === "single" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "single" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
@@ -3466,7 +3466,7 @@ export default function Info(props) {
                       style={{ color: nav === "log" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "log" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Control Log
-                    </button> */}
+                    </button>
                   </div>
                 )
               case "update":

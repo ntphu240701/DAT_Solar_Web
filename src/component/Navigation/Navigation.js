@@ -324,7 +324,7 @@ export default function Navigation(props) {
                         }}
                       >
                         <div className="DAT_NavNotif-content-main-group-content-tit">
-                          {dataLang.formatMessage({ id: item.boxid })}
+                          {dataLang.formatMessage({ id: item.boxid, defaultMessage: item.boxid })}
                           &nbsp;
                           {dataLang.formatMessage({ id: "at" })}
                           &nbsp;

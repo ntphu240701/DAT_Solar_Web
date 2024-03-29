@@ -4,11 +4,11 @@ import "./GroupRole.scss";
 import { addState, groupID, groupUser } from "./GroupRole";
 import { signal } from "@preact/signals-react";
 import { useIntl } from "react-intl";
-
-import { IoClose } from "react-icons/io5";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
+
+import { IoClose } from "react-icons/io5";
 
 const infouser = signal([]);
 
@@ -34,26 +34,17 @@ export default function AddUsers() {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(email);
     };
-    // console.log(group.value , groupID.value)
-    // ););
-    //   letd = group.value.find(
-    //   (item) => item.usr_ === usr_
-    // );
 
-    // console.log(usr_);
     if (validateEmail(usr_)) {
       let d = await callApi("post", host.DATA + "/addUsrPartner", {
         mail: usr_,
         partnerid: String(groupID.value),
       });
-      console.log(d);
       if (d.status === true) {
         alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
         groupUser.value = [...groupUser.value, d.data];
-        console.log(groupUser.value);
         addState.value = false;
       } else {
-        console.log(d);
         if (d.number === 0) {
           alertDispatch(dataLang.formatMessage({ id: "alert_38" }));
         } else if (d.number === 1) {
@@ -65,38 +56,12 @@ export default function AddUsers() {
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_3" }));
     }
-
-    // addState.value = false;
-    // const i = groupUser.value.findIndex(
-    //   (item) => item.groupid === groupID.value
-    // );
-    // const check = groupUser.value[i].users.findIndex(
-    //   (item) => item.usr_ === usr_
-    // );
-    // if (check === -1) {
-    //   const t = infouser.value.find((item) => item.usr_ === usr_);
-    //   if (t !== undefined) {
-    //     groupUser.value[i] = {
-    //       ...groupUser.value[i],
-    //       users: [...groupUser.value[i].users, t],
-    //     };
-
-    //     console.log(groupUser.value);
-
-    //     setAddUserState("AddSuccess");
-    //   } else {
-    //     setAddUserState("UserNotFound");
-    //   }
-    // } else {
-    //   setAddUserState("UserAlreadyInGroup");
-    // }
   };
 
   const AddButton = () => {
     return (
       <div className="DAT_AddUserPopup_Box_Foot">
         <button
-          style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}
           onClick={() => handleAddUser()}
         >
           {dataLang.formatMessage({ id: "confirm" })}
