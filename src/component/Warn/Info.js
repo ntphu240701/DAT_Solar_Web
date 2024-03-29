@@ -50,7 +50,7 @@ export default function Info(props) {
               onMouseEnter={(e) => handlePopup("new")}
               onMouseLeave={(e) => handlePopup("pre")}
             >
-              <IoClose size={20}></IoClose>
+              <IoClose size={25}></IoClose>
             </div>
           </div>
         </div>

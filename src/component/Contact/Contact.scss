@@ -187,6 +187,7 @@
 
     &_Head {
         display: flex;
+        align-items: center;
         background-color: COLOR.$Primary-color !important; //rgba(182, 182, 182, 0.4)
         padding: 16px;
         color: white;
@@ -341,6 +342,27 @@
             justify-content: flex-end;
             gap: 10px;
 
+<<<<<<< HEAD
+=======
+            &_Save {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                overflow: hidden;
+                height: 30px;
+                padding: 0px 10px;
+                cursor: pointer;
+                background-color: COLOR.$Save-button;
+                border-radius: 5px;
+                gap: 5px;
+
+                & span {
+                    color: white;
+                }
+            }
+
+>>>>>>> fe2c0bd0b4d49f940065fc9d04b0a3a01b6ceab0
             &_Close {
                 width: 30px;
                 height: 30px;
@@ -350,12 +372,7 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
-                background-color: red;
                 cursor: pointer;
-
-                &:hover {
-                    background-color: rgb(252, 122, 122);
-                }
             }
         }
     }

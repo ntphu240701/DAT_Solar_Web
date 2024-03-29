@@ -8,8 +8,7 @@ import { partnerInfor } from "../../App";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 
-import { RxCross2 } from "react-icons/rx";
-import { IoSaveOutline } from "react-icons/io5";
+import { IoClose, IoSaveOutline } from "react-icons/io5";
 
 export default function CreateRole(props) {
   const datalang = useIntl();
@@ -64,6 +63,18 @@ export default function CreateRole(props) {
     }
   };
 
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
+
   return (
     <form className="DAT_CreateRole" onSubmit={handleSave}>
       <div className="DAT_CreateRole_Header">
@@ -73,14 +84,17 @@ export default function CreateRole(props) {
 
         <div className="DAT_CreateRole_Header_Right">
           <button className="DAT_CreateRole_Header_Right_Save">
-            <IoSaveOutline size={20} color="rgba(11, 25, 103)" />
+            <IoSaveOutline size={20} color="white" />
             <span>{dataLang.formatMessage({ id: "save" })}</span>
           </button>
           <div
             className="DAT_CreateRole_Header_Right_Close"
+            id="Popup"
+            onMouseEnter={(e) => handlePopup("new")}
+            onMouseLeave={(e) => handlePopup("pre")}
             onClick={() => (roleState.value = "default")}
           >
-            <RxCross2 size={20} color="white" />
+            <IoClose size={25} />
           </div>
         </div>
       </div>

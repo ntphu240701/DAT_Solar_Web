@@ -45,6 +45,7 @@ export default function AddGateway(props) {
       return { ret: 1, msg: "cloud err" };
     }
   };
+
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
@@ -127,11 +128,13 @@ export default function AddGateway(props) {
           <div
             className="DAT_AddGateway_Head_Right_Icon"
             onClick={() => handleClose()}
-            id="Popup"
-            onMouseEnter={(e) => handlePopup("new")}
-            onMouseLeave={(e) => handlePopup("pre")}
           >
-            <IoClose size={20} />
+            <IoClose
+              size={25}
+              id="Popup"
+              onMouseEnter={(e) => handlePopup("new")}
+              onMouseLeave={(e) => handlePopup("pre")}
+            />
           </div>
         </div>
       </div>

@@ -74,7 +74,7 @@ export default function Warn(props) {
           onClick={(e) => handleInfo(e)}
           id={row.boxid + "_" + row.level + "_" + row.plant + "_" + row.device} // E_1_3_warn....
         >
-          {dataLang.formatMessage({ id: row.boxid })}
+          {dataLang.formatMessage({ id: row.boxid, defaultMessage: row.boxid })}
         </div>,
       sortable: true,
       width: "180px",

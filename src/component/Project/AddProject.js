@@ -16,7 +16,7 @@ import { useIntl } from "react-intl";
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
-import { IoSaveOutline } from "react-icons/io5";
+import { IoClose, IoSaveOutline } from "react-icons/io5";
 
 export const plantData = signal({
   addr: "",
@@ -543,6 +543,17 @@ const OwnerInfo = (props) => {
 
 export default function AddProject(props) {
   const dataLang = useIntl();
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
 
   const handleSaveBasic = () => {
     var check = 0;
@@ -622,13 +633,16 @@ export default function AddProject(props) {
           <div className="DAT_AddProject_Header_Right_Save"
             onClick={() => handleSaveBasic()}
           >
-            <IoSaveOutline size={20} color="rgba(11, 25, 103)" />
+            <IoSaveOutline size={20} color="white" />
             <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
-          <div className="DAT_AddProject_Header_Right_Close" onClick={() => (plantState.value = "default")}>
-            <RxCross2
-              size={20}
-              color="white"
+          <div className="DAT_AddProject_Header_Right_Close"
+            onClick={() => (plantState.value = "default")}>
+            <IoClose
+              size={25}
+              id="Popup"
+              onMouseEnter={(e) => handlePopup("new")}
+              onMouseLeave={(e) => handlePopup("pre")}
             />
           </div>
         </div>
