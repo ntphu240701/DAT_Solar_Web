@@ -6,6 +6,7 @@ import { useIntl } from "react-intl";
 
 import { FaSave } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
+import { IoClose } from "react-icons/io5";
 
 const CheckBox = (props) => {
   return (
@@ -50,9 +51,8 @@ export default function Config() {
             <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
           <div className="DAT_Config_Header_Right_Close" onClick={handleCloseConfig}>
-            <RxCross2
-              size={20}
-              color="white"
+            <IoClose
+              size={25}
             />
           </div>
         </div>

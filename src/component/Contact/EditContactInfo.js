@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./Contact.scss";
 
-import { contactState } from "./Contact";
+import { contactState, popupStateContact } from "./Contact";
 import { COLOR, partnerInfor } from "../../App";
 import { signal } from "@preact/signals-react";
 import { callApi } from "../Api/Api";
@@ -10,6 +10,19 @@ import { useIntl } from "react-intl";
 import { alertDispatch } from "../Alert/Alert";
 
 import { RxCross2 } from "react-icons/rx";
+import { IoClose } from "react-icons/io5";
+
+const popup_state = {
+  pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+  new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+};
+
+const handlePopup = (state) => {
+  const popup = document.getElementById("Popup");
+  popup.style.transform = popup_state[state].transform;
+  popup.style.transition = popup_state[state].transition;
+  popup.style.color = popup_state[state].color;
+};
 
 const Type = signal({
   OnM: { name: "onm", checked: false },
@@ -72,12 +85,13 @@ export default function EditContactInfo(props) {
         </div>
 
         <div className="DAT_EditContactInfo_Header_Right">
-          <div className="DAT_EditContactInfo_Header_Right_Close">
-            <RxCross2
-              size={20}
-              color="white"
-              onClick={() => (contactState.value = "default")}
-            />
+          <div className="DAT_EditContactInfo_Header_Right_Close"
+            id="Popup"
+            onMouseEnter={(e) => handlePopup("new")}
+            onMouseLeave={(e) => handlePopup("pre")}
+            onClick={() => { contactState.value = 'default'; }}
+          >
+            <IoClose size={25} />
           </div>
         </div>
       </div>

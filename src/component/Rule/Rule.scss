@@ -185,14 +185,14 @@
                 height: 30px;
                 padding: 0px 8px;
                 cursor: pointer;
-                background-color: white;
+                background-color: COLOR.$Save-button;
                 border-radius: 5px;
-                border: none;
+                border: 1px solid white;
                 gap: 5px;
                 font-family: Montserrat-SemiBold;
 
                 & span {
-                    color: COLOR.$Primary-color;
+                    color: white;
                 }
             }
 
@@ -203,12 +203,7 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
-                background-color: red;
                 cursor: pointer;
-
-                &:hover {
-                    background-color: rgb(252, 122, 122);
-                }
             }
         }
     }
@@ -314,6 +309,7 @@
 
     &_Head {
         display: flex;
+        align-items: center;
         background-color: COLOR.$Primary-color !important; //rgba(182, 182, 182, 0.4)
         padding: 16px;
         color: white;
