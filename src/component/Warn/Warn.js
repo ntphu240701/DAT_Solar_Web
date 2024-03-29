@@ -280,6 +280,7 @@ export default function Warn(props) {
     //Gọi biến thời gian nhập vào
     const openInput = moment(opentime).format("MM/DD/YYYY");
     const closeInput = moment(closetime).format("MM/DD/YYYY");
+
     console.log('openINPUT', openInput, closeInput);
 
     const newdb = dataWarn.value.filter((item) => {
@@ -293,6 +294,25 @@ export default function Warn(props) {
         const levelChange = item.level == warn.value || item.level == notice.value
         return levelChange;
       }
+
+      // Trường hợp 1 : Nhập ngày vào open time thì những ngày sau open time xuất hiện
+      else if (closeInput === "Invalid date") {
+        console.log('openData:', openData);
+        console.log('openInput:', openInput);
+        const timeChange = moment(openData).isSameOrAfter(openInput);
+        console.log("OPEN", timeChange);
+        return timeChange;
+      }
+
+      // Trường hợp 2 : Nhập ngày vào close time thì những trước sau close time xuất hiện
+      else if (openInput === "Invalid date") {
+        console.log('closeData:', closeData);
+        console.log('closeInput:', closeInput);
+        const timeChange = moment(openData).isSameOrBefore(closeInput);
+        console.log("CLOSE", timeChange);
+        return timeChange;
+      }
+
       // Nếu người dùng không check type warning thì vẫn chạy điều kiện thời gian
       else if (warn.value == null && notice.value == null) {
         const timeChange = (openData >= openInput && openData <= closeInput) || (closeData >= openInput && closeData < closeInput);

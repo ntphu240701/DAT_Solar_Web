@@ -371,6 +371,7 @@ export default function Filter(props) {
                                   ref={opentime}
                                   value={startDate}
                                   onChange={handleStartDateChange}
+                                  min={"2000-01-01"}
                                   max={endDate}
                                 />
                                 ~
