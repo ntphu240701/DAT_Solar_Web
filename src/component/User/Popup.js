@@ -196,6 +196,9 @@ export default function Popup() {
                     accept="image/png, image/gif, image/jpeg"
                     onChange={(e) => handleChooseAvatar(e)}
                   />
+                  <label htmlFor="file" style={{ cursor: "pointer" }}>
+                    {dataLang.formatMessage({ id: 'chooseImg' })}
+                  </label>
                 </div>
               );
             case "password":
