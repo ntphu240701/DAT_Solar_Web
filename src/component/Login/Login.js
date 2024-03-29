@@ -378,7 +378,7 @@ export default function Login(props) {
             <div className="DAT_Login_Footer" >
                 <div className='DAT_Login_Footer_Info'>
                     <span className="DAT_Login_Footer_Info_Version">
-                        {dataLang.formatMessage({ id: 'version' })}: 1.1
+                        {dataLang.formatMessage({ id: 'version' })}: {process.env.REACT_APP_VER}
                     </span>
                     &nbsp;
                     <span className="DAT_Login_Footer_Info_Title">
