@@ -76,6 +76,7 @@ import { Fade, Paper, Popper, Typography } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { filter } from "lodash";
 import ExportData from "./ExportData";
+import { CiClock1 } from "react-icons/ci";
 
 export const dropState = signal(false);
 export const popupAddGateway = signal(false);
@@ -188,6 +189,7 @@ export default function ProjectData(props) {
   const user = useSelector((state) => state.admin.usr);
   // const [nav, setNav] = useState(projectData.value.plantmode === "grid" ? "production" : "graph");
   const [nav, setNav] = useState("production");
+  const [timeRemaining, setTimeRemaining] = useState(300000);
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
   const [configname, setConfigname] = useState(
@@ -1426,6 +1428,11 @@ export default function ProjectData(props) {
         );
         // console.log(res)
         if (res.ret === 0) {
+          let res_ = await callApi("post", host.DATA + "/updateLogger", {
+            sn: item.sn,
+            type: 'state',
+            data: res.data.enabled
+          })
           //console.log(res.data)
           setInvt((pre) => ({ ...pre, [item.sn]: res.data }));
           const decimalArray = JSON.parse(item.setting.sn);
@@ -1584,6 +1591,7 @@ export default function ProjectData(props) {
       document.removeEventListener("mousedown", handleOutsideUser);
     };
   }, [invt]);
+
 
   const handlefilterchart = (e) => {
     const state = e.currentTarget.checked;
@@ -2096,6 +2104,10 @@ export default function ProjectData(props) {
                                 );
                             }
                           })()}
+                        </div>
+                        <div className="DAT_ProjectData_Dashboard_Data_Center_Tit_Timer">
+                          <CiClock1 size={13} color="13px" />
+                          {/* {minutes}:{seconds < 10 ? `0${seconds}` : seconds} */}
                         </div>
                       </div>
                       <Graph
@@ -4246,7 +4258,7 @@ const GraphGrid = (props) => {
       <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", gap: "10px", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px", padding: "5px", boxSizing: "border-box", backgroundColor: "white", overflow: "hidden" }}>
         <img src={props.src} width={`${props.width}px`} height={`${props.height}px`} alt="" />
         <div>
-          <div>
+          <div style={{ color: props.color }}>
             {props.val}
           </div>
           <span style={{ color: "gray", fontSize: "13px" }}>{props.unit}</span>
@@ -4277,7 +4289,7 @@ const GraphGrid = (props) => {
         <LineD dur="10s" strokeWidth="3" />
 
         <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/production.png" width="30" color="black" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
@@ -4407,7 +4419,7 @@ const GraphConsumption = (props) => {
       <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", gap: "10px", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px", padding: "5px", boxSizing: "border-box", backgroundColor: "white", overflow: "hidden" }}>
         <img src={props.src} width={`${props.width}px`} height={`${props.height}px`} alt="" />
         <div>
-          <div>
+          <div style={{ color: props.color }}>
             {props.val}
           </div>
           <span style={{ color: "gray", fontSize: "13px" }}>{props.unit}</span>
@@ -4431,15 +4443,15 @@ const GraphConsumption = (props) => {
         <LineD dur="10s" />
 
         <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="193" y="233" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="193" y="92" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
@@ -4589,7 +4601,7 @@ const GraphFull = (props) => {
       <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", gap: "10px", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px", padding: "5px", boxSizing: "border-box", backgroundColor: "white", overflow: "hidden" }}>
         <img src={props.src} width={`${props.width}px`} height={`${props.height}px`} alt="" />
         <div>
-          <div>
+          <div style={{ color: props.color }}>
             {props.val}
           </div>
           <span style={{ color: "gray", fontSize: "13px" }}>{props.unit}</span>
@@ -4614,19 +4626,19 @@ const GraphFull = (props) => {
         <LineD dur="10s" strokeWidth="3" />
 
         <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="5" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/bat.png" width="20" height="30" val={Number(parseFloat(props.cal?.bat_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/bat.png" width="20" height="30" color={props.cal?.bat_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.bat_1) / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="395" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="193" y="112" width="102" height="68" style={{ overflow: "hidden", padding: "2px" }}>
@@ -4755,7 +4767,7 @@ const Production = (props) => {
           </div>
           <div style={{ marginBottom: "8px" }}>
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(parseFloat(convertUnit((props.cal?.pro_1 || 0) / 1000)).toFixed(3)).toLocaleString("en-US")}
+              {Number(parseFloat(convertUnit((props.cal?.pro_1 || 0) / 1000)).toFixed(2)).toLocaleString("en-US")}
             </span>
             &nbsp;
             <span style={{ fontSize: "12px", color: "grey" }}>
@@ -4894,7 +4906,7 @@ const Consumption = (props) => {
           <span>{dataLang.formatMessage({ id: "consumption" })}</span>
           &nbsp;
           <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(parseFloat(convertUnit(props.cal?.con_1 || 0)).toFixed(3)).toLocaleString("en-US")}
+            {Number(parseFloat(convertUnit(props.cal?.con_1 || 0)).toFixed(2)).toLocaleString("en-US")}
           </span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5012,8 +5024,8 @@ const Grid = (props) => {
         <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Data">
           <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
           &nbsp;
-          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(parseFloat(convertUnit((props.cal?.grid_1 || 0) / 1000).toFixed(3))).toLocaleString("en-US")}
+          <span style={{ fontWeight: "650", fontFamily: "sans-serif", color: props.cal?.grid_1 < 0 ? "red" : "black" }}>
+            {Number(parseFloat(convertUnit((Math.abs(props.cal?.grid_1 || 0)) / 1000)).toFixed(2)).toLocaleString("en-US")}
           </span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5047,7 +5059,7 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_in_1 || 0))).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_in_1 || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5062,7 +5074,7 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_in_month || 0))).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_in_month || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5077,7 +5089,7 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_in_year || 0))).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_in_year || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5092,7 +5104,7 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_in_2 || 0))).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_in_2 || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5127,7 +5139,7 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_out_1 || 0))).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_out_1 || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5142,7 +5154,7 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_out_month || 0))).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_out_month || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5157,7 +5169,7 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_out_year || 0))).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_out_year || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5172,7 +5184,7 @@ const Grid = (props) => {
               </div>
               <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_out_2 || 0))).toLocaleString("en-US")}
+                  {Number(parseFloat(convertUnit(props.cal?.grid_out_2 || 0)).toFixed(2)).toLocaleString("en-US")}
                 </span>
                 &nbsp;
                 <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5236,8 +5248,8 @@ const Battery = (props) => {
         <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Data">
           <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
           &nbsp;
-          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(parseFloat(convertUnit((props.cal?.bat_1 || 0) / 1000)).toFixed(3) || 0).toLocaleString("en-US")}
+          <span style={{ fontWeight: "650", fontFamily: "sans-serif", color: props.cal?.bat_1 < 0 ? "red" : "" }}>
+            {Number(parseFloat(convertUnit((Math.abs(props.cal?.bat_1 || 0)) / 1000)).toFixed(2) || 0).toLocaleString("en-US")}
           </span>
           &nbsp;
           <span style={{ fontSize: "12px", color: "grey" }}>
@@ -5417,6 +5429,7 @@ const Battery = (props) => {
   );
 };
 
+
 // Thẻ Chart
 const Day = (props) => {
   const dataLang = useIntl();
@@ -5451,12 +5464,12 @@ const Day = (props) => {
                         <stop
                           offset="5%"
                           stopColor="rgba(11,25,103)"
-                          stopOpacity={0.7}
+                          stopOpacity={0.1}
                         />
                         <stop
                           offset="90%"
                           stopColor="rgba(11,25,103)"
-                          stopOpacity={0}
+                          stopOpacity={0.1}
                         />
                       </linearGradient>
                     </defs>
@@ -5493,9 +5506,9 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v}
-                        stroke="rgba(11,25,103)"
+                        stroke="rgba(11,25,103,0.7)"
                         fillOpacity={1}
-                        fill="url(#colorday)"
+                        fill="rgba(11,25,103, 0.2)"
                       />
                     ) : (
                       <></>
@@ -5511,16 +5524,16 @@ const Day = (props) => {
                 >
                   <AreaChart width={100} height={500} data={props.data}>
                     <defs>
-                      <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
+                      {/* <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
                         <stop
                           offset="5%"
                           stopColor="rgba(11,25,103)"
-                          stopOpacity={0.7}
+                          stopOpacity={0.1}
                         />
                         <stop
                           offset="90%"
                           stopColor="rgba(11,25,103)"
-                          stopOpacity={0}
+                          stopOpacity={0.1}
                         />
                       </linearGradient>
                       <linearGradient
@@ -5530,8 +5543,8 @@ const Day = (props) => {
                         x2="0"
                         y2="1"
                       >
-                        <stop offset="5%" stopColor="rgba(247, 148, 29)" stopOpacity={0.7} />
-                        <stop offset="90%" stopColor="rgba(247, 148, 29)" stopOpacity={0} />
+                        <stop offset="5%" stopColor="rgba(247, 148, 29)" stopOpacity={0.1} />
+                        <stop offset="90%" stopColor="rgba(247, 148, 29)" stopOpacity={0.1} />
                       </linearGradient>
                       <linearGradient
                         id="colorday3"
@@ -5540,8 +5553,8 @@ const Day = (props) => {
                         x2="0"
                         y2="1"
                       >
-                        <stop offset="5%" stopColor="rgba(0, 163, 0)" stopOpacity={0.7} />
-                        <stop offset="90%" stopColor="rgba(0, 163, 0)" stopOpacity={0} />
+                        <stop offset="5%" stopColor="rgba(0, 163, 0)" stopOpacity={0.1} />
+                        <stop offset="90%" stopColor="rgba(0, 163, 0)" stopOpacity={0.1} />
                       </linearGradient>
                       <linearGradient
                         id="colorday4"
@@ -5553,10 +5566,10 @@ const Day = (props) => {
                         <stop
                           offset="5%"
                           stopColor="purple"
-                          stopOpacity={0.7}
+                          stopOpacity={0.1}
                         />
-                        <stop offset="90%" stopColor="purple" stopOpacity={0} />
-                      </linearGradient>
+                        <stop offset="90%" stopColor="purple" stopOpacity={0.1} />
+                      </linearGradient> */}
                     </defs>
                     <XAxis dataKey="time" axisLine={false} tickLine={false} />
                     <YAxis
@@ -5597,9 +5610,9 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v}
-                        stroke="rgba(11,25,103)"
+                        stroke="rgba(11,25,103,0.7)"
                         fillOpacity={1}
-                        fill="url(#colorday)"
+                        fill="rgba(11,25,103, 0.2)"
                       />
                     ) : (
                       <></>
@@ -5611,9 +5624,9 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v2}
-                        stroke="rgba(247, 148, 29)"
-                        fillOpacity={2}
-                        fill="url(#colorday2)"
+                        stroke="rgba(247, 148, 29,0.7)"
+                        fillOpacity={1}
+                        fill="rgba(247, 148, 29, 0.2)"
                       />
                     ) : (
                       <></>
@@ -5625,9 +5638,9 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v3}
-                        stroke="rgba(0, 163, 0)"
-                        fillOpacity={2}
-                        fill="url(#colorday3)"
+                        stroke="rgba(0, 163, 0,0.7)"
+                        fillOpacity={1}
+                        fill="rgba(0, 163, 0, 0.2)"
                       />
                     ) : (
                       <></>
@@ -5638,9 +5651,9 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v4}
-                        stroke="purple"
-                        fillOpacity={2}
-                        fill="url(#colorday4)"
+                        stroke="rgba(120, 90, 0,0.7)"
+                        fillOpacity={1}
+                        fill="rgba(196, 147, 2, 0.1)"
                       />
                     ) : (
                       <></>
@@ -5655,52 +5668,18 @@ const Day = (props) => {
                 >
                   <AreaChart width={100} height={500} data={props.data}>
                     <defs>
-                      <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
+                      {/* <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
                         <stop
                           offset="5%"
                           stopColor="rgba(11,25,103)"
-                          stopOpacity={0.7}
+                          stopOpacity={0.1}
                         />
                         <stop
                           offset="90%"
                           stopColor="rgba(11,25,103)"
-                          stopOpacity={0}
+                          stopOpacity={0.1}
                         />
-                      </linearGradient>
-                      <linearGradient
-                        id="colorday2"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop offset="5%" stopColor="rgba(247, 148, 29)" stopOpacity={0.7} />
-                        <stop offset="90%" stopColor="rgba(247, 148, 29)" stopOpacity={0} />
-                      </linearGradient>
-                      <linearGradient
-                        id="colorday3"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop offset="5%" stopColor="rgba(0, 163, 0)" stopOpacity={0.7} />
-                        <stop offset="90%" stopColor="rgba(0, 163, 0)" stopOpacity={0} />
-                      </linearGradient>
-                      <linearGradient
-                        id="colorday4"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop
-                          offset="5%"
-                          stopColor="purple"
-                          stopOpacity={0.7}
-                        />
-                        <stop offset="90%" stopColor="purple" stopOpacity={0} />
-                      </linearGradient>
+                      </linearGradient> */}
                     </defs>
                     <XAxis dataKey="time" axisLine={false} tickLine={false} />
                     <YAxis
@@ -5741,9 +5720,9 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v}
-                        stroke="rgba(11,25,103)"
+                        stroke="rgba(11,25,103,0.7)"
                         fillOpacity={1}
-                        fill="url(#colorday)"
+                        fill="rgba(11,25,103,0.2)"
                       />
                     ) : (
                       <></>
@@ -5755,9 +5734,9 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v2}
-                        stroke="rgba(247, 148, 29)"
-                        fillOpacity={2}
-                        fill="url(#colorday2)"
+                        stroke="rgba(247, 148, 29,0.7)"
+                        fillOpacity={1}
+                        fill="rgba(247, 148, 29,0.2)"
                       />
                     ) : (
                       <></>
@@ -5769,9 +5748,9 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v3}
-                        stroke="rgba(0, 163, 0)"
-                        fillOpacity={2}
-                        fill="url(#colorday3)"
+                        stroke="rgba(0, 163, 0,0.7)"
+                        fillOpacity={1}
+                        fill="rgba(0, 163, 0, 0.2)"
                       />
                     ) : (
                       <></>
@@ -5782,9 +5761,9 @@ const Day = (props) => {
                       <Area
                         type="monotone"
                         dataKey={props.v4}
-                        stroke="purple"
-                        fillOpacity={2}
-                        fill="url(#colorday4)"
+                        stroke="rgba(120, 90, 0,0.7)"
+                        fillOpacity={1}
+                        fill="rgba(196, 147, 2, 0.1)"
                       />
                     ) : (
                       <></>

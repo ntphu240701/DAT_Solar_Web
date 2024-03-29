@@ -1,8 +1,2 @@
-Design Component:
-+Layer 1: Device: 19/1/204 - 23/1/2024
-+Layer 1: Report: 24/1/24 - 25/1/24
-    - Layer 2: Delete: 29/1/24
-    - Layer 2: Add: 30/1/24 - 31/1/24
-    - Layer 2: Edit: 30/1/24 - 31/1/24
-+Layer 1: 26/1/24
-+Layer 1: Fix bug Device, Report, User, tạo mới GroupRole: 27/1/24
+1. Đồng hồ đếm ngược data trả về sau 5p
+2. Sửa lại màu chart, bỏ gradient, để 1 màu và giảm opacity

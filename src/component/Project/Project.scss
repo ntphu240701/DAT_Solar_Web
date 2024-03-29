@@ -524,9 +524,19 @@
 
                 &_Tit {
                     display: flex;
+                    align-items: center;
+                    justify-content: space-between;
 
                     &_Item {
                         padding: 16px;
+                        white-space: nowrap; // ngan xuong dong
+                        overflow: hidden; // an noi dung vuot ra ngoai
+                        text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
+                    }
+                    &_Timer {
+                        padding: 16px;
+                        font-size: 13px;
+                        color: grey;
                         white-space: nowrap; // ngan xuong dong
                         overflow: hidden; // an noi dung vuot ra ngoai
                         text-overflow: ellipsis; // hien thi 3 cham khi vuot ra ngoai
@@ -1639,7 +1649,8 @@
                         justify-content: center;
                         gap: 5px;
 
-                        &_Item {}
+                        &_Item {
+                        }
                     }
                 }
             }
@@ -3575,9 +3586,11 @@
                 }
             }
 
-            &_History {}
+            &_History {
+            }
 
-            &_More {}
+            &_More {
+            }
         }
 
         &_Device {
