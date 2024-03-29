@@ -2611,6 +2611,8 @@ export default function ProjectData(props) {
                                       return <Checkboxfilter></Checkboxfilter>;
                                     case "total":
                                       return <Checkboxfilter></Checkboxfilter>;
+                                    default:
+                                      return <></>;
                                   }
                                 case "hybrid":
                                   switch (dateType) {
@@ -2793,6 +2795,8 @@ export default function ProjectData(props) {
                                       return <Checkboxfilter></Checkboxfilter>;
                                     case "total":
                                       return <Checkboxfilter></Checkboxfilter>;
+                                    default:
+                                      return <></>;
                                   }
 
                                 case "ESS":
