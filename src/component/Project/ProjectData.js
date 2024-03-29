@@ -4117,6 +4117,7 @@ const Graph = (props) => {
   );
 };
 
+
 const GraphGrid = (props) => {
   const [lineA_, setLinA] = useState("Default");
 
@@ -4134,13 +4135,13 @@ const GraphGrid = (props) => {
       <>
         <path
           className="path"
-          d="M 196.271 98.625 L 196.396 16.86 L 72.511 17.177"
+          d="M 230.857 133.65 L 231.165 38.854 C 231.618 33.403 228.857 31.82 223.463 32.163 L 82.444 32.537"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
             stroke: lineA_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(43, 195, 253)",
-            strokeWidth: "8",
+            strokeWidth: props.strokeWidth,
             strokeLinecap: "round",
             overflow: "hidden",
             strokeDasharray: lineA_ === "Default" ? "0" : "20",
@@ -4176,13 +4177,13 @@ const GraphGrid = (props) => {
     return (
       <>
         <path
-          d="M 217.242 98.976 L 217.726 16.793 L 341.759 16.278"
+          d="M 258.136 132.82 L 258.703 39.488 C 258.59 34.811 259.013 31.481 266.609 31.554 L 413.676 31.085"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
             stroke: "rgba(43, 195, 253)",
-            strokeWidth: "8",
+            strokeWidth: props.strokeWidth,
             strokeLinecap: "round",
             overflow: "hidden",
           }}
@@ -4196,13 +4197,13 @@ const GraphGrid = (props) => {
     return (
       <>
         <path
-          d="M 219.85 174.188 L 220.334 254.116 L 344.367 254.616"
+          d="M 241.751 145.923 L 242.029 243.54"
           width="100%"
           height="100%"
           style={{
             fill: "none",
             stroke: "rgba(43, 195, 253)",
-            strokeWidth: "8",
+            strokeWidth: props.strokeWidth,
             strokeLinecap: "round",
             overflow: "hidden",
           }}
@@ -4238,30 +4239,30 @@ const GraphGrid = (props) => {
   return (
     <>
       <svg
-        viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" width={"100%"} height={"100%"}
+        viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" width={"100%"} height={"100%"}
         style={{
           backgroundColor: "white"
         }}
       >
-        <LineA dur="10s" />
-        <LineB dur="10s" />
-        <LineD dur="10s" />
+        <LineA dur="10s" strokeWidth="3" />
+        <LineB dur="10s" strokeWidth="3" />
+        <LineD dur="10s" strokeWidth="3" />
 
         <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
           <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
-        <foreignObject x="295" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+        <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
           <SolarImg src="/dat_icon/consumption.png" width="30" height="30" />
         </foreignObject>
 
 
-        <foreignObject x="295" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+        <foreignObject x="193" y="233" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
           <SolarImg src="/dat_icon/grid.png" width="30" height="30" />
         </foreignObject>
 
-        <foreignObject x="157.188" y="102.233" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px" }}>
+        <foreignObject x="193" y="92" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", backgroundColor: "white", borderRadius: "3px" }}>
             DC/AC
           </div>
         </foreignObject>
@@ -4305,46 +4306,24 @@ const GraphConsumption = (props) => {
       setLinD("Default");
     }
   }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1]);
-
   const LineA = (props) => {
     return (
       <>
         <path
           className="path"
-          d="M 196.271 98.625 L 196.396 16.86 L 72.511 17.177"
+          d="M 230.857 133.65 L 231.165 38.854 C 231.618 33.403 228.857 31.82 223.463 32.163 L 82.444 32.537"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
             stroke: lineA_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(43, 195, 253)",
-            strokeWidth: "8",
+            strokeWidth: props.strokeWidth,
             strokeLinecap: "round",
             overflow: "hidden",
             strokeDasharray: lineA_ === "Default" ? "0" : "20",
             animation: `${lineA_} ${props.dur} linear infinite`,
           }}
         />
-        {/* {lineA_ ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 7 7 L 82 7 C 90 7 100 13 100 21 L 100 36"
-              dur={props.dur}
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )} */}
       </>
     );
   };
@@ -4353,13 +4332,13 @@ const GraphConsumption = (props) => {
     return (
       <>
         <path
-          d="M 217.242 98.976 L 217.726 16.793 L 341.759 16.278"
+          d="M 258.136 132.82 L 258.703 39.488 C 258.59 34.811 259.013 31.481 266.609 31.554 L 413.676 31.085"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
             stroke: lineB_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(247, 148, 29)",
-            strokeWidth: "8",
+            strokeWidth: props.strokeWidth,
             strokeLinecap: "round",
             overflow: "hidden",
             strokeDasharray: lineB_ === "Default" ? "0" : "20",
@@ -4377,13 +4356,13 @@ const GraphConsumption = (props) => {
     return (
       <>
         <path
-          d="M 219.85 174.188 L 220.334 254.116 L 344.367 254.616"
+          d="M 241.751 145.923 L 242.029 243.54"
           width="100%"
           height="100%"
           style={{
             fill: "none",
             stroke: lineD_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(0, 163, 0)",
-            strokeWidth: "8",
+            strokeWidth: props.strokeWidth,
             strokeLinecap: "round",
             overflow: "hidden",
             strokeDasharray: lineD_ === "Default" ? "0" : "20",
@@ -4414,7 +4393,7 @@ const GraphConsumption = (props) => {
   return (
     <>
       <svg
-        viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" width={"100%"} height={"100%"}
+        viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" width={"100%"} height={"100%"}
         style={{
           backgroundColor: "white"
         }}
@@ -4427,16 +4406,16 @@ const GraphConsumption = (props) => {
           <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
-        <foreignObject x="295" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+        <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
           <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
-        <foreignObject x="295" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+        <foreignObject x="193" y="233" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
           <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
-        <foreignObject x="157.188" y="102.233" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px" }}>
+        <foreignObject x="193" y="92" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", backgroundColor: "white", borderRadius: "3px" }}>
             DC/AC
           </div>
         </foreignObject>
@@ -4491,40 +4470,19 @@ const GraphFull = (props) => {
       <>
         <path
           className="path"
-          d="M 196.271 98.625 L 196.396 16.86 L 72.511 17.177"
+          d="M 230.857 133.65 L 231.165 38.854 C 231.618 33.403 228.857 31.82 223.463 32.163 L 82.444 32.537"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
             stroke: lineA_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(43, 195, 253)",
-            strokeWidth: "8",
+            strokeWidth: props.strokeWidth,
             strokeLinecap: "round",
             overflow: "hidden",
-            strokeDasharray: lineA_ === "Default" ? "0" : "30",
+            strokeDasharray: lineA_ === "Default" ? "0" : "20",
             animation: `${lineA_} ${props.dur} linear infinite`,
           }}
         />
-        {/* {lineA_ ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 7 7 L 82 7 C 90 7 100 13 100 21 L 100 36"
-              dur={props.dur}
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )} */}
       </>
     );
   };
@@ -4533,16 +4491,16 @@ const GraphFull = (props) => {
     return (
       <>
         <path
-          d="M 217.242 98.976 L 217.726 16.793 L 341.759 16.278"
+          d="M 258.136 132.82 L 258.703 39.488 C 258.59 34.811 259.013 31.481 266.609 31.554 L 413.676 31.085"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
             stroke: lineB_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(247, 148, 29)",
-            strokeWidth: "8",
+            strokeWidth: props.strokeWidth,
             strokeLinecap: "round",
             overflow: "hidden",
-            strokeDasharray: lineB_ === "Default" ? "0" : "30",
+            strokeDasharray: lineB_ === "Default" ? "0" : "20",
             animation: `${lineB_}  ${props.dur} linear infinite`,
 
           }}
@@ -4557,16 +4515,16 @@ const GraphFull = (props) => {
       <>
         <path
           className="path"
-          d="M 197.95 174.365 L 198.082 254.227 L 63.344 253.918"
+          d="M 226.842 164.494 L 227.12 262.111 C 227.543 270.476 225.304 271.397 217.555 271.123 L 76.035 270.736"
           style={{
             width: "100%",
             height: "100%",
             fill: "none",
             stroke: lineC_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(77, 255, 0)",
-            strokeWidth: "8",
+            strokeWidth: props.strokeWidth,
             strokeLinecap: "round",
             overflow: "hidden",
-            strokeDasharray: lineC_ === "Default" ? "0" : "30",
+            strokeDasharray: lineC_ === "Default" ? "0" : "20",
             animation: `${lineC_} ${props.dur} linear infinite`,
 
           }}
@@ -4580,16 +4538,16 @@ const GraphFull = (props) => {
     return (
       <>
         <path
-          d="M 219.85 174.188 L 220.334 254.116 L 344.367 254.616"
+          d="M 259.334 162.907 L 259.913 261.215 C 259.941 268.812 260.465 270.05 268.772 270.188 L 417.31 270.833"
           width="100%"
           height="100%"
           style={{
             fill: "none",
             stroke: lineD_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(0, 163, 0)",
-            strokeWidth: "8",
+            strokeWidth: props.strokeWidth,
             strokeLinecap: "round",
             overflow: "hidden",
-            strokeDasharray: lineD_ === "Default" ? "0" : "30",
+            strokeDasharray: lineD_ === "Default" ? "0" : "20",
             animation: `${lineD_} ${props.dur} linear infinite`,
           }}
         />
@@ -4617,34 +4575,34 @@ const GraphFull = (props) => {
   return (
     <>
       <svg
-        viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" width={"100%"} height={"100%"}
+        viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" width={"100%"} height={"100%"}
         style={{
           backgroundColor: "white"
         }}
       >
-        <LineA dur="10s" />
-        <LineB dur="10s" />
-        <LineC dur="10s" />
-        <LineD dur="10s" />
+        <LineA dur="10s" strokeWidth="3" />
+        <LineB dur="10s" strokeWidth="3" />
+        <LineC dur="10s" strokeWidth="3" />
+        <LineD dur="10s" strokeWidth="3" />
 
         <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/production.png" width="30" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
-        <foreignObject x="295" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+        <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+          <Solar src="/dat_icon/consumption.png" width="30" height="30" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
         <foreignObject x="5" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/bat.png" width="20" height="30" val={Number(parseFloat(props.cal?.bat_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+          <Solar src="/dat_icon/bat.png" width="20" height="30" val={Number(parseFloat(props.cal?.bat_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
-        <foreignObject x="295" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+        <foreignObject x="395" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+          <Solar src="/dat_icon/grid.png" width="30" height="30" val={Number(parseFloat(props.cal?.grid_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
         </foreignObject>
 
-        <foreignObject x="157.188" y="102.233" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px" }}>
+        <foreignObject x="193" y="112" width="102" height="68" style={{ overflow: "hidden", padding: "2px" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", backgroundColor: "white", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px" }}>
             DC/AC
           </div>
         </foreignObject>

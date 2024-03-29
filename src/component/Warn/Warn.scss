@@ -666,8 +666,6 @@
 // INFO BOX IN WARN SECTION
 .DAT_PopupReportInfo_Box {
     position: relative;
-    margin-top: -100px;
-    height: 430px;
     width: 600px;
     background-color: white;
     border-radius: 5px;
@@ -692,13 +690,13 @@
 
             &_TableWarning {
                 font-size: 17px;
-                border-left: solid 4px rgba(255, 0, 0);
+                border-left: solid 4px COLOR.$Warning-color;
                 padding-left: 10px;
             }
 
             &_TableNotice {
                 font-size: 17px;
-                border-left: solid 4px rgb(253, 193, 39, 0.9);
+                border-left: solid 4px COLOR.$Notice-color;
                 padding-left: 10px;
             }
 
@@ -720,7 +718,7 @@
     }
 
     &_Body {
-        margin-top: -10px;
+        margin-top: -15px;
         font-size: 13px;
         padding: 16px;
         color: #505050;
