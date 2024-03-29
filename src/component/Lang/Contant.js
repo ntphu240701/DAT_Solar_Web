@@ -688,6 +688,7 @@ export const messages = {
     A_46_1: "Battery Full charge",
     A_47_1: "Battery need be charge",
     A_47_2: "Battery can be only charrge",
+    // A_48_17: "Unknown",
   },
   vi: {
     description: "Mô tả",
@@ -1373,5 +1374,6 @@ export const messages = {
     A_46_1: "Battery Full charge",
     A_47_1: "Battery need be charge",
     A_47_2: "Battery can be only charrge",
+    // A_48_17: "Unknown",
   },
 };

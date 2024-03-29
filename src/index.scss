@@ -1,4 +1,4 @@
-//SCSS Variables 
+//SCSS Variables
 $Primary-color: rgba(11, 25, 103);
 $Secondary-color: rgba(43, 195, 253);
 $DarkGreen-color: rgba(0, 163, 0);
@@ -10,6 +10,7 @@ $Lightpurple-color: rgba(97, 88, 194, 0.8);
 $LightGray-color: rgba(233, 233, 233, 0.5);
 $Warning-color: rgba(255, 0, 0);
 $Notice-color: rgba(255, 255, 0);
+$purple-color: rgb(123, 90, 123);
 
 body {
   // font-family: segoeui !important;
@@ -659,7 +660,6 @@ iframe {
     }
 
     &_content1 {
-
       cursor: pointer;
       max-width: 350px;
       font-size: 14px;
@@ -672,12 +672,8 @@ iframe {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-
     }
   }
-
-
-
 }
 
 .DAT_Filter {
