@@ -113,7 +113,7 @@ export default function EditRule() {
     <div className="DAT_CreateRule">
       <div className="DAT_CreateRule_Header">
         <div className="DAT_CreateRule_Header_Left">
-          <p style={{ fontSize: "20px" }}>
+          <p>
             {dataLang.formatMessage({ id: "editRule" })}
           </p>
         </div>

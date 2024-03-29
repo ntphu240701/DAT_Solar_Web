@@ -1002,7 +1002,7 @@ export const messages = {
     ExportPEnable: 'Kích hoạt trả ngược công xuất',
     ExportPLimit: 'Giá trị công suất trả ngược',
     ExportLimitWay: 'Kiểu giới hạn trả ngược',
-    LimitSinglePhase: 'Giới hạn công suất theo từng pha',
+    LimitSinglePhase: 'Giới hạn công suất theo pha nhỏ nhất',
     LimitThreePhase: 'Giới hạn công suất trung bình 3 pha',
     MetterType: 'Loại đồng hồ',
     MultiExportLimit: 'Multi-export limit',
