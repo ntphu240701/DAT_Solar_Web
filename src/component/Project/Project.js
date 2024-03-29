@@ -414,7 +414,6 @@ export default function Project(props) {
       (item) => item.plantid_ == e.currentTarget.id
     );
     projectData.value = newPlant;
-    console.log(projectData.value);
     // const newDevicePlant = devicePlant.value.filter(
     //   (item) => item.plantid_ == e.currentTarget.id
     // );
@@ -454,7 +453,6 @@ export default function Project(props) {
       action: newData[i].mark ? "unmark" : "mark",
       partnerid: userInfor.value.partnerid,
     });
-    console.log(markplant);
     if (markplant.status == true) {
       if (newData[i].mark) {
         newData[i] = {
@@ -582,7 +580,6 @@ export default function Project(props) {
       max: parseFloat(max_),
       location: _location
     })
-    console.log(_location.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
     if (_location) {
       // console.log(min_, max_, _location)
       dataproject.value.filter(item => {

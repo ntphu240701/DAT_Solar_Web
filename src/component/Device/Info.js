@@ -3458,7 +3458,7 @@ export default function Info(props) {
                     >
                       {dataLang.formatMessage({ id: "BatchCommand" })}
                     </button>
-                    {/* <button className="DAT_Info_Header_Left_Item"
+                    <button className="DAT_Info_Header_Left_Item"
                       id="single"
                       onClick={() => { setNav("single") }}
                       style={{ color: nav === "single" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "single" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
@@ -3478,7 +3478,7 @@ export default function Info(props) {
                       style={{ color: nav === "log" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "log" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       Control Log
-                    </button> */}
+                    </button>
                   </div>
                 )
               case "update":

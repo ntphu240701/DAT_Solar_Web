@@ -3,13 +3,13 @@ import "./GroupRole.scss";
 
 import { editState, group, groupEdit } from "./GroupRole";
 import { useIntl } from "react-intl";
-
-import { FaSave } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
-import { alertDispatch } from "../Alert/Alert";
-import { IoSaveOutline } from "react-icons/io5";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { alertDispatch } from "../Alert/Alert";
+
+import { RxCross2 } from "react-icons/rx";
+import { IoClose, IoSaveOutline } from "react-icons/io5";
+import { COLOR } from "../../App";
 
 const CheckBox = (props) => {
   const handleCheck = (e) => {
@@ -50,21 +50,20 @@ export default function CreateGroupRole() {
   const [name, setName] = useState(groupEdit.value.name_);
 
   const handleSave = async () => {
-
     let res = await callApi("post", `${host.DATA}/updatePartner`, {
       code: groupEdit.value.code_,
       type: "name",
       data: name,
     });
     if (res.status) {
-          const t = group.value.findIndex((item) => item.id_ == groupEdit.value.id_);
-          group.value[t] = {
-            ...group.value[t],
-            name_: name,
-          }
-          editState.value = false;
-          alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
-    }else{
+      const t = group.value.findIndex((item) => item.id_ == groupEdit.value.id_);
+      group.value[t] = {
+        ...group.value[t],
+        name_: name,
+      }
+      editState.value = false;
+      alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+    } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
   };
@@ -73,69 +72,43 @@ export default function CreateGroupRole() {
     setName(e.currentTarget.value);
   };
 
-  // const handleEditCode = (e) => {
-  //   setCode(e.currentTarget.value);
-  // };
-
   return (
-    <>
-      <div className="DAT_CreateGroupRole">
-        <div className="DAT_CreateGroupRole_Header">
-          <div className="DAT_CreateGroupRole_Header_Left">
-            <p style={{ fontSize: "20px" }}>{dataLang.formatMessage({ id: 'editGroup' })}</p>
-          </div>
-
-          <div className="DAT_CreateGroupRole_Header_Right">
-            <div className="DAT_CreateGroupRole_Header_Right_Save"
-              onClick={() => handleSave()}
-            >
-              <IoSaveOutline size={20} color="white" />
-              <span>{dataLang.formatMessage({ id: 'save' })}</span>
-            </div>
-            <div className="DAT_CreateGroupRole_Header_Right_Close">
-              <RxCross2
-                size={20}
-                color="white"
-                onClick={() => (editState.value = false)}
-              />
-            </div>
-          </div>
+    <div className="DAT_CreateGroupRole">
+      <div className="DAT_CreateGroupRole_Header">
+        <div className="DAT_CreateGroupRole_Header_Left">
+          <p>{dataLang.formatMessage({ id: 'editGroup' })}</p>
         </div>
 
-        <div className="DAT_CreateGroupRole_Body">
-          <div className="DAT_CreateGroupRole_Body_Item">
-            <h4>{dataLang.formatMessage({ id: 'grouproleInfo' })}</h4>
-            <div className="DAT_CreateGroupRole_Body_Item_Input">
-              <span>{dataLang.formatMessage({ id: 'groupName' })}:</span>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => handleEditName(e)}
-              />
-            </div>
-
-            {/* <div className="DAT_CreateGroupRole_Body_Item_Input">
-              <span>{dataLang.formatMessage({ id: 'groupInfo' })}:</span>
-              <input
-                type="text"
-                value={code}
-                onChange={(e) => handleEditCode(e)}
-              />
-            </div> */}
-
-            {/* <div className="DAT_CreateGroupRole_Body_Item_Checkbox">
-              {Object.entries(groupEdit.value.role).map(([key, value]) => (
-                <CheckBox
-                  info={value.lang}
-                  key={key}
-                  status={value.status}
-                  num={String(key)}
-                />
-              ))}
-            </div> */}
+        <div className="DAT_CreateGroupRole_Header_Right">
+          <div className="DAT_CreateGroupRole_Header_Right_Close"
+            onClick={() => (editState.value = false)}
+          >
+            <IoClose size={25} />
           </div>
         </div>
       </div>
-    </>
+
+      <div className="DAT_CreateGroupRole_Body">
+        <div className="DAT_CreateGroupRole_Body_Item">
+          <span>{dataLang.formatMessage({ id: 'groupName' })}:</span>
+          <div className="DAT_CreateGroupRole_Body_Item_Input">
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => handleEditName(e)}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="DAT_CreateGroupRole_Foot">
+        <button
+          style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
+          onClick={() => { handleSave(); }}
+        >
+          {dataLang.formatMessage({ id: 'confirm' })}
+        </button>
+      </div>
+    </div>
   );
 }
