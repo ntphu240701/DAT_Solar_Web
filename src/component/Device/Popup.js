@@ -114,7 +114,8 @@ export default function Popup(props) {
           </div>
         </div>
         <div className="DAT_Popup_Box_Body">
-          <input type="text" placeholder={dataLang.formatMessage({ id: 'name' })} ref={name} />
+          <p>{dataLang.formatMessage({ id: 'name' })}:</p>
+          <input type="text" ref={name} />
         </div>
         <div className="DAT_Popup_Box_Foot">
           <button style={{ backgroundColor: "rgba(11, 25, 103)", color: "white" }}

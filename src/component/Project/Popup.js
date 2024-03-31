@@ -17,15 +17,15 @@ export default function Popup(props) {
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
-  };
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" }
+  }
 
   const handlePopup = (state) => {
-    const popup = document.getElementById("Popup");
+    const popup = document.getElementById("Popup")
     popup.style.transform = popup_state[state].transform;
     popup.style.transition = popup_state[state].transition;
     popup.style.color = popup_state[state].color;
-  };
+  }
 
   const handleDelete = (e) => {
     switch (props.type) {

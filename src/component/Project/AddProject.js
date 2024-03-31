@@ -13,8 +13,6 @@ import { alertDispatch } from "../Alert/Alert";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
 
-import { FaSave } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoClose, IoSaveOutline } from "react-icons/io5";
 

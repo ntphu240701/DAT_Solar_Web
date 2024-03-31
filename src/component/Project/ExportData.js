@@ -88,10 +88,10 @@ export default function ExportData(props) {
         <div className="DAT_EditRole_Head_Right">
           <div
             className="DAT_EditRole_Head_Right_Icon"
-            onClick={() => props.handleClose()}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
+            onClick={() => props.handleClose()}
           >
             <IoClose size={25}></IoClose>
           </div>

@@ -32,7 +32,6 @@ export default function CreateRole(props) {
       });
       console.log(res);
       if (res.status) {
-        console.log(window.location.host);
         let register = await callApi("post", host.AUTH + "/Register", {
           usr: username.current.value,
           mail: mail.current.value,
@@ -44,7 +43,6 @@ export default function CreateRole(props) {
           code: partnerInfor.value.code,
           host: window.location.host,
         });
-        console.log(register);
         if (register.status) {
           roleState.value = "default";
           alertDispatch(datalang.formatMessage({ id: "alert_6" }));
@@ -83,12 +81,11 @@ export default function CreateRole(props) {
         </div>
 
         <div className="DAT_CreateRole_Header_Right">
-          <button className="DAT_CreateRole_Header_Right_Save">
+          <div className="DAT_CreateRole_Header_Right_Save">
             <IoSaveOutline size={20} color="white" />
             <span>{dataLang.formatMessage({ id: "save" })}</span>
-          </button>
-          <div
-            className="DAT_CreateRole_Header_Right_Close"
+          </div>
+          <div className="DAT_CreateRole_Header_Right_Close"
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}

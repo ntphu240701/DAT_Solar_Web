@@ -8,18 +8,19 @@ import { isMobile, warnfilter } from "../Navigation/Navigation";
 import SettingWarn from "./SettingWarn";
 import RaiseBox from "./RaiseBox";
 import { useIntl } from "react-intl";
+import { ruleInfor } from "../../App";
+import Info from "./Info";
+import Filter from "../Project/Filter";
+import moment from "moment-timezone";
+
 import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { LuMailWarning } from "react-icons/lu";
 import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore } from "react-icons/io";
 import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
-import { ruleInfor } from "../../App";
 import { IoTrashOutline } from "react-icons/io5";
-import Info from "./Info";
 import { FiFilter } from "react-icons/fi";
-import Filter from "../Project/Filter";
-import moment from "moment-timezone";
 
 const warntab = signal("all");
 const tabMobile = signal(false);
@@ -203,13 +204,11 @@ export default function Warn(props) {
     setLevel(level)
     setPlant(plant)
     setDevice(device)
-    // console.log(temp)
   };
 
   const handleDeleteWarn = (e) => {
     deletewarnState.value = true;
     idDel.value = e.currentTarget.id;
-    // console.log(idDel.value);
   };
 
   const handleSetting = (e) => {
@@ -230,25 +229,6 @@ export default function Warn(props) {
     tabLable.value = newLabel.name;
   };
 
-  // const changeData = (e) => {
-  //   if (e.target.value == ' ') {
-  //     setDatafilter(dataWarn.value);
-  //   } else {
-  //     const t = e.target.value
-  //     const df = dataWarn.value.filter((item) => {
-  //       switch (type) {
-  //         case 'code':
-  //           return item.boxid.includes(t) || item.boxid.toLowerCase().includes(t);
-  //         case 'device':
-  //           return item.device.includes(t) || item.device.toLowerCase().includes(t);
-  //         default:
-  //           return item.plant.includes(t) || item.plant.toLowerCase().includes(t);
-  //       }
-  //     })
-  //     setDatafilter(df)
-  //   }
-  // };
-
   // by Mr Loc
   const handleSearch = (e) => {
     const searchTerm = e.currentTarget.value.toLowerCase();
@@ -260,9 +240,7 @@ export default function Warn(props) {
     } else {
       let temp = dataWarn.value.filter(
         (item) => item.plant.toLowerCase().includes(searchTerm) || item.device.toLowerCase().includes(searchTerm)
-        // item.device.toLowerCase().includes(searchTerm)
       );
-      // console.log(temp);
       setDatafilter([...temp]);
       warnfilter.value = {};
     }
@@ -287,7 +265,6 @@ export default function Warn(props) {
       // Gọi biến thời gian trong dataWarn
       const openData = moment(item.opentime).format("MM/DD/YYYY");
       const closeData = moment(item.closetime).format("MM/DD/YYYY");
-      console.log('openDATA', openData, closeData);
 
       // Nếu người dùng không chỉnh ngày thì vẫn chạy điều kiện checkbox
       if (openInput == "Invalid date" && closeInput == "Invalid date") {
@@ -297,19 +274,13 @@ export default function Warn(props) {
 
       // Trường hợp 1 : Nhập ngày vào open time thì những ngày sau open time xuất hiện
       else if (closeInput === "Invalid date") {
-        console.log('openData:', openData);
-        console.log('openInput:', openInput);
         const timeChange = moment(openData).isSameOrAfter(openInput);
-        console.log("OPEN", timeChange);
         return timeChange;
       }
 
       // Trường hợp 2 : Nhập ngày vào close time thì những trước sau close time xuất hiện
       else if (openInput === "Invalid date") {
-        console.log('closeData:', closeData);
-        console.log('closeInput:', closeInput);
         const timeChange = moment(openData).isSameOrBefore(closeInput);
-        console.log("CLOSE", timeChange);
         return timeChange;
       }
 
@@ -329,9 +300,7 @@ export default function Warn(props) {
 
   // by Mr Loc
   useEffect(() => {
-    // console.log(warnfilter.value);
     if (warnfilter.value.device) {
-      console.log(warnfilter.value);
       let d = document.getElementById("warnsearch");
       d.value = warnfilter.value.device;
       let temp_ = dataWarn.value.filter(
@@ -354,36 +323,16 @@ export default function Warn(props) {
   // by Mr Loc
   useEffect(() => {
     tabLable.value = listTab[0].name;
-    // console.log(warnfilter.value.device, projectwarnfilter.value);
     if (
       warnfilter.value.device === undefined &&
       Number(projectwarnfilter.value) === 0
     ) {
-      // console.log("ok");
       setDatafilter([...dataWarn.value]);
     }
     return () => {
       warntab.value = "all";
     }
   }, [dataWarn.value]);
-
-  //by Mr  Tai
-
-  // useEffect(() => {
-  //   tabLable.value = listTab[0].name;
-  //   setDatafilter([...dataWarn.value]);
-  // }, [dataWarn.value]);
-
-  // const handleSearch = (e) => {
-  //   console.log(e.target.value);
-  //   // console.log(warnfilter.value.warnid);
-  //   // warnfilter.value.warnid = e.target.value;
-  //   if(warnfilter.value.warnid){
-  //     let temp = dataWarn.value.filter((item) => item.warnid == warnfilter.value.warnid);
-  //     setDatafilter(temp);
-  //     console.log(temp);
-  //   }
-  // };
 
   return (
     <>
@@ -766,8 +715,7 @@ export default function Warn(props) {
         </div>
       )}
 
-      <div
-        className="DAT_WarnInfor"
+      <div className="DAT_WarnInfor"
         style={{
           height: warnState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",

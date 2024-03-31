@@ -4,18 +4,7 @@ import "./Project.scss";
 import AddGateway from "./AddGateway";
 import { Empty, plantState, projectData, popupState } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area, } from "recharts";
 import { signal } from "@preact/signals-react";
 import DataTable from "react-data-table-component";
 import moment from "moment-timezone";
@@ -24,58 +13,26 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import {
-  COLOR,
-  Token,
-  convertUnit,
-  ruleInfor,
-  showUnit,
-  showUnitk,
-  userInfor,
-} from "../../App";
+import { Token, convertUnit, ruleInfor, showUnit, showUnitk, } from "../../App";
 import axios from "axios";
 import Popup from "./Popup";
 import { useIntl } from "react-intl";
-
-import {
-  IoIosArrowDown,
-  IoIosArrowForward,
-  IoIosCloud,
-  IoMdMore,
-} from "react-icons/io";
-import {
-  IoAddOutline,
-  IoArrowForward,
-  IoCalendarOutline,
-  IoClose,
-  IoSyncOutline,
-  IoTrashOutline,
-} from "react-icons/io5";
-import {
-  MdDelete,
-  MdEdit,
-  MdOutlineError,
-  MdPermDataSetting,
-} from "react-icons/md";
-import { FaCheckCircle, FaMoneyBill, FaTree } from "react-icons/fa";
-import { RiMoneyCnyCircleFill } from "react-icons/ri";
-import { RxCross2 } from "react-icons/rx";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { LiaLongArrowAltLeftSolid } from "react-icons/lia";
-import { CiSearch } from "react-icons/ci";
-import { useSelector } from "react-redux";
-import { FiEdit } from "react-icons/fi";
-
-import styled, { keyframes } from "styled-components";
-import { info, infoState, loggerList, tab } from "../Device/Device";
+import { info, infoState, tab } from "../Device/Device";
 import Info from "../Device/Info";
-import { GiCoalWagon } from "react-icons/gi";
-import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import PopupState, { bindHover, bindPopper } from "material-ui-popup-state";
 import { Fade, Paper, Popper, Typography } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import { filter } from "lodash";
 import ExportData from "./ExportData";
+
+import { IoIosArrowDown, IoIosArrowForward, IoIosCloud, IoMdMore, } from "react-icons/io";
+import { IoAddOutline, IoCalendarOutline, IoClose, IoTrashOutline, } from "react-icons/io5";
+import { MdDelete, MdEdit, MdOutlineError, } from "react-icons/md";
+import { FaCheckCircle, FaMoneyBill, FaTree } from "react-icons/fa";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { useSelector } from "react-redux";
+import { FiEdit } from "react-icons/fi";
+import { GiCoalWagon } from "react-icons/gi";
+import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { CiClock1 } from "react-icons/ci";
 
 export const dropState = signal(false);
@@ -203,64 +160,27 @@ export default function ProjectData(props) {
   const [vDay3, setVDay3] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vDay4, setVDay4] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataMonth, setDataMonth] = useState([]);
-
-  const [vMonth, setVMonth] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth2, setVMonth2] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth3, setVMonth3] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth4, setVMonth4] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth5, setVMonth5] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth6, setVMonth6] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
+  const [vMonth, setVMonth] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth2, setVMonth2] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth3, setVMonth3] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth4, setVMonth4] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth5, setVMonth5] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth6, setVMonth6] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataYear, setDataYear] = useState([]);
   const [vYear, setVYear] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vYear2, setVYear2] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vYear3, setVYear3] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vYear4, setVYear4] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vYear5, setVYear5] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vYear6, setVYear6] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
+  const [vYear2, setVYear2] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear3, setVYear3] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear4, setVYear4] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear5, setVYear5] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear6, setVYear6] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataTotal, setDataTotal] = useState([]);
-  const [vTotal, setVTotal] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal2, setVTotal2] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal3, setVTotal3] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal4, setVTotal4] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal5, setVTotal5] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal6, setVTotal6] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [snlogger, setSnlogger] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
+  const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal2, setVTotal2] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal3, setVTotal3] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal4, setVTotal4] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal5, setVTotal5] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal6, setVTotal6] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [exportReport, setExportReport] = useState(false);
   const [type, setType] = useState("");
   const [invt, setInvt] = useState({});
@@ -617,33 +537,6 @@ export default function ProjectData(props) {
     info.value.invt = invt[inverterDB.value[0].logger_];
     // console.log(info.value)
     // console.log(tempInverter)
-  };
-
-  const handleSync = async (e) => {
-    // console.log(e.currentTarget.id);
-    // console.log(temp.value);
-    const arr = e.currentTarget.id.split("_");
-    const newdata = temp.value.find((item) => item.sn == arr[0]);
-    const decimalArray = JSON.parse(newdata.setting.sn);
-    const hexString = decimalArray
-      .map((num) => parseInt(invt[arr[0]]?.[num]).toString(16))
-      .join("");
-    const invertersn = hexString
-      .match(/.{2}/g)
-      .map((byte) => String.fromCharCode(parseInt(byte, 16)))
-      .join("");
-    // console.log(invertersn, arr[0], projectData.value.plantid_, newdata.type);
-
-    let async_ = await callApi("post", host.DATA + "/addInverter", {
-      loggersn: arr[0],
-      invertersn: invertersn,
-      type: newdata.type,
-      plantid: projectData.value.plantid_,
-    });
-    console.log(async_);
-    if (async_.status) {
-      inverterDB.value = [...inverterDB.value, async_.data];
-    }
   };
 
   const invtCloud = async (data, token) => {
@@ -1035,15 +928,11 @@ export default function ProjectData(props) {
   };
 
   const handleInvt = async (sn) => {
-    console.log(sn);
-
     const res = await invtCloud(
       '{"deviceCode":"' + sn + '"}',
       Token.value.token
     );
-    // console.log(res)
     if (res.ret === 0) {
-      //console.log(res.data)
       setInvt((pre) => ({ ...pre, [sn]: res.data }));
     }
   };
@@ -1070,11 +959,6 @@ export default function ProjectData(props) {
         let vDay4_ = dataLang.formatMessage({ id: "batteryData" });
         d.data.data.map((item) => {
           let arr = item.time.split(":");
-          // console.log(item);
-          // if (projectData.value.plantmode === "grid") {
-          //   x = [...x, { time: `${arr[0]}:${arr[1]}`, [vDay_]: item.value }];
-          // }
-          // if (projectData.value.plantmode === "hybrid") {
           x = [
             ...x,
             {
@@ -1085,23 +969,8 @@ export default function ProjectData(props) {
               [vDay4_]: item.value4,
             },
           ];
-          // }
         });
 
-        // if (projectData.value.plantmode === "grid") {
-        //   for (let i = x.length; i < 287; i++) {
-        //     if (
-        //       moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
-        //     ) {
-        //       let nextTime = moment(x[x.length - 1].time, "HH:mm")
-        //         .add(5, "minutes")
-        //         .format("HH:mm");
-        //       x.push({ time: nextTime, [vDay_]: 0 });
-        //     }
-        //   }
-        // }
-
-        // if (projectData.value.plantmode === "hybrid") {
         for (let i = x.length; i < 287; i++) {
           if (
             moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
@@ -1118,8 +987,6 @@ export default function ProjectData(props) {
             });
           }
         }
-        // }
-        // console.log(x)
         setDataDay(x);
         setVDay(dataLang.formatMessage({ id: "productionData" }));
         setVDay2(dataLang.formatMessage({ id: "consumptionData" }));
@@ -1167,11 +1034,6 @@ export default function ProjectData(props) {
         let sum_month6 = [];
         d.data.data.map((item, i) => {
           let index = datamonth_.findIndex((d) => d.date == item.date);
-          // if (projectData.value.plantmode === "grid") {
-          //   datamonth_[index][vMonth] = item.value;
-          //   sum_month[i] = item.value;
-          // }
-          // if (projectData.value.plantmode === "hybrid") {
           datamonth_[index][vMonth] = item.value;
           datamonth_[index][vMonth2] = item.value2;
           datamonth_[index][vMonth3] = item.value3;
@@ -1184,15 +1046,8 @@ export default function ProjectData(props) {
           sum_month4[i] = item?.value4 || 0;
           sum_month5[i] = item?.value5 || 0;
           sum_month6[i] = item?.value6 || 0;
-          // }
 
           if (i == d.data.data.length - 1) {
-            // if (projectData.value.plantmode === "grid") {
-            //   cal.value["pro_month"] = parseFloat(
-            //     sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-            //   ).toFixed(2);
-            // }
-            // if (projectData.value.plantmode === "hybrid") {
             cal.value["pro_month"] = parseFloat(
               sum_month.reduce((a, b) => Number(a) + Number(b), 0)
             ).toFixed(2);
@@ -1211,7 +1066,6 @@ export default function ProjectData(props) {
             cal.value["bat_out_month"] = parseFloat(
               sum_month6.reduce((a, b) => Number(a) + Number(b), 0)
             ).toFixed(2);
-            // }
           }
         });
         setVMonth(vMonth);
@@ -1239,9 +1093,7 @@ export default function ProjectData(props) {
         plantid: projectData.value.plantid_,
         year: moment(new Date()).format("YYYY"),
       });
-      //console.log(d)
       if (d.status) {
-        //console.log(d.data)
         let vYear = dataLang.formatMessage({ id: "monthlyproduction" });
         let vYear2 = dataLang.formatMessage({ id: "monthlyconsumption" });
         let vYear3 = dataLang.formatMessage({ id: "monthlygridin" });
@@ -1330,7 +1182,6 @@ export default function ProjectData(props) {
       });
       setDataTotal([]);
       if (d.status) {
-        //console.log(d.data)
         let vTotal = dataLang.formatMessage({ id: "yearproduction" });
         let vTotal2 = dataLang.formatMessage({ id: "yearconsumption" });
         let vTotal3 = dataLang.formatMessage({ id: "yeargridin" });
@@ -1384,7 +1235,6 @@ export default function ProjectData(props) {
             ).toFixed(2);
           }
         });
-        // console.log(d.data.name);
         setVTotal(vTotal);
         setVTotal2(vTotal2);
         setVTotal3(vTotal3);
@@ -1404,7 +1254,6 @@ export default function ProjectData(props) {
     getTotal();
 
     //data Logger
-
     return () => {
       cal.value = {};
       tab_.value = "logger";
@@ -1419,21 +1268,18 @@ export default function ProjectData(props) {
       let d = await callApi("post", host.DATA + "/getLogger", {
         plantid: projectData.value.plantid_,
       });
-      // console.log(d);
       temp.value = d;
       d.map(async (item) => {
         const res = await invtCloud(
           '{"deviceCode":"' + item.sn + '"}',
           Token.value.token
         );
-        // console.log(res)
         if (res.ret === 0) {
           let res_ = await callApi("post", host.DATA + "/updateLogger", {
             sn: item.sn,
             type: 'state',
             data: res.data.enabled
           })
-          //console.log(res.data)
           setInvt((pre) => ({ ...pre, [item.sn]: res.data }));
           const decimalArray = JSON.parse(item.setting.sn);
           const hexString = decimalArray
@@ -1443,7 +1289,6 @@ export default function ProjectData(props) {
             .match(/.{2}/g)
             .map((byte) => String.fromCharCode(parseInt(byte, 16)))
             .join("");
-          // console.log(asciiString);
         } else {
           setInvt((pre) => ({ ...pre, [item.sn]: {} }));
         }
@@ -1451,7 +1296,6 @@ export default function ProjectData(props) {
         let inverter = await callApi("post", host.DATA + "/getInverter", {
           loggerid: item.sn,
         });
-        // console.log(inverter);
         if (inverter.length > 0) {
           inverterDB.value = [...inverter];
         } else {
@@ -1483,59 +1327,27 @@ export default function ProjectData(props) {
       pro_2: [],
       pro_3: [],
     };
-    //console.log("data", temp.value)
     temp.value.map(async (item, i) => {
-      // console.log(item);
       Object.entries(item.data).map(([key, value]) => {
         switch (value.type) {
           case "sum":
             let inum = [];
             let register_ = JSON.parse(value.register);
-            // console.log(register_);
             register_.map((reg, j) => {
               inum[j] = parseFloat(invt[item.sn]?.[reg] || 0);
             });
-            console.log(inum);
 
             num_[key][i] = inum.reduce((accumulator, currentValue) => {
               return Number(accumulator) + Number(currentValue);
             }, 0);
 
             if (i == temp.value.length - 1) {
-              // if (invt[item.psn]?.enabled == 1) {
-
               cal.value[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
                 }, 0) * parseFloat(value.cal)
               ).toFixed(2);
             }
-            // let inum = [];
-            // let cal_ = JSON.parse(value.cal);
-            // Object.entries(value.register).map(([key, value]) => {
-            //   let n = JSON.parse(value);
-            //   inum[key] =
-            //     parseFloat(invt[item.sn]?.[n[0]] || 0) *
-            //     parseFloat(cal_[0]) *
-            //     parseFloat(invt[item.sn]?.[n[1]] || 0) *
-            //     parseFloat(cal_[1]);
-            // });
-
-            // num_[key][i] = inum.reduce((accumulator, currentValue) => {
-            //   return Number(accumulator) + Number(currentValue);
-            // }, 0);
-            // if (i == temp.value.length - 1) {
-            //   //console.log("Total", total)
-            //   if (invt[item.sn]?.enabled == 1) {
-            //     cal.value[key] = parseFloat(
-            //       num_[key].reduce((accumulator, currentValue) => {
-            //         return Number(accumulator) + Number(currentValue);
-            //       }, 0) / 1000
-            //     ).toFixed(2);
-            //   } else {
-            //     cal.value[key] = 0;
-            //   }
-            // }
             break;
           case "word":
             let d = JSON.parse(value.register);
@@ -1555,7 +1367,6 @@ export default function ProjectData(props) {
             num_[key][i] = convertToDoublewordAndFloat(e, "int");
 
             if (i == temp.value.length - 1) {
-              //console.log(num_)
               cal.value[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
@@ -1568,7 +1379,6 @@ export default function ProjectData(props) {
               parseFloat(invt[item.sn]?.[value.register] || 0) *
               parseFloat(value.cal);
             if (i == temp.value.length - 1) {
-              //console.log(num_)
               cal.value[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return accumulator + currentValue;
@@ -1580,7 +1390,6 @@ export default function ProjectData(props) {
       });
     });
 
-    // console.log(cal.value)
     coalsave.value = {
       ...coalsave.value,
       value: cal.value.pro_3,
@@ -1592,15 +1401,12 @@ export default function ProjectData(props) {
     };
   }, [invt]);
 
-
   const handlefilterchart = (e) => {
     const state = e.currentTarget.checked;
     const chartfield = e.currentTarget.id.split("_");
-    console.log(chartfield);
     const temp = filterchart.value;
     temp[chartfield[1]][dateType][chartfield[0]] = state;
     filterchart.value = temp;
-    console.log(filterchart.value);
   };
 
   const Checkboxfilter = (props) => {
@@ -1788,7 +1594,7 @@ export default function ProjectData(props) {
   };
 
   const handlePopup = (state) => {
-    const popup = document.getElementById("Popup");
+    const popup = document.getElementById("Popup_");
     popup.style.transform = popup_state[state].transform;
     popup.style.transition = popup_state[state].transition;
     popup.style.color = popup_state[state].color;
@@ -2000,7 +1806,7 @@ export default function ProjectData(props) {
                 <IoClose
                   size={25}
                   color="rgba(11, 25, 103)"
-                  id="Popup"
+                  id="Popup_"
                   onMouseEnter={(e) => handlePopup("new")}
                   onMouseLeave={(e) => handlePopup("pre")}
                 />
@@ -3145,42 +2951,13 @@ export default function ProjectData(props) {
                     <div className="DAT_ProjectData_Dashboard_More_Left">
                       <div className="DAT_ProjectData_Dashboard_More_Left_Tit">
                         <span>Thông tin dự án</span>
-                        {/* <div className="DAT_ProjectData_Dashboard_More_Left_Tit_Button">
-                          <IoArrowForward />
-                        </div> */}
                       </div>
 
                       <div className="DAT_ProjectData_Dashboard_More_Left_Content">
                         <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left">
                           <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item">
-                            {/* <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#048FFF",
-                            }}
-                          >
-                            0
-                          </div>
-
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "inProgress" })}
-                          </div> */}
-                            {/* <div
-                            className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
-                            style={{ marginBottom: "16px" }}
-                          > */}
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Title">
-                              {dataLang.formatMessage({ id: "projType" })}
+                              {dataLang.formatMessage({ id: "projType" })}:
                             </div>
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Content">
                               {projectData.value.planttype === "industrial" ? (
@@ -3191,32 +2968,9 @@ export default function ProjectData(props) {
                                 </>
                               )}
                             </div>
-                            {/* </div> */}
                           </div>
 
                           <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item">
-                            {/* <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#41D068",
-                            }}
-                          >
-                            0
-                          </div>
-
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "complete" })}
-                          </div> */}
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Title">
                               {dataLang.formatMessage({ id: "companyName" })}:
                             </div>
@@ -3224,65 +2978,10 @@ export default function ProjectData(props) {
                               {projectData.value.business}
                             </div>
                           </div>
-
-                          {/* <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item"> */}
-                          {/* <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#41D068",
-                            }}
-                          >
-                            0
-                          </div>
-
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "complete" })}
-                          </div> */}
-                          {/* <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Title">
-                              {dataLang.formatMessage({ id: "unitPrice" })}:
-
-                            </div>
-                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Content">
-                              {projectData.value.price}
-
-                            </div>
-                          </div> */}
                         </div>
 
                         <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right">
                           <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item">
-                            {/* <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#41D068",
-                            }}
-                          >
-                            0
-                          </div>
-
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "complete" })}
-                          </div> */}
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Title">
                               {dataLang.formatMessage({ id: "contactName" })}:
                             </div>
@@ -3292,28 +2991,6 @@ export default function ProjectData(props) {
                           </div>
 
                           <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item">
-                            {/* <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#41D068",
-                            }}
-                          >
-                            0
-                          </div>
-
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "complete" })}
-                          </div> */}
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Title">
                               {dataLang.formatMessage({ id: "phone" })}:
                             </div>
@@ -3321,40 +2998,6 @@ export default function ProjectData(props) {
                               {projectData.value.phone}
                             </div>
                           </div>
-
-                          {/* <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item"> */}
-                          {/* <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#41D068",
-                            }}
-                          >
-                            0
-                          </div>
-
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "complete" })}
-                          </div> */}
-                          {/* <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Title">
-                              {dataLang.formatMessage({ id: "companyName" })}:
-
-
-                            </div>
-                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Content">
-
-
-                            </div>
-                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -3870,8 +3513,6 @@ export default function ProjectData(props) {
                       </div>
                     </div>
                   )}
-
-                  {/* </div> */}
                 </div>
               );
             case "alert":
@@ -4158,12 +3799,10 @@ const Graph = (props) => {
   );
 };
 
-
 const GraphGrid = (props) => {
   const [lineA_, setLinA] = useState("Default");
 
   useEffect(() => {
-    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1, props.cal?.bat_1)
     if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
       setLinA("moveLtoR");
     } else {
@@ -4189,27 +3828,6 @@ const GraphGrid = (props) => {
             animation: `${lineA_} ${props.dur} linear infinite`,
           }}
         />
-        {/* {lineA_ ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 7 7 L 82 7 C 90 7 100 13 100 21 L 100 36"
-              dur={props.dur}
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )} */}
       </>
     );
   };
@@ -4267,6 +3885,7 @@ const GraphGrid = (props) => {
       </div>
     );
   };
+
   const SolarImg = (props) => {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "10px", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px", padding: "5px", boxSizing: "border-box", backgroundColor: "white", overflow: "hidden" }}>
@@ -4274,8 +3893,6 @@ const GraphGrid = (props) => {
       </div>
     );
   };
-
-
 
   return (
     <>
@@ -4307,12 +3924,7 @@ const GraphGrid = (props) => {
             DC/AC
           </div>
         </foreignObject>
-
-
-
-
       </svg>
-
     </>
   );
 };
@@ -4322,16 +3934,12 @@ const GraphConsumption = (props) => {
   const [lineB_, setLinB] = useState("Default");
   const [lineD_, setLinD] = useState("Default");
 
-
-
   useEffect(() => {
-    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
     if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
       setLinA("moveLtoR");
     } else {
       setLinA("Default");
     }
-
 
     if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
       setLinB("moveRtoL");
@@ -4347,6 +3955,7 @@ const GraphConsumption = (props) => {
       setLinD("Default");
     }
   }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1]);
+
   const LineA = (props) => {
     return (
       <>
@@ -4392,7 +4001,6 @@ const GraphConsumption = (props) => {
     );
   };
 
-
   const LineD = (props) => {
     return (
       <>
@@ -4429,8 +4037,6 @@ const GraphConsumption = (props) => {
     );
   };
 
-
-
   return (
     <>
       <svg
@@ -4461,7 +4067,6 @@ const GraphConsumption = (props) => {
           </div>
         </foreignObject>
       </svg>
-
     </>
   );
 };
@@ -4472,16 +4077,12 @@ const GraphFull = (props) => {
   const [lineC_, setLinC] = useState("Default");
   const [lineD_, setLinD] = useState("Default");
 
-
-
   useEffect(() => {
-    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1, props.cal?.bat_1)
     if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
       setLinA("moveLtoR");
     } else {
       setLinA("Default");
     }
-
 
     if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
       setLinB("moveRtoL");
@@ -4611,8 +4212,6 @@ const GraphFull = (props) => {
     );
   };
 
-
-
   return (
     <>
       <svg
@@ -4647,12 +4246,7 @@ const GraphFull = (props) => {
             DC/AC
           </div>
         </foreignObject>
-
-
-
-
       </svg>
-
     </>
   );
 };
@@ -5429,7 +5023,6 @@ const Battery = (props) => {
     </div>
   );
 };
-
 
 // Thẻ Chart
 const Day = (props) => {

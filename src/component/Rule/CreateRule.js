@@ -8,9 +8,8 @@ import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { COLOR, userInfor } from "../../App";
+import { userInfor } from "../../App";
 
-import { RxCross2 } from "react-icons/rx";
 import { IoClose, IoSaveOutline } from "react-icons/io5";
 
 const temp = signal({

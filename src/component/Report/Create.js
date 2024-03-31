@@ -1,20 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Report.scss";
 
-import { createState, ReportData, lastID } from "./Report";
+import { createState, ReportData } from "./Report";
 import { signal } from "@preact/signals-react";
 import { isMobile } from "../Navigation/Navigation";
 import { useSelector } from "react-redux";
 import moment from "moment-timezone";
 import { useIntl } from "react-intl";
-
-import { FaSave } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
-import { IoClose, IoSaveOutline } from "react-icons/io5";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { userInfor } from "../../App";
 import { alertDispatch } from "../Alert/Alert";
+
+import { IoClose, IoSaveOutline } from "react-icons/io5";
 
 const newdata = signal({
   id: 1,
@@ -238,7 +236,6 @@ export default function Create() {
         customdata: JSON.stringify(newdata.value.customdata),
       });
       if (addReport.status) {
-        console.log(addReport);
         // lastID.value = lastID.value + 1;
         newdata.value = {
           ...newdata.value,
@@ -252,7 +249,6 @@ export default function Create() {
         //BAT TAT TRANG
         createState.value = false;
 
-        console.log(JSON.stringify(newdata.value));
         newdata.value = temp.value;
       }
     }
@@ -285,87 +281,86 @@ export default function Create() {
   }, [isMobile.value]);
 
   return (
-    <div>
-      <div className="DAT_Create">
-        <div className="DAT_Create_Header">
-          <div className="DAT_Create_Header_Left">
-            <p style={{ fontSize: "20px" }}>
-              {dataLang.formatMessage({ id: "createReport" })}
-            </p>
+    <div className="DAT_Create">
+      <div className="DAT_Create_Header">
+        <div className="DAT_Create_Header_Left">
+          <p style={{ fontSize: "20px" }}>
+            {dataLang.formatMessage({ id: "createReport" })}
+          </p>
+        </div>
+        <div className="DAT_Create_Header_Right">
+          <div
+            className="DAT_Create_Header_Right_Save"
+            onClick={() => handleCreate()}
+          >
+            <IoSaveOutline size={20} color="white" />
+            <span>{dataLang.formatMessage({ id: "save" })}</span>
           </div>
-          <div className="DAT_Create_Header_Right">
-            <div
-              className="DAT_Create_Header_Right_Save"
-              onClick={() => handleCreate()}
+          <div
+            className="DAT_Create_Header_Right_Close"
+            id="Popup"
+            onMouseEnter={(e) => handlePopup("new")}
+            onMouseLeave={(e) => handlePopup("pre")}
+            onClick={() => (createState.value = false)}
+          >
+            <IoClose size={25} />
+          </div>
+        </div>
+      </div>
+
+      <div className="DAT_Create_Body">
+        <div className="DAT_Create_Body_Item">
+          <div className="DAT_Create_Body_Item_Type">
+            <h4>{dataLang.formatMessage({ id: "reportType" })}</h4>
+            <select
+              className="form-select form-select-sm mt-3"
+              defaultValue={"dailyReport"}
+              onChange={(e) => {
+                handleDataType(e);
+              }}
             >
-              <IoSaveOutline size={20} color="white" />
-              <span>{dataLang.formatMessage({ id: "save" })}</span>
-            </div>
-            <div
-              className="DAT_Create_Header_Right_Close"
-              id="Popup"
-              onMouseEnter={(e) => handlePopup("new")}
-              onMouseLeave={(e) => handlePopup("pre")}
-              onClick={() => (createState.value = false)}
-            >
-              <IoClose size={25} />
-            </div>
+              <option value={"monthlyReport"}>
+                {dataLang.formatMessage({ id: "dailyReport" })}
+              </option>
+              <option value={"monthlyReport"}>
+                {dataLang.formatMessage({ id: "monthlyReport" })}
+              </option>
+              <option value={"yearlyReport"}>
+                {dataLang.formatMessage({ id: "yearlyReport" })}
+              </option>
+              <option value={"totalReport"}>
+                {dataLang.formatMessage({ id: "totalReport" })}
+              </option>
+            </select>
           </div>
         </div>
 
-        <div className="DAT_Create_Body">
-          <div className="DAT_Create_Body_Item">
-            <div className="DAT_Create_Body_Item_Type">
-              <h4>{dataLang.formatMessage({ id: "reportType" })}</h4>
-              <select
-                className="form-select form-select-sm mt-3"
-                defaultValue={"dailyReport"}
-                onChange={(e) => {
-                  handleDataType(e);
-                }}
-              >
-                <option value={"monthlyReport"}>
-                  {dataLang.formatMessage({ id: "dailyReport" })}
-                </option>
-                <option value={"monthlyReport"}>
-                  {dataLang.formatMessage({ id: "monthlyReport" })}
-                </option>
-                <option value={"yearlyReport"}>
-                  {dataLang.formatMessage({ id: "yearlyReport" })}
-                </option>
-                <option value={"totalReport"}>
-                  {dataLang.formatMessage({ id: "totalReport" })}
-                </option>
-              </select>
+        <TypeReport />
+
+        <div className="DAT_Create_Body_Item">
+          <div className="DAT_Create_Body_Item_Option">
+            <label style={{ margin: "0" }}>
+              {dataLang.formatMessage({ id: "customOpt" })}
+            </label>
+            <div className="DAT_Create_Body_Item_Option_Check">
+              <p style={{ color: "grey" }}>
+                {dataLang.formatMessage({ id: "reportprojectitem" })}
+              </p>
+              {Object.entries(newdata.value.inf).map(([key, value]) => (
+                <CheckBox
+                  key={key}
+                  num={String(key)}
+                  tab="inf_content"
+                  status={newdata.value.inf[key].status}
+                  id={dataLang.formatMessage({
+                    id: newdata.value.inf[key].id,
+                  })}
+                  width={widthCheckBox}
+                />
+              ))}
             </div>
-          </div>
 
-          <TypeReport />
-
-          <div className="DAT_Create_Body_Item">
-            <div className="DAT_Create_Body_Item_Option">
-              <label style={{ margin: "0" }}>
-                {dataLang.formatMessage({ id: "customOpt" })}
-              </label>
-              <div className="DAT_Create_Body_Item_Option_Check">
-                <p style={{ color: "grey" }}>
-                  {dataLang.formatMessage({ id: "reportprojectitem" })}
-                </p>
-                {Object.entries(newdata.value.inf).map(([key, value]) => (
-                  <CheckBox
-                    key={key}
-                    num={String(key)}
-                    tab="inf_content"
-                    status={newdata.value.inf[key].status}
-                    id={dataLang.formatMessage({
-                      id: newdata.value.inf[key].id,
-                    })}
-                    width={widthCheckBox}
-                  />
-                ))}
-              </div>
-
-              {/* <div className="DAT_Create_Body_Item_Option_Check"
+            {/* <div className="DAT_Create_Body_Item_Option_Check"
                 style={{
                   border: newdata.value.subinf.status
                     ? "1px solid grey"
@@ -438,32 +433,34 @@ export default function Create() {
                   <></>
                 )}
               </div> */}
-            </div>
           </div>
-          <div className="DAT_Create_Body_Item">
-            <div className="DAT_Create_Body_Item_Option">
-              <label style={{ margin: "0" }}>
-                {dataLang.formatMessage({ id: "dataPref" })}
-              </label>
-              <div className="DAT_Create_Body_Item_Option_Check">
-                <p style={{ color: "grey" }}>
-                  {dataLang.formatMessage({ id: "projData" })}
-                </p>
-                {Object.entries(newdata.value.customdata).map(
-                  ([key, value]) => (
-                    <CheckBox
-                      key={key}
-                      num={String(key)}
-                      tab="customdata_content"
-                      status={newdata.value.customdata[key].status}
-                      id={dataLang.formatMessage({
-                        id: newdata.value.customdata[key].id,
-                      })}
-                      width={widthCheckBox}
-                    />
-                  )
-                )}
-              </div>
+        </div>
+
+        <div className="DAT_Create_Body_Item"
+          style={{ border: "none" }}
+        >
+          <div className="DAT_Create_Body_Item_Option">
+            <label style={{ margin: "0" }}>
+              {dataLang.formatMessage({ id: "dataPref" })}
+            </label>
+            <div className="DAT_Create_Body_Item_Option_Check">
+              <p style={{ color: "grey" }}>
+                {dataLang.formatMessage({ id: "projData" })}
+              </p>
+              {Object.entries(newdata.value.customdata).map(
+                ([key, value]) => (
+                  <CheckBox
+                    key={key}
+                    num={String(key)}
+                    tab="customdata_content"
+                    status={newdata.value.customdata[key].status}
+                    id={dataLang.formatMessage({
+                      id: newdata.value.customdata[key].id,
+                    })}
+                    width={widthCheckBox}
+                  />
+                )
+              )}
             </div>
           </div>
         </div>

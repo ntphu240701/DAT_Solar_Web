@@ -5,12 +5,11 @@ import { editState, editData, ReportData } from "./Report";
 import { signal } from "@preact/signals-react";
 import { isMobile } from "../Navigation/Navigation";
 import { useIntl } from "react-intl";
-
-import { RxCross2 } from "react-icons/rx";
-import { IoClose, IoSaveOutline } from "react-icons/io5";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
+
+import { IoClose, IoSaveOutline } from "react-icons/io5";
 
 const reportname = signal();
 const popup_state = {
@@ -108,17 +107,11 @@ const DataReport = (props) => {
   const handlePushName = (e) => {
     setNameReport(e.currentTarget.value);
     reportname.value = e.currentTarget.value;
-    // console.log(nameReport);
-    // console.log(e.currentTarget.value);
   };
 
   useEffect(() => {
     reportname.value = editData.value.name;
   });
-
-  // useEffect(() => {
-  //   reportname.value = editData.value.name
-  // },[editData.value.name]);
 
   useEffect(() => {
     reportname.value = nameReport;
@@ -213,7 +206,6 @@ export default function Create() {
       customdata: JSON.stringify(editData.value.customdata),
       reportid: editData.value.id,
     });
-    // console.log(updateReport);
 
     if (updateReport.status) {
       editState.value = false;
@@ -226,16 +218,7 @@ export default function Create() {
         name: reportname.value,
       };
       alertDispatch(dataLang.formatMessage({ id: "alert_41" }));
-      console.log(reportname.value);
     }
-
-    // console.log(
-    //   reportname.value,
-    //   editData.value.type,
-    //   JSON.stringify(editData.value.inf),
-    //   JSON.stringify(editData.value.customdata),
-    //   editData.value.id
-    // );
   };
 
   const handleCloseCreate = () => {
@@ -248,7 +231,6 @@ export default function Create() {
     } else {
       setWidwidthCheckBox("25%");
     }
-    // console.log(isMobile.value);
   }, [isMobile.value]);
 
   return (
@@ -305,7 +287,10 @@ export default function Create() {
             </div>
           </div>
         </div>
-        <div className="DAT_EditReport_Body_Item">
+
+        <div className="DAT_EditReport_Body_Item"
+          style={{ border: "none" }}
+        >
           <div className="DAT_EditReport_Body_Item_Option">
             <label style={{ margin: "0" }}>
               {dataLang.formatMessage({ id: "dataPref" })}
