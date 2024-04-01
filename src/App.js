@@ -228,7 +228,7 @@ export default function App() {
         type: type,
       });
       if (warn.status) {
-        let newdb = warn.data.sort((a, b) => b.warnid_ - a.warnid_);
+        let newdb = warn.data.sort((a, b) => new Date(b.opentime_) - new Date(a.opentime_));
         newdb.map((item, index) => {
           dataWarn.value = [
             ...dataWarn.value,

@@ -34,8 +34,8 @@ import { FiEdit } from "react-icons/fi";
 import { GiCoalWagon } from "react-icons/gi";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { CiClock1 } from "react-icons/ci";
+import { clear } from "@testing-library/user-event/dist/clear";
 
-export const dropState = signal(false);
 export const popupAddGateway = signal(false);
 export const popupAddSubsystem = signal(false);
 export const temp = signal([]);
@@ -56,6 +56,8 @@ const tabAlert = signal("all");
 const open = signal([]);
 const close = signal([]);
 const cal = signal({});
+const viewNav = signal(false);
+const viewStateNav = signal([false, false]);
 
 const dataMeter = [];
 
@@ -149,6 +151,7 @@ export default function ProjectData(props) {
   const [timeRemaining, setTimeRemaining] = useState(300000);
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
+  const [dropState, setDropState] = useState(false);
   const [configname, setConfigname] = useState(dataLang.formatMessage({ id: "choosePara" }));
   const [dropConfig, setDropConfig] = useState(false);
   // const [tempInverter, setTempInverter] = useState([]);
@@ -157,6 +160,7 @@ export default function ProjectData(props) {
   const [vDay2, setVDay2] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vDay3, setVDay3] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vDay4, setVDay4] = useState(dataLang.formatMessage({ id: "unknown" }));
+
   const [dataMonth, setDataMonth] = useState([]);
   const [vMonth, setVMonth] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vMonth2, setVMonth2] = useState(dataLang.formatMessage({ id: "unknown" }));
@@ -164,6 +168,7 @@ export default function ProjectData(props) {
   const [vMonth4, setVMonth4] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vMonth5, setVMonth5] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vMonth6, setVMonth6] = useState(dataLang.formatMessage({ id: "unknown" }));
+
   const [dataYear, setDataYear] = useState([]);
   const [vYear, setVYear] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vYear2, setVYear2] = useState(dataLang.formatMessage({ id: "unknown" }));
@@ -171,6 +176,7 @@ export default function ProjectData(props) {
   const [vYear4, setVYear4] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vYear5, setVYear5] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vYear6, setVYear6] = useState(dataLang.formatMessage({ id: "unknown" }));
+
   const [dataTotal, setDataTotal] = useState([]);
   const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vTotal2, setVTotal2] = useState(dataLang.formatMessage({ id: "unknown" }));
@@ -178,6 +184,7 @@ export default function ProjectData(props) {
   const [vTotal4, setVTotal4] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vTotal5, setVTotal5] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vTotal6, setVTotal6] = useState(dataLang.formatMessage({ id: "unknown" }));
+
   const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [exportReport, setExportReport] = useState(false);
   const [type, setType] = useState("");
@@ -499,7 +506,7 @@ export default function ProjectData(props) {
   ];
 
   const handleInfoLogger = (e) => {
-    dropState.value = false
+    setDropState(false);
     infoState.value = true;
     tab.value = "logger";
     let plantname = projectData.value.plantname;
@@ -513,7 +520,7 @@ export default function ProjectData(props) {
   };
 
   const handleInfoInverter = (e) => {
-    dropState.value = false
+    setDropState(false);
     infoState.value = true;
     tab.value = "inverter";
     let plantname = projectData.value.plantname;
@@ -585,7 +592,7 @@ export default function ProjectData(props) {
     if (id === "dashboard") {
       setNav("production");
     }
-    dropState.value = !dropState.value;
+    setDropState(false);
   };
 
   const handleShowConfig = (e) => {
@@ -1088,6 +1095,16 @@ export default function ProjectData(props) {
     popup.style.transform = popup_state[state].transform;
     popup.style.transition = popup_state[state].transition;
     popup.style.color = popup_state[state].color;
+  };
+
+  const handleOutsideView = (e) => {
+    setTimeout(() => {
+      if (viewStateNav.value[1] == false) {
+        viewNav.value = false;
+        viewStateNav.value = [false, false];
+      }
+      clearTimeout();
+    }, 250);
   };
 
   useEffect(() => {
@@ -1603,7 +1620,7 @@ export default function ProjectData(props) {
             <div className="DAT_ProjectData_Header_Right">
               <div
                 className="DAT_ProjectData_Header_Right_More"
-                onClick={() => (dropState.value = !dropState.value)}
+                onClick={() => (setDropState(false))}
               >
                 <BsThreeDotsVertical size={20} color="#9e9e9e" />
               </div>
@@ -1736,7 +1753,12 @@ export default function ProjectData(props) {
                 <BsThreeDotsVertical
                   size={20}
                   color="#9e9e9e"
-                  onClick={() => (dropState.value = true)}
+                  onClick={() => {
+                    (setDropState(!dropState));
+                    viewNav.value = true;
+                    viewStateNav.value = [true, false];
+                  }}
+                  onMouseLeave={() => handleOutsideView()}
                 />
               </div>
               {ruleInfor.value.setting.device.add ? (
@@ -1747,7 +1769,7 @@ export default function ProjectData(props) {
                     id="add"
                     onClick={() => {
                       (popupAddGateway.value = true);
-                      (dropState.value = false)
+                      (setDropState(false))
                     }}
                   >
                     <IoAddOutline size={20} color="white" />
@@ -1759,7 +1781,7 @@ export default function ProjectData(props) {
               <div className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => {
                   plantState.value = "default";
-                  dropState.value = false;
+                  setDropState(false);
                 }}
               >
                 <IoClose
@@ -3645,7 +3667,7 @@ export default function ProjectData(props) {
 
       {isMobile.value ? (
         <>
-          {dropState.value ? (
+          {dropState ? (
             <div className="DAT_ProjectDataDrop">
               {view === "dashboard" ? (
                 <>
@@ -3677,8 +3699,17 @@ export default function ProjectData(props) {
         </>
       ) : (
         <>
-          {dropState.value ? (
-            <div className="DAT_ProjectDataDrop">
+          {dropState ? (
+            <div className="DAT_ProjectDataDrop"
+              style={{ display: viewNav.value ? "block" : "none" }}
+              onMouseEnter={() => {
+                viewStateNav.value = [true, true];
+              }}
+              onMouseLeave={() => {
+                viewNav.value = false;
+                viewStateNav.value = [false, false];
+              }}
+            >
               {view === "dashboard" ? (
                 <>
                   <div
@@ -4040,9 +4071,9 @@ const GraphFull = (props) => {
     }
 
     if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
-      setLinD("moveRtoL");
-    } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
       setLinD("moveLtoR");
+    } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
+      setLinD("moveRtoL");
     } else {
       setLinD("Default");
     }

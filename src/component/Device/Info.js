@@ -14,6 +14,7 @@ import moment from "moment-timezone";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, } from "recharts";
+import { signal } from "@preact/signals-react";
 
 import { IoIosArrowDown } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
@@ -47,6 +48,9 @@ const data_ = [
     //   feedbacktime: "2021-09-01 00:00:00",
   },
 ];
+
+const viewNav = signal(false);
+const viewStateNav = signal([false, false]);
 
 const BasicInformation = (props) => {
   const dataLang = useIntl();
@@ -3407,6 +3411,16 @@ export default function Info(props) {
     popup.style.color = popup_state[state].color;
   };
 
+  const handleOutsideView = (e) => {
+    setTimeout(() => {
+      if (viewStateNav.value[1] == false) {
+        viewNav.value = false;
+        viewStateNav.value = [false, false];
+      }
+      clearTimeout();
+    }, 250);
+  };
+
   return (
     <div className="DAT_Info">
       <div className="DAT_Info_Header">
@@ -3516,7 +3530,12 @@ export default function Info(props) {
                       <BsThreeDotsVertical
                         size={20}
                         color="#9e9e9e"
-                        onClick={() => setDropState(!dropState)}
+                        onClick={() => {
+                          setDropState(!dropState);
+                          viewNav.value = true;
+                          viewStateNav.value = [true, false];
+                        }}
+                        onMouseLeave={() => handleOutsideView()}
                       />
                     </div>
 
@@ -3644,40 +3663,63 @@ export default function Info(props) {
       })()}
 
       {dropState ? (
-        <div className="DAT_InfoDrop">
-          {/* {view == "detail" ? (
-            <> */}
-          <div className="DAT_InfoDrop_Item"
-            style={{ borderBottom: "1px solid #e0e0e0" }}
-            onClick={() => { setView("detail"); setDropState(false) }}
-          >
-            {dataLang.formatMessage({ id: 'monitor' })}
-          </div>
-          <div className="DAT_InfoDrop_Item"
-            style={{ borderBottom: "1px solid #e0e0e0" }}
-            onClick={() => { setView("control"); setDropState(false) }}
-          >
-            {dataLang.formatMessage({ id: 'control' })}
-          </div>
-          <div className="DAT_InfoDrop_Item"
-            onClick={() => { setView("update"); setDropState(false) }}
-          >
-            {dataLang.formatMessage({ id: 'update' })}
-          </div>
-          {/* </>
-          ) : (
-            <>
-              <div className="DAT_InfoDrop_Item"
-                style={{ borderBottom: "1px solid #e0e0e0" }}
-                onClick={() => { setView("detail"); setDropState(false) }}
-              >
-                {dataLang.formatMessage({ id: 'monitor' })}
-              </div>
-              <div className="DAT_InfoDrop_Item" onClick={() => { setView("update"); setDropState(false) }}>
-                update
-              </div>
-            </>
-          )} */}
+        <div className="DAT_InfoDrop"
+          style={{ display: viewNav.value ? "block" : "none" }}
+          onMouseEnter={() => {
+            viewStateNav.value = [true, true];
+          }}
+          onMouseLeave={() => {
+            viewNav.value = false;
+            viewStateNav.value = [false, false];
+          }}
+        >
+          {(() => {
+            switch (view) {
+              case "control":
+                return <>
+                  <div className="DAT_InfoDrop_Item"
+                    style={{ borderBottom: "1px solid #e0e0e0" }}
+                    onClick={() => { setView("detail"); setDropState(false) }}
+                  >
+                    {dataLang.formatMessage({ id: 'monitor' })}
+                  </div>
+                  <div className="DAT_InfoDrop_Item"
+                    onClick={() => { setView("update"); setDropState(false) }}
+                  >
+                    {dataLang.formatMessage({ id: 'update' })}
+                  </div>
+                </>
+              case "update":
+                return <>
+                  <div className="DAT_InfoDrop_Item"
+                    style={{ borderBottom: "1px solid #e0e0e0" }}
+                    onClick={() => { setView("detail"); setDropState(false) }}
+                  >
+                    {dataLang.formatMessage({ id: 'monitor' })}
+                  </div>
+                  <div className="DAT_InfoDrop_Item"
+                    style={{ borderBottom: "1px solid #e0e0e0" }}
+                    onClick={() => { setView("control"); setDropState(false) }}
+                  >
+                    {dataLang.formatMessage({ id: 'control' })}
+                  </div>
+                </>
+              default:
+                return <>
+                  <div className="DAT_InfoDrop_Item"
+                    style={{ borderBottom: "1px solid #e0e0e0" }}
+                    onClick={() => { setView("control"); setDropState(false) }}
+                  >
+                    {dataLang.formatMessage({ id: 'control' })}
+                  </div>
+                  <div className="DAT_InfoDrop_Item"
+                    onClick={() => { setView("update"); setDropState(false) }}
+                  >
+                    {dataLang.formatMessage({ id: 'update' })}
+                  </div>
+                </>
+            }
+          })()}
         </div>
       ) : (
         <></>
