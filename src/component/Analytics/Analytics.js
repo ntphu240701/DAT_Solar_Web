@@ -8,7 +8,6 @@ import AnaCreate from "./AnaCreate";
 import { useIntl } from "react-intl";
 
 import { TiFlowSwitch } from "react-icons/ti";
-import { TbReport } from "react-icons/tb";
 
 export const anaState = signal("default");
 

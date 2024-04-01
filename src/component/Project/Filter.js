@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
+import "./Project.scss";
+
 import { useIntl } from "react-intl";
 import "./Project.scss";
-import moment from "moment-timezone";
 import { signal } from "@preact/signals-react";
+import { COLOR } from "../../App";
 
 export const filterProject = signal([]);
 
@@ -17,6 +19,9 @@ export default function Filter(props) {
   const min = useRef(0);
   const max = useRef(0);
   const location = useRef("");
+  const today = new Date();
+  const todayString = today.toISOString().split('T')[0];
+  const [deviceF, setDeviceF] = useState("all");
 
   const handleReset = (e) => {
     let min = document.getElementById("min");
@@ -71,12 +76,6 @@ export default function Filter(props) {
     setEndDate(e.target.value);
   };
 
-  const [deviceF, setDeviceF] = useState("all");
-
-  useEffect(() => {
-    console.log(props.data);
-  }, [props.data])
-
   const filterdevice = (e) => {
     console.log(e.target.id);
     setDeviceF(e.target.id);
@@ -90,8 +89,9 @@ export default function Filter(props) {
     );
   };
 
-  const today = new Date();
-  const todayString = today.toISOString().split('T')[0];
+  useEffect(() => {
+    console.log(props.data);
+  }, [props.data])
 
   return (
     <>
@@ -99,16 +99,14 @@ export default function Filter(props) {
         switch (props.type) {
           case "project":
             return (
-              <div
-                className="DAT_Filter"
+              <div className="DAT_Filter"
                 style={{
                   height: props.display ? "567px" : "0px",
                   transition: "0.5s",
                 }}
               >
                 {props.display ? (
-                  <div
-                    className="DAT_Filter_Dropdown"
+                  <div className="DAT_Filter_Dropdown"
                     style={{
                       height: props.display ? "200px" : "0px",
                       transition: "0.5s",
@@ -171,7 +169,7 @@ export default function Filter(props) {
                         {dataLang.formatMessage({ id: 'reset' })}
                       </button>
                       <button
-                        style={{ backgroundColor: "#048FFF", color: "white" }}
+                        style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
                         onClick={() =>
                           props.handleClose(
                             min.current.value,
@@ -296,7 +294,7 @@ export default function Filter(props) {
                         {dataLang.formatMessage({ id: 'reset' })}
                       </button>
                       <button
-                        style={{ backgroundColor: "#048FFF", color: "white" }}
+                        style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
                         onClick={(e) => props.handlefilterdevice(deviceF)}
                       >
                         {dataLang.formatMessage({ id: "confirm" })}
@@ -405,7 +403,7 @@ export default function Filter(props) {
                         {dataLang.formatMessage({ id: "reset" })}
                       </button>
                       <button
-                        style={{ backgroundColor: "#048FFF", color: "white" }}
+                        style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
                         onClick={() => props.handleClose(opentime.current.value, closetime.current.value)}
                       >
                         {dataLang.formatMessage({ id: 'confirm' })}

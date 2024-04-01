@@ -78,6 +78,18 @@ export default function CreateGroupRole() {
     }
   };
 
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
+
   return (
     <div className="DAT_CreateGroupRole">
       <div className="DAT_CreateGroupRole_Header">
@@ -87,6 +99,9 @@ export default function CreateGroupRole() {
 
         <div className="DAT_CreateGroupRole_Header_Right">
           <div className="DAT_CreateGroupRole_Header_Right_Close"
+            id="Popup"
+            onMouseEnter={(e) => handlePopup("new")}
+            onMouseLeave={(e) => handlePopup("pre")}
             onClick={() => (createState.value = false)}
           >
             <IoClose size={25} />

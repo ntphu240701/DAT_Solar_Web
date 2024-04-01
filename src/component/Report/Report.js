@@ -1,19 +1,20 @@
 import React, { useEffect } from "react";
 import "./Report.scss";
 
-import { HiOutlineDocumentReport } from "react-icons/hi";
-import { CiEdit } from "react-icons/ci";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { signal } from "@preact/signals-react";
 import Create from "./Create";
 import ReportEdit from "./ReportEdit";
 import Popup from "./Popup";
 import { useSelector } from "react-redux";
 import { useIntl } from "react-intl";
-import { MdOutlinePostAdd } from "react-icons/md";
 import { ruleInfor, userInfor } from "../../App";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+
+import { HiOutlineDocumentReport } from "react-icons/hi";
+import { CiEdit } from "react-icons/ci";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { MdOutlinePostAdd } from "react-icons/md";
 
 export const createState = signal(false);
 export const editState = signal(false);
@@ -83,6 +84,7 @@ export default function Report(props) {
           <div></div>
         )}
       </div>
+
       <div className="DAT_Report">
         <div className="DAT_Report_List">
           {ReportData.value.map((item, i) => {
@@ -140,8 +142,8 @@ export default function Report(props) {
           })}
         </div>
       </div>
-      <div
-        className="DAT_ReportCreate"
+
+      <div className="DAT_ReportCreate"
         style={{
           height: createState.value ? "100vh" : "0px",
           transition: "0.5s",
@@ -150,8 +152,7 @@ export default function Report(props) {
         {createState.value ? <Create /> : <></>}
       </div>
 
-      <div
-        className="DAT_ReportEdit"
+      <div className="DAT_ReportEdit"
         style={{
           height: editState.value ? "100vh" : "0px",
           transition: "0.5s",
@@ -162,7 +163,7 @@ export default function Report(props) {
 
       {popupStateReport.value ? (
         <div className="DAT_ReportPopup">
-          <Popup></Popup>
+          <Popup />
         </div>
       ) : (
         <></>

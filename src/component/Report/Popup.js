@@ -4,12 +4,12 @@ import "./Report.scss";
 import { popupStateReport } from "./Report";
 import { idReport, ReportData } from "./Report";
 import { useIntl } from "react-intl";
-
-import { IoClose } from "react-icons/io5";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { userInfor } from "../../App";
 import { alertDispatch } from "../Alert/Alert";
+
+import { IoClose } from "react-icons/io5";
 
 export default function Popup() {
   const dataLang = useIntl();
@@ -20,7 +20,6 @@ export default function Popup() {
   };
 
   const handleDeleteReport = async (e) => {
-    console.log(userInfor.value.partnerid, idReport.value);
     const removeReport = await callApi("post", host.DATA + "/removeReport", {
       partnerid: userInfor.value.partnerid,
       reportid: idReport.value,
@@ -34,8 +33,6 @@ export default function Popup() {
       console.log(newDB);
       ReportData.value = newDB;
     }
-    console.log(removeReport);
-
   };
 
   const handlePopup = (state) => {
