@@ -152,14 +152,12 @@ export default function Role(props) {
   const handleDelete_ = (e) => {
     popupState.value = "delete";
     setTemp(e.currentTarget.id);
-    console.log(e.currentTarget.id)
   };
 
   const handleEdit = (e) => {
     popupState.value = "edit";
     const id = e.currentTarget.id;
     roleData.value = Usr_.value.find((item) => item.id_ == id);
-    console.log(roleData.value);
   };
 
   const handleModify = (e, type) => {
@@ -172,7 +170,6 @@ export default function Role(props) {
 
   const handleFilter = (e) => {
     const searchterm = e.currentTarget.value.toLowerCase();
-    console.log(e.currentTarget.value)
     if (searchterm == "") {
       setdatafilter(Usr_.value);
     } else {
@@ -191,11 +188,9 @@ export default function Role(props) {
       const d = await callApi("post", host.DATA + "/getallUser", {
         partnerid: partnerInfor.value.partnerid,
       });
-      // console.log(d);
       if (d.status === true) {
         Usr_.value = d.data;
         setdatafilter(d.data)
-        console.log(Usr_.value)
         Usr_.value = Usr_.value.sort((a, b) => a.ruleid_ - b.ruleid_);
       }
     };
@@ -208,7 +203,6 @@ export default function Role(props) {
         partnerid: partnerInfor.value.partnerid,
       });
       if (rule.status) {
-        // console.log(rule.data);
         datarule.value = rule.data;
         datarule.value = datarule.value.sort((a, b) => a.ruleid_ - b.ruleid_);
       }
@@ -351,8 +345,7 @@ export default function Role(props) {
       ) : (
         <>
           <div className="DAT_Role">
-            <div
-              className="DAT_Role_Header"
+            <div className="DAT_Role_Header"
               style={{
                 padding: "15px",
                 backgroundColor: "rgba(233, 233, 233, 0.5)",
@@ -376,8 +369,7 @@ export default function Role(props) {
         </>
       )}
 
-      <div
-        className="DAT_RoleInfor"
+      <div className="DAT_RoleInfor"
         style={{
           height: roleState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",
@@ -393,8 +385,7 @@ export default function Role(props) {
         })()}
       </div>
 
-      <div
-        className="DAT_RolePopup"
+      <div className="DAT_RolePopup"
         style={{
           height: popupState.value === "default" ? "0px" : "100vh",
         }}

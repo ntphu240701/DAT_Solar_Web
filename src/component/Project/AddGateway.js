@@ -7,11 +7,10 @@ import { inverterDB, popupAddGateway, temp } from "./ProjectData";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
-
-import { IoClose } from "react-icons/io5";
-
 import axios from "axios";
 import { Token } from "../../App";
+
+import { IoClose } from "react-icons/io5";
 
 export default function AddGateway(props) {
   const dataLang = useIntl();
@@ -72,7 +71,6 @@ export default function AddGateway(props) {
         name: name.current.value,
         type: type.current.value,
       });
-      console.log(d);
       if (d.status) {
         temp.value = [...temp.value, d.data];
         props.handleInvt(sn.current.value)
@@ -80,10 +78,7 @@ export default function AddGateway(props) {
           '{"deviceCode":"' + sn.current.value + '"}',
           Token.value.token
         );
-        // console.log(res)
         if (res.ret === 0) {
-          //console.log(res.data)
-
           const decimalArray = JSON.parse(d.data.setting.sn)
           const hexString = decimalArray.map((num) => parseInt(res.data[num]).toString(16)).join('');
           const invertersn = hexString.match(/.{2}/g).map(byte => String.fromCharCode(parseInt(byte, 16))).join('');
@@ -94,7 +89,6 @@ export default function AddGateway(props) {
             type: d.data.type,
             plantid: projectData.value.plantid_,
           });
-          console.log(async_);
           if (async_.status) {
             inverterDB.value = [...inverterDB.value, async_.data];
           }

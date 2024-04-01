@@ -8,17 +8,19 @@ import { IoClose } from "react-icons/io5";
 import { partnerInfor, userInfor } from "../../App";
 import { datarule } from "../Rule/Rule";
 import { host } from "../Lang/Contant";
-import { callApi } from "../Api/Api";
+import { Download, callApi } from "../Api/Api";
 import { alertDispatch } from "../Alert/Alert";
 import { projectData } from "./Project";
 import { ReportData } from "../Report/Report";
 import { useSelector } from "react-redux";
+import fileDownload from "js-file-download";
 
 export default function ExportData(props) {
   const dataLang = useIntl();
   const idRef = useRef();
   //   const ruleidRef = useRef(0);
   const [type, setType] = useState("dailyReport");
+  const usr = useSelector((state) => state.admin.usr);
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
@@ -32,7 +34,33 @@ export default function ExportData(props) {
     popup.style.color = popup_state[state].color;
   };
 
-  const usr = useSelector((state) => state.admin.usr);
+  const handleConfirm = async (e) => {
+    // console.log(idRef.current.value)
+    const t = ReportData.value.find((item) => item.id == idRef.current.value);
+    if (t) {
+      // console.log(t.id, t.type, props.datetime);
+      const d = await Download(
+        host.DATA + "/Report",
+        {
+          plant: props.plant,
+          report: t,
+          datetime: props.datetime,
+        }
+      )
+
+      if (d.type === 'application/json') {
+        alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
+
+      } else {
+        fileDownload(d, `${t.name}_${props.datetime}.xlsx`)
+
+      }
+      props.handleClose();
+    } else {
+      alertDispatch(dataLang.formatMessage({ id: "alert_48" }));
+    }
+  };
+
   useEffect(() => {
     const getReport = async () => {
       const d = await callApi("post", host.DATA + "/getReport", {
@@ -67,16 +95,6 @@ export default function ExportData(props) {
         break;
     }
   }, []);
-  const handleConfirm = async (e) => {
-    console.log(idRef.current.value)
-    const t = ReportData.value.find((item) => item.id == idRef.current.value);
-    if (t) {
-      console.log(t);
-      props.handleClose();
-    } else {
-      alertDispatch(dataLang.formatMessage({ id: "alert_48" }));
-    }
-  };
 
   return (
     <div className="DAT_EditRole">
@@ -88,10 +106,10 @@ export default function ExportData(props) {
         <div className="DAT_EditRole_Head_Right">
           <div
             className="DAT_EditRole_Head_Right_Icon"
-            onClick={() => props.handleClose()}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
+            onClick={() => props.handleClose()}
           >
             <IoClose size={25}></IoClose>
           </div>

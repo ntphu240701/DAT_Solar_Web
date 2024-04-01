@@ -4,18 +4,7 @@ import "./Project.scss";
 import AddGateway from "./AddGateway";
 import { Empty, plantState, projectData, popupState } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area, } from "recharts";
 import { signal } from "@preact/signals-react";
 import DataTable from "react-data-table-component";
 import moment from "moment-timezone";
@@ -24,58 +13,26 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import {
-  COLOR,
-  Token,
-  convertUnit,
-  ruleInfor,
-  showUnit,
-  showUnitk,
-  userInfor,
-} from "../../App";
+import { Token, convertUnit, ruleInfor, showUnit, showUnitk, } from "../../App";
 import axios from "axios";
 import Popup from "./Popup";
 import { useIntl } from "react-intl";
-
-import {
-  IoIosArrowDown,
-  IoIosArrowForward,
-  IoIosCloud,
-  IoMdMore,
-} from "react-icons/io";
-import {
-  IoAddOutline,
-  IoArrowForward,
-  IoCalendarOutline,
-  IoClose,
-  IoSyncOutline,
-  IoTrashOutline,
-} from "react-icons/io5";
-import {
-  MdDelete,
-  MdEdit,
-  MdOutlineError,
-  MdPermDataSetting,
-} from "react-icons/md";
-import { FaCheckCircle, FaMoneyBill, FaTree } from "react-icons/fa";
-import { RiMoneyCnyCircleFill } from "react-icons/ri";
-import { RxCross2 } from "react-icons/rx";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { LiaLongArrowAltLeftSolid } from "react-icons/lia";
-import { CiSearch } from "react-icons/ci";
-import { useSelector } from "react-redux";
-import { FiEdit } from "react-icons/fi";
-
-import styled, { keyframes } from "styled-components";
-import { info, infoState, loggerList, tab } from "../Device/Device";
+import { info, infoState, tab } from "../Device/Device";
 import Info from "../Device/Info";
-import { GiCoalWagon } from "react-icons/gi";
-import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import PopupState, { bindHover, bindPopper } from "material-ui-popup-state";
 import { Fade, Paper, Popper, Typography } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import { filter } from "lodash";
 import ExportData from "./ExportData";
+
+import { IoIosArrowDown, IoIosArrowForward, IoIosCloud, IoMdMore, } from "react-icons/io";
+import { IoAddOutline, IoCalendarOutline, IoClose, IoTrashOutline, } from "react-icons/io5";
+import { MdDelete, MdEdit, MdOutlineError, } from "react-icons/md";
+import { FaCheckCircle, FaMoneyBill, FaTree } from "react-icons/fa";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { useSelector } from "react-redux";
+import { FiEdit } from "react-icons/fi";
+import { GiCoalWagon } from "react-icons/gi";
+import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { CiClock1 } from "react-icons/ci";
 
 export const dropState = signal(false);
@@ -192,9 +149,7 @@ export default function ProjectData(props) {
   const [timeRemaining, setTimeRemaining] = useState(300000);
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
-  const [configname, setConfigname] = useState(
-    dataLang.formatMessage({ id: "choosePara" })
-  );
+  const [configname, setConfigname] = useState(dataLang.formatMessage({ id: "choosePara" }));
   const [dropConfig, setDropConfig] = useState(false);
   // const [tempInverter, setTempInverter] = useState([]);
   const [dataDay, setDataDay] = useState([]);
@@ -203,75 +158,40 @@ export default function ProjectData(props) {
   const [vDay3, setVDay3] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vDay4, setVDay4] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataMonth, setDataMonth] = useState([]);
-
-  const [vMonth, setVMonth] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth2, setVMonth2] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth3, setVMonth3] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth4, setVMonth4] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth5, setVMonth5] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth6, setVMonth6] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
+  const [vMonth, setVMonth] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth2, setVMonth2] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth3, setVMonth3] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth4, setVMonth4] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth5, setVMonth5] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth6, setVMonth6] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataYear, setDataYear] = useState([]);
   const [vYear, setVYear] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vYear2, setVYear2] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vYear3, setVYear3] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vYear4, setVYear4] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vYear5, setVYear5] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vYear6, setVYear6] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
+  const [vYear2, setVYear2] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear3, setVYear3] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear4, setVYear4] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear5, setVYear5] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear6, setVYear6] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [dataTotal, setDataTotal] = useState([]);
-  const [vTotal, setVTotal] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal2, setVTotal2] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal3, setVTotal3] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal4, setVTotal4] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal5, setVTotal5] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal6, setVTotal6] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [snlogger, setSnlogger] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
+  const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal2, setVTotal2] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal3, setVTotal3] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal4, setVTotal4] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal5, setVTotal5] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal6, setVTotal6] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [exportReport, setExportReport] = useState(false);
   const [type, setType] = useState("");
   const [invt, setInvt] = useState({});
   const box = useRef();
 
   const [d, setD] = useState({
-    date: moment(new Date()).format("YYYY-MM-DD"),
-    month: moment(new Date()).format("YYYY-MM"),
+    date: moment(new Date()).format("MM/DD/YYYY"),
+    month: moment(new Date()).format("MM/YYYY"),
     year: moment(new Date()).format("YYYY"),
     total: "Tổng",
   });
+
+  const [datetime_, setDatatime_] = useState(moment(new Date()).format("MM/DD/YYYY"));
 
   const color = {
     cur: "blue",
@@ -487,22 +407,12 @@ export default function ProjectData(props) {
           ) : (
             <div></div>
           )}
-          <div
-            className="DAT_ModifyBox"
+          <div className="DAT_ModifyBox"
             id={row.sn + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            {/* <div className="DAT_ModifyBox_Fix"
-              id={row.sn + "_sync"}
-              onClick={(e) => handleSync(e)}
-            >
-              <IoSyncOutline size={14} />
-              &nbsp;
-              Dong bo
-            </div> */}
-            <div
-              className="DAT_ModifyBox_Fix"
+            <div className="DAT_ModifyBox_Fix"
               id={row.sn + "_edit"}
               onClick={(e) => handleEdit(e)}
             >
@@ -510,8 +420,7 @@ export default function ProjectData(props) {
               &nbsp;
               {dataLang.formatMessage({ id: "change" })}
             </div>
-            <div
-              className="DAT_ModifyBox_Remove"
+            <div className="DAT_ModifyBox_Remove"
               id={row.sn + "_remove"}
               onClick={(e) => handleDelete(e)}
             >
@@ -619,33 +528,6 @@ export default function ProjectData(props) {
     // console.log(tempInverter)
   };
 
-  const handleSync = async (e) => {
-    // console.log(e.currentTarget.id);
-    // console.log(temp.value);
-    const arr = e.currentTarget.id.split("_");
-    const newdata = temp.value.find((item) => item.sn == arr[0]);
-    const decimalArray = JSON.parse(newdata.setting.sn);
-    const hexString = decimalArray
-      .map((num) => parseInt(invt[arr[0]]?.[num]).toString(16))
-      .join("");
-    const invertersn = hexString
-      .match(/.{2}/g)
-      .map((byte) => String.fromCharCode(parseInt(byte, 16)))
-      .join("");
-    // console.log(invertersn, arr[0], projectData.value.plantid_, newdata.type);
-
-    let async_ = await callApi("post", host.DATA + "/addInverter", {
-      loggersn: arr[0],
-      invertersn: invertersn,
-      type: newdata.type,
-      plantid: projectData.value.plantid_,
-    });
-    console.log(async_);
-    if (async_.status) {
-      inverterDB.value = [...inverterDB.value, async_.data];
-    }
-  };
-
   const invtCloud = async (data, token) => {
     var reqData = {
       data: data,
@@ -730,6 +612,7 @@ export default function ProjectData(props) {
 
   const handleChart = (date) => {
     if (dateType === "date") {
+      setDatatime_(moment(date).format("MM/DD/YYYY"));
       setD({ ...d, date: moment(date).format("DD/MM/YYYY") });
       const getDaily = async () => {
         const d = await callApi("post", host.DATA + "/getChart", {
@@ -737,8 +620,6 @@ export default function ProjectData(props) {
           date: moment(date).format("MM/DD/YYYY"),
         });
         setDataDay([]);
-        // console.log(projectData.value.plantid_)
-        // console.log(d)
         let x = [];
         if (d.status) {
           let vDay_ = dataLang.formatMessage({ id: "productionData" });
@@ -747,11 +628,6 @@ export default function ProjectData(props) {
           let vDay4_ = dataLang.formatMessage({ id: "batteryData" });
           d.data.data.map((item) => {
             let arr = item.time.split(":");
-            // console.log(item);
-            // if (projectData.value.plantmode === "grid") {
-            //   x = [...x, { time: `${arr[0]}:${arr[1]}`, [vDay_]: item.value }];
-            // }
-            // if (projectData.value.plantmode === "hybrid") {
             x = [
               ...x,
               {
@@ -762,23 +638,7 @@ export default function ProjectData(props) {
                 [vDay4_]: item.value4,
               },
             ];
-            // }
           });
-
-          // if (projectData.value.plantmode === "grid") {
-          //   for (let i = x.length; i < 287; i++) {
-          //     if (
-          //       moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
-          //     ) {
-          //       let nextTime = moment(x[x.length - 1].time, "HH:mm")
-          //         .add(5, "minutes")
-          //         .format("HH:mm");
-          //       x.push({ time: nextTime, [vDay_]: 0 });
-          //     }
-          //   }
-          // }
-
-          // if (projectData.value.plantmode === "hybrid") {
           for (let i = x.length; i < 287; i++) {
             if (
               moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
@@ -795,8 +655,6 @@ export default function ProjectData(props) {
               });
             }
           }
-          // }
-          // console.log(x)
           setDataDay(x);
           setVDay(dataLang.formatMessage({ id: "productionData" }));
           setVDay2(dataLang.formatMessage({ id: "consumptionData" }));
@@ -813,6 +671,7 @@ export default function ProjectData(props) {
 
       getDaily();
     } else if (dateType === "month") {
+      setDatatime_(moment(date).format("MM/YYYY"));
       setD({ ...d, month: moment(date).format("MM/YYYY") });
 
       const getMonth = async () => {
@@ -827,10 +686,8 @@ export default function ProjectData(props) {
           let vMonth4 = dataLang.formatMessage({ id: "dailygridout" });
           let vMonth5 = dataLang.formatMessage({ id: "dailybatteryin" });
           let vMonth6 = dataLang.formatMessage({ id: "dailybatteryout" });
-          const currentDate = new Date();
-          const currentMonth = currentDate.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
-          const currentYear = currentDate.getFullYear();
-          const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+          let arr = moment(date).format("MM/YYYY").split("/");
+          const daysInMonth = new Date(arr[1], arr[0], 0).getDate();
           let datamonth_ = [];
           for (let i = 1; i <= daysInMonth; i++) {
             datamonth_ = [
@@ -846,11 +703,6 @@ export default function ProjectData(props) {
           let sum_month6 = [];
           d.data.data.map((item, i) => {
             let index = datamonth_.findIndex((d) => d.date == item.date);
-            // if (projectData.value.plantmode === "grid") {
-            //   datamonth_[index][vMonth] = item.value;
-            //   sum_month[i] = item.value;
-            // }
-            // if (projectData.value.plantmode === "hybrid") {
             datamonth_[index][vMonth] = item.value;
             datamonth_[index][vMonth2] = item.value2;
             datamonth_[index][vMonth3] = item.value3;
@@ -866,12 +718,6 @@ export default function ProjectData(props) {
             // }
 
             if (i == d.data.data.length - 1) {
-              // if (projectData.value.plantmode === "grid") {
-              //   cal.value["pro_month"] = parseFloat(
-              //     sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-              //   ).toFixed(2);
-              // }
-              // if (projectData.value.plantmode === "hybrid") {
               cal.value["pro_month"] = parseFloat(
                 sum_month.reduce((a, b) => Number(a) + Number(b), 0)
               ).toFixed(2);
@@ -912,6 +758,7 @@ export default function ProjectData(props) {
       };
       getMonth();
     } else if (dateType === "year") {
+      setDatatime_(moment(date).format("YYYY"));
       setD({ ...d, year: moment(date).format("YYYY") });
 
       const getYear = async () => {
@@ -1013,9 +860,9 @@ export default function ProjectData(props) {
   };
 
   const handleOutsideUser = (e) => {
-    // if(!box.current.contains(e.target)){
-    //   plantState.value = "default";
-    // }
+    if (!box.current.contains(e.target)) {
+      plantState.value = "default";
+    }
   };
 
   const handleEdit = (e) => {
@@ -1035,572 +882,21 @@ export default function ProjectData(props) {
   };
 
   const handleInvt = async (sn) => {
-    console.log(sn);
-
     const res = await invtCloud(
       '{"deviceCode":"' + sn + '"}',
       Token.value.token
     );
-    // console.log(res)
     if (res.ret === 0) {
-      //console.log(res.data)
       setInvt((pre) => ({ ...pre, [sn]: res.data }));
     }
   };
 
-  useEffect(() => {
-    // filter data AlertTable
-    open.value = dataAlert.filter((item) => item.status == true);
-    close.value = dataAlert.filter((item) => item.status == false);
-    tabLableAlert.value = listAlertTab[0].name;
-    tabLable.value = listDeviceTab[0].name;
-
-    // data Day
-    const getDaily = async () => {
-      const d = await callApi("post", host.DATA + "/getChart", {
-        plantid: projectData.value.plantid_,
-        date: moment(new Date()).format("MM/DD/YYYY"),
-      });
-      setDataDay([]);
-      let x = [];
-      if (d.status) {
-        let vDay_ = dataLang.formatMessage({ id: "productionData" });
-        let vDay2_ = dataLang.formatMessage({ id: "gridData" });
-        let vDay3_ = dataLang.formatMessage({ id: "consumptionData" });
-        let vDay4_ = dataLang.formatMessage({ id: "batteryData" });
-        d.data.data.map((item) => {
-          let arr = item.time.split(":");
-          // console.log(item);
-          // if (projectData.value.plantmode === "grid") {
-          //   x = [...x, { time: `${arr[0]}:${arr[1]}`, [vDay_]: item.value }];
-          // }
-          // if (projectData.value.plantmode === "hybrid") {
-          x = [
-            ...x,
-            {
-              time: `${arr[0]}:${arr[1]}`,
-              [vDay_]: item.value,
-              [vDay2_]: item.value2,
-              [vDay3_]: item.value3,
-              [vDay4_]: item.value4,
-            },
-          ];
-          // }
-        });
-
-        // if (projectData.value.plantmode === "grid") {
-        //   for (let i = x.length; i < 287; i++) {
-        //     if (
-        //       moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
-        //     ) {
-        //       let nextTime = moment(x[x.length - 1].time, "HH:mm")
-        //         .add(5, "minutes")
-        //         .format("HH:mm");
-        //       x.push({ time: nextTime, [vDay_]: 0 });
-        //     }
-        //   }
-        // }
-
-        // if (projectData.value.plantmode === "hybrid") {
-        for (let i = x.length; i < 287; i++) {
-          if (
-            moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
-          ) {
-            let nextTime = moment(x[x.length - 1].time, "HH:mm")
-              .add(5, "minutes")
-              .format("HH:mm");
-            x.push({
-              time: nextTime,
-              [vDay_]: 0,
-              [vDay2_]: 0,
-              [vDay3_]: 0,
-              [vDay4_]: 0,
-            });
-          }
-        }
-        // }
-        // console.log(x)
-        setDataDay(x);
-        setVDay(dataLang.formatMessage({ id: "productionData" }));
-        setVDay2(dataLang.formatMessage({ id: "consumptionData" }));
-        setVDay3(dataLang.formatMessage({ id: "gridData" }));
-        setVDay4(dataLang.formatMessage({ id: "batteryData" }));
-      } else {
-        setDataDay([]);
-        setVDay(dataLang.formatMessage({ id: "unknown" }));
-        setVDay2(dataLang.formatMessage({ id: "unknown" }));
-        setVDay3(dataLang.formatMessage({ id: "unknown" }));
-        setVDay4(dataLang.formatMessage({ id: "unknown" }));
-      }
-    };
-    getDaily();
-
-    //data Month
-    const getMonth = async () => {
-      const d = await callApi("post", host.DATA + "/getMonthChart", {
-        plantid: projectData.value.plantid_,
-        month: moment(new Date()).format("MM/YYYY"),
-      });
-      if (d.status) {
-        let vMonth = dataLang.formatMessage({ id: "dailyproduction" });
-        let vMonth2 = dataLang.formatMessage({ id: "dailyconsumption" });
-        let vMonth3 = dataLang.formatMessage({ id: "dailygridin" });
-        let vMonth4 = dataLang.formatMessage({ id: "dailygridout" });
-        let vMonth5 = dataLang.formatMessage({ id: "dailybatteryin" });
-        let vMonth6 = dataLang.formatMessage({ id: "dailybatteryout" });
-        const currentDate = new Date();
-        const currentMonth = currentDate.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
-        const currentYear = currentDate.getFullYear();
-        const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
-        let datamonth_ = [];
-        for (let i = 1; i <= daysInMonth; i++) {
-          datamonth_ = [
-            ...datamonth_,
-            { date: i < 10 ? `0${i}` : `${i}`, [vMonth]: 0 },
-          ];
-        }
-        let sum_month = [];
-        let sum_month2 = [];
-        let sum_month3 = [];
-        let sum_month4 = [];
-        let sum_month5 = [];
-        let sum_month6 = [];
-        d.data.data.map((item, i) => {
-          let index = datamonth_.findIndex((d) => d.date == item.date);
-          // if (projectData.value.plantmode === "grid") {
-          //   datamonth_[index][vMonth] = item.value;
-          //   sum_month[i] = item.value;
-          // }
-          // if (projectData.value.plantmode === "hybrid") {
-          datamonth_[index][vMonth] = item.value;
-          datamonth_[index][vMonth2] = item.value2;
-          datamonth_[index][vMonth3] = item.value3;
-          datamonth_[index][vMonth4] = item.value4;
-          datamonth_[index][vMonth5] = item.value5;
-          datamonth_[index][vMonth6] = item.value6;
-          sum_month[i] = item?.value || 0;
-          sum_month2[i] = item?.value2 || 0;
-          sum_month3[i] = item?.value3 || 0;
-          sum_month4[i] = item?.value4 || 0;
-          sum_month5[i] = item?.value5 || 0;
-          sum_month6[i] = item?.value6 || 0;
-          // }
-
-          if (i == d.data.data.length - 1) {
-            // if (projectData.value.plantmode === "grid") {
-            //   cal.value["pro_month"] = parseFloat(
-            //     sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-            //   ).toFixed(2);
-            // }
-            // if (projectData.value.plantmode === "hybrid") {
-            cal.value["pro_month"] = parseFloat(
-              sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["con_month"] = parseFloat(
-              sum_month2.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["grid_in_month"] = parseFloat(
-              sum_month3.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["grid_out_month"] = parseFloat(
-              sum_month4.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["bat_in_month"] = parseFloat(
-              sum_month5.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["bat_out_month"] = parseFloat(
-              sum_month6.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            // }
-          }
-        });
-        setVMonth(vMonth);
-        setVMonth2(vMonth2);
-        setVMonth3(vMonth3);
-        setVMonth4(vMonth4);
-        setVMonth5(vMonth5);
-        setVMonth6(vMonth6);
-        setDataMonth(datamonth_);
-      } else {
-        setDataMonth([]);
-        setVMonth(dataLang.formatMessage({ id: "unknown" }));
-        setVMonth2(dataLang.formatMessage({ id: "unknown" }));
-        setVMonth3(dataLang.formatMessage({ id: "unknown" }));
-        setVMonth4(dataLang.formatMessage({ id: "unknown" }));
-        setVMonth5(dataLang.formatMessage({ id: "unknown" }));
-        setVMonth6(dataLang.formatMessage({ id: "unknown" }));
-      }
-    };
-    getMonth();
-
-    //data Year
-    const getYear = async () => {
-      const d = await callApi("post", host.DATA + "/getYearChart", {
-        plantid: projectData.value.plantid_,
-        year: moment(new Date()).format("YYYY"),
-      });
-      //console.log(d)
-      if (d.status) {
-        //console.log(d.data)
-        let vYear = dataLang.formatMessage({ id: "monthlyproduction" });
-        let vYear2 = dataLang.formatMessage({ id: "monthlyconsumption" });
-        let vYear3 = dataLang.formatMessage({ id: "monthlygridin" });
-        let vYear4 = dataLang.formatMessage({ id: "monthlygridout" });
-        let vYear5 = dataLang.formatMessage({ id: "monthlybatteryin" });
-        let vYear6 = dataLang.formatMessage({ id: "monthlybatteryout" });
-        let sum_year = [];
-        let sum_year2 = [];
-        let sum_year3 = [];
-        let sum_year4 = [];
-        let sum_year5 = [];
-        let sum_year6 = [];
-        let datayear_ = [];
-        for (let i = 1; i <= 12; i++) {
-          datayear_ = [
-            ...datayear_,
-            {
-              month: i < 10 ? `0${i}` : `${i}`,
-              [vYear]: 0,
-              [vYear2]: 0,
-              [vYear3]: 0,
-              [vYear4]: 0,
-              [vYear5]: 0,
-              [vYear6]: 0,
-            },
-          ];
-        }
-        d.data.data.map((item, i) => {
-          let index = datayear_.findIndex((d) => d.month == item.month);
-          datayear_[index][vYear] = item.value;
-          datayear_[index][vYear2] = item.value2;
-          datayear_[index][vYear3] = item.value3;
-          datayear_[index][vYear4] = item.value4;
-          datayear_[index][vYear5] = item.value5;
-          datayear_[index][vYear6] = item.value6;
-          sum_year[i] = item?.value || 0;
-          sum_year2[i] = item?.value2 || 0;
-          sum_year3[i] = item?.value3 || 0;
-          sum_year4[i] = item?.value4 || 0;
-          sum_year5[i] = item?.value5 || 0;
-          sum_year6[i] = item?.value6 || 0;
-          if (i == d.data.data.length - 1) {
-            cal.value["pro_year"] = parseFloat(
-              sum_year.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["con_year"] = parseFloat(
-              sum_year2.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["grid_in_year"] = parseFloat(
-              sum_year3.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["grid_out_year"] = parseFloat(
-              sum_year4.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["bat_in_year"] = parseFloat(
-              sum_year5.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["bat_out_year"] = parseFloat(
-              sum_year6.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-          }
-        });
-        setVYear(vYear);
-        setVYear2(vYear2);
-        setVYear3(vYear3);
-        setVYear4(vYear4);
-        setVYear5(vYear5);
-        setVYear6(vYear6);
-        setDataYear(datayear_);
-      } else {
-        setDataYear([]);
-        setVYear(dataLang.formatMessage({ id: "unknown" }));
-        setVYear2(dataLang.formatMessage({ id: "unknown" }));
-        setVYear3(dataLang.formatMessage({ id: "unknown" }));
-        setVYear4(dataLang.formatMessage({ id: "unknown" }));
-        setVYear5(dataLang.formatMessage({ id: "unknown" }));
-        setVYear6(dataLang.formatMessage({ id: "unknown" }));
-      }
-    };
-    getYear();
-
-    //data Total
-    const getTotal = async () => {
-      const d = await callApi("post", host.DATA + "/getTotalChart", {
-        plantid: projectData.value.plantid_,
-      });
-      setDataTotal([]);
-      if (d.status) {
-        //console.log(d.data)
-        let vTotal = dataLang.formatMessage({ id: "yearproduction" });
-        let vTotal2 = dataLang.formatMessage({ id: "yearconsumption" });
-        let vTotal3 = dataLang.formatMessage({ id: "yeargridin" });
-        let vTotal4 = dataLang.formatMessage({ id: "yeargridout" });
-        let vTotal5 = dataLang.formatMessage({ id: "yearbatteryin" });
-        let vTotal6 = dataLang.formatMessage({ id: "yearbatteryout" });
-
-        let sum_total = [];
-        let sum_total2 = [];
-        let sum_total3 = [];
-        let sum_total4 = [];
-        let sum_total5 = [];
-        let sum_total6 = [];
-        d.data.data.map((item, i) => {
-          setDataTotal((old) => [
-            ...old,
-            {
-              year: item.year,
-              [vTotal]: item.value,
-              [vTotal2]: item.value2,
-              [vTotal3]: item.value3,
-              [vTotal4]: item.value4,
-              [vTotal5]: item.value5,
-              [vTotal6]: item.value6,
-            },
-          ]);
-          sum_total[i] = item?.value || 0;
-          sum_total2[i] = item?.value2 || 0;
-          sum_total3[i] = item?.value3 || 0;
-          sum_total4[i] = item?.value4 || 0;
-          sum_total5[i] = item?.value5 || 0;
-          sum_total6[i] = item?.value6 || 0;
-          if (i == d.data.data.length - 1) {
-            cal.value["pro_total"] = parseFloat(
-              sum_total.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["con_total"] = parseFloat(
-              sum_total2.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["grid_in_total"] = parseFloat(
-              sum_total3.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["grid__out_total"] = parseFloat(
-              sum_total4.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["bat_in_total"] = parseFloat(
-              sum_total5.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["bat_out_total"] = parseFloat(
-              sum_total6.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-          }
-        });
-        // console.log(d.data.name);
-        setVTotal(vTotal);
-        setVTotal2(vTotal2);
-        setVTotal3(vTotal3);
-        setVTotal4(vTotal4);
-        setVTotal5(vTotal5);
-        setVTotal6(vTotal6);
-      } else {
-        setVTotal(dataLang.formatMessage({ id: "unknown" }));
-        setVTotal2(dataLang.formatMessage({ id: "unknown" }));
-        setVTotal3(dataLang.formatMessage({ id: "unknown" }));
-        setVTotal4(dataLang.formatMessage({ id: "unknown" }));
-        setVTotal5(dataLang.formatMessage({ id: "unknown" }));
-        setVTotal6(dataLang.formatMessage({ id: "unknown" }));
-        setDataYear([]);
-      }
-    };
-    getTotal();
-
-    //data Logger
-
-    return () => {
-      cal.value = {};
-      tab_.value = "logger";
-      infoState.value = false;
-    };
-
-    // eslint-disable-next-line
-  }, [lang]);
-
-  useEffect(() => {
-    const getLogger = async () => {
-      let d = await callApi("post", host.DATA + "/getLogger", {
-        plantid: projectData.value.plantid_,
-      });
-      // console.log(d);
-      temp.value = d;
-      d.map(async (item) => {
-        const res = await invtCloud(
-          '{"deviceCode":"' + item.sn + '"}',
-          Token.value.token
-        );
-        // console.log(res)
-        if (res.ret === 0) {
-          let res_ = await callApi("post", host.DATA + "/updateLogger", {
-            sn: item.sn,
-            type: 'state',
-            data: res.data.enabled
-          })
-          //console.log(res.data)
-          setInvt((pre) => ({ ...pre, [item.sn]: res.data }));
-          const decimalArray = JSON.parse(item.setting.sn);
-          const hexString = decimalArray
-            .map((num) => parseInt(res.data[num]).toString(16))
-            .join("");
-          const asciiString = hexString
-            .match(/.{2}/g)
-            .map((byte) => String.fromCharCode(parseInt(byte, 16)))
-            .join("");
-          // console.log(asciiString);
-        } else {
-          setInvt((pre) => ({ ...pre, [item.sn]: {} }));
-        }
-
-        let inverter = await callApi("post", host.DATA + "/getInverter", {
-          loggerid: item.sn,
-        });
-        // console.log(inverter);
-        if (inverter.length > 0) {
-          inverterDB.value = [...inverter];
-        } else {
-          inverterDB.value = [];
-        }
-      });
-    };
-    getLogger();
-    return () => {
-      temp.value = [];
-      inverterDB.value = [];
-    };
-  }, []);
-
-  useEffect(() => {
-    var num_ = {
-      bat_1: [],
-      bat_2: [],
-      bat_in_1: [],
-      bat_out_1: [],
-      con_1: [],
-      con_2: [],
-      grid_1: [],
-      grid_in_1: [],
-      grid_in_2: [],
-      grid_out_1: [],
-      grid_out_2: [],
-      pro_1: [],
-      pro_2: [],
-      pro_3: [],
-    };
-    //console.log("data", temp.value)
-    temp.value.map(async (item, i) => {
-      // console.log(item);
-      Object.entries(item.data).map(([key, value]) => {
-        switch (value.type) {
-          case "sum":
-            let inum = [];
-            let register_ = JSON.parse(value.register);
-            // console.log(register_);
-            register_.map((reg, j) => {
-              inum[j] = parseFloat(invt[item.sn]?.[reg] || 0);
-            });
-            console.log(inum);
-
-            num_[key][i] = inum.reduce((accumulator, currentValue) => {
-              return Number(accumulator) + Number(currentValue);
-            }, 0);
-
-            if (i == temp.value.length - 1) {
-              // if (invt[item.psn]?.enabled == 1) {
-
-              cal.value[key] = parseFloat(
-                num_[key].reduce((accumulator, currentValue) => {
-                  return Number(accumulator) + Number(currentValue);
-                }, 0) * parseFloat(value.cal)
-              ).toFixed(2);
-            }
-            // let inum = [];
-            // let cal_ = JSON.parse(value.cal);
-            // Object.entries(value.register).map(([key, value]) => {
-            //   let n = JSON.parse(value);
-            //   inum[key] =
-            //     parseFloat(invt[item.sn]?.[n[0]] || 0) *
-            //     parseFloat(cal_[0]) *
-            //     parseFloat(invt[item.sn]?.[n[1]] || 0) *
-            //     parseFloat(cal_[1]);
-            // });
-
-            // num_[key][i] = inum.reduce((accumulator, currentValue) => {
-            //   return Number(accumulator) + Number(currentValue);
-            // }, 0);
-            // if (i == temp.value.length - 1) {
-            //   //console.log("Total", total)
-            //   if (invt[item.sn]?.enabled == 1) {
-            //     cal.value[key] = parseFloat(
-            //       num_[key].reduce((accumulator, currentValue) => {
-            //         return Number(accumulator) + Number(currentValue);
-            //       }, 0) / 1000
-            //     ).toFixed(2);
-            //   } else {
-            //     cal.value[key] = 0;
-            //   }
-            // }
-            break;
-          case "word":
-            let d = JSON.parse(value.register);
-            let e = [invt[item.sn]?.[d[0]] || 0, invt[item.sn]?.[d[1]] || 0];
-
-            const convertToDoublewordAndFloat = (word, type) => {
-              var doubleword = (word[1] << 16) | word[0];
-              var buffer = new ArrayBuffer(4);
-              var intView = new Int32Array(buffer);
-              var floatView = new Float32Array(buffer);
-              intView[0] = doubleword;
-              var float_value = floatView[0];
-              return type === "int"
-                ? parseFloat(doubleword).toFixed(2)
-                : parseFloat(float_value).toFixed(2) || 0;
-            };
-            num_[key][i] = convertToDoublewordAndFloat(e, "int");
-
-            if (i == temp.value.length - 1) {
-              //console.log(num_)
-              cal.value[key] = parseFloat(
-                num_[key].reduce((accumulator, currentValue) => {
-                  return Number(accumulator) + Number(currentValue);
-                }, 0) * parseFloat(value.cal)
-              ).toFixed(2);
-            }
-            break;
-          default:
-            num_[key][i] =
-              parseFloat(invt[item.sn]?.[value.register] || 0) *
-              parseFloat(value.cal);
-            if (i == temp.value.length - 1) {
-              //console.log(num_)
-              cal.value[key] = parseFloat(
-                num_[key].reduce((accumulator, currentValue) => {
-                  return accumulator + currentValue;
-                })
-              ).toFixed(2);
-            }
-            break;
-        }
-      });
-    });
-
-    // console.log(cal.value)
-    coalsave.value = {
-      ...coalsave.value,
-      value: cal.value.pro_3,
-    };
-
-    document.addEventListener("mousedown", handleOutsideUser);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideUser);
-    };
-  }, [invt]);
-
-
   const handlefilterchart = (e) => {
     const state = e.currentTarget.checked;
     const chartfield = e.currentTarget.id.split("_");
-    console.log(chartfield);
     const temp = filterchart.value;
     temp[chartfield[1]][dateType][chartfield[0]] = state;
     filterchart.value = temp;
-    console.log(filterchart.value);
   };
 
   const Checkboxfilter = (props) => {
@@ -1788,14 +1084,486 @@ export default function ProjectData(props) {
   };
 
   const handlePopup = (state) => {
-    const popup = document.getElementById("Popup");
+    const popup = document.getElementById("Popup_");
     popup.style.transform = popup_state[state].transform;
     popup.style.transition = popup_state[state].transition;
     popup.style.color = popup_state[state].color;
   };
 
+  useEffect(() => {
+    let d = document.getElementById("datepicker");
+    let v = d.querySelector("span");
+    // console.log(v.innerHTML);
+    setDatatime_(v.innerHTML);
+
+  }, [dateType])
+
+  useEffect(() => {
+    // filter data AlertTable
+    open.value = dataAlert.filter((item) => item.status == true);
+    close.value = dataAlert.filter((item) => item.status == false);
+    tabLableAlert.value = listAlertTab[0].name;
+    tabLable.value = listDeviceTab[0].name;
+
+    // data Day
+    const getDaily = async () => {
+      const d = await callApi("post", host.DATA + "/getChart", {
+        plantid: projectData.value.plantid_,
+        date: moment(new Date()).format("MM/DD/YYYY"),
+      });
+      setDataDay([]);
+      let x = [];
+      if (d.status) {
+        let vDay_ = dataLang.formatMessage({ id: "productionData" });
+        let vDay2_ = dataLang.formatMessage({ id: "gridData" });
+        let vDay3_ = dataLang.formatMessage({ id: "consumptionData" });
+        let vDay4_ = dataLang.formatMessage({ id: "batteryData" });
+        d.data.data.map((item) => {
+          let arr = item.time.split(":");
+          x = [
+            ...x,
+            {
+              time: `${arr[0]}:${arr[1]}`,
+              [vDay_]: item.value,
+              [vDay2_]: item.value2,
+              [vDay3_]: item.value3,
+              [vDay4_]: item.value4,
+            },
+          ];
+        });
+
+        for (let i = x.length; i < 287; i++) {
+          if (
+            moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
+          ) {
+            let nextTime = moment(x[x.length - 1].time, "HH:mm")
+              .add(5, "minutes")
+              .format("HH:mm");
+            x.push({
+              time: nextTime,
+              [vDay_]: 0,
+              [vDay2_]: 0,
+              [vDay3_]: 0,
+              [vDay4_]: 0,
+            });
+          }
+        }
+        setDataDay(x);
+        setVDay(dataLang.formatMessage({ id: "productionData" }));
+        setVDay2(dataLang.formatMessage({ id: "consumptionData" }));
+        setVDay3(dataLang.formatMessage({ id: "gridData" }));
+        setVDay4(dataLang.formatMessage({ id: "batteryData" }));
+      } else {
+        setDataDay([]);
+        setVDay(dataLang.formatMessage({ id: "unknown" }));
+        setVDay2(dataLang.formatMessage({ id: "unknown" }));
+        setVDay3(dataLang.formatMessage({ id: "unknown" }));
+        setVDay4(dataLang.formatMessage({ id: "unknown" }));
+      }
+    };
+    getDaily();
+
+    //data Month
+    const getMonth = async () => {
+      const d = await callApi("post", host.DATA + "/getMonthChart", {
+        plantid: projectData.value.plantid_,
+        month: moment(new Date()).format("MM/YYYY"),
+      });
+      if (d.status) {
+        let vMonth = dataLang.formatMessage({ id: "dailyproduction" });
+        let vMonth2 = dataLang.formatMessage({ id: "dailyconsumption" });
+        let vMonth3 = dataLang.formatMessage({ id: "dailygridin" });
+        let vMonth4 = dataLang.formatMessage({ id: "dailygridout" });
+        let vMonth5 = dataLang.formatMessage({ id: "dailybatteryin" });
+        let vMonth6 = dataLang.formatMessage({ id: "dailybatteryout" });
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
+        const currentYear = currentDate.getFullYear();
+        const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+        let datamonth_ = [];
+        for (let i = 1; i <= daysInMonth; i++) {
+          datamonth_ = [
+            ...datamonth_,
+            { date: i < 10 ? `0${i}` : `${i}`, [vMonth]: 0 },
+          ];
+        }
+        let sum_month = [];
+        let sum_month2 = [];
+        let sum_month3 = [];
+        let sum_month4 = [];
+        let sum_month5 = [];
+        let sum_month6 = [];
+        d.data.data.map((item, i) => {
+          let index = datamonth_.findIndex((d) => d.date == item.date);
+          datamonth_[index][vMonth] = item.value;
+          datamonth_[index][vMonth2] = item.value2;
+          datamonth_[index][vMonth3] = item.value3;
+          datamonth_[index][vMonth4] = item.value4;
+          datamonth_[index][vMonth5] = item.value5;
+          datamonth_[index][vMonth6] = item.value6;
+          sum_month[i] = item?.value || 0;
+          sum_month2[i] = item?.value2 || 0;
+          sum_month3[i] = item?.value3 || 0;
+          sum_month4[i] = item?.value4 || 0;
+          sum_month5[i] = item?.value5 || 0;
+          sum_month6[i] = item?.value6 || 0;
+
+          if (i == d.data.data.length - 1) {
+            cal.value["pro_month"] = parseFloat(
+              sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["con_month"] = parseFloat(
+              sum_month2.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["grid_in_month"] = parseFloat(
+              sum_month3.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["grid_out_month"] = parseFloat(
+              sum_month4.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["bat_in_month"] = parseFloat(
+              sum_month5.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["bat_out_month"] = parseFloat(
+              sum_month6.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+          }
+        });
+        setVMonth(vMonth);
+        setVMonth2(vMonth2);
+        setVMonth3(vMonth3);
+        setVMonth4(vMonth4);
+        setVMonth5(vMonth5);
+        setVMonth6(vMonth6);
+        setDataMonth(datamonth_);
+      } else {
+        setDataMonth([]);
+        setVMonth(dataLang.formatMessage({ id: "unknown" }));
+        setVMonth2(dataLang.formatMessage({ id: "unknown" }));
+        setVMonth3(dataLang.formatMessage({ id: "unknown" }));
+        setVMonth4(dataLang.formatMessage({ id: "unknown" }));
+        setVMonth5(dataLang.formatMessage({ id: "unknown" }));
+        setVMonth6(dataLang.formatMessage({ id: "unknown" }));
+      }
+    };
+    getMonth();
+
+    //data Year
+    const getYear = async () => {
+      const d = await callApi("post", host.DATA + "/getYearChart", {
+        plantid: projectData.value.plantid_,
+        year: moment(new Date()).format("YYYY"),
+      });
+      if (d.status) {
+        let vYear = dataLang.formatMessage({ id: "monthlyproduction" });
+        let vYear2 = dataLang.formatMessage({ id: "monthlyconsumption" });
+        let vYear3 = dataLang.formatMessage({ id: "monthlygridin" });
+        let vYear4 = dataLang.formatMessage({ id: "monthlygridout" });
+        let vYear5 = dataLang.formatMessage({ id: "monthlybatteryin" });
+        let vYear6 = dataLang.formatMessage({ id: "monthlybatteryout" });
+        let sum_year = [];
+        let sum_year2 = [];
+        let sum_year3 = [];
+        let sum_year4 = [];
+        let sum_year5 = [];
+        let sum_year6 = [];
+        let datayear_ = [];
+        for (let i = 1; i <= 12; i++) {
+          datayear_ = [
+            ...datayear_,
+            {
+              month: i < 10 ? `0${i}` : `${i}`,
+              [vYear]: 0,
+              [vYear2]: 0,
+              [vYear3]: 0,
+              [vYear4]: 0,
+              [vYear5]: 0,
+              [vYear6]: 0,
+            },
+          ];
+        }
+        d.data.data.map((item, i) => {
+          let index = datayear_.findIndex((d) => d.month == item.month);
+          datayear_[index][vYear] = item.value;
+          datayear_[index][vYear2] = item.value2;
+          datayear_[index][vYear3] = item.value3;
+          datayear_[index][vYear4] = item.value4;
+          datayear_[index][vYear5] = item.value5;
+          datayear_[index][vYear6] = item.value6;
+          sum_year[i] = item?.value || 0;
+          sum_year2[i] = item?.value2 || 0;
+          sum_year3[i] = item?.value3 || 0;
+          sum_year4[i] = item?.value4 || 0;
+          sum_year5[i] = item?.value5 || 0;
+          sum_year6[i] = item?.value6 || 0;
+          if (i == d.data.data.length - 1) {
+            cal.value["pro_year"] = parseFloat(
+              sum_year.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["con_year"] = parseFloat(
+              sum_year2.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["grid_in_year"] = parseFloat(
+              sum_year3.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["grid_out_year"] = parseFloat(
+              sum_year4.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["bat_in_year"] = parseFloat(
+              sum_year5.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["bat_out_year"] = parseFloat(
+              sum_year6.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+          }
+        });
+        setVYear(vYear);
+        setVYear2(vYear2);
+        setVYear3(vYear3);
+        setVYear4(vYear4);
+        setVYear5(vYear5);
+        setVYear6(vYear6);
+        setDataYear(datayear_);
+      } else {
+        setDataYear([]);
+        setVYear(dataLang.formatMessage({ id: "unknown" }));
+        setVYear2(dataLang.formatMessage({ id: "unknown" }));
+        setVYear3(dataLang.formatMessage({ id: "unknown" }));
+        setVYear4(dataLang.formatMessage({ id: "unknown" }));
+        setVYear5(dataLang.formatMessage({ id: "unknown" }));
+        setVYear6(dataLang.formatMessage({ id: "unknown" }));
+      }
+    };
+    getYear();
+
+    //data Total
+    const getTotal = async () => {
+      const d = await callApi("post", host.DATA + "/getTotalChart", {
+        plantid: projectData.value.plantid_,
+      });
+      setDataTotal([]);
+      if (d.status) {
+        let vTotal = dataLang.formatMessage({ id: "yearproduction" });
+        let vTotal2 = dataLang.formatMessage({ id: "yearconsumption" });
+        let vTotal3 = dataLang.formatMessage({ id: "yeargridin" });
+        let vTotal4 = dataLang.formatMessage({ id: "yeargridout" });
+        let vTotal5 = dataLang.formatMessage({ id: "yearbatteryin" });
+        let vTotal6 = dataLang.formatMessage({ id: "yearbatteryout" });
+
+        let sum_total = [];
+        let sum_total2 = [];
+        let sum_total3 = [];
+        let sum_total4 = [];
+        let sum_total5 = [];
+        let sum_total6 = [];
+        d.data.data.map((item, i) => {
+          setDataTotal((old) => [
+            ...old,
+            {
+              year: item.year,
+              [vTotal]: item.value,
+              [vTotal2]: item.value2,
+              [vTotal3]: item.value3,
+              [vTotal4]: item.value4,
+              [vTotal5]: item.value5,
+              [vTotal6]: item.value6,
+            },
+          ]);
+          sum_total[i] = item?.value || 0;
+          sum_total2[i] = item?.value2 || 0;
+          sum_total3[i] = item?.value3 || 0;
+          sum_total4[i] = item?.value4 || 0;
+          sum_total5[i] = item?.value5 || 0;
+          sum_total6[i] = item?.value6 || 0;
+          if (i == d.data.data.length - 1) {
+            cal.value["pro_total"] = parseFloat(
+              sum_total.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["con_total"] = parseFloat(
+              sum_total2.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["grid_in_total"] = parseFloat(
+              sum_total3.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["grid__out_total"] = parseFloat(
+              sum_total4.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["bat_in_total"] = parseFloat(
+              sum_total5.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+            cal.value["bat_out_total"] = parseFloat(
+              sum_total6.reduce((a, b) => Number(a) + Number(b), 0)
+            ).toFixed(2);
+          }
+        });
+        setVTotal(vTotal);
+        setVTotal2(vTotal2);
+        setVTotal3(vTotal3);
+        setVTotal4(vTotal4);
+        setVTotal5(vTotal5);
+        setVTotal6(vTotal6);
+      } else {
+        setVTotal(dataLang.formatMessage({ id: "unknown" }));
+        setVTotal2(dataLang.formatMessage({ id: "unknown" }));
+        setVTotal3(dataLang.formatMessage({ id: "unknown" }));
+        setVTotal4(dataLang.formatMessage({ id: "unknown" }));
+        setVTotal5(dataLang.formatMessage({ id: "unknown" }));
+        setVTotal6(dataLang.formatMessage({ id: "unknown" }));
+        setDataYear([]);
+      }
+    };
+    getTotal();
+
+    //data Logger
+    return () => {
+      cal.value = {};
+      tab_.value = "logger";
+      infoState.value = false;
+    };
+
+    // eslint-disable-next-line
+  }, [lang]);
+
+  useEffect(() => {
+    const getLogger = async () => {
+      let d = await callApi("post", host.DATA + "/getLogger", {
+        plantid: projectData.value.plantid_,
+      });
+      temp.value = d;
+      d.map(async (item) => {
+        const res = await invtCloud(
+          '{"deviceCode":"' + item.sn + '"}',
+          Token.value.token
+        );
+        if (res.ret === 0) {
+          let res_ = await callApi("post", host.DATA + "/updateLogger", {
+            sn: item.sn,
+            type: 'state',
+            data: res.data.enabled
+          })
+          setInvt((pre) => ({ ...pre, [item.sn]: res.data }));
+          const decimalArray = JSON.parse(item.setting.sn);
+          const hexString = decimalArray
+            .map((num) => parseInt(res.data[num]).toString(16))
+            .join("");
+          const asciiString = hexString
+            .match(/.{2}/g)
+            .map((byte) => String.fromCharCode(parseInt(byte, 16)))
+            .join("");
+        } else {
+          setInvt((pre) => ({ ...pre, [item.sn]: {} }));
+        }
+
+        let inverter = await callApi("post", host.DATA + "/getInverter", {
+          loggerid: item.sn,
+        });
+        if (inverter.length > 0) {
+          inverterDB.value = [...inverter];
+        } else {
+          inverterDB.value = [];
+        }
+      });
+    };
+    getLogger();
+    return () => {
+      temp.value = [];
+      inverterDB.value = [];
+    };
+  }, []);
+
+  useEffect(() => {
+    var num_ = {
+      bat_1: [],
+      bat_2: [],
+      bat_in_1: [],
+      bat_out_1: [],
+      con_1: [],
+      con_2: [],
+      grid_1: [],
+      grid_in_1: [],
+      grid_in_2: [],
+      grid_out_1: [],
+      grid_out_2: [],
+      pro_1: [],
+      pro_2: [],
+      pro_3: [],
+    };
+    temp.value.map(async (item, i) => {
+      Object.entries(item.data).map(([key, value]) => {
+        switch (value.type) {
+          case "sum":
+            let inum = [];
+            let register_ = JSON.parse(value.register);
+            register_.map((reg, j) => {
+              inum[j] = parseFloat(invt[item.sn]?.[reg] || 0);
+            });
+
+            num_[key][i] = inum.reduce((accumulator, currentValue) => {
+              return Number(accumulator) + Number(currentValue);
+            }, 0);
+
+            if (i == temp.value.length - 1) {
+              cal.value[key] = parseFloat(
+                num_[key].reduce((accumulator, currentValue) => {
+                  return Number(accumulator) + Number(currentValue);
+                }, 0) * parseFloat(value.cal)
+              ).toFixed(2);
+            }
+            break;
+          case "word":
+            let d = JSON.parse(value.register);
+            let e = [invt[item.sn]?.[d[0]] || 0, invt[item.sn]?.[d[1]] || 0];
+
+            const convertToDoublewordAndFloat = (word, type) => {
+              var doubleword = (word[1] << 16) | word[0];
+              var buffer = new ArrayBuffer(4);
+              var intView = new Int32Array(buffer);
+              var floatView = new Float32Array(buffer);
+              intView[0] = doubleword;
+              var float_value = floatView[0];
+              return type === "int"
+                ? parseFloat(doubleword).toFixed(2)
+                : parseFloat(float_value).toFixed(2) || 0;
+            };
+            num_[key][i] = convertToDoublewordAndFloat(e, "int");
+
+            if (i == temp.value.length - 1) {
+              cal.value[key] = parseFloat(
+                num_[key].reduce((accumulator, currentValue) => {
+                  return Number(accumulator) + Number(currentValue);
+                }, 0) * parseFloat(value.cal)
+              ).toFixed(2);
+            }
+            break;
+          default:
+            num_[key][i] =
+              parseFloat(invt[item.sn]?.[value.register] || 0) *
+              parseFloat(value.cal);
+            if (i == temp.value.length - 1) {
+              cal.value[key] = parseFloat(
+                num_[key].reduce((accumulator, currentValue) => {
+                  return accumulator + currentValue;
+                })
+              ).toFixed(2);
+            }
+            break;
+        }
+      });
+    });
+
+    coalsave.value = {
+      ...coalsave.value,
+      value: cal.value.pro_3,
+    };
+
+    document.addEventListener("mousedown", handleOutsideUser);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideUser);
+    };
+  }, [invt]);
+
   return (
-    <div ref={box}>
+    <div ref={box} style={{ width: "98%", margin: "auto" }}>
       <div className="DAT_ProjectData">
         {isMobile.value ? (
           <div className="DAT_ProjectData_Header">
@@ -1855,8 +1623,7 @@ export default function ProjectData(props) {
                 <div></div>
               )}
 
-              <div
-                className="DAT_ProjectData_Header_Right_Close"
+              <div className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => (plantState.value = "default")}
               >
                 <IoClose
@@ -1969,12 +1736,11 @@ export default function ProjectData(props) {
                 <BsThreeDotsVertical
                   size={20}
                   color="#9e9e9e"
-                  onClick={() => (dropState.value = !dropState.value)}
+                  onClick={() => (dropState.value = true)}
                 />
               </div>
               {ruleInfor.value.setting.device.add ? (
-                <div
-                  className="DAT_ProjectData_Header_Right_Add"
+                <div className="DAT_ProjectData_Header_Right_Add"
                   style={{ display: view === "device" ? "block" : "none" }}
                 >
                   <button
@@ -1990,8 +1756,7 @@ export default function ProjectData(props) {
               ) : (
                 <div></div>
               )}
-              <div
-                className="DAT_ProjectData_Header_Right_Close"
+              <div className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => {
                   plantState.value = "default";
                   dropState.value = false;
@@ -2000,7 +1765,7 @@ export default function ProjectData(props) {
                 <IoClose
                   size={25}
                   color="rgba(11, 25, 103)"
-                  id="Popup"
+                  id="Popup_"
                   onMouseEnter={(e) => handlePopup("new")}
                   onMouseLeave={(e) => handlePopup("pre")}
                 />
@@ -2199,6 +1964,7 @@ export default function ProjectData(props) {
                         </div>
 
                         <DatePicker
+                          id="datepicker"
                           onChange={(date) => handleChart(date)}
                           showMonthYearPicker={
                             dateType === "date" ? false : true
@@ -2624,6 +2390,8 @@ export default function ProjectData(props) {
                                       return <Checkboxfilter></Checkboxfilter>;
                                     case "total":
                                       return <Checkboxfilter></Checkboxfilter>;
+                                    default:
+                                      return <></>;
                                   }
                                 case "hybrid":
                                   switch (dateType) {
@@ -2806,6 +2574,8 @@ export default function ProjectData(props) {
                                       return <Checkboxfilter></Checkboxfilter>;
                                     case "total":
                                       return <Checkboxfilter></Checkboxfilter>;
+                                    default:
+                                      return <></>;
                                   }
 
                                 case "ESS":
@@ -3151,42 +2921,13 @@ export default function ProjectData(props) {
                     <div className="DAT_ProjectData_Dashboard_More_Left">
                       <div className="DAT_ProjectData_Dashboard_More_Left_Tit">
                         <span>Thông tin dự án</span>
-                        {/* <div className="DAT_ProjectData_Dashboard_More_Left_Tit_Button">
-                          <IoArrowForward />
-                        </div> */}
                       </div>
 
                       <div className="DAT_ProjectData_Dashboard_More_Left_Content">
                         <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left">
                           <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item">
-                            {/* <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#048FFF",
-                            }}
-                          >
-                            0
-                          </div>
-
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "inProgress" })}
-                          </div> */}
-                            {/* <div
-                            className="DAT_ProjectData_Dashboard_Data_Left_Info_Addr"
-                            style={{ marginBottom: "16px" }}
-                          > */}
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Title">
-                              {dataLang.formatMessage({ id: "projType" })}
+                              {dataLang.formatMessage({ id: "projType" })}:
                             </div>
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Content">
                               {projectData.value.planttype === "industrial" ? (
@@ -3197,32 +2938,9 @@ export default function ProjectData(props) {
                                 </>
                               )}
                             </div>
-                            {/* </div> */}
                           </div>
 
                           <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item">
-                            {/* <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#41D068",
-                            }}
-                          >
-                            0
-                          </div>
-
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "complete" })}
-                          </div> */}
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Title">
                               {dataLang.formatMessage({ id: "companyName" })}:
                             </div>
@@ -3230,65 +2948,10 @@ export default function ProjectData(props) {
                               {projectData.value.business}
                             </div>
                           </div>
-
-                          {/* <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item"> */}
-                          {/* <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#41D068",
-                            }}
-                          >
-                            0
-                          </div>
-
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "complete" })}
-                          </div> */}
-                          {/* <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Title">
-                              {dataLang.formatMessage({ id: "unitPrice" })}:
-
-                            </div>
-                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Content">
-                              {projectData.value.price}
-
-                            </div>
-                          </div> */}
                         </div>
 
                         <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right">
                           <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item">
-                            {/* <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#41D068",
-                            }}
-                          >
-                            0
-                          </div>
-
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "complete" })}
-                          </div> */}
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Title">
                               {dataLang.formatMessage({ id: "contactName" })}:
                             </div>
@@ -3298,28 +2961,6 @@ export default function ProjectData(props) {
                           </div>
 
                           <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item">
-                            {/* <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#41D068",
-                            }}
-                          >
-                            0
-                          </div>
-
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "complete" })}
-                          </div> */}
                             <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Title">
                               {dataLang.formatMessage({ id: "phone" })}:
                             </div>
@@ -3327,40 +2968,6 @@ export default function ProjectData(props) {
                               {projectData.value.phone}
                             </div>
                           </div>
-
-                          {/* <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item"> */}
-                          {/* <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Value"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "32px",
-                              color: "#41D068",
-                            }}
-                          >
-                            0
-                          </div>
-
-                          <div
-                            className="DAT_ProjectData_Dashboard_More_Left_Content_Item_Detail"
-                            style={{
-                              textAlign: "center",
-                              fontSize: "14px",
-                              color: "grey",
-                              marginTop: "8px",
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "complete" })}
-                          </div> */}
-                          {/* <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Title">
-                              {dataLang.formatMessage({ id: "companyName" })}:
-
-
-                            </div>
-                            <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right_Item_Content">
-
-
-                            </div>
-                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -3876,8 +3483,6 @@ export default function ProjectData(props) {
                       </div>
                     </div>
                   )}
-
-                  {/* </div> */}
                 </div>
               );
             case "alert":
@@ -4042,26 +3647,7 @@ export default function ProjectData(props) {
         <div className="DAT_RolePopup" style={{
           height: exportReport === "default" ? "0px" : "100vh",
         }}>
-          <ExportData handleClose={handleClose} typereport={dateType
-            // ()=>{
-            //   switch(dateType){
-            //     case "date":
-            //     return("dailyReport");
-            //     break;
-            //   case "month":
-            //     return("monthlyReport");
-            //     break;
-            //   case "year":
-            //     return("yearlyReport");
-            //     break;
-            //   case "total":
-            //     return("totalReport");
-            //     break;
-            //   default:
-            //     break;
-            //   }
-            // }
-          } />
+          <ExportData handleClose={handleClose} typereport={dateType} plant={projectData.value} datetime={datetime_} />
         </div>
       ) : (
         <> </>
@@ -4164,12 +3750,10 @@ const Graph = (props) => {
   );
 };
 
-
 const GraphGrid = (props) => {
   const [lineA_, setLinA] = useState("Default");
 
   useEffect(() => {
-    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1, props.cal?.bat_1)
     if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
       setLinA("moveLtoR");
     } else {
@@ -4195,27 +3779,6 @@ const GraphGrid = (props) => {
             animation: `${lineA_} ${props.dur} linear infinite`,
           }}
         />
-        {/* {lineA_ ? (
-          <circle
-            r={4}
-            style={{
-              fill: "none",
-              stroke: "#3e80fb",
-              strokeWidth: "3",
-              position: "absolute",
-              top: "0",
-              left: "0",
-            }}
-          >
-            <animateMotion
-              path="M 7 7 L 82 7 C 90 7 100 13 100 21 L 100 36"
-              dur={props.dur}
-              repeatCount="indefinite"
-            ></animateMotion>
-          </circle>
-        ) : (
-          <></>
-        )} */}
       </>
     );
   };
@@ -4273,6 +3836,7 @@ const GraphGrid = (props) => {
       </div>
     );
   };
+
   const SolarImg = (props) => {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "10px", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px", padding: "5px", boxSizing: "border-box", backgroundColor: "white", overflow: "hidden" }}>
@@ -4280,8 +3844,6 @@ const GraphGrid = (props) => {
       </div>
     );
   };
-
-
 
   return (
     <>
@@ -4313,12 +3875,7 @@ const GraphGrid = (props) => {
             DC/AC
           </div>
         </foreignObject>
-
-
-
-
       </svg>
-
     </>
   );
 };
@@ -4328,16 +3885,12 @@ const GraphConsumption = (props) => {
   const [lineB_, setLinB] = useState("Default");
   const [lineD_, setLinD] = useState("Default");
 
-
-
   useEffect(() => {
-    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1)
     if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
       setLinA("moveLtoR");
     } else {
       setLinA("Default");
     }
-
 
     if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
       setLinB("moveRtoL");
@@ -4353,6 +3906,7 @@ const GraphConsumption = (props) => {
       setLinD("Default");
     }
   }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1]);
+
   const LineA = (props) => {
     return (
       <>
@@ -4398,7 +3952,6 @@ const GraphConsumption = (props) => {
     );
   };
 
-
   const LineD = (props) => {
     return (
       <>
@@ -4435,8 +3988,6 @@ const GraphConsumption = (props) => {
     );
   };
 
-
-
   return (
     <>
       <svg
@@ -4467,7 +4018,6 @@ const GraphConsumption = (props) => {
           </div>
         </foreignObject>
       </svg>
-
     </>
   );
 };
@@ -4478,16 +4028,12 @@ const GraphFull = (props) => {
   const [lineC_, setLinC] = useState("Default");
   const [lineD_, setLinD] = useState("Default");
 
-
-
   useEffect(() => {
-    console.log(props.cal?.pro_1, props.cal?.con_1, props.cal?.grid_1, props.cal?.bat_1)
     if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
       setLinA("moveLtoR");
     } else {
       setLinA("Default");
     }
-
 
     if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
       setLinB("moveRtoL");
@@ -4617,8 +4163,6 @@ const GraphFull = (props) => {
     );
   };
 
-
-
   return (
     <>
       <svg
@@ -4653,12 +4197,7 @@ const GraphFull = (props) => {
             DC/AC
           </div>
         </foreignObject>
-
-
-
-
       </svg>
-
     </>
   );
 };
@@ -5435,7 +4974,6 @@ const Battery = (props) => {
     </div>
   );
 };
-
 
 // Thẻ Chart
 const Day = (props) => {

@@ -400,6 +400,7 @@
 
     &_Head {
         display: flex;
+        align-items: center;
         background-color: COLOR.$Primary-color !important; //rgba(182, 182, 182, 0.4)
         padding: 16px;
         color: white;

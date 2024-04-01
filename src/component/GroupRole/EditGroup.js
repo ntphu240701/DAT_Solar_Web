@@ -6,10 +6,9 @@ import { useIntl } from "react-intl";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
-
-import { RxCross2 } from "react-icons/rx";
-import { IoClose, IoSaveOutline } from "react-icons/io5";
 import { COLOR } from "../../App";
+
+import { IoClose } from "react-icons/io5";
 
 const CheckBox = (props) => {
   const handleCheck = (e) => {
@@ -72,6 +71,18 @@ export default function CreateGroupRole() {
     setName(e.currentTarget.value);
   };
 
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
+
   return (
     <div className="DAT_CreateGroupRole">
       <div className="DAT_CreateGroupRole_Header">
@@ -81,6 +92,9 @@ export default function CreateGroupRole() {
 
         <div className="DAT_CreateGroupRole_Header_Right">
           <div className="DAT_CreateGroupRole_Header_Right_Close"
+            id="Popup"
+            onMouseEnter={(e) => handlePopup("new")}
+            onMouseLeave={(e) => handlePopup("pre")}
             onClick={() => (editState.value = false)}
           >
             <IoClose size={25} />

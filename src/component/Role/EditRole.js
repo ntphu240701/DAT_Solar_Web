@@ -1,15 +1,14 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import "./Role.scss";
 
-import { Usr_, popupState, roleData, roleState } from "./Role";
+import { Usr_, popupState, roleData } from "./Role";
 import { useIntl } from "react-intl";
-
-import { IoClose } from "react-icons/io5";
-import { partnerInfor } from "../../App";
 import { datarule } from "../Rule/Rule";
 import { host } from "../Lang/Contant";
 import { callApi } from "../Api/Api";
 import { alertDispatch } from "../Alert/Alert";
+
+import { IoClose } from "react-icons/io5";
 
 export default function EditRole() {
   const dataLang = useIntl();
@@ -29,23 +28,17 @@ export default function EditRole() {
   };
 
   const handleConfirm = async () => {
-    console.log(roleRef.current);
     const updateRoleUser = await callApi(
       "post", host.DATA + "/updateRoleUser", {
       usr: roleData.value.usr_,
       role: roleRef.current.value,
       ruleid: parseInt(ruleidRef.current.value),
-    }
-    )
-    // console.log(roleData.value.usr_, roleRef.current.value, roleData.value.ruleid_);
-    console.log(updateRoleUser);
+    })
+
     if (updateRoleUser.status) {
       let newData = Usr_.value
       let index = Usr_.value.findIndex((d) => d.usr_ == roleData.value.usr_);
-
-      //console.log(ruleidRef.current.value);
       let rulename = datarule.value.find((d) => d.ruleid_ == parseInt(ruleidRef.current.value)).rulename_;
-      console.log(parseInt(ruleidRef.current.value), rulename);
       newData[index].type_ = roleRef.current.value
       newData[index].ruleid_ = parseInt(ruleidRef.current.value)
       newData[index].rulename_ = rulename
@@ -72,7 +65,7 @@ export default function EditRole() {
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
           >
-            <IoClose size={25}></IoClose>
+            <IoClose size={25} />
           </div>
         </div>
       </div>

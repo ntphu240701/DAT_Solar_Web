@@ -4,12 +4,6 @@ import "./Device.scss";
 import { infoState, info, tab } from "./Device";
 import { useIntl } from "react-intl";
 import DatePicker from "react-datepicker";
-
-import { IoIosArrowDown } from "react-icons/io";
-import { FaCheckCircle } from "react-icons/fa";
-import { MdOutlineError } from "react-icons/md";
-import { RxCross2 } from "react-icons/rx";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import PopupState, { bindHover, bindPopper } from "material-ui-popup-state";
 import { Fade, Paper, Popper, Typography } from "@mui/material";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -19,18 +13,12 @@ import { IoCalendarOutline, IoClose } from "react-icons/io5";
 import moment from "moment-timezone";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-} from "recharts";
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, } from "recharts";
+
+import { IoIosArrowDown } from "react-icons/io";
+import { FaCheckCircle } from "react-icons/fa";
+import { MdOutlineError } from "react-icons/md";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const data = [
   {
