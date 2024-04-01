@@ -1633,7 +1633,7 @@ export default function ProjectData(props) {
                     id="add"
                     onClick={() => (popupAddGateway.value = true)}
                   >
-                    <IoAddOutline size={20} color="white" />
+                    <IoAddOutline size={25} color="white" />
                   </button>
                 </div>
               ) : (
@@ -1772,7 +1772,7 @@ export default function ProjectData(props) {
                       (setDropState(false))
                     }}
                   >
-                    <IoAddOutline size={20} color="white" />
+                    <IoAddOutline size={25} color="white" />
                   </button>
                 </div>
               ) : (

@@ -27,6 +27,8 @@ import { FiEdit, FiFilter } from "react-icons/fi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { alertDispatch } from "../Alert/Alert";
+import { RiShareForwardLine } from "react-icons/ri";
+import ShareBox from "./ShareBox";
 
 export const projtab = signal("total");
 const tabLable = signal("");
@@ -37,10 +39,11 @@ const warn = signal([]);
 const demo = signal([]);
 const care = signal([]);
 export const connectval = signal();
-export const plantState = signal("default");
-export const plantEdit = signal(false);
 export const projectData = signal({});
+export const plantEdit = signal(false);
+export const plantState = signal("default");
 export const popupState = signal(false);
+export const shareState = signal(false);
 export const deviceData = signal([]);
 export const inverterData = signal([]);
 
@@ -382,6 +385,20 @@ export default function Project(props) {
             ) : (
               <div></div>
             )}
+            <div
+              id={row.plantid_}
+              className="DAT_ModifyBox_Share"
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+              onClick={(e) => handleShare(e)}
+            >
+              <RiShareForwardLine size={16} />
+              &nbsp;
+              {dataLang.formatMessage({ id: "share" })}
+            </div>
           </div>
           <div className="DAT_TableMark">
             <FaStar
@@ -431,6 +448,10 @@ export default function Project(props) {
       (item) => item.plantid_ == e.currentTarget.id
     );
     projectData.value = newPlant;
+  };
+
+  const handleShare = (e) => {
+    shareState.value = true;
   };
 
   const usr = useSelector((state) => state.admin.usr);
@@ -1852,6 +1873,14 @@ export default function Project(props) {
             type="plant"
             usr={user}
           />
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {shareState.value ? (
+        <div className="DAT_SharePopup">
+          <ShareBox />
         </div>
       ) : (
         <></>

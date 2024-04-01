@@ -228,10 +228,10 @@ export const messages = {
     addProj: "New Project",
     save: "Save",
     reset: "Reset",
+    share: "Share",
     add: "Add",
     ADD: "Add",
     export: "Export",
-    reset: "Reset",
     cancel: "Cancel",
     confirm: "Confirm",
     choosePara: "Select Parameters",
@@ -390,6 +390,7 @@ export const messages = {
 
     //--------------------
     enter: "Enter ",
+    enterEmail: "Please enter an email...",
     enterMore: "Please enter or select more information",
     enterPr: " Enter project...",
     enterDev: " Enter device information...",
@@ -912,10 +913,10 @@ export const messages = {
     addProj: "Thêm dự án",
     save: "Lưu",
     reset: "Đặt lại",
+    share: 'Chia sẻ',
     add: "Thêm",
     ADD: "Thêm",
     export: "Xuất báo cáo",
-    reset: "Cài lại",
     cancel: "Hủy",
     confirm: "Xác nhận",
     choosePara: "Chọn thông số",
@@ -1079,6 +1080,7 @@ export const messages = {
 
     //--------------------
     enter: "Nhập ",
+    enterEmail: "Vui lòng nhập email...",
     enterMore: "Vui lòng nhập hoặc chọn thêm thông tin",
     enterPr: " Nhập tên dự án...",
     enterDev: " Nhập thông tin thiết bị...",
