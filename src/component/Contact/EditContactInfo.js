@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import "./Contact.scss";
 
-import { contactState, popupStateContact } from "./Contact";
 import { COLOR, partnerInfor } from "../../App";
 import { signal } from "@preact/signals-react";
 import { callApi } from "../Api/Api";

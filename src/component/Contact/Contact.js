@@ -4,12 +4,9 @@ import "./Contact.scss";
 import PopupAvatar from "./PopupAva";
 import EditContactInfo from "./EditContactInfo";
 import { partnerInfor, ruleInfor } from "../../App";
-import { signal } from "@preact/signals-react";
 import { useIntl } from "react-intl";
 
 import { MdOutlineContactPhone } from "react-icons/md";
-
-// export const contactState = signal("default");
 
 export default function Contact(props) {
   const dataLang = useIntl();

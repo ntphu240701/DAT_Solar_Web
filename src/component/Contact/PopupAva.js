@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./Contact.scss";
 
-import { popupStateContact } from "./Contact";
 import { partnerInfor } from "../../App";
 import Resizer from "react-image-file-resizer";
 import { callApi } from "../Api/Api";
