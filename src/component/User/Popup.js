@@ -1,10 +1,9 @@
 import React, { useRef, useState } from "react";
 import "./User.scss";
 
-import { popupStateUser, editType } from "./User";
 import { alertDispatch } from "../Alert/Alert";
 import Resizer from "react-image-file-resizer";
-import { COLOR, userInfor } from "../../App";
+import { userInfor } from "../../App";
 import { callApi } from "../Api/Api";
 import { useSelector } from "react-redux";
 import { host } from "../Lang/Contant";
@@ -13,7 +12,7 @@ import { useIntl } from "react-intl";
 import { IoClose } from "react-icons/io5";
 import { LiaEyeSolid, LiaEyeSlashSolid } from "react-icons/lia";
 
-export default function Popup() {
+export default function Popup(props) {
   const dataLang = useIntl();
   const user = useSelector((state) => state.admin.usr);
   const [oldpass, setOldpass] = useState(true);
@@ -32,6 +31,13 @@ export default function Popup() {
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
   };
 
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
+
   const resizeFilAvatar = (file) =>
     new Promise((resolve) => {
       Resizer.imageFileResizer(
@@ -47,13 +53,6 @@ export default function Popup() {
         "file"
       );
     });
-
-  const handlePopup = (state) => {
-    const popup = document.getElementById("Popup");
-    popup.style.transform = popup_state[state].transform;
-    popup.style.transition = popup_state[state].transition;
-    popup.style.color = popup_state[state].color;
-  };
 
   const handleChooseAvatar = async (e) => {
     var reader = new FileReader();
@@ -72,7 +71,7 @@ export default function Popup() {
   };
 
   const handleSave = async () => {
-    switch (editType.value) {
+    switch (props.editType) {
       case "avatar":
         let d = await callApi("post", host.DATA + "/updateUser", { usr: user, type: "avatar", data: ava });
         if (d.status) {
@@ -84,7 +83,7 @@ export default function Popup() {
         } else {
           alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
         }
-        popupStateUser.value = false;
+        props.handleClose();
         break;
       case "password":
         if (oldpassRef.current.value !== "" && newpassRef.current.value !== "" && confirmpassRef.current.value !== "") {
@@ -92,7 +91,7 @@ export default function Popup() {
             let d = await callApi("post", host.AUTH + "/ChangePassword", { usr: user, type: "password", oldpass: oldpassRef.current.value, newpass: confirmpassRef.current.value });
             if (d.status) {
               alertDispatch(dataLang.formatMessage({ id: "alert_1" }));
-              popupStateUser.value = false;
+              props.handleClose();
             } else {
               if (d.number) {
                 alertDispatch(dataLang.formatMessage({ id: "alert_5" }));
@@ -119,7 +118,7 @@ export default function Popup() {
           } else {
             alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
           }
-          popupStateUser.value = false;
+          props.handleClose();
         } else {
           alertDispatch(dataLang.formatMessage({ id: "alert_17" }));
         }
@@ -136,7 +135,7 @@ export default function Popup() {
           } else {
             alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
           }
-          popupStateUser.value = false;
+          props.handleClose();
         } else {
           alertDispatch(dataLang.formatMessage({ id: "alert_17" }));
         }
@@ -153,7 +152,7 @@ export default function Popup() {
           } else {
             alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
           }
-          popupStateUser.value = false;
+          props.handleClose();
         } else {
           alertDispatch(dataLang.formatMessage({ id: "alert_17" }));
         }
@@ -171,19 +170,19 @@ export default function Popup() {
         </div>
         <div className="DAT_PopupUser_Box_Head_Right">
           <div className="DAT_PopupUser_Box_Head_Right_Icon"
-            onClick={() => (popupStateUser.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
+            onClick={() => (props.handleClose())}
           >
-            <IoClose size={25}></IoClose>
+            <IoClose size={25} />
           </div>
         </div>
       </div>
 
       <div className="DAT_PopupUser_Box_Body">
         {(() => {
-          switch (editType.value) {
+          switch (props.editType) {
             case "avatar":
               return (
                 <div className="DAT_PopupUser_Box_Body_Avatar">
