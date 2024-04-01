@@ -1633,7 +1633,7 @@ export default function ProjectData(props) {
                     id="add"
                     onClick={() => (popupAddGateway.value = true)}
                   >
-                    <IoAddOutline size={20} color="white" />
+                    <IoAddOutline size={25} color="white" />
                   </button>
                 </div>
               ) : (
@@ -1772,7 +1772,7 @@ export default function ProjectData(props) {
                       (setDropState(false))
                     }}
                   >
-                    <IoAddOutline size={20} color="white" />
+                    <IoAddOutline size={25} color="white" />
                   </button>
                 </div>
               ) : (
@@ -2922,6 +2922,16 @@ export default function ProjectData(props) {
                               }
                             })()}
                           </div>
+
+                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Btn">
+                            <button>
+                              {dataLang.formatMessage({ id: "cancel", })}
+                            </button>
+                            <button>
+                              {dataLang.formatMessage({ id: "confirm", })}
+                            </button>
+                          </div>
+
                         </div>
                       ) : (
                         <></>

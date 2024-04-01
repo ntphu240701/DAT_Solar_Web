@@ -338,11 +338,12 @@ export default function Navigation(props) {
                           {dataLang.formatMessage({ id: "level" })}: &nbsp;
                           <span
                             style={{
-                              color: "black",
-                              textTransform: "capitalize",
+                              fontFamily: "Montserrat-SemiBold",
+                              color: item.level == "warn" ? "red" : "rgba(247, 148, 29)",
+                              // textTransform: "capitalize",
                             }}
                           >
-                            {item.level}
+                            {dataLang.formatMessage({ id: item.level })}
                           </span>
                         </div>
                         <div className="DAT_NavNotif-content-main-group-content-status">
@@ -352,12 +353,13 @@ export default function Navigation(props) {
                           <div className="DAT_NavNotif-content-main-group-content-status-read">
                             {item.state == 0 ? (
                               <div style={{ color: "grey", display: "flex", gap: "4px" }}>
-                                Read
+                                {dataLang.formatMessage({ id: "readNotif" })}
                                 <BiMessageCheck />
                               </div>
                             ) : (
-                              <div style={{ color: "blue", display: "flex", gap: "4px" }}>
-                                Unread
+                              <div style={{ color: "rgba(11, 25, 103)", display: "flex", gap: "4px", fontFamily: "Montserrat-SemiBold" }}>
+                                {dataLang.formatMessage({ id: "unreadNotif" })}
+
                                 <BiMessageAltX />
                               </div>
                             )}

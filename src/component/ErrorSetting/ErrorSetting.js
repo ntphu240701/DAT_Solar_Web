@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './ErrorSetting.scss';
 
 import { Empty } from '../Project/Project';
 import { useIntl } from 'react-intl';
 import DataTable from "react-data-table-component";
-
+import { IoMdMore } from "react-icons/io";
 import { CiSearch } from 'react-icons/ci';
 import { MdOutlineManageHistory } from "react-icons/md";
+import { FiEdit } from "react-icons/fi";
+import { IoTrashOutline } from "react-icons/io5";
+import { IoIosAddCircleOutline } from "react-icons/io";
 
 export default function ErrorSetting(props) {
     const dataLang = useIntl()
@@ -18,62 +21,251 @@ export default function ErrorSetting(props) {
         selectAllRowsItemText: dataLang.formatMessage({ id: 'showAll' }),
     };
 
-    const dataLog = [
-
+    const data = [
+        {
+            boxid: "A_1_3",
+            viinfo: {
+                cause: {
+                    1: "Lỗi điều khiển",
+                    2: "Lỗi chuột cắn",
+                },
+                solution: {
+                    1: "Khôi phục cấu hình gốc",
+                    2: "Mua Tom",
+                },
+            },
+            enginfo: {
+                cause: {
+                    1: "Control Error",
+                    2: "Jerry Error",
+                },
+                solution: {
+                    1: "Return factory config",
+                    2: "Buy Tom",
+                },
+            },
+        },
     ];
+
+    const handleModify = (e, type) => {
+        const id = e.currentTarget.id;
+        var arr = id.split("_");
+
+        const mod = document.getElementById(arr[0] + "_Modify");
+        mod.style.display = type;
+    };
 
     const columnLog = [
         {
-            name: dataLang.formatMessage({ id: 'device' }),
-            selector: (row) => row.SN,
+            name: "STT",
+            selector: (row, index) => index + 1,
             sortable: true,
-            minWidth: "150px",
+            width: "50px",
             style: {
                 justifyContent: "left",
+                height: "auto",
             }
         },
         {
-            name: dataLang.formatMessage({ id: 'type' }),
-            selector: (row) => row.type,
-            width: "110px",
-        },
-        {
-            name: dataLang.formatMessage({ id: 'config' }),
-            selector: (row) => row.config,
+            name: "Box ID",
+            selector: (row) => row.boxid,
             sortable: true,
-            minWidth: "110px",
+            width: "100px",
+            style: {
+                justifyContent: "left",
+                height: "auto",
+            }
         },
-
+        //CAUSE VIETNAMESE
         {
-            name: dataLang.formatMessage({ id: 'status' }),
+            name: "Cause - Vietnamese",
             selector: (row) => {
-                if (row.state) {
-                    return dataLang.formatMessage({ id: 'success' })
-                } else {
-                    return dataLang.formatMessage({ id: 'fail' })
-                }
+                const temp = Object.entries(row.viinfo.cause).map((err, index) => err)
+                console.log(temp.length);
+                return (
+                    <div style={{ height: "auto" }}>
+                        {Object.entries(row.viinfo.cause).map((err, index) => {
+                            return (
+                                <div key={index}
+                                    style={{
+                                        display: "flex",
+                                        padding: "8px 0",
+                                        gap: "10px",
+                                    }}>
+                                    <div style={{ width: "150px" }}>
+                                        {err[1]}
+                                    </div>
+                                    <FiEdit size={16} style={{ cursor: "pointer" }} />
+                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} />
+                                    {parseInt(err[0]) === temp.length ?
+                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} /> : <></>}
+                                </div>
+                            );
+                        })}
+                    </div>
+                )
             },
-            sortable: true,
-            width: "140px",
+            style: {
+                height: "auto",
+            }
         },
+        //CAUSE ENGLISH
         {
-            name: dataLang.formatMessage({ id: 'operator' }),
-            selector: (row) => row.operator,
-            sortable: true,
-            width: "150px",
+            name: "Cause - English",
+            selector: (row) => {
+                const temp = Object.entries(row.enginfo.cause).map((err, index) => err)
+                console.log(temp.length);
+                return (
+                    <div style={{ height: "auto" }}>
+                        {Object.entries(row.enginfo.cause).map((err, index) => {
+                            return (
+                                <div key={index}
+                                    style={{
+                                        display: "flex",
+                                        padding: "8px 0",
+                                        gap: "10px",
+                                    }}>
+                                    <div style={{ width: "150px" }}>
+                                        {err[1]}
+                                    </div>
+                                    <FiEdit size={16} style={{ cursor: "pointer" }} />
+                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} />
+                                    {parseInt(err[0]) === temp.length ?
+                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} /> : <></>}
+                                </div>
+                            );
+                        })}
+                    </div>
+                )
+            },
+            style: {
+                height: "auto",
+            }
         },
+        //SOLUTION VIETNAMESE
         {
-            name: dataLang.formatMessage({ id: 'runtime' }),
-            selector: (row) => row.runtime,
-            sortable: true,
-            width: "180px",
+            name: "Solution - Vietnamese",
+            selector: (row) => {
+                const temp = Object.entries(row.viinfo.solution).map((err, index) => err)
+                console.log(temp.length);
+                return (
+                    <div style={{ height: "auto" }}>
+                        {Object.entries(row.viinfo.solution).map((err, index) => {
+                            return (
+                                <div key={index}
+                                    style={{
+                                        display: "flex",
+                                        padding: "8px 0",
+                                        gap: "10px",
+                                    }}>
+                                    <div style={{ width: "150px" }}>
+                                        {err[1]}
+                                    </div>
+                                    <FiEdit size={16} style={{ cursor: "pointer" }} />
+                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} />
+                                    {parseInt(err[0]) === temp.length ?
+                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} /> : <></>}
+                                </div>
+                            );
+                        })}
+                    </div>
+                )
+            },
+            style: {
+                height: "auto",
+            }
         },
+        //SOLUTION ENGLISH
         {
-            name: dataLang.formatMessage({ id: 'responseTime' }),
-            selector: (row) => row.response,
-            width: "180px",
+            name: "Solution - English",
+            selector: (row) => {
+                const temp = Object.entries(row.enginfo.solution).map((err, index) => err)
+                console.log(temp.length);
+                return (
+                    <div style={{ height: "auto" }}>
+                        {Object.entries(row.enginfo.solution).map((err, index) => {
+                            return (
+                                <div key={index}
+                                    style={{
+                                        display: "flex",
+                                        padding: "8px 0",
+                                        gap: "10px",
+                                    }}>
+                                    <div style={{ width: "150px" }}>
+                                        {err[1]}
+                                    </div>
+                                    <FiEdit size={16} style={{ cursor: "pointer" }} />
+                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} />
+                                    {parseInt(err[0]) === temp.length ?
+                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} /> : <></>}
+                                </div>
+                            );
+                        })}
+                    </div>
+                )
+            },
+            style: {
+                height: "auto",
+            }
+        },
+        //SETTING
+        {
+            name: dataLang.formatMessage({ id: "setting" }),
+            selector: (row) => (
+                <>
+                    {row.type_ === "master" ? (
+                        <></>
+                    ) : (
+                        <div className="DAT_TableEdit">
+                            <span
+                                id={row.id_ + "_MORE"}
+                                // onMouseEnter={(e) => handleModify(e, "block")}
+                                onClick={(e) => handleModify(e, "block")}
+                            >
+                                <IoMdMore size={20} />
+                            </span>
+                        </div>
+                    )}
+                    <div
+                        className="DAT_ModifyBox"
+                        id={row.id_ + "_Modify"}
+                        style={{ display: "none", marginRight: "4px", marginTop: "2px" }}
+                        onMouseLeave={(e) => handleModify(e, "none")}
+                    >
+                        <div
+                            className="DAT_ModifyBox_Fix"
+                            id={row.id_}
+                        // onClick={(e) => handleEdit(e)}
+                        >
+                            <FiEdit size={14} />
+                            &nbsp;
+                            {dataLang.formatMessage({ id: "change" })}
+                        </div>
+                        <div
+                            className="DAT_ModifyBox_Remove"
+                            id={row.usr_}
+                        // onClick={(e) => handleDelete_(e)}
+                        >
+                            <IoTrashOutline size={16} />
+                            &nbsp;
+                            {dataLang.formatMessage({ id: "remove" })}
+                        </div>
+                    </div>
+                </>
+            ),
+            width: "100px",
+            style: {
+                height: "auto",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }
         },
     ];
+
+    useEffect(() => {
+
+    }, [])
 
     const handleShowConfig = () => { }
 
@@ -99,7 +291,7 @@ export default function ErrorSetting(props) {
                     <DataTable
                         className="DAT_Table_Container"
                         columns={columnLog}
-                        data={dataLog}
+                        data={data}
                         pagination
                         paginationComponentOptions={paginationComponentOptions}
                         fixedHeader={true}

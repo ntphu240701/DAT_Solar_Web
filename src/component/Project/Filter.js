@@ -23,15 +23,6 @@ export default function Filter(props) {
   const todayString = today.toISOString().split('T')[0];
   const [deviceF, setDeviceF] = useState("all");
 
-  const handleReset = (e) => {
-    let min = document.getElementById("min");
-    let max = document.getElementById("max");
-    let location = document.getElementById("location");
-    min.value = "";
-    max.value = "";
-    location.value = "";
-  };
-
   const handleResetWarn = () => {
     setWarnChecked(false);
     setNoticeChecked(false);
@@ -60,13 +51,6 @@ export default function Filter(props) {
     }
   };
 
-  const handleClose = (e) => {
-    let min = document.getElementById("min");
-    let max = document.getElementById("max");
-    let location = document.getElementById("location");
-    console.log(min.value, max.value, location.value);
-  };
-
   // Thay đổi ngày tháng năm theo lựa chọn trong input placeholder
   const handleStartDateChange = (e) => {
     setStartDate(e.target.value);
@@ -79,14 +63,6 @@ export default function Filter(props) {
   const filterdevice = (e) => {
     console.log(e.target.id);
     setDeviceF(e.target.id);
-  };
-
-  const handleSubmit = () => {
-    props.handleClose(
-      min.current.value,
-      max.current.value,
-      location.current.value
-    );
   };
 
   useEffect(() => {
@@ -281,6 +257,7 @@ export default function Filter(props) {
                     <div className="DAT_Filter_Dropdown_Bot">
                       <button
                         style={{ backgroundColor: "white", color: "black" }}
+                        onClick={() => { props.handleClose(); }}
                       >
                         {dataLang.formatMessage({ id: "cancel" })}
                       </button>
@@ -289,6 +266,7 @@ export default function Filter(props) {
                         onClick={(e) => {
                           // handleReset(e);
                           props.handleReset();
+                          setDeviceF("all");
                         }}
                       >
                         {dataLang.formatMessage({ id: 'reset' })}
@@ -389,6 +367,7 @@ export default function Filter(props) {
                     <div className="DAT_Filter_Dropdown_Bot">
                       <button
                         style={{ backgroundColor: "white", color: "black" }}
+                        onClick={() => props.handleClose()}
                       >
                         {dataLang.formatMessage({ id: "cancel" })}
                       </button>
@@ -403,7 +382,7 @@ export default function Filter(props) {
                       </button>
                       <button
                         style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
-                        onClick={() => props.handleClose(opentime.current.value, closetime.current.value)}
+                        onClick={() => props.handleFilter(opentime.current.value, closetime.current.value)}
                       >
                         {dataLang.formatMessage({ id: 'confirm' })}
                       </button>

@@ -276,13 +276,7 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-
-            background-color: #f44336;
             cursor: pointer;
-
-            &:hover {
-                background-color: rgb(252, 122, 122);
-            }
         }
     }
 }
@@ -346,13 +340,7 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
-
-                background-color: red;
                 cursor: pointer;
-
-                &:hover {
-                    background-color: rgb(252, 122, 122);
-                }
             }
         }
     }
@@ -552,10 +540,6 @@
                         justify-content: center;
                         color: grey;
                         cursor: pointer;
-
-                        &:hover {
-                            color: rgb(252, 122, 122);
-                        }
                     }
                 }
             }
@@ -728,14 +712,16 @@
         &_Item {
             display: flex;
             align-items: center;
+
+            &_Cause {
+                padding: 10px;
+                border-radius: 15px;
+                font-size: 14px;
+                border: 2px solid #d6d6d6;
+                outline: none;
+            }
         }
 
-        & input {
-            padding: 20px;
-            width: 91%;
-            border-radius: 10px;
-            font-size: 14px;
-        }
 
         & input:disabled {
             // background-color: white;
