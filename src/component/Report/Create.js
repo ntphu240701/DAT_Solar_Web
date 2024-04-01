@@ -36,13 +36,10 @@ const newdata = signal({
     13: { id: "companyName", status: false },
   },
   customdata: {
-    1: { id: "productionData", status: false },
-    2: { id: "consumptionData", status: false },
-    3: { id: "purchasedelectricity", status: false },
-    4: { id: "inchargeelectricity", status: false },
-    5: { id: "dischargedelectricity", status: false },
-    6: { id: "weatherinfo", status: false },
-    7: { id: "kWhonkWp", status: false },
+    value: { id: "production", status: false },
+    value2: { id: "grid", status: false },
+    value3: { id: "consumption", status: false },
+    value4: { id: "batteryData", status: false },
   },
 });
 
@@ -267,8 +264,33 @@ export default function Create() {
   };
 
   const handleDataType = (e) => {
-    // // console.log(e.currentTarget.value)
     setReportType(e.currentTarget.value);
+    if (e.currentTarget.value === "dailyReport") {
+      newdata.value = {
+        ...newdata.value,
+        customdata: {
+          value: { id: "production", status: false },
+          value2: { id: "grid", status: false },
+          value3: { id: "consumption", status: false },
+          value4: { id: "batteryData", status: false },
+          // 6: { id: "weatherinfo", status: false },
+          // 7: { id: "kWhonkWp", status: false },
+        },
+      }
+
+    } else {
+      newdata.value = {
+        ...newdata.value,
+        customdata: {
+          value: { id: "production", status: true },
+          value2: { id: "consumption", status: false },
+          value3: { id: "gridfeed", status: false },
+          value4: { id: "purchaseE", status: false },
+          value5: { id: "charge", status: false },
+          value6: { id: "discharge", status: false },
+        },
+      }
+    }
   };
 
   useEffect(() => {
@@ -319,7 +341,7 @@ export default function Create() {
                 handleDataType(e);
               }}
             >
-              <option value={"monthlyReport"}>
+              <option value={"dailyReport"}>
                 {dataLang.formatMessage({ id: "dailyReport" })}
               </option>
               <option value={"monthlyReport"}>

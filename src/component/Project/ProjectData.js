@@ -187,11 +187,13 @@ export default function ProjectData(props) {
   const box = useRef();
 
   const [d, setD] = useState({
-    date: moment(new Date()).format("YYYY-MM-DD"),
-    month: moment(new Date()).format("YYYY-MM"),
+    date: moment(new Date()).format("MM/DD/YYYY"),
+    month: moment(new Date()).format("MM/YYYY"),
     year: moment(new Date()).format("YYYY"),
     total: "Tổng",
   });
+
+  const [datetime_, setDatatime_] = useState(moment(new Date()).format("MM/DD/YYYY"));
 
   const color = {
     cur: "blue",
@@ -623,6 +625,7 @@ export default function ProjectData(props) {
 
   const handleChart = (date) => {
     if (dateType === "date") {
+      setDatatime_(moment(date).format("MM/DD/YYYY"));
       setD({ ...d, date: moment(date).format("DD/MM/YYYY") });
       const getDaily = async () => {
         const d = await callApi("post", host.DATA + "/getChart", {
@@ -706,6 +709,7 @@ export default function ProjectData(props) {
 
       getDaily();
     } else if (dateType === "month") {
+      setDatatime_(moment(date).format("MM/YYYY"));
       setD({ ...d, month: moment(date).format("MM/YYYY") });
 
       const getMonth = async () => {
@@ -805,6 +809,7 @@ export default function ProjectData(props) {
       };
       getMonth();
     } else if (dateType === "year") {
+      setDatatime_(moment(date).format("YYYY"));
       setD({ ...d, year: moment(date).format("YYYY") });
 
       const getYear = async () => {
@@ -936,6 +941,213 @@ export default function ProjectData(props) {
       setInvt((pre) => ({ ...pre, [sn]: res.data }));
     }
   };
+
+  const handlefilterchart = (e) => {
+    const state = e.currentTarget.checked;
+    const chartfield = e.currentTarget.id.split("_");
+    const temp = filterchart.value;
+    temp[chartfield[1]][dateType][chartfield[0]] = state;
+    filterchart.value = temp;
+  };
+
+  const Checkboxfilter = (props) => {
+    return (
+      <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
+        <tbody>
+          <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+            <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+              {dataLang.formatMessage({
+                id: "production",
+              })}
+            </th>
+            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                <input
+                  id={"productionData_" + projectData.value.plantmode}
+                  type="checkbox"
+                  defaultChecked={
+                    filterchart.value[projectData.value.plantmode][dateType]
+                      .productionData
+                  }
+                  onChange={(e) => {
+                    handlefilterchart(e);
+                  }}
+                />
+                <label
+                  htmlFor={"productionData_" + projectData.value.plantmode}
+                >
+                  {dataLang.formatMessage({
+                    id: "production",
+                  })}
+                </label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <tbody>
+          <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+            <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+              {dataLang.formatMessage({
+                id: "consumption",
+              })}
+            </th>
+            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                <input
+                  id={"consumptionData_" + projectData.value.plantmode}
+                  type="checkbox"
+                  defaultChecked={
+                    filterchart.value[projectData.value.plantmode][dateType]
+                      .consumptionData
+                  }
+                  onChange={(e) => {
+                    handlefilterchart(e);
+                  }}
+                />
+                <label
+                  htmlFor={"consumptionData_" + projectData.value.plantmode}
+                >
+                  {dataLang.formatMessage({
+                    id: "consumption",
+                  })}
+                </label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <tbody>
+          <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+            <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+              {dataLang.formatMessage({
+                id: "grid",
+              })}
+            </th>
+            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                <input
+                  id={"dailygridin_" + projectData.value.plantmode}
+                  type="checkbox"
+                  defaultChecked={
+                    filterchart.value[projectData.value.plantmode][dateType]
+                      .dailygridin
+                  }
+                  onChange={(e) => {
+                    handlefilterchart(e);
+                  }}
+                />
+                <label htmlFor={"dailygridin_" + projectData.value.plantmode}>
+                  {dataLang.formatMessage({
+                    id: "gridfeed",
+                  })}
+                </label>
+              </div>
+            </td>
+            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                <input
+                  id={"dailygridout_" + projectData.value.plantmode}
+                  type="checkbox"
+                  defaultChecked={
+                    filterchart.value[projectData.value.plantmode][dateType]
+                      .dailygridout
+                  }
+                  onChange={(e) => {
+                    handlefilterchart(e);
+                  }}
+                />
+                <label htmlFor={"dailygridout_" + projectData.value.plantmode}>
+                  {dataLang.formatMessage({
+                    id: "purchaseE",
+                  })}
+                </label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <tbody>
+          <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
+            <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
+              {dataLang.formatMessage({
+                id: "batteryData",
+              })}
+            </th>
+            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                <input
+                  id={"charge_" + projectData.value.plantmode}
+                  type="checkbox"
+                  defaultChecked={
+                    filterchart.value[projectData.value.plantmode][dateType]
+                      .charge
+                  }
+                  onChange={(e) => {
+                    handlefilterchart(e);
+                  }}
+                />
+                <label htmlFor={"charge_" + projectData.value.plantmode}>
+                  {dataLang.formatMessage({
+                    id: "charge",
+                  })}
+                </label>
+              </div>
+            </td>
+            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
+              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                <input
+                  id={"discharge_" + projectData.value.plantmode}
+                  type="checkbox"
+                  defaultChecked={
+                    filterchart.value[projectData.value.plantmode][dateType]
+                      .discharge
+                  }
+                  onChange={(e) => {
+                    handlefilterchart(e);
+                  }}
+                />
+                <label htmlFor={"discharge_" + projectData.value.plantmode}>
+                  {dataLang.formatMessage({
+                    id: "discharge",
+                  })}
+                </label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    );
+  };
+
+  const handleExport = () => {
+    setExportReport(true);
+    // console.log(exportReport);
+  }
+
+  const handleClose = () => {
+    setExportReport(false);
+  }
+
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: 'rgba(11, 25, 103)' },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: 'rgba(11, 25, 103)' },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup_");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
+
+  useEffect(() => {
+    let d = document.getElementById("datepicker");
+    let v = d.querySelector("span");
+    // console.log(v.innerHTML);
+    setDatatime_(v.innerHTML);
+
+  }, [dateType])
 
   useEffect(() => {
     // filter data AlertTable
@@ -1401,205 +1613,6 @@ export default function ProjectData(props) {
     };
   }, [invt]);
 
-  const handlefilterchart = (e) => {
-    const state = e.currentTarget.checked;
-    const chartfield = e.currentTarget.id.split("_");
-    const temp = filterchart.value;
-    temp[chartfield[1]][dateType][chartfield[0]] = state;
-    filterchart.value = temp;
-  };
-
-  const Checkboxfilter = (props) => {
-    return (
-      <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">
-        <tbody>
-          <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-            <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-              {dataLang.formatMessage({
-                id: "production",
-              })}
-            </th>
-            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                <input
-                  id={"productionData_" + projectData.value.plantmode}
-                  type="checkbox"
-                  defaultChecked={
-                    filterchart.value[projectData.value.plantmode][dateType]
-                      .productionData
-                  }
-                  onChange={(e) => {
-                    handlefilterchart(e);
-                  }}
-                />
-                <label
-                  htmlFor={"productionData_" + projectData.value.plantmode}
-                >
-                  {dataLang.formatMessage({
-                    id: "production",
-                  })}
-                </label>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-
-        <tbody>
-          <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-            <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-              {dataLang.formatMessage({
-                id: "consumption",
-              })}
-            </th>
-            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                <input
-                  id={"consumptionData_" + projectData.value.plantmode}
-                  type="checkbox"
-                  defaultChecked={
-                    filterchart.value[projectData.value.plantmode][dateType]
-                      .consumptionData
-                  }
-                  onChange={(e) => {
-                    handlefilterchart(e);
-                  }}
-                />
-                <label
-                  htmlFor={"consumptionData_" + projectData.value.plantmode}
-                >
-                  {dataLang.formatMessage({
-                    id: "consumption",
-                  })}
-                </label>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-
-        <tbody>
-          <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-            <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-              {dataLang.formatMessage({
-                id: "grid",
-              })}
-            </th>
-            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                <input
-                  id={"dailygridin_" + projectData.value.plantmode}
-                  type="checkbox"
-                  defaultChecked={
-                    filterchart.value[projectData.value.plantmode][dateType]
-                      .dailygridin
-                  }
-                  onChange={(e) => {
-                    handlefilterchart(e);
-                  }}
-                />
-                <label htmlFor={"dailygridin_" + projectData.value.plantmode}>
-                  {dataLang.formatMessage({
-                    id: "gridfeed",
-                  })}
-                </label>
-              </div>
-            </td>
-            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                <input
-                  id={"dailygridout_" + projectData.value.plantmode}
-                  type="checkbox"
-                  defaultChecked={
-                    filterchart.value[projectData.value.plantmode][dateType]
-                      .dailygridout
-                  }
-                  onChange={(e) => {
-                    handlefilterchart(e);
-                  }}
-                />
-                <label htmlFor={"dailygridout_" + projectData.value.plantmode}>
-                  {dataLang.formatMessage({
-                    id: "purchaseE",
-                  })}
-                </label>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-
-        <tbody>
-          <tr className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr">
-            <th className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Th">
-              {dataLang.formatMessage({
-                id: "batteryData",
-              })}
-            </th>
-            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                <input
-                  id={"charge_" + projectData.value.plantmode}
-                  type="checkbox"
-                  defaultChecked={
-                    filterchart.value[projectData.value.plantmode][dateType]
-                      .charge
-                  }
-                  onChange={(e) => {
-                    handlefilterchart(e);
-                  }}
-                />
-                <label htmlFor={"charge_" + projectData.value.plantmode}>
-                  {dataLang.formatMessage({
-                    id: "charge",
-                  })}
-                </label>
-              </div>
-            </td>
-            <td className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td">
-              <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
-                <input
-                  id={"discharge_" + projectData.value.plantmode}
-                  type="checkbox"
-                  defaultChecked={
-                    filterchart.value[projectData.value.plantmode][dateType]
-                      .discharge
-                  }
-                  onChange={(e) => {
-                    handlefilterchart(e);
-                  }}
-                />
-                <label htmlFor={"discharge_" + projectData.value.plantmode}>
-                  {dataLang.formatMessage({
-                    id: "discharge",
-                  })}
-                </label>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    );
-  };
-
-  const handleExport = () => {
-    setExportReport(true);
-    // console.log(exportReport);
-  }
-
-  const handleClose = () => {
-    setExportReport(false);
-  }
-
-  const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: 'rgba(11, 25, 103)' },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: 'rgba(11, 25, 103)' },
-  };
-
-  const handlePopup = (state) => {
-    const popup = document.getElementById("Popup_");
-    popup.style.transform = popup_state[state].transform;
-    popup.style.transition = popup_state[state].transition;
-    popup.style.color = popup_state[state].color;
-  };
-
   return (
     <div ref={box}>
       <div className="DAT_ProjectData">
@@ -2005,6 +2018,7 @@ export default function ProjectData(props) {
                         </div>
 
                         <DatePicker
+                          id="datepicker"
                           onChange={(date) => handleChart(date)}
                           showMonthYearPicker={
                             dateType === "date" ? false : true
@@ -3677,26 +3691,7 @@ export default function ProjectData(props) {
         <div className="DAT_RolePopup" style={{
           height: exportReport === "default" ? "0px" : "100vh",
         }}>
-          <ExportData handleClose={handleClose} typereport={dateType
-            // ()=>{
-            //   switch(dateType){
-            //     case "date":
-            //     return("dailyReport");
-            //     break;
-            //   case "month":
-            //     return("monthlyReport");
-            //     break;
-            //   case "year":
-            //     return("yearlyReport");
-            //     break;
-            //   case "total":
-            //     return("totalReport");
-            //     break;
-            //   default:
-            //     break;
-            //   }
-            // }
-          } />
+          <ExportData handleClose={handleClose} typereport={dateType} plant={projectData.value} datetime={datetime_} />
         </div>
       ) : (
         <> </>
