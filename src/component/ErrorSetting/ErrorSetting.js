@@ -24,26 +24,17 @@ export default function ErrorSetting(props) {
     const data = [
         {
             boxid: "A_1_3",
-            viinfo: {
-                cause: {
-                    1: "Lỗi điều khiển",
-                    2: "Lỗi chuột cắn",
-                },
-                solution: {
-                    1: "Khôi phục cấu hình gốc",
-                    2: "Mua Tom",
-                },
-            },
-            enginfo: {
-                cause: {
-                    1: "Control Error",
-                    2: "Jerry Error",
-                },
-                solution: {
-                    1: "Return factory config",
-                    2: "Buy Tom",
-                },
-            },
+
+            cause: [
+                { id: 1, vi: "...", en: "..." },
+                { id: 2, vi: "xin chao", en: "hello" },
+            ],
+            solution: [
+                { id: 1, vi: "...", en: "..." },
+                { id: 2, vi: "Khôi phục cấu hình gốc", en: "Return factory config" },
+            ]
+
+
         },
     ];
 
@@ -76,29 +67,32 @@ export default function ErrorSetting(props) {
                 height: "auto",
             }
         },
-        //CAUSE VIETNAMESE
+        //CAUSE
         {
-            name: "Cause - Vietnamese",
+            name: "Cause (Vi-En)",
             selector: (row) => {
-                const temp = Object.entries(row.viinfo.cause).map((err, index) => err)
-                console.log(temp.length);
+                let cause = row.cause.sort((a, b) => a.id - b.id);
+
                 return (
                     <div style={{ height: "auto" }}>
-                        {Object.entries(row.viinfo.cause).map((err, index) => {
+                        {cause.map((err, index) => {
                             return (
-                                <div key={index}
+                                <div key={err.id}
                                     style={{
                                         display: "flex",
                                         padding: "8px 0",
                                         gap: "10px",
                                     }}>
                                     <div style={{ width: "150px" }}>
-                                        {err[1]}
+                                        {err.vi}
                                     </div>
-                                    <FiEdit size={16} style={{ cursor: "pointer" }} />
-                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} />
-                                    {parseInt(err[0]) === temp.length ?
-                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} /> : <></>}
+                                    <div style={{ width: "150px" }}>
+                                        {err.en}
+                                    </div>
+                                    <FiEdit size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_EDIT`} />
+                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_REMOVE`} />
+                                    {parseInt(index) === cause.length - 1 ?
+                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} id={`${err.id}_ADD`} /> : <></>}
                                 </div>
                             );
                         })}
@@ -109,29 +103,32 @@ export default function ErrorSetting(props) {
                 height: "auto",
             }
         },
-        //CAUSE ENGLISH
+        //SOLUTION
         {
-            name: "Cause - English",
+            name: "Solution (Vi-En)",
             selector: (row) => {
-                const temp = Object.entries(row.enginfo.cause).map((err, index) => err)
-                console.log(temp.length);
+                let solution = row.solution.sort((a, b) => a.id - b.id);
+
                 return (
                     <div style={{ height: "auto" }}>
-                        {Object.entries(row.enginfo.cause).map((err, index) => {
+                        {solution.map((err, index) => {
                             return (
-                                <div key={index}
+                                <div key={err.id}
                                     style={{
                                         display: "flex",
                                         padding: "8px 0",
                                         gap: "10px",
                                     }}>
                                     <div style={{ width: "150px" }}>
-                                        {err[1]}
+                                        {err.vi}
                                     </div>
-                                    <FiEdit size={16} style={{ cursor: "pointer" }} />
-                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} />
-                                    {parseInt(err[0]) === temp.length ?
-                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} /> : <></>}
+                                    <div style={{ width: "150px" }}>
+                                        {err.en}
+                                    </div>
+                                    <FiEdit size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_EDIT`} />
+                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_REMOVE`} />
+                                    {parseInt(index) === solution.length - 1 ?
+                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_ADD`} /> : <></>}
                                 </div>
                             );
                         })}
@@ -140,72 +137,7 @@ export default function ErrorSetting(props) {
             },
             style: {
                 height: "auto",
-            }
-        },
-        //SOLUTION VIETNAMESE
-        {
-            name: "Solution - Vietnamese",
-            selector: (row) => {
-                const temp = Object.entries(row.viinfo.solution).map((err, index) => err)
-                console.log(temp.length);
-                return (
-                    <div style={{ height: "auto" }}>
-                        {Object.entries(row.viinfo.solution).map((err, index) => {
-                            return (
-                                <div key={index}
-                                    style={{
-                                        display: "flex",
-                                        padding: "8px 0",
-                                        gap: "10px",
-                                    }}>
-                                    <div style={{ width: "150px" }}>
-                                        {err[1]}
-                                    </div>
-                                    <FiEdit size={16} style={{ cursor: "pointer" }} />
-                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} />
-                                    {parseInt(err[0]) === temp.length ?
-                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} /> : <></>}
-                                </div>
-                            );
-                        })}
-                    </div>
-                )
-            },
-            style: {
-                height: "auto",
-            }
-        },
-        //SOLUTION ENGLISH
-        {
-            name: "Solution - English",
-            selector: (row) => {
-                const temp = Object.entries(row.enginfo.solution).map((err, index) => err)
-                console.log(temp.length);
-                return (
-                    <div style={{ height: "auto" }}>
-                        {Object.entries(row.enginfo.solution).map((err, index) => {
-                            return (
-                                <div key={index}
-                                    style={{
-                                        display: "flex",
-                                        padding: "8px 0",
-                                        gap: "10px",
-                                    }}>
-                                    <div style={{ width: "150px" }}>
-                                        {err[1]}
-                                    </div>
-                                    <FiEdit size={16} style={{ cursor: "pointer" }} />
-                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} />
-                                    {parseInt(err[0]) === temp.length ?
-                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} /> : <></>}
-                                </div>
-                            );
-                        })}
-                    </div>
-                )
-            },
-            style: {
-                height: "auto",
+                justifyContent: "left",
             }
         },
         //SETTING
@@ -232,7 +164,7 @@ export default function ErrorSetting(props) {
                         style={{ display: "none", marginRight: "4px", marginTop: "2px" }}
                         onMouseLeave={(e) => handleModify(e, "none")}
                     >
-                        <div
+                        {/* <div
                             className="DAT_ModifyBox_Fix"
                             id={row.id_}
                         // onClick={(e) => handleEdit(e)}
@@ -240,7 +172,7 @@ export default function ErrorSetting(props) {
                             <FiEdit size={14} />
                             &nbsp;
                             {dataLang.formatMessage({ id: "change" })}
-                        </div>
+                        </div> */}
                         <div
                             className="DAT_ModifyBox_Remove"
                             id={row.usr_}

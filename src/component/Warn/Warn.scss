@@ -713,12 +713,13 @@
             display: flex;
             align-items: center;
 
-            &_Cause {
+            &_Box {
                 padding: 10px;
                 border-radius: 15px;
                 font-size: 14px;
                 border: 2px solid #d6d6d6;
                 outline: none;
+                margin-bottom: 10px;
             }
         }
 
