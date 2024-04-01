@@ -633,8 +633,6 @@ export default function ProjectData(props) {
           date: moment(date).format("MM/DD/YYYY"),
         });
         setDataDay([]);
-        // console.log(projectData.value.plantid_)
-        // console.log(d)
         let x = [];
         if (d.status) {
           let vDay_ = dataLang.formatMessage({ id: "productionData" });
@@ -643,11 +641,6 @@ export default function ProjectData(props) {
           let vDay4_ = dataLang.formatMessage({ id: "batteryData" });
           d.data.data.map((item) => {
             let arr = item.time.split(":");
-            // console.log(item);
-            // if (projectData.value.plantmode === "grid") {
-            //   x = [...x, { time: `${arr[0]}:${arr[1]}`, [vDay_]: item.value }];
-            // }
-            // if (projectData.value.plantmode === "hybrid") {
             x = [
               ...x,
               {
@@ -658,23 +651,7 @@ export default function ProjectData(props) {
                 [vDay4_]: item.value4,
               },
             ];
-            // }
           });
-
-          // if (projectData.value.plantmode === "grid") {
-          //   for (let i = x.length; i < 287; i++) {
-          //     if (
-          //       moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
-          //     ) {
-          //       let nextTime = moment(x[x.length - 1].time, "HH:mm")
-          //         .add(5, "minutes")
-          //         .format("HH:mm");
-          //       x.push({ time: nextTime, [vDay_]: 0 });
-          //     }
-          //   }
-          // }
-
-          // if (projectData.value.plantmode === "hybrid") {
           for (let i = x.length; i < 287; i++) {
             if (
               moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
@@ -691,8 +668,6 @@ export default function ProjectData(props) {
               });
             }
           }
-          // }
-          // console.log(x)
           setDataDay(x);
           setVDay(dataLang.formatMessage({ id: "productionData" }));
           setVDay2(dataLang.formatMessage({ id: "consumptionData" }));
@@ -724,10 +699,8 @@ export default function ProjectData(props) {
           let vMonth4 = dataLang.formatMessage({ id: "dailygridout" });
           let vMonth5 = dataLang.formatMessage({ id: "dailybatteryin" });
           let vMonth6 = dataLang.formatMessage({ id: "dailybatteryout" });
-          const currentDate = new Date();
-          const currentMonth = currentDate.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
-          const currentYear = currentDate.getFullYear();
-          const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+          let arr = moment(date).format("MM/YYYY").split("/");
+          const daysInMonth = new Date(arr[1], arr[0], 0).getDate();
           let datamonth_ = [];
           for (let i = 1; i <= daysInMonth; i++) {
             datamonth_ = [
@@ -743,11 +716,6 @@ export default function ProjectData(props) {
           let sum_month6 = [];
           d.data.data.map((item, i) => {
             let index = datamonth_.findIndex((d) => d.date == item.date);
-            // if (projectData.value.plantmode === "grid") {
-            //   datamonth_[index][vMonth] = item.value;
-            //   sum_month[i] = item.value;
-            // }
-            // if (projectData.value.plantmode === "hybrid") {
             datamonth_[index][vMonth] = item.value;
             datamonth_[index][vMonth2] = item.value2;
             datamonth_[index][vMonth3] = item.value3;
@@ -763,12 +731,6 @@ export default function ProjectData(props) {
             // }
 
             if (i == d.data.data.length - 1) {
-              // if (projectData.value.plantmode === "grid") {
-              //   cal.value["pro_month"] = parseFloat(
-              //     sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-              //   ).toFixed(2);
-              // }
-              // if (projectData.value.plantmode === "hybrid") {
               cal.value["pro_month"] = parseFloat(
                 sum_month.reduce((a, b) => Number(a) + Number(b), 0)
               ).toFixed(2);
