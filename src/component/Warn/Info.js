@@ -78,15 +78,21 @@ export default function Info(props) {
             {dataLang.formatMessage({ id: "cause" })} :
           </p>
 
-          <div className="DAT_PopupReportInfo_Box_Body_Item_Cause">
+          <div className="DAT_PopupReportInfo_Box_Body_Item_Box">
             <p>
               {dataLang.formatMessage({ id: "cause" })}...
             </p>
           </div>
-          {/* <p>
+
+          <p>
             {dataLang.formatMessage({ id: "solution" })} :
           </p>
-          <input placeholder="..." disabled></input> */}
+
+          <div className="DAT_PopupReportInfo_Box_Body_Item_Box">
+            <p>
+              {dataLang.formatMessage({ id: "solution" })}...
+            </p>
+          </div>
         </div>
       </div>
     </div >
