@@ -2640,7 +2640,7 @@ const DeviceSettings = (props) => {
                   </div>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Content">
                     <select>
-                      <option selected disabled>---{dataLang.formatMessage({ id: 'PleaseSel' })}---</option>
+                      <option defaultValue={1} disabled>---{dataLang.formatMessage({ id: 'PleaseSel' })}---</option>
                       <option>CQC2013</option>
                       <option>SKYWORTH</option>
                       <option>EN50549</option>
