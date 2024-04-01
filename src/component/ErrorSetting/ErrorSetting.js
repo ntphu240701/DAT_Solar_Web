@@ -1,18 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ErrorSetting.scss';
 
 import { Empty } from '../Project/Project';
 import { useIntl } from 'react-intl';
 import DataTable from "react-data-table-component";
+import CreateErrSetting from './CreateErrSetting';
+import EditErr from './EditErr';
 
 import { IoMdMore, IoIosAddCircleOutline } from "react-icons/io";
 import { CiSearch } from 'react-icons/ci';
 import { MdOutlineManageHistory } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
+import RemoveErr from './RemoveErr';
 
 export default function ErrorSetting(props) {
     const dataLang = useIntl()
+    const [createState, setCreateState] = useState(false);
+    const [editState, setEditState] = useState(false);
+    const [editType, setEditType] = useState("");
+    const [removeState, setRemoveState] = useState(false);
 
     const paginationComponentOptions = {
         rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
@@ -37,14 +44,6 @@ export default function ErrorSetting(props) {
 
         },
     ];
-
-    const handleModify = (e, type) => {
-        const id = e.currentTarget.id;
-        var arr = id.split("_");
-
-        const mod = document.getElementById(arr[0] + "_Modify");
-        mod.style.display = type;
-    };
 
     const columnLog = [
         {
@@ -89,10 +88,25 @@ export default function ErrorSetting(props) {
                                     <div style={{ width: "150px" }}>
                                         {err.en}
                                     </div>
-                                    <FiEdit size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_EDITCAUSE`} />
-                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_REMOVECAUSE`} />
+                                    <FiEdit
+                                        size={16}
+                                        style={{ cursor: "pointer" }}
+                                        id={`${err.boxid}_${err.id}_EDITCAUSE`}
+                                        onClick={(e) => handleEdit(e)}
+                                    />
+                                    <IoTrashOutline
+                                        size={16}
+                                        style={{ cursor: "pointer" }}
+                                        id={`${err.boxid}_${err.id}_REMOVECAUSE`}
+                                    />
                                     {parseInt(index) === cause.length - 1 ?
-                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} id={`${err.id}_ADDCAUSE`} /> : <></>}
+                                        <IoIosAddCircleOutline
+                                            size={16}
+                                            style={{ cursor: "pointer" }}
+                                            id={`${err.id}_ADDCAUSE`}
+                                        />
+                                        : <></>
+                                    }
                                 </div>
                             );
                         })}
@@ -125,10 +139,24 @@ export default function ErrorSetting(props) {
                                     <div style={{ width: "150px" }}>
                                         {err.en}
                                     </div>
-                                    <FiEdit size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_EDITSOLUTION`} />
-                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_REMOVESOLUTION`} />
+                                    <FiEdit
+                                        size={16}
+                                        style={{ cursor: "pointer" }}
+                                        id={`${err.boxid}_${err.id}_EDITSOLUTION`}
+                                        onClick={(e) => handleEdit(e)}
+                                    />
+                                    <IoTrashOutline
+                                        size={16}
+                                        style={{ cursor: "pointer" }}
+                                        id={`${err.boxid}_${err.id}_REMOVESOLUTION`}
+                                    />
                                     {parseInt(index) === solution.length - 1 ?
-                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_ADDSOLUTION`} /> : <></>}
+                                        <IoIosAddCircleOutline
+                                            size={16}
+                                            style={{ cursor: "pointer" }}
+                                            id={`${err.boxid}_${err.id}_ADDSOLUTION`}
+                                        /> : <></>
+                                    }
                                 </div>
                             );
                         })}
@@ -176,7 +204,7 @@ export default function ErrorSetting(props) {
                         <div
                             className="DAT_ModifyBox_Remove"
                             id={row.usr_}
-                        // onClick={(e) => handleDelete_(e)}
+                            onClick={(e) => handleDelete(e)}
                         >
                             <IoTrashOutline size={16} />
                             &nbsp;
@@ -195,27 +223,70 @@ export default function ErrorSetting(props) {
         },
     ];
 
+    const handleModify = (e, type) => {
+        const id = e.currentTarget.id;
+        var arr = id.split("_");
+
+        const mod = document.getElementById(arr[0] + "_Modify");
+        mod.style.display = type;
+    };
+
+    const handleCloseCreate = () => {
+        setCreateState(false);
+    };
+
+    const handleEdit = (e) => {
+        let arr = e.currentTarget.id.split("_");
+        setEditType(arr[2]);
+        setEditState(true);
+    };
+
+    const handleCloseEdit = () => {
+        setEditState(false);
+    };
+
+    const handleDelete = (e) => {
+        setRemoveState(true);
+    };
+
+    const handleCloseRemove = () => {
+        setRemoveState(false);
+    };
+
     useEffect(() => {
 
     }, [])
-
-    const handleShowConfig = () => { }
 
     return (
         <>
             <div className="DAT_ErrSetting">
                 <div className="DAT_ErrSetting_Title">
-                    <MdOutlineManageHistory color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'errorsetting' })}</span>
+                    <MdOutlineManageHistory color="gray" size={25} />
+                    <span>{dataLang.formatMessage({ id: 'errorsetting' })}</span>
                 </div>
+
                 <div className="DAT_ErrSetting_Filter">
-                    <input type="text" placeholder={dataLang.formatMessage({ id: 'enterError' }) + "..."} />
+                    <input
+                        type="text"
+                        placeholder={dataLang.formatMessage({ id: 'enterError' }) + "..."}
+                    />
                     <CiSearch color="gray" size={20} />
                 </div>
-                <div></div>
+
+                <button className="DAT_ErrSetting_New"
+                    onClick={() => (setCreateState(true))}
+                >
+                    <span>
+                        <MdOutlineManageHistory color="white" size={20} />
+                        &nbsp;
+                        {/* {dataLang.formatMessage({ id: "newRule" })} */}
+                        Tạo mới
+                    </span>
+                </button>
             </div>
 
             <div className='DAT_ErrSet'>
-                <div className='DAT_ErrSet_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>
+                <div className='DAT_ErrSet_Header' >
                     {dataLang.formatMessage({ id: 'errlist' })}
                 </div>
 
@@ -230,6 +301,33 @@ export default function ErrorSetting(props) {
                         noDataComponent={<Empty />}
                     />
                 </div>
+            </div>
+
+            <div className="DAT_ErrSettingBG"
+                style={{
+                    height: createState ? "100vh" : "0",
+                    transition: "0.5s",
+                }}
+            >
+                {createState ? <CreateErrSetting handleClose={handleCloseCreate} /> : <></>}
+            </div>
+
+            <div className="DAT_ErrSettingBG"
+                style={{
+                    height: editState ? "100vh" : "0",
+                    transition: "0.5s",
+                }}
+            >
+                {editState ? <EditErr type={editType} handleClose={handleCloseEdit} /> : <></>}
+            </div>
+
+            <div className="DAT_ErrSettingBG"
+                style={{
+                    height: removeState ? "100vh" : "0",
+                    transition: "0.5s",
+                }}
+            >
+                {removeState ? <RemoveErr handleClose={handleCloseRemove} /> : <></>}
             </div>
         </>
     );
