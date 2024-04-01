@@ -9,30 +9,29 @@ import { host } from "../Lang/Contant";
 import { useIntl } from "react-intl";
 import { alertDispatch } from "../Alert/Alert";
 
-import { RxCross2 } from "react-icons/rx";
 import { IoClose } from "react-icons/io5";
-
-const popup_state = {
-  pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
-  new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
-};
-
-const handlePopup = (state) => {
-  const popup = document.getElementById("Popup");
-  popup.style.transform = popup_state[state].transform;
-  popup.style.transition = popup_state[state].transition;
-  popup.style.color = popup_state[state].color;
-};
-
-const Type = signal({
-  OnM: { name: "onm", checked: false },
-  Investor: { name: "investor", checked: false },
-  Distributor: { name: "distributor", checked: false },
-  Manufacturer: { name: "manufacturer", checked: false },
-})
 
 export default function EditContactInfo(props) {
   const dataLang = useIntl();
+
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
+
+  const Type = signal({
+    OnM: { name: "onm", checked: false },
+    Investor: { name: "investor", checked: false },
+    Distributor: { name: "distributor", checked: false },
+    Manufacturer: { name: "manufacturer", checked: false },
+  })
 
   const handeTypeChange = (e) => {
     Object.entries(Type.value).forEach(async ([key, value]) => {
@@ -65,6 +64,7 @@ export default function EditContactInfo(props) {
           ...partnerInfor.value,
           [id]: data
         }
+        props.handleClose();
       } else {
         alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
       }
@@ -89,7 +89,7 @@ export default function EditContactInfo(props) {
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
-            onClick={() => { contactState.value = 'default'; }}
+            onClick={() => { props.handleClose() }}
           >
             <IoClose size={25} />
           </div>
@@ -195,8 +195,18 @@ export default function EditContactInfo(props) {
                   {dataLang.formatMessage({ id: 'name' })}
                 </div>
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
-                  <input type="text" id="name_input" defaultValue={partnerInfor.value.name} />
-                  <span style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }} id='name' onClick={(e) => handeUpdate(e)} >{dataLang.formatMessage({ id: 'save' })}</span>
+                  <input
+                    type="text"
+                    id="name_input"
+                    defaultValue={partnerInfor.value.name}
+                  />
+                  <span
+                    style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }}
+                    id='name'
+                    onClick={(e) => handeUpdate(e)}
+                  >
+                    {dataLang.formatMessage({ id: 'save' })}
+                  </span>
                 </div>
               </div>
 
@@ -206,19 +216,39 @@ export default function EditContactInfo(props) {
                 </div>
 
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
-                  <input type="number" id="phone_input" defaultValue={partnerInfor.value.phone} />
-                  <span style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }} id="phone" onClick={(e) => handeUpdate(e)}>{dataLang.formatMessage({ id: 'save' })}</span>
+                  <input
+                    type="number"
+                    id="phone_input"
+                    defaultValue={partnerInfor.value.phone}
+                  />
+                  <span
+                    style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }}
+                    id="phone"
+                    onClick={(e) => handeUpdate(e)}
+                  >
+                    {dataLang.formatMessage({ id: 'save' })}
+                  </span>
                 </div>
               </div>
 
               <div className="DAT_EditContactInfo_Body_Row2_Item">
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
-                  {dataLang.formatMessage({ id: 'area' })}
+                  E-mail
                 </div>
 
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
-                  <input type="mail" id="mail_input" defaultValue={partnerInfor.value.mail} />
-                  <span style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }} id="mail" onClick={(e) => handeUpdate(e)}>{dataLang.formatMessage({ id: 'save' })}</span>
+                  <input
+                    type="mail"
+                    id="mail_input"
+                    defaultValue={partnerInfor.value.mail}
+                  />
+                  <span
+                    style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }}
+                    id="mail"
+                    onClick={(e) => handeUpdate(e)}
+                  >
+                    {dataLang.formatMessage({ id: 'save' })}
+                  </span>
                 </div>
               </div>
             </div>

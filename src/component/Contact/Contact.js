@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Contact.scss";
 
 import PopupAvatar from "./PopupAva";
@@ -9,11 +9,12 @@ import { useIntl } from "react-intl";
 
 import { MdOutlineContactPhone } from "react-icons/md";
 
-export const popupStateContact = signal(false);
-export const contactState = signal("default");
+// export const contactState = signal("default");
 
 export default function Contact(props) {
   const dataLang = useIntl();
+  const [popupState, setPopupState] = useState(false);
+  const [contactState, setContactState] = useState("default");
 
   const Type = {
     OnM: "onm",
@@ -21,6 +22,14 @@ export default function Contact(props) {
     Distributor: "distributor",
     Manufacturer: "manufacturer",
   }
+
+  const handleCloseAva = () => {
+    setPopupState(false);
+  }
+
+  const handleClose = () => {
+    setContactState("default");
+  };
 
   return (
     <>
@@ -40,7 +49,7 @@ export default function Contact(props) {
               <div>{dataLang.formatMessage({ id: 'registerInfo' })}</div>
               {ruleInfor.value.setting.contact.edit === false
                 ? <div></div>
-                : <div onClick={() => (contactState.value = "editRegisterInf")}>
+                : <div onClick={() => (setContactState("editRegisterInf"))}>
                   {dataLang.formatMessage({ id: 'edits' })}
                 </div>
               }
@@ -76,7 +85,7 @@ export default function Contact(props) {
               <div>{dataLang.formatMessage({ id: 'contact' })}</div>
               {ruleInfor.value.setting.contact.edit === false
                 ? <div></div>
-                : <div onClick={() => (contactState.value = "editContactInf")}>
+                : <div onClick={() => (setContactState("editContactInf"))}>
                   {dataLang.formatMessage({ id: 'edits' })}
                 </div>
               }
@@ -105,7 +114,7 @@ export default function Contact(props) {
               <div>Logo</div>
               {ruleInfor.value.setting.contact.edit === false
                 ? <div></div>
-                : <div onClick={() => (popupStateContact.value = true)}>
+                : <div onClick={() => (setPopupState(true))}>
                   {dataLang.formatMessage({ id: 'edits' })}
                 </div>
               }
@@ -120,25 +129,25 @@ export default function Contact(props) {
 
       <div className="DAT_ContactInfo"
         style={{
-          height: contactState.value === "default" ? "0px" : "100vh",
+          height: contactState === "default" ? "0px" : "100vh",
           transition: "0.5s",
         }}
       >
         {(() => {
-          switch (contactState.value) {
+          switch (contactState) {
             case "editRegisterInf":
-              return <EditContactInfo mode="RegisterInf" />;
+              return <EditContactInfo mode="RegisterInf" handleClose={handleClose} />;
             case "editContactInf":
-              return <EditContactInfo mode="ContactInf" />;
+              return <EditContactInfo mode="ContactInf" handleClose={handleClose} />;
             default:
               return <></>;
           }
         })()}
       </div>
 
-      {popupStateContact.value ? (
+      {popupState ? (
         <div className="DAT_PopupAvatar">
-          <PopupAvatar />
+          <PopupAvatar handleClose={handleCloseAva} />
         </div>
       ) : (
         <></>

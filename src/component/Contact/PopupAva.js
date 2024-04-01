@@ -15,6 +15,18 @@ export default function PopupAva(props) {
   const dataLang = useIntl();
   const [ava, setAva] = useState(partnerInfor.value.logo ? partnerInfor.value.logo : "/dat_icon/logo_DAT.png");
 
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
+
   const resizeFile = (file) =>
     new Promise((resolve) => {
       Resizer.imageFileResizer(
@@ -30,18 +42,6 @@ export default function PopupAva(props) {
         "file"
       );
     });
-
-  const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
-  };
-
-  const handlePopup = (state) => {
-    const popup = document.getElementById("Popup");
-    popup.style.transform = popup_state[state].transform;
-    popup.style.transition = popup_state[state].transition;
-    popup.style.color = popup_state[state].color;
-  };
 
   const handleChooseAvatar = async (e) => {
     var reader = new FileReader();
@@ -69,7 +69,7 @@ export default function PopupAva(props) {
         ...partnerInfor.value,
         logo: ava
       }
-      popupStateContact.value = false;
+      props.handleClose();
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
@@ -87,7 +87,7 @@ export default function PopupAva(props) {
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
-            onClick={() => { popupStateContact.value = false; }}
+            onClick={() => props.handleClose()}
           >
             <IoClose size={25} />
           </div>
