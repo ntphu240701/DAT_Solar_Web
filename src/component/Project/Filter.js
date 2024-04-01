@@ -318,7 +318,6 @@ export default function Filter(props) {
               >
                 {props.display ? (
                   <form className="DAT_Filter_Dropdown"
-
                     style={{
                       height: props.display ? "180px" : "0px",
                       transition: "0.5s",

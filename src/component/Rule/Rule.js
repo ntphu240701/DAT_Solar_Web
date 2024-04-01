@@ -10,23 +10,18 @@ import EditRule, { editruledata } from "./EditRule";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
+import { partnerInfor } from "../../App";
 
 import { CiSearch } from "react-icons/ci";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { IoMdMore } from "react-icons/io";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete, MdEdit, MdOutlineAdminPanelSettings } from "react-icons/md";
 import { GrUserAdmin } from "react-icons/gr";
-import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
-import { callApi } from "../Api/Api";
-import { host } from "../Lang/Contant";
-import { partnerInfor } from "../../App";
 
-export const ruleID = signal();
-export const editRuleState = signal(false);
-export const confirmDeleteState = signal(false);
-export const createruleState = signal(false);
 export const datarule = signal([]);
 
 export default function Rule() {
@@ -34,6 +29,9 @@ export default function Rule() {
   const [filter, setFilter] = useState(false);
   const [idDel, setIdDel] = useState();
   const [datafilter, setdatafilter] = useState([]);
+  const [createruleState, setCreateruleState] = useState(false);
+  const [editRuleState, setEditRuleState] = useState(false);
+  const [confirmDeleteState, setConfirmDeleteState] = useState(false);
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: "row" }),
@@ -124,20 +122,32 @@ export default function Rule() {
     },
   ];
 
+  const handleCloseCreate = () => {
+    setCreateruleState(false);
+  };
+
   const handleEdit = (e) => {
     const id = parseInt(e.currentTarget.id);
     if (id == 1) {
       alertDispatch(dataLang.formatMessage({ id: "alert_20" }));
     } else {
-      editRuleState.value = true;
+      setEditRuleState(true);
       editruledata.value = datarule.value.find((data) => data.ruleid_ == id);
     }
+  };
+
+  const handleCloseEdit = (state) => {
+    setEditRuleState(false);
   };
 
   const handleDel = (e) => {
     const id = e.currentTarget.id;
     setIdDel(id);
-    confirmDeleteState.value = "delete";
+    setConfirmDeleteState(true);
+  };
+
+  const handleCloseDelete = () => {
+    setConfirmDeleteState(false);
   };
 
   const handleModify = (e, type) => {
@@ -176,7 +186,7 @@ export default function Rule() {
                 <CiSearch color="white" size={20} />
               </div>
               <div className="DAT_Modify_Add"
-                onClick={() => (createruleState.value = true)}
+                onClick={() => (setCreateruleState(true))}
               >
                 <IoAddOutline color="white" size={20} />
               </div>
@@ -209,7 +219,7 @@ export default function Rule() {
               <CiSearch color="gray" size={20} />
             </div>
             <button className="DAT_RuleHeader_New"
-              onClick={() => (createruleState.value = true)}
+              onClick={() => (setCreateruleState(true))}
             >
               <span>
                 <GrUserAdmin color="white" size={20} />
@@ -282,27 +292,27 @@ export default function Rule() {
         </div>
       )}
 
-      <div className="DAT_RuleCreate"
+      <div className="DAT_RuleBG"
         style={{
-          height: editRuleState.value ? "100vh" : "0px",
+          height: createruleState ? "100vh" : "0px",
           transition: "0.5s",
         }}
       >
-        {editRuleState.value ? <EditRule /> : <></>}
+        {createruleState ? <CreateRule handleClose={handleCloseCreate} /> : <></>}
       </div>
 
-      <div className="DAT_RuleCreate"
+      <div className="DAT_RuleBG"
         style={{
-          height: createruleState.value ? "100vh" : "0px",
+          height: editRuleState ? "100vh" : "0px",
           transition: "0.5s",
         }}
       >
-        {createruleState.value ? <CreateRule /> : <></>}
+        {editRuleState ? <EditRule handleClose={handleCloseEdit} /> : <></>}
       </div>
 
-      {confirmDeleteState.value ? (
-        <div className="DAT_ComfirmDeletePopup">
-          <ConfirmDeleteRule id={idDel} />
+      {confirmDeleteState ? (
+        <div className="DAT_PopupBG">
+          <ConfirmDeleteRule id={idDel} handleClose={handleCloseDelete} />
         </div>
       ) : (
         <></>

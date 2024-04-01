@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Rule.scss";
 
-import { confirmDeleteState, datarule } from "./Rule";
+import { datarule } from "./Rule";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 import { callApi } from "../Api/Api";
@@ -13,20 +13,6 @@ import { IoClose } from "react-icons/io5";
 export default function ConfirmDeleteRule(props) {
   const dataLang = useIntl();
   const [del, setDel] = useState(true);
-
-  const handleDeleteRule = async (e) => {
-    const delRule = await callApi("post", host.DATA + "/removeRule", {
-      partnerid: userInfor.value.partnerid,
-      ruleid: props.id,
-    });
-    if (delRule.status) {
-      datarule.value = datarule.value.filter(
-        (item) => item.ruleid_ !== parseInt(props.id)
-      );
-      confirmDeleteState.value = false;
-      alertDispatch(dataLang.formatMessage({ id: "alert_23" }));
-    }
-  };
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
@@ -40,6 +26,20 @@ export default function ConfirmDeleteRule(props) {
     popup.style.color = popup_state[state].color;
   };
 
+  const handleDeleteRule = async (e) => {
+    const delRule = await callApi("post", host.DATA + "/removeRule", {
+      partnerid: userInfor.value.partnerid,
+      ruleid: props.id,
+    });
+    if (delRule.status) {
+      datarule.value = datarule.value.filter(
+        (item) => item.ruleid_ !== parseInt(props.id)
+      );
+      props.handleClose();
+      alertDispatch(dataLang.formatMessage({ id: "alert_23" }));
+    }
+  };
+
   return (
     <div className="DAT_ConfirmPopup_Box">
       <div className="DAT_ConfirmPopup_Box_Head">
@@ -48,8 +48,8 @@ export default function ConfirmDeleteRule(props) {
         </div>
         <div className="DAT_ConfirmPopup_Box_Head_Right">
           <div className="DAT_ConfirmPopup_Box_Head_Right_Icon"
-            onClick={() => (confirmDeleteState.value = false)}
             id="Popup"
+            onClick={() => (props.handleClose())}
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
           >
@@ -81,7 +81,7 @@ export default function ConfirmDeleteRule(props) {
               backgroundColor: "white",
               color: "#505050",
             }}
-            onClick={() => (confirmDeleteState.value = false)}
+            onClick={() => (props.handleClose())}
           >
             {dataLang.formatMessage({ id: "quit" })}
           </button>

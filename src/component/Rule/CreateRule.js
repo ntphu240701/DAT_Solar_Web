@@ -3,7 +3,7 @@ import "./Rule.scss";
 
 import { signal } from "@preact/signals-react";
 import { isMobile } from "../Navigation/Navigation";
-import { createruleState, datarule } from "./Rule";
+import { datarule } from "./Rule";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 import { callApi } from "../Api/Api";
@@ -44,17 +44,6 @@ const temp = signal({
 
 const newruledata = signal(temp.value);
 
-const popup_state = {
-  pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
-  new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
-};
-const handlePopup = (state) => {
-  const popup = document.getElementById("Popup");
-  popup.style.transform = popup_state[state].transform;
-  popup.style.transition = popup_state[state].transition;
-  popup.style.color = popup_state[state].color;
-};
-
 export const ruletitle = signal([
   "alert",
   "device",
@@ -67,14 +56,11 @@ export const ruletitle = signal([
 export const CheckBox = (props) => {
   const handleShow = (e) => {
     let arr = props.html.split("_");
-    console.log(arr[0]);
     newruledata.value.setting[props.rights][props.custom] = e.target.checked;
-    console.log(newruledata.value);
   };
 
   return (
-    <div
-      className="DAT_CreateRule_Body_Item_Option_Check_SingleCheck"
+    <div className="DAT_CreateRule_Body_Item_Option_Check_SingleCheck"
       style={{ width: props.width }}
     >
       <div className="form-check">
@@ -86,10 +72,9 @@ export const CheckBox = (props) => {
           onChange={(e) => {
             handleShow(e);
           }}
-        ></input>
-        <label
+        />
+        <label className="form-check-label"
           style={{ cursor: "pointer", fontSize: "15px", color: "grey" }}
-          className="form-check-label"
           htmlFor={props.html}
         >
           {props.id}
@@ -99,10 +84,22 @@ export const CheckBox = (props) => {
   );
 };
 
-export default function CreateRule() {
+export default function CreateRule(props) {
   const dataLang = useIntl();
   const [widthCheckBox, setWidwidthCheckBox] = useState("");
   const rulenameRef = useRef("");
+
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
 
   const TypeReport = (props) => {
     const handerChangeReportName = (e) => {
@@ -139,7 +136,7 @@ export default function CreateRule() {
       });
       if (createRule.status) {
         datarule.value = [...datarule.value, createRule.data];
-        createruleState.value = false;
+        props.handleClose();
         alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
       } else {
         alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
@@ -163,6 +160,7 @@ export default function CreateRule() {
             {dataLang.formatMessage({ id: "newRule" })}
           </p>
         </div>
+
         <div className="DAT_CreateRule_Header_Right">
           <div className="DAT_CreateRule_Header_Right_Save"
             onClick={() => handleCreate()}
@@ -171,8 +169,8 @@ export default function CreateRule() {
             <span>{dataLang.formatMessage({ id: 'save' })}</span>
           </div>
           <div className="DAT_CreateRule_Header_Right_Close"
-            onClick={() => (createruleState.value = false)}
             id="Popup"
+            onClick={() => (props.handleClose())}
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
           >
