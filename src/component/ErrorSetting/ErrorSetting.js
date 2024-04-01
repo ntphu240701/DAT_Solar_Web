@@ -63,8 +63,8 @@ export default function ErrorSetting(props) {
             sortable: true,
             width: "100px",
             style: {
-                justifyContent: "left",
-                height: "auto",
+                height: "auto !important",
+                justifyContent: "left !important",
             }
         },
         //CAUSE
@@ -89,10 +89,10 @@ export default function ErrorSetting(props) {
                                     <div style={{ width: "150px" }}>
                                         {err.en}
                                     </div>
-                                    <FiEdit size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_EDIT`} />
-                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_REMOVE`} />
+                                    <FiEdit size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_EDITCAUSE`} />
+                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_REMOVECAUSE`} />
                                     {parseInt(index) === cause.length - 1 ?
-                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} id={`${err.id}_ADD`} /> : <></>}
+                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} id={`${err.id}_ADDCAUSE`} /> : <></>}
                                 </div>
                             );
                         })}
@@ -125,10 +125,10 @@ export default function ErrorSetting(props) {
                                     <div style={{ width: "150px" }}>
                                         {err.en}
                                     </div>
-                                    <FiEdit size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_EDIT`} />
-                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_REMOVE`} />
+                                    <FiEdit size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_EDITSOLUTION`} />
+                                    <IoTrashOutline size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_REMOVESOLUTION`} />
                                     {parseInt(index) === solution.length - 1 ?
-                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_ADD`} /> : <></>}
+                                        <IoIosAddCircleOutline size={16} style={{ cursor: "pointer" }} id={`${err.boxid}_${err.id}_ADDSOLUTION`} /> : <></>}
                                 </div>
                             );
                         })}
@@ -136,8 +136,8 @@ export default function ErrorSetting(props) {
                 )
             },
             style: {
-                height: "auto",
-                justifyContent: "left",
+                height: "auto !important",
+                justifyContent: "left !important",
             }
         },
         //SETTING
