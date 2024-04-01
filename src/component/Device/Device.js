@@ -670,6 +670,11 @@ export default function Device(props) {
 
   const handleReset = () => {
     setDisplay(false);
+    setDatafilter(loggerList.value);
+  };
+
+  const handleCloseFilter = () => {
+    setDisplay(false);
   };
 
   return (
@@ -1034,7 +1039,7 @@ export default function Device(props) {
               display={display}
               handlefilterdevice={handleFilterDevice}
               handleReset={handleReset}
-            // handleClose={handleCloseFilter}
+              handleClose={handleCloseFilter}
             // handleReset={handleResetFilter}
             />
           </div>

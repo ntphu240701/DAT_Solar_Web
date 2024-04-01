@@ -338,7 +338,7 @@ export default function Navigation(props) {
                           {dataLang.formatMessage({ id: "level" })}: &nbsp;
                           <span
                             style={{
-                              color: "black",
+                              color: item.level == "warn" ? "red" : "rgba(247, 148, 29)",
                               textTransform: "capitalize",
                             }}
                           >

@@ -3130,6 +3130,16 @@ export default function ProjectData(props) {
                               }
                             })()}
                           </div>
+
+                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Btn">
+                            <button>
+                              {dataLang.formatMessage({ id: "cancel", })}
+                            </button>
+                            <button>
+                              {dataLang.formatMessage({ id: "confirm", })}
+                            </button>
+                          </div>
+
                         </div>
                       ) : (
                         <></>
