@@ -257,6 +257,7 @@ export default function Filter(props) {
                     <div className="DAT_Filter_Dropdown_Bot">
                       <button
                         style={{ backgroundColor: "white", color: "black" }}
+                        onClick={() => { props.handleClose(); }}
                       >
                         {dataLang.formatMessage({ id: "cancel" })}
                       </button>
@@ -265,6 +266,7 @@ export default function Filter(props) {
                         onClick={(e) => {
                           // handleReset(e);
                           props.handleReset();
+                          setDeviceF("all");
                         }}
                       >
                         {dataLang.formatMessage({ id: 'reset' })}
@@ -292,7 +294,6 @@ export default function Filter(props) {
               >
                 {props.display ? (
                   <form className="DAT_Filter_Dropdown"
-
                     style={{
                       height: props.display ? "180px" : "0px",
                       transition: "0.5s",

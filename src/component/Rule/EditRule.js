@@ -3,33 +3,20 @@ import "./Rule.scss";
 
 import { signal } from "@preact/signals-react";
 import { isMobile } from "../Navigation/Navigation";
-import { datarule, editRuleState } from "./Rule";
+import { datarule } from "./Rule";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { COLOR } from "../../App";
 
-import { RxCross2 } from "react-icons/rx";
 import { IoClose, IoSaveOutline } from "react-icons/io5";
 
-const temp = signal();
-const popup_state = {
-  pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
-  new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
-};
-const handlePopup = (state) => {
-  const popup = document.getElementById("Popup");
-  popup.style.transform = popup_state[state].transform;
-  popup.style.transition = popup_state[state].transition;
-  popup.style.color = popup_state[state].color;
-};
 export const editruledata = signal();
+const temp = signal();
 
 export const CheckBox = (props) => {
   const handleShow = (e) => {
     let arr = props.html.split("_");
-    console.log(arr[0]);
     temp.value = {
       ...editruledata.value,
     };
@@ -61,10 +48,22 @@ export const CheckBox = (props) => {
   );
 };
 
-export default function EditRule() {
+export default function EditRule(props) {
   const dataLang = useIntl();
   const [widthCheckBox, setWidwidthCheckBox] = useState("");
   const rulenameRef = useRef();
+
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
 
   const TypeReport = (props) => {
     return (
@@ -102,7 +101,7 @@ export default function EditRule() {
         );
         newData[index].rulename_ = rulenameRef.current.value;
         datarule.value = [...newData];
-        editRuleState.value = false;
+        props.handleClose();
         alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
       } else {
         alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
@@ -126,6 +125,7 @@ export default function EditRule() {
             {dataLang.formatMessage({ id: "editRule" })}
           </p>
         </div>
+
         <div className="DAT_CreateRule_Header_Right">
           <div className="DAT_CreateRule_Header_Right_Save"
             onClick={() => handleSave()}
@@ -133,9 +133,10 @@ export default function EditRule() {
             <IoSaveOutline size={20} color={'white'} />
             <span>{dataLang.formatMessage({ id: "save" })}</span>
           </div>
+
           <div className="DAT_CreateRule_Header_Right_Close"
-            onClick={() => (editRuleState.value = false)}
             id="Popup"
+            onClick={() => (props.handleClose())}
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
           >

@@ -13,7 +13,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { Token, convertUnit, ruleInfor, showUnit, showUnitk, } from "../../App";
+import { COLOR, Token, convertUnit, ruleInfor, showUnit, showUnitk, } from "../../App";
 import axios from "axios";
 import Popup from "./Popup";
 import { useIntl } from "react-intl";
@@ -34,8 +34,8 @@ import { FiEdit } from "react-icons/fi";
 import { GiCoalWagon } from "react-icons/gi";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { CiClock1 } from "react-icons/ci";
+import { clear } from "@testing-library/user-event/dist/clear";
 
-export const dropState = signal(false);
 export const popupAddGateway = signal(false);
 export const popupAddSubsystem = signal(false);
 export const temp = signal([]);
@@ -56,6 +56,8 @@ const tabAlert = signal("all");
 const open = signal([]);
 const close = signal([]);
 const cal = signal({});
+const viewNav = signal(false);
+const viewStateNav = signal([false, false]);
 
 const dataMeter = [];
 
@@ -149,9 +151,8 @@ export default function ProjectData(props) {
   const [timeRemaining, setTimeRemaining] = useState(300000);
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
-  const [configname, setConfigname] = useState(
-    dataLang.formatMessage({ id: "choosePara" })
-  );
+  const [dropState, setDropState] = useState(false);
+  const [configname, setConfigname] = useState(dataLang.formatMessage({ id: "choosePara" }));
   const [dropConfig, setDropConfig] = useState(false);
   // const [tempInverter, setTempInverter] = useState([]);
   const [dataDay, setDataDay] = useState([]);
@@ -159,6 +160,7 @@ export default function ProjectData(props) {
   const [vDay2, setVDay2] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vDay3, setVDay3] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vDay4, setVDay4] = useState(dataLang.formatMessage({ id: "unknown" }));
+
   const [dataMonth, setDataMonth] = useState([]);
   const [vMonth, setVMonth] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vMonth2, setVMonth2] = useState(dataLang.formatMessage({ id: "unknown" }));
@@ -166,6 +168,7 @@ export default function ProjectData(props) {
   const [vMonth4, setVMonth4] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vMonth5, setVMonth5] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vMonth6, setVMonth6] = useState(dataLang.formatMessage({ id: "unknown" }));
+
   const [dataYear, setDataYear] = useState([]);
   const [vYear, setVYear] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vYear2, setVYear2] = useState(dataLang.formatMessage({ id: "unknown" }));
@@ -173,6 +176,7 @@ export default function ProjectData(props) {
   const [vYear4, setVYear4] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vYear5, setVYear5] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vYear6, setVYear6] = useState(dataLang.formatMessage({ id: "unknown" }));
+
   const [dataTotal, setDataTotal] = useState([]);
   const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vTotal2, setVTotal2] = useState(dataLang.formatMessage({ id: "unknown" }));
@@ -180,6 +184,7 @@ export default function ProjectData(props) {
   const [vTotal4, setVTotal4] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vTotal5, setVTotal5] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vTotal6, setVTotal6] = useState(dataLang.formatMessage({ id: "unknown" }));
+
   const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [exportReport, setExportReport] = useState(false);
   const [type, setType] = useState("");
@@ -196,8 +201,8 @@ export default function ProjectData(props) {
   const [datetime_, setDatatime_] = useState(moment(new Date()).format("MM/DD/YYYY"));
 
   const color = {
-    cur: "blue",
-    pre: "black",
+    cur: COLOR.value.PrimaryColor,
+    pre: COLOR.value.grayText,
   };
 
   const tit = {
@@ -409,22 +414,12 @@ export default function ProjectData(props) {
           ) : (
             <div></div>
           )}
-          <div
-            className="DAT_ModifyBox"
+          <div className="DAT_ModifyBox"
             id={row.sn + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            {/* <div className="DAT_ModifyBox_Fix"
-              id={row.sn + "_sync"}
-              onClick={(e) => handleSync(e)}
-            >
-              <IoSyncOutline size={14} />
-              &nbsp;
-              Dong bo
-            </div> */}
-            <div
-              className="DAT_ModifyBox_Fix"
+            <div className="DAT_ModifyBox_Fix"
               id={row.sn + "_edit"}
               onClick={(e) => handleEdit(e)}
             >
@@ -432,8 +427,7 @@ export default function ProjectData(props) {
               &nbsp;
               {dataLang.formatMessage({ id: "change" })}
             </div>
-            <div
-              className="DAT_ModifyBox_Remove"
+            <div className="DAT_ModifyBox_Remove"
               id={row.sn + "_remove"}
               onClick={(e) => handleDelete(e)}
             >
@@ -512,7 +506,7 @@ export default function ProjectData(props) {
   ];
 
   const handleInfoLogger = (e) => {
-    dropState.value = false
+    setDropState(false);
     infoState.value = true;
     tab.value = "logger";
     let plantname = projectData.value.plantname;
@@ -526,7 +520,7 @@ export default function ProjectData(props) {
   };
 
   const handleInfoInverter = (e) => {
-    dropState.value = false
+    setDropState(false);
     infoState.value = true;
     tab.value = "inverter";
     let plantname = projectData.value.plantname;
@@ -598,7 +592,7 @@ export default function ProjectData(props) {
     if (id === "dashboard") {
       setNav("production");
     }
-    dropState.value = !dropState.value;
+    setDropState(false);
   };
 
   const handleShowConfig = (e) => {
@@ -633,8 +627,6 @@ export default function ProjectData(props) {
           date: moment(date).format("MM/DD/YYYY"),
         });
         setDataDay([]);
-        // console.log(projectData.value.plantid_)
-        // console.log(d)
         let x = [];
         if (d.status) {
           let vDay_ = dataLang.formatMessage({ id: "productionData" });
@@ -643,11 +635,6 @@ export default function ProjectData(props) {
           let vDay4_ = dataLang.formatMessage({ id: "batteryData" });
           d.data.data.map((item) => {
             let arr = item.time.split(":");
-            // console.log(item);
-            // if (projectData.value.plantmode === "grid") {
-            //   x = [...x, { time: `${arr[0]}:${arr[1]}`, [vDay_]: item.value }];
-            // }
-            // if (projectData.value.plantmode === "hybrid") {
             x = [
               ...x,
               {
@@ -658,23 +645,7 @@ export default function ProjectData(props) {
                 [vDay4_]: item.value4,
               },
             ];
-            // }
           });
-
-          // if (projectData.value.plantmode === "grid") {
-          //   for (let i = x.length; i < 287; i++) {
-          //     if (
-          //       moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
-          //     ) {
-          //       let nextTime = moment(x[x.length - 1].time, "HH:mm")
-          //         .add(5, "minutes")
-          //         .format("HH:mm");
-          //       x.push({ time: nextTime, [vDay_]: 0 });
-          //     }
-          //   }
-          // }
-
-          // if (projectData.value.plantmode === "hybrid") {
           for (let i = x.length; i < 287; i++) {
             if (
               moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
@@ -691,8 +662,6 @@ export default function ProjectData(props) {
               });
             }
           }
-          // }
-          // console.log(x)
           setDataDay(x);
           setVDay(dataLang.formatMessage({ id: "productionData" }));
           setVDay2(dataLang.formatMessage({ id: "consumptionData" }));
@@ -724,10 +693,8 @@ export default function ProjectData(props) {
           let vMonth4 = dataLang.formatMessage({ id: "dailygridout" });
           let vMonth5 = dataLang.formatMessage({ id: "dailybatteryin" });
           let vMonth6 = dataLang.formatMessage({ id: "dailybatteryout" });
-          const currentDate = new Date();
-          const currentMonth = currentDate.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
-          const currentYear = currentDate.getFullYear();
-          const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+          let arr = moment(date).format("MM/YYYY").split("/");
+          const daysInMonth = new Date(arr[1], arr[0], 0).getDate();
           let datamonth_ = [];
           for (let i = 1; i <= daysInMonth; i++) {
             datamonth_ = [
@@ -743,11 +710,6 @@ export default function ProjectData(props) {
           let sum_month6 = [];
           d.data.data.map((item, i) => {
             let index = datamonth_.findIndex((d) => d.date == item.date);
-            // if (projectData.value.plantmode === "grid") {
-            //   datamonth_[index][vMonth] = item.value;
-            //   sum_month[i] = item.value;
-            // }
-            // if (projectData.value.plantmode === "hybrid") {
             datamonth_[index][vMonth] = item.value;
             datamonth_[index][vMonth2] = item.value2;
             datamonth_[index][vMonth3] = item.value3;
@@ -763,12 +725,6 @@ export default function ProjectData(props) {
             // }
 
             if (i == d.data.data.length - 1) {
-              // if (projectData.value.plantmode === "grid") {
-              //   cal.value["pro_month"] = parseFloat(
-              //     sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-              //   ).toFixed(2);
-              // }
-              // if (projectData.value.plantmode === "hybrid") {
               cal.value["pro_month"] = parseFloat(
                 sum_month.reduce((a, b) => Number(a) + Number(b), 0)
               ).toFixed(2);
@@ -911,9 +867,9 @@ export default function ProjectData(props) {
   };
 
   const handleOutsideUser = (e) => {
-    // if(!box.current.contains(e.target)){
-    //   plantState.value = "default";
-    // }
+    if (!box.current.contains(e.target)) {
+      plantState.value = "default";
+    }
   };
 
   const handleEdit = (e) => {
@@ -1139,6 +1095,16 @@ export default function ProjectData(props) {
     popup.style.transform = popup_state[state].transform;
     popup.style.transition = popup_state[state].transition;
     popup.style.color = popup_state[state].color;
+  };
+
+  const handleOutsideView = (e) => {
+    setTimeout(() => {
+      if (viewStateNav.value[1] == false) {
+        viewNav.value = false;
+        viewStateNav.value = [false, false];
+      }
+      clearTimeout();
+    }, 250);
   };
 
   useEffect(() => {
@@ -1614,7 +1580,7 @@ export default function ProjectData(props) {
   }, [invt]);
 
   return (
-    <div ref={box}>
+    <div ref={box} style={{ width: "98%", margin: "auto" }}>
       <div className="DAT_ProjectData">
         {isMobile.value ? (
           <div className="DAT_ProjectData_Header">
@@ -1654,7 +1620,7 @@ export default function ProjectData(props) {
             <div className="DAT_ProjectData_Header_Right">
               <div
                 className="DAT_ProjectData_Header_Right_More"
-                onClick={() => (dropState.value = !dropState.value)}
+                onClick={() => (setDropState(false))}
               >
                 <BsThreeDotsVertical size={20} color="#9e9e9e" />
               </div>
@@ -1674,8 +1640,7 @@ export default function ProjectData(props) {
                 <div></div>
               )}
 
-              <div
-                className="DAT_ProjectData_Header_Right_Close"
+              <div className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => (plantState.value = "default")}
               >
                 <IoClose
@@ -1788,19 +1753,23 @@ export default function ProjectData(props) {
                 <BsThreeDotsVertical
                   size={20}
                   color="#9e9e9e"
-                  onClick={() => (dropState.value = !dropState.value)}
+                  onClick={() => {
+                    (setDropState(!dropState));
+                    viewNav.value = true;
+                    viewStateNav.value = [true, false];
+                  }}
+                  onMouseLeave={() => handleOutsideView()}
                 />
               </div>
               {ruleInfor.value.setting.device.add ? (
-                <div
-                  className="DAT_ProjectData_Header_Right_Add"
+                <div className="DAT_ProjectData_Header_Right_Add"
                   style={{ display: view === "device" ? "block" : "none" }}
                 >
                   <button
                     id="add"
                     onClick={() => {
                       (popupAddGateway.value = true);
-                      (dropState.value = false)
+                      (setDropState(false))
                     }}
                   >
                     <IoAddOutline size={25} color="white" />
@@ -1809,11 +1778,10 @@ export default function ProjectData(props) {
               ) : (
                 <div></div>
               )}
-              <div
-                className="DAT_ProjectData_Header_Right_Close"
+              <div className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => {
                   plantState.value = "default";
-                  dropState.value = false;
+                  setDropState(false);
                 }}
               >
                 <IoClose
@@ -2954,6 +2922,16 @@ export default function ProjectData(props) {
                               }
                             })()}
                           </div>
+
+                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Btn">
+                            <button>
+                              {dataLang.formatMessage({ id: "cancel", })}
+                            </button>
+                            <button>
+                              {dataLang.formatMessage({ id: "confirm", })}
+                            </button>
+                          </div>
+
                         </div>
                       ) : (
                         <></>
@@ -3699,7 +3677,7 @@ export default function ProjectData(props) {
 
       {isMobile.value ? (
         <>
-          {dropState.value ? (
+          {dropState ? (
             <div className="DAT_ProjectDataDrop">
               {view === "dashboard" ? (
                 <>
@@ -3731,8 +3709,17 @@ export default function ProjectData(props) {
         </>
       ) : (
         <>
-          {dropState.value ? (
-            <div className="DAT_ProjectDataDrop">
+          {dropState ? (
+            <div className="DAT_ProjectDataDrop"
+              style={{ display: viewNav.value ? "block" : "none" }}
+              onMouseEnter={() => {
+                viewStateNav.value = [true, true];
+              }}
+              onMouseLeave={() => {
+                viewNav.value = false;
+                viewStateNav.value = [false, false];
+              }}
+            >
               {view === "dashboard" ? (
                 <>
                   <div
@@ -4490,7 +4477,7 @@ const Consumption = (props) => {
     <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data_Img">
-          <img src="/dat_icon/consumption.png" alt="" />
+          <img src="/dat_icon/consumption.png" alt="" style={{ width: "35px", height: "35px" }} />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data_Data">
           <span>{dataLang.formatMessage({ id: "consumption" })}</span>
@@ -4609,7 +4596,7 @@ const Grid = (props) => {
     <div className="DAT_ProjectData_Dashboard_Data_Center_Grid">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Img">
-          <img src="/dat_icon/grid.png" alt="" />
+          <img src="/dat_icon/grid.png" alt="" style={{ width: "35px", height: "35px" }} />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Data">
           <span>{dataLang.formatMessage({ id: "gridData_" })}</span>

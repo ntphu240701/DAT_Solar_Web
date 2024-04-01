@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import "./User.scss";
 
 import Popup from "./Popup";
-import { signal } from "@preact/signals-react";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
 
 import { VscAccount } from "react-icons/vsc";
 
-export const popupStateUser = signal(false);
-export const editType = signal();
-
 export default function User(props) {
   const dataLang = useIntl();
+  const [popupState, setPopupState] = useState(false);
+  const [editType, setEditType] = useState("");
+
+  const handleClose = () => {
+    setPopupState(false);
+  };
 
   return (
     <>
@@ -38,8 +40,8 @@ export default function User(props) {
               : "/dat_icon/user_manager.png"}
               alt=""
               onClick={() => {
-                (popupStateUser.value = true);
-                (editType.value = "avatar")
+                (setPopupState(true));
+                setEditType("avatar")
               }}
             />
           </div>
@@ -55,8 +57,8 @@ export default function User(props) {
             </div>
           </div>
           <span onClick={() => {
-            (popupStateUser.value = true);
-            (editType.value = "name")
+            (setPopupState(true));
+            setEditType("name")
           }}
           >
             {dataLang.formatMessage({ id: 'edits' })}
@@ -72,7 +74,11 @@ export default function User(props) {
               {userInfor.value.phone}
             </div>
           </div>
-          <span onClick={() => (popupStateUser.value = true, editType.value = "phone")}>
+          <span onClick={() => {
+            (setPopupState(true));
+            setEditType("phone")
+          }}
+          >
             {dataLang.formatMessage({ id: 'edits' })}
           </span>
         </div>
@@ -86,7 +92,11 @@ export default function User(props) {
               {userInfor.value.addr}
             </div>
           </div>
-          <span onClick={() => (popupStateUser.value = true, editType.value = "addr")}>
+          <span onClick={() => {
+            (setPopupState(true));
+            setEditType("addr")
+          }}
+          >
             {dataLang.formatMessage({ id: 'edits' })}
           </span>
         </div>
@@ -100,15 +110,19 @@ export default function User(props) {
               ********
             </div>
           </div>
-          <span onClick={() => (popupStateUser.value = true, editType.value = "password")}>
+          <span onClick={() => {
+            (setPopupState(true));
+            setEditType("password")
+          }}
+          >
             {dataLang.formatMessage({ id: 'editPassword' })}
           </span>
         </div>
       </div>
 
-      {popupStateUser.value ? (
+      {popupState ? (
         <div className="DAT_EditPopup">
-          <Popup />
+          <Popup handleClose={handleClose} editType={editType} />
         </div>
       ) : (
         <></>

@@ -4,7 +4,7 @@ import "./Navigation.scss";
 import { sidenar } from "../../component/Sidenar/Sidenar";
 import { Link, useNavigate } from "react-router-dom";
 import { signal } from "@preact/signals-react";
-import { partnerInfor, phuhosting, userInfor } from "../../App";
+import { partnerInfor, userInfor } from "../../App";
 import { sidebartab, sidebartabli } from "../../component/Sidenar/Sidenar";
 import { useDispatch, useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
@@ -15,7 +15,7 @@ import adminslice from "../Redux/adminslice";
 import { dataWarn } from "../Warn/Warn";
 
 import { BsFillMenuButtonWideFill } from "react-icons/bs";
-import { IoIosNotificationsOutline, IoMdClose } from "react-icons/io";
+import { IoIosNotificationsOutline } from "react-icons/io";
 import { MdOutlineLanguage } from "react-icons/md";
 import { FaRegMessage } from "react-icons/fa6";
 import { plantState, projectwarnfilter } from "../Project/Project";
@@ -87,29 +87,6 @@ export default function Navigation(props) {
     sidenar.value = !sidenar.value;
   };
 
-  useEffect(function () {
-    if (window.innerWidth >= 900) {
-      isMobile.value = false;
-      messageOption.value = "default";
-    } else {
-      isMobile.value = true;
-      messageOption.value = "mess";
-    }
-
-    document.addEventListener("mousedown", handleOutsideUser);
-    document.addEventListener("mousedown", handleOutsideNotif);
-    window.addEventListener("resize", handleWindowResize);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideUser);
-      document.removeEventListener("mousedown", handleOutsideNotif);
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    // console.log(dataWarn.value);
-  });
-
   let logout = function () {
     //navigate('/Login');
     const setDefault = async () => {
@@ -158,6 +135,30 @@ export default function Navigation(props) {
 
     // console.log(warnfilter.value);
   };
+
+  useEffect(function () {
+    if (window.innerWidth >= 900) {
+      isMobile.value = false;
+      messageOption.value = "default";
+    } else {
+      isMobile.value = true;
+      messageOption.value = "mess";
+    }
+
+    document.addEventListener("mousedown", handleOutsideUser);
+    document.addEventListener("mousedown", handleOutsideNotif);
+    window.addEventListener("resize", handleWindowResize);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideUser);
+      document.removeEventListener("mousedown", handleOutsideNotif);
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    // console.log(dataWarn.value);
+  });
+
   return (
     <>
       <div className="DAT_Navigation"
@@ -190,8 +191,7 @@ export default function Navigation(props) {
         </div>
 
         <div className="DAT_Navigation_right">
-          <button
-            className="DAT_Navigation_right-item"
+          <button className="DAT_Navigation_right-item"
             id="notif"
             onClick={() => (notifNav.value = !notifNav.value)}
             ref={notif_icon}
@@ -207,8 +207,7 @@ export default function Navigation(props) {
             )}
           </button>
 
-          <button
-            className="DAT_Navigation_right-language"
+          <button className="DAT_Navigation_right-language"
             id="lang"
             onClick={() => {
               langNav.value = true;
@@ -220,8 +219,7 @@ export default function Navigation(props) {
             <span>{lang === "vi" ? "Vi" : "En"}</span>
           </button>
 
-          <button
-            className="DAT_Navigation_right-item"
+          <button className="DAT_Navigation_right-item"
             id="user"
             style={{
               backgroundColor: "rgba(159, 155, 155, 0.4)",
@@ -324,7 +322,9 @@ export default function Navigation(props) {
                         }}
                       >
                         <div className="DAT_NavNotif-content-main-group-content-tit">
-                          {dataLang.formatMessage({ id: item.boxid, defaultMessage: item.boxid })}
+                          <span>
+                            {dataLang.formatMessage({ id: item.boxid, defaultMessage: item.boxid })}
+                          </span>
                           &nbsp;
                           {dataLang.formatMessage({ id: "at" })}
                           &nbsp;
@@ -338,11 +338,12 @@ export default function Navigation(props) {
                           {dataLang.formatMessage({ id: "level" })}: &nbsp;
                           <span
                             style={{
-                              color: "black",
-                              textTransform: "capitalize",
+                              fontFamily: "Montserrat-SemiBold",
+                              color: item.level == "warn" ? "red" : "rgba(247, 148, 29)",
+                              // textTransform: "capitalize",
                             }}
                           >
-                            {item.level}
+                            {dataLang.formatMessage({ id: item.level })}
                           </span>
                         </div>
                         <div className="DAT_NavNotif-content-main-group-content-status">
@@ -352,12 +353,13 @@ export default function Navigation(props) {
                           <div className="DAT_NavNotif-content-main-group-content-status-read">
                             {item.state == 0 ? (
                               <div style={{ color: "grey", display: "flex", gap: "4px" }}>
-                                Read
+                                {dataLang.formatMessage({ id: "readNotif" })}
                                 <BiMessageCheck />
                               </div>
                             ) : (
-                              <div style={{ color: "blue", display: "flex", gap: "4px" }}>
-                                Unread
+                              <div style={{ color: "rgba(11, 25, 103)", display: "flex", gap: "4px", fontFamily: "Montserrat-SemiBold" }}>
+                                {dataLang.formatMessage({ id: "unreadNotif" })}
+
                                 <BiMessageAltX />
                               </div>
                             )}
