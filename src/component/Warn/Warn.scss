@@ -276,13 +276,7 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-
-            background-color: #f44336;
             cursor: pointer;
-
-            &:hover {
-                background-color: rgb(252, 122, 122);
-            }
         }
     }
 }
@@ -346,13 +340,7 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
-
-                background-color: red;
                 cursor: pointer;
-
-                &:hover {
-                    background-color: rgb(252, 122, 122);
-                }
             }
         }
     }
@@ -552,10 +540,6 @@
                         justify-content: center;
                         color: grey;
                         cursor: pointer;
-
-                        &:hover {
-                            color: rgb(252, 122, 122);
-                        }
                     }
                 }
             }

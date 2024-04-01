@@ -1667,7 +1667,7 @@ export default function ProjectData(props) {
                     id="add"
                     onClick={() => (popupAddGateway.value = true)}
                   >
-                    <IoAddOutline size={20} color="white" />
+                    <IoAddOutline size={25} color="white" />
                   </button>
                 </div>
               ) : (
@@ -1803,7 +1803,7 @@ export default function ProjectData(props) {
                       (dropState.value = false)
                     }}
                   >
-                    <IoAddOutline size={20} color="white" />
+                    <IoAddOutline size={25} color="white" />
                   </button>
                 </div>
               ) : (
@@ -4094,9 +4094,9 @@ const GraphFull = (props) => {
     }
 
     if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
-      setLinD("moveRtoL");
-    } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
       setLinD("moveLtoR");
+    } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
+      setLinD("moveRtoL");
     } else {
       setLinD("Default");
     }

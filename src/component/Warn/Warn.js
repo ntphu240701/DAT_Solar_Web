@@ -165,7 +165,6 @@ export default function Warn(props) {
             }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            {/* <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div> */}
             {ruleInfor.value.setting.warn.remove === true ? (
               <div
                 className="DAT_ModifyBox_Remove"
@@ -251,7 +250,11 @@ export default function Warn(props) {
     setDatafilter(dataWarn.value);
   };
 
-  const handleCloseFilter = (opentime, closetime) => {
+  const handleCloseFilter = () => {
+    setDisplay(false);
+  }
+
+  const handleWarnFilter = (opentime, closetime) => {
     //Bật tắt filter layout
     setDisplay(false)
 
@@ -708,6 +711,7 @@ export default function Warn(props) {
               display={display}
               warn={warn}
               notice={notice}
+              handleFilter={handleWarnFilter}
               handleClose={handleCloseFilter}
               handleReset={handleResetFilter}
             />

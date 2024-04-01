@@ -61,7 +61,7 @@ export const ruleInfor = signal({
     contact: { edit: false },
     device: { add: false, modify: false, remove: false },
     partner: { modify: false },
-    project: { add: false, modify: false, remove: false },
+    project: { add: false, modify: false, remove: false, share: false },
     report: { add: false, modify: false, remove: false },
     rule: { add: false, active: false, modify: false, remove: false },
     user: { add: false, modify: false, remove: false },
@@ -228,7 +228,7 @@ export default function App() {
         type: type,
       });
       if (warn.status) {
-        let newdb = warn.data.sort((a, b) => b.warnid_ - a.warnid_);
+        let newdb = warn.data.sort((a, b) => new Date(b.opentime_) - new Date(a.opentime_));
         newdb.map((item, index) => {
           dataWarn.value = [
             ...dataWarn.value,
