@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./GroupRole.scss";
 
-import { addState, groupID, groupUser } from "./GroupRole";
+import { groupID, groupUser } from "./GroupRole";
 import { signal } from "@preact/signals-react";
 import { useIntl } from "react-intl";
 import { callApi } from "../Api/Api";
@@ -12,7 +12,7 @@ import { IoClose } from "react-icons/io5";
 
 const infouser = signal([]);
 
-export default function AddUsers() {
+export default function AddUsers(props) {
   const dataLang = useIntl();
   const [usr_, setusr_] = useState("");
   const [addUserState, setAddUserState] = useState("none");
@@ -43,7 +43,7 @@ export default function AddUsers() {
       if (d.status === true) {
         alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
         groupUser.value = [...groupUser.value, d.data];
-        addState.value = false;
+        props.handleClose();
       } else {
         if (d.number === 0) {
           alertDispatch(dataLang.formatMessage({ id: "alert_38" }));
@@ -80,7 +80,7 @@ export default function AddUsers() {
         <div className="DAT_AddUserPopup_Box_Head_Right">
           <div
             className="DAT_AddUserPopup_Box_Head_Right_Icon"
-            onClick={() => (addState.value = false)}
+            onClick={() => props.handleClose()}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
@@ -122,9 +122,10 @@ export default function AddUsers() {
             return (
               <div className="DAT_AddUserPopup_Box_Foot">
                 <button
-                  onClick={() => (
-                    (addState.value = false), setAddUserState("none")
-                  )}
+                  onClick={() => {
+                    (props.handleClose());
+                    (setAddUserState("none"))
+                  }}
                   style={{
                     border: "1px solid #505050",
                     backgroundColor: "white",
@@ -139,9 +140,10 @@ export default function AddUsers() {
             return (
               <div className="DAT_AddUserPopup_Box_Foot">
                 <button
-                  onClick={() => (
-                    (addState.value = false), setAddUserState("none")
-                  )}
+                  onClick={() => {
+                    (props.handleClose());
+                    (setAddUserState("none"))
+                  }}
                   style={{
                     border: "1px solid #505050",
                     backgroundColor: "white",
@@ -156,9 +158,10 @@ export default function AddUsers() {
             return (
               <div className="DAT_AddUserPopup_Box_Foot">
                 <button
-                  onClick={() => (
-                    (addState.value = false), setAddUserState("none")
-                  )}
+                  onClick={() => {
+                    (props.handleClose());
+                    (setAddUserState("none"))
+                  }}
                   style={{
                     border: "1px solid #505050",
                     backgroundColor: "white",

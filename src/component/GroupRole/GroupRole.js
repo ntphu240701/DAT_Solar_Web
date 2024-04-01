@@ -28,8 +28,6 @@ export const group = signal([]);
 export const groupUser = signal([]);
 
 //CONST SIGNALS
-export const createState = signal(false);
-export const addState = signal(false);
 export const popupState = signal(false);
 export const groupDelState = signal(false);
 export const editState = signal(false);
@@ -40,7 +38,7 @@ export const groupEdit = signal();
 
 const datafilter = signal();
 
-const GroupUsers = () => {
+const GroupUsers = (props) => {
   const dataLang = useIntl();
 
   const paginationComponentOptions = {
@@ -229,7 +227,7 @@ const GroupUsers = () => {
                 </div>
 
                 <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
-                  onClick={() => (addState.value = true)}
+                  onClick={() => props.addState()}
                 >
                   <AiOutlineUserAdd size={18} />
                 </div>
@@ -263,6 +261,8 @@ const GroupUsers = () => {
 export default function GroupRole(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
+  const [createState, setCreateState] = useState(false);
+  const [addState, setAddState] = useState(false);
 
   const handleFilter = (e) => {
     const t = e.currentTarget.value.toLowerCase();
@@ -276,6 +276,18 @@ export default function GroupRole(props) {
         );
       });
     }
+  };
+
+  const handleCloseCreate = () => {
+    setCreateState(false);
+  };
+
+  const handleAddState = () => {
+    setAddState(true);
+  };
+
+  const handleCloseAdd = () => {
+    setAddState(false);
   };
 
   useEffect(() => {
@@ -299,15 +311,13 @@ export default function GroupRole(props) {
         {isMobile.value ? (
           <>
             <div className="DAT_Modify">
-              <div
-                className="DAT_Modify_Item"
+              <div className="DAT_Modify_Item"
                 onClick={() => setFilter(!filter)}
               >
                 <CiSearch color="white" size={20} />
               </div>
-              <div
-                className="DAT_Modify_Add"
-                onClick={() => (createState.value = true)}
+              <div className="DAT_Modify_Add"
+                onClick={() => setCreateState(true)}
               >
                 <IoAddOutline color="white" size={20} />
               </div>
@@ -357,7 +367,7 @@ export default function GroupRole(props) {
               <CiSearch color="gray" size={20} />
             </div>
             <button className="DAT_GRHeader_New"
-              onClick={() => (createState.value = true)}
+              onClick={() => setCreateState(true)}
             >
               <span>
                 <AiOutlineUsergroupAdd color="white" size={20} />
@@ -374,17 +384,17 @@ export default function GroupRole(props) {
           {dataLang.formatMessage({ id: "grouproleList" })}
         </div>
         <div className="DAT_GR_Content">
-          <GroupUsers />
+          <GroupUsers addState={handleAddState} />
         </div>
       </div>
 
       <div className="DAT_GroupCreate"
         style={{
-          height: createState.value ? "100vh" : "0px",
+          height: createState ? "100vh" : "0px",
           transition: "0.5s",
         }}
       >
-        {createState.value ? <CreateGroupRole /> : <></>}
+        {createState ? <CreateGroupRole handleClose={handleCloseCreate} /> : <></>}
       </div>
 
       {popupState.value ? (
@@ -395,9 +405,9 @@ export default function GroupRole(props) {
         <></>
       )}
 
-      {addState.value ? (
+      {addState ? (
         <div className="DAT_AddUserPopup">
-          <AddUsers />
+          <AddUsers handleClose={handleCloseAdd} />
         </div>
       ) : (
         <></>

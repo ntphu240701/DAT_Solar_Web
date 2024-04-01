@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./GroupRole.scss";
 
-import { createState, group } from "./GroupRole";
+import { group } from "./GroupRole";
 import { alertDispatch } from "../Alert/Alert";
 import { signal } from "@preact/signals-react";
 import { useIntl } from "react-intl";
@@ -52,7 +52,7 @@ const CheckBox = (props) => {
   );
 };
 
-export default function CreateGroupRole() {
+export default function CreateGroupRole(props) {
   const dataLang = useIntl();
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
@@ -68,7 +68,7 @@ export default function CreateGroupRole() {
           ...group.value,
           res.data
         ];
-        createState.value = false;
+        props.handleClose();
         alertDispatch(dataLang.formatMessage({ id: "alert_31" }))
       } else {
         alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
@@ -102,7 +102,7 @@ export default function CreateGroupRole() {
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
-            onClick={() => (createState.value = false)}
+            onClick={() => props.handleClose()}
           >
             <IoClose size={25} />
           </div>
