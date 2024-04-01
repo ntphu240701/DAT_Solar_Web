@@ -149,9 +149,7 @@ export default function ProjectData(props) {
   const [timeRemaining, setTimeRemaining] = useState(300000);
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
-  const [configname, setConfigname] = useState(
-    dataLang.formatMessage({ id: "choosePara" })
-  );
+  const [configname, setConfigname] = useState(dataLang.formatMessage({ id: "choosePara" }));
   const [dropConfig, setDropConfig] = useState(false);
   // const [tempInverter, setTempInverter] = useState([]);
   const [dataDay, setDataDay] = useState([]);
@@ -409,22 +407,12 @@ export default function ProjectData(props) {
           ) : (
             <div></div>
           )}
-          <div
-            className="DAT_ModifyBox"
+          <div className="DAT_ModifyBox"
             id={row.sn + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            {/* <div className="DAT_ModifyBox_Fix"
-              id={row.sn + "_sync"}
-              onClick={(e) => handleSync(e)}
-            >
-              <IoSyncOutline size={14} />
-              &nbsp;
-              Dong bo
-            </div> */}
-            <div
-              className="DAT_ModifyBox_Fix"
+            <div className="DAT_ModifyBox_Fix"
               id={row.sn + "_edit"}
               onClick={(e) => handleEdit(e)}
             >
@@ -432,8 +420,7 @@ export default function ProjectData(props) {
               &nbsp;
               {dataLang.formatMessage({ id: "change" })}
             </div>
-            <div
-              className="DAT_ModifyBox_Remove"
+            <div className="DAT_ModifyBox_Remove"
               id={row.sn + "_remove"}
               onClick={(e) => handleDelete(e)}
             >
@@ -873,9 +860,9 @@ export default function ProjectData(props) {
   };
 
   const handleOutsideUser = (e) => {
-    // if(!box.current.contains(e.target)){
-    //   plantState.value = "default";
-    // }
+    if (!box.current.contains(e.target)) {
+      plantState.value = "default";
+    }
   };
 
   const handleEdit = (e) => {
@@ -1576,7 +1563,7 @@ export default function ProjectData(props) {
   }, [invt]);
 
   return (
-    <div ref={box}>
+    <div ref={box} style={{ width: "98%", margin: "auto" }}>
       <div className="DAT_ProjectData">
         {isMobile.value ? (
           <div className="DAT_ProjectData_Header">
@@ -1636,8 +1623,7 @@ export default function ProjectData(props) {
                 <div></div>
               )}
 
-              <div
-                className="DAT_ProjectData_Header_Right_Close"
+              <div className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => (plantState.value = "default")}
               >
                 <IoClose
@@ -1750,12 +1736,11 @@ export default function ProjectData(props) {
                 <BsThreeDotsVertical
                   size={20}
                   color="#9e9e9e"
-                  onClick={() => (dropState.value = !dropState.value)}
+                  onClick={() => (dropState.value = true)}
                 />
               </div>
               {ruleInfor.value.setting.device.add ? (
-                <div
-                  className="DAT_ProjectData_Header_Right_Add"
+                <div className="DAT_ProjectData_Header_Right_Add"
                   style={{ display: view === "device" ? "block" : "none" }}
                 >
                   <button
@@ -1771,8 +1756,7 @@ export default function ProjectData(props) {
               ) : (
                 <div></div>
               )}
-              <div
-                className="DAT_ProjectData_Header_Right_Close"
+              <div className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => {
                   plantState.value = "default";
                   dropState.value = false;
