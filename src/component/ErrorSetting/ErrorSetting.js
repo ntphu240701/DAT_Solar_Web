@@ -4,12 +4,12 @@ import './ErrorSetting.scss';
 import { Empty } from '../Project/Project';
 import { useIntl } from 'react-intl';
 import DataTable from "react-data-table-component";
-import { IoMdMore } from "react-icons/io";
+
+import { IoMdMore, IoIosAddCircleOutline } from "react-icons/io";
 import { CiSearch } from 'react-icons/ci';
 import { MdOutlineManageHistory } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
-import { IoIosAddCircleOutline } from "react-icons/io";
 
 export default function ErrorSetting(props) {
     const dataLang = useIntl()
