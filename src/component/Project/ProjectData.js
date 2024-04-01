@@ -13,7 +13,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { Token, convertUnit, ruleInfor, showUnit, showUnitk, } from "../../App";
+import { COLOR, Token, convertUnit, ruleInfor, showUnit, showUnitk, } from "../../App";
 import axios from "axios";
 import Popup from "./Popup";
 import { useIntl } from "react-intl";
@@ -201,8 +201,8 @@ export default function ProjectData(props) {
   const [datetime_, setDatatime_] = useState(moment(new Date()).format("MM/DD/YYYY"));
 
   const color = {
-    cur: "blue",
-    pre: "black",
+    cur: COLOR.value.PrimaryColor,
+    pre: COLOR.value.grayText,
   };
 
   const tit = {
@@ -4467,7 +4467,7 @@ const Consumption = (props) => {
     <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data_Img">
-          <img src="/dat_icon/consumption.png" alt="" />
+          <img src="/dat_icon/consumption.png" alt="" style={{ width: "35px", height: "35px" }} />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data_Data">
           <span>{dataLang.formatMessage({ id: "consumption" })}</span>
@@ -4586,7 +4586,7 @@ const Grid = (props) => {
     <div className="DAT_ProjectData_Dashboard_Data_Center_Grid">
       <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data">
         <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Img">
-          <img src="/dat_icon/grid.png" alt="" />
+          <img src="/dat_icon/grid.png" alt="" style={{ width: "35px", height: "35px" }} />
         </div>
         <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Data">
           <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
