@@ -25,7 +25,7 @@ export default function ShareBox(props) {
     };
 
     return (
-        <div className="DAT_SharePopup_Box">
+        <form className="DAT_SharePopup_Box">
             <div className="DAT_SharePopup_Box_Head">
                 <div className="DAT_SharePopup_Box_Head_Left">
                     <p>{dataLang.formatMessage({ id: "share" })}</p>
@@ -47,6 +47,7 @@ export default function ShareBox(props) {
             <div className="DAT_SharePopup_Box_Body">
                 <p>{dataLang.formatMessage({ id: "email" })}:</p>
                 <input type="email"
+                    required
                     placeholder={dataLang.formatMessage({ id: "enterEmail" })}>
                 </input>
             </div>
@@ -57,6 +58,6 @@ export default function ShareBox(props) {
                     {dataLang.formatMessage({ id: "confirm" })}
                 </button>
             </div>
-        </div>
+        </form>
     );
 }

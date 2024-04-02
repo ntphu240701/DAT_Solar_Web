@@ -26,7 +26,7 @@ export default function CreateErrSetting(props) {
     };
 
     return (
-        <div className="DAT_CreateErrSetting">
+        <for className="DAT_CreateErrSetting">
             <div className="DAT_CreateErrSetting_Head">
                 <div className="DAT_CreateErrSetting_Head_Left">
                     <p>{dataLang.formatMessage({ id: "createNew" })}</p>
@@ -75,7 +75,7 @@ export default function CreateErrSetting(props) {
                     </button>
                 </div>
             </div>
-        </div>
+        </for>
     );
 }
 

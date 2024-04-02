@@ -28,9 +28,6 @@ export const group = signal([]);
 export const groupUser = signal([]);
 
 //CONST SIGNALS
-export const popupState = signal(false);
-export const groupDelState = signal(false);
-export const editState = signal(false);
 export const groupID = signal(0);
 export const groupDelID = signal();
 export const userDel = signal();
@@ -135,16 +132,12 @@ const GroupUsers = (props) => {
   };
 
   const handleDeleteUser = (e) => {
-    popupState.value = true;
+    props.delState();
     userDel.value = e.currentTarget.id;
   };
 
-  const handleDeleteGroup = (e) => {
-    groupDelState.value = true;
-  };
-
   const handleEditGroup = (e) => {
-    editState.value = true;
+    props.editState();
     groupEdit.value = group.value.find(
       (item) => item.id_ === Number(e.currentTarget.id)
     );
@@ -213,7 +206,7 @@ const GroupUsers = (props) => {
                 ) : (
                   <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Delete"
                     id={item.id_}
-                    onClick={(e) => handleDeleteGroup(e)}
+                    onClick={() => props.groupDelState()}
                   >
                     <IoTrashOutline size={18} />
                   </div>
@@ -263,6 +256,9 @@ export default function GroupRole(props) {
   const [filter, setFilter] = useState(false);
   const [createState, setCreateState] = useState(false);
   const [addState, setAddState] = useState(false);
+  const [popupState, setPopupState] = useState(false);
+  const [editState, setEditState] = useState(false);
+  const [groupDelState, setGroupDelState] = useState(false);
 
   const handleFilter = (e) => {
     const t = e.currentTarget.value.toLowerCase();
@@ -288,6 +284,30 @@ export default function GroupRole(props) {
 
   const handleCloseAdd = () => {
     setAddState(false);
+  };
+
+  const handleDelState = () => {
+    setPopupState(true);
+  };
+
+  const handleCloseDel = () => {
+    setPopupState(false);
+  };
+
+  const handleEditState = () => {
+    setEditState(true);
+  };
+
+  const handleCloseEdit = () => {
+    setEditState(false);
+  };
+
+  const handleGroupDelState = () => {
+    setGroupDelState(true);
+  };
+
+  const handleCloseGroupDel = () => {
+    setGroupDelState(false);
   };
 
   useEffect(() => {
@@ -384,7 +404,7 @@ export default function GroupRole(props) {
           {dataLang.formatMessage({ id: "grouproleList" })}
         </div>
         <div className="DAT_GR_Content">
-          <GroupUsers addState={handleAddState} />
+          <GroupUsers addState={handleAddState} delState={handleDelState} editState={handleEditState} groupDelState={handleGroupDelState} />
         </div>
       </div>
 
@@ -397,9 +417,9 @@ export default function GroupRole(props) {
         {createState ? <CreateGroupRole handleClose={handleCloseCreate} /> : <></>}
       </div>
 
-      {popupState.value ? (
+      {popupState ? (
         <div className="DAT_EraseUserPopup">
-          <Popup />
+          <Popup handleClose={handleCloseDel} />
         </div>
       ) : (
         <></>
@@ -413,17 +433,17 @@ export default function GroupRole(props) {
         <></>
       )}
 
-      {groupDelState.value ? (
+      {groupDelState ? (
         <div className="DAT_DeleteGroupPopup">
-          <ConfirmDeleteGroup />
+          <ConfirmDeleteGroup handleClose={handleCloseGroupDel} />
         </div>
       ) : (
         <></>
       )}
 
-      {editState.value ? (
+      {editState ? (
         <div className="DAT_EditGroup">
-          <EditGroup />
+          <EditGroup handleClose={handleCloseEdit} />
         </div>
       ) : (
         <></>

@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Role.scss";
 
-import { Usr_, popupState } from "./Role";
+import { Usr_ } from "./Role";
 import { useIntl } from "react-intl";
-
-import { IoClose } from "react-icons/io5";
 import { alertDispatch } from "../Alert/Alert";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+
+import { IoClose } from "react-icons/io5";
 
 export default function DeleteRole(props) {
   const dataLang = useIntl();
@@ -17,27 +17,25 @@ export default function DeleteRole(props) {
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
   };
 
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
+
   const handleDelete = async () => {
     const d = await callApi("post", host.DATA + "/removeUser", {
       usr: props.user,
     });
     if (d.status === true) {
       Usr_.value = Usr_.value.filter((d) => d.usr_ !== props.user)
-      console.log(Usr_.value)
-      popupState.value = "default";
+      props.handleClose();
       alertDispatch(dataLang.formatMessage({ id: 'alert_45' }))
     }
     else {
-      // popupState.value = "default";
       alertDispatch(dataLang.formatMessage({ id: 'alert_46' }))
     }
-  };
-
-  const handlePopup = (state) => {
-    const popup = document.getElementById("Popup");
-    popup.style.transform = popup_state[state].transform;
-    popup.style.transition = popup_state[state].transition;
-    popup.style.color = popup_state[state].color;
   };
 
   return (
@@ -49,12 +47,12 @@ export default function DeleteRole(props) {
         <div className="DAT_DeleteRole_Head_Right">
           <div
             className="DAT_DeleteRole_Head_Right_Icon"
-            onClick={() => (popupState.value = "default")}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
+            onClick={() => props.handleClose()}
           >
-            <IoClose size={25}></IoClose>
+            <IoClose size={25} />
           </div>
         </div>
       </div>

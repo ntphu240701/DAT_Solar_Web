@@ -5,7 +5,6 @@ import DataTable from "react-data-table-component";
 import { signal } from "@preact/signals-react";
 import { Empty, projectwarnfilter } from "../Project/Project";
 import { isMobile, warnfilter } from "../Navigation/Navigation";
-import SettingWarn from "./SettingWarn";
 import RaiseBox from "./RaiseBox";
 import { useIntl } from "react-intl";
 import { ruleInfor } from "../../App";
@@ -22,24 +21,20 @@ import { RxCross2 } from "react-icons/rx";
 import { IoTrashOutline } from "react-icons/io5";
 import { FiFilter } from "react-icons/fi";
 
-const warntab = signal("all");
-const tabMobile = signal(false);
 export const tabLable = signal("");
 export const open = signal([]);
 export const closed = signal([]);
-export const warnState = signal("default");
 export const temp = signal([]);
-export const deletewarnState = signal(false);
 export const idDel = signal();
-export const infowarnState = signal(false);
 export const idInfo = signal();
-
 export const dataWarn = signal([]);
-// const datafilter = signal([]);
+
+const warntab = signal("all");
+const tabMobile = signal(false);
+
 export default function Warn(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
-  const [type, setType] = useState("project");
   const [datafilter, setDatafilter] = useState([]);
   const [boxid, setBoxid] = useState("");
   const [level, setLevel] = useState("");
@@ -48,6 +43,8 @@ export default function Warn(props) {
   const [display, setDisplay] = useState(false);
   const warn = useRef();
   const notice = useRef();
+  const [infowarnState, setInfowarnState] = useState(false);
+  const [delWarnState, setDelWarnState] = useState(false);
 
   const listTab = [
     { id: "all", name: dataLang.formatMessage({ id: "total" }) },
@@ -191,7 +188,7 @@ export default function Warn(props) {
   ];
 
   const handleInfo = (e) => {
-    infowarnState.value = true;
+    setInfowarnState(true);
     const temp = e.currentTarget.id.split("_");
 
     const id = `${temp[0]}_${temp[1]}_${temp[2]}`; //temp[0];
@@ -205,13 +202,17 @@ export default function Warn(props) {
     setDevice(device)
   };
 
+  const handleCloseInfo = () => {
+    setInfowarnState(false);
+  };
+
   const handleDeleteWarn = (e) => {
-    deletewarnState.value = true;
+    setDelWarnState(true);
     idDel.value = e.currentTarget.id;
   };
 
-  const handleSetting = (e) => {
-    warnState.value = "setting";
+  const handleCloseDel = () => {
+    setDelWarnState(false);
   };
 
   const handleModify = (e, type) => {
@@ -348,22 +349,11 @@ export default function Warn(props) {
         {isMobile.value ? (
           <>
             <div className="DAT_Modify">
-              <div
-                className="DAT_Modify_Item"
+              <div className="DAT_Modify_Item"
                 onClick={() => setFilter(!filter)}
               >
                 <CiSearch color="white" size={20} />
               </div>
-              {ruleInfor.value.setting.warn.remove ? (
-                <div
-                  className="DAT_Modify_Add"
-                  onClick={(e) => handleSetting(e)}
-                >
-                  <TbSettingsCode color="white" size={20} />
-                </div>
-              ) : (
-                <div></div>
-              )}
             </div>
 
             {filter ? (
@@ -371,10 +361,8 @@ export default function Warn(props) {
                 <input
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterWarn" })}
-                // onChange={(e) => handlefilterwarn(e)}
                 />
-                <div
-                  className="DAT_Modify_Filter_Close"
+                <div className="DAT_Modify_Filter_Close"
                   onClick={() => setFilter(!filter)}
                 >
                   <RxCross2 size={20} color="white" />
@@ -719,32 +707,16 @@ export default function Warn(props) {
         </div>
       )}
 
-      <div className="DAT_WarnInfor"
-        style={{
-          height: warnState.value === "default" ? "0px" : "100vh",
-          transition: "0.5s",
-        }}
-      >
-        {(() => {
-          switch (warnState.value) {
-            case "setting":
-              return <SettingWarn />;
-            default:
-              return <></>;
-          }
-        })()}
-      </div>
-
-      {deletewarnState.value ? (
+      {delWarnState ? (
         <div className="DAT_ReportPopup">
-          <RaiseBox />
+          <RaiseBox handleClose={handleCloseDel} />
         </div>
       ) : (
         <></>
       )}
 
-      {infowarnState.value ? (
-        <Info boxid={boxid} level={level} plant={plant} device={device}></Info>
+      {infowarnState ? (
+        <Info boxid={boxid} level={level} plant={plant} device={device} handleClose={handleCloseInfo} />
       ) : (
         <></>
       )}

@@ -10,7 +10,7 @@ import { COLOR } from "../../App";
 
 import { IoClose } from "react-icons/io5";
 
-export default function ConfirmDeleteGroup() {
+export default function ConfirmDeleteGroup(props) {
   const dataLang = useIntl();
 
   const popup_state = {
@@ -26,7 +26,7 @@ export default function ConfirmDeleteGroup() {
   };
 
   const handleDelete = async (e) => {
-    groupDelState.value = false;
+    props.handleClose();
 
     let d_ = group.value.find(
       (item) => item.id_ == groupID.value
@@ -59,10 +59,10 @@ export default function ConfirmDeleteGroup() {
 
         <div className="DAT_DeleteGroupPopup_Box_Head_Right">
           <div className="DAT_DeleteGroupPopup_Box_Head_Right_Icon"
-            onClick={() => (groupDelState.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
+            onClick={() => props.handleClose()}
           >
             <IoClose size={25} />
           </div>

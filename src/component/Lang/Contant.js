@@ -363,7 +363,11 @@ export const messages = {
     Taiwan: 'Taiwan',
     Italy: 'Italy',
 
-
+    ACVolt: "AC Voltage",
+    ACCurrent: "AC Current",
+    DCVolt: "DC Voltage",
+    DCCurrent: "DC Current",
+    DCPower: "DC Power",
     acfre: "AC frequency",
     acrcur: "AC R current",
     acrvolt: "AC R voltage",
@@ -396,10 +400,10 @@ export const messages = {
     enterEmail: "Please enter an email...",
     enterMore: "Please enter or select more information",
     enterPr: " Enter project...",
-    enterDev: " Enter device information...",
+    enterDev: " Enter device info...",
     enterError: " Enter error information...",
-    enterLogger: " Enter logger information...",
-    enterInverter: " Enter inverter information...",
+    enterLogger: " Enter logger info...",
+    enterInverter: " Enter inverter info...",
     enterType: "Enter device type...",
     enterCode: "Enter device code...",
     enterWarn: "Enter warning name..",
@@ -696,7 +700,7 @@ export const messages = {
     //Alert Type : Battery charge
     A_46_1: "Battery Full charge",
     A_47_1: "Battery need be charge",
-    A_47_2: "Battery can be only charrge",
+    A_47_2: "Battery can be only charge",
     // A_48_17: "Unknown",
   },
   vi: {
@@ -1060,6 +1064,11 @@ export const messages = {
     Taiwan: 'Đài Loan',
     Italy: 'Ý',
 
+    ACVolt: "Điện áp AC",
+    ACCurrent: "Dòng điện AC",
+    DCVolt: "Điện áp DC",
+    DCCurrent: "Dòng điện DC",
+    DCPower: "Công suất DC",
     acfre: "Tần số AC",
     acrcur: "Dòng điện AC R",
     acrvolt: "Điện áp AC R",

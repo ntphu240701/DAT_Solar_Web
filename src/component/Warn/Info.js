@@ -1,14 +1,12 @@
 import React from "react";
 import "./Warn.scss";
 
-import { infowarnState } from "./Warn";
 import { useIntl } from "react-intl";
+
 import { IoClose } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
 
 export default function Info(props) {
   const dataLang = useIntl();
-  const navigate = useNavigate();
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
@@ -45,7 +43,7 @@ export default function Info(props) {
           <div className="DAT_PopupReportInfo_Box_Head_Right">
             <div
               className="DAT_PopupReportInfo_Box_Head_Right_Icon"
-              onClick={() => (infowarnState.value = false)}
+              onClick={() => props.handleClose()}
               id="Popup"
               onMouseEnter={(e) => handlePopup("new")}
               onMouseLeave={(e) => handlePopup("pre")}

@@ -13,8 +13,6 @@ import { setKey, geocode, RequestType } from "react-geocode";
 import { useIntl } from "react-intl";
 import Resizer from "react-image-file-resizer";
 
-import { FaSave } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoClose, IoSaveOutline } from "react-icons/io5";
 

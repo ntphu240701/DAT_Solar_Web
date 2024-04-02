@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Report.scss";
 
-import { editState, editData, ReportData } from "./Report";
+import { editData, ReportData } from "./Report";
 import { signal } from "@preact/signals-react";
 import { isMobile } from "../Navigation/Navigation";
 import { useIntl } from "react-intl";
@@ -12,17 +12,7 @@ import { alertDispatch } from "../Alert/Alert";
 import { IoClose, IoSaveOutline } from "react-icons/io5";
 
 const reportname = signal();
-const popup_state = {
-  pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
-  new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
-};
 
-const handlePopup = (state) => {
-  const popup = document.getElementById("Popup");
-  popup.style.transform = popup_state[state].transform;
-  popup.style.transition = popup_state[state].transition;
-  popup.style.color = popup_state[state].color;
-};
 
 export const CheckBox = (props) => {
   const handleShow = (e) => {
@@ -194,9 +184,21 @@ const DataReport = (props) => {
   );
 };
 
-export default function Create() {
+export default function ReportEdit(props) {
   const dataLang = useIntl();
   const [widthCheckBox, setWidwidthCheckBox] = useState("");
+
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
 
   const handleSaveData = async () => {
     const updateReport = await callApi("post", host.DATA + "/updateReport", {
@@ -208,7 +210,7 @@ export default function Create() {
     });
 
     if (updateReport.status) {
-      editState.value = false;
+      props.handleClose();
       const index = ReportData.value.findIndex((item) => {
         return item.id === editData.value.id;
       });
@@ -219,10 +221,6 @@ export default function Create() {
       };
       alertDispatch(dataLang.formatMessage({ id: "alert_41" }));
     }
-  };
-
-  const handleCloseCreate = () => {
-    editState.value = false;
   };
 
   useEffect(() => {
@@ -243,8 +241,7 @@ export default function Create() {
         </div>
 
         <div className="DAT_EditReport_Header_Right">
-          <div
-            className="DAT_EditReport_Header_Right_Save"
+          <div className="DAT_EditReport_Header_Right_Save"
             onClick={() => handleSaveData()}
           >
             <IoSaveOutline size={20} color="white" />
@@ -255,7 +252,7 @@ export default function Create() {
               id="Popup"
               onMouseEnter={(e) => handlePopup("new")}
               onMouseLeave={(e) => handlePopup("pre")}
-              onClick={handleCloseCreate} />
+              onClick={() => props.handleClose()} />
           </div>
         </div>
       </div>
