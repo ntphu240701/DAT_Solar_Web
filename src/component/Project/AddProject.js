@@ -541,6 +541,7 @@ const OwnerInfo = (props) => {
 
 export default function AddProject(props) {
   const dataLang = useIntl();
+
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },

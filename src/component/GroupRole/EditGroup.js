@@ -44,7 +44,7 @@ const CheckBox = (props) => {
   );
 };
 
-export default function CreateGroupRole() {
+export default function CreateGroupRole(props) {
   const dataLang = useIntl();
   const [name, setName] = useState(groupEdit.value.name_);
 
@@ -60,7 +60,7 @@ export default function CreateGroupRole() {
         ...group.value[t],
         name_: name,
       }
-      editState.value = false;
+      props.handleClose();
       alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
@@ -95,7 +95,7 @@ export default function CreateGroupRole() {
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
-            onClick={() => (editState.value = false)}
+            onClick={() => props.handleClose()}
           >
             <IoClose size={25} />
           </div>

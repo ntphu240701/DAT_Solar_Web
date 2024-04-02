@@ -30,7 +30,6 @@ export default function CreateRole(props) {
         mail: mail.current.value,
         code: partnerInfor.value.code,
       });
-      console.log(res);
       if (res.status) {
         let register = await callApi("post", host.AUTH + "/Register", {
           usr: username.current.value,
@@ -44,7 +43,7 @@ export default function CreateRole(props) {
           host: window.location.host,
         });
         if (register.status) {
-          roleState.value = "default";
+          props.handleClose();
           alertDispatch(datalang.formatMessage({ id: "alert_6" }));
         } else {
           alertDispatch(datalang.formatMessage({ id: "alert_7" }));
@@ -89,7 +88,7 @@ export default function CreateRole(props) {
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
-            onClick={() => (roleState.value = "default")}
+            onClick={() => props.handleClose()}
           >
             <IoClose size={25} />
           </div>

@@ -1,7 +1,6 @@
 import React from "react";
 import "./Report.scss";
 
-import { popupStateReport } from "./Report";
 import { idReport, ReportData } from "./Report";
 import { useIntl } from "react-intl";
 import { callApi } from "../Api/Api";
@@ -11,12 +10,19 @@ import { alertDispatch } from "../Alert/Alert";
 
 import { IoClose } from "react-icons/io5";
 
-export default function Popup() {
+export default function Popup(props) {
   const dataLang = useIntl();
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
     new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
   };
 
   const handleDeleteReport = async (e) => {
@@ -25,21 +31,13 @@ export default function Popup() {
       reportid: idReport.value,
     });
     if (removeReport.status) {
-      popupStateReport.value = false;
+      props.handleClose();
       const newDB = ReportData.value.filter(
         (item) => item.id !== parseInt(idReport.value)
       );
       alertDispatch(dataLang.formatMessage({ id: "alert_42" }));
-      console.log(newDB);
       ReportData.value = newDB;
     }
-  };
-
-  const handlePopup = (state) => {
-    const popup = document.getElementById("Popup");
-    popup.style.transform = popup_state[state].transform;
-    popup.style.transition = popup_state[state].transition;
-    popup.style.color = popup_state[state].color;
   };
 
   return (
@@ -51,12 +49,12 @@ export default function Popup() {
         <div className="DAT_PopupReport_Box_Head_Right">
           <div
             className="DAT_PopupReport_Box_Head_Right_Icon"
-            onClick={() => (popupStateReport.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
+            onClick={() => props.handleClose()}
           >
-            <IoClose size={25}></IoClose>
+            <IoClose size={25} />
           </div>
         </div>
       </div>

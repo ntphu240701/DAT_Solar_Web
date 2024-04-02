@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
 import "./Project.scss";
 
-import DataTable from "react-data-table-component";
-import { isMobile, warnfilter } from "../Navigation/Navigation";
 import ProjectData from "./ProjectData";
 import EditProject from "./EditProject";
 import AddProject from "./AddProject";
 import Filter from "./Filter";
-import { sidebartab, sidebartabli } from "../Sidenar/Sidenar";
 import Popup from "./Popup";
+import ShareBox from "./ShareBox";
+import { isMobile, warnfilter } from "../Navigation/Navigation";
+import { sidebartab, sidebartabli } from "../Sidenar/Sidenar";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { alertDispatch } from "../Alert/Alert";
+import { ruleInfor, Token, partnerInfor, userInfor, convertUnit, showUnitk, showUnit } from "../../App";
 import { useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
-import { ruleInfor, Token, partnerInfor, userInfor, convertUnit, showUnitk, showUnit } from "../../App";
 import { useIntl } from "react-intl";
-import { FaStar } from "react-icons/fa";
-import { FaCheckCircle, FaRegFileAlt } from "react-icons/fa";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import DataTable from "react-data-table-component";
+
+import { FaCheckCircle, FaRegFileAlt, FaStar } from "react-icons/fa";
 import { MdOutlineError, MdEdit, MdDelete, MdAddchart } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { GoProject } from "react-icons/go";
@@ -24,13 +28,8 @@ import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { FiEdit, FiFilter } from "react-icons/fi";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { alertDispatch } from "../Alert/Alert";
 import { RiShareForwardLine } from "react-icons/ri";
-import ShareBox from "./ShareBox";
 
-export const projtab = signal("total");
 const tabLable = signal("");
 const tabMobile = signal(false);
 const online = signal([]);
@@ -38,6 +37,7 @@ const offline = signal([]);
 const warn = signal([]);
 const demo = signal([]);
 const care = signal([]);
+export const projtab = signal("total");
 export const connectval = signal();
 export const projectData = signal({});
 export const plantEdit = signal(false);
@@ -77,73 +77,12 @@ export const Empty = (props) => {
     </div>
   );
 };
-
-export const devicePlant = signal([
-  {
-    plantId: 41,
-    // SN: "11111111",
-    loggerSN: "T0623A000162",
-    inverterSN: "I0000145",
-  },
-  {
-    plantId: 15,
-    // SN: "22222222",
-    loggerSN: "T0623A000166",
-    inverterSN: "I0000012",
-  },
-  {
-    plantId: 22,
-    // SN: "33333333",
-    loggerSN: "T0623A000177",
-    inverterSN: "I0000001",
-  },
-  // {
-  //   plantId: 3,
-  //   // SN: "33333333",
-  //   loggerSN: "T0623A000188",
-  //   inverterSN: "I0000333",
-  // },
-]);
-
-export const Logger = signal([]);
-export const InverterbyLogger = signal([]);
-export const Inverter = signal([
-  // {
-  //   id: 1,
-  //   SN: "I0000145",
-  //   name: "Inverter 01",
-  //   plant: "Năng lượng DAT 01",
-  //   status: true,
-  //   production: "16",
-  //   dailyproduction: "123.4",
-  //   updated: "12/30/2023 12:07:12",
-  // },
-  // {
-  //   id: 2,
-  //   SN: "I0000012",
-  //   name: "Inverter 02",
-  //   plant: "Năng lượng DAT 01",
-  //   status: true,
-  //   production: "18",
-  //   dailyproduction: "238.4",
-  //   updated: "12/30/2023 12:07:12",
-  // },
-  // {
-  //   id: 3,
-  //   SN: "I0000001",
-  //   name: "Inverter 03",
-  //   plant: "Năng lượng DAT 01",
-  //   status: true,
-  //   production: "562",
-  //   dailyproduction: "897.4",
-  //   updated: "12/30/2023 12:07:12",
-  // },
-]);
 export const projectwarnfilter = signal(0);
 
 export default function Project(props) {
   const dataLang = useIntl();
   const user = useSelector((state) => state.admin.usr);
+  const navigate = useNavigate();
   const [datafilter, setDatafilter] = useState([]);
   const [type, setType] = useState("name");
   const [filter, setFilter] = useState(false);
@@ -151,14 +90,11 @@ export default function Project(props) {
   const [power, setPower] = useState([]);
   const [dailyProduction, setDailyProduction] = useState([]);
   const [display, setDisplay] = useState(false);
-  const [like, setLike] = useState(false);
-  const navigate = useNavigate();
   const [saveDataInputFilter, setSaveDataInputFilter] = useState({
     min: 0,
     max: 10000,
     location: "",
   });
-
 
   const listTab = [
     { id: "total", name: dataLang.formatMessage({ id: "total" }) },
@@ -297,15 +233,6 @@ export default function Project(props) {
       sortable: true,
       width: "160px",
     },
-    // {
-    //   name: "Tag",
-    //   selector: (row) => (
-    //     <div className="DAT_TableEdit">
-    //       <MdEditDocument color="gray" size={20} />
-    //     </div>
-    //   ),
-    //   width: "100px",
-    // },
     {
       name: dataLang.formatMessage({ id: "lastupdate" }),
       selector: (row) => row.lastupdate,
@@ -331,27 +258,25 @@ export default function Project(props) {
         >
           {ruleInfor.value.setting.project.modify == true ||
             ruleInfor.value.setting.project.remove == true ? (
-            <div className="DAT_TableEdit">
-              <span
-                id={row.plantid_ + "_MORE"}
-                // onMouseEnter={(e) => handleModify(e, "block")}
-                onClick={(e) => handleModify(e, "block")}
-              >
-                <IoMdMore size={20} />
-              </span>
-            </div>
+            row.shared == 1 ? <></>
+              : <div className="DAT_TableEdit">
+                <span
+                  id={row.plantid_ + "_MORE"}
+                  onClick={(e) => handleModify(e, "block")}
+                >
+                  <IoMdMore size={20} />
+                </span>
+              </div>
           ) : (
             <div></div>
           )}
-          <div
-            className="DAT_ModifyBox"
+          <div className="DAT_ModifyBox"
             id={row.plantid_ + "_Modify"}
             style={{ display: "none", marginTop: "3px", marginRight: "3px" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             {ruleInfor.value.setting.project.modify === true ? (
-              <div
-                className="DAT_ModifyBox_Fix"
+              <div className="DAT_ModifyBox_Fix"
                 id={row.plantid_}
                 style={{
                   display: "flex",
@@ -368,8 +293,7 @@ export default function Project(props) {
               <div></div>
             )}
             {ruleInfor.value.setting.project.remove === true ? (
-              <div
-                className="DAT_ModifyBox_Remove"
+              <div className="DAT_ModifyBox_Remove"
                 id={row.plantid_}
                 style={{
                   display: "flex",
@@ -385,9 +309,8 @@ export default function Project(props) {
             ) : (
               <div></div>
             )}
-            <div
+            <div className="DAT_ModifyBox_Share"
               id={row.plantid_}
-              className="DAT_ModifyBox_Share"
               style={{
                 display: "flex",
                 justifyContent: "flex-start",
@@ -423,15 +346,10 @@ export default function Project(props) {
 
   const handlePlant = (e) => {
     plantState.value = "info";
-    // console.log(dataproject.value);
     const newPlant = dataproject.value.find(
       (item) => item.plantid_ == e.currentTarget.id
     );
     projectData.value = newPlant;
-    // const newDevicePlant = devicePlant.value.filter(
-    //   (item) => item.plantid_ == e.currentTarget.id
-    // );
-    // deviceData.value = newDevicePlant;
   };
 
   const handleEdit = (e) => {
@@ -454,19 +372,15 @@ export default function Project(props) {
     shareState.value = true;
   };
 
-  const usr = useSelector((state) => state.admin.usr);
-
   const handleLike = async (e) => {
-    // console.log(e.currentTarget.id);
     //0: UNMARK, 1: MARK
     const i = dataproject.value.findIndex(
       (item) => item.plantid_ == e.currentTarget.id
     );
     let newData = dataproject.value;
-    // console.log(newData[i]);
 
     const markplant = await callApi("post", host.DATA + "/setMark", {
-      usr: usr,
+      usr: user,
       plantid: e.currentTarget.id,
       action: newData[i].mark ? "unmark" : "mark",
       partnerid: userInfor.value.partnerid,
@@ -503,42 +417,24 @@ export default function Project(props) {
     tabLable.value = newLabel.name;
   };
 
-  const pickTypeFilter = (e) => {
-    setType(e.target.value);
-    let search = document.getElementById("search");
-    search.placeholder =
-      dataLang.formatMessage({ id: "enter" }) +
-      dataLang.formatMessage({ id: e.target.value });
-  };
-
   const handleSearch = (e) => {
     if (e.target.value == "") {
       setDatafilter(dataproject.value);
     } else {
       const t = e.target.value;
-      const db = dataproject.value.filter((row) =>
-      // item.name.includes(t)
-      {
+      const db = dataproject.value.filter((row) => {
         switch (type) {
-          // case "name":
-          //   return row.plantname.includes(t) || row.plantname.toLowerCase().includes(t);
-          // return (console.log(row.plantname.includes(t) || row.plantname.toLowerCase().includes(t)));
           case "inCapacity":
             return String(row.capacity) == t;
           case "production":
             return String(row.production) == t;
           case "power":
             return String(row.power) == t;
-          // case "lastupdate":
-          //   return String(row.lastupdate) == t;
-          // case "createdate":
-          //   return String(row.createdate) == t;
           default:
             return (
               row.plantname.includes(t) ||
               row.plantname.toLowerCase().includes(t)
             );
-          // return row.name.toLowerCase().includes(t);
         }
       }
       );
@@ -588,7 +484,6 @@ export default function Project(props) {
     setDatafilter(dataproject.value);
   };
 
-
   const handleApproveFilter = (_min, _max, _location) => {
     let temp = []
     let min_ = _min === "" ? 0 : _min;
@@ -599,7 +494,6 @@ export default function Project(props) {
       location: _location
     })
     if (_location) {
-      // console.log(min_, max_, _location)
       dataproject.value.filter(item => {
         if (parseFloat(item.capacity) >= parseFloat(min_) &&
           parseFloat(item.capacity) <= parseFloat(max_) &&
@@ -608,7 +502,6 @@ export default function Project(props) {
         }
       })
     } else {
-      // console.log(min_, max_)
       dataproject.value.filter(item => {
         if (parseFloat(item.capacity) >= parseFloat(min_) && parseFloat(item.capacity) <= parseFloat(max_)) {
           temp = [...temp, item]
@@ -620,11 +513,11 @@ export default function Project(props) {
   };
 
   useEffect(() => {
-    // console.log("hello");
     online.value = dataproject.value.filter((item) => item.state == 1);
     offline.value = dataproject.value.filter((item) => item.state == 0);
     warn.value = dataproject.value.filter((item) => item.warn == 0);
     care.value = dataproject.value.filter((item) => item.mark == 1);
+    demo.value = dataproject.value.filter((item) => item.shared == 1);
     tabLable.value = listTab[0].name;
     setDatafilter(dataproject.value);
   }, [dataproject.value]);
@@ -637,7 +530,6 @@ export default function Project(props) {
         type: userInfor.value.type,
       });
       if (d.status === true) {
-        // console.log(d.data);
         dataproject.value = d.data;
       }
     };
@@ -656,9 +548,7 @@ export default function Project(props) {
             '{"deviceCode":"' + item.psn + '"}',
             Token.value.token
           );
-          // console.log(res)
           if (res.ret === 0) {
-            //console.log(res.data)
             setInvt((pre) => ({ ...pre, [item.psn]: res.data }));
           } else {
             setInvt((pre) => ({ ...pre, [item.psn]: {} }));
@@ -670,7 +560,6 @@ export default function Project(props) {
 
     return () => {
       plantState.value = "default";
-      // projtab.value = "total";
     };
   }, []);
 
@@ -694,17 +583,16 @@ export default function Project(props) {
     };
     let daily_ = {};
     let power_ = {};
+
     logger.value.map((item, i) => {
       Object.entries(item.pdata).map(([key, value]) => {
         switch (value.type) {
           case "sum":
             let inum = [];
             let register_ = JSON.parse(value.register);
-            // console.log(register_);
             register_.map((reg, j) => {
               inum[j] = parseFloat(invt[item.psn]?.[reg] || 0)
             })
-
 
             num_[key][i] = inum.reduce((accumulator, currentValue) => {
               return Number(accumulator) + Number(currentValue);
@@ -715,60 +603,19 @@ export default function Project(props) {
                 power_[item.pplantid] = inum.reduce(
                   (accumulator, currentValue) => {
                     return Number(accumulator) + Number(currentValue);
-                  },
-                  0
-                ) * parseFloat(value.cal);
+                  }, 0) * parseFloat(value.cal);
               } else {
                 power_[item.pplantid] = 0;
               }
             }
 
-
             if (i == logger.value.length - 1) {
-
-              // if (invt[item.psn]?.enabled == 1) {
               cal[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
                 }, 0) * parseFloat(value.cal)
               ).toFixed(2);
-              // console.log(cal[key]);
             }
-            // let inum = [];
-            // let cal_ = JSON.parse(value.cal);
-
-            // Object.entries(value.register).map(([key, value]) => {
-            //   let n = JSON.parse(value);
-            //   inum[key] =
-            //     parseFloat(invt[item.psn]?.[n[0]] || 0) *
-            //     parseFloat(cal_[0]) *
-            //     parseFloat(invt[item.psn]?.[n[1]] || 0) *
-            //     parseFloat(cal_[1]);
-            // });
-
-            // num_[key][i] = inum.reduce((accumulator, currentValue) => {
-            //   return Number(accumulator) + Number(currentValue);
-            // }, 0);
-            // if (key == "pro_1") {
-            //   if (invt[item.psn]?.enabled == "1") {
-            //     power_[item.pplantid] = inum.reduce(
-            //       (accumulator, currentValue) => {
-            //         return Number(accumulator) + Number(currentValue);
-            //       },
-            //       0
-            //     );
-            //   } else {
-            //     power_[item.pplantid] = 0;
-            //   }
-            // }
-
-            // if (i == logger.value.length - 1) {
-            //   cal[key] = parseFloat(
-            //     num_[key].reduce((accumulator, currentValue) => {
-            //       return Number(accumulator) + Number(currentValue);
-            //     }, 0) / 1000
-            //   ).toFixed(2);
-            // }
             break;
           case "word":
             let d = JSON.parse(value.register);
@@ -834,22 +681,20 @@ export default function Project(props) {
     <>
       <div className="DAT_ProjectHeader">
         <div className="DAT_ProjectHeader_Title">
-          <GoProject color="gray" size={25} />{" "}
+          <GoProject color="gray" size={25} />
           <span>{dataLang.formatMessage({ id: "project" })}</span>
         </div>
 
         {isMobile.value ? (
           <>
             <div className="DAT_Modify">
-              <div
-                className="DAT_Modify_Item"
+              <div className="DAT_Modify_Item"
                 onClick={() => setFilter(!filter)}
               >
                 <CiSearch color="white" size={20} />
               </div>
               {ruleInfor.value.setting.project.modify === true ? (
-                <div
-                  className="DAT_Modify_Add"
+                <div className="DAT_Modify_Add"
                   onClick={() => (plantState.value = "add")}
                 >
                   <IoAddOutline color="white" size={20} />
@@ -861,32 +706,6 @@ export default function Project(props) {
 
             {filter ? (
               <div className="DAT_Modify_Filter">
-                {/* <select onChange={(e) => pickTypeFilter(e)}>
-                  <option value={"name"}>
-                    {dataLang.formatMessage({ id: "name" })}
-                  </option>
-                  <option value={"connect"}>
-                    {dataLang.formatMessage({ id: "connect" })}
-                  </option>
-                  <option value={"status"}>
-                    {dataLang.formatMessage({ id: "status" })}
-                  </option>
-                  <option value={"capacity"}>
-                    {dataLang.formatMessage({ id: "capacity" })}
-                  </option>
-                  <option value={"production"}>
-                    {dataLang.formatMessage({ id: "production" })}
-                  </option>
-                  <option value={"power"}>
-                    {dataLang.formatMessage({ id: "power" })}
-                  </option>
-                  <option value={"lastupdate"}>
-                    {dataLang.formatMessage({ id: "lastupdate" })}
-                  </option>
-                  <option value={"createdate"}>
-                    {dataLang.formatMessage({ id: "createdate" })}
-                  </option>
-                </select> */}
                 <input
                   type="text"
                   placeholder={
@@ -909,47 +728,17 @@ export default function Project(props) {
         ) : (
           <>
             <div className="DAT_ProjectHeader_Filter">
-              {/* <select onChange={(e) => pickTypeFilter(e)}> */}
-              {/* <option value={"name"}>
-                  {dataLang.formatMessage({ id: "name" })}
-                </option> */}
-              {/* <option value={"connect"}>
-                  {dataLang.formatMessage({ id: "connect" })}
-                </option>
-                <option value={"status"}>
-                  {dataLang.formatMessage({ id: "status" })}
-                </option> */}
-              {/* <option value={"inCapacity"}>
-                  {dataLang.formatMessage({ id: "inCapacity" })}
-                </option>
-                <option value={"production"}>
-                  {dataLang.formatMessage({ id: "daily" })}
-                </option>
-                <option value={"power"}>
-                  {dataLang.formatMessage({ id: "power" })}
-                </option> */}
-              {/* <option value={"lastupdate"}>
-                  {dataLang.formatMessage({ id: "lastupdate" })}
-                </option>
-                <option value={"createdate"}>
-                  {dataLang.formatMessage({ id: "createdate" })}
-                </option> */}
-              {/* </select> */}
               <input
                 id="search"
                 type="text"
-                placeholder={
-                  dataLang.formatMessage({ id: "enter" }) +
-                  dataLang.formatMessage({ id: "project" })
-                }
+                placeholder={dataLang.formatMessage({ id: "enter" }) + dataLang.formatMessage({ id: "project" })}
                 autoComplete="off"
                 onChange={(e) => handleSearch(e)}
               />
               <CiSearch color="gray" size={20} />
             </div>
             {ruleInfor.value.setting.project.add === true ? (
-              <button
-                className="DAT_ProjectHeader_New"
+              <button className="DAT_ProjectHeader_New"
                 onClick={() => (plantState.value = "add")}
               >
                 <span value={"createdate"}>
@@ -1712,8 +1501,7 @@ export default function Project(props) {
               return projtab.value === item.id ? (
                 <div key={"tab_" + i} className="DAT_Toollist_Tab_main">
                   <p className="DAT_Toollist_Tab_main_left"></p>
-                  <span
-                    className="DAT_Toollist_Tab_main_content1"
+                  <span className="DAT_Toollist_Tab_main_content1"
                     id={item.id}
                     style={{
                       backgroundColor: "White",
@@ -1727,8 +1515,7 @@ export default function Project(props) {
                   <p className="DAT_Toollist_Tab_main_right"></p>
                 </div>
               ) : (
-                <span
-                  className="DAT_Toollist_Tab_main_content2"
+                <span className="DAT_Toollist_Tab_main_content2"
                   key={"tab_" + i}
                   id={item.id}
                   style={{ backgroundColor: "#dadada" }}
@@ -1739,8 +1526,7 @@ export default function Project(props) {
               );
             })}
 
-            <div
-              className="DAT_Project_Filter"
+            <div className="DAT_Project_Filter"
               onClick={(e) => setDisplay(!display)}
             >
               <FiFilter />

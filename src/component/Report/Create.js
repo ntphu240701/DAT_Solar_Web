@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Report.scss";
 
-import { createState, ReportData } from "./Report";
+import { ReportData } from "./Report";
 import { signal } from "@preact/signals-react";
 import { isMobile } from "../Navigation/Navigation";
 import { useSelector } from "react-redux";
@@ -120,7 +120,7 @@ export const CheckBox = (props) => {
   );
 };
 
-export default function Create() {
+export default function Create(props) {
   const dataLang = useIntl();
   const [widthCheckBox, setWidwidthCheckBox] = useState("");
   const [reportType, setReportType] = useState("dailyReport");
@@ -244,7 +244,7 @@ export default function Create() {
         ReportData.value.push(newdata.value);
         alertDispatch(dataLang.formatMessage({ id: "alert_40" }));
         //BAT TAT TRANG
-        createState.value = false;
+        props.handleClose();
 
         newdata.value = temp.value;
       }
@@ -323,7 +323,7 @@ export default function Create() {
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
-            onClick={() => (createState.value = false)}
+            onClick={() => props.handleClose()}
           >
             <IoClose size={25} />
           </div>

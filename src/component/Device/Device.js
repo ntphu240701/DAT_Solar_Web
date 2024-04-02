@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./Device.scss";
 
 import Info from "./Info";
-import Config from "./Config";
 import Popup from "./Popup";
 import DataTable from "react-data-table-component";
 import { signal } from "@preact/signals-react";
@@ -13,6 +12,8 @@ import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { Token, convertUnit, ruleInfor, userInfor } from "../../App";
 import { useIntl } from "react-intl";
+import Filter from "../Project/Filter";
+import axios from "axios";
 
 import { MdDelete, MdEdit, MdDevices, MdOutlineError } from "react-icons/md";
 import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
@@ -21,15 +22,9 @@ import { CiSearch } from "react-icons/ci";
 import { RxCross2 } from "react-icons/rx";
 import { FiEdit, FiFilter } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
-import Filter from "../Project/Filter";
-import axios from "axios";
 
 export const tab = signal("logger");
-export const infoState = signal(false);
 export const info = signal({});
-export const configState = signal(false);
-export const popupState = signal(false);
-export const displayState = signal("default");
 export const projectList = signal([]);
 export const loggerList = signal([]);
 export const inverterList = signal([]);
@@ -48,6 +43,8 @@ export default function Device(props) {
   const [datafilerInvert, setDatafilterInvert] = useState([]);
   const [display, setDisplay] = useState(false);
   const [invt, setInvt] = useState({});
+  const [popupState, setPopupState] = useState(false);
+  const [infoState, setInfoState] = useState(false);
 
   const listTab = [
     { id: "logger", name: "Logger" },
@@ -61,39 +58,6 @@ export default function Device(props) {
     selectAllRowsItem: true,
     selectAllRowsItemText: dataLang.formatMessage({ id: "showAll" }),
   };
-
-  const dataInverter = [
-    // {
-    //   id: 1,
-    //   SN: "I0000145",
-    //   name: "Inverter 01",
-    //   plant: "Năng lượng DAT 01",
-    //   status: true,
-    //   production: "16",
-    //   dailyproduction: "123.4",
-    //   updated: "12/30/2023 12:07:12",
-    // },
-    // {
-    //   id: 2,
-    //   SN: "I0000012",
-    //   name: "Inverter 02",
-    //   plant: "Năng lượng DAT 01",
-    //   status: false,
-    //   production: "18",
-    //   dailyproduction: "238.4",
-    //   updated: "12/30/2023 12:07:12",
-    // },
-    // {
-    //   id: 3,
-    //   SN: "I0000001",
-    //   name: "Inverter 03",
-    //   plant: "Năng lượng DAT 01",
-    //   status: true,
-    //   production: "562",
-    //   dailyproduction: "897.4",
-    //   updated: "12/30/2023 12:07:12",
-    // },
-  ];
 
   const dataMeter = [
     {
@@ -394,7 +358,7 @@ export default function Device(props) {
   ];
 
   const handleShowInfo = (e) => {
-    infoState.value = true;
+    setInfoState(true);
     const id = e.currentTarget.id;
     const idArr = id.split("_");
     switch (idArr[1]) {
@@ -413,6 +377,10 @@ export default function Device(props) {
     }
   };
 
+  const handleCloseInfo = () => {
+    setInfoState(false);
+  };
+
   const convertToDoublewordAndFloat = (word, type) => {
     var doubleword = (word[1] << 16) | word[0];
     var buffer = new ArrayBuffer(4);
@@ -426,7 +394,7 @@ export default function Device(props) {
   };
 
   const handleEdit = (e) => {
-    popupState.value = true;
+    setPopupState(true);
     const id = e.currentTarget.id;
     const idArr = id.split("_");
     setSnlogger(idArr[0]);
@@ -434,7 +402,7 @@ export default function Device(props) {
   };
 
   const handleRemove = (e) => {
-    popupState.value = true;
+    setPopupState(true);
     const id = e.currentTarget.id;
     const idArr = id.split("_");
     setPlantid(idArr[1]);
@@ -454,8 +422,8 @@ export default function Device(props) {
     // }
   };
 
-  const handleShowConfig = (e) => {
-    configState.value = true;
+  const handleClosePopup = () => {
+    setPopupState(false);
   };
 
   const invtCloud = async (data, token) => {
@@ -499,15 +467,6 @@ export default function Device(props) {
     const newLabel = listTab.find((item) => item.id == id);
     tabLable.value = newLabel.name;
   };
-
-  // useEffect(() => {
-  //   if (connectval.value) {
-  //     const db = loggerList.value.filter(
-  //       (item) => item.pname == connectval.value
-  //     );
-  //   setDatafilter(db);
-  //   }
-  // }, [connectval.value]);
 
   const handleSearch = (e) => {
     const searchTerm = e.currentTarget.value.toLowerCase();
@@ -553,81 +512,8 @@ export default function Device(props) {
     }
   };
 
-  useEffect(() => {
-    if (connectval.value) {
-      let filter = loggerList.value.filter(
-        (item) =>
-          item.pplantname.includes(connectval.value) ||
-          item.pplantname.toLowerCase().includes(connectval.value)
-      );
-      setDatafilter([...filter]);
-      let d = document.getElementById("search");
-      d.value = connectval.value;
-    } else {
-      setDatafilter(loggerList.value);
-    }
-
-    setDatafilterInvert(inverterList.value);
-  }, [loggerList.value, connectval.value]);
-
-  useEffect(() => {
-    tabLable.value = listTab[0].name;
-    // get logger
-    const getAllLogger = async () => {
-      let d = await callApi("post", host.DATA + "/getallLogger", {
-        usr: user,
-        partnerid: userInfor.value.partnerid,
-        type: userInfor.value.type,
-      });
-      // console.log(d);
-      if (d.status === true) {
-        loggerList.value = d.data;
-
-        d.data.map(async (item) => {
-          const res = await invtCloud(
-            '{"deviceCode":"' + item.psn + '"}',
-            Token.value.token
-          );
-          // console.log(res)
-          if (res.ret === 0) {
-            //console.log(res.data)
-            setInvt((pre) => ({ ...pre, [item.psn]: res.data }));
-          } else {
-            setInvt((pre) => ({ ...pre, [item.psn]: {} }));
-          }
-        });
-      }
-    };
-    getAllLogger();
-
-    return () => {
-      tab.value = "logger";
-    };
-  }, []);
-  //API INVERTER
-  useEffect(() => {
-    const getAllInverter = async () => {
-      let d = await callApi("post", host.DATA + "/getallInverter", {
-        usr: user,
-        partnerid: userInfor.value.partnerid,
-        type: userInfor.value.type,
-      });
-      // console.log(d);
-      if (d.status === true) {
-        inverterList.value = d.data;
-        setDatafilterInvert(d.data);
-      }
-    };
-    if (tab.value == "inverter") {
-      getAllInverter();
-    }
-  }, [tab.value]);
-
   const handleFilterDevice = (deviceF) => {
     setDisplay(false);
-    // console.log(deviceF);
-    // console.log(tab.value);
-    console.log(loggerList.value);
 
     switch (tab.value) {
       case "logger":
@@ -639,12 +525,10 @@ export default function Device(props) {
         } else {
           tL = 2;
         }
-        console.log(tL);
         if (tL == 2) {
           setDatafilter(loggerList.value);
         } else {
           const temp = loggerList.value.filter((item) => item.pstate === tL);
-          console.log(temp);
           setDatafilter(temp);
         }
         break;
@@ -677,6 +561,73 @@ export default function Device(props) {
     setDisplay(false);
   };
 
+  useEffect(() => {
+    if (connectval.value) {
+      let filter = loggerList.value.filter(
+        (item) =>
+          item.pplantname.includes(connectval.value) ||
+          item.pplantname.toLowerCase().includes(connectval.value)
+      );
+      setDatafilter([...filter]);
+      let d = document.getElementById("search");
+      d.value = connectval.value;
+    } else {
+      setDatafilter(loggerList.value);
+    }
+
+    setDatafilterInvert(inverterList.value);
+  }, [loggerList.value, connectval.value]);
+
+  useEffect(() => {
+    tabLable.value = listTab[0].name;
+    // get logger
+    const getAllLogger = async () => {
+      let d = await callApi("post", host.DATA + "/getallLogger", {
+        usr: user,
+        partnerid: userInfor.value.partnerid,
+        type: userInfor.value.type,
+      });
+      if (d.status === true) {
+        loggerList.value = d.data;
+
+        d.data.map(async (item) => {
+          const res = await invtCloud(
+            '{"deviceCode":"' + item.psn + '"}',
+            Token.value.token
+          );
+          if (res.ret === 0) {
+            setInvt((pre) => ({ ...pre, [item.psn]: res.data }));
+          } else {
+            setInvt((pre) => ({ ...pre, [item.psn]: {} }));
+          }
+        });
+      }
+    };
+    getAllLogger();
+
+    return () => {
+      tab.value = "logger";
+    };
+  }, []);
+
+  //API INVERTER
+  useEffect(() => {
+    const getAllInverter = async () => {
+      let d = await callApi("post", host.DATA + "/getallInverter", {
+        usr: user,
+        partnerid: userInfor.value.partnerid,
+        type: userInfor.value.type,
+      });
+      if (d.status === true) {
+        inverterList.value = d.data;
+        setDatafilterInvert(d.data);
+      }
+    };
+    if (tab.value == "inverter") {
+      getAllInverter();
+    }
+  }, [tab.value]);
+
   return (
     <>
       <div className="DAT_DeviceHeader">
@@ -688,13 +639,11 @@ export default function Device(props) {
         {isMobile.value ? (
           <>
             <div className="DAT_Modify">
-              <div
-                className="DAT_Modify_Item"
+              <div className="DAT_Modify_Item"
                 onClick={() => setFilter(!filter)}
               >
                 <CiSearch color="white" size={20} />
               </div>
-              {/* <div className="DAT_Modify_Add" onClick={handleShowConfig}><TbSettingsCode color="white" size={20} /></div> */}
             </div>
 
             {filter ? (
@@ -703,8 +652,7 @@ export default function Device(props) {
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterDev" })}
                 />
-                <div
-                  className="DAT_Modify_Filter_Close"
+                <div className="DAT_Modify_Filter_Close"
                   onClick={() => setFilter(!filter)}
                 >
                   <RxCross2 size={20} color="white" />
@@ -726,19 +674,11 @@ export default function Device(props) {
                     : dataLang.formatMessage({ id: "enterInverter" })
                 }
                 autoComplete="off"
-                // value={connectval.value}
                 onChange={(e) => handleSearch(e)}
               />
               <CiSearch color="gray" size={20} />
             </div>
             <div></div>
-            {/* <button className="DAT_DeviceHeader_New" onClick={handleShowConfig}>
-              <span>
-                <TbSettingsCode color="white" size={20} />
-                &nbsp;
-                {dataLang.formatMessage({ id: 'config' })}
-              </span>
-            </button> */}
           </>
         )}
       </div>
@@ -779,7 +719,7 @@ export default function Device(props) {
               case "inverter":
                 return (
                   <>
-                    {dataInverter?.map((item, i) => {
+                    {inverterList.value?.map((item, i) => {
                       return (
                         <div key={i} className="DAT_DeviceMobile_Content">
                           <div className="DAT_DeviceMobile_Content_Top">
@@ -975,8 +915,7 @@ export default function Device(props) {
               );
             })}
 
-            <div
-              className="DAT_Device_Filter"
+            <div className="DAT_Device_Filter"
               onClick={(e) => setDisplay(!display)}
             >
               <FiFilter />
@@ -1040,32 +979,20 @@ export default function Device(props) {
               handlefilterdevice={handleFilterDevice}
               handleReset={handleReset}
               handleClose={handleCloseFilter}
-            // handleReset={handleResetFilter}
             />
           </div>
         </div>
       )}
 
-      <div
-        className="DAT_DeviceInfor"
-        style={{ height: infoState.value ? "100%" : "0px", transition: "0.5s" }}
+      <div className="DAT_DeviceInfor"
+        style={{ height: infoState ? "100%" : "0px", transition: "0.5s" }}
       >
-        {infoState.value ? <Info /> : <></>}
+        {infoState ? <Info handleClose={handleCloseInfo} /> : <></>}
       </div>
 
-      <div
-        className="DAT_DeviceConfig"
-        style={{
-          height: configState.value ? "100vh" : "0px",
-          transition: "0.5s",
-        }}
-      >
-        {configState.value ? <Config /> : <></>}
-      </div>
-
-      {popupState.value ? (
+      {popupState ? (
         <div className="DAT_DevicePopup">
-          <Popup plantid={plantid} sn={snlogger} type={type} />
+          <Popup plantid={plantid} sn={snlogger} type={type} handleClose={handleClosePopup} />
         </div>
       ) : (
         <></>

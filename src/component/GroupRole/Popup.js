@@ -1,7 +1,7 @@
 import React from "react";
 import "./GroupRole.scss";
 
-import { groupID, groupUser, popupState, userDel } from "./GroupRole";
+import { groupID, groupUser, userDel } from "./GroupRole";
 import { useIntl } from "react-intl";
 import { alertDispatch } from "../Alert/Alert";
 import { callApi } from "../Api/Api";
@@ -10,7 +10,7 @@ import { COLOR } from "../../App";
 
 import { IoClose } from "react-icons/io5";
 
-export default function Popup() {
+export default function Popup(props) {
   const dataLang = useIntl();
 
   const popup_state = {
@@ -38,7 +38,7 @@ export default function Popup() {
       groupUser.value = groupUser.value.filter(
         (item) => item.id_ != parseInt(userDel.value)
       );
-      popupState.value = false;
+      props.handleClose();
       alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
@@ -55,10 +55,10 @@ export default function Popup() {
         <div className="DAT_Popup_Box_Head_Right">
           <div
             className="DAT_Popup_Box_Head_Right_Icon"
-            onClick={() => (popupState.value = false)}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
+            onClick={() => props.handleClose()}
           >
             <IoClose size={25} />
           </div>

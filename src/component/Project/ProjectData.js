@@ -2,42 +2,46 @@ import React, { useEffect, useState, useRef } from "react";
 import "./Project.scss";
 
 import AddGateway from "./AddGateway";
+import Weather from "./Weather";
+import ExportData from "./ExportData";
+import Graph from "./Graph";
+import Production from "./Production";
+import Consumption from "./Consumption";
+import Grid from "./Grid";
+import Battery from "./Battery";
+import Day from "./Day";
+import Month from "./Month";
+import Year from "./Year";
+import Total from "./Total";
+import Popup from "./Popup";
+import Info from "../Device/Info";
 import { Empty, plantState, projectData, popupState } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area, } from "recharts";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
+import { COLOR, Token, ruleInfor } from "../../App";
+import { info, tab } from "../Device/Device";
+import { useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
 import DataTable from "react-data-table-component";
 import moment from "moment-timezone";
-import Weather from "./Weather";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { callApi } from "../Api/Api";
-import { host } from "../Lang/Contant";
-import { COLOR, Token, convertUnit, ruleInfor, showUnit, showUnitk, } from "../../App";
 import axios from "axios";
-import Popup from "./Popup";
 import { useIntl } from "react-intl";
-import { info, infoState, tab } from "../Device/Device";
-import Info from "../Device/Info";
 import PopupState, { bindHover, bindPopper } from "material-ui-popup-state";
 import { Fade, Paper, Popper, Typography } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import ExportData from "./ExportData";
 
 import { IoIosArrowDown, IoIosArrowForward, IoIosCloud, IoMdMore, } from "react-icons/io";
 import { IoAddOutline, IoCalendarOutline, IoClose, IoTrashOutline, } from "react-icons/io5";
 import { MdDelete, MdEdit, MdOutlineError, } from "react-icons/md";
 import { FaCheckCircle, FaMoneyBill, FaTree } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { useSelector } from "react-redux";
 import { FiEdit } from "react-icons/fi";
 import { GiCoalWagon } from "react-icons/gi";
-import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { CiClock1 } from "react-icons/ci";
-import { clear } from "@testing-library/user-event/dist/clear";
 
-export const popupAddGateway = signal(false);
-export const popupAddSubsystem = signal(false);
 export const temp = signal([]);
 export const inverterDB = signal([]);
 export const coalsave = signal({
@@ -55,15 +59,13 @@ const tabLableAlert = signal("");
 const tabAlert = signal("all");
 const open = signal([]);
 const close = signal([]);
-const cal = signal({});
+export const cal = signal({});
 const viewNav = signal(false);
 const viewStateNav = signal([false, false]);
-
 const dataMeter = [];
-
 const dataAlert = [];
 
-const filterchart = signal({
+export const filterchart = signal({
   grid: {
     date: {
       productionData: true,
@@ -145,16 +147,15 @@ const filterchart = signal({
 export default function ProjectData(props) {
   const dataLang = useIntl();
   const lang = useSelector((state) => state.admin.lang);
-  const user = useSelector((state) => state.admin.usr);
-  // const [nav, setNav] = useState(projectData.value.plantmode === "grid" ? "production" : "graph");
   const [nav, setNav] = useState("production");
-  const [timeRemaining, setTimeRemaining] = useState(300000);
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
   const [dropState, setDropState] = useState(false);
   const [configname, setConfigname] = useState(dataLang.formatMessage({ id: "choosePara" }));
   const [dropConfig, setDropConfig] = useState(false);
-  // const [tempInverter, setTempInverter] = useState([]);
+  const [infoState, setInfoState] = useState(false);
+  const [popupAddGateway, setPopupAddGateway] = useState(false);
+
   const [dataDay, setDataDay] = useState([]);
   const [vDay, setVDay] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [vDay2, setVDay2] = useState(dataLang.formatMessage({ id: "unknown" }));
@@ -402,15 +403,16 @@ export default function ProjectData(props) {
         <>
           {ruleInfor.value.setting.project.modify === true ||
             ruleInfor.value.setting.project.delete === true ? (
-            <div className="DAT_TableEdit">
-              <span
-                id={row.sn + "_MORE"}
-                // onMouseEnter={(e) => handleModify(e, "block")}
-                onClick={(e) => handleModify(e, "block")}
-              >
-                <IoMdMore size={20} />
-              </span>
-            </div>
+            projectData.value.shared == 1 ? <></>
+              : <div className="DAT_TableEdit">
+                <span
+                  id={row.sn + "_MORE"}
+                  // onMouseEnter={(e) => handleModify(e, "block")}
+                  onClick={(e) => handleModify(e, "block")}
+                >
+                  <IoMdMore size={20} />
+                </span>
+              </div>
           ) : (
             <div></div>
           )}
@@ -505,9 +507,21 @@ export default function ProjectData(props) {
     },
   ];
 
+  const popup_state = {
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: 'rgba(11, 25, 103)' },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: 'rgba(11, 25, 103)' },
+  };
+
+  const handlePopup = (state) => {
+    const popup = document.getElementById("Popup_");
+    popup.style.transform = popup_state[state].transform;
+    popup.style.transition = popup_state[state].transition;
+    popup.style.color = popup_state[state].color;
+  };
+
   const handleInfoLogger = (e) => {
     setDropState(false);
-    infoState.value = true;
+    setInfoState(true);
     tab.value = "logger";
     let plantname = projectData.value.plantname;
     info.value = {
@@ -521,7 +535,7 @@ export default function ProjectData(props) {
 
   const handleInfoInverter = (e) => {
     setDropState(false);
-    infoState.value = true;
+    setInfoState(true);
     tab.value = "inverter";
     let plantname = projectData.value.plantname;
     info.value = {
@@ -531,8 +545,14 @@ export default function ProjectData(props) {
       pdata: inverterDB.value[0].data,
     };
     info.value.invt = invt[inverterDB.value[0].logger_];
-    // console.log(info.value)
-    // console.log(tempInverter)
+  };
+
+  const handleCloseInfo = () => {
+    setInfoState(false);
+  };
+
+  const handleClosePopupAddGateway = () => {
+    setPopupAddGateway(false);
   };
 
   const invtCloud = async (data, token) => {
@@ -1085,18 +1105,6 @@ export default function ProjectData(props) {
     setExportReport(false);
   }
 
-  const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: 'rgba(11, 25, 103)' },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: 'rgba(11, 25, 103)' },
-  };
-
-  const handlePopup = (state) => {
-    const popup = document.getElementById("Popup_");
-    popup.style.transform = popup_state[state].transform;
-    popup.style.transition = popup_state[state].transition;
-    popup.style.color = popup_state[state].color;
-  };
-
   const handleOutsideView = (e) => {
     setTimeout(() => {
       if (viewStateNav.value[1] == false) {
@@ -1435,7 +1443,7 @@ export default function ProjectData(props) {
     return () => {
       cal.value = {};
       tab_.value = "logger";
-      infoState.value = false;
+      // infoState.value = false;
     };
 
     // eslint-disable-next-line
@@ -1631,7 +1639,7 @@ export default function ProjectData(props) {
                 >
                   <button
                     id="add"
-                    onClick={() => (popupAddGateway.value = true)}
+                    onClick={() => setPopupAddGateway(true)}
                   >
                     <IoAddOutline size={25} color="white" />
                   </button>
@@ -1762,19 +1770,20 @@ export default function ProjectData(props) {
                 />
               </div>
               {ruleInfor.value.setting.device.add ? (
-                <div className="DAT_ProjectData_Header_Right_Add"
-                  style={{ display: view === "device" ? "block" : "none" }}
-                >
-                  <button
-                    id="add"
-                    onClick={() => {
-                      (popupAddGateway.value = true);
-                      (setDropState(false))
-                    }}
+                projectData.value.shared == 1 ? <></>
+                  : <div className="DAT_ProjectData_Header_Right_Add"
+                    style={{ display: view === "device" ? "block" : "none" }}
                   >
-                    <IoAddOutline size={25} color="white" />
-                  </button>
-                </div>
+                    <button
+                      id="add"
+                      onClick={() => {
+                        setPopupAddGateway(true);
+                        (setDropState(false))
+                      }}
+                    >
+                      <IoAddOutline size={25} color="white" />
+                    </button>
+                  </div>
               ) : (
                 <div></div>
               )}
@@ -1867,17 +1876,13 @@ export default function ProjectData(props) {
                               case "consumption":
                                 return (
                                   <>
-                                    {dataLang.formatMessage({
-                                      id: "consumptionType",
-                                    })}
+                                    {dataLang.formatMessage({ id: "consumptionType", })}
                                   </>
                                 );
                               case "hybrid":
                                 return (
                                   <>
-                                    {dataLang.formatMessage({
-                                      id: "hybridType",
-                                    })}
+                                    {dataLang.formatMessage({ id: "hybridType", })}
                                   </>
                                 );
                               case "ESS":
@@ -1895,7 +1900,6 @@ export default function ProjectData(props) {
                         </div>
                         <div className="DAT_ProjectData_Dashboard_Data_Center_Tit_Timer">
                           <CiClock1 size={13} color="13px" />
-                          {/* {minutes}:{seconds < 10 ? `0${seconds}` : seconds} */}
                         </div>
                       </div>
                       <Graph
@@ -2064,22 +2068,20 @@ export default function ProjectData(props) {
                       }
                     })()}
 
-                    <div
-                      className="DAT_ProjectData_Dashboard_History_SubConfig"
+                    <div className="DAT_ProjectData_Dashboard_History_SubConfig"
                       style={{
                         height: dropConfig ? "500px" : "0px",
                         transition: "0.5s",
                       }}
                     >
                       {dropConfig ? (
-                        <div
-                          className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
+                        <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
                           style={{
                             height: dropConfig ? "200px" : "0px",
                             transition: "0.5s",
                           }}
                         >
-                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
+                          <div lassName="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
                             {(() => {
                               switch (projectData.value.plantmode) {
                                 case "consumption":
@@ -3643,9 +3645,9 @@ export default function ProjectData(props) {
         })()}
       </div>
 
-      {popupAddGateway.value ? (
+      {popupAddGateway ? (
         <div className="DAT_AddGatewayPopup">
-          <AddGateway data={temp.value} handleInvt={handleInvt} />
+          <AddGateway data={temp.value} handleInvt={handleInvt} handleClose={handleClosePopupAddGateway} />
         </div>
       ) : (
         <></>
@@ -3681,10 +3683,8 @@ export default function ProjectData(props) {
             <div className="DAT_ProjectDataDrop">
               {view === "dashboard" ? (
                 <>
-                  <div
-                    className="DAT_ProjectDataDrop_Item"
+                  <div className="DAT_ProjectDataDrop_Item"
                     id="device"
-                    // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
                     onClick={(e) => handleView(e)}
                   >
                     {dataLang.formatMessage({ id: "device" })}
@@ -3692,10 +3692,8 @@ export default function ProjectData(props) {
                 </>
               ) : (
                 <>
-                  <div
-                    className="DAT_ProjectDataDrop_Item"
+                  <div className="DAT_ProjectDataDrop_Item"
                     id="dashboard"
-                    // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
                     onClick={(e) => handleView(e)}
                   >
                     {dataLang.formatMessage({ id: "monitor" })}
@@ -3712,9 +3710,7 @@ export default function ProjectData(props) {
           {dropState ? (
             <div className="DAT_ProjectDataDrop"
               style={{ display: viewNav.value ? "block" : "none" }}
-              onMouseEnter={() => {
-                viewStateNav.value = [true, true];
-              }}
+              onMouseEnter={() => { viewStateNav.value = [true, true]; }}
               onMouseLeave={() => {
                 viewNav.value = false;
                 viewStateNav.value = [false, false];
@@ -3722,10 +3718,8 @@ export default function ProjectData(props) {
             >
               {view === "dashboard" ? (
                 <>
-                  <div
-                    className="DAT_ProjectDataDrop_Item"
+                  <div className="DAT_ProjectDataDrop_Item"
                     id="device"
-                    // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
                     onClick={(e) => handleView(e)}
                   >
                     {dataLang.formatMessage({ id: "device" })}
@@ -3733,10 +3727,8 @@ export default function ProjectData(props) {
                 </>
               ) : (
                 <>
-                  <div
-                    className="DAT_ProjectDataDrop_Item"
+                  <div className="DAT_ProjectDataDrop_Item"
                     id="dashboard"
-                    // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
                     onClick={(e) => handleView(e)}
                   >
                     {dataLang.formatMessage({ id: "monitor" })}
@@ -3751,2431 +3743,9 @@ export default function ProjectData(props) {
       )}
 
       <div className="DAT_DeviceInfor"
-        style={{ height: infoState.value ? "100%" : "0px", transition: "0.5s" }}
+        style={{ height: infoState ? "100%" : "0px", transition: "0.5s" }}
       >
-        {infoState.value ? <Info /> : <></>}
-      </div>
-    </div>
-  );
-}
-
-// Thẻ Data
-const Graph = (props) => {
-  return (
-    <div className="DAT_ProjectData_Dashboard_Data_Center_Graph">
-      {(() => {
-        switch (props.type) {
-          case "grid":
-            return <GraphGrid cal={props.cal} />;
-          case "consumption":
-            return <GraphConsumption cal={cal.value} />;
-          case "hybrid":
-            return <GraphFull cal={cal.value} />;
-          case "ESS":
-            return <GraphFull cal={cal.value} />;
-          default:
-            <></>;
-        }
-      })()}
-    </div>
-  );
-};
-
-const GraphGrid = (props) => {
-  const [lineA_, setLinA] = useState("Default");
-
-  useEffect(() => {
-    if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
-      setLinA("moveLtoR");
-    } else {
-      setLinA("Default");
-    }
-  }, [props.cal.pro_1]);
-
-  const LineA = (props) => {
-    return (
-      <>
-        <path
-          className="path"
-          d="M 230.857 133.65 L 231.165 38.854 C 231.618 33.403 228.857 31.82 223.463 32.163 L 82.444 32.537"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: lineA_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(43, 195, 253)",
-            strokeWidth: props.strokeWidth,
-            strokeLinecap: "round",
-            overflow: "hidden",
-            strokeDasharray: lineA_ === "Default" ? "0" : "20",
-            animation: `${lineA_} ${props.dur} linear infinite`,
-          }}
-        />
-      </>
-    );
-  };
-
-  const LineB = (props) => {
-    return (
-      <>
-        <path
-          d="M 258.136 132.82 L 258.703 39.488 C 258.59 34.811 259.013 31.481 266.609 31.554 L 413.676 31.085"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: "rgba(43, 195, 253)",
-            strokeWidth: props.strokeWidth,
-            strokeLinecap: "round",
-            overflow: "hidden",
-          }}
-        />
-
-      </>
-    );
-  };
-
-  const LineD = (props) => {
-    return (
-      <>
-        <path
-          d="M 241.751 145.923 L 242.029 243.54"
-          width="100%"
-          height="100%"
-          style={{
-            fill: "none",
-            stroke: "rgba(43, 195, 253)",
-            strokeWidth: props.strokeWidth,
-            strokeLinecap: "round",
-            overflow: "hidden",
-          }}
-        />
-
-      </>
-    );
-  };
-
-  const Solar = (props) => {
-    return (
-      <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", gap: "10px", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px", padding: "5px", boxSizing: "border-box", backgroundColor: "white", overflow: "hidden" }}>
-        <img src={props.src} width={`${props.width}px`} height={`${props.height}px`} alt="" />
-        <div>
-          <div style={{ color: props.color }}>
-            {props.val}
-          </div>
-          <span style={{ color: "gray", fontSize: "13px" }}>{props.unit}</span>
-        </div>
-      </div>
-    );
-  };
-
-  const SolarImg = (props) => {
-    return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "10px", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px", padding: "5px", boxSizing: "border-box", backgroundColor: "white", overflow: "hidden" }}>
-        <img src={props.src} width={`${props.width}px`} height={`${props.height}px`} alt="" />
-      </div>
-    );
-  };
-
-  return (
-    <>
-      <svg
-        viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" width={"100%"} height={"100%"}
-        style={{
-          backgroundColor: "white"
-        }}
-      >
-        <LineA dur="10s" strokeWidth="3" />
-        <LineB dur="10s" strokeWidth="3" />
-        <LineD dur="10s" strokeWidth="3" />
-
-        <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/production.png" width="30" color="black" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
-        </foreignObject>
-
-        <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <SolarImg src="/dat_icon/consumption.png" width="30" height="30" />
-        </foreignObject>
-
-
-        <foreignObject x="193" y="233" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <SolarImg src="/dat_icon/grid.png" width="30" height="30" />
-        </foreignObject>
-
-        <foreignObject x="193" y="92" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", backgroundColor: "white", borderRadius: "3px" }}>
-            DC/AC
-          </div>
-        </foreignObject>
-      </svg>
-    </>
-  );
-};
-
-const GraphConsumption = (props) => {
-  const [lineA_, setLinA] = useState("Default");
-  const [lineB_, setLinB] = useState("Default");
-  const [lineD_, setLinD] = useState("Default");
-
-  useEffect(() => {
-    if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
-      setLinA("moveLtoR");
-    } else {
-      setLinA("Default");
-    }
-
-    if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
-      setLinB("moveRtoL");
-    } else {
-      setLinB("Default");
-    }
-
-    if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
-      setLinD("moveRtoL");
-    } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
-      setLinD("moveLtoR");
-    } else {
-      setLinD("Default");
-    }
-  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1]);
-
-  const LineA = (props) => {
-    return (
-      <>
-        <path
-          className="path"
-          d="M 230.857 133.65 L 231.165 38.854 C 231.618 33.403 228.857 31.82 223.463 32.163 L 82.444 32.537"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: lineA_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(43, 195, 253)",
-            strokeWidth: props.strokeWidth,
-            strokeLinecap: "round",
-            overflow: "hidden",
-            strokeDasharray: lineA_ === "Default" ? "0" : "20",
-            animation: `${lineA_} ${props.dur} linear infinite`,
-          }}
-        />
-      </>
-    );
-  };
-
-  const LineB = (props) => {
-    return (
-      <>
-        <path
-          d="M 258.136 132.82 L 258.703 39.488 C 258.59 34.811 259.013 31.481 266.609 31.554 L 413.676 31.085"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: lineB_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(247, 148, 29)",
-            strokeWidth: props.strokeWidth,
-            strokeLinecap: "round",
-            overflow: "hidden",
-            strokeDasharray: lineB_ === "Default" ? "0" : "20",
-            animation: `${lineB_}  ${props.dur} linear infinite`,
-
-          }}
-        />
-
-      </>
-    );
-  };
-
-  const LineD = (props) => {
-    return (
-      <>
-        <path
-          d="M 241.751 145.923 L 242.029 243.54"
-          width="100%"
-          height="100%"
-          style={{
-            fill: "none",
-            stroke: lineD_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(0, 163, 0)",
-            strokeWidth: props.strokeWidth,
-            strokeLinecap: "round",
-            overflow: "hidden",
-            strokeDasharray: lineD_ === "Default" ? "0" : "20",
-            animation: `${lineD_} ${props.dur} linear infinite`,
-          }}
-        />
-
-      </>
-    );
-  };
-
-  const Solar = (props) => {
-    return (
-      <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", gap: "10px", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px", padding: "5px", boxSizing: "border-box", backgroundColor: "white", overflow: "hidden" }}>
-        <img src={props.src} width={`${props.width}px`} height={`${props.height}px`} alt="" />
-        <div>
-          <div style={{ color: props.color }}>
-            {props.val}
-          </div>
-          <span style={{ color: "gray", fontSize: "13px" }}>{props.unit}</span>
-        </div>
-      </div>
-    );
-  };
-
-  return (
-    <>
-      <svg
-        viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" width={"100%"} height={"100%"}
-        style={{
-          backgroundColor: "white"
-        }}
-      >
-        <LineA dur="10s" />
-        <LineB dur="10s" />
-        <LineD dur="10s" />
-
-        <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
-        </foreignObject>
-
-        <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
-        </foreignObject>
-
-        <foreignObject x="193" y="233" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
-        </foreignObject>
-
-        <foreignObject x="193" y="92" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", backgroundColor: "white", borderRadius: "3px" }}>
-            DC/AC
-          </div>
-        </foreignObject>
-      </svg>
-    </>
-  );
-};
-
-const GraphFull = (props) => {
-  const [lineA_, setLinA] = useState("Default");
-  const [lineB_, setLinB] = useState("Default");
-  const [lineC_, setLinC] = useState("Default");
-  const [lineD_, setLinD] = useState("Default");
-
-  useEffect(() => {
-    if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
-      setLinA("moveLtoR");
-    } else {
-      setLinA("Default");
-    }
-
-    if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
-      setLinB("moveRtoL");
-    } else {
-      setLinB("Default");
-    }
-
-    if (parseFloat(props.cal?.bat_1 / 1000).toFixed(2) > 0) {
-      setLinC("moveRtoL");
-    } else if (parseFloat(props.cal?.bat_1 / 1000).toFixed(2) < 0) {
-      setLinC("moveLtoR");
-    } else {
-      setLinC("Default");
-    }
-
-    if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
-      setLinD("moveLtoR");
-    } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
-      setLinD("moveRtoL");
-    } else {
-      setLinD("Default");
-    }
-  }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1, props.cal.bat_1]);
-
-  const LineA = (props) => {
-    return (
-      <>
-        <path
-          className="path"
-          d="M 230.857 133.65 L 231.165 38.854 C 231.618 33.403 228.857 31.82 223.463 32.163 L 82.444 32.537"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: lineA_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(43, 195, 253)",
-            strokeWidth: props.strokeWidth,
-            strokeLinecap: "round",
-            overflow: "hidden",
-            strokeDasharray: lineA_ === "Default" ? "0" : "20",
-            animation: `${lineA_} ${props.dur} linear infinite`,
-          }}
-        />
-      </>
-    );
-  };
-
-  const LineB = (props) => {
-    return (
-      <>
-        <path
-          d="M 258.136 132.82 L 258.703 39.488 C 258.59 34.811 259.013 31.481 266.609 31.554 L 413.676 31.085"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: lineB_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(247, 148, 29)",
-            strokeWidth: props.strokeWidth,
-            strokeLinecap: "round",
-            overflow: "hidden",
-            strokeDasharray: lineB_ === "Default" ? "0" : "20",
-            animation: `${lineB_}  ${props.dur} linear infinite`,
-
-          }}
-        />
-
-      </>
-    );
-  };
-
-  const LineC = (props) => {
-    return (
-      <>
-        <path
-          className="path"
-          d="M 226.842 164.494 L 227.12 262.111 C 227.543 270.476 225.304 271.397 217.555 271.123 L 76.035 270.736"
-          style={{
-            width: "100%",
-            height: "100%",
-            fill: "none",
-            stroke: lineC_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(77, 255, 0)",
-            strokeWidth: props.strokeWidth,
-            strokeLinecap: "round",
-            overflow: "hidden",
-            strokeDasharray: lineC_ === "Default" ? "0" : "20",
-            animation: `${lineC_} ${props.dur} linear infinite`,
-
-          }}
-        />
-
-      </>
-    );
-  };
-
-  const LineD = (props) => {
-    return (
-      <>
-        <path
-          d="M 259.334 162.907 L 259.913 261.215 C 259.941 268.812 260.465 270.05 268.772 270.188 L 417.31 270.833"
-          width="100%"
-          height="100%"
-          style={{
-            fill: "none",
-            stroke: lineD_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(0, 163, 0)",
-            strokeWidth: props.strokeWidth,
-            strokeLinecap: "round",
-            overflow: "hidden",
-            strokeDasharray: lineD_ === "Default" ? "0" : "20",
-            animation: `${lineD_} ${props.dur} linear infinite`,
-          }}
-        />
-
-      </>
-    );
-  };
-
-  const Solar = (props) => {
-    return (
-      <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", gap: "10px", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px", padding: "5px", boxSizing: "border-box", backgroundColor: "white", overflow: "hidden" }}>
-        <img src={props.src} width={`${props.width}px`} height={`${props.height}px`} alt="" />
-        <div>
-          <div style={{ color: props.color }}>
-            {props.val}
-          </div>
-          <span style={{ color: "gray", fontSize: "13px" }}>{props.unit}</span>
-        </div>
-      </div>
-    );
-  };
-
-  return (
-    <>
-      <svg
-        viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" width={"100%"} height={"100%"}
-        style={{
-          backgroundColor: "white"
-        }}
-      >
-        <LineA dur="10s" strokeWidth="3" />
-        <LineB dur="10s" strokeWidth="3" />
-        <LineC dur="10s" strokeWidth="3" />
-        <LineD dur="10s" strokeWidth="3" />
-
-        <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
-        </foreignObject>
-
-        <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
-        </foreignObject>
-
-        <foreignObject x="5" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/bat.png" width="20" height="30" color={props.cal?.bat_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.bat_1) / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
-        </foreignObject>
-
-        <foreignObject x="395" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-          <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
-        </foreignObject>
-
-        <foreignObject x="193" y="112" width="102" height="68" style={{ overflow: "hidden", padding: "2px" }}>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", backgroundColor: "white", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px" }}>
-            DC/AC
-          </div>
-        </foreignObject>
-      </svg>
-    </>
-  );
-};
-
-const Production = (props) => {
-  const dataLang = useIntl();
-  const in_max = 100;
-  const in_min = 0;
-  const out_max = -10;
-  const out_min = 140;
-  const [per, setPer] = useState(0);
-
-  const mapValue = (data, in_min, in_max, out_min, out_max) => {
-    return (
-      ((data - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
-    );
-  };
-
-  useEffect(() => {
-    let result = parseFloat(((props.cal?.pro_1 / 1000 || 0) / projectData.value.capacity) * 100);
-
-    setPer(mapValue(result, in_min, in_max, out_min, out_max));
-  }, [props.cal.pro_1]);
-
-  const keyframes = `
-    @keyframes plant {
-      0% { background-position: -1200px ${parseFloat(
-    per
-  )}px, -800px ${per}px, -400px ${per}px}
-      100% { background-position: 200px ${parseFloat(
-    per
-  )}px;, 100x ${per}px, 0px ${per}px}
-    }`;
-
-  const divStyle = {
-    animationName: "plant",
-    animationDuration: "30s",
-    animationTimingFunction: "linear",
-    animationIterationCount: "infinite",
-  };
-
-  return (
-    <div className="DAT_ProjectData_Dashboard_Data_Center_Production">
-      <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data">
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart">
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data"
-            style={divStyle}
-          >
-            <style>{keyframes}</style>
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_num">
-                {Number(parseFloat(((props.cal?.pro_1 / 1000 || 0) / projectData.value.capacity) * 100).toFixed(2)).toLocaleString("en-US")}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Chart_Data_value_unit">
-                %
-              </div>
-            </div>
-          </div>
-
-          <div className="DAT_Home_Overview-Main-Percent-Icon"
-            style={{ cursor: "pointer" }}
-          >
-            <PopupState variant="popper" popupId="demo-popup-popper">
-              {(popupState) => (
-                <div style={{ cursor: "pointer" }}>
-                  <HelpOutlineIcon
-                    {...bindHover(popupState)}
-                    color="action"
-                    fontSize="9px"
-                  />
-                  <Popper {...bindPopper(popupState)} transition>
-                    {({ TransitionProps }) => (
-                      <Fade {...TransitionProps} timeout={350}>
-                        <Paper
-                          sx={{ width: "400px", marginLeft: "235px", p: 2 }}
-                        >
-                          <Typography
-                            sx={{
-                              fontSize: "12px",
-                              textAlign: "justify",
-                              marginBottom: 1.7,
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "overview1" })}
-                          </Typography>
-                          <Typography
-                            sx={{
-                              fontSize: "12px",
-                              textAlign: "justify",
-                              marginBottom: 1.7,
-                            }}
-                          >
-                            {dataLang.formatMessage({ id: "overview2" })}
-                          </Typography>
-                          <Typography
-                            sx={{ fontSize: "12px", textAlign: "justify" }}
-                          >
-                            {dataLang.formatMessage({ id: "overview3" })}
-                          </Typography>
-                        </Paper>
-                      </Fade>
-                    )}
-                  </Popper>
-                </div>
-              )}
-            </PopupState>
-          </div>
-        </div>
-
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Data_Detail">
-          <div style={{ marginBottom: "8px", color: "grey" }}>
-            {dataLang.formatMessage({ id: "production" })}
-          </div>
-          <div style={{ marginBottom: "8px" }}>
-            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(parseFloat(convertUnit((props.cal?.pro_1 || 0) / 1000)).toFixed(2)).toLocaleString("en-US")}
-            </span>
-            &nbsp;
-            <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnit((props.cal?.pro_1 || 0) / 1000)}W
-            </span>
-          </div>
-          <div
-            style={{
-              borderBottom: "solid 1px rgb(199, 199, 199)",
-              width: "50%",
-              marginBottom: "8px",
-            }}
-          />
-          <div style={{ marginBottom: "8px", color: "grey" }}>
-            {dataLang.formatMessage({ id: "inCapacity" })}
-          </div>
-          <div>
-            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(parseFloat(convertUnit(projectData.value.capacity)).toFixed(2)).toLocaleString("en-US")}
-            </span>
-            &nbsp;
-            <span style={{ fontSize: "12px", color: "grey" }}>
-              {showUnitk(projectData.value.capacity)}Wp
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total">
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left">
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item"
-            style={{ backgroundColor: "white" }}
-          >
-            <div>
-              <img src="/dat_icon/day.png" alt="" style={{ width: "35px", height: "35px" }} />
-            </div>
-            <div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Tit">
-                {dataLang.formatMessage({ id: "today" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_2 || 0)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_2 || 0)}Wh
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item"
-            style={{ backgroundColor: "white" }}
-          >
-            <div>
-              <img src="/dat_icon/year.png" alt="" style={{ width: "35px", height: "35px" }} />
-            </div>
-            <div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Tit">
-                {dataLang.formatMessage({ id: "year" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_year || 0))).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_year || 0)}Wh
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right">
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item"
-            style={{ backgroundColor: "white" }}
-          >
-            <div>
-              <img src="/dat_icon/month.png" alt="" style={{ width: "35px", height: "35px" }} />
-            </div>
-            <div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Tit">
-                {dataLang.formatMessage({ id: "month" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_month || 0))).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_month || 0)}Wh
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item"
-            style={{ backgroundColor: "white" }}
-          >
-            <div>
-              <img src="/dat_icon/total.png" alt="" style={{ width: "35px", height: "35px" }} />
-            </div>
-            <div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Tit">
-                {dataLang.formatMessage({ id: "total" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.pro_3 || 0))).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.pro_3 || 0)}Wh
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Consumption = (props) => {
-  const dataLang = useIntl();
-
-  return (
-    <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption">
-      <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data">
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data_Img">
-          <img src="/dat_icon/consumption.png" alt="" style={{ width: "35px", height: "35px" }} />
-        </div>
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Data_Data">
-          <span>{dataLang.formatMessage({ id: "consumption" })}</span>
-          &nbsp;
-          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {Number(parseFloat(convertUnit(props.cal?.con_1 || 0)).toFixed(2)).toLocaleString("en-US")}
-          </span>
-          &nbsp;
-          <span style={{ fontSize: "12px", color: "grey" }}>
-            {showUnitk(props.cal?.con_1 || 0)}W
-          </span>
-        </div>
-      </div>
-
-      <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total">
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left">
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item"
-            style={{ backgroundColor: "white" }}
-          >
-            <div>
-              <img src="/dat_icon/day.png" alt="" style={{ width: "35px", height: "35px" }} />
-            </div>
-            <div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
-                {dataLang.formatMessage({ id: "today" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.con_2 || 0)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.con_2 || 0)}Wh
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item"
-            style={{ backgroundColor: "white" }}
-          >
-            <div>
-              <img src="/dat_icon/year.png" alt="" style={{ width: "35px", height: "35px" }} />
-            </div>
-            <div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Tit">
-                {dataLang.formatMessage({ id: "year" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.con_year || 0)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.con_year || 0)}Wh
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right">
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
-            style={{ backgroundColor: "white" }}
-          >
-            <div>
-              <img src="/dat_icon/month.png" alt="" style={{ width: "35px", height: "35px" }} />
-            </div>
-            <div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
-                {dataLang.formatMessage({ id: "month" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.con_month || 0)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.con_month || 0)}Wh
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item"
-            style={{ backgroundColor: "white" }}
-          >
-            <div>
-              <img src="/dat_icon/total.png" alt="" style={{ width: "35px", height: "35px" }} />
-            </div>
-            <div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Tit">
-                {dataLang.formatMessage({ id: "total" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.con_total || 0)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.con_total || 0)}Wh
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Grid = (props) => {
-  const dataLang = useIntl();
-
-  return (
-    <div className="DAT_ProjectData_Dashboard_Data_Center_Grid">
-      <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data">
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Img">
-          <img src="/dat_icon/grid.png" alt="" style={{ width: "35px", height: "35px" }} />
-        </div>
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Data_Data">
-          <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
-          &nbsp;
-          <span style={{ fontWeight: "650", fontFamily: "sans-serif", color: props.cal?.grid_1 < 0 ? "red" : "black" }}>
-            {Number(parseFloat(convertUnit((Math.abs(props.cal?.grid_1 || 0)) / 1000)).toFixed(2)).toLocaleString("en-US")}
-          </span>
-          &nbsp;
-          <span style={{ fontSize: "12px", color: "grey" }}>
-            {showUnit(props.cal?.grid_1 || 0)}W
-          </span>
-        </div>
-      </div>
-
-      <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row">
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
-          style={{ backgroundColor: "white" }}
-        >
-          {isMobile.value ? (
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
-              style={{ borderBottom: "solid 1px rgba(198, 197, 197, 0.5)" }}
-            >
-              {dataLang.formatMessage({ id: "gridfeed" })}
-            </div>
-          ) : (
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
-              style={{ borderRight: "solid 1px rgba(198, 197, 197, 0.5)" }}
-            >
-              {dataLang.formatMessage({ id: "gridfeed" })}
-            </div>
-          )}
-
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "today" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_in_1 || 0)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_in_1 || 0)}Wh
-                </span>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "month" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_in_month || 0)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_in_month || 0)}Wh
-                </span>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "year" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_in_year || 0)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_in_year || 0)}Wh
-                </span>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "total" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_in_2 || 0)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_in_2 || 0)}Wh
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left"
-          style={{ backgroundColor: "white" }}
-        >
-          {isMobile.value ? (
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
-              style={{ borderBottom: "solid 1px rgba(198, 197, 197, 0.5)" }}
-            >
-              {dataLang.formatMessage({ id: "purchaseE" })}
-            </div>
-          ) : (
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Tit"
-              style={{ borderRight: "solid 1px rgba(198, 197, 197, 0.5)" }}
-            >
-              {dataLang.formatMessage({ id: "purchaseE" })}
-            </div>
-          )}
-
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "today" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_out_1 || 0)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_out_1 || 0)}Wh
-                </span>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "month" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_out_month || 0)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_out_month || 0)}Wh
-                </span>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "year" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_out_year || 0)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_out_year || 0)}Wh
-                </span>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "total" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.grid_out_2 || 0)).toFixed(2)).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.grid_out_2 || 0)}Wh
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Battery = (props) => {
-  const dataLang = useIntl();
-  const [state, setState] = useState(false);
-
-  useEffect(() => {
-    if (parseFloat(props.cal?.bat_1) > 0) {
-      setState(true);
-    } else {
-      setState(false);
-    }
-  }, [props.cal.bat_1]);
-
-  return (
-    <div className="DAT_ProjectData_Dashboard_Data_Center_Battery">
-      <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data">
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Img">
-          <img src="/dat_icon/bat.png" alt="" style={{ width: "25px", height: "35px" }} />
-        </div>
-
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Status">
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "center",
-              gap: "4px",
-            }}
-          >
-            <span>SoC:</span>
-            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {Number(parseFloat(props.cal?.bat_2 || 0).toFixed(2)).toLocaleString("en-US")}
-            </span>
-            <span style={{ fontSize: "12px", color: "grey" }}>%</span>
-          </div>
-          {state ? (
-            <FaArrowLeftLong color="green" size={30} />
-          ) : (
-            <FaArrowRightLong color="red" size={25} />
-          )}
-          <span style={{ fontSize: "13px" }}>
-            {state
-              ? dataLang.formatMessage({ id: "charge" })
-              : dataLang.formatMessage({ id: "discharge" })}
-          </span>
-        </div>
-
-        <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Data">
-          <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
-          &nbsp;
-          <span style={{ fontWeight: "650", fontFamily: "sans-serif", color: props.cal?.bat_1 < 0 ? "red" : "" }}>
-            {Number(parseFloat(convertUnit((Math.abs(props.cal?.bat_1 || 0)) / 1000)).toFixed(2) || 0).toLocaleString("en-US")}
-          </span>
-          &nbsp;
-          <span style={{ fontSize: "12px", color: "grey" }}>
-            {showUnit(props.cal?.bat_1 || 0)}W
-          </span>
-        </div>
-      </div>
-
-      <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row">
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
-          style={{ backgroundColor: "white" }}
-        >
-          {isMobile.value ? (
-            <div
-              className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
-              style={{ borderBottom: "solid 1px rgba(198, 197, 197, 0.5)" }}
-            >
-              {dataLang.formatMessage({ id: "charge" })}
-            </div>
-          ) : (
-            <div
-              className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
-              style={{ borderRight: "solid 1px rgba(198, 197, 197, 0.5)" }}
-            >
-              {dataLang.formatMessage({ id: "charge" })}
-            </div>
-          )}
-
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "today" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_in_1 || 0))).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_in_1 || 0)}Wh
-                </span>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "month" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_in_month || 0))).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_in_month || 0)}Wh
-                </span>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "year" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_in_year || 0))).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_in_year || 0)}Wh
-                </span>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "total" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_in_total || 0))).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_in_total || 0)}Wh
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left"
-          style={{ backgroundColor: "white" }}
-        >
-          {isMobile.value ? (
-            <div
-              className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
-              style={{ borderBottom: "solid 1px rgb(231, 231, 231)" }}
-            >
-              {dataLang.formatMessage({ id: "discharge" })}
-            </div>
-          ) : (
-            <div
-              className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Tit"
-              style={{ borderRight: "solid 1px rgb(231, 231, 231)" }}
-            >
-              {dataLang.formatMessage({ id: "discharge" })}
-            </div>
-          )}
-
-          <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data">
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "today" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_out_1 || 0))).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_out_1 || 0)}Wh
-                </span>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "month" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_out_month || 0))).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_out_month || 0)}Wh
-                </span>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "year" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_out_year || 0))).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_out_year || 0)}Wh
-                </span>
-              </div>
-            </div>
-
-            <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item">
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Tit">
-                {dataLang.formatMessage({ id: "total" })}
-              </div>
-              <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
-                <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                  {Number(parseFloat(convertUnit(props.cal?.bat_out_total || 0))).toLocaleString("en-US")}
-                </span>
-                &nbsp;
-                <span style={{ fontSize: "12px", color: "grey" }}>
-                  {showUnitk(props.cal?.bat_out_total || 0)}Wh
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Thẻ Chart
-const Day = (props) => {
-  const dataLang = useIntl();
-
-  useEffect(() => {
-    console.log(props.dateType);
-  }, []);
-
-  return (
-    <div className="DAT_ProjectData_Dashboard_History_Day">
-      <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
-        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Unit">
-          kW
-        </div>
-        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {/* {props.v}: {cal.value.pro_1} kW */}
-          {dataLang.formatMessage({ id: "production" })}:{" "}
-          {parseFloat(cal.value.pro_1 / 1000).toFixed(2)} kW
-        </div>
-      </div>
-      <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-        {(() => {
-          switch (projectData.value.plantmode) {
-            case "grid":
-              return (
-                <ResponsiveContainer
-                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                >
-                  <AreaChart width={100} height={500} data={props.data}>
-                    <defs>
-                      <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
-                        <stop
-                          offset="5%"
-                          stopColor="rgba(11,25,103)"
-                          stopOpacity={0.1}
-                        />
-                        <stop
-                          offset="90%"
-                          stopColor="rgba(11,25,103)"
-                          stopOpacity={0.1}
-                        />
-                      </linearGradient>
-                    </defs>
-                    <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      domain={[
-                        props.data.reduce((min, item) => {
-                          // console.log(item)
-                          const values = Object.values({
-                            x: item[props.v],
-                          });
-                          const currentMin = Math.min(...values.map(Number));
-                          // console.log(currentMax)
-                          return currentMin < min ? currentMin : min;
-                        }, Infinity),
-                        props.data.reduce((max, item) => {
-                          // console.log(item)/
-                          const values = Object.values({
-                            x: item[props.v],
-                          });
-                          const currentMax = Math.max(...values.map(Number));
-                          // console.log(currentMax)
-                          return currentMax > max ? currentMax : max;
-                        }, -Infinity),
-                      ]}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
-                      <Area
-                        type="monotone"
-                        dataKey={props.v}
-                        stroke="rgba(11,25,103,0.7)"
-                        fillOpacity={1}
-                        fill="rgba(11,25,103, 0.2)"
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </AreaChart>
-                </ResponsiveContainer>
-              );
-            case "consumption":
-
-              return (
-                <ResponsiveContainer
-                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                >
-                  <AreaChart width={100} height={500} data={props.data}>
-                    <defs>
-                      {/* <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
-                        <stop
-                          offset="5%"
-                          stopColor="rgba(11,25,103)"
-                          stopOpacity={0.1}
-                        />
-                        <stop
-                          offset="90%"
-                          stopColor="rgba(11,25,103)"
-                          stopOpacity={0.1}
-                        />
-                      </linearGradient>
-                      <linearGradient
-                        id="colorday2"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop offset="5%" stopColor="rgba(247, 148, 29)" stopOpacity={0.1} />
-                        <stop offset="90%" stopColor="rgba(247, 148, 29)" stopOpacity={0.1} />
-                      </linearGradient>
-                      <linearGradient
-                        id="colorday3"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop offset="5%" stopColor="rgba(0, 163, 0)" stopOpacity={0.1} />
-                        <stop offset="90%" stopColor="rgba(0, 163, 0)" stopOpacity={0.1} />
-                      </linearGradient>
-                      <linearGradient
-                        id="colorday4"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop
-                          offset="5%"
-                          stopColor="purple"
-                          stopOpacity={0.1}
-                        />
-                        <stop offset="90%" stopColor="purple" stopOpacity={0.1} />
-                      </linearGradient> */}
-                    </defs>
-                    <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      domain={[
-                        props.data.reduce((min, item) => {
-                          // console.log(item)
-                          const values = Object.values({
-                            x: item[props.v],
-                            y: item[props.v2],
-                            z: item[props.v3],
-                            t: item[props.v4],
-                          });
-                          const currentMin = Math.min(...values.map(Number));
-                          // console.log(currentMax)
-                          return currentMin < min ? currentMin : min;
-                        }, Infinity),
-                        props.data.reduce((max, item) => {
-                          // console.log(item)/
-                          const values = Object.values({
-                            x: item[props.v],
-                            y: item[props.v2],
-                            z: item[props.v3],
-                            t: item[props.v4],
-                          });
-                          const currentMax = Math.max(...values.map(Number));
-                          // console.log(currentMax)
-                          return currentMax > max ? currentMax : max;
-                        }, -Infinity),
-                      ]}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
-                      <Area
-                        type="monotone"
-                        dataKey={props.v}
-                        stroke="rgba(11,25,103,0.7)"
-                        fillOpacity={1}
-                        fill="rgba(11,25,103, 0.2)"
-                      />
-                    ) : (
-                      <></>
-                    )}
-
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].consumptionData ? (
-                      <Area
-                        type="monotone"
-                        dataKey={props.v2}
-                        stroke="rgba(247, 148, 29,0.7)"
-                        fillOpacity={1}
-                        fill="rgba(247, 148, 29, 0.2)"
-                      />
-                    ) : (
-                      <></>
-                    )}
-
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].gridData ? (
-                      <Area
-                        type="monotone"
-                        dataKey={props.v3}
-                        stroke="rgba(0, 163, 0,0.7)"
-                        fillOpacity={1}
-                        fill="rgba(0, 163, 0, 0.2)"
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].batteryData ? (
-                      <Area
-                        type="monotone"
-                        dataKey={props.v4}
-                        stroke="rgba(120, 90, 0,0.7)"
-                        fillOpacity={1}
-                        fill="rgba(196, 147, 2, 0.1)"
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </AreaChart>
-                </ResponsiveContainer>
-              );
-            case "hybrid":
-              return (
-                <ResponsiveContainer
-                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                >
-                  <AreaChart width={100} height={500} data={props.data}>
-                    <defs>
-                      {/* <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
-                        <stop
-                          offset="5%"
-                          stopColor="rgba(11,25,103)"
-                          stopOpacity={0.1}
-                        />
-                        <stop
-                          offset="90%"
-                          stopColor="rgba(11,25,103)"
-                          stopOpacity={0.1}
-                        />
-                      </linearGradient> */}
-                    </defs>
-                    <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      domain={[
-                        props.data.reduce((min, item) => {
-                          // console.log(item)
-                          const values = Object.values({
-                            x: item[props.v],
-                            y: item[props.v2],
-                            z: item[props.v3],
-                            t: item[props.v4],
-                          });
-                          const currentMin = Math.min(...values.map(Number));
-                          // console.log(currentMax)
-                          return currentMin < min ? currentMin : min;
-                        }, Infinity),
-                        props.data.reduce((max, item) => {
-                          // console.log(item)/
-                          const values = Object.values({
-                            x: item[props.v],
-                            y: item[props.v2],
-                            z: item[props.v3],
-                            t: item[props.v4],
-                          });
-                          const currentMax = Math.max(...values.map(Number));
-                          // console.log(currentMax)
-                          return currentMax > max ? currentMax : max;
-                        }, -Infinity),
-                      ]}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
-                      <Area
-                        type="monotone"
-                        dataKey={props.v}
-                        stroke="rgba(11,25,103,0.7)"
-                        fillOpacity={1}
-                        fill="rgba(11,25,103,0.2)"
-                      />
-                    ) : (
-                      <></>
-                    )}
-
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].consumptionData ? (
-                      <Area
-                        type="monotone"
-                        dataKey={props.v2}
-                        stroke="rgba(247, 148, 29,0.7)"
-                        fillOpacity={1}
-                        fill="rgba(247, 148, 29,0.2)"
-                      />
-                    ) : (
-                      <></>
-                    )}
-
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].gridData ? (
-                      <Area
-                        type="monotone"
-                        dataKey={props.v3}
-                        stroke="rgba(0, 163, 0,0.7)"
-                        fillOpacity={1}
-                        fill="rgba(0, 163, 0, 0.2)"
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].batteryData ? (
-                      <Area
-                        type="monotone"
-                        dataKey={props.v4}
-                        stroke="rgba(120, 90, 0,0.7)"
-                        fillOpacity={1}
-                        fill="rgba(196, 147, 2, 0.1)"
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </AreaChart>
-                </ResponsiveContainer>
-              );
-            default:
-              return <></>;
-          }
-        })()}
-      </div>
-    </div>
-  );
-};
-
-const Month = (props) => {
-  const dataLang = useIntl();
-
-  const TriangleBar = (props) => {
-    const { fill, x, y, width, height } = props;
-
-    return (
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        fill={props.fill}
-        rx="3"
-        ry="3"
-        opacity="1"
-      />
-    );
-  };
-
-  return (
-    <div className="DAT_ProjectData_Dashboard_History_Year">
-      <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
-        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Unit">
-          kWh
-        </div>
-        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {/* {props.v}: {cal.value.pro_month} kWh */}
-          {dataLang.formatMessage({ id: "monthOutput" })}: {cal.value.pro_month}{" "}
-          kWh
-        </div>
-      </div>
-      <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-        {(() => {
-          switch (projectData.value.plantmode) {
-            case "grid":
-              return (
-                <ResponsiveContainer
-                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                >
-                  <BarChart width={150} height={200} data={props.data}>
-                    <XAxis dataKey="date" axisLine={false} tickLine={false} />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      // domain={[0, Math.max(...props.data.map((item) => item[props.v]))]}
-                      domain={[
-                        0,
-                        props.data.reduce((max, item) => {
-                          // console.log(item)/
-                          const values = Object.values({
-                            x: item[props.v],
-                            // y: item[props.v2],
-                            // z: item[props.v3],
-                            // t: item[props.v4],
-                            // o: item[props.v5],
-                            // p: item[props.v6],
-                          });
-                          const currentMax = Math.max(...values.map(Number));
-                          // console.log(currentMax)
-                          return currentMax > max ? currentMax : max;
-                        }, -Infinity),
-                      ]}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    <Legend />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(11,25,103)" />}
-                        dataKey={props.v}
-                        fill="rgba(11,25,103)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(11,25,103)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </BarChart>
-                </ResponsiveContainer>
-              );
-            case "consumption":
-              return (
-                <ResponsiveContainer
-                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                >
-                  <BarChart width={150} height={200} data={props.data}>
-                    <XAxis dataKey="date" axisLine={false} tickLine={false} />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      // domain={[0, Math.max(...props.data.map((item) => item[props.v]))]}
-                      domain={[
-                        0,
-                        props.data.reduce((max, item) => {
-                          // console.log(item)/
-                          const values = Object.values({
-                            x: item[props.v],
-                            // y: item[props.v2],
-                            // z: item[props.v3],
-                            // t: item[props.v4],
-                            // o: item[props.v5],
-                            // p: item[props.v6],
-                          });
-                          const currentMax = Math.max(...values.map(Number));
-                          // console.log(currentMax)
-                          return currentMax > max ? currentMax : max;
-                        }, -Infinity),
-                      ]}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    <Legend />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(11,25,103)" />}
-                        dataKey={props.v}
-                        fill="rgba(11,25,103)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(11,25,103)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].consumptionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
-                        dataKey={props.v2}
-                        fill="rgba(97,88,194,0.8)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(97,88,194,0.8)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].dailygridin ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(247, 148, 29)" />}
-                        dataKey={props.v3}
-                        fill="rgba(247, 148, 29)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(247, 148, 29)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].dailygridout ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(0, 163, 0)" />}
-                        dataKey={props.v4}
-                        fill="rgba(0, 163, 0)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(0, 163, 0)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-
-                  </BarChart>
-                </ResponsiveContainer>
-              );
-            case "hybrid":
-              return (
-                <ResponsiveContainer
-                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                >
-                  <BarChart width={150} height={200} data={props.data}>
-                    <XAxis dataKey="date" axisLine={false} tickLine={false} />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      // domain={[0, Math.max(...props.data.map((item) => item[props.v]))]}
-                      domain={[
-                        0,
-                        props.data.reduce((max, item) => {
-                          // console.log(item)/
-                          const values = Object.values({
-                            x: item[props.v],
-                            // y: item[props.v2],
-                            // z: item[props.v3],
-                            // t: item[props.v4],
-                            // o: item[props.v5],
-                            // p: item[props.v6],
-                          });
-                          const currentMax = Math.max(...values.map(Number));
-                          // console.log(currentMax)
-                          return currentMax > max ? currentMax : max;
-                        }, -Infinity),
-                      ]}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    <Legend />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(11,25,103)" />}
-                        dataKey={props.v}
-                        fill="rgba(11,25,103)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(11,25,103)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].consumptionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
-                        dataKey={props.v2}
-                        fill="rgba(97,88,194,0.8)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(97,88,194,0.8)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].dailygridin ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(247, 148, 29)" />}
-                        dataKey={props.v3}
-                        fill="rgba(247, 148, 29)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(247, 148, 29)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].dailygridout ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(0, 163, 0)" />}
-                        dataKey={props.v4}
-                        fill="rgba(0, 163, 0)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(0, 163, 0)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].charge ? (
-                      <Bar
-                        shape={<TriangleBar fill="purple" />}
-                        dataKey={props.v5}
-                        fill="purple"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "purple" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].discharge ? (
-                      <Bar
-                        shape={<TriangleBar fill="grey" />}
-                        dataKey={props.v6}
-                        fill="grey"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "grey" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </BarChart>
-                </ResponsiveContainer>
-              );
-            default:
-              return <></>;
-          }
-        })()}
-      </div>
-    </div>
-  );
-};
-
-const Year = (props) => {
-  const dataLang = useIntl();
-
-  const TriangleBar = (props) => {
-    const { fill, x, y, width, height } = props;
-
-    return (
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        fill={props.fill}
-        rx="3"
-        ry="3"
-        opacity="1"
-      />
-    );
-  };
-
-  return (
-    <div className="DAT_ProjectData_Dashboard_History_Year">
-      <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
-        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Unit">
-          kWh
-        </div>
-        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {/* {props.v}: {cal.value.pro_year} kWh */}
-          {dataLang.formatMessage({ id: "yearOutput" })}: {cal.value.pro_year}{" "}
-          kWh
-        </div>
-      </div>
-      <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-        {(() => {
-          switch (projectData.value.plantmode) {
-            case "grid":
-              return (
-                <ResponsiveContainer
-                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                >
-                  <BarChart width={150} height={200} data={props.data}>
-                    <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      domain={[
-                        0,
-                        Math.max(...props.data.map((item) => item[props.v])),
-                      ]}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    <Legend />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(11,25,103)" />}
-                        dataKey={props.v}
-                        fill="rgba(11,25,103)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(11,25,103)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </BarChart>
-                </ResponsiveContainer>
-              );
-            case "consumption":
-              return (
-                <ResponsiveContainer
-                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                >
-                  <BarChart width={150} height={200} data={props.data}>
-                    <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      domain={[
-                        0,
-                        Math.max(...props.data.map((item) => item[props.v])),
-                      ]}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    <Legend />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(11,25,103)" />}
-                        dataKey={props.v}
-                        fill="rgba(11,25,103)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(11,25,103)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].consumptionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
-                        dataKey={props.v2}
-                        fill="rgba(97,88,194,0.8)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(97,88,194,0.8)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].dailygridin ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(247, 148, 29)" />}
-                        dataKey={props.v3}
-                        fill="rgba(247, 148, 29)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(247, 148, 29)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].dailygridout ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(0, 163, 0)" />}
-                        dataKey={props.v4}
-                        fill="rgba(0, 163, 0)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(0, 163, 0)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </BarChart>
-                </ResponsiveContainer>
-              );
-            case "hybrid":
-              return (
-                <ResponsiveContainer
-                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                >
-                  <BarChart width={150} height={200} data={props.data}>
-                    <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      domain={[
-                        0,
-                        Math.max(...props.data.map((item) => item[props.v])),
-                      ]}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    <Legend />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(11,25,103)" />}
-                        dataKey={props.v}
-                        fill="rgba(11,25,103)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(11,25,103)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].consumptionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
-                        dataKey={props.v2}
-                        fill="rgba(97,88,194,0.8)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(97,88,194,0.8)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].dailygridin ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(247, 148, 29)" />}
-                        dataKey={props.v3}
-                        fill="rgba(247, 148, 29)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(247, 148, 29)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].dailygridout ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(0, 163, 0)" />}
-                        dataKey={props.v4}
-                        fill="rgba(0, 163, 0)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(0, 163, 0)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].charge ? (
-                      <Bar
-                        shape={<TriangleBar fill="purple" />}
-                        dataKey={props.v5}
-                        fill="purple"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "purple" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].discharge ? (
-                      <Bar
-                        shape={<TriangleBar fill="grey" />}
-                        dataKey={props.v6}
-                        fill="grey"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "grey" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </BarChart>
-                </ResponsiveContainer>
-              );
-            default:
-              return <></>;
-          }
-        })()}
-      </div>
-    </div>
-  );
-};
-
-const Total = (props) => {
-  const dataLang = useIntl();
-
-  const TriangleBar = (props) => {
-    const { fill, x, y, width, height } = props;
-
-    return (
-      <rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        fill={props.fill}
-        rx="3"
-        ry="3"
-        opacity="1"
-      />
-    );
-  };
-
-  return (
-    <div className="DAT_ProjectData_Dashboard_History_Year">
-      <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
-        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Unit">
-          MWh
-        </div>
-        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {/* {props.v}: {cal.value.pro_total} kWh */}
-          {props.v}: {cal.value.pro_total} kWh
-        </div>
-      </div>
-      <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
-        {(() => {
-          switch (projectData.value.plantmode) {
-            case "grid":
-              return (
-                <ResponsiveContainer
-                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                >
-                  <BarChart width={150} height={200} data={props.data}>
-                    <XAxis dataKey="year" axisLine={false} tickLine={false} />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      domain={[
-                        0,
-                        Math.max(...props.data.map((item) => item[props.v])),
-                      ]}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    <Legend />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(11,25,103)" />}
-                        dataKey={props.v}
-                        fill="rgba(11,25,103)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(11,25,103)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </BarChart>
-                </ResponsiveContainer>
-              );
-            case "consumption":
-              return (
-                <ResponsiveContainer
-                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                >
-                  <BarChart width={150} height={200} data={props.data}>
-                    <XAxis dataKey="year" axisLine={false} tickLine={false} />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      domain={[
-                        0,
-                        Math.max(...props.data.map((item) => item[props.v])),
-                      ]}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    <Legend />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(11,25,103)" />}
-                        dataKey={props.v}
-                        fill="rgba(11,25,103)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(11,25,103)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].consumptionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
-                        dataKey={props.v2}
-                        fill="rgba(97,88,194,0.8)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(97,88,194,0.8)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].dailygridin ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(247, 148, 29)" />}
-                        dataKey={props.v3}
-                        fill="rgba(247, 148, 29)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(247, 148, 29)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].dailygridout ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(0, 163, 0)" />}
-                        dataKey={props.v4}
-                        fill="rgba(0, 163, 0)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(0, 163, 0)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </BarChart>
-                </ResponsiveContainer>
-              );
-            case "hybrid":
-              return (
-                <ResponsiveContainer
-                  style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                >
-                  <BarChart width={150} height={200} data={props.data}>
-                    <XAxis dataKey="year" axisLine={false} tickLine={false} />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      domain={[
-                        0,
-                        Math.max(...props.data.map((item) => item[props.v])),
-                      ]}
-                    />
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    <Legend />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(11,25,103)" />}
-                        dataKey={props.v}
-                        fill="rgba(11,25,103)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(11,25,103)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].consumptionData ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
-                        dataKey={props.v2}
-                        fill="rgba(97,88,194,0.8)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(97,88,194,0.8)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].dailygridin ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(247, 148, 29)" />}
-                        dataKey={props.v3}
-                        fill="rgba(247, 148, 29)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(247, 148, 29)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].dailygridout ? (
-                      <Bar
-                        shape={<TriangleBar fill="rgba(0, 163, 0)" />}
-                        dataKey={props.v4}
-                        fill="rgba(0, 163, 0)"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "rgba(0, 163, 0)" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].charge ? (
-                      <Bar
-                        shape={<TriangleBar fill="purple" />}
-                        dataKey={props.v5}
-                        fill="purple"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "purple" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].discharge ? (
-                      <Bar
-                        shape={<TriangleBar fill="grey" />}
-                        dataKey={props.v6}
-                        fill="grey"
-                        barSize={15}
-                        legendType="circle"
-                        style={{ fill: "grey" }}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </BarChart>
-                </ResponsiveContainer>
-              );
-            default:
-              return <></>;
-          }
-        })()}
+        {infoState ? <Info handleClose={handleCloseInfo} /> : <></>}
       </div>
     </div>
   );

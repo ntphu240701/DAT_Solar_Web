@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Report.scss";
 
 import { signal } from "@preact/signals-react";
@@ -16,29 +16,37 @@ import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdOutlinePostAdd } from "react-icons/md";
 
-export const createState = signal(false);
-export const editState = signal(false);
-export const popupStateReport = signal(false);
 export const editData = signal({});
 export const idReport = signal(0);
 export const lastID = signal(2);
-
 export const ReportData = signal([]);
 
 export default function Report(props) {
-  //DataLang
   const dataLang = useIntl();
-
-  //DAT_MASTER
   const usr = useSelector((state) => state.admin.usr);
+  const [createState, setCreateState] = useState(false);
+  const [editState, setEditState] = useState(false);
+  const [popupState, setPopupState] = useState(false);
+
+  const handleCloseCreate = () => {
+    setCreateState(false);
+  };
+
+  const handleCloseEdit = () => {
+    setEditState(false);
+  };
+
+  const handleCloseDel = () => {
+    setPopupState(false);
+  };
 
   const handleDeleteReport = (e) => {
-    popupStateReport.value = true;
+    setPopupState(true);
     idReport.value = e.currentTarget.id;
   };
 
   const handleEditReport = (e) => {
-    editState.value = true;
+    setEditState(true);
     editData.value = ReportData.value.find(
       (item) => item.id == e.currentTarget.id
     ); //[{},{},{},{}] filrter [{}], find =>{}
@@ -58,10 +66,6 @@ export default function Report(props) {
     getReport()
   }, [])
 
-  useEffect(() => {
-    console.log(ReportData.value);
-  }, [ReportData.value]);
-
   return (
     <>
       <div className="DAT_ReportHeader">
@@ -72,7 +76,7 @@ export default function Report(props) {
         {ruleInfor.value.setting.report.add ? (
           <button
             className="DAT_ReportHeader_New"
-            onClick={() => (createState.value = true)}
+            onClick={() => setCreateState(true)}
           >
             <span>
               <MdOutlinePostAdd color="white" size={20} />
@@ -104,7 +108,6 @@ export default function Report(props) {
                   {ruleInfor.value.setting.report.modify ? (
                     <div
                       className="DAT_Report_List_Form_Custom_Edit"
-                      // onClick={() => (editState.value = true)}
                       id={item.id}
                       onClick={(e) => handleEditReport(e)}
                     >
@@ -118,9 +121,6 @@ export default function Report(props) {
                   ) : (
                     <div></div>
                   )}
-                  {/* <div className="DAT_Report_List_Form_Custom_Report">
-                    <HiOutlineDocumentReport color="green" size={20} />
-                  </div> */}
                   {ruleInfor.value.setting.report.modify ? (
                     <div
                       className="DAT_Report_List_Form_Custom_Remove"
@@ -145,25 +145,25 @@ export default function Report(props) {
 
       <div className="DAT_ReportCreate"
         style={{
-          height: createState.value ? "100vh" : "0px",
+          height: createState ? "100vh" : "0px",
           transition: "0.5s",
         }}
       >
-        {createState.value ? <Create /> : <></>}
+        {createState ? <Create handleClose={handleCloseCreate} /> : <></>}
       </div>
 
       <div className="DAT_ReportEdit"
         style={{
-          height: editState.value ? "100vh" : "0px",
+          height: editState ? "100vh" : "0px",
           transition: "0.5s",
         }}
       >
-        {editState.value ? <ReportEdit /> : <></>}
+        {editState ? <ReportEdit handleClose={handleCloseEdit} /> : <></>}
       </div>
 
-      {popupStateReport.value ? (
+      {popupState ? (
         <div className="DAT_ReportPopup">
-          <Popup />
+          <Popup handleClose={handleCloseDel} />
         </div>
       ) : (
         <></>

@@ -12,6 +12,7 @@ import { callApi } from "../Api/Api";
 import { partnerInfor } from "../../App";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
+import { datarule } from "../Rule/Rule";
 
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
@@ -20,12 +21,9 @@ import { RxCross2 } from "react-icons/rx";
 import { IoMdMore } from "react-icons/io";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { LuUserSquare } from "react-icons/lu";
-import { datarule } from "../Rule/Rule";
 import { FiEdit } from "react-icons/fi";
 
 export const roleData = signal({});
-export const roleState = signal("default");
-export const popupState = signal("default");
 export const Usr_ = signal([]);
 
 export default function Role(props) {
@@ -33,6 +31,8 @@ export default function Role(props) {
   const [temp, setTemp] = useState();
   const [filter, setFilter] = useState(false);
   const [datafilter, setdatafilter] = useState([]);
+  const [roleState, setRoleState] = useState("default");
+  const [popupState, setPopupState] = useState("default");
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: "row" }),
@@ -149,15 +149,23 @@ export default function Role(props) {
     },
   ];
 
+  const handleCloseCreate = () => {
+    setRoleState("default");
+  };
+
   const handleDelete_ = (e) => {
-    popupState.value = "delete";
+    setPopupState("delete");
     setTemp(e.currentTarget.id);
   };
 
   const handleEdit = (e) => {
-    popupState.value = "edit";
+    setPopupState("edit");
     const id = e.currentTarget.id;
     roleData.value = Usr_.value.find((item) => item.id_ == id);
+  };
+
+  const handleClosePopup = () => {
+    setPopupState("default");
   };
 
   const handleModify = (e, type) => {
@@ -233,7 +241,7 @@ export default function Role(props) {
               </div>
               <div
                 className="DAT_Modify_Add"
-                onClick={() => (roleState.value = "create")}
+                onClick={() => setRoleState("create")}
               >
                 <IoAddOutline color="white" size={20} />
               </div>
@@ -270,7 +278,7 @@ export default function Role(props) {
             </div>
             <button
               className="DAT_RoleHeader_New"
-              onClick={() => (roleState.value = "create")}
+              onClick={() => setRoleState("create")}
             >
               <span>
                 <AiOutlineUserAdd color="white" size={20} />
@@ -308,7 +316,7 @@ export default function Role(props) {
                         </div>
                         <div
                           className="DAT_RoleMobile_Content_Item_Row_Right_Item"
-                          onClick={() => (popupState.value = "delete")}
+                          onClick={() => setPopupState("delete")}
                         >
                           <MdDelete size={20} color="red" />
                         </div>
@@ -371,14 +379,14 @@ export default function Role(props) {
 
       <div className="DAT_RoleInfor"
         style={{
-          height: roleState.value === "default" ? "0px" : "100vh",
+          height: roleState === "default" ? "0px" : "100vh",
           transition: "0.5s",
         }}
       >
         {(() => {
-          switch (roleState.value) {
+          switch (roleState) {
             case "create":
-              return <CreateRole />;
+              return <CreateRole handleClose={handleCloseCreate} />;
             default:
               return <></>;
           }
@@ -387,15 +395,15 @@ export default function Role(props) {
 
       <div className="DAT_RolePopup"
         style={{
-          height: popupState.value === "default" ? "0px" : "100vh",
+          height: popupState === "default" ? "0px" : "100vh",
         }}
       >
         {(() => {
-          switch (popupState.value) {
+          switch (popupState) {
             case "delete":
-              return <DeleteRole user={temp} />;
+              return <DeleteRole user={temp} handleClose={handleClosePopup} />;
             case "edit":
-              return <EditRole />;
+              return <EditRole handleClose={handleClosePopup} />;
             default:
               return <></>;
           }
