@@ -20,6 +20,7 @@ export default function ErrorSetting(props) {
     const [editState, setEditState] = useState(false);
     const [editType, setEditType] = useState("");
     const [removeState, setRemoveState] = useState(false);
+    const [removeType, setRemoveType] = useState("");
 
     const paginationComponentOptions = {
         rowsPerPageText: dataLang.formatMessage({ id: 'row' }),
@@ -91,13 +92,14 @@ export default function ErrorSetting(props) {
                                     <FiEdit
                                         size={16}
                                         style={{ cursor: "pointer" }}
-                                        id={`${err.boxid}_${err.id}_EDITCAUSE`}
+                                        id={`${row.boxid}_${err.id}_EDITCAUSE`}
                                         onClick={(e) => handleEdit(e)}
                                     />
                                     <IoTrashOutline
                                         size={16}
                                         style={{ cursor: "pointer" }}
-                                        id={`${err.boxid}_${err.id}_REMOVECAUSE`}
+                                        id={`${row.boxid}_${err.id}_REMOVECAUSE`}
+                                        onClick={(e) => handleDelete(e)}
                                     />
                                     {parseInt(index) === cause.length - 1 ?
                                         <IoIosAddCircleOutline
@@ -142,19 +144,20 @@ export default function ErrorSetting(props) {
                                     <FiEdit
                                         size={16}
                                         style={{ cursor: "pointer" }}
-                                        id={`${err.boxid}_${err.id}_EDITSOLUTION`}
+                                        id={`${row.boxid}_${err.id}_EDITSOLUTION`}
                                         onClick={(e) => handleEdit(e)}
                                     />
                                     <IoTrashOutline
                                         size={16}
                                         style={{ cursor: "pointer" }}
-                                        id={`${err.boxid}_${err.id}_REMOVESOLUTION`}
+                                        id={`${row.boxid}_${err.id}_REMOVESOLUTION`}
+                                        onClick={(e) => handleDelete(e)}
                                     />
                                     {parseInt(index) === solution.length - 1 ?
                                         <IoIosAddCircleOutline
                                             size={16}
                                             style={{ cursor: "pointer" }}
-                                            id={`${err.boxid}_${err.id}_ADDSOLUTION`}
+                                            id={`${row.boxid}_${err.id}_ADDSOLUTION`}
                                         /> : <></>
                                     }
                                 </div>
@@ -203,7 +206,7 @@ export default function ErrorSetting(props) {
                         </div> */}
                         <div
                             className="DAT_ModifyBox_Remove"
-                            id={row.usr_}
+                            id={row.boxid}
                             onClick={(e) => handleDelete(e)}
                         >
                             <IoTrashOutline size={16} />
@@ -246,6 +249,8 @@ export default function ErrorSetting(props) {
     };
 
     const handleDelete = (e) => {
+        let arr = e.currentTarget.id.split("_");
+        setRemoveType(arr[4]);
         setRemoveState(true);
     };
 
@@ -326,7 +331,7 @@ export default function ErrorSetting(props) {
                     transition: "0.5s",
                 }}
             >
-                {removeState ? <RemoveErr handleClose={handleCloseRemove} /> : <></>}
+                {removeState ? <RemoveErr type={removeType} handleClose={handleCloseRemove} /> : <></>}
             </div>
         </>
     );

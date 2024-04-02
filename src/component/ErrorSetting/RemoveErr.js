@@ -43,9 +43,28 @@ export default function RemoveErr(props) {
                 </div>
             </div>
 
-            <div className="DAT_RemoveErr_Body">
-                <span>Bạn có chắc xóa lỗi này không ?</span>
-            </div>
+            {(() => {
+                switch (props.type) {
+                    case "REMOVECAUSE":
+                        return (
+                            <div className="DAT_RemoveErr_Body">
+                                <span>Bạn có chắc xóa nguyên nhân này không ?</span>
+                            </div>
+                        )
+                    case "REMOVESOLUTION":
+                        return (
+                            <div className="DAT_RemoveErr_Body">
+                                <span>Bạn có chắc xóa biện pháp này không ?</span>
+                            </div>
+                        )
+                    default:
+                        return (
+                            <div className="DAT_RemoveErr_Body">
+                                <span>Bạn có chắc xóa lỗi này không ?</span>
+                            </div>
+                        )
+                }
+            })()}
 
             <div className="DAT_RemoveErr_Foot">
                 <button
