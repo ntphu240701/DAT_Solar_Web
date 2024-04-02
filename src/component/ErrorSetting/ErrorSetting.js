@@ -53,7 +53,7 @@ export default function ErrorSetting(props) {
             width: "50px",
             style: {
                 justifyContent: "left",
-                height: "auto",
+                height: "auto !important",
             }
         },
         {
@@ -114,7 +114,7 @@ export default function ErrorSetting(props) {
                 )
             },
             style: {
-                height: "auto",
+                height: "auto !important",
             }
         },
         //SOLUTION
@@ -122,7 +122,6 @@ export default function ErrorSetting(props) {
             name: "Solution (Vi-En)",
             selector: (row) => {
                 let solution = row.solution.sort((a, b) => a.id - b.id);
-
                 return (
                     <div style={{ height: "auto" }}>
                         {solution.map((err, index) => {
@@ -215,7 +214,7 @@ export default function ErrorSetting(props) {
             ),
             width: "100px",
             style: {
-                height: "auto",
+                height: "auto !important",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
