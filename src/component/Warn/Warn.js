@@ -66,7 +66,7 @@ export default function Warn(props) {
       width: "80px",
     },
     {
-      name: dataLang.formatMessage({ id: "errcode" }),
+      name: dataLang.formatMessage({ id: "errname" }),
       selector: (row) =>
         <div style={{ cursor: "pointer" }}
           onClick={(e) => handleInfo(e)}
