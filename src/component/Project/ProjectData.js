@@ -403,15 +403,16 @@ export default function ProjectData(props) {
         <>
           {ruleInfor.value.setting.project.modify === true ||
             ruleInfor.value.setting.project.delete === true ? (
-            <div className="DAT_TableEdit">
-              <span
-                id={row.sn + "_MORE"}
-                // onMouseEnter={(e) => handleModify(e, "block")}
-                onClick={(e) => handleModify(e, "block")}
-              >
-                <IoMdMore size={20} />
-              </span>
-            </div>
+            projectData.value.shared == 1 ? <></>
+              : <div className="DAT_TableEdit">
+                <span
+                  id={row.sn + "_MORE"}
+                  // onMouseEnter={(e) => handleModify(e, "block")}
+                  onClick={(e) => handleModify(e, "block")}
+                >
+                  <IoMdMore size={20} />
+                </span>
+              </div>
           ) : (
             <div></div>
           )}
@@ -1769,19 +1770,20 @@ export default function ProjectData(props) {
                 />
               </div>
               {ruleInfor.value.setting.device.add ? (
-                <div className="DAT_ProjectData_Header_Right_Add"
-                  style={{ display: view === "device" ? "block" : "none" }}
-                >
-                  <button
-                    id="add"
-                    onClick={() => {
-                      setPopupAddGateway(true);
-                      (setDropState(false))
-                    }}
+                projectData.value.shared == 1 ? <></>
+                  : <div className="DAT_ProjectData_Header_Right_Add"
+                    style={{ display: view === "device" ? "block" : "none" }}
                   >
-                    <IoAddOutline size={25} color="white" />
-                  </button>
-                </div>
+                    <button
+                      id="add"
+                      onClick={() => {
+                        setPopupAddGateway(true);
+                        (setDropState(false))
+                      }}
+                    >
+                      <IoAddOutline size={25} color="white" />
+                    </button>
+                  </div>
               ) : (
                 <div></div>
               )}
