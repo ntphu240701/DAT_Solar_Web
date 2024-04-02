@@ -354,183 +354,106 @@ export default function Home(props) {
   const handleChart = (date) => {
     if (chart == "month") {
       setD({ ...d, month: moment(date).format("MM/YYYY") });
+      let arr = moment(date).format("MM/YYYY").split("/");
+      const daysInMonth = new Date(arr[1], arr[0], 0).getDate();
+      let datamonth_ = [];
+      for (let i = 1; i <= daysInMonth; i++) {
+        datamonth_ = [
+          ...datamonth_,
+          {
+            date: i < 10 ? `0${i}` : `${i}`,
+            [dataLang.formatMessage({ id: "monthOutput" })]: 0,
+          },
+        ];
+      }
+      let sum_month = [];
+      plant.value.map(async (item_plant, i) => {
+        let chart = await callApi("post", host.DATA + "/getMonthChart", {
+          plantid: item_plant.plantid_,
+          month: moment(date).format("MM/YYYY"),
+        });
 
-      // const currentDate = new Date();
-      // const currentMonth = currentDate.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
-      // const currentYear = currentDate.getFullYear();
-      // const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+        if (chart.status) {
+          if (item_plant.state === 1) {
+            sum_month[i] = chart.data.data
+              .map((item) => item.value)
+              .reduce((a, b) => Number(a) + Number(b), 0);
+            chart.data.data.map((item, j) => {
+              let index = datamonth_.findIndex((d) => d.date == item.date);
+              datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })] =
+                parseFloat(
+                  Number(
+                    datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })]
+                  ) + Number(item.value)
+                ).toFixed(2);
+            });
+          } else {
+            sum_month[i] = 0
+          }
+        } else {
+          sum_month[i] = 0;
+        }
 
-      // let datamonth_ = [];
-      // for (let i = 1; i <= daysInMonth; i++) {
-      //   datamonth_ = [
-      //     ...datamonth_,
-      //     {
-      //       date: i < 10 ? `0${i}` : `${i}`,
-      //       [dataLang.formatMessage({ id: "monthOutput" })]: 0,
-      //     },
-      //   ];
-      // }
-      plant.value.map((item, i) => {
-        const getMonth = async () => {
-          const d = await callApi("post", host.DATA + "/getMonthChart", {
-            plantid: item.plantid_,
-            month: moment(date).format("MM/YYYY"),
-          });
-          console.log(d);
-          //     if (d.status) {
-          //       // let arr = moment(date).format("MM/YYYY").split("/");
-          //       // const daysInMonth = new Date(arr[1], arr[0], 0).getDate();
-
-          //       const currentDate = new Date();
-          //       const currentMonth = currentDate.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
-          //       const currentYear = currentDate.getFullYear();
-          //       const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
-          //       let datamonth_ = [];
-          //       for (let i = 1; i <= daysInMonth; i++) {
-          //         datamonth_ = [
-          //           ...datamonth_,
-          //           {
-          //             date: i < 10 ? `0${i}` : `${i}`,
-          //             [dataLang.formatMessage({ id: "monthOutput" })]: 0,
-          //           },
-          //         ];
-          //       }
-
-          //       console.log(datamonth_);
-
-          //       //       if (item.state === 1) {
-          //       //         sum_month[i] = d.data.data
-          //       //           .map((item) => item.value)
-          //       //           .reduce((a, b) => Number(a) + Number(b), 0);
-          //       //         d.data.data.map((item, j) => {
-          //       //           let index = datamonth_.findIndex((d) => d.date == item.date);
-          //       //           datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })] =
-          //       //             parseFloat(
-          //       //               Number(
-          //       //                 datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })]
-          //       //               ) + Number(item.value)
-          //       //             ).toFixed(2);
-          //       //         });
-          //       //       } else {
-          //       //         sum_month[i] = 0
-          //       //       }
-          //       //     } else {
-          //       //       sum_month[i] = 0;
-          //       //     }
-          //       //     if (i == plant.value.length - 1) {
-          //       //       let total_month = parseFloat(
-          //       //         sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-          //       //       ).toFixed(2);
-          //       //       setMonthlyProduction(total_month);
-
-          //       //       // let total_year = parseFloat(
-          //       //       //   sum_year.reduce((a, b) => Number(a) + Number(b), 0)
-          //       //       // ).toFixed(2);
-          //       //       // setYearlyProduction(total_year);
-
-          //       //       // let total = parseFloat(
-          //       //       //   cap.reduce((a, b) => Number(a) + Number(b), 0)
-          //       //       // ).toFixed(2);
-          //       //       // setCapacity(total);
-
-          //       //       setDatamonth(datamonth_);
-          //       //       // setDatayear(datayear_);
-          //     }
-        };
-        getMonth();
+        if (i == plant.value.length - 1) {
+          let total_month = parseFloat(
+            sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+          ).toFixed(2);
+          setMonthlyProduction(total_month);
+          setDatamonth(datamonth_);
+        }
       });
     }
     else if (chart === "year") {
       setD({ ...d, year: moment(date).format("YYYY") });
 
-      //   const getYear = async () => {
-      //     const d = await callApi("post", host.DATA + "/getYearChart", {
-      //       plantid: projectData.value.plantid_,
-      //       year: moment(date).format("YYYY"),
-      //     });
+      let datayear_ = [];
+      for (let i = 1; i <= 12; i++) {
+        datayear_ = [
+          ...datayear_,
+          {
+            month: i < 10 ? `0${i}` : `${i}`,
+            [dataLang.formatMessage({ id: "yearOutput" })]: 0,
+          },
+        ];
+      }
+      let sum_year = [];
 
-      //     if (d.status) {
-      //       //console.log(d.data)
-      //       let vYear = dataLang.formatMessage({ id: "monthlyproduction" });
-      //       let vYear2 = dataLang.formatMessage({ id: "monthlyconsumption" });
-      //       let vYear3 = dataLang.formatMessage({ id: "monthlygridin" });
-      //       let vYear4 = dataLang.formatMessage({ id: "monthlygridout" });
-      //       let vYear5 = dataLang.formatMessage({ id: "monthlybatteryin" });
-      //       let vYear6 = dataLang.formatMessage({ id: "monthlybatteryout" });
-      //       let sum_year = [];
-      //       let sum_year2 = [];
-      //       let sum_year3 = [];
-      //       let sum_year4 = [];
-      //       let sum_year5 = [];
-      //       let sum_year6 = [];
-      //       let datayear_ = [];
-      //       for (let i = 1; i <= 12; i++) {
-      //         datayear_ = [
-      //           ...datayear_,
-      //           {
-      //             month: i < 10 ? `0${i}` : `${i}`,
-      //             [vYear]: 0,
-      //             [vYear2]: 0,
-      //             [vYear3]: 0,
-      //             [vYear4]: 0,
-      //             [vYear5]: 0,
-      //             [vYear6]: 0,
-      //           },
-      //         ];
-      //       }
-      //       d.data.data.map((item, i) => {
-      //         let index = datayear_.findIndex((d) => d.month == item.month);
-      //         datayear_[index][vYear] = item.value;
-      //         datayear_[index][vYear2] = item.value2;
-      //         datayear_[index][vYear3] = item.value3;
-      //         datayear_[index][vYear4] = item.value4;
-      //         datayear_[index][vYear5] = item.value5;
-      //         datayear_[index][vYear6] = item.value6;
-      //         sum_year[i] = item.value;
-      //         sum_year2[i] = item.value2;
-      //         sum_year3[i] = item.value3;
-      //         sum_year4[i] = item.value4;
-      //         sum_year5[i] = item.value5;
-      //         sum_year6[i] = item.value6;
-      //         if (i == d.data.data.length - 1) {
-      //           cal.value["pro_year"] = parseFloat(
-      //             sum_year.reduce((a, b) => Number(a) + Number(b), 0)
-      //           ).toFixed(2);
-      //           cal.value["con_year"] = parseFloat(
-      //             sum_year2.reduce((a, b) => Number(a) + Number(b), 0)
-      //           ).toFixed(2);
-      //           cal.value["grid_in_year"] = parseFloat(
-      //             sum_year3.reduce((a, b) => Number(a) + Number(b), 0)
-      //           ).toFixed(2);
-      //           cal.value["grid_out_year"] = parseFloat(
-      //             sum_year4.reduce((a, b) => Number(a) + Number(b), 0)
-      //           ).toFixed(2);
-      //           cal.value["bat_in_year"] = parseFloat(
-      //             sum_year5.reduce((a, b) => Number(a) + Number(b), 0)
-      //           ).toFixed(2);
-      //           cal.value["bat_out_year"] = parseFloat(
-      //             sum_year6.reduce((a, b) => Number(a) + Number(b), 0)
-      //           ).toFixed(2);
-      //         }
-      //       });
-      //       setVYear(vYear);
-      //       setVYear2(vYear2);
-      //       setVYear3(vYear3);
-      //       setVYear4(vYear4);
-      //       setVYear5(vYear5);
-      //       setVYear6(vYear6);
-      //       setDataYear(datayear_);
-      //     } else {
-      //       setDataYear([]);
-      //       setVYear(dataLang.formatMessage({ id: "unknown" }));
-      //       setVYear2(dataLang.formatMessage({ id: "unknown" }));
-      //       setVYear3(dataLang.formatMessage({ id: "unknown" }));
-      //       setVYear4(dataLang.formatMessage({ id: "unknown" }));
-      //       setVYear5(dataLang.formatMessage({ id: "unknown" }));
-      //       setVYear6(dataLang.formatMessage({ id: "unknown" }));
-      //     }
-      //   };
-      //   getYear();
+      plant.value.map(async (item_plant, i) => {
+        let chartY = await callApi("post", host.DATA + "/getYearChart", {
+          plantid: item_plant.plantid_,
+          year: moment(date).format("YYYY"),
+        });
+
+        if (chartY.status) {
+          if (item_plant.state === 1) {
+            sum_year[i] = chartY.data.data
+              .map((item) => item.value)
+              .reduce((a, b) => Number(a) + Number(b), 0);
+            chartY.data.data.map((item, j) => {
+              let index = datayear_.findIndex((d) => d.month == item.month);
+              datayear_[index][dataLang.formatMessage({ id: "yearOutput" })] =
+                parseFloat(
+                  Number(
+                    datayear_[index][dataLang.formatMessage({ id: "yearOutput" })]
+                  ) + Number(item.value)
+                ).toFixed(2);
+            });
+          } else {
+            sum_year[i] = 0
+          }
+        } else {
+          sum_year[i] = 0;
+        }
+
+        if (i == plant.value.length - 1) {
+
+          let total_year = parseFloat(
+            sum_year.reduce((a, b) => Number(a) + Number(b), 0)
+          ).toFixed(2);
+          setYearlyProduction(total_year);
+          setDatayear(datayear_);
+        }
+      });
     }
   };
 

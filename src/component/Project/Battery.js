@@ -54,7 +54,7 @@ export default function Battery(props) {
                 </div>
 
                 <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Data_Data">
-                    <span>{dataLang.formatMessage({ id: "gridData_" })}</span>
+                    <span>{dataLang.formatMessage({ id: "batteryData" })}</span>
                     &nbsp;
                     <span style={{ fontWeight: "650", fontFamily: "sans-serif", color: props.cal?.bat_1 < 0 ? "red" : "" }}>
                         {Number(parseFloat(convertUnit((Math.abs(props.cal?.bat_1 || 0)) / 1000)).toFixed(2) || 0).toLocaleString("en-US")}
