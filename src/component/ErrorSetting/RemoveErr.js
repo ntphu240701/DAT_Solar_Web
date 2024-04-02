@@ -44,7 +44,7 @@ export default function RemoveErr(props) {
             </div>
 
             <div className="DAT_RemoveErr_Body">
-                <span>Bạn có chắc xóa lỗi này không ?</span>
+                <span>{dataLang.formatMessage({ id: 'delErrorSetting' })}</span>
             </div>
 
             <div className="DAT_RemoveErr_Foot">

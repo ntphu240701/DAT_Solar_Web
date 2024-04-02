@@ -91,13 +91,13 @@ export default function ErrorSetting(props) {
                                     <FiEdit
                                         size={16}
                                         style={{ cursor: "pointer" }}
-                                        id={`${err.boxid}_${err.id}_EDITCAUSE`}
+                                        id={`${row.boxid}_${err.id}_EDITCAUSE`}
                                         onClick={(e) => handleEdit(e)}
                                     />
                                     <IoTrashOutline
                                         size={16}
                                         style={{ cursor: "pointer" }}
-                                        id={`${err.boxid}_${err.id}_REMOVECAUSE`}
+                                        id={`${row.boxid}_${err.id}_REMOVECAUSE`}
                                     />
                                     {parseInt(index) === cause.length - 1 ?
                                         <IoIosAddCircleOutline
@@ -142,19 +142,19 @@ export default function ErrorSetting(props) {
                                     <FiEdit
                                         size={16}
                                         style={{ cursor: "pointer" }}
-                                        id={`${err.boxid}_${err.id}_EDITSOLUTION`}
+                                        id={`${row.boxid}_${err.id}_EDITSOLUTION`}
                                         onClick={(e) => handleEdit(e)}
                                     />
                                     <IoTrashOutline
                                         size={16}
                                         style={{ cursor: "pointer" }}
-                                        id={`${err.boxid}_${err.id}_REMOVESOLUTION`}
+                                        id={`${row.boxid}_${err.id}_REMOVESOLUTION`}
                                     />
                                     {parseInt(index) === solution.length - 1 ?
                                         <IoIosAddCircleOutline
                                             size={16}
                                             style={{ cursor: "pointer" }}
-                                            id={`${err.boxid}_${err.id}_ADDSOLUTION`}
+                                            id={`${row.boxid}_${err.id}_ADDSOLUTION`}
                                         /> : <></>
                                     }
                                 </div>
