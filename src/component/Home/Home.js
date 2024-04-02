@@ -22,6 +22,7 @@ import PopupState, { bindPopper, bindHover } from 'material-ui-popup-state';
 import Fade from '@mui/material/Fade';
 import Paper from '@mui/material/Paper';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import DatePicker from "react-datepicker";
 
 import { FaSolarPanel, FaTree } from "react-icons/fa6";
 import { IoIosCloud } from "react-icons/io";
@@ -29,6 +30,7 @@ import { GiCoalWagon } from "react-icons/gi";
 import { FaMoneyBill } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { VscDashboard } from "react-icons/vsc";
+import { IoCalendarOutline } from "react-icons/io5";
 
 const plant = signal([]);
 const logger = signal([]);
@@ -57,7 +59,10 @@ export default function Home(props) {
   const [datamonth, setDatamonth] = useState([]);
   const [datayear, setDatayear] = useState([]);
   const navigate = useNavigate();
-
+  const [d, setD] = useState({
+    month: moment(new Date()).format("MM/YYYY"),
+    year: moment(new Date()).format("YYYY"),
+  });
   const [per, setPer] = useState(0);
   const in_max = 100;
   const in_min = 0;
@@ -344,6 +349,189 @@ export default function Home(props) {
         setDatayear(datayear_);
       }
     });
+  };
+
+  const handleChart = (date) => {
+    if (chart === "month") {
+      setD({ ...d, month: moment(date).format("MM/YYYY") });
+
+      // const currentDate = new Date();
+      // const currentMonth = currentDate.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
+      // const currentYear = currentDate.getFullYear();
+      // const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+      // let datamonth_ = [];
+      // for (let i = 1; i <= daysInMonth; i++) {
+      //   datamonth_ = [
+      //     ...datamonth_,
+      //     {
+      //       date: i < 10 ? `0${i}` : `${i}`,
+      //       [dataLang.formatMessage({ id: "monthOutput" })]: 0,
+      //     },
+      //   ];
+      // }
+      plant.value.map((item, i) => {
+        const getMonth = async () => {
+          const d = await callApi("post", host.DATA + "/getMonthChart", {
+            plantid: item.plantid_,
+            month: moment(date).format("MM/YYYY"),
+          });
+          console.log(d);
+          //     if (d.status) {
+          //       // let arr = moment(date).format("MM/YYYY").split("/");
+          //       // const daysInMonth = new Date(arr[1], arr[0], 0).getDate();
+
+          //       const currentDate = new Date();
+          //       const currentMonth = currentDate.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
+          //       const currentYear = currentDate.getFullYear();
+          //       const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();
+          //       let datamonth_ = [];
+          //       for (let i = 1; i <= daysInMonth; i++) {
+          //         datamonth_ = [
+          //           ...datamonth_,
+          //           {
+          //             date: i < 10 ? `0${i}` : `${i}`,
+          //             [dataLang.formatMessage({ id: "monthOutput" })]: 0,
+          //           },
+          //         ];
+          //       }
+
+          //       console.log(datamonth_);
+
+          //       //       if (item.state === 1) {
+          //       //         sum_month[i] = d.data.data
+          //       //           .map((item) => item.value)
+          //       //           .reduce((a, b) => Number(a) + Number(b), 0);
+          //       //         d.data.data.map((item, j) => {
+          //       //           let index = datamonth_.findIndex((d) => d.date == item.date);
+          //       //           datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })] =
+          //       //             parseFloat(
+          //       //               Number(
+          //       //                 datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })]
+          //       //               ) + Number(item.value)
+          //       //             ).toFixed(2);
+          //       //         });
+          //       //       } else {
+          //       //         sum_month[i] = 0
+          //       //       }
+          //       //     } else {
+          //       //       sum_month[i] = 0;
+          //       //     }
+          //       //     if (i == plant.value.length - 1) {
+          //       //       let total_month = parseFloat(
+          //       //         sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+          //       //       ).toFixed(2);
+          //       //       setMonthlyProduction(total_month);
+
+          //       //       // let total_year = parseFloat(
+          //       //       //   sum_year.reduce((a, b) => Number(a) + Number(b), 0)
+          //       //       // ).toFixed(2);
+          //       //       // setYearlyProduction(total_year);
+
+          //       //       // let total = parseFloat(
+          //       //       //   cap.reduce((a, b) => Number(a) + Number(b), 0)
+          //       //       // ).toFixed(2);
+          //       //       // setCapacity(total);
+
+          //       //       setDatamonth(datamonth_);
+          //       //       // setDatayear(datayear_);
+          //     }
+        };
+        getMonth();
+      });
+    }
+    else if (chart === "year") {
+      setD({ ...d, year: moment(date).format("YYYY") });
+
+      //   const getYear = async () => {
+      //     const d = await callApi("post", host.DATA + "/getYearChart", {
+      //       plantid: projectData.value.plantid_,
+      //       year: moment(date).format("YYYY"),
+      //     });
+
+      //     if (d.status) {
+      //       //console.log(d.data)
+      //       let vYear = dataLang.formatMessage({ id: "monthlyproduction" });
+      //       let vYear2 = dataLang.formatMessage({ id: "monthlyconsumption" });
+      //       let vYear3 = dataLang.formatMessage({ id: "monthlygridin" });
+      //       let vYear4 = dataLang.formatMessage({ id: "monthlygridout" });
+      //       let vYear5 = dataLang.formatMessage({ id: "monthlybatteryin" });
+      //       let vYear6 = dataLang.formatMessage({ id: "monthlybatteryout" });
+      //       let sum_year = [];
+      //       let sum_year2 = [];
+      //       let sum_year3 = [];
+      //       let sum_year4 = [];
+      //       let sum_year5 = [];
+      //       let sum_year6 = [];
+      //       let datayear_ = [];
+      //       for (let i = 1; i <= 12; i++) {
+      //         datayear_ = [
+      //           ...datayear_,
+      //           {
+      //             month: i < 10 ? `0${i}` : `${i}`,
+      //             [vYear]: 0,
+      //             [vYear2]: 0,
+      //             [vYear3]: 0,
+      //             [vYear4]: 0,
+      //             [vYear5]: 0,
+      //             [vYear6]: 0,
+      //           },
+      //         ];
+      //       }
+      //       d.data.data.map((item, i) => {
+      //         let index = datayear_.findIndex((d) => d.month == item.month);
+      //         datayear_[index][vYear] = item.value;
+      //         datayear_[index][vYear2] = item.value2;
+      //         datayear_[index][vYear3] = item.value3;
+      //         datayear_[index][vYear4] = item.value4;
+      //         datayear_[index][vYear5] = item.value5;
+      //         datayear_[index][vYear6] = item.value6;
+      //         sum_year[i] = item.value;
+      //         sum_year2[i] = item.value2;
+      //         sum_year3[i] = item.value3;
+      //         sum_year4[i] = item.value4;
+      //         sum_year5[i] = item.value5;
+      //         sum_year6[i] = item.value6;
+      //         if (i == d.data.data.length - 1) {
+      //           cal.value["pro_year"] = parseFloat(
+      //             sum_year.reduce((a, b) => Number(a) + Number(b), 0)
+      //           ).toFixed(2);
+      //           cal.value["con_year"] = parseFloat(
+      //             sum_year2.reduce((a, b) => Number(a) + Number(b), 0)
+      //           ).toFixed(2);
+      //           cal.value["grid_in_year"] = parseFloat(
+      //             sum_year3.reduce((a, b) => Number(a) + Number(b), 0)
+      //           ).toFixed(2);
+      //           cal.value["grid_out_year"] = parseFloat(
+      //             sum_year4.reduce((a, b) => Number(a) + Number(b), 0)
+      //           ).toFixed(2);
+      //           cal.value["bat_in_year"] = parseFloat(
+      //             sum_year5.reduce((a, b) => Number(a) + Number(b), 0)
+      //           ).toFixed(2);
+      //           cal.value["bat_out_year"] = parseFloat(
+      //             sum_year6.reduce((a, b) => Number(a) + Number(b), 0)
+      //           ).toFixed(2);
+      //         }
+      //       });
+      //       setVYear(vYear);
+      //       setVYear2(vYear2);
+      //       setVYear3(vYear3);
+      //       setVYear4(vYear4);
+      //       setVYear5(vYear5);
+      //       setVYear6(vYear6);
+      //       setDataYear(datayear_);
+      //     } else {
+      //       setDataYear([]);
+      //       setVYear(dataLang.formatMessage({ id: "unknown" }));
+      //       setVYear2(dataLang.formatMessage({ id: "unknown" }));
+      //       setVYear3(dataLang.formatMessage({ id: "unknown" }));
+      //       setVYear4(dataLang.formatMessage({ id: "unknown" }));
+      //       setVYear5(dataLang.formatMessage({ id: "unknown" }));
+      //       setVYear6(dataLang.formatMessage({ id: "unknown" }));
+      //     }
+      //   };
+      //   getYear();
+    }
   };
 
   const getPrice = async (data, logger) => {
@@ -814,6 +1002,7 @@ export default function Home(props) {
             <div className="DAT_Home_History-Head-Title">
               {dataLang.formatMessage({ id: "history" })}
             </div>
+
             <div className="DAT_Home_History-Head-Option">
               <span
                 style={{
@@ -842,15 +1031,33 @@ export default function Home(props) {
             </div>
 
             <div className="DAT_Home_History-Head-Datetime">
-              {chart === "year"
-                ? moment(new Date()).format("YYYY")
-                : moment(new Date()).format("MM/YYYY")}
+              <DatePicker
+                // id="datepicker"
+                onChange={(date) => handleChart(date)}
+                showMonthYearPicker={
+                  chart === "year" ? false : true
+                }
+                showYearPicker={
+                  chart === "month" ? false : true
+                }
+                customInput={
+                  <button className="DAT_CustomPicker">
+                    <span>{d[chart]}</span>
+                    <IoCalendarOutline color="gray" />
+                  </button>
+                }
+              />
             </div>
           </div>
 
           <div className="DAT_Home_History-Chart">
             <div className="DAT_Home_History-Chart-label">
-              <div className="DAT_Home_History-Chart-label-Unit">MWh</div>
+              <div className="DAT_Home_History-Chart-label-Unit">
+                {chart === "year"
+                  ? <span style={{ color: COLOR.value.grayText, fontSize: "13px" }}>{showUnitk(yearlyproduction)}Wh</span>
+                  : <span style={{ color: COLOR.value.grayText, fontSize: "13px" }}>{showUnitk(monthlyproduction)}Wh</span>
+                }
+              </div>
               <div className="DAT_Home_History-Chart-label-Label">
                 {chart === "year"
                   ? dataLang.formatMessage({ id: "yearOutput" })

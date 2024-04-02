@@ -110,7 +110,7 @@ const GroupUsers = (props) => {
               onClick={(e) => handleDeleteUser(e)}
               style={{ cursor: "pointer" }}
             >
-              <MdDelete size={20} color="red" />
+              <IoTrashOutline size={18} />
             </div>
           )}
         </>
