@@ -44,7 +44,7 @@ export default function CreateErrSetting(props) {
             </div>
 
             <div className="DAT_CreateErrSetting_Body">
-                <span>Mã lỗi:</span>
+                <span>{dataLang.formatMessage({ id: "errcode" })}:</span>
                 <select>
                     <option value="A">A</option>
                     <option value="E">E</option>
@@ -61,8 +61,8 @@ export default function CreateErrSetting(props) {
                 <div className="DAT_CreateErrSetting_Foot_Left">
                     <span style={{ color: "red" }}>*</span>
                     <div className="DAT_CreateErrSetting_Foot_Left_Item">
-                        <span>A: Chú ý</span>
-                        <span>E: Cảnh báo</span>
+                        <span>A: {dataLang.formatMessage({ id: "notice" })}</span>
+                        <span>E: {dataLang.formatMessage({ id: "alert" })}</span>
                     </div>
                 </div>
 

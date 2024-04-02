@@ -320,6 +320,13 @@ $colorWhite: rgb(229, 229, 229, .5);
       & span {
         font-size: 14px;
       }
+
+      &-back {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Montserrat-Regular;
+      }
     }
 
   }

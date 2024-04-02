@@ -2923,11 +2923,18 @@ export default function ProjectData(props) {
                             })()}
                           </div>
 
-                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Btn">
-                            <button>
+                          <div className="DAT_Filter_Dropdown_Bot">
+                            <button
+                              style={{ backgroundColor: "white", color: "black" }}
+                              onClick={(e) => {
+                                handleShowConfig(e);
+                                setDropConfig(!dropConfig);
+                              }}
+                            >
                               {dataLang.formatMessage({ id: "cancel", })}
                             </button>
-                            <button>
+                            <button
+                              style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}>
                               {dataLang.formatMessage({ id: "confirm", })}
                             </button>
                           </div>
@@ -3643,119 +3650,127 @@ export default function ProjectData(props) {
         })()}
       </div>
 
-      {popupAddGateway.value ? (
-        <div className="DAT_AddGatewayPopup">
-          <AddGateway data={temp.value} handleInvt={handleInvt} />
-        </div>
-      ) : (
-        <></>
-      )}
+      {
+        popupAddGateway.value ? (
+          <div className="DAT_AddGatewayPopup">
+            <AddGateway data={temp.value} handleInvt={handleInvt} />
+          </div>
+        ) : (
+          <></>
+        )
+      }
 
-      {popupState.value ? (
-        <div className="DAT_DevicePopup">
-          <Popup
-            plantid={projectData.value.plantid_}
-            type="logger"
-            sn={snlogger}
-            data={temp.value}
-            func={type}
-          />
-        </div>
-      ) : (
-        <> </>
-      )}
+      {
+        popupState.value ? (
+          <div className="DAT_DevicePopup">
+            <Popup
+              plantid={projectData.value.plantid_}
+              type="logger"
+              sn={snlogger}
+              data={temp.value}
+              func={type}
+            />
+          </div>
+        ) : (
+          <> </>
+        )
+      }
 
-      {exportReport ? (
-        <div className="DAT_RolePopup" style={{
-          height: exportReport === "default" ? "0px" : "100vh",
-        }}>
-          <ExportData handleClose={handleClose} typereport={dateType} plant={projectData.value} datetime={datetime_} />
-        </div>
-      ) : (
-        <> </>
-      )}
+      {
+        exportReport ? (
+          <div className="DAT_RolePopup" style={{
+            height: exportReport === "default" ? "0px" : "100vh",
+          }}>
+            <ExportData handleClose={handleClose} typereport={dateType} plant={projectData.value} datetime={datetime_} />
+          </div>
+        ) : (
+          <> </>
+        )
+      }
 
-      {isMobile.value ? (
-        <>
-          {dropState ? (
-            <div className="DAT_ProjectDataDrop">
-              {view === "dashboard" ? (
-                <>
-                  <div
-                    className="DAT_ProjectDataDrop_Item"
-                    id="device"
-                    // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                    onClick={(e) => handleView(e)}
-                  >
-                    {dataLang.formatMessage({ id: "device" })}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div
-                    className="DAT_ProjectDataDrop_Item"
-                    id="dashboard"
-                    // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                    onClick={(e) => handleView(e)}
-                  >
-                    {dataLang.formatMessage({ id: "monitor" })}
-                  </div>
-                </>
-              )}
-            </div>
-          ) : (
-            <></>
-          )}
-        </>
-      ) : (
-        <>
-          {dropState ? (
-            <div className="DAT_ProjectDataDrop"
-              style={{ display: viewNav.value ? "block" : "none" }}
-              onMouseEnter={() => {
-                viewStateNav.value = [true, true];
-              }}
-              onMouseLeave={() => {
-                viewNav.value = false;
-                viewStateNav.value = [false, false];
-              }}
-            >
-              {view === "dashboard" ? (
-                <>
-                  <div
-                    className="DAT_ProjectDataDrop_Item"
-                    id="device"
-                    // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                    onClick={(e) => handleView(e)}
-                  >
-                    {dataLang.formatMessage({ id: "device" })}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div
-                    className="DAT_ProjectDataDrop_Item"
-                    id="dashboard"
-                    // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
-                    onClick={(e) => handleView(e)}
-                  >
-                    {dataLang.formatMessage({ id: "monitor" })}
-                  </div>
-                </>
-              )}
-            </div>
-          ) : (
-            <></>
-          )}
-        </>
-      )}
+      {
+        isMobile.value ? (
+          <>
+            {dropState ? (
+              <div className="DAT_ProjectDataDrop">
+                {view === "dashboard" ? (
+                  <>
+                    <div
+                      className="DAT_ProjectDataDrop_Item"
+                      id="device"
+                      // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                      onClick={(e) => handleView(e)}
+                    >
+                      {dataLang.formatMessage({ id: "device" })}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div
+                      className="DAT_ProjectDataDrop_Item"
+                      id="dashboard"
+                      // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                      onClick={(e) => handleView(e)}
+                    >
+                      {dataLang.formatMessage({ id: "monitor" })}
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <></>
+            )}
+          </>
+        ) : (
+          <>
+            {dropState ? (
+              <div className="DAT_ProjectDataDrop"
+                style={{ display: viewNav.value ? "block" : "none" }}
+                onMouseEnter={() => {
+                  viewStateNav.value = [true, true];
+                }}
+                onMouseLeave={() => {
+                  viewNav.value = false;
+                  viewStateNav.value = [false, false];
+                }}
+              >
+                {view === "dashboard" ? (
+                  <>
+                    <div
+                      className="DAT_ProjectDataDrop_Item"
+                      id="device"
+                      // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                      onClick={(e) => handleView(e)}
+                    >
+                      {dataLang.formatMessage({ id: "device" })}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div
+                      className="DAT_ProjectDataDrop_Item"
+                      id="dashboard"
+                      // style={{ borderBottom: "solid 1px rgb(199, 199, 199)" }}
+                      onClick={(e) => handleView(e)}
+                    >
+                      {dataLang.formatMessage({ id: "monitor" })}
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <></>
+            )}
+          </>
+        )
+      }
 
       <div className="DAT_DeviceInfor"
         style={{ height: infoState.value ? "100%" : "0px", transition: "0.5s" }}
       >
         {infoState.value ? <Info /> : <></>}
       </div>
-    </div>
+    </div >
   );
 }
 
