@@ -352,7 +352,7 @@ export default function Home(props) {
   };
 
   const handleChart = (date) => {
-    if (chart === "month") {
+    if (chart == "month") {
       setD({ ...d, month: moment(date).format("MM/YYYY") });
 
       // const currentDate = new Date();
