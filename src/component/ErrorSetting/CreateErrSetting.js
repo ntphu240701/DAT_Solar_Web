@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './ErrorSetting.scss';
 
 import { COLOR } from '../../App';
 import { useIntl } from 'react-intl';
 
 import { IoClose } from 'react-icons/io5';
+import { alertDispatch } from '../Alert/Alert';
 
 export default function CreateErrSetting(props) {
     const dataLang = useIntl();
+    const codeRef1 = useRef("A");
+    const codeRef2 = useRef("");
+    const codeRef3 = useRef("");
 
     const popup_state = {
         pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
@@ -21,12 +25,15 @@ export default function CreateErrSetting(props) {
         popup.style.color = popup_state[state].color;
     };
 
-    const handleSave = () => {
-        props.handleClose();
-    };
-
     return (
-        <for className="DAT_CreateErrSetting">
+        <form className="DAT_CreateErrSetting" onSubmit={(e) => {
+            props.handleConfirm(
+                e,
+                codeRef1.current.value,
+                codeRef2.current.value,
+                codeRef3.current.value
+            )
+        }}>
             <div className="DAT_CreateErrSetting_Head">
                 <div className="DAT_CreateErrSetting_Head_Left">
                     <p>{dataLang.formatMessage({ id: "createNew" })}</p>
@@ -42,18 +49,17 @@ export default function CreateErrSetting(props) {
                     </div>
                 </div>
             </div>
-
             <div className="DAT_CreateErrSetting_Body">
-                <span>{dataLang.formatMessage({ id: "errcode" })}:</span>
-                <select>
+                <span>Mã lỗi:</span>
+                <select ref={codeRef1}>
                     <option value="A">A</option>
                     <option value="E">E</option>
                 </select>
                 <input
-                    type='text'
+                    type='number' ref={codeRef2} max={1000}
                 />
                 <input
-                    type='text'
+                    type='number' ref={codeRef3} max={1000}
                 />
             </div>
 
@@ -69,13 +75,20 @@ export default function CreateErrSetting(props) {
                 <div className="DAT_CreateErrSetting_Foot_Right">
                     <button
                         style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
-                        onClick={() => handleSave()}
+                        onClick={(e) => {
+                            props.handleConfirm(
+                                e,
+                                codeRef1.current.value,
+                                codeRef2.current.value,
+                                codeRef3.current.value
+                            )
+                        }}
                     >
                         {dataLang.formatMessage({ id: "confirm" })}
                     </button>
                 </div>
             </div>
-        </for>
+        </form>
     );
 }
 

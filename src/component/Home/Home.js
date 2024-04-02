@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Home.scss";
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, } from "recharts";
 import moment from "moment-timezone";
 import ProjectData from "../Project/ProjectData";
 import { Empty, plantState, projectData, projtab } from "../Project/Project";
@@ -25,6 +16,12 @@ import axios from "axios";
 import { useIntl } from "react-intl";
 import { coalsave } from "../Project/ProjectData";
 import { Loader } from "@googlemaps/js-api-loader";
+import Typography from '@mui/material/Typography';
+import Popper from '@mui/material/Popper';
+import PopupState, { bindPopper, bindHover } from 'material-ui-popup-state';
+import Fade from '@mui/material/Fade';
+import Paper from '@mui/material/Paper';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 import { FaSolarPanel, FaTree } from "react-icons/fa6";
 import { IoIosCloud } from "react-icons/io";
@@ -32,12 +29,6 @@ import { GiCoalWagon } from "react-icons/gi";
 import { FaMoneyBill } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { VscDashboard } from "react-icons/vsc";
-import Typography from '@mui/material/Typography';
-import Popper from '@mui/material/Popper';
-import PopupState, { bindPopper, bindHover } from 'material-ui-popup-state';
-import Fade from '@mui/material/Fade';
-import Paper from '@mui/material/Paper';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const plant = signal([]);
 const logger = signal([]);
@@ -437,6 +428,7 @@ export default function Home(props) {
         setOnline(d.data.filter((data) => data.state == 1).length);
         setOffline(d.data.filter((data) => data.state == 0).length);
         setWarn(d.data.filter((data) => data.warn == 0).length);
+        setTrial(d.data.filter((data) => data.shared == 1).length);
         plant.value = d.data;
         plant.value = plant.value.sort((a, b) => a.plantid_ - b.plantid_);
       }
@@ -951,6 +943,7 @@ export default function Home(props) {
           <div className="DAT_Home_State-Title">
             {dataLang.formatMessage({ id: "projectStatus" })}
           </div>
+
           <div className="DAT_Home_State-Total">
             <div className="DAT_Home_State-Total-Icon">
               <FaSolarPanel color={COLOR.value.PrimaryColor} />

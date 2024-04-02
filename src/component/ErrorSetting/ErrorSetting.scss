@@ -163,7 +163,7 @@
         }
 
         & input {
-            width: 40px;
+            width: 80px;
             border-radius: 5px;
             border: solid 1px rgb(199, 199, 199);
             padding: 4px;
@@ -172,6 +172,8 @@
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
             font-family: Montserrat-Regular;
+            -webkit-appearance: none;
+            margin: 0;
         }
     }
 

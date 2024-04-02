@@ -90,7 +90,6 @@ export default function Project(props) {
   const [power, setPower] = useState([]);
   const [dailyProduction, setDailyProduction] = useState([]);
   const [display, setDisplay] = useState(false);
-  const [like, setLike] = useState(false);
   const [saveDataInputFilter, setSaveDataInputFilter] = useState({
     min: 0,
     max: 10000,
@@ -234,15 +233,6 @@ export default function Project(props) {
       sortable: true,
       width: "160px",
     },
-    // {
-    //   name: "Tag",
-    //   selector: (row) => (
-    //     <div className="DAT_TableEdit">
-    //       <MdEditDocument color="gray" size={20} />
-    //     </div>
-    //   ),
-    //   width: "100px",
-    // },
     {
       name: dataLang.formatMessage({ id: "lastupdate" }),
       selector: (row) => row.lastupdate,
@@ -268,27 +258,25 @@ export default function Project(props) {
         >
           {ruleInfor.value.setting.project.modify == true ||
             ruleInfor.value.setting.project.remove == true ? (
-            <div className="DAT_TableEdit">
-              <span
-                id={row.plantid_ + "_MORE"}
-                // onMouseEnter={(e) => handleModify(e, "block")}
-                onClick={(e) => handleModify(e, "block")}
-              >
-                <IoMdMore size={20} />
-              </span>
-            </div>
+            row.shared == 1 ? <></>
+              : <div className="DAT_TableEdit">
+                <span
+                  id={row.plantid_ + "_MORE"}
+                  onClick={(e) => handleModify(e, "block")}
+                >
+                  <IoMdMore size={20} />
+                </span>
+              </div>
           ) : (
             <div></div>
           )}
-          <div
-            className="DAT_ModifyBox"
+          <div className="DAT_ModifyBox"
             id={row.plantid_ + "_Modify"}
             style={{ display: "none", marginTop: "3px", marginRight: "3px" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             {ruleInfor.value.setting.project.modify === true ? (
-              <div
-                className="DAT_ModifyBox_Fix"
+              <div className="DAT_ModifyBox_Fix"
                 id={row.plantid_}
                 style={{
                   display: "flex",
@@ -305,8 +293,7 @@ export default function Project(props) {
               <div></div>
             )}
             {ruleInfor.value.setting.project.remove === true ? (
-              <div
-                className="DAT_ModifyBox_Remove"
+              <div className="DAT_ModifyBox_Remove"
                 id={row.plantid_}
                 style={{
                   display: "flex",
@@ -322,9 +309,8 @@ export default function Project(props) {
             ) : (
               <div></div>
             )}
-            <div
+            <div className="DAT_ModifyBox_Share"
               id={row.plantid_}
-              className="DAT_ModifyBox_Share"
               style={{
                 display: "flex",
                 justifyContent: "flex-start",
@@ -531,6 +517,7 @@ export default function Project(props) {
     offline.value = dataproject.value.filter((item) => item.state == 0);
     warn.value = dataproject.value.filter((item) => item.warn == 0);
     care.value = dataproject.value.filter((item) => item.mark == 1);
+    demo.value = dataproject.value.filter((item) => item.shared == 1);
     tabLable.value = listTab[0].name;
     setDatafilter(dataproject.value);
   }, [dataproject.value]);
