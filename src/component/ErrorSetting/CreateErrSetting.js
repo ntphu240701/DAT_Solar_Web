@@ -2,10 +2,13 @@ import React from 'react';
 import './ErrorSetting.scss';
 
 import { COLOR } from '../../App';
+import { useIntl } from 'react-intl';
 
 import { IoClose } from 'react-icons/io5';
 
 export default function CreateErrSetting(props) {
+    const dataLang = useIntl();
+
     const popup_state = {
         pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
         new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
@@ -26,7 +29,7 @@ export default function CreateErrSetting(props) {
         <div className="DAT_CreateErrSetting">
             <div className="DAT_CreateErrSetting_Head">
                 <div className="DAT_CreateErrSetting_Head_Left">
-                    <p>Tạo mới</p>
+                    <p>{dataLang.formatMessage({ id: "createNew" })}</p>
                 </div>
                 <div className="DAT_CreateErrSetting_Head_Right">
                     <div className="DAT_CreateErrSetting_Head_Right_Icon"
@@ -68,7 +71,7 @@ export default function CreateErrSetting(props) {
                         style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
                         onClick={() => handleSave()}
                     >
-                        Xác nhận
+                        {dataLang.formatMessage({ id: "confirm" })}
                     </button>
                 </div>
             </div>

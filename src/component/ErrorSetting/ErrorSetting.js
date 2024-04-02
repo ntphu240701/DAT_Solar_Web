@@ -279,8 +279,7 @@ export default function ErrorSetting(props) {
                     <span>
                         <MdOutlineManageHistory color="white" size={20} />
                         &nbsp;
-                        {/* {dataLang.formatMessage({ id: "newRule" })} */}
-                        Tạo mới
+                        {dataLang.formatMessage({ id: "createNew" })}
                     </span>
                 </button>
             </div>

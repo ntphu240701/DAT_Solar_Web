@@ -52,7 +52,7 @@ export default function RemoveErr(props) {
                     style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
                     onClick={() => handleSave()}
                 >
-                    Xác nhận
+                    {dataLang.formatMessage({ id: "confirm" })}
                 </button>
             </div>
         </div>
