@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Device.scss";
 
-import { infoState, info, tab } from "./Device";
+import { info, tab } from "./Device";
 import { useIntl } from "react-intl";
 import DatePicker from "react-datepicker";
 import PopupState, { bindHover, bindPopper } from "material-ui-popup-state";
@@ -9,13 +9,13 @@ import { Fade, Paper, Popper, Typography } from "@mui/material";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import DataTable from "react-data-table-component";
 import { Empty } from "../Project/Project";
-import { IoCalendarOutline, IoClose } from "react-icons/io5";
 import moment from "moment-timezone";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, } from "recharts";
 import { signal } from "@preact/signals-react";
 
+import { IoCalendarOutline, IoClose } from "react-icons/io5";
 import { IoIosArrowDown } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdOutlineError } from "react-icons/md";
@@ -3513,7 +3513,7 @@ export default function Info(props) {
             switch (tab.value) {
               case 'logger':
                 return (
-                  <div className="DAT_Info_Header_Right_Close" onClick={() => { infoState.value = false; }}>
+                  <div className="DAT_Info_Header_Right_Close" onClick={() => props.handleClose()}>
                     <IoClose
                       id="Popup"
                       onMouseEnter={(e) => handlePopup("new")}
@@ -3539,7 +3539,7 @@ export default function Info(props) {
                       />
                     </div>
 
-                    <div className="DAT_Info_Header_Right_Close" onClick={() => { infoState.value = false; }}>
+                    <div className="DAT_Info_Header_Right_Close" onClick={() => props.handleClose()}>
                       <IoClose
                         id="Popup"
                         onMouseEnter={(e) => handlePopup("new")}

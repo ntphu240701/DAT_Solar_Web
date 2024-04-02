@@ -3,7 +3,7 @@ import "./Project.scss";
 
 import { projectData, } from "./Project";
 import { useIntl } from "react-intl";
-import { inverterDB, popupAddGateway, temp } from "./ProjectData";
+import { inverterDB, temp } from "./ProjectData";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
@@ -17,6 +17,7 @@ export default function AddGateway(props) {
   const sn = useRef();
   const name = useRef();
   const type = useRef();
+
   const invtCloud = async (data, token) => {
     var reqData = {
       data: data,
@@ -57,10 +58,6 @@ export default function AddGateway(props) {
     popup.style.color = popup_state[state].color;
   };
 
-  const handleClose = () => {
-    popupAddGateway.value = false;
-  };
-
   const handleSave = async (e) => {
     if (sn.current.value === "" || name.current.value === "" || type.current.value === "") {
       alertDispatch(dataLang.formatMessage({ id: "alert_22" }))
@@ -93,7 +90,7 @@ export default function AddGateway(props) {
             inverterDB.value = [...inverterDB.value, async_.data];
           }
         }
-        popupAddGateway.value = false;
+        props.handleClose();
       }
       if (d.status === true) {
         alertDispatch(dataLang.formatMessage({ id: "alert_32" }))
@@ -121,7 +118,7 @@ export default function AddGateway(props) {
         <div className="DAT_AddGateway_Head_Right">
           <div
             className="DAT_AddGateway_Head_Right_Icon"
-            onClick={() => handleClose()}
+            onClick={() => props.handleClose()}
           >
             <IoClose
               size={25}

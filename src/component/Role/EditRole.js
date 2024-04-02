@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import "./Role.scss";
 
-import { Usr_, popupState, roleData } from "./Role";
+import { Usr_, roleData } from "./Role";
 import { useIntl } from "react-intl";
 import { datarule } from "../Rule/Rule";
 import { host } from "../Lang/Contant";
@@ -10,7 +10,7 @@ import { alertDispatch } from "../Alert/Alert";
 
 import { IoClose } from "react-icons/io5";
 
-export default function EditRole() {
+export default function EditRole(props) {
   const dataLang = useIntl();
   const roleRef = useRef(roleData.value.type_);
   const ruleidRef = useRef(0);
@@ -43,7 +43,7 @@ export default function EditRole() {
       newData[index].ruleid_ = parseInt(ruleidRef.current.value)
       newData[index].rulename_ = rulename
       Usr_.value = [...newData];
-      popupState.value = "default";
+      props.handleClose();
       alertDispatch(dataLang.formatMessage({ id: "alert_43" }));
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_44" }));
@@ -60,7 +60,7 @@ export default function EditRole() {
         <div className="DAT_EditRole_Head_Right">
           <div
             className="DAT_EditRole_Head_Right_Icon"
-            onClick={() => (popupState.value = "default")}
+            onClick={() => props.handleClose()}
             id="Popup"
             onMouseEnter={(e) => handlePopup("new")}
             onMouseLeave={(e) => handlePopup("pre")}
