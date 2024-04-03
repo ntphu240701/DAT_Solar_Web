@@ -397,6 +397,14 @@
     }
 }
 
+.DAT_TableText {
+    width: 180px;
+    height: 20px;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
 @media (max-width: 900px) {
     .DAT_ErrSet {
         width: 98%;

@@ -45,6 +45,8 @@ export default function Device(props) {
   const [invt, setInvt] = useState({});
   const [popupState, setPopupState] = useState(false);
   const [infoState, setInfoState] = useState(false);
+  const [devname, setDevname] = useState("");
+  const [devtype, setDevtype] = useState("");
 
   const listTab = [
     { id: "logger", name: "Logger" },
@@ -137,11 +139,6 @@ export default function Device(props) {
       name: dataLang.formatMessage({ id: "status" }),
       selector: (row) => (
         <>
-          {/* {row.status ? (
-            <FaCheckCircle size={20} color="green" />
-          ) : (
-            <MdOutlineError size={22} color="red" />
-          )} */}
           {invt[row.plogger]?.[row.pdata.status] == 2 ? (
             <FaCheckCircle size={20} color="green" />
           ) : (
@@ -154,13 +151,10 @@ export default function Device(props) {
     {
       name: dataLang.formatMessage({ id: "production" }),
       selector: (row) => {
-
         let power = 0
         let d = JSON.parse(row.pdata.total?.register || "[]")
-        // console.log(row)
         if (row.pdata.mode === "HYBRID") {
           let num = []
-          // console.log(invt[row.logger_])
           d.map((item, i) => {
             num[i] = invt[row.plogger]?.[item]
           })
@@ -216,31 +210,20 @@ export default function Device(props) {
           ) : (
             <div></div>
           )}
-          <div
-            className="DAT_ModifyBox"
+          <div className="DAT_ModifyBox"
             id={row.psn + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            {/* <div className="DAT_ModifyBox_Fix">Chỉnh sửa</div> */}
-            <div
-              className="DAT_ModifyBox_Fix"
-              id={row.psn + "_" + tab.value + "_" + row.plogger}
-            // onClick={(e) => handleEdit(e)}
+            <div className="DAT_ModifyBox_Fix"
+              // id={row.psn + "_" + tab.value + "_" + row.plogger}
+              id={`${row.psn}-${row.pname}-edit`}
+              onClick={(e) => handleEdit(e)}
             >
               <FiEdit size={14} />
               &nbsp;
               {dataLang.formatMessage({ id: "change" })}
             </div>
-            {/* <div
-              className="DAT_ModifyBox_Remove"
-              id={row.id + "_" + tab.value}
-              onClick={(e) => handleRemove(e)}
-            >
-              <IoTrashOutline size={16} />
-              &nbsp;
-              {dataLang.formatMessage({ id: "remove" })}
-            </div> */}
           </div>
         </>
       ),
@@ -285,7 +268,7 @@ export default function Device(props) {
       sortable: true,
       minWidth: "350px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -301,13 +284,6 @@ export default function Device(props) {
       ),
       width: "110px",
     },
-
-    // {
-    //   name: "Cập nhật",
-    //   selector: (row) => row.updated,
-    //   sortable: true,
-    //   width: "180px",
-    // },
     {
       name: dataLang.formatMessage({ id: "edits" }),
       selector: (row) => (
@@ -317,7 +293,6 @@ export default function Device(props) {
             <div className="DAT_TableEdit">
               <span
                 id={row.psn + "_MORE"}
-                // onMouseEnter={(e) => handleModify(e, "block")}
                 onClick={(e) => handleModify(e, "block")}
               >
                 <IoMdMore size={20} />
@@ -326,23 +301,20 @@ export default function Device(props) {
           ) : (
             <div></div>
           )}
-          <div
-            className="DAT_ModifyBox"
+          <div className="DAT_ModifyBox"
             id={row.psn + "_Modify"}
             style={{ display: "none", marginTop: "2px" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            <div
-              className="DAT_ModifyBox_Fix"
-              id={row.psn + "_" + row.pplantid + "_edit"}
+            <div className="DAT_ModifyBox_Fix"
+              id={`${row.psn}-${row.pname}-edit`}
               onClick={(e) => handleEdit(e)}
             >
               <FiEdit size={14} />
               &nbsp;
               {dataLang.formatMessage({ id: "change" })}
             </div>
-            <div
-              className="DAT_ModifyBox_Remove"
+            <div className="DAT_ModifyBox_Remove"
               id={row.psn + "_" + row.pplantid + "_remove"}
               onClick={(e) => handleRemove(e)}
             >
@@ -396,9 +368,11 @@ export default function Device(props) {
   const handleEdit = (e) => {
     setPopupState(true);
     const id = e.currentTarget.id;
-    const idArr = id.split("_");
+    const idArr = id.split("-");
     setSnlogger(idArr[0]);
+    setDevname(idArr[1]);
     setType(idArr[2]);
+    setDevtype(tab.value);
   };
 
   const handleRemove = (e) => {
@@ -992,7 +966,13 @@ export default function Device(props) {
 
       {popupState ? (
         <div className="DAT_DevicePopup">
-          <Popup plantid={plantid} sn={snlogger} type={type} handleClose={handleClosePopup} />
+          <Popup
+            plantid={plantid}
+            sn={snlogger}
+            name={devname}
+            type={type}
+            devtype={devtype}
+            handleClose={handleClosePopup} />
         </div>
       ) : (
         <></>

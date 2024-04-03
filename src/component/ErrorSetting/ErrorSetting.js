@@ -14,6 +14,8 @@ import { FiEdit } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
 import RemoveErr from "./RemoveErr";
 import { alertDispatch } from "../Alert/Alert";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
 
 export default function ErrorSetting(props) {
   const dataLang = useIntl();
@@ -23,15 +25,7 @@ export default function ErrorSetting(props) {
   const [removeState, setRemoveState] = useState(false);
   const [removeType, setRemoveType] = useState("");
   const [arrayData, setArrayData] = useState();
-  const [data, setData] = useState([
-    {
-      boxid: "A_1_3",
-      cause: [{ id: 1, vi: "Lỗi điều khiển", en: "Control system error" }],
-      solution: [
-        { id: 1, vi: "Khôi phục cấu hình gốc", en: "Return factory config" },
-      ],
-    },
-  ]);
+  const [data, setData] = useState([]);
   const [editVi, setEditVi] = useState("");
   const [editEn, setEditEn] = useState("");
   const [editarray, setEditarray] = useState();
@@ -56,7 +50,7 @@ export default function ErrorSetting(props) {
     },
     {
       name: dataLang.formatMessage({ id: "errcode" }),
-      selector: (row) => row.boxid,
+      selector: (row) => row.boxid_,
       sortable: true,
       width: "100px",
       style: {
@@ -68,7 +62,7 @@ export default function ErrorSetting(props) {
     {
       name: dataLang.formatMessage({ id: "causeViEn" }),
       selector: (row) => {
-        let cause = row.cause.sort((a, b) => a.id - b.id);
+        let cause = row.cause_.sort((a, b) => a.id - b.id);
         return (
           <div style={{ height: "auto" }}>
             {cause.map((err, index) => {
@@ -77,34 +71,43 @@ export default function ErrorSetting(props) {
                   key={err.id}
                   style={{
                     display: "flex",
+                    alignItems: "center",
                     padding: "8px 0",
-                    gap: "10px",
+                    gap: "20px",
                   }}
                 >
-                  <div style={{ width: "150px" }}>{err.vi}</div>
-                  <div style={{ width: "150px" }}>{err.en}</div>
-                  <FiEdit
-                    size={16}
-                    style={{ cursor: "pointer" }}
-                    id={`${row.boxid}-${err.id}-EDITCAUSE`}
-                    onClick={(e) => handleEdit(e)}
-                  />
-                  <IoTrashOutline
-                    size={16}
-                    style={{ cursor: "pointer" }}
-                    id={`${row.boxid}_${err.id}_REMOVECAUSE`}
-                    onClick={(e) => handleDelete(e)}
-                  />
-                  {parseInt(index) === cause.length - 1 ? (
-                    <IoIosAddCircleOutline
+                  <div className="DAT_TableText">{err.vi}</div>
+                  <div className="DAT_TableText">{err.en}</div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      gap: "10px",
+                    }}
+                  >
+                    <FiEdit
                       size={16}
                       style={{ cursor: "pointer" }}
-                      id={`${row.boxid}-ADDCAUSE`}
-                      onClick={(e) => handleAdd(e)}
+                      id={`${row.boxid_}-${err.id}-EDITCAUSE`}
+                      onClick={(e) => handleEdit(e)}
                     />
-                  ) : (
-                    <></>
-                  )}
+                    <IoTrashOutline
+                      size={16}
+                      style={{ cursor: "pointer" }}
+                      id={`${row.boxid_}_${err.id}_REMOVECAUSE`}
+                      onClick={(e) => handleDelete(e)}
+                    />
+                    {parseInt(index) === cause.length - 1 ? (
+                      <IoIosAddCircleOutline
+                        size={16}
+                        style={{ cursor: "pointer" }}
+                        id={`${row.boxid_}-ADDCAUSE`}
+                        onClick={(e) => handleAdd(e)}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -112,14 +115,16 @@ export default function ErrorSetting(props) {
         );
       },
       style: {
+        minWidth: "200px",
         height: "auto !important",
+        justifyContent: "center !important",
       },
     },
     //SOLUTION
     {
       name: dataLang.formatMessage({ id: "solutionViEn" }),
       selector: (row) => {
-        let solution = row.solution.sort((a, b) => a.id - b.id);
+        let solution = row.solution_.sort((a, b) => a.id - b.id);
         return (
           <div style={{ height: "auto" }}>
             {solution.map((err, index) => {
@@ -128,34 +133,43 @@ export default function ErrorSetting(props) {
                   key={err.id}
                   style={{
                     display: "flex",
+                    alignItems: "center",
                     padding: "8px 0",
-                    gap: "10px",
+                    gap: "20px",
                   }}
                 >
-                  <div style={{ width: "150px" }}>{err.vi}</div>
-                  <div style={{ width: "150px" }}>{err.en}</div>
-                  <FiEdit
-                    size={16}
-                    style={{ cursor: "pointer" }}
-                    id={`${row.boxid}-${err.id}-EDITSOLUTION`}
-                    onClick={(e) => handleEdit(e)}
-                  />
-                  <IoTrashOutline
-                    size={16}
-                    style={{ cursor: "pointer" }}
-                    id={`${row.boxid}_${err.id}_REMOVESOLUTION`}
-                    onClick={(e) => handleDelete(e)}
-                  />
-                  {parseInt(index) === solution.length - 1 ? (
-                    <IoIosAddCircleOutline
+                  <div className="DAT_TableText">{err.vi}</div>
+                  <div className="DAT_TableText">{err.en}</div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      gap: "10px",
+                    }}
+                  >
+                    <FiEdit
                       size={16}
                       style={{ cursor: "pointer" }}
-                      id={`${row.boxid}-ADDSOLUTION`}
-                      onClick={(e) => handleAdd(e)}
+                      id={`${row.boxid_}-${err.id}-EDITSOLUTION`}
+                      onClick={(e) => handleEdit(e)}
                     />
-                  ) : (
-                    <></>
-                  )}
+                    <IoTrashOutline
+                      size={16}
+                      style={{ cursor: "pointer" }}
+                      id={`${row.boxid_}_${err.id}_REMOVESOLUTION`}
+                      onClick={(e) => handleDelete(e)}
+                    />
+                    {parseInt(index) === solution.length - 1 ? (
+                      <IoIosAddCircleOutline
+                        size={16}
+                        style={{ cursor: "pointer" }}
+                        id={`${row.boxid_}-ADDSOLUTION`}
+                        onClick={(e) => handleAdd(e)}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -163,8 +177,9 @@ export default function ErrorSetting(props) {
         );
       },
       style: {
+        minWidth: "200px",
         height: "auto !important",
-        justifyContent: "left !important",
+        justifyContent: "center !important",
       },
     },
     //SETTING
@@ -177,32 +192,20 @@ export default function ErrorSetting(props) {
           ) : (
             <div className="DAT_TableEdit">
               <span
-                id={row.id_ + "_MORE"}
-                // onMouseEnter={(e) => handleModify(e, "block")}
+                id={row.warnid_ + "_MORE"}
                 onClick={(e) => handleModify(e, "block")}
               >
                 <IoMdMore size={20} />
               </span>
             </div>
           )}
-          <div
-            className="DAT_ModifyBox"
-            id={row.id_ + "_Modify"}
-            style={{ display: "none", marginRight: "4px", marginTop: "2px" }}
+          <div className="DAT_ModifyBox"
+            id={row.warnid_ + "_Modify"}
+            style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            {/* <div
-                            className="DAT_ModifyBox_Fix"
-                            id={row.id_}
-                        // onClick={(e) => handleEdit(e)}
-                        >
-                            <FiEdit size={14} />
-                            &nbsp;
-                            {dataLang.formatMessage({ id: "change" })}
-                        </div> */}
-            <div
-              className="DAT_ModifyBox_Remove"
-              id={row.boxid}
+            <div className="DAT_ModifyBox_Remove"
+              id={row.boxid_}
               onClick={(e) => handleDelete(e)}
             >
               <IoTrashOutline size={16} />
@@ -234,25 +237,25 @@ export default function ErrorSetting(props) {
     setCreateState(false);
   };
 
-  const handleConfirmCreate = (e, code, num1, num2) => {
+  const handleConfirmCreate = async (e, code, num1, num2) => {
+    e.preventDefault();
     if (num1 === "" || num2 === "") {
       alertDispatch(dataLang.formatMessage({ id: "alert_17" }));
-      e.preventDefault();
     } else {
-      const t = data.find((item) => item.boxid === `${code}_${num1}_${num2}`); //{...}
-      console.log(t);
+      const t = data.find((item) => item.boxid_ === `${code}_${num1}_${num2}`);
       if (t !== undefined) {
         alertDispatch(dataLang.formatMessage({ id: "alert_49" }));
-        e.preventDefault();
       } else {
-        const newdata = {
+        let req = await callApi("post", `${host.DATA}/addWarnBox`, {
           boxid: `${code}_${num1}_${num2}`,
           cause: [{ id: 1, vi: "Nguyên nhân 1", en: "Cause 1" }],
-          solution: [{ id: 1, vi: "Giải pháp 1", en: "Solution 1" }],
-        };
-        setData([...data, newdata]);
-        // console.log(data);
-        setCreateState(false);
+          solution: [{ id: 1, vi: "Giải pháp 1", en: "Solution 1" }]
+        })
+        if (req.status) {
+          const newdata = req.data;
+          setData([...data, newdata]);
+          setCreateState(false);
+        }
       }
     }
   };
@@ -260,50 +263,61 @@ export default function ErrorSetting(props) {
   const handleEdit = (e) => {
     const arr = e.currentTarget.id.split("-");
     setEditarray(arr);
-    // console.log(arr);
+    console.log(arr);
     switch (arr[2]) {
       case "EDITCAUSE":
         const index = data
-          .find((item) => item.boxid === arr[0])
-          .cause.findIndex((item) => item.id === parseInt(arr[1]));
-        setEditVi(data.find((item) => item.boxid === arr[0]).cause[index].vi);
-        setEditEn(data.find((item) => item.boxid === arr[0]).cause[index].en);
+          .find((item) => item.boxid_ === arr[0])
+          .cause_.findIndex((item) => item.id === parseInt(arr[1]));
+        setEditVi(data.find((item) => item.boxid_ === arr[0]).cause_[index].vi);
+        setEditEn(data.find((item) => item.boxid_ === arr[0]).cause_[index].en);
         break;
       case "EDITSOLUTION":
         const i = data
-          .find((item) => item.boxid === arr[0])
-          .solution.findIndex((item) => item.id === parseInt(arr[1]));
-        setEditVi(data.find((item) => item.boxid === arr[0]).solution[i].vi);
-        setEditEn(data.find((item) => item.boxid === arr[0]).solution[i].en);
+          .find((item) => item.boxid_ === arr[0])
+          .solution_.findIndex((item) => item.id === parseInt(arr[1]));
+        setEditVi(data.find((item) => item.boxid_ === arr[0]).solution_[i].vi);
+        setEditEn(data.find((item) => item.boxid_ === arr[0]).solution_[i].en);
+        break;
+      default:
+        break;
     }
 
     setEditType(arr[2]);
     setEditState(true);
   };
 
-  const confirmEdit = (editvi, editen) => {
-    setEditState(false);
-    console.log(editvi, editen);
-    console.log(editarray);
-
+  const confirmEdit = async (e, editvi, editen) => {
+    e.preventDefault();
     switch (editarray[2]) {
       case "EDITCAUSE":
         const index = data
-          .find((item) => item.boxid === editarray[0])
-          .cause.findIndex((item) => item.id === parseInt(editarray[1]));
-        data.find((item) => item.boxid === editarray[0]).cause[index].vi =
-          editvi;
-        data.find((item) => item.boxid === editarray[0]).cause[index].en =
-          editen;
+          .find((item) => item.boxid_ === editarray[0])
+          .cause_.findIndex((item) => item.id === parseInt(editarray[1]));
+        data.find((item) => item.boxid_ === editarray[0]).cause_[index].vi = editvi;
+        data.find((item) => item.boxid_ === editarray[0]).cause_[index].en = editen;
         break;
       case "EDITSOLUTION":
         const i = data
-          .find((item) => item.boxid === editarray[0])
-          .solution.findIndex((item) => item.id === parseInt(editarray[1]));
-        data.find((item) => item.boxid === editarray[0]).solution[i].vi =
-          editvi;
-        data.find((item) => item.boxid === editarray[0]).solution[i].en =
-          editen;
+          .find((item) => item.boxid_ === editarray[0])
+          .solution_.findIndex((item) => item.id === parseInt(editarray[1]));
+        data.find((item) => item.boxid_ === editarray[0]).solution_[i].vi = editvi;
+        data.find((item) => item.boxid_ === editarray[0]).solution_[i].en = editen;
+        break;
+      default:
+        break;
+    }
+    let req = await callApi("post", `${host.DATA}/updateWarnBox`, {
+      boxid: editarray[0],
+      cause: data.find((item) => item.boxid_ === editarray[0]).cause_,
+      solution: data.find((item) => item.boxid_ === editarray[0]).solution_
+    })
+    console.log(req);
+    if (req.status) {
+      alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+      setEditState(false);
+    } else {
+      alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
   };
 
@@ -319,44 +333,64 @@ export default function ErrorSetting(props) {
     setRemoveState(true);
   };
 
-  const confirmDelete = (e) => {
+  const confirmDelete = async (e) => {
+    e.preventDefault();
+
     const boxid = `${arrayData[0]}_${arrayData[1]}_${arrayData[2]}`;
     switch (arrayData[4]) {
       case "REMOVECAUSE":
-        let tremovecause = data.find((item) => item.boxid === boxid);
-        let indexcause = data.findIndex((item) => item.boxid === boxid);
-        if (tremovecause.cause.length === 1) {
+        let tremovecause = data.find((item) => item.boxid_ === boxid);
+        let indexcause = data.findIndex((item) => item.boxid_ === boxid);
+        if (tremovecause.cause_.length === 1) {
           alertDispatch(dataLang.formatMessage({ id: "alert_50" }));
-          e.preventDefault();
         } else {
-          const temp = tremovecause.cause.filter(
+          const temp = tremovecause.cause_.filter(
             (item) => item.id !== parseInt(arrayData[3])
           );
-          tremovecause.cause = temp;
+          tremovecause.cause_ = temp;
           data[indexcause] = tremovecause;
-          console.log(data);
+        }
+        let req1 = await callApi("post", `${host.DATA}/updateWarnBox`, {
+          boxid: boxid,
+          cause: data.find((item) => item.boxid_ === boxid).cause_,
+          solution: data.find((item) => item.boxid_ === boxid).solution_
+        })
+        console.log(req1);
+        if (req1.status) {
           setRemoveState(false);
         }
         break;
       case "REMOVESOLUTION":
-        let tremovesolution = data.find((item) => item.boxid === boxid);
-        let indexsolution = data.findIndex((item) => item.boxid === boxid);
-        if (tremovesolution.solution.length === 1) {
+        let tremovesolution = data.find((item) => item.boxid_ === boxid);
+        let indexsolution = data.findIndex((item) => item.boxid_ === boxid);
+        if (tremovesolution.solution_.length === 1) {
           alertDispatch(dataLang.formatMessage({ id: "alert_51" }));
-          e.preventDefault();
         } else {
-          const temp = tremovesolution.solution.filter(
+          const temp = tremovesolution.solution_.filter(
             (item) => item.id !== parseInt(arrayData[3])
           );
-          tremovesolution.solution = temp;
+          tremovesolution.solution_ = temp;
           data[indexsolution] = tremovesolution;
           console.log(data);
+        }
+        let req2 = await callApi("post", `${host.DATA}/updateWarnBox`, {
+          boxid: boxid,
+          cause: data.find((item) => item.boxid_ === boxid).cause_,
+          solution: data.find((item) => item.boxid_ === boxid).solution_
+        })
+        console.log(req2);
+        if (req2.status) {
           setRemoveState(false);
         }
         break;
       default:
-        setData(data.filter((item) => item.boxid !== boxid));
-        setRemoveState(false);
+        let req = await callApi("post", `${host.DATA}/removeWarnBox`, {
+          boxid: boxid,
+        })
+        if (req.status) {
+          setData(data.filter((item) => item.boxid_ !== boxid));
+          setRemoveState(false);
+        }
         break;
     }
   };
@@ -365,37 +399,35 @@ export default function ErrorSetting(props) {
     setRemoveState(false);
   };
 
-  const handleAdd = (e) => {
+  const handleAdd = async (e) => {
     const arr = e.currentTarget.id.split("-");
     const bigdata = data;
-    const index = bigdata.findIndex((item) => item.boxid === arr[0]);
+    const index = bigdata.findIndex((item) => item.boxid_ === arr[0]);
     // console.log(arr);
     switch (arr[1]) {
       case "ADDCAUSE":
-        const causelength = bigdata[index].cause.length;
-        bigdata[index].cause = [
-          ...bigdata[index].cause,
+        const causelength = bigdata[index].cause_.length;
+        bigdata[index].cause_ = [
+          ...bigdata[index].cause_,
           {
-            id: bigdata[index].cause[causelength - 1].id + 1,
-            vi: `Nguyên nhân ${bigdata[index].cause[causelength - 1].id + 1}`,
-            en: `Cause ${bigdata[index].cause[causelength - 1].id + 1}`,
+            id: bigdata[index].cause_[causelength - 1].id + 1,
+            vi: `Nguyên nhân ${bigdata[index].cause_[causelength - 1].id + 1}`,
+            en: `Cause ${bigdata[index].cause_[causelength - 1].id + 1}`,
           },
         ];
         setData([...bigdata]);
 
         break;
       case "ADDSOLUTION":
-        const solutionlength = bigdata[index].solution.length;
-        bigdata[index].solution = [
-          ...bigdata[index].solution,
+        const solutionlength = bigdata[index].solution_.length;
+        bigdata[index].solution_ = [
+          ...bigdata[index].solution_,
           {
-            id: bigdata[index].solution[solutionlength - 1].id + 1,
-            vi: `Giải pháp ${
-              bigdata[index].solution[solutionlength - 1].id + 1
-            }`,
-            en: `Solution ${
-              bigdata[index].solution[solutionlength - 1].id + 1
-            }`,
+            id: bigdata[index].solution_[solutionlength - 1].id + 1,
+            vi: `Giải pháp ${bigdata[index].solution_[solutionlength - 1].id + 1
+              }`,
+            en: `Solution ${bigdata[index].solution_[solutionlength - 1].id + 1
+              }`,
           },
         ];
         setData([...bigdata]);
@@ -404,9 +436,23 @@ export default function ErrorSetting(props) {
       default:
         break;
     }
+    await callApi("post", `${host.DATA}/updateWarnBox`, {
+      boxid: arr[0],
+      cause: data.find((item) => item.boxid_ === arr[0]).cause_,
+      solution: data.find((item) => item.boxid_ === arr[0]).solution_
+    })
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const getWarnBox = async () => {
+      let req = await callApi("get", `${host.DATA}/getWarnBox`, '')
+      if (req.status) {
+        let newData = req.data.sort((a, b) => a.warnid_ - b.warnid_);
+        setData(newData);
+      }
+    };
+    getWarnBox();
+  }, []);
 
   return (
     <>

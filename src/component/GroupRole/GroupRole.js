@@ -14,7 +14,6 @@ import { isMobile } from "../Navigation/Navigation";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 
-import { MdDelete } from "react-icons/md";
 import { IoMdMore } from "react-icons/io";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
@@ -58,7 +57,7 @@ const GroupUsers = (props) => {
       sortable: true,
       minWidth: "200px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -67,7 +66,7 @@ const GroupUsers = (props) => {
       sortable: true,
       maxWidth: "200px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -76,7 +75,7 @@ const GroupUsers = (props) => {
       sortable: true,
       width: "250px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -85,7 +84,7 @@ const GroupUsers = (props) => {
       sortable: true,
       minwidth: "200px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -94,7 +93,7 @@ const GroupUsers = (props) => {
       sortable: true,
       // width: "150px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
