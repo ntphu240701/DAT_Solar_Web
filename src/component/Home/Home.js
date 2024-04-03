@@ -125,7 +125,7 @@ export default function Home(props) {
       sortable: true,
       minWidth: "180px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -133,7 +133,7 @@ export default function Home(props) {
       selector: (row) => row.addr,
       width: "250px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
 

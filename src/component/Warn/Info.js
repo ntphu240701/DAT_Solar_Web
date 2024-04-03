@@ -4,9 +4,11 @@ import "./Warn.scss";
 import { useIntl } from "react-intl";
 
 import { IoClose } from "react-icons/io5";
+import { useSelector } from "react-redux";
 
 export default function Info(props) {
   const dataLang = useIntl();
+  const lang = useSelector((state) => state.admin.lang);
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
@@ -77,9 +79,12 @@ export default function Info(props) {
           </p>
 
           <div className="DAT_PopupReportInfo_Box_Body_Item_Box">
-            <p>
-              {dataLang.formatMessage({ id: "cause" })}...
-            </p>
+            {props.cause.map((item, index) => (
+              <div key={index} style={{ marginBottom: "5px" }}>
+                {item[lang]}
+                <br />
+              </div>
+            ))}
           </div>
 
           <p>
@@ -87,9 +92,12 @@ export default function Info(props) {
           </p>
 
           <div className="DAT_PopupReportInfo_Box_Body_Item_Box">
-            <p>
-              {dataLang.formatMessage({ id: "solution" })}...
-            </p>
+            {props.solution.map((item, index) => (
+              <div key={index} style={{ marginBottom: "5px" }}>
+                {item[lang]}
+                <br />
+              </div>
+            ))}
           </div>
         </div>
       </div>

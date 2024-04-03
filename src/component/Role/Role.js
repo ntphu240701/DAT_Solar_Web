@@ -54,7 +54,7 @@ export default function Role(props) {
       sortable: true,
       minWidth: "200px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -62,7 +62,7 @@ export default function Role(props) {
       selector: (row) => row.phone_,
       minWidth: "250px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -70,7 +70,7 @@ export default function Role(props) {
       selector: (row) => row.mail_,
       width: "250px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {

@@ -321,16 +321,16 @@ iframe {
     font-weight: 400;
     border-right: solid 1px rgb(213, 213, 213);
     //border-bottom: solid 1px rgb(213, 213, 213);
-    justify-content: left;
+    // justify-content: left;
     height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    & div:first-child {
-      white-space: normal !important;
-      overflow: visible !important;
-    }
+    // & div:first-child {
+    //   white-space: normal !important;
+    //   overflow: visible !important;
+    // }
   }
 
   //     // &Header{
@@ -386,8 +386,9 @@ iframe {
   position: absolute;
   z-index: 20;
   width: 100px;
-  top: 0px;
-  right: 0px;
+  top: 50%;
+  // right: 0px;
+  left: 0px;
   background-color: white;
   padding: 7px 0 7px 0;
   //  border: solid 1px rgb(205, 205, 205);

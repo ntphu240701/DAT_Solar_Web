@@ -72,8 +72,8 @@ export default function EditErr(props) {
       <div className="DAT_EditErr_Foot">
         <button
           style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
-          onClick={() =>
-            props.confirmEdit(editVi.current.value, editEn.current.value)
+          onClick={(e) =>
+            props.confirmEdit(e, editVi.current.value, editEn.current.value)
           }
         >
           {dataLang.formatMessage({ id: "confirm" })}
