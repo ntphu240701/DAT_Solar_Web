@@ -33,7 +33,8 @@ export default function Year(props) {
                     kWh
                 </div>
                 <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-                    {dataLang.formatMessage({ id: "yearOutput" })}: {cal.value.pro_year}
+                    {/* {props.v}: {cal.value.pro_year} kWh */}
+                    {dataLang.formatMessage({ id: "yearOutput" })}: {cal.value.pro_year}{" "}
                     kWh
                 </div>
             </div>
@@ -52,13 +53,23 @@ export default function Year(props) {
                                             tickLine={false}
                                             domain={[
                                                 0,
-                                                Math.max(...props.data.map((item) => item[props.v])),
+                                                props.data.reduce((max, item) => {
+                                                    // console.log(item)/
+                                                    const values = Object.values({
+                                                        x: item[props.v],
+                                                    });
+                                                    const currentMax = Math.max(...values.map(Number));
+                                                    // console.log(currentMax)
+                                                    return currentMax > max ? currentMax : max;
+                                                }, -Infinity),
                                             ]}
                                         />
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                         <Tooltip />
                                         <Legend />
-                                        {filterchart.value[projectData.value.plantmode][props.dateType].productionData ? (
+                                        {filterchart.value[projectData.value.plantmode][
+                                            props.dateType
+                                        ].productionData ? (
                                             <Bar
                                                 shape={<TriangleBar fill="rgba(11,25,103)" />}
                                                 dataKey={props.v}
@@ -85,13 +96,28 @@ export default function Year(props) {
                                             tickLine={false}
                                             domain={[
                                                 0,
-                                                Math.max(...props.data.map((item) => item[props.v])),
+                                                props.data.reduce((max, item) => {
+                                                    // console.log(item)/
+                                                    const values = Object.values({
+                                                        x: item[props.v],
+                                                        y: item[props.v2],
+                                                        z: item[props.v3],
+                                                        t: item[props.v4],
+                                                        // o: item[props.v5],
+                                                        // p: item[props.v6],
+                                                    });
+                                                    const currentMax = Math.max(...values.map(Number));
+                                                    // console.log(currentMax)
+                                                    return currentMax > max ? currentMax : max;
+                                                }, -Infinity),
                                             ]}
                                         />
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                         <Tooltip />
                                         <Legend />
-                                        {filterchart.value[projectData.value.plantmode][props.dateType].productionData ? (
+                                        {filterchart.value[projectData.value.plantmode][
+                                            props.dateType
+                                        ].productionData ? (
                                             <Bar
                                                 shape={<TriangleBar fill="rgba(11,25,103)" />}
                                                 dataKey={props.v}
@@ -103,7 +129,9 @@ export default function Year(props) {
                                         ) : (
                                             <></>
                                         )}
-                                        {filterchart.value[projectData.value.plantmode][props.dateType].consumptionData ? (
+                                        {filterchart.value[projectData.value.plantmode][
+                                            props.dateType
+                                        ].consumptionData ? (
                                             <Bar
                                                 shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
                                                 dataKey={props.v2}
@@ -115,7 +143,9 @@ export default function Year(props) {
                                         ) : (
                                             <></>
                                         )}
-                                        {filterchart.value[projectData.value.plantmode][props.dateType].dailygridin ? (
+                                        {filterchart.value[projectData.value.plantmode][
+                                            props.dateType
+                                        ].dailygridin ? (
                                             <Bar
                                                 shape={<TriangleBar fill="rgba(247, 148, 29)" />}
                                                 dataKey={props.v3}
@@ -127,7 +157,9 @@ export default function Year(props) {
                                         ) : (
                                             <></>
                                         )}
-                                        {filterchart.value[projectData.value.plantmode][props.dateType].dailygridout ? (
+                                        {filterchart.value[projectData.value.plantmode][
+                                            props.dateType
+                                        ].dailygridout ? (
                                             <Bar
                                                 shape={<TriangleBar fill="rgba(0, 163, 0)" />}
                                                 dataKey={props.v4}
@@ -154,13 +186,28 @@ export default function Year(props) {
                                             tickLine={false}
                                             domain={[
                                                 0,
-                                                Math.max(...props.data.map((item) => item[props.v])),
+                                                props.data.reduce((max, item) => {
+                                                    // console.log(item)/
+                                                    const values = Object.values({
+                                                        x: item[props.v],
+                                                        y: item[props.v2],
+                                                        z: item[props.v3],
+                                                        t: item[props.v4],
+                                                        o: item[props.v5],
+                                                        p: item[props.v6],
+                                                    });
+                                                    const currentMax = Math.max(...values.map(Number));
+                                                    // console.log(currentMax)
+                                                    return currentMax > max ? currentMax : max;
+                                                }, -Infinity),
                                             ]}
                                         />
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                         <Tooltip />
                                         <Legend />
-                                        {filterchart.value[projectData.value.plantmode][props.dateType].productionData ? (
+                                        {filterchart.value[projectData.value.plantmode][
+                                            props.dateType
+                                        ].productionData ? (
                                             <Bar
                                                 shape={<TriangleBar fill="rgba(11,25,103)" />}
                                                 dataKey={props.v}
@@ -172,7 +219,9 @@ export default function Year(props) {
                                         ) : (
                                             <></>
                                         )}
-                                        {filterchart.value[projectData.value.plantmode][props.dateType].consumptionData ? (
+                                        {filterchart.value[projectData.value.plantmode][
+                                            props.dateType
+                                        ].consumptionData ? (
                                             <Bar
                                                 shape={<TriangleBar fill="rgba(97,88,194,0.8)" />}
                                                 dataKey={props.v2}
@@ -184,7 +233,9 @@ export default function Year(props) {
                                         ) : (
                                             <></>
                                         )}
-                                        {filterchart.value[projectData.value.plantmode][props.dateType].dailygridin ? (
+                                        {filterchart.value[projectData.value.plantmode][
+                                            props.dateType
+                                        ].dailygridin ? (
                                             <Bar
                                                 shape={<TriangleBar fill="rgba(247, 148, 29)" />}
                                                 dataKey={props.v3}
@@ -196,7 +247,9 @@ export default function Year(props) {
                                         ) : (
                                             <></>
                                         )}
-                                        {filterchart.value[projectData.value.plantmode][props.dateType].dailygridout ? (
+                                        {filterchart.value[projectData.value.plantmode][
+                                            props.dateType
+                                        ].dailygridout ? (
                                             <Bar
                                                 shape={<TriangleBar fill="rgba(0, 163, 0)" />}
                                                 dataKey={props.v4}
@@ -208,7 +261,9 @@ export default function Year(props) {
                                         ) : (
                                             <></>
                                         )}
-                                        {filterchart.value[projectData.value.plantmode][props.dateType].charge ? (
+                                        {filterchart.value[projectData.value.plantmode][
+                                            props.dateType
+                                        ].charge ? (
                                             <Bar
                                                 shape={<TriangleBar fill="purple" />}
                                                 dataKey={props.v5}
@@ -220,7 +275,9 @@ export default function Year(props) {
                                         ) : (
                                             <></>
                                         )}
-                                        {filterchart.value[projectData.value.plantmode][props.dateType].discharge ? (
+                                        {filterchart.value[projectData.value.plantmode][
+                                            props.dateType
+                                        ].discharge ? (
                                             <Bar
                                                 shape={<TriangleBar fill="grey" />}
                                                 dataKey={props.v6}

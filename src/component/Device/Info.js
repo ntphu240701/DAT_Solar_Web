@@ -20,6 +20,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdOutlineError } from "react-icons/md";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { useSelector } from "react-redux";
 
 const data = [
   {
@@ -813,6 +814,7 @@ const Control = (props) => {
 };
 
 const HistoricalData = (props) => {
+  const lang = useSelector((state) => state.admin.lang);
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
   const [chart, setChart] = useState([]);
@@ -843,8 +845,6 @@ const HistoricalData = (props) => {
     year: moment(new Date()).format("YYYY"),
     total: "Tổng",
   });
-
-
 
   useEffect(() => {
     // console.log(info.value.psn, moment(new Date()).format("MM/DD/YYYY"))
@@ -962,12 +962,10 @@ const HistoricalData = (props) => {
       } else {
         setChart([])
       }
-
-
     }
 
     getChart()
-  }, [])
+  }, [lang])
 
   const handleChart = (date) => {
     console.log(date)
@@ -1154,12 +1152,12 @@ const HistoricalData = (props) => {
             <div className="DAT_Info_Databox_HistoricalData_Chart">
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "20px" }}>
 
-                <div style={{ cursor: "pointer", color: mode === "ACVOLT" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACVOLT')}>AC Voltage(V)</div>
-                <div style={{ cursor: "pointer", color: mode === "ACCUR" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACCUR')}>AC Current(A)</div>
-                <div style={{ cursor: "pointer", color: mode === "ACFRE" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACFRE')}>AC frequency(Hz)</div>
-                <div style={{ cursor: "pointer", color: mode === "DCVOLT" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCVOLT')}>DC Voltage(V)</div>
-                <div style={{ cursor: "pointer", color: mode === "DCCUR" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCCUR')}>DC Current(A)</div>
-                <div style={{ cursor: "pointer", color: mode === "DCPOWER" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCPOWER')}>DC Power(kW)</div>
+                <div style={{ cursor: "pointer", color: mode === "ACVOLT" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACVOLT')}>{dataLang.formatMessage({ id: "ACVolt" })}(V)</div>
+                <div style={{ cursor: "pointer", color: mode === "ACCUR" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACCUR')}>{dataLang.formatMessage({ id: "ACCurrent" })}(A)</div>
+                <div style={{ cursor: "pointer", color: mode === "ACFRE" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACFRE')}>{dataLang.formatMessage({ id: "acfre" })}(Hz)</div>
+                <div style={{ cursor: "pointer", color: mode === "DCVOLT" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCVOLT')}>{dataLang.formatMessage({ id: "DCVolt" })}(V)</div>
+                <div style={{ cursor: "pointer", color: mode === "DCCUR" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCCUR')}>{dataLang.formatMessage({ id: "DCCurrent" })}(A)</div>
+                <div style={{ cursor: "pointer", color: mode === "DCPOWER" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCPOWER')}>{dataLang.formatMessage({ id: "DCPower" })}(kW)</div>
               </div>
               {(() => {
                 switch (mode) {

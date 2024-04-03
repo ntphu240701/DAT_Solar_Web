@@ -370,6 +370,10 @@ export default function Project(props) {
 
   const handleShare = (e) => {
     shareState.value = true;
+    const newPlant = dataproject.value.find(
+      (item) => item.plantid_ == e.currentTarget.id
+    );
+    projectData.value = newPlant;
   };
 
   const handleLike = async (e) => {
@@ -1666,7 +1670,7 @@ export default function Project(props) {
 
       {shareState.value ? (
         <div className="DAT_SharePopup">
-          <ShareBox />
+          <ShareBox plantid={projectData.value.plantid_} usr={user} />
         </div>
       ) : (
         <></>

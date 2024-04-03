@@ -22,6 +22,7 @@ import PopupState, { bindPopper, bindHover } from 'material-ui-popup-state';
 import Fade from '@mui/material/Fade';
 import Paper from '@mui/material/Paper';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import DatePicker from "react-datepicker";
 
 import { FaSolarPanel, FaTree } from "react-icons/fa6";
 import { IoIosCloud } from "react-icons/io";
@@ -29,6 +30,7 @@ import { GiCoalWagon } from "react-icons/gi";
 import { FaMoneyBill } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { VscDashboard } from "react-icons/vsc";
+import { IoCalendarOutline } from "react-icons/io5";
 
 const plant = signal([]);
 const logger = signal([]);
@@ -57,7 +59,10 @@ export default function Home(props) {
   const [datamonth, setDatamonth] = useState([]);
   const [datayear, setDatayear] = useState([]);
   const navigate = useNavigate();
-
+  const [d, setD] = useState({
+    month: moment(new Date()).format("MM/YYYY"),
+    year: moment(new Date()).format("YYYY"),
+  });
   const [per, setPer] = useState(0);
   const in_max = 100;
   const in_min = 0;
@@ -344,6 +349,112 @@ export default function Home(props) {
         setDatayear(datayear_);
       }
     });
+  };
+
+  const handleChart = (date) => {
+    if (chart == "month") {
+      setD({ ...d, month: moment(date).format("MM/YYYY") });
+      let arr = moment(date).format("MM/YYYY").split("/");
+      const daysInMonth = new Date(arr[1], arr[0], 0).getDate();
+      let datamonth_ = [];
+      for (let i = 1; i <= daysInMonth; i++) {
+        datamonth_ = [
+          ...datamonth_,
+          {
+            date: i < 10 ? `0${i}` : `${i}`,
+            [dataLang.formatMessage({ id: "monthOutput" })]: 0,
+          },
+        ];
+      }
+      let sum_month = [];
+      plant.value.map(async (item_plant, i) => {
+        let chart = await callApi("post", host.DATA + "/getMonthChart", {
+          plantid: item_plant.plantid_,
+          month: moment(date).format("MM/YYYY"),
+        });
+
+        if (chart.status) {
+          if (item_plant.state === 1) {
+            sum_month[i] = chart.data.data
+              .map((item) => item.value)
+              .reduce((a, b) => Number(a) + Number(b), 0);
+            chart.data.data.map((item, j) => {
+              let index = datamonth_.findIndex((d) => d.date == item.date);
+              datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })] =
+                parseFloat(
+                  Number(
+                    datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })]
+                  ) + Number(item.value)
+                ).toFixed(2);
+            });
+          } else {
+            sum_month[i] = 0
+          }
+        } else {
+          sum_month[i] = 0;
+        }
+
+        if (i == plant.value.length - 1) {
+          let total_month = parseFloat(
+            sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+          ).toFixed(2);
+          setMonthlyProduction(total_month);
+          setDatamonth(datamonth_);
+        }
+      });
+    }
+    else if (chart === "year") {
+      setD({ ...d, year: moment(date).format("YYYY") });
+
+      let datayear_ = [];
+      for (let i = 1; i <= 12; i++) {
+        datayear_ = [
+          ...datayear_,
+          {
+            month: i < 10 ? `0${i}` : `${i}`,
+            [dataLang.formatMessage({ id: "yearOutput" })]: 0,
+          },
+        ];
+      }
+      let sum_year = [];
+
+      plant.value.map(async (item_plant, i) => {
+        let chartY = await callApi("post", host.DATA + "/getYearChart", {
+          plantid: item_plant.plantid_,
+          year: moment(date).format("YYYY"),
+        });
+
+        if (chartY.status) {
+          if (item_plant.state === 1) {
+            sum_year[i] = chartY.data.data
+              .map((item) => item.value)
+              .reduce((a, b) => Number(a) + Number(b), 0);
+            chartY.data.data.map((item, j) => {
+              let index = datayear_.findIndex((d) => d.month == item.month);
+              datayear_[index][dataLang.formatMessage({ id: "yearOutput" })] =
+                parseFloat(
+                  Number(
+                    datayear_[index][dataLang.formatMessage({ id: "yearOutput" })]
+                  ) + Number(item.value)
+                ).toFixed(2);
+            });
+          } else {
+            sum_year[i] = 0
+          }
+        } else {
+          sum_year[i] = 0;
+        }
+
+        if (i == plant.value.length - 1) {
+
+          let total_year = parseFloat(
+            sum_year.reduce((a, b) => Number(a) + Number(b), 0)
+          ).toFixed(2);
+          setYearlyProduction(total_year);
+          setDatayear(datayear_);
+        }
+      });
+    }
   };
 
   const getPrice = async (data, logger) => {
@@ -814,6 +925,7 @@ export default function Home(props) {
             <div className="DAT_Home_History-Head-Title">
               {dataLang.formatMessage({ id: "history" })}
             </div>
+
             <div className="DAT_Home_History-Head-Option">
               <span
                 style={{
@@ -842,15 +954,33 @@ export default function Home(props) {
             </div>
 
             <div className="DAT_Home_History-Head-Datetime">
-              {chart === "year"
-                ? moment(new Date()).format("YYYY")
-                : moment(new Date()).format("MM/YYYY")}
+              <DatePicker
+                // id="datepicker"
+                onChange={(date) => handleChart(date)}
+                showMonthYearPicker={
+                  chart === "year" ? false : true
+                }
+                showYearPicker={
+                  chart === "month" ? false : true
+                }
+                customInput={
+                  <button className="DAT_CustomPicker">
+                    <span>{d[chart]}</span>
+                    <IoCalendarOutline color="gray" />
+                  </button>
+                }
+              />
             </div>
           </div>
 
           <div className="DAT_Home_History-Chart">
             <div className="DAT_Home_History-Chart-label">
-              <div className="DAT_Home_History-Chart-label-Unit">MWh</div>
+              <div className="DAT_Home_History-Chart-label-Unit">
+                {chart === "year"
+                  ? <span style={{ color: COLOR.value.grayText, fontSize: "13px" }}>{showUnitk(yearlyproduction)}Wh</span>
+                  : <span style={{ color: COLOR.value.grayText, fontSize: "13px" }}>{showUnitk(monthlyproduction)}Wh</span>
+                }
+              </div>
               <div className="DAT_Home_History-Chart-label-Label">
                 {chart === "year"
                   ? dataLang.formatMessage({ id: "yearOutput" })

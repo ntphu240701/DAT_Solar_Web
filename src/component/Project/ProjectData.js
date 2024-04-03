@@ -2077,11 +2077,11 @@ export default function ProjectData(props) {
                       {dropConfig ? (
                         <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
                           style={{
-                            height: dropConfig ? "200px" : "0px",
+                            height: dropConfig ? "250px" : "0px",
                             transition: "0.5s",
                           }}
                         >
-                          <div lassName="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
+                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item">
                             {(() => {
                               switch (projectData.value.plantmode) {
                                 case "consumption":
@@ -2925,11 +2925,22 @@ export default function ProjectData(props) {
                             })()}
                           </div>
 
-                          <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Btn">
-                            <button>
+                          <div className="DAT_Filter_Dropdown_Bot">
+                            <button
+                              style={{ backgroundColor: "white", color: "black" }}
+                              onClick={(e) => {
+                                handleShowConfig(e);
+                                setDropConfig(!dropConfig);
+                              }}
+                            >
                               {dataLang.formatMessage({ id: "cancel", })}
                             </button>
-                            <button>
+                            <button
+                              onClick={(e) => {
+                                handleShowConfig(e);
+                                setDropConfig(!dropConfig);
+                              }}
+                              style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}>
                               {dataLang.formatMessage({ id: "confirm", })}
                             </button>
                           </div>
@@ -3653,29 +3664,33 @@ export default function ProjectData(props) {
         <></>
       )}
 
-      {popupState.value ? (
-        <div className="DAT_DevicePopup">
-          <Popup
-            plantid={projectData.value.plantid_}
-            type="logger"
-            sn={snlogger}
-            data={temp.value}
-            func={type}
-          />
-        </div>
-      ) : (
-        <> </>
-      )}
+      {
+        popupState.value ? (
+          <div className="DAT_DevicePopup">
+            <Popup
+              plantid={projectData.value.plantid_}
+              type="logger"
+              sn={snlogger}
+              data={temp.value}
+              func={type}
+            />
+          </div>
+        ) : (
+          <> </>
+        )
+      }
 
-      {exportReport ? (
-        <div className="DAT_RolePopup" style={{
-          height: exportReport === "default" ? "0px" : "100vh",
-        }}>
-          <ExportData handleClose={handleClose} typereport={dateType} plant={projectData.value} datetime={datetime_} />
-        </div>
-      ) : (
-        <> </>
-      )}
+      {
+        exportReport ? (
+          <div className="DAT_RolePopup" style={{
+            height: exportReport === "default" ? "0px" : "100vh",
+          }}>
+            <ExportData handleClose={handleClose} typereport={dateType} plant={projectData.value} datetime={datetime_} />
+          </div>
+        ) : (
+          <> </>
+        )
+      }
 
       {isMobile.value ? (
         <>

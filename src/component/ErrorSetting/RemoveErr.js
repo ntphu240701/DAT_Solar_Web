@@ -49,21 +49,21 @@ export default function RemoveErr(props) {
           case "REMOVECAUSE":
             return (
               <div className="DAT_RemoveErr_Body">
-                <span>Bạn có chắc xóa nguyên nhân này không ?</span>
+                <span>{dataLang.formatMessage({ id: 'delCause' })}</span>
               </div>
-            );
+            )
           case "REMOVESOLUTION":
             return (
               <div className="DAT_RemoveErr_Body">
-                <span>Bạn có chắc xóa biện pháp này không ?</span>
+                <span>{dataLang.formatMessage({ id: 'delSolution' })}</span>
               </div>
-            );
+            )
           default:
             return (
               <div className="DAT_RemoveErr_Body">
-                <span>Bạn có chắc xóa lỗi này không ?</span>
+                <span>{dataLang.formatMessage({ id: 'delErrorInfo' })}</span>
               </div>
-            );
+            )
         }
       })()}
 

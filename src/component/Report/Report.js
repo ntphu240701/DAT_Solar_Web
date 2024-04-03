@@ -15,6 +15,7 @@ import { HiOutlineDocumentReport } from "react-icons/hi";
 import { CiEdit } from "react-icons/ci";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdOutlinePostAdd } from "react-icons/md";
+import { IoTrashOutline } from "react-icons/io5";
 
 export const editData = signal({});
 export const idReport = signal(0);
@@ -127,10 +128,10 @@ export default function Report(props) {
                       id={item.id}
                       onClick={(e) => handleDeleteReport(e)}
                     >
-                      <RiDeleteBin6Line
+                      <IoTrashOutline
                         style={{ cursor: "pointer" }}
                         color="red"
-                        size={20}
+                        size={18}
                       />
                     </div>
                   ) : (

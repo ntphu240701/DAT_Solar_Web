@@ -38,6 +38,12 @@
             font-size: 14px;
             font-family: Montserrat-Regular;
         }
+
+        & input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     }
 
     &_New {
@@ -1290,6 +1296,24 @@
                     background-color: white;
                     border-top: 1px solid #b8b8b8;
                     padding: 16px;
+                    height: 100%;
+
+                    &_Btn {
+                        padding: 16px;
+                        display: flex;
+                        gap: 16px;
+
+                        & button {
+                            padding: 5px 15px;
+                            border-radius: 4px;
+                            cursor: pointer;
+                            border: none;
+                            box-shadow: 0 0 3px 3px rgba(193, 193, 193, 0.5);
+                            width: 100px;
+                            height: 35px;
+                            font-family: Montserrat-SemiBold;
+                        }
+                    }
 
                     &_Search {
                         display: flex;
@@ -2106,6 +2130,12 @@
                         background-color: white;
                         font-family: Montserrat-Regular;
                     }
+
+                    & input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
                 }
             }
 
@@ -2134,6 +2164,12 @@
                         -webkit-box-sizing: border-box;
                         -moz-box-sizing: border-box;
                         font-family: Montserrat-Regular;
+                    }
+
+                    & input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
                     }
                 }
             }
@@ -2224,6 +2260,12 @@
                         -moz-box-sizing: border-box;
                         font-family: Montserrat-Regular;
                     }
+
+                    & input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
                 }
             }
 
@@ -2291,6 +2333,12 @@
                         -moz-box-sizing: border-box;
                         font-family: Montserrat-Regular;
                     }
+
+                    & input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
                 }
             }
 
@@ -2320,6 +2368,12 @@
                         -moz-box-sizing: border-box;
                         font-family: Montserrat-Regular;
                     }
+
+                    & input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
                 }
             }
 
@@ -2348,6 +2402,12 @@
                         -webkit-box-sizing: border-box;
                         -moz-box-sizing: border-box;
                         font-family: Montserrat-Regular;
+                    }
+
+                    & input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
                     }
                 }
             }
@@ -2563,6 +2623,12 @@
                         font-family: Montserrat-Regular;
                     }
 
+                    & input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
+
                     & select {
                         width: 100%;
                         height: 40px;
@@ -2695,6 +2761,12 @@
                         background-color: white;
                         font-family: Montserrat-Regular;
                     }
+
+                    & input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
                 }
             }
 
@@ -2723,6 +2795,12 @@
                         -webkit-box-sizing: border-box;
                         -moz-box-sizing: border-box;
                         font-family: Montserrat-Regular;
+                    }
+
+                    & input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
                     }
                 }
             }
@@ -2813,6 +2891,12 @@
                         -moz-box-sizing: border-box;
                         font-family: Montserrat-Regular;
                     }
+
+                    & input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
                 }
             }
 
@@ -2880,6 +2964,12 @@
                         -moz-box-sizing: border-box;
                         font-family: Montserrat-Regular;
                     }
+
+                    & input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
                 }
             }
 
@@ -2937,6 +3027,12 @@
                         -webkit-box-sizing: border-box;
                         -moz-box-sizing: border-box;
                         font-family: Montserrat-Regular;
+                    }
+
+                    & input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
                     }
                 }
             }
@@ -3123,6 +3219,12 @@
             -moz-box-sizing: border-box;
             font-family: Montserrat-Regular;
         }
+
+        & input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     }
 
     &_Foot {
@@ -3221,6 +3323,12 @@
                 -moz-box-sizing: border-box;
                 font-family: Montserrat-Regular;
                 background-color: white;
+            }
+
+            & input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
             }
         }
 
@@ -3327,6 +3435,12 @@
                 -webkit-box-sizing: border-box;
                 -moz-box-sizing: border-box;
                 font-family: Montserrat-Regular;
+            }
+
+            & input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
             }
         }
 
@@ -3440,6 +3554,12 @@
                 box-sizing: border-box;
                 -webkit-box-sizing: border-box;
                 -moz-box-sizing: border-box;
+            }
+
+            & input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
             }
         }
 
@@ -3949,3 +4069,10 @@
 // box-sizing: border-box;
 // -webkit-box-sizing: border-box;
 // -moz-box-sizing: border-box;
+
+// input [type=number] // xóa nút tăng giảm của type input number
+// & input::-webkit-outer-spin-button,
+// input::-webkit-inner-spin-button {
+//     -webkit-appearance: none;
+//     margin: 0;
+// }
