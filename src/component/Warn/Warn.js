@@ -16,10 +16,11 @@ import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { LuMailWarning } from "react-icons/lu";
 import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore } from "react-icons/io";
-import { TbSettingsCode } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
 import { IoTrashOutline } from "react-icons/io5";
 import { FiFilter } from "react-icons/fi";
+import { callApi } from "../Api/Api";
+import { host } from "../Lang/Contant";
 
 export const tabLable = signal("");
 export const open = signal([]);
@@ -45,6 +46,8 @@ export default function Warn(props) {
   const notice = useRef();
   const [infowarnState, setInfowarnState] = useState(false);
   const [delWarnState, setDelWarnState] = useState(false);
+  const [cause, setCause] = useState([]);
+  const [solution, setSolution] = useState([]);
 
   const listTab = [
     { id: "all", name: dataLang.formatMessage({ id: "total" }) },
@@ -154,12 +157,7 @@ export default function Warn(props) {
           <div
             className="DAT_ModifyBox"
             id={row.boxid + "_" + row.warnid + "_Modify"}
-            style={{
-              display: "none",
-              marginTop: "12px",
-              width: "90px",
-              marginRight: "4px",
-            }}
+            style={{ display: "none", marginTop: "3px", marginRight: "3px" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             {ruleInfor.value.setting.warn.remove === true ? (
@@ -187,19 +185,33 @@ export default function Warn(props) {
     },
   ];
 
-  const handleInfo = (e) => {
-    setInfowarnState(true);
+  const handleInfo = async (e) => {
     const temp = e.currentTarget.id.split("_");
 
-    const id = `${temp[0]}_${temp[1]}_${temp[2]}`; //temp[0];
-    const level = temp[3];
-    const plant = temp[4];
-    const device = temp[5];
+    const id = `${temp[0]}_${temp[1]}_${temp[2]}`;
 
-    setBoxid(id)
-    setLevel(level)
-    setPlant(plant)
-    setDevice(device)
+    let req = await callApi("post", `${host.DATA}/getWarninf`, {
+      boxid: id,
+    })
+    console.log(req);
+    if (req.status) {
+      setInfowarnState(true);
+      setBoxid(id)
+      setLevel(temp[3])
+      setPlant(temp[4])
+      setDevice(temp[5])
+      setCause(req.data.cause_)
+      setSolution(req.data.solution_)
+    } else {
+      setInfowarnState(true);
+      setBoxid(id)
+      setLevel(temp[3])
+      setPlant(temp[4])
+      setDevice(temp[5])
+      setCause([])
+      setSolution([])
+    }
+
   };
 
   const handleCloseInfo = () => {
@@ -716,7 +728,15 @@ export default function Warn(props) {
       )}
 
       {infowarnState ? (
-        <Info boxid={boxid} level={level} plant={plant} device={device} handleClose={handleCloseInfo} />
+        <Info
+          boxid={boxid}
+          level={level}
+          plant={plant}
+          device={device}
+          cause={cause}
+          solution={solution}
+          handleClose={handleCloseInfo}
+        />
       ) : (
         <></>
       )}

@@ -2808,7 +2808,7 @@ const LastCommandRecord = (props) => {
   return (
     <div className="DAT_Info_Databox" id="LastCommandRecord">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Last Command Record</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'LastCommandRecord' })}</div>
       </div>
 
       <div className="DAT_Info_Databox_LastCommandRecord">
@@ -2816,15 +2816,15 @@ const LastCommandRecord = (props) => {
           <div className="DAT_Info_Databox_LastCommandRecord_Content_Left">
             <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item" style={{ marginBottom: "24px" }}>
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item_Tit">
-                Inerter Status:
+                {dataLang.formatMessage({ id: 'InverterStatus' })}:
               </div>
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item_Content">
-                Read AC Start High Volt
+                {dataLang.formatMessage({ id: 'ReadACStartHighVolt' })}
               </div>
             </div>
             <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item">
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item_Tit">
-                Read Result:
+                {dataLang.formatMessage({ id: 'ReadResult' })}:
               </div>
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item_Content">
                 264.5 V
@@ -2834,15 +2834,15 @@ const LastCommandRecord = (props) => {
           <div className="DAT_Info_Databox_LastCommandRecord_Content_Center">
             <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item" style={{ marginBottom: "24px" }}>
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item_Tit">
-                Command Type:
+                {dataLang.formatMessage({ id: 'CommandType' })}:
               </div>
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item_Content">
-                Read
+                {dataLang.formatMessage({ id: 'read' })}
               </div>
             </div>
             <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item">
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item_Tit">
-                Send time:
+                {dataLang.formatMessage({ id: 'SendTime' })}:
               </div>
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item_Content">
                 2024/03/25 10:30:49 UTC+07:00
@@ -2852,18 +2852,18 @@ const LastCommandRecord = (props) => {
           <div className="DAT_Info_Databox_LastCommandRecord_Content_Right">
             <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item" style={{ marginBottom: "24px" }}>
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item_Tit">
-                Command State:
+                {dataLang.formatMessage({ id: 'CommandState' })}:
               </div>
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item_Content">
                 <FaCheckCircle size={16} color="green" />
                 <span style={{ color: "green" }}>
-                  Succeeded
+                  {dataLang.formatMessage({ id: 'success' })}
                 </span>
               </div>
             </div>
             <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item">
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item_Tit">
-                Feedback Time:
+                {dataLang.formatMessage({ id: 'FeedbackTime' })}:
               </div>
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item_Content">
                 2024/03/25 10:30:50 UTC+07:00
@@ -2883,7 +2883,7 @@ const SelectCommand = (props) => {
   return (
     <div className="DAT_Info_Databox" id="SelectCommand">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Select Command</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'SelCommand' })}</div>
       </div>
 
       <div className="DAT_Info_Databox_SelectCommand">
@@ -2891,13 +2891,13 @@ const SelectCommand = (props) => {
           <div className="DAT_Info_Databox_SelectCommand_Content_Left">
             <div className="DAT_Info_Databox_SelectCommand_Content_Left_Item">
               <div className="DAT_Info_Databox_SelectCommand_Content_Left_Item_Tit">
-                Inerter Status:
+                {dataLang.formatMessage({ id: 'InverterStatus' })}:
               </div>
               <div className="DAT_Info_Databox_SelectCommand_Content_Left_Item_Content">
                 <select>
-                  <option>Init</option>
-                  <option>Wait</option>
-                  <option>On Grid</option>
+                  <option>{dataLang.formatMessage({ id: 'StatusInit' })}</option>
+                  <option>{dataLang.formatMessage({ id: 'StatusWait' })}</option>
+                  <option>{dataLang.formatMessage({ id: 'StatusOnGrid' })}</option>
                 </select>
               </div>
             </div>
@@ -2907,10 +2907,10 @@ const SelectCommand = (props) => {
         <div className="DAT_Info_Databox_SelectCommand_Foot">
           <div className="DAT_Info_Databox_SelectCommand_Foot_Item">
             <span>
-              Timeout:
+              {dataLang.formatMessage({ id: 'Timeout' })}:
             </span>
             <input />
-            <span>Minute</span>
+            <span>{dataLang.formatMessage({ id: 'Timeout' })}</span>
 
             <div className="DAT_Home_Overview-Main-Percent-Icon" style={{ cursor: 'pointer' }}>
               <PopupState variant="popper" popupId="demo-popup-popper">
@@ -2936,7 +2936,7 @@ const SelectCommand = (props) => {
               </PopupState>
             </div>
           </div>
-          <button>Send Command</button>
+          <button>{dataLang.formatMessage({ id: 'SendCommand' })}</button>
         </div>
       </div >
     </div >
@@ -2960,15 +2960,14 @@ const CustomizedCommand = (props) => {
           <div className="DAT_Info_Databox_CustomizedCommand_Foot">
             <div className="DAT_Info_Databox_CustomizedCommand_Foot_Func">
               <select>
-                <option>3 minutes timeout</option>
-                <option>3 minutes timeout</option>
-                <option>3 minutes timeout</option>
+                <option>{dataLang.formatMessage({ id: 'ThreeminsTimeout' })}</option>
+                <option>{dataLang.formatMessage({ id: 'SixminsTimeout' })}</option>
               </select>
-              <button>Click Calculate CRC</button>
+              <button>{dataLang.formatMessage({ id: 'ClickCalculateCRC' })}</button>
             </div>
             <textarea />
             <div className="DAT_Info_Databox_CustomizedCommand_Foot_Button">
-              <button>Send</button>
+              <button>{dataLang.formatMessage({ id: 'confirm' })}</button>
             </div>
           </div>
         </div>
@@ -2989,7 +2988,7 @@ const ControlLog = (props) => {
 
   const columnLog = [
     {
-      name: "Sent Time",
+      name: dataLang.formatMessage({ id: 'SentTime' }),
       selector: (row) => row.senttime,
       sortable: true,
       // width: "80px",
@@ -2998,7 +2997,7 @@ const ControlLog = (props) => {
       },
     },
     {
-      name: "Command Name",
+      name: dataLang.formatMessage({ id: 'CommandName' }),
       selector: (row) => row.name,
       sortable: true,
       // width: "180px",
@@ -3007,7 +3006,7 @@ const ControlLog = (props) => {
       },
     },
     {
-      name: "Command Type",
+      name: dataLang.formatMessage({ id: 'CommandType' }),
       selector: (row) => row.type,
       sortable: true,
       // width: "180px",
@@ -3016,7 +3015,7 @@ const ControlLog = (props) => {
       },
     },
     {
-      name: "Inputs",
+      name: dataLang.formatMessage({ id: 'Inputs' }),
       selector: (row) => row.input,
       sortable: true,
       // width: "180px",
@@ -3025,7 +3024,7 @@ const ControlLog = (props) => {
       },
     },
     {
-      name: "Return Result(s)",
+      name: dataLang.formatMessage({ id: 'ReturnResult' }),
       selector: (row) => row.result,
       sortable: true,
       // width: "180px",
@@ -3034,7 +3033,7 @@ const ControlLog = (props) => {
       },
     },
     {
-      name: "Command State",
+      name: dataLang.formatMessage({ id: 'CommandState' }),
       selector: (row) => row.state,
       sortable: true,
       // width: "180px",
@@ -3043,7 +3042,7 @@ const ControlLog = (props) => {
       },
     },
     {
-      name: "Reason of Failure",
+      name: dataLang.formatMessage({ id: 'ReasonOfFailure' }),
       selector: (row) => row.reason,
       sortable: true,
       // width: "180px",
@@ -3052,7 +3051,7 @@ const ControlLog = (props) => {
       },
     },
     {
-      name: "Operator",
+      name: dataLang.formatMessage({ id: 'Operator' }),
       selector: (row) => row.operator,
       sortable: true,
       // width: "180px",
@@ -3061,7 +3060,7 @@ const ControlLog = (props) => {
       },
     },
     {
-      name: "Feedback Time",
+      name: dataLang.formatMessage({ id: 'FeedbackTime' }),
       selector: (row) => row.feedbacktime,
       sortable: true,
       // width: "180px",
@@ -3076,7 +3075,7 @@ const ControlLog = (props) => {
       <div className="DAT_Info_Databox_Title">
         <div className="DAT_Info_Databox_Title_Left">
           <select>
-            <option>Command State</option>
+            <option>{dataLang.formatMessage({ id: 'CommandState' })}</option>
           </select>
         </div>
       </div>
@@ -3103,7 +3102,7 @@ const FirmwareUpgrade = (props) => {
     <>
       <div className="DAT_Info_Databox" id="FirmwareUpgrade">
         <div className="DAT_Info_Databox_Title">
-          <div className="DAT_Info_Databox_Title_Left">Current Version Info</div>
+          <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: 'CurrentVersion' })}</div>
         </div>
 
         <div className="DAT_Info_Databox_FirmwareUpgrade">
@@ -3111,7 +3110,7 @@ const FirmwareUpgrade = (props) => {
             <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left">
               <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left_Item">
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left_Item_Tit">
-                  Certification Version Number:
+                  {dataLang.formatMessage({ id: 'CertificationVersion' })}:
                 </div>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left_Item_Content">
                   GAA
@@ -3121,7 +3120,7 @@ const FirmwareUpgrade = (props) => {
             <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center">
               <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center_Item">
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center_Item_Tit">
-                  Internal Software Version Number:
+                  {dataLang.formatMessage({ id: 'InternalSoftwareVersion' })}:
                 </div>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center_Item_Content">
                   1110-0-0-203
@@ -3131,7 +3130,7 @@ const FirmwareUpgrade = (props) => {
             <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right">
               <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right_Item">
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right_Item_Tit">
-                  Upgrade Flag Bit:
+                  {dataLang.formatMessage({ id: 'UpgradeFlagBit' })}:
                 </div>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right_Item_Content">
                   2
@@ -3144,7 +3143,9 @@ const FirmwareUpgrade = (props) => {
 
       <div className="DAT_Info_Databox" id="FirmwareUpgrade">
         <div className="DAT_Info_Databox_Title">
-          <div className="DAT_Info_Databox_Title_Left">Last Upgrade Record</div>
+          <div className="DAT_Info_Databox_Title_Left">
+            {dataLang.formatMessage({ id: 'LastUpgradeRecord' })}:
+          </div>
         </div>
 
         <div className="DAT_Info_Databox_FirmwareUpgrade">
@@ -3152,7 +3153,7 @@ const FirmwareUpgrade = (props) => {
             <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left">
               <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item" style={{ marginBottom: "24px" }}>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item_Tit">
-                  Target Version:
+                  {dataLang.formatMessage({ id: "TargetVersion" })}:
                 </div>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item_Content">
                   XG5-10KTL_arm_203_Vietnam
@@ -3160,12 +3161,12 @@ const FirmwareUpgrade = (props) => {
               </div>
               <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item">
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item_Tit">
-                  Upgrade phase:
+                  {dataLang.formatMessage({ id: 'UpgradePhase' })}:
                 </div>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item_Content">
                   <FaCheckCircle size={16} color="green" />
                   <span style={{ color: "green" }}>
-                    Succeeded
+                    {dataLang.formatMessage({ id: "success" })}
                   </span>
                 </div>
               </div>
@@ -3173,15 +3174,15 @@ const FirmwareUpgrade = (props) => {
             <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center">
               <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item" style={{ marginBottom: "24px" }}>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item_Tit">
-                  Related Version:
+                  {dataLang.formatMessage({ id: "RelatedVersion" })}::
                 </div>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item_Content">
-                  Internal Software Version Number
+                  {dataLang.formatMessage({ id: "InternalSoftwareVersion" })}
                 </div>
               </div>
               <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item">
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item_Tit">
-                  Feedback Time:
+                  {dataLang.formatMessage({ id: "FeedbackTime" })}:
                 </div>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item_Content">
                   2024/03/11 08:50:17 UTC+07:00
@@ -3191,7 +3192,7 @@ const FirmwareUpgrade = (props) => {
             <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Right">
               <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Right_Item">
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Right_Item_Tit">
-                  Upgraded Time:
+                  {dataLang.formatMessage({ id: "UpgradedTime" })}:
                 </div>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Right_Item_Content">
                   2024/03/11 08:48:18 UTC+07:00
@@ -3204,11 +3205,15 @@ const FirmwareUpgrade = (props) => {
 
       <div className="DAT_Info_Databox" id="FirmwareUpgrade">
         <div className="DAT_Info_Databox_Title">
-          <div className="DAT_Info_Databox_Title_Left">Upgrade operation</div>
+          <div className="DAT_Info_Databox_Title_Left">
+            {dataLang.formatMessage({ id: "UpgradeOperation" })}:
+          </div>
           <div className="DAT_Info_Databox_Title_Right">
-            <span>Logger download methods:</span>
+            <span>
+              {dataLang.formatMessage({ id: "LoggerDownloadMethods" })}:
+            </span>
             <select>
-              <option>IP Download</option>
+              <option>{dataLang.formatMessage({ id: "IPDownload" })}</option>
             </select>
           </div>
         </div>
@@ -3218,17 +3223,17 @@ const FirmwareUpgrade = (props) => {
             <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left">
               <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item" style={{ marginBottom: "24px" }}>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item_Tit">
-                  Select Firmware Package:
+                  {dataLang.formatMessage({ id: "SelFirmwarePackage" })}:
                 </div>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item_Content">
                   <button>
-                    Click Select Firmware Package
+                    {dataLang.formatMessage({ id: "ClickSelectFirmwarePackage" })}
                   </button>
                 </div>
               </div>
               <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item">
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item_Tit">
-                  Timeout:
+                  {dataLang.formatMessage({ id: "Timeout" })}:
 
                   <div className="DAT_Home_Overview-Main-Percent-Icon" style={{ cursor: 'pointer' }}>
                     <PopupState variant="popper" popupId="demo-popup-popper">
@@ -3256,14 +3261,18 @@ const FirmwareUpgrade = (props) => {
                 </div>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item_Content">
                   <input />
-                  <span>Minute</span>
+                  <span>
+                    {dataLang.formatMessage({ id: "Minute" })}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="DAT_Info_Databox_FirmwareUpgrade_Foot">
-            <button>Start upgrading</button>
+            <button>
+              {dataLang.formatMessage({ id: "StartUpgrading" })}
+            </button>
           </div>
         </div>
       </div>
@@ -3283,7 +3292,7 @@ const UpgradelLog = (props) => {
 
   const columnLog = [
     {
-      name: "Upgraded Time",
+      name: dataLang.formatMessage({ id: 'UpgradedTime' }),
       selector: (row) => row.upgradedtime,
       sortable: true,
       // width: "80px",
@@ -3292,7 +3301,7 @@ const UpgradelLog = (props) => {
       },
     },
     {
-      name: "Firmware Package",
+      name: dataLang.formatMessage({ id: 'FirmwarePackage' }),
       selector: (row) => row.package,
       sortable: true,
       // width: "180px",
@@ -3301,7 +3310,7 @@ const UpgradelLog = (props) => {
       },
     },
     {
-      name: "Target Version",
+      name: dataLang.formatMessage({ id: 'TargetVersion' }),
       selector: (row) => row.target,
       sortable: true,
       // width: "180px",
@@ -3310,7 +3319,7 @@ const UpgradelLog = (props) => {
       },
     },
     {
-      name: "Related Version",
+      name: dataLang.formatMessage({ id: 'RelatedVersion' }),
       selector: (row) => row.related,
       sortable: true,
       // width: "180px",
@@ -3319,7 +3328,7 @@ const UpgradelLog = (props) => {
       },
     },
     {
-      name: "Upgrade State",
+      name: dataLang.formatMessage({ id: 'UpgradeState' }),
       selector: (row) => row.state,
       sortable: true,
       // width: "180px",
@@ -3328,7 +3337,7 @@ const UpgradelLog = (props) => {
       },
     },
     {
-      name: "Parse Result",
+      name: dataLang.formatMessage({ id: 'ParseResult' }),
       selector: (row) => row.result,
       sortable: true,
       // width: "180px",
@@ -3337,7 +3346,7 @@ const UpgradelLog = (props) => {
       },
     },
     {
-      name: "Reason of Failure",
+      name: dataLang.formatMessage({ id: 'ReasonOfFailure' }),
       selector: (row) => row.reason,
       sortable: true,
       // width: "180px",
@@ -3346,7 +3355,7 @@ const UpgradelLog = (props) => {
       },
     },
     {
-      name: "Operator",
+      name: dataLang.formatMessage({ id: 'Operator' }),
       selector: (row) => row.operator,
       sortable: true,
       // width: "180px",
@@ -3355,7 +3364,7 @@ const UpgradelLog = (props) => {
       },
     },
     {
-      name: "Feedback Time",
+      name: dataLang.formatMessage({ id: 'FeedbackTime' }),
       selector: (row) => row.feedbacktime,
       sortable: true,
       // width: "180px",
@@ -3370,7 +3379,7 @@ const UpgradelLog = (props) => {
       <div className="DAT_Info_Databox_Title">
         <div className="DAT_Info_Databox_Title_Left">
           <select>
-            <option>Upgrade State</option>
+            <option>{dataLang.formatMessage({ id: 'UpgradeState' })}</option>
           </select>
         </div>
       </div>
@@ -3463,21 +3472,21 @@ export default function Info(props) {
                       onClick={() => { setNav("single") }}
                       style={{ color: nav === "single" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "single" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
-                      Single Command
+                      {dataLang.formatMessage({ id: "SingleCommand" })}
                     </button>
                     <button className="DAT_Info_Header_Left_Item"
                       id="customized"
                       onClick={() => { setNav("customized") }}
                       style={{ color: nav === "customized" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "customized" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
-                      Customized Command
+                      {dataLang.formatMessage({ id: "CustomizedCommand" })}
                     </button>
                     <button className="DAT_Info_Header_Left_Item"
                       id="log"
                       onClick={() => { setNav("log") }}
                       style={{ color: nav === "log" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "log" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
-                      Control Log
+                      {dataLang.formatMessage({ id: "ControlLog" })}
                     </button>
                   </div>
                 )
@@ -3489,14 +3498,14 @@ export default function Info(props) {
                       onClick={() => { setNav_("firmware") }}
                       style={{ color: nav_ === "firmware" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav_ === "firmware" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
-                      Firmware Upgrade
+                      {dataLang.formatMessage({ id: "FirmwareUpgrade" })}
                     </button>
                     <button className="DAT_Info_Header_Left_Item"
                       id="upgrade"
                       onClick={() => { setNav_("upgrade") }}
                       style={{ color: nav_ === "upgrade" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav_ === "upgrade" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
-                      Upgrade Log
+                      {dataLang.formatMessage({ id: "UpdateLog" })}
                     </button>
                   </div>
                 )
