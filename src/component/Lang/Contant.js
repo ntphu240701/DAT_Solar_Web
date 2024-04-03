@@ -286,6 +286,53 @@ export const messages = {
     SingleCommand: "Single Command",
     CustomizedCommand: "Customized Command",
     ControlLog: "Control Log",
+    FirmwareUpgrade: "Firmware Log",
+    UpdateLog: "Control Log",
+
+    //DataTables Header Inverter 
+    UpgradedTime: 'Upgraded Time',
+    FirmwarePackage: 'Firmware Package',
+    TargetVersion: 'Target Version',
+    RelatedVersion: 'Related Version',
+    UpgradeState: 'Upgrade State',
+    ParseResult: 'Parse Result',
+    ReasonOfFailure: 'Reason of Failure',
+    Operator: ' Operator',
+    FeedbackTime: 'Feedback Time',
+    SentTime: 'Sent Time',
+    CommandType: 'Command Type',
+    CommandName: 'Command Name',
+    CommandState: 'Command State',
+    Inputs: 'Inputs',
+    ReturnResult: 'Return Result(s)',
+
+    //Inverter FirmwareUpgrade
+    CurrentVersion: 'Current Version Info',
+    CertificationVersion: 'Certification Version Number',
+    InternalSoftwareVersion: 'Internal Software Version Number',
+    UpgradeFlagBit: 'Upgrade Flag Bit',
+    LastUpgradeRecord: 'Last Upgrade Record',
+    UpgradePhase: 'Upgrade Phase',
+    UpgradeOperation: 'Upgrade Operation',
+    LoggerDownloadMethods: 'Logger Download Methods',
+    SelFirmwarePackage: 'Select Firmware Package',
+    ClickSelectFirmwarePackage: 'Click Select Firmware Package',
+    Timeout: 'Timeout',
+    ThreeminsTimeout: '3 mins timeout',
+    SixminsTimeout: '6 mins timeout',
+    Minute: 'Minute',
+    IPDownload: 'IP Download',
+    StartUpgrading: 'Start Upgrading',
+
+    //Inverter SingleCommand
+    LastCommandRecord: 'Last Command Record',
+    ReadACStartHighVolt: 'Read AC Start High Volt',
+    ReadResult: 'Read Result',
+    SendTime: 'Send Time',
+    SelCommand: 'Select Command',
+    InverterStatus: 'Inverter Status',
+    SendCommand: 'Send Command',
+    ClickCalculateCRC: 'Click Calculate CRC',
 
     //Grid Start Settings
     Gridstartsettings: "Grid start settings",
@@ -328,6 +375,8 @@ export const messages = {
     ExportPEnable: "Export power enable",
     ExportPLimit: "Export power limit",
     ExportLimitWay: "Export Limit Way",
+    LimitSinglePhase: "Limit Single Phase",
+    LimitThreePhase: "Limit Three Phase",
     MetterType: "Metter Type",
     MultiExportLimit: "Multi-export limit",
     Enable: "Enable",
@@ -393,7 +442,6 @@ export const messages = {
 
     //Grid Infomation
     GridInfor: "Grid Information",
-    InverterStatus: "Inverter Status",
     StatusInit: "Init",
     StatusWait: "Wait",
     StatusOnGrid: "On Grid",
@@ -990,6 +1038,53 @@ export const messages = {
     SingleCommand: "Cài đặt lệnh đơn",
     CustomizedCommand: "Tùy chọn cài đặt  ",
     ControlLog: "Lịch sử cài đặt",
+    FirmwareUpgrade: "Nâng cấp phần mềm",
+    UpdateLog: "Lịch sử nâng cấp",
+
+    //DataTables Header Inverter 
+    UpgradedTime: 'Thời gian cập nhật',
+    FirmwarePackage: 'Gói phần mềm',
+    TargetVersion: 'Phiên bản chính',
+    RelatedVersion: 'Phiên bản phụ',
+    UpgradeState: 'Trạng thái cập nhật',
+    ParseResult: 'Kết quả phân tích',
+    ReasonOfFailure: 'Nguyên nhân lỗi',
+    Operator: 'Đơn vị thực hiện',
+    FeedbackTime: 'Thời gian phản hồi',
+    SentTime: 'Thời gian gửi',
+    CommandType: 'Kiểu lệnh',
+    CommandName: 'Tên lệnh',
+    CommandState: 'Trạng thái lệnh',
+    Inputs: 'Đầu vào',
+    ReturnResult: 'Kế quả trả về(s)',
+
+    //Inverter FirmwareUpgrade
+    CurrentVersion: 'Thông tin phiên bản hiện tại',
+    CertificationVersion: 'Số chứng nhận phiên bản',
+    InternalSoftwareVersion: 'Số phiên bản phần mềm',
+    UpgradeFlagBit: 'Trạng thái nâng cấp',
+    LastUpgradeRecord: 'Bản nâng cấp mới nhất',
+    UpgradePhase: 'Giai đoạn nâng cấp',
+    UpgradeOperation: 'Hoạt động nâng cấp',
+    LoggerDownloadMethods: 'Phương thức tải xuống',
+    SelFirmwarePackage: 'Chọn gói phần mềm',
+    ClickSelectFirmwarePackage: 'Nhấn để chọn gói phần mềm',
+    Timeout: 'Thời gian cập nhật',
+    ThreeminsTimeout: 'Cập nhật sau 3 phút',
+    SixminsTimeout: 'Cập nhật sau 6 phút',
+    Minute: 'Phút',
+    IPDownload: 'Tải xuống theo IP',
+    StartUpgrading: 'Bắt đầu nâng cấp',
+
+    //Inverter SingleCommand
+    LastCommandRecord: 'Lệnh gửi mới nhất',
+    ReadACStartHighVolt: 'Đọc điện áp AC khởi động ngưỡng trên',
+    ReadResult: 'Kết quả đọc',
+    SendTime: 'Thời gian gửi',
+    SelCommand: 'Chọn lệnh',
+    InverterStatus: 'Trạng thái biến tần',
+    SendCommand: 'Gửi lệnh',
+    ClickCalculateCRC: 'Nhấn để tính toán CRC',
 
     //---Cài đặt điện áp lưới khởi động---
     Gridstartsettings: "Cài đặt điện áp lưới khởi động",
@@ -1100,10 +1195,9 @@ export const messages = {
 
     //Grid Infomation
     GridInfor: "Thông tin lưới điện",
-    InverterStatus: "Trạng thái biến tần",
     StatusInit: "Khởi tạo",
-    StatusWait: "Chờ",
-    StatusOnGrid: "Trên lưới",
+    StatusWait: "Kiểm tra",
+    StatusOnGrid: "Kết nối lưới",
 
     //--------------------
     enter: "Nhập ",
