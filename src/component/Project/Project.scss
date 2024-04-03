@@ -1685,7 +1685,8 @@
                         justify-content: center;
                         gap: 5px;
 
-                        &_Item {}
+                        &_Item {
+                        }
                     }
                 }
             }
@@ -3831,9 +3832,11 @@
                 }
             }
 
-            &_History {}
+            &_History {
+            }
 
-            &_More {}
+            &_More {
+            }
         }
 
         &_Device {

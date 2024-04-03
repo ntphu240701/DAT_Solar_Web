@@ -33,14 +33,25 @@ import PopupState, { bindHover, bindPopper } from "material-ui-popup-state";
 import { Fade, Paper, Popper, Typography } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
-import { IoIosArrowDown, IoIosArrowForward, IoIosCloud, IoMdMore, } from "react-icons/io";
-import { IoAddOutline, IoCalendarOutline, IoClose, IoTrashOutline, } from "react-icons/io5";
-import { MdDelete, MdEdit, MdOutlineError, } from "react-icons/md";
+import {
+  IoIosArrowDown,
+  IoIosArrowForward,
+  IoIosCloud,
+  IoMdMore,
+} from "react-icons/io";
+import {
+  IoAddOutline,
+  IoCalendarOutline,
+  IoClose,
+  IoTrashOutline,
+} from "react-icons/io5";
+import { MdDelete, MdEdit, MdOutlineError } from "react-icons/md";
 import { FaCheckCircle, FaMoneyBill, FaTree } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { GiCoalWagon } from "react-icons/gi";
 import { CiClock1 } from "react-icons/ci";
+import { set } from "lodash";
 
 export const temp = signal([]);
 export const inverterDB = signal([]);
@@ -85,29 +96,100 @@ export const filterchart = signal({
       productionData: true,
       gridData: true,
       consumptionData: true,
-
-
     },
     month: {
       productionData: true,
       consumptionData: true,
       dailygridin: true,
       dailygridout: true,
-
     },
     year: {
       productionData: true,
       consumptionData: true,
       dailygridin: true,
       dailygridout: true,
-
     },
     total: {
       productionData: true,
       consumptionData: true,
       dailygridin: true,
       dailygridout: true,
+    },
+  },
+  hybrid: {
+    date: {
+      productionData: true,
+      gridData: true,
+      consumptionData: true,
+      batteryData: true,
+    },
+    month: {
+      productionData: true,
+      consumptionData: true,
+      dailygridin: true,
+      dailygridout: true,
+      charge: true,
+      discharge: true,
+    },
+    year: {
+      productionData: true,
+      consumptionData: true,
+      dailygridin: true,
+      dailygridout: true,
+      charge: true,
+      discharge: true,
+    },
+    total: {
+      productionData: true,
+      consumptionData: true,
+      dailygridin: true,
+      dailygridout: true,
+      charge: true,
+      discharge: true,
+    },
+  },
+});
 
+const filterchartFake = signal();
+
+const filterchartTemp = signal({
+  grid: {
+    date: {
+      productionData: true,
+    },
+    month: {
+      productionData: true,
+    },
+    year: {
+      productionData: true,
+    },
+    total: {
+      productionData: true,
+    },
+  },
+  consumption: {
+    date: {
+      productionData: true,
+      gridData: true,
+      consumptionData: true,
+    },
+    month: {
+      productionData: true,
+      consumptionData: true,
+      dailygridin: true,
+      dailygridout: true,
+    },
+    year: {
+      productionData: true,
+      consumptionData: true,
+      dailygridin: true,
+      dailygridout: true,
+    },
+    total: {
+      productionData: true,
+      consumptionData: true,
+      dailygridin: true,
+      dailygridout: true,
     },
   },
   hybrid: {
@@ -151,7 +233,9 @@ export default function ProjectData(props) {
   const [dateType, setDateType] = useState("date");
   const [view, setView] = useState("dashboard");
   const [dropState, setDropState] = useState(false);
-  const [configname, setConfigname] = useState(dataLang.formatMessage({ id: "choosePara" }));
+  const [configname, setConfigname] = useState(
+    dataLang.formatMessage({ id: "choosePara" })
+  );
   const [dropConfig, setDropConfig] = useState(false);
   const [infoState, setInfoState] = useState(false);
   const [popupAddGateway, setPopupAddGateway] = useState(false);
@@ -163,30 +247,66 @@ export default function ProjectData(props) {
   const [vDay4, setVDay4] = useState(dataLang.formatMessage({ id: "unknown" }));
 
   const [dataMonth, setDataMonth] = useState([]);
-  const [vMonth, setVMonth] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vMonth2, setVMonth2] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vMonth3, setVMonth3] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vMonth4, setVMonth4] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vMonth5, setVMonth5] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vMonth6, setVMonth6] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth, setVMonth] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vMonth2, setVMonth2] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vMonth3, setVMonth3] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vMonth4, setVMonth4] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vMonth5, setVMonth5] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vMonth6, setVMonth6] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
 
   const [dataYear, setDataYear] = useState([]);
   const [vYear, setVYear] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vYear2, setVYear2] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vYear3, setVYear3] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vYear4, setVYear4] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vYear5, setVYear5] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vYear6, setVYear6] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear2, setVYear2] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vYear3, setVYear3] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vYear4, setVYear4] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vYear5, setVYear5] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vYear6, setVYear6] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
 
   const [dataTotal, setDataTotal] = useState([]);
-  const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vTotal2, setVTotal2] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vTotal3, setVTotal3] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vTotal4, setVTotal4] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vTotal5, setVTotal5] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vTotal6, setVTotal6] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal, setVTotal] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vTotal2, setVTotal2] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vTotal3, setVTotal3] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vTotal4, setVTotal4] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vTotal5, setVTotal5] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
+  const [vTotal6, setVTotal6] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
 
-  const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [snlogger, setSnlogger] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
   const [exportReport, setExportReport] = useState(false);
   const [type, setType] = useState("");
   const [invt, setInvt] = useState({});
@@ -199,7 +319,9 @@ export default function ProjectData(props) {
     total: "Tổng",
   });
 
-  const [datetime_, setDatatime_] = useState(moment(new Date()).format("MM/DD/YYYY"));
+  const [datetime_, setDatatime_] = useState(
+    moment(new Date()).format("MM/DD/YYYY")
+  );
 
   const color = {
     cur: COLOR.value.PrimaryColor,
@@ -292,9 +414,9 @@ export default function ProjectData(props) {
         <>
           {row.data.daily?.register
             ? parseFloat(
-              invt[row.logger_]?.[row.data.daily.register] *
-              row.data.daily?.cal
-            ).toFixed(2)
+                invt[row.logger_]?.[row.data.daily.register] *
+                  row.data.daily?.cal
+              ).toFixed(2)
             : 0}{" "}
           kWh
         </>
@@ -402,9 +524,11 @@ export default function ProjectData(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify === true ||
-            ruleInfor.value.setting.project.delete === true ? (
-            projectData.value.shared == 1 ? <></>
-              : <div className="DAT_TableEdit">
+          ruleInfor.value.setting.project.delete === true ? (
+            projectData.value.shared == 1 ? (
+              <></>
+            ) : (
+              <div className="DAT_TableEdit">
                 <span
                   id={row.sn + "_MORE"}
                   // onMouseEnter={(e) => handleModify(e, "block")}
@@ -413,15 +537,18 @@ export default function ProjectData(props) {
                   <IoMdMore size={20} />
                 </span>
               </div>
+            )
           ) : (
             <div></div>
           )}
-          <div className="DAT_ModifyBox"
+          <div
+            className="DAT_ModifyBox"
             id={row.sn + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            <div className="DAT_ModifyBox_Fix"
+            <div
+              className="DAT_ModifyBox_Fix"
               id={row.sn + "_edit"}
               onClick={(e) => handleEdit(e)}
             >
@@ -429,7 +556,8 @@ export default function ProjectData(props) {
               &nbsp;
               {dataLang.formatMessage({ id: "change" })}
             </div>
-            <div className="DAT_ModifyBox_Remove"
+            <div
+              className="DAT_ModifyBox_Remove"
               id={row.sn + "_remove"}
               onClick={(e) => handleDelete(e)}
             >
@@ -508,8 +636,16 @@ export default function ProjectData(props) {
   ];
 
   const popup_state = {
-    pre: { transform: "rotate(0deg)", transition: "0.5s", color: 'rgba(11, 25, 103)' },
-    new: { transform: "rotate(90deg)", transition: "0.5s", color: 'rgba(11, 25, 103)' },
+    pre: {
+      transform: "rotate(0deg)",
+      transition: "0.5s",
+      color: "rgba(11, 25, 103)",
+    },
+    new: {
+      transform: "rotate(90deg)",
+      transition: "0.5s",
+      color: "rgba(11, 25, 103)",
+    },
   };
 
   const handlePopup = (state) => {
@@ -920,10 +1056,21 @@ export default function ProjectData(props) {
 
   const handlefilterchart = (e) => {
     const state = e.currentTarget.checked;
+    console.log(state);
     const chartfield = e.currentTarget.id.split("_");
-    const temp = filterchart.value;
+    const temp = filterchartTemp.value;
     temp[chartfield[1]][dateType][chartfield[0]] = state;
-    filterchart.value = temp;
+    filterchartTemp.value = temp;
+    filterchartFake.value = temp;
+    console.log(filterchart.value.hybrid.date);
+    console.log(filterchartTemp.value.hybrid.date);
+  };
+
+  const handleConfirmChart = (e) => {
+    filterchart.value = filterchartTemp.value;
+    filterchartTemp.value = filterchartFake.value;
+    console.log(filterchart.value.hybrid.date);
+    console.log(filterchartTemp.value.hybrid.date);
   };
 
   const Checkboxfilter = (props) => {
@@ -1099,11 +1246,11 @@ export default function ProjectData(props) {
   const handleExport = () => {
     setExportReport(true);
     // console.log(exportReport);
-  }
+  };
 
   const handleClose = () => {
     setExportReport(false);
-  }
+  };
 
   const handleOutsideView = (e) => {
     setTimeout(() => {
@@ -1120,8 +1267,7 @@ export default function ProjectData(props) {
     let v = d.querySelector("span");
     // console.log(v.innerHTML);
     setDatatime_(v.innerHTML);
-
-  }, [dateType])
+  }, [dateType]);
 
   useEffect(() => {
     // filter data AlertTable
@@ -1463,9 +1609,9 @@ export default function ProjectData(props) {
         if (res.ret === 0) {
           let res_ = await callApi("post", host.DATA + "/updateLogger", {
             sn: item.sn,
-            type: 'state',
-            data: res.data.enabled
-          })
+            type: "state",
+            data: res.data.enabled,
+          });
           setInvt((pre) => ({ ...pre, [item.sn]: res.data }));
           const decimalArray = JSON.parse(item.setting.sn);
           const hexString = decimalArray
@@ -1628,7 +1774,7 @@ export default function ProjectData(props) {
             <div className="DAT_ProjectData_Header_Right">
               <div
                 className="DAT_ProjectData_Header_Right_More"
-                onClick={() => (setDropState(false))}
+                onClick={() => setDropState(false)}
               >
                 <BsThreeDotsVertical size={20} color="#9e9e9e" />
               </div>
@@ -1637,10 +1783,7 @@ export default function ProjectData(props) {
                   className="DAT_ProjectData_Header_Right_Add"
                   style={{ display: view === "device" ? "block" : "none" }}
                 >
-                  <button
-                    id="add"
-                    onClick={() => setPopupAddGateway(true)}
-                  >
+                  <button id="add" onClick={() => setPopupAddGateway(true)}>
                     <IoAddOutline size={25} color="white" />
                   </button>
                 </div>
@@ -1648,7 +1791,8 @@ export default function ProjectData(props) {
                 <div></div>
               )}
 
-              <div className="DAT_ProjectData_Header_Right_Close"
+              <div
+                className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => (plantState.value = "default")}
               >
                 <IoClose
@@ -1656,7 +1800,8 @@ export default function ProjectData(props) {
                   color="rgba(11, 25, 103)"
                   id="Popup"
                   onMouseEnter={(e) => handlePopup("new")}
-                  onMouseLeave={(e) => handlePopup("pre")} />
+                  onMouseLeave={(e) => handlePopup("pre")}
+                />
               </div>
             </div>
           </div>
@@ -1762,7 +1907,7 @@ export default function ProjectData(props) {
                   size={20}
                   color="#9e9e9e"
                   onClick={() => {
-                    (setDropState(!dropState));
+                    setDropState(!dropState);
                     viewNav.value = true;
                     viewStateNav.value = [true, false];
                   }}
@@ -1770,24 +1915,29 @@ export default function ProjectData(props) {
                 />
               </div>
               {ruleInfor.value.setting.device.add ? (
-                projectData.value.shared == 1 ? <></>
-                  : <div className="DAT_ProjectData_Header_Right_Add"
+                projectData.value.shared == 1 ? (
+                  <></>
+                ) : (
+                  <div
+                    className="DAT_ProjectData_Header_Right_Add"
                     style={{ display: view === "device" ? "block" : "none" }}
                   >
                     <button
                       id="add"
                       onClick={() => {
                         setPopupAddGateway(true);
-                        (setDropState(false))
+                        setDropState(false);
                       }}
                     >
                       <IoAddOutline size={25} color="white" />
                     </button>
                   </div>
+                )
               ) : (
                 <div></div>
               )}
-              <div className="DAT_ProjectData_Header_Right_Close"
+              <div
+                className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => {
                   plantState.value = "default";
                   setDropState(false);
@@ -1813,38 +1963,55 @@ export default function ProjectData(props) {
                   <div className="DAT_ProjectData_Dashboard_Data">
                     <div className="DAT_ProjectData_Dashboard_Data_Left">
                       <div className="DAT_ProjectData_Dashboard_Data_Left_Tit">
-                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
                           id="production"
-                          style={{ color: nav === "production" ? color.cur : color.pre, }}
+                          style={{
+                            color: nav === "production" ? color.cur : color.pre,
+                          }}
                           onClick={(e) => handleNav(e)}
                         >
                           {dataLang.formatMessage({ id: "productionData" })}
                         </div>
-                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
                           id="consumption"
                           style={{
-                            color: nav === "consumption" ? color.cur : color.pre,
-                            display: projectData.value.plantmode === "grid" ? "none" : "block",
+                            color:
+                              nav === "consumption" ? color.cur : color.pre,
+                            display:
+                              projectData.value.plantmode === "grid"
+                                ? "none"
+                                : "block",
                           }}
                           onClick={(e) => handleNav(e)}
                         >
                           {dataLang.formatMessage({ id: "consumptionData" })}
                         </div>
-                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
                           id="grid"
                           style={{
                             color: nav === "grid" ? color.cur : color.pre,
-                            display: projectData.value.plantmode === "grid" ? "none" : "block",
+                            display:
+                              projectData.value.plantmode === "grid"
+                                ? "none"
+                                : "block",
                           }}
                           onClick={(e) => handleNav(e)}
                         >
                           {dataLang.formatMessage({ id: "grid" })}
                         </div>
-                        <div className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
+                        <div
+                          className="DAT_ProjectData_Dashboard_Data_Left_Tit_Item"
                           id="battery"
                           style={{
                             color: nav === "battery" ? color.cur : color.pre,
-                            display: projectData.value.plantmode === "grid" || projectData.value.plantmode === "consumption" ? "none" : "block",
+                            display:
+                              projectData.value.plantmode === "grid" ||
+                              projectData.value.plantmode === "consumption"
+                                ? "none"
+                                : "block",
                           }}
                           onClick={(e) => handleNav(e)}
                         >
@@ -1876,13 +2043,17 @@ export default function ProjectData(props) {
                               case "consumption":
                                 return (
                                   <>
-                                    {dataLang.formatMessage({ id: "consumptionType", })}
+                                    {dataLang.formatMessage({
+                                      id: "consumptionType",
+                                    })}
                                   </>
                                 );
                               case "hybrid":
                                 return (
                                   <>
-                                    {dataLang.formatMessage({ id: "hybridType", })}
+                                    {dataLang.formatMessage({
+                                      id: "hybridType",
+                                    })}
                                   </>
                                 );
                               case "ESS":
@@ -2068,16 +2239,18 @@ export default function ProjectData(props) {
                       }
                     })()}
 
-                    <div className="DAT_ProjectData_Dashboard_History_SubConfig"
+                    <div
+                      className="DAT_ProjectData_Dashboard_History_SubConfig"
                       style={{
                         height: dropConfig ? "500px" : "0px",
                         transition: "0.5s",
                       }}
                     >
                       {dropConfig ? (
-                        <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
+                        <div
+                          className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
                           style={{
-                            height: dropConfig ? "250px" : "0px",
+                            height: dropConfig ? "auto" : "0px",
                             transition: "0.5s",
                           }}
                         >
@@ -2927,24 +3100,31 @@ export default function ProjectData(props) {
 
                           <div className="DAT_Filter_Dropdown_Bot">
                             <button
-                              style={{ backgroundColor: "white", color: "black" }}
+                              style={{
+                                backgroundColor: "white",
+                                color: "black",
+                              }}
                               onClick={(e) => {
                                 handleShowConfig(e);
                                 setDropConfig(!dropConfig);
                               }}
                             >
-                              {dataLang.formatMessage({ id: "cancel", })}
+                              {dataLang.formatMessage({ id: "cancel" })}
                             </button>
                             <button
                               onClick={(e) => {
                                 handleShowConfig(e);
                                 setDropConfig(!dropConfig);
+                                handleConfirmChart(e);
                               }}
-                              style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}>
-                              {dataLang.formatMessage({ id: "confirm", })}
+                              style={{
+                                backgroundColor: COLOR.value.PrimaryColor,
+                                color: "white",
+                              }}
+                            >
+                              {dataLang.formatMessage({ id: "confirm" })}
                             </button>
                           </div>
-
                         </div>
                       ) : (
                         <></>
@@ -3176,7 +3356,7 @@ export default function ProjectData(props) {
                                   parseFloat(
                                     (coalsave.value.value *
                                       projectData.value.price) /
-                                    1000
+                                      1000
                                   ).toFixed(2)
                                 ).toLocaleString("en-US")}
                                 &nbsp;
@@ -3658,39 +3838,47 @@ export default function ProjectData(props) {
 
       {popupAddGateway ? (
         <div className="DAT_AddGatewayPopup">
-          <AddGateway data={temp.value} handleInvt={handleInvt} handleClose={handleClosePopupAddGateway} />
+          <AddGateway
+            data={temp.value}
+            handleInvt={handleInvt}
+            handleClose={handleClosePopupAddGateway}
+          />
         </div>
       ) : (
         <></>
       )}
 
-      {
-        popupState.value ? (
-          <div className="DAT_DevicePopup">
-            <Popup
-              plantid={projectData.value.plantid_}
-              type="logger"
-              sn={snlogger}
-              data={temp.value}
-              func={type}
-            />
-          </div>
-        ) : (
-          <> </>
-        )
-      }
+      {popupState.value ? (
+        <div className="DAT_DevicePopup">
+          <Popup
+            plantid={projectData.value.plantid_}
+            type="logger"
+            sn={snlogger}
+            data={temp.value}
+            func={type}
+          />
+        </div>
+      ) : (
+        <> </>
+      )}
 
-      {
-        exportReport ? (
-          <div className="DAT_RolePopup" style={{
+      {exportReport ? (
+        <div
+          className="DAT_RolePopup"
+          style={{
             height: exportReport === "default" ? "0px" : "100vh",
-          }}>
-            <ExportData handleClose={handleClose} typereport={dateType} plant={projectData.value} datetime={datetime_} />
-          </div>
-        ) : (
-          <> </>
-        )
-      }
+          }}
+        >
+          <ExportData
+            handleClose={handleClose}
+            typereport={dateType}
+            plant={projectData.value}
+            datetime={datetime_}
+          />
+        </div>
+      ) : (
+        <> </>
+      )}
 
       {isMobile.value ? (
         <>
@@ -3698,7 +3886,8 @@ export default function ProjectData(props) {
             <div className="DAT_ProjectDataDrop">
               {view === "dashboard" ? (
                 <>
-                  <div className="DAT_ProjectDataDrop_Item"
+                  <div
+                    className="DAT_ProjectDataDrop_Item"
                     id="device"
                     onClick={(e) => handleView(e)}
                   >
@@ -3707,7 +3896,8 @@ export default function ProjectData(props) {
                 </>
               ) : (
                 <>
-                  <div className="DAT_ProjectDataDrop_Item"
+                  <div
+                    className="DAT_ProjectDataDrop_Item"
                     id="dashboard"
                     onClick={(e) => handleView(e)}
                   >
@@ -3723,9 +3913,12 @@ export default function ProjectData(props) {
       ) : (
         <>
           {dropState ? (
-            <div className="DAT_ProjectDataDrop"
+            <div
+              className="DAT_ProjectDataDrop"
               style={{ display: viewNav.value ? "block" : "none" }}
-              onMouseEnter={() => { viewStateNav.value = [true, true]; }}
+              onMouseEnter={() => {
+                viewStateNav.value = [true, true];
+              }}
               onMouseLeave={() => {
                 viewNav.value = false;
                 viewStateNav.value = [false, false];
@@ -3733,7 +3926,8 @@ export default function ProjectData(props) {
             >
               {view === "dashboard" ? (
                 <>
-                  <div className="DAT_ProjectDataDrop_Item"
+                  <div
+                    className="DAT_ProjectDataDrop_Item"
                     id="device"
                     onClick={(e) => handleView(e)}
                   >
@@ -3742,7 +3936,8 @@ export default function ProjectData(props) {
                 </>
               ) : (
                 <>
-                  <div className="DAT_ProjectDataDrop_Item"
+                  <div
+                    className="DAT_ProjectDataDrop_Item"
                     id="dashboard"
                     onClick={(e) => handleView(e)}
                   >
@@ -3757,11 +3952,12 @@ export default function ProjectData(props) {
         </>
       )}
 
-      <div className="DAT_DeviceInfor"
+      <div
+        className="DAT_DeviceInfor"
         style={{ height: infoState ? "100%" : "0px", transition: "0.5s" }}
       >
         {infoState ? <Info handleClose={handleCloseInfo} /> : <></>}
       </div>
     </div>
   );
-};
+}
