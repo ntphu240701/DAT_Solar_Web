@@ -2,7 +2,14 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { WiStrongWind } from "react-icons/wi";
 import { WiHumidity } from "react-icons/wi";
-import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Area,
+  AreaChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { PacmanLoader } from "react-spinners";
 import { projectData } from "./Project";
 import { useSelector } from "react-redux";
@@ -20,11 +27,10 @@ export default function Weather() {
   const lang = useSelector((state) => state.admin.lang);
   const lat = projectData.value.lat;
   const lon = projectData.value.long;
-  const url = `${host.WEATHER}/forecast.json?key=${process.env.REACT_APP_WEATHERKEY}&q=${lat},${lon}&days=7&aqi=no&alerts=no&lang=${lang}`
+  const url = `${host.WEATHER}/forecast.json?key=${process.env.REACT_APP_WEATHERKEY}&q=${lat},${lon}&days=7&aqi=no&alerts=no&lang=${lang}`;
 
   //CALL DATA BY AXIOS
   const [forecastdata, setForecastdata] = useState([]);
-
   useEffect(() => {
     axios.get(url).then((response) => {
       setData(response.data);
@@ -134,8 +140,16 @@ export default function Weather() {
                 x2="0"
                 y2="1"
               >
-                <stop offset="5%" stopColor="rgba(97,88,194,0.8)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="rgba(97,88,194,0.8)" stopOpacity={0} />
+                <stop
+                  offset="5%"
+                  stopColor="rgba(97,88,194,0.8)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="rgba(97,88,194,0.8)"
+                  stopOpacity={0}
+                />
               </linearGradient>
             </defs>
             <XAxis dataKey="name" hide={true} />
@@ -167,9 +181,25 @@ export default function Weather() {
         {data.forecast.forecastday.map((item, index) => {
           let weekdays = [];
           if (lang === "en") {
-            weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            weekdays = [
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ];
           } else if (lang === "vi") {
-            weekdays = ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
+            weekdays = [
+              "Chủ nhật",
+              "Thứ hai",
+              "Thứ ba",
+              "Thứ tư",
+              "Thứ năm",
+              "Thứ sáu",
+              "Thứ bảy",
+            ];
           }
           const dateObj = new Date(item.date);
           const weekday = weekdays[dateObj.getUTCDay()];

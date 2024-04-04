@@ -149,9 +149,6 @@ export const filterchart = signal({
     },
   },
 });
-
-const filterchartFake = signal();
-
 const filterchartTemp = signal({
   grid: {
     date: {
@@ -225,6 +222,8 @@ const filterchartTemp = signal({
     },
   },
 });
+
+const filterchartFake = signal(filterchartTemp.value);
 
 export default function ProjectData(props) {
   const dataLang = useIntl();
@@ -1111,21 +1110,18 @@ export default function ProjectData(props) {
 
   const handlefilterchart = (e) => {
     const state = e.currentTarget.checked;
-    console.log(state);
     const chartfield = e.currentTarget.id.split("_");
-    const temp = filterchartTemp.value;
-    temp[chartfield[1]][dateType][chartfield[0]] = state;
-    filterchartTemp.value = temp;
-    filterchartFake.value = temp;
-    console.log(filterchart.value.hybrid.date);
-    console.log(filterchartTemp.value.hybrid.date);
+    filterchartTemp.value[chartfield[1]][dateType][chartfield[0]] = state;
+    // console.log(filterchart.value.hybrid.date);
+    // console.log(filterchartTemp.value.hybrid.date);
   };
 
   const handleConfirmChart = (e) => {
     filterchart.value = filterchartTemp.value;
-    filterchartTemp.value = filterchartFake.value;
-    console.log(filterchart.value.hybrid.date);
-    console.log(filterchartTemp.value.hybrid.date);
+    filterchartFake.value = filterchartTemp.value;
+    // filterchartTemp.value = filterchartFake.value;
+    // console.log(filterchart.value.hybrid.date);
+    // console.log(filterchartTemp.value.hybrid.date);
   };
 
   const Checkboxfilter = (props) => {
@@ -3162,6 +3158,7 @@ export default function ProjectData(props) {
                               onClick={(e) => {
                                 handleShowConfig(e);
                                 setDropConfig(!dropConfig);
+                                // filterchartTemp.value = filterchartFake.value;
                               }}
                             >
                               {dataLang.formatMessage({ id: "cancel" })}
