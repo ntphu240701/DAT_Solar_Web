@@ -13,13 +13,6 @@ export default function Contact(props) {
   const [popupState, setPopupState] = useState(false);
   const [contactState, setContactState] = useState("default");
 
-  const Type = {
-    OnM: "onm",
-    Investor: "investor",
-    Distributor: "distributor",
-    Manufacturer: "manufacturer",
-  }
-
   const handleCloseAva = () => {
     setPopupState(false);
   }
@@ -71,7 +64,7 @@ export default function Contact(props) {
               style={{ marginBottom: "0px" }}
             >
               <div>{dataLang.formatMessage({ id: 'businesstype' })}</div>
-              <div>{dataLang.formatMessage({ id: Type[partnerInfor.value.businesstype] })}</div>
+              <div>{dataLang.formatMessage({ id: partnerInfor.value.businesstype })}</div>
             </div>
           </div>
         </div>
