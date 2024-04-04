@@ -8,6 +8,7 @@ import { projectData } from "./Project";
 import { useSelector } from "react-redux";
 import { useIntl } from "react-intl";
 import { IoLocation } from "react-icons/io5";
+import { host } from "../Lang/Contant";
 
 export default function Weather() {
   const [data, setData] = useState({});
@@ -19,23 +20,7 @@ export default function Weather() {
   const lang = useSelector((state) => state.admin.lang);
   const lat = projectData.value.lat;
   const lon = projectData.value.long;
-  const q = lat + "," + lon;
-  const APIkey = "d5e7a9e22d9b4bf997e73539240202";
-  const url =
-    "http://api.weatherapi.com/v1/forecast.json?key=" +
-    APIkey +
-    "&q=" +
-    q +
-    "&days=7&aqi=no&alerts=no&lang=" +
-    lang;
-
-  // CALL DATA BY FETCH()
-  //   useEffect(() => {
-  //     fetch(url)
-  //         .then((response) => response.json())
-  //       .then((data) => console.log(data));
-  //     // console.log(url);
-  //   });
+  const url = `${host.WEATHER}/forecast.json?key=${process.env.REACT_APP_WEATHERKEY}&q=${lat},${lon}&days=7&aqi=no&alerts=no&lang=${lang}`
 
   //CALL DATA BY AXIOS
   const [forecastdata, setForecastdata] = useState([]);

@@ -307,6 +307,8 @@ export default function ProjectData(props) {
   const [snlogger, setSnlogger] = useState(
     dataLang.formatMessage({ id: "unknown" })
   );
+  const [devname, setDevname] = useState("");
+  const [devtype, setDevtype] = useState("");
   const [exportReport, setExportReport] = useState(false);
   const [type, setType] = useState("");
   const [invt, setInvt] = useState({});
@@ -406,7 +408,7 @@ export default function ProjectData(props) {
         return <div>{parseFloat(power / 1000).toFixed(2)} kW</div>;
       },
       sortable: true,
-      width: "300px",
+      width: "200px",
     },
     {
       name: dataLang.formatMessage({ id: "daily" }),
@@ -414,21 +416,72 @@ export default function ProjectData(props) {
         <>
           {row.data.daily?.register
             ? parseFloat(
-                invt[row.logger_]?.[row.data.daily.register] *
-                  row.data.daily?.cal
-              ).toFixed(2)
+              invt[row.logger_]?.[row.data.daily.register] *
+              row.data.daily?.cal
+            ).toFixed(2)
             : 0}{" "}
           kWh
         </>
       ),
       sortable: true,
-      width: "300px",
+      width: "200px",
     },
     {
       name: dataLang.formatMessage({ id: "ogLog" }),
       selector: (row) => row.logger_,
       sortable: true,
       width: "300px",
+    },
+    {
+      name: dataLang.formatMessage({ id: "edits" }),
+      selector: (row) => (
+        <>
+          {ruleInfor.value.setting.project.modify === true ||
+            ruleInfor.value.setting.project.delete === true ? (
+            projectData.value.shared == 1 ? (
+              <></>
+            ) : (
+              <div className="DAT_TableEdit">
+                <span
+                  id={row.sn + "_MORE"}
+                  // onMouseEnter={(e) => handleModify(e, "block")}
+                  onClick={(e) => handleModify(e, "block")}
+                >
+                  <IoMdMore size={20} />
+                </span>
+              </div>
+            )
+          ) : (
+            <div></div>
+          )}
+          <div
+            className="DAT_ModifyBox"
+            id={row.sn + "_Modify"}
+            style={{ display: "none" }}
+            onMouseLeave={(e) => handleModify(e, "none")}
+          >
+            <div
+              className="DAT_ModifyBox_Fix"
+              id={`${row.sn}_${row.name}_edit`}
+              onClick={(e) => handleEdit(e)}
+            >
+              <FiEdit size={14} />
+              &nbsp;
+              {dataLang.formatMessage({ id: "change" })}
+            </div>
+            {/* <div
+              className="DAT_ModifyBox_Remove"
+              id={row.sn + "_remove"}
+              onClick={(e) => handleDelete(e)}
+            >
+              <IoTrashOutline size={16} />
+              &nbsp;
+              {dataLang.formatMessage({ id: "remove" })}
+            </div> */}
+          </div>
+        </>
+      ),
+      width: "100px",
     },
   ];
 
@@ -524,7 +577,7 @@ export default function ProjectData(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify === true ||
-          ruleInfor.value.setting.project.delete === true ? (
+            ruleInfor.value.setting.project.delete === true ? (
             projectData.value.shared == 1 ? (
               <></>
             ) : (
@@ -549,7 +602,7 @@ export default function ProjectData(props) {
           >
             <div
               className="DAT_ModifyBox_Fix"
-              id={row.sn + "_edit"}
+              id={`${row.sn}_${row.name}_edit`}
               onClick={(e) => handleEdit(e)}
             >
               <FiEdit size={14} />
@@ -1033,7 +1086,9 @@ export default function ProjectData(props) {
     const id = e.currentTarget.id;
     const idArr = id.split("_");
     setSnlogger(idArr[0]);
-    setType(idArr[1]);
+    setDevname(idArr[1]);
+    setType(idArr[2]);
+    setDevtype(tab_.value);
   };
 
   const handleDelete = (e) => {
@@ -2009,7 +2064,7 @@ export default function ProjectData(props) {
                             color: nav === "battery" ? color.cur : color.pre,
                             display:
                               projectData.value.plantmode === "grid" ||
-                              projectData.value.plantmode === "consumption"
+                                projectData.value.plantmode === "consumption"
                                 ? "none"
                                 : "block",
                           }}
@@ -3356,7 +3411,7 @@ export default function ProjectData(props) {
                                   parseFloat(
                                     (coalsave.value.value *
                                       projectData.value.price) /
-                                      1000
+                                    1000
                                   ).toFixed(2)
                                 ).toLocaleString("en-US")}
                                 &nbsp;
@@ -3856,6 +3911,8 @@ export default function ProjectData(props) {
             sn={snlogger}
             data={temp.value}
             func={type}
+            name={devname}
+            devtype={devtype}
           />
         </div>
       ) : (
