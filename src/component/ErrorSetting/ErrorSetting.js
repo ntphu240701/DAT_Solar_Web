@@ -500,31 +500,19 @@ export default function ErrorSetting(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_ErrSettingBG"
-        style={{
-          height: createState ? "100vh" : "0",
-          transition: "0.5s",
-        }}
-      >
-        {createState ? (
+      {createState ? (
+        <div className="DAT_ErrSettingBG">
           <CreateErrSetting
             handleClose={handleCloseCreate}
             handleConfirm={handleConfirmCreate}
           />
-        ) : (
-          <></>
-        )}
-      </div>
+        </div>
+      ) : (
+        <></>
+      )}
 
-      <div
-        className="DAT_ErrSettingBG"
-        style={{
-          height: editState ? "100vh" : "0",
-          transition: "0.5s",
-        }}
-      >
-        {editState ? (
+      {editState ? (
+        <div className="DAT_ErrSettingBG">
           <EditErr
             type={editType}
             handleClose={handleCloseEdit}
@@ -532,29 +520,23 @@ export default function ErrorSetting(props) {
             editEn={editEn}
             confirmEdit={confirmEdit}
           />
-        ) : (
-          <></>
-        )}
-      </div>
+        </div>
+      ) : (
+        <></>
+      )}
 
-      <div
-        className="DAT_ErrSettingBG"
-        style={{
-          height: removeState ? "100vh" : "0",
-          transition: "0.5s",
-        }}
-      >
-        {removeState ? (
+      {removeState ? (
+        <div className="DAT_ErrSettingBG">
           <RemoveErr
             type={removeType}
             handleClose={handleCloseRemove}
             handleDel={handleDelete}
             confirmDel={confirmDelete}
           />
-        ) : (
-          <></>
-        )}
-      </div>
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

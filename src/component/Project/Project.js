@@ -1669,7 +1669,7 @@ export default function Project(props) {
       )}
 
       {shareState.value ? (
-        <div className="DAT_SharePopup">
+        <div className="DAT_DevicePopup">
           <ShareBox plantid={projectData.value.plantid_} usr={user} />
         </div>
       ) : (

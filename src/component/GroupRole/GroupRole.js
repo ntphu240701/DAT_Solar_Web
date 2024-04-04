@@ -426,22 +426,16 @@ export default function GroupRole(props) {
         </div>
       </div>
 
-      <div
-        className="DAT_GroupCreate"
-        style={{
-          height: createState ? "100vh" : "0px",
-          transition: "0.5s",
-        }}
-      >
-        {createState ? (
+      {createState ? (
+        <div className="DAT_PopupBG">
           <CreateGroupRole handleClose={handleCloseCreate} />
-        ) : (
-          <></>
-        )}
-      </div>
+        </div>
+      ) : (
+        <></>
+      )}
 
       {popupState ? (
-        <div className="DAT_EraseUserPopup">
+        <div className="DAT_PopupBG">
           <Popup handleClose={handleCloseDel} />
         </div>
       ) : (
@@ -449,7 +443,7 @@ export default function GroupRole(props) {
       )}
 
       {addState ? (
-        <div className="DAT_AddUserPopup">
+        <div className="DAT_PopupBG">
           <AddUsers handleClose={handleCloseAdd} />
         </div>
       ) : (
@@ -457,7 +451,7 @@ export default function GroupRole(props) {
       )}
 
       {groupDelState ? (
-        <div className="DAT_DeleteGroupPopup">
+        <div className="DAT_PopupBG">
           <ConfirmDeleteGroup handleClose={handleCloseGroupDel} />
         </div>
       ) : (
@@ -465,7 +459,7 @@ export default function GroupRole(props) {
       )}
 
       {editState ? (
-        <div className="DAT_EditGroup">
+        <div className="DAT_PopupBG">
           <EditGroup handleClose={handleCloseEdit} />
         </div>
       ) : (

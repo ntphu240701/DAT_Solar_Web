@@ -154,7 +154,7 @@
     }
 }
 
-.DAT_EraseUserPopup {
+.DAT_PopupBG {
     height: 100vh;
     width: 100%;
     position: fixed;
@@ -165,74 +165,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.DAT_AddUserPopup {
-    height: 100vh;
-    width: 100%;
-    position: fixed;
-    background-color: rgb(128, 128, 128, 0.7);
-    top: 0;
-    right: 0;
-    z-index: 25;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.DAT_DeleteGroupPopup {
-    height: 100vh;
-    width: 100%;
-    position: fixed;
-    background-color: rgb(128, 128, 128, 0.7);
-    top: 0;
-    right: 0;
-    z-index: 25;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.DAT_GroupCreate {
-    height: 100vh;
-    width: 100%;
-    position: fixed;
-    background-color: rgb(188, 188, 188, 0.7);
-    top: 0px;
-    right: 0;
-    z-index: 30;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
-}
-
-.DAT_EditGroup {
-    height: 100vh;
-    width: 100%;
-    position: fixed;
-    background-color: rgb(188, 188, 188, 0.7);
-    top: 0px;
-    right: 0;
-    z-index: 30;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
 }
 
 .DAT_CreateGroupRole {
