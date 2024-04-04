@@ -12,7 +12,7 @@ import { Empty } from "../Project/Project";
 import moment from "moment-timezone";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, } from "recharts";
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, LineChart, Line, Legend, } from "recharts";
 import { signal } from "@preact/signals-react";
 
 import { IoCalendarOutline, IoClose } from "react-icons/io5";
@@ -1166,7 +1166,7 @@ const HistoricalData = (props) => {
                       <ResponsiveContainer
                         style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                       >
-                        <AreaChart width={100} height={500} data={chart}>
+                        {/* <AreaChart width={100} height={500} data={chart}>
                           <defs>
                             <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
                               <stop
@@ -1304,7 +1304,23 @@ const HistoricalData = (props) => {
 
 
 
-                        </AreaChart>
+                        </AreaChart> */}
+
+                        <LineChart width={100} height={500} data={chart}>
+                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                          <YAxis
+                            axisLine={false}
+                            tickLine={false} />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                          <Tooltip />
+                          <Legend />
+                          <Line
+                            type="monotone"
+                            dataKey={acfre}
+                            stroke="red"
+                            dot={false}
+                          />
+                        </LineChart>
                       </ResponsiveContainer>
                     )
                   case "ACVOLT":
@@ -1312,7 +1328,7 @@ const HistoricalData = (props) => {
                       <ResponsiveContainer
                         style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                       >
-                        <AreaChart width={100} height={500} data={chart}>
+                        {/* <AreaChart width={100} height={500} data={chart}>
                           <defs>
                             <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
                               <stop
@@ -1464,7 +1480,37 @@ const HistoricalData = (props) => {
                           />
 
 
-                        </AreaChart>
+                        </AreaChart> */}
+
+                        <LineChart width={100} height={500} data={chart}>
+                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                          <YAxis
+                            axisLine={false}
+                            tickLine={false} />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                          <Tooltip />
+                          <Legend />
+                          <Line
+                            type="monotone"
+                            dataKey={acrvolt}
+                            stroke="red"
+                            dot={false}
+                          />
+
+                          <Line
+                            type="monotone"
+                            dataKey={acsvolt}
+                            stroke="green"
+                            dot={false}
+                          />
+
+                          <Line
+                            type="monotone"
+                            dataKey={actvolt}
+                            stroke="purple"
+                            dot={false}
+                          />
+                        </LineChart>
                       </ResponsiveContainer>
                     )
                   case "ACCUR":
@@ -1472,7 +1518,7 @@ const HistoricalData = (props) => {
                       <ResponsiveContainer
                         style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                       >
-                        <AreaChart width={100} height={500} data={chart}>
+                        {/* <AreaChart width={100} height={500} data={chart}>
                           <defs>
                             <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
                               <stop
@@ -1622,7 +1668,37 @@ const HistoricalData = (props) => {
                             fill="url(#colorday7)"
                           />
 
-                        </AreaChart>
+                        </AreaChart> */}
+
+                        <LineChart width={100} height={500} data={chart}>
+                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                          <YAxis
+                            axisLine={false}
+                            tickLine={false} />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                          <Tooltip />
+                          <Legend />
+                          <Line
+                            type="monotone"
+                            dataKey={acrcur}
+                            stroke="orange"
+                            dot={false}
+                          />
+
+                          <Line
+                            type="monotone"
+                            dataKey={acscur}
+                            stroke="gray"
+                            dot={false}
+                          />
+
+                          <Line
+                            type="monotone"
+                            dataKey={actcur}
+                            stroke="pink"
+                            dot={false}
+                          />
+                        </LineChart>
                       </ResponsiveContainer>
                     )
                   case "DCCUR":
@@ -1630,7 +1706,7 @@ const HistoricalData = (props) => {
                       <ResponsiveContainer
                         style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                       >
-                        <AreaChart width={100} height={500} data={chart}>
+                        {/* <AreaChart width={100} height={500} data={chart}>
                           <defs>
                             <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
                               <stop
@@ -1789,7 +1865,44 @@ const HistoricalData = (props) => {
                           />
 
 
-                        </AreaChart>
+                        </AreaChart> */}
+
+                        <LineChart width={100} height={500} data={chart}>
+                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                          <YAxis
+                            axisLine={false}
+                            tickLine={false} />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                          <Tooltip />
+                          <Legend />
+                          <Line
+                            type="monotone"
+                            dataKey={pv1cur}
+                            stroke="rgb(4,143,255)"
+                            dot={false}
+                          />
+
+                          <Line
+                            type="monotone"
+                            dataKey={pv2cur}
+                            stroke="red"
+                            dot={false}
+                          />
+
+                          <Line
+                            type="monotone"
+                            dataKey={pv3cur}
+                            stroke="green"
+                            dot={false}
+                          />
+
+                          <Line
+                            type="monotone"
+                            dataKey={pv4cur}
+                            stroke="purple"
+                            dot={false}
+                          />
+                        </LineChart>
                       </ResponsiveContainer>
                     )
                   case 'DCVOLT':
@@ -1797,7 +1910,7 @@ const HistoricalData = (props) => {
                       <ResponsiveContainer
                         style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                       >
-                        <AreaChart width={100} height={500} data={chart}>
+                        {/* <AreaChart width={100} height={500} data={chart}>
                           <defs>
                             <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
                               <stop
@@ -1956,7 +2069,44 @@ const HistoricalData = (props) => {
                           />
 
 
-                        </AreaChart>
+                        </AreaChart> */}
+
+                        <LineChart width={100} height={500} data={chart}>
+                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                          <YAxis
+                            axisLine={false}
+                            tickLine={false} />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                          <Tooltip />
+                          <Legend />
+                          <Line
+                            type="monotone"
+                            dataKey={pv1volt}
+                            stroke="rgb(4,143,255)"
+                            dot={false}
+                          />
+
+                          <Line
+                            type="monotone"
+                            dataKey={pv2volt}
+                            stroke="red"
+                            dot={false}
+                          />
+
+                          <Line
+                            type="monotone"
+                            dataKey={pv3volt}
+                            stroke="green"
+                            dot={false}
+                          />
+
+                          <Line
+                            type="monotone"
+                            dataKey={pv4volt}
+                            stroke="purple"
+                            dot={false}
+                          />
+                        </LineChart>
                       </ResponsiveContainer>
                     )
                   case 'DCPOWER':
@@ -1964,7 +2114,7 @@ const HistoricalData = (props) => {
                       <ResponsiveContainer
                         style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                       >
-                        <AreaChart width={100} height={500} data={chart}>
+                        {/* <AreaChart width={100} height={500} data={chart}>
                           <defs>
                             <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
                               <stop
@@ -2123,7 +2273,44 @@ const HistoricalData = (props) => {
                           />
 
 
-                        </AreaChart>
+                        </AreaChart> */}
+
+                        <LineChart width={100} height={500} data={chart}>
+                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                          <YAxis
+                            axisLine={false}
+                            tickLine={false} />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                          <Tooltip />
+                          <Legend />
+                          <Line
+                            type="monotone"
+                            dataKey={pv1power}
+                            stroke="rgb(4,143,255)"
+                            dot={false}
+                          />
+
+                          <Line
+                            type="monotone"
+                            dataKey={pv2power}
+                            stroke="red"
+                            dot={false}
+                          />
+
+                          <Line
+                            type="monotone"
+                            dataKey={pv3power}
+                            stroke="green"
+                            dot={false}
+                          />
+
+                          <Line
+                            type="monotone"
+                            dataKey={pv4power}
+                            stroke="purple"
+                            dot={false}
+                          />
+                        </LineChart>
                       </ResponsiveContainer>
                     )
                   default:

@@ -179,7 +179,7 @@ export default function Login(props) {
         <div className='DAT_Login' >
             <div className="DAT_Login_Head" >
                 <div className="DAT_Login_Head_Logo">
-                    <img src={"/dat_icon/Embody_APP_28.png"} alt='' />
+                    <img src={"/dat_icon/Embody_APP_24.png"} alt='' />
                 </div>
 
                 <div className="DAT_Login_Head_Title">
@@ -307,7 +307,7 @@ export default function Login(props) {
                                 <div className="DAT_Login_Form-input">
                                     <BsTelephoneInbound color={colorWhite} size={24} />
                                     <input
-                                        type="number"
+                                        type="text"
                                         placeholder={dataLang.formatMessage({ id: 'phone' })}
                                         required
                                         value={phone}
@@ -468,7 +468,7 @@ export default function Login(props) {
                     </span>
                     &nbsp;
                     <span className="DAT_Login_Footer_Info_Title">
-                        Copyright © 2020 - 2024 DAT.
+                        Embody Platform
                     </span>
                 </div>
             </div>

@@ -36,7 +36,7 @@ export default function ConfirmDeleteRule(props) {
         (item) => item.ruleid_ !== parseInt(props.id)
       );
       props.handleClose();
-      alertDispatch(dataLang.formatMessage({ id: "alert_23" }));
+      alertDispatch(dataLang.formatMessage({ id: "alert_52" }));
     }
   };
 

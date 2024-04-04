@@ -50,7 +50,7 @@ export default function CreateErrSetting(props) {
                 </div>
             </div>
             <div className="DAT_CreateErrSetting_Body">
-                <span>Mã lỗi:</span>
+                <span>{dataLang.formatMessage({ id: "errcode" })}:</span>
                 <select ref={codeRef1}>
                     <option value="A">A</option>
                     <option value="E">E</option>

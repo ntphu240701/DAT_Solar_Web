@@ -52,9 +52,9 @@ export default function EditErr(props) {
 
       <div className="DAT_EditErr_Body">
         {props.type === "EDITCAUSE" ? (
-          <div className="DAT_EditErr_Body_Head">Cause</div>
+          <div className="DAT_EditErr_Body_Head">{dataLang.formatMessage({ id: "cause" })}</div>
         ) : (
-          <div className="DAT_EditErr_Body_Head">Solution</div>
+          <div className="DAT_EditErr_Body_Head">{dataLang.formatMessage({ id: "solution" })}</div>
         )}
         <div className="DAT_EditErr_Body_Content">
           <div className="DAT_EditErr_Body_Content_Item">

@@ -171,7 +171,7 @@ export default function Device(props) {
         );
       },
       sortable: true,
-      width: "160px",
+      width: "150px",
     },
     {
       name: dataLang.formatMessage({ id: "daily" }),
@@ -185,7 +185,7 @@ export default function Device(props) {
         </>
       ),
       sortable: true,
-      width: "160px",
+      width: "150px",
     },
     {
       name: dataLang.formatMessage({ id: "ogLog" }),

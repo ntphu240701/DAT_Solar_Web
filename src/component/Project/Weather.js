@@ -27,16 +27,7 @@ export default function Weather() {
   const lang = useSelector((state) => state.admin.lang);
   const lat = projectData.value.lat;
   const lon = projectData.value.long;
-  const q = lat + "," + lon;
   const url = `${host.WEATHER}/forecast.json?key=${process.env.REACT_APP_WEATHERKEY}&q=${lat},${lon}&days=7&aqi=no&alerts=no&lang=${lang}`;
-
-  // CALL DATA BY FETCH()
-  //   useEffect(() => {
-  //     fetch(url)
-  //         .then((response) => response.json())
-  //       .then((data) => console.log(data));
-  //     // console.log(url);
-  //   });
 
   //CALL DATA BY AXIOS
   const [forecastdata, setForecastdata] = useState([]);

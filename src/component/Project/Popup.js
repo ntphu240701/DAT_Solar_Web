@@ -72,20 +72,40 @@ export default function Popup(props) {
   };
 
   const handleUpdate = (e) => {
-    const updateLogger = async () => {
-      let d = await callApi('post', host.DATA + '/updateLogger', { sn: props.sn, type: "name", data: name.current.value });
-      if (name.current.value === "") {
-        alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
-      } else if (d.status === true) {
-        alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
-        let newData = temp.value
-        let index = newData.findIndex((item) => item.sn == props.sn);
-        newData[index].name = name.current.value;
-        temp.value = [...newData];
-        popupState.value = false;
-      }
+    switch (props.devtype) {
+      case "inverter":
+        const updateInverter = async () => {
+          let d = await callApi('post', host.DATA + '/updateInverter', { sn: props.sn, type: "name", data: name.current.value });
+          if (name.current.value === "") {
+            alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+          } else if (d.status === true) {
+            alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+            let newData = inverterDB.value
+            let index = newData.findIndex((item) => item.sn == props.sn);
+            newData[index].name = name.current.value;
+            inverterDB.value = [...newData];
+            popupState.value = false;
+          }
+        }
+        updateInverter();
+        break;
+      default:
+        const updateLogger = async () => {
+          let d = await callApi('post', host.DATA + '/updateLogger', { sn: props.sn, type: "name", data: name.current.value });
+          if (name.current.value === "") {
+            alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+          } else if (d.status === true) {
+            alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+            let newData = temp.value
+            let index = newData.findIndex((item) => item.sn == props.sn);
+            newData[index].name = name.current.value;
+            temp.value = [...newData];
+            popupState.value = false;
+          }
+        }
+        updateLogger();
+        break;
     }
-    updateLogger();
   }
 
   return (
@@ -146,7 +166,7 @@ export default function Popup(props) {
         </div>
 
         <div className="DAT_Popup_Box_Body">
-          <input type="text" placeholder={dataLang.formatMessage({ id: 'name' })} ref={name} />
+          <input type="text" ref={name} defaultValue={props.name} />
         </div>
 
         <div className="DAT_Popup_Box_Foot">

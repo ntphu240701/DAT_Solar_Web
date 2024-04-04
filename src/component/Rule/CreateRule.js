@@ -11,6 +11,7 @@ import { host } from "../Lang/Contant";
 import { userInfor } from "../../App";
 
 import { IoClose, IoSaveOutline } from "react-icons/io5";
+import { Abc } from "@mui/icons-material";
 
 const temp = signal({
   ruleid_: 0,
@@ -104,6 +105,7 @@ export default function CreateRule(props) {
   const TypeReport = (props) => {
     const handerChangeReportName = (e) => {
       rulenameRef.current = e.target.value;
+      console.log(rulenameRef.current)
     };
 
     return (
@@ -128,7 +130,8 @@ export default function CreateRule(props) {
   };
 
   const handleCreate = async () => {
-    if (rulenameRef.current !== "") {
+    let d = datarule.value.filter((item) => rulenameRef.current == item.rulename_)
+    if (rulenameRef.current != "" && d.length == 0) {
       const createRule = await callApi("post", host.DATA + "/addRule", {
         name: rulenameRef.current,
         partnerid: userInfor.value.partnerid,
@@ -138,9 +141,9 @@ export default function CreateRule(props) {
         datarule.value = [...datarule.value, createRule.data];
         props.handleClose();
         alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
-      } else {
-        alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
       }
+    } else {
+      alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
   };
 

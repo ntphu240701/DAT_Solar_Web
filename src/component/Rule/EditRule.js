@@ -88,6 +88,8 @@ export default function EditRule(props) {
   };
 
   const handleSave = async () => {
+    // let newData = datarule.value.filter((item) => rulenameRef.current.value == item.rulename_)
+    // if (rulenameRef.current.value !== "" && newData.length == 0) {
     if (rulenameRef.current.value !== "") {
       let d = await callApi("post", host.DATA + "/updateRule", {
         ruleid: editruledata.value.ruleid_,
@@ -103,9 +105,10 @@ export default function EditRule(props) {
         datarule.value = [...newData];
         props.handleClose();
         alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
-      } else {
-        alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
       }
+    }
+    else {
+      alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
   };
 
