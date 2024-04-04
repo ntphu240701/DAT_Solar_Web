@@ -86,7 +86,7 @@ export default function Popup(props) {
         props.handleClose();
         break;
       case "password":
-        if (oldpassRef.current.value !== "" && newpassRef.current.value !== "" && confirmpassRef.current.value !== "") {
+        if (oldpassRef.current.value !== "" && newpassRef.current.value !== "" && confirmpassRef.current.value !== "" && oldpassRef.current.value !== newpassRef.current.value) {
           if (newpassRef.current.value === confirmpassRef.current.value) {
             let d = await callApi("post", host.AUTH + "/ChangePassword", { usr: user, type: "password", oldpass: oldpassRef.current.value, newpass: confirmpassRef.current.value });
             if (d.status) {
@@ -102,6 +102,8 @@ export default function Popup(props) {
           } else {
             alertDispatch(dataLang.formatMessage({ id: "alert_18" }));
           }
+        } else if (oldpassRef.current.value !== "" || newpassRef.current.value !== "") {
+          alertDispatch(dataLang.formatMessage({ id: "alert_53" }));
         } else {
           alertDispatch(dataLang.formatMessage({ id: "alert_17" }));
         }

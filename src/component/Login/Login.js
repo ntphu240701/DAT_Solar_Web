@@ -307,7 +307,7 @@ export default function Login(props) {
                                 <div className="DAT_Login_Form-input">
                                     <BsTelephoneInbound color={colorWhite} size={24} />
                                     <input
-                                        type="number"
+                                        type="text"
                                         placeholder={dataLang.formatMessage({ id: 'phone' })}
                                         required
                                         value={phone}
