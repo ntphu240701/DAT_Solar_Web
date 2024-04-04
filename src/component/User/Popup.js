@@ -102,10 +102,10 @@ export default function Popup(props) {
           } else {
             alertDispatch(dataLang.formatMessage({ id: "alert_18" }));
           }
-        } else if (oldpassRef.current.value !== "" || newpassRef.current.value !== "") {
-          alertDispatch(dataLang.formatMessage({ id: "alert_53" }));
-        } else {
+        } else if (oldpassRef.current.value == "" || newpassRef.current.value == "" || confirmpassRef.current.value == "") {
           alertDispatch(dataLang.formatMessage({ id: "alert_17" }));
+        } else {
+          alertDispatch(dataLang.formatMessage({ id: "alert_53" }));
         }
         break;
       case "name":

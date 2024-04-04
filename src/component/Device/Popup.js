@@ -48,7 +48,7 @@ export default function Popup(props) {
         const updateInverter = async () => {
           let d = await callApi('post', host.DATA + '/updateInverter', { sn: props.sn, type: "name", data: name.current.value });
           if (name.current.value === "") {
-            alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+            alertDispatch(dataLang.formatMessage({ id: "alert_22" }));
           } else if (d.status === true) {
             alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
             let newData = inverterList.value
@@ -64,7 +64,7 @@ export default function Popup(props) {
         const updateLogger = async () => {
           let d = await callApi('post', host.DATA + '/updateLogger', { sn: props.sn, type: "name", data: name.current.value });
           if (name.current.value === "") {
-            alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+            alertDispatch(dataLang.formatMessage({ id: "alert_22" }));
           } else if (d.status === true) {
             alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
             let newData = loggerList.value
@@ -105,7 +105,7 @@ export default function Popup(props) {
             {dataLang.formatMessage({ id: 'delDevicemess' })}
             &nbsp;
             <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-              {props.sn}
+              {props.sn}?
             </span>
           </p>
         </div>

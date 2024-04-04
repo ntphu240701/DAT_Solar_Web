@@ -251,9 +251,13 @@ export default function Warn(props) {
       projectwarnfilter.value = 0;
     } else {
       let temp = dataWarn.value.filter(
-        (item) => item.plant.toLowerCase().includes(searchTerm) || item.device.toLowerCase().includes(searchTerm)
+        (item) => item.plant.toLowerCase().includes(searchTerm) ||
+          item.device.toLowerCase().includes(searchTerm) ||
+          item.boxid.toLowerCase().includes(searchTerm) ||
+          dataLang.formatMessage({ id: item.boxid, defaultMessage: item.boxid }).toLowerCase().includes(searchTerm)
       );
       setDatafilter([...temp]);
+      console.log(temp);
       warnfilter.value = {};
     }
   };
