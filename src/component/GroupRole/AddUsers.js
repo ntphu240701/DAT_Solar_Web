@@ -43,6 +43,7 @@ export default function AddUsers(props) {
       if (d.status === true) {
         alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
         groupUser.value = [...groupUser.value, d.data];
+        // datafilter.value = groupUser.value;
         props.handleClose();
       } else {
         if (d.number === 0) {
@@ -61,9 +62,7 @@ export default function AddUsers(props) {
   const AddButton = () => {
     return (
       <div className="DAT_AddUserPopup_Box_Foot">
-        <button
-          onClick={() => handleAddUser()}
-        >
+        <button onClick={() => handleAddUser()}>
           {dataLang.formatMessage({ id: "confirm" })}
         </button>
       </div>
@@ -123,8 +122,8 @@ export default function AddUsers(props) {
               <div className="DAT_AddUserPopup_Box_Foot">
                 <button
                   onClick={() => {
-                    (props.handleClose());
-                    (setAddUserState("none"))
+                    props.handleClose();
+                    setAddUserState("none");
                   }}
                   style={{
                     border: "1px solid #505050",
@@ -141,8 +140,8 @@ export default function AddUsers(props) {
               <div className="DAT_AddUserPopup_Box_Foot">
                 <button
                   onClick={() => {
-                    (props.handleClose());
-                    (setAddUserState("none"))
+                    props.handleClose();
+                    setAddUserState("none");
                   }}
                   style={{
                     border: "1px solid #505050",
@@ -159,8 +158,8 @@ export default function AddUsers(props) {
               <div className="DAT_AddUserPopup_Box_Foot">
                 <button
                   onClick={() => {
-                    (props.handleClose());
-                    (setAddUserState("none"))
+                    props.handleClose();
+                    setAddUserState("none");
                   }}
                   style={{
                     border: "1px solid #505050",

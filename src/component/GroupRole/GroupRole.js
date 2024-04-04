@@ -121,7 +121,9 @@ const GroupUsers = (props) => {
   const handleChangeGroup = (e) => {
     groupID.value = Number(e.currentTarget.id);
     const checkApi = async () => {
-      const getUser = await callApi("post", host.DATA + "/getallUser", { partnerid: groupID.value, });
+      const getUser = await callApi("post", host.DATA + "/getallUser", {
+        partnerid: groupID.value,
+      });
       if (getUser.status) {
         groupUser.value = getUser.data.sort((a, b) => a.id_ - b.id_);
         datafilter.value = groupUser.value;
@@ -166,7 +168,8 @@ const GroupUsers = (props) => {
 
         <div className="DAT_GR_Content_DevideTable_Left_ItemList">
           {group.value.map((item, index) => (
-            <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item"
+            <div
+              className="DAT_GR_Content_DevideTable_Left_ItemList_Item"
               key={index}
               id={item.id_}
               style={{
@@ -176,26 +179,30 @@ const GroupUsers = (props) => {
               onClick={(e) => handleChangeGroup(e)}
             >
               <div>
-                <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
+                <div
+                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
                   style={{ fontSize: "15px" }}
                 >
                   {item.name_}
                 </div>
 
-                <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
+                <div
+                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
                   style={{ fontSize: "13px", color: "grey", maxWidth: "100px" }}
                 >
                   {item.code_}
                 </div>
               </div>
-              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Shortcut"
+              <div
+                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Shortcut"
                 id={item.id_ + "_dot"}
                 onClick={(e) => handleShowFunction(e)}
               >
                 <IoMdMore size={20} color="grey" />
               </div>
 
-              <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More"
+              <div
+                className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More"
                 id={item.id_ + "_function"}
                 style={{ display: "none" }}
                 onMouseLeave={(e) => handleShowFunction(e)}
@@ -203,14 +210,16 @@ const GroupUsers = (props) => {
                 {item.id_ === 1 ? (
                   <></>
                 ) : (
-                  <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Delete"
+                  <div
+                    className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Delete"
                     id={item.id_}
                     onClick={() => props.groupDelState()}
                   >
                     <IoTrashOutline size={18} />
                   </div>
                 )}
-                <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Edit"
+                <div
+                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Edit"
                   style={{ right: "40px" }}
                   id={item.id_}
                   onClick={(e) => handleEditGroup(e)}
@@ -218,7 +227,8 @@ const GroupUsers = (props) => {
                   <FiEdit size={18} />
                 </div>
 
-                <div className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
+                <div
+                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
                   onClick={() => props.addState()}
                 >
                   <AiOutlineUserAdd size={18} />
@@ -237,7 +247,7 @@ const GroupUsers = (props) => {
             <DataTable
               className="DAT_Table_GroupRole"
               columns={columnGroupRole}
-              data={datafilter.value}
+              data={groupUser.value}
               pagination
               paginationComponentOptions={paginationComponentOptions}
               fixedHeader={true}
@@ -330,12 +340,14 @@ export default function GroupRole(props) {
         {isMobile.value ? (
           <>
             <div className="DAT_Modify">
-              <div className="DAT_Modify_Item"
+              <div
+                className="DAT_Modify_Item"
                 onClick={() => setFilter(!filter)}
               >
                 <CiSearch color="white" size={20} />
               </div>
-              <div className="DAT_Modify_Add"
+              <div
+                className="DAT_Modify_Add"
                 onClick={() => setCreateState(true)}
               >
                 <IoAddOutline color="white" size={20} />
@@ -370,7 +382,8 @@ export default function GroupRole(props) {
           </>
         ) : (
           <>
-            <div className="DAT_GRHeader_Filter"
+            <div
+              className="DAT_GRHeader_Filter"
               style={{
                 backgroundColor:
                   groupID.value === 0 ? "rgba(233, 233, 233, 0.5)" : "white",
@@ -385,7 +398,8 @@ export default function GroupRole(props) {
               />
               <CiSearch color="gray" size={20} />
             </div>
-            <button className="DAT_GRHeader_New"
+            <button
+              className="DAT_GRHeader_New"
               onClick={() => setCreateState(true)}
             >
               <span>
@@ -403,17 +417,27 @@ export default function GroupRole(props) {
           {dataLang.formatMessage({ id: "grouproleList" })}
         </div>
         <div className="DAT_GR_Content">
-          <GroupUsers addState={handleAddState} delState={handleDelState} editState={handleEditState} groupDelState={handleGroupDelState} />
+          <GroupUsers
+            addState={handleAddState}
+            delState={handleDelState}
+            editState={handleEditState}
+            groupDelState={handleGroupDelState}
+          />
         </div>
       </div>
 
-      <div className="DAT_GroupCreate"
+      <div
+        className="DAT_GroupCreate"
         style={{
           height: createState ? "100vh" : "0px",
           transition: "0.5s",
         }}
       >
-        {createState ? <CreateGroupRole handleClose={handleCloseCreate} /> : <></>}
+        {createState ? (
+          <CreateGroupRole handleClose={handleCloseCreate} />
+        ) : (
+          <></>
+        )}
       </div>
 
       {popupState ? (
