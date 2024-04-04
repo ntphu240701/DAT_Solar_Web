@@ -10,6 +10,13 @@ import { alertDispatch } from "../Alert/Alert";
 
 import { IoClose } from "react-icons/io5";
 
+const Type = signal({
+  onm: { name: "onm", checked: false },
+  investor: { name: "investor", checked: false },
+  distributor: { name: "distributor", checked: false },
+  manufacturer: { name: "manufacturer", checked: false },
+})
+
 export default function EditContactInfo(props) {
   const dataLang = useIntl();
 
@@ -25,16 +32,9 @@ export default function EditContactInfo(props) {
     popup.style.color = popup_state[state].color;
   };
 
-  const Type = signal({
-    OnM: { name: "onm", checked: false },
-    Investor: { name: "investor", checked: false },
-    Distributor: { name: "distributor", checked: false },
-    Manufacturer: { name: "manufacturer", checked: false },
-  })
-
   const handeTypeChange = (e) => {
     Object.entries(Type.value).forEach(async ([key, value]) => {
-      if (key === e.target.id) {
+      if (key == e.target.id) {
         Type.value = { ...Type.value, [key]: { ...Type.value[key], checked: !Type.value[key].checked } }
         const d = await callApi('post', host.DATA + '/updatePartner', { code: partnerInfor.value.code, type: 'businesstype', data: key })
         if (d.status) {
