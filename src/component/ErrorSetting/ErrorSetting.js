@@ -17,6 +17,33 @@ import { alertDispatch } from "../Alert/Alert";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 
+export const lowercasedata = (str) => {
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D");
+};
+// data = [
+//   {
+//     warnid: 1,
+//     boxid: "A_1_3",
+//     cause: [{ id: 1, vi: "Lỗi điều khiển", en: "Control system error" }],
+//     solution: [
+//       { id: 1, vi: "Khôi phục cấu hình gốc", en: "Return factory config" },
+//     ],
+//   },
+//   {
+//     warnid: 1,
+//     boxid: "A_1_3",
+//     cause: [{ id: 1, vi: "Lỗi điều khiển", en: "Control system error" }],
+//     solution: [
+//       { id: 1, vi: "Khôi phục cấu hình gốc", en: "Return factory config" },
+//     ],
+//   },
+// ];
+
 export default function ErrorSetting(props) {
   const dataLang = useIntl();
   const [createState, setCreateState] = useState(false);
@@ -25,10 +52,12 @@ export default function ErrorSetting(props) {
   const [removeState, setRemoveState] = useState(false);
   const [removeType, setRemoveType] = useState("");
   const [arrayData, setArrayData] = useState();
-  const [data, setData] = useState([]);
+  const [dataApi, setDataApi] = useState([]);
+  const [data, setData] = useState(dataApi);
   const [editVi, setEditVi] = useState("");
   const [editEn, setEditEn] = useState("");
   const [editarray, setEditarray] = useState();
+  const filterRef = useRef();
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: "row" }),
@@ -199,12 +228,14 @@ export default function ErrorSetting(props) {
               </span>
             </div>
           )}
-          <div className="DAT_ModifyBox"
+          <div
+            className="DAT_ModifyBox"
             id={row.warnid_ + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            <div className="DAT_ModifyBox_Remove"
+            <div
+              className="DAT_ModifyBox_Remove"
               id={row.boxid_}
               onClick={(e) => handleDelete(e)}
             >
@@ -249,8 +280,8 @@ export default function ErrorSetting(props) {
         let req = await callApi("post", `${host.DATA}/addWarnBox`, {
           boxid: `${code}_${num1}_${num2}`,
           cause: [{ id: 1, vi: "Nguyên nhân 1", en: "Cause 1" }],
-          solution: [{ id: 1, vi: "Giải pháp 1", en: "Solution 1" }]
-        })
+          solution: [{ id: 1, vi: "Giải pháp 1", en: "Solution 1" }],
+        });
         if (req.status) {
           const newdata = req.data;
           setData([...data, newdata]);
@@ -294,15 +325,19 @@ export default function ErrorSetting(props) {
         const index = data
           .find((item) => item.boxid_ === editarray[0])
           .cause_.findIndex((item) => item.id === parseInt(editarray[1]));
-        data.find((item) => item.boxid_ === editarray[0]).cause_[index].vi = editvi;
-        data.find((item) => item.boxid_ === editarray[0]).cause_[index].en = editen;
+        data.find((item) => item.boxid_ === editarray[0]).cause_[index].vi =
+          editvi;
+        data.find((item) => item.boxid_ === editarray[0]).cause_[index].en =
+          editen;
         break;
       case "EDITSOLUTION":
         const i = data
           .find((item) => item.boxid_ === editarray[0])
           .solution_.findIndex((item) => item.id === parseInt(editarray[1]));
-        data.find((item) => item.boxid_ === editarray[0]).solution_[i].vi = editvi;
-        data.find((item) => item.boxid_ === editarray[0]).solution_[i].en = editen;
+        data.find((item) => item.boxid_ === editarray[0]).solution_[i].vi =
+          editvi;
+        data.find((item) => item.boxid_ === editarray[0]).solution_[i].en =
+          editen;
         break;
       default:
         break;
@@ -310,8 +345,8 @@ export default function ErrorSetting(props) {
     let req = await callApi("post", `${host.DATA}/updateWarnBox`, {
       boxid: editarray[0],
       cause: data.find((item) => item.boxid_ === editarray[0]).cause_,
-      solution: data.find((item) => item.boxid_ === editarray[0]).solution_
-    })
+      solution: data.find((item) => item.boxid_ === editarray[0]).solution_,
+    });
     console.log(req);
     if (req.status) {
       alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
@@ -353,8 +388,8 @@ export default function ErrorSetting(props) {
         let req1 = await callApi("post", `${host.DATA}/updateWarnBox`, {
           boxid: boxid,
           cause: data.find((item) => item.boxid_ === boxid).cause_,
-          solution: data.find((item) => item.boxid_ === boxid).solution_
-        })
+          solution: data.find((item) => item.boxid_ === boxid).solution_,
+        });
         console.log(req1);
         if (req1.status) {
           setRemoveState(false);
@@ -376,8 +411,8 @@ export default function ErrorSetting(props) {
         let req2 = await callApi("post", `${host.DATA}/updateWarnBox`, {
           boxid: boxid,
           cause: data.find((item) => item.boxid_ === boxid).cause_,
-          solution: data.find((item) => item.boxid_ === boxid).solution_
-        })
+          solution: data.find((item) => item.boxid_ === boxid).solution_,
+        });
         console.log(req2);
         if (req2.status) {
           setRemoveState(false);
@@ -386,7 +421,7 @@ export default function ErrorSetting(props) {
       default:
         let req = await callApi("post", `${host.DATA}/removeWarnBox`, {
           boxid: boxid,
-        })
+        });
         if (req.status) {
           setData(data.filter((item) => item.boxid_ !== boxid));
           setRemoveState(false);
@@ -424,10 +459,12 @@ export default function ErrorSetting(props) {
           ...bigdata[index].solution_,
           {
             id: bigdata[index].solution_[solutionlength - 1].id + 1,
-            vi: `Giải pháp ${bigdata[index].solution_[solutionlength - 1].id + 1
-              }`,
-            en: `Solution ${bigdata[index].solution_[solutionlength - 1].id + 1
-              }`,
+            vi: `Giải pháp ${
+              bigdata[index].solution_[solutionlength - 1].id + 1
+            }`,
+            en: `Solution ${
+              bigdata[index].solution_[solutionlength - 1].id + 1
+            }`,
           },
         ];
         setData([...bigdata]);
@@ -439,20 +476,47 @@ export default function ErrorSetting(props) {
     await callApi("post", `${host.DATA}/updateWarnBox`, {
       boxid: arr[0],
       cause: data.find((item) => item.boxid_ === arr[0]).cause_,
-      solution: data.find((item) => item.boxid_ === arr[0]).solution_
-    })
+      solution: data.find((item) => item.boxid_ === arr[0]).solution_,
+    });
+  };
+
+  const handleFilter = (e) => {
+    const input = lowercasedata(e.currentTarget.value);
+    console.log(input);
+    const temp = dataApi.filter((item) => {
+      return (
+        lowercasedata(item.boxid_).includes(input) ||
+        item.cause_.some(
+          (cause) =>
+            lowercasedata(cause.vi).includes(input) ||
+            lowercasedata(cause.en).includes(input)
+        ) ||
+        item.solution_.some(
+          (solution) =>
+            lowercasedata(solution.vi).includes(input) ||
+            lowercasedata(solution.en).includes(input)
+        )
+      );
+    });
+    console.log(temp);
+    setData(temp);
   };
 
   useEffect(() => {
     const getWarnBox = async () => {
-      let req = await callApi("get", `${host.DATA}/getWarnBox`, '')
+      let req = await callApi("get", `${host.DATA}/getWarnBox`, "");
       if (req.status) {
         let newData = req.data.sort((a, b) => a.warnid_ - b.warnid_);
-        setData(newData);
+        setDataApi(newData);
+        console.log(dataApi);
       }
     };
     getWarnBox();
   }, []);
+
+  useEffect(() => {
+    setData(dataApi);
+  }, [dataApi]);
 
   return (
     <>
@@ -466,6 +530,10 @@ export default function ErrorSetting(props) {
           <input
             type="text"
             placeholder={dataLang.formatMessage({ id: "enterError" }) + "..."}
+            ref={filterRef}
+            onChange={(e) => {
+              handleFilter(e);
+            }}
           />
           <CiSearch color="gray" size={20} />
         </div>
