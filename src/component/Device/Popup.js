@@ -119,7 +119,7 @@ export default function Popup(props) {
 
           <div className="DAT_Popup_Box_Body">
             <p>{dataLang.formatMessage({ id: 'name' })}:</p>
-            <input type="text" ref={name} value={props.name} />
+            <input type="text" ref={name} defaultValue={props.name} />
           </div>
 
           <div className="DAT_Popup_Box_Foot">
@@ -151,7 +151,7 @@ export default function Popup(props) {
 
         <div className="DAT_Popup_Box_Body">
           <p>{dataLang.formatMessage({ id: 'name' })}:</p>
-          <input type="text" ref={name} value={props.name} />
+          <input type="text" ref={name} defaultValue={props.name} />
         </div>
 
         <div className="DAT_Popup_Box_Foot">

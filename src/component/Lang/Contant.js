@@ -2,6 +2,7 @@ export const host = {
   AUTH: process.env.REACT_APP_SOLAR + "/auth",
   DATA: process.env.REACT_APP_SOLAR + "/data",
   CLOUD: process.env.REACT_APP_CLOUD,
+  WEATHER: process.env.REACT_APP_WEATHER,
 };
 
 export const messages = {
@@ -53,6 +54,7 @@ export const messages = {
     newRule: "New Rights",
     device: "Device",
     warn: "Warning",
+    unresolvewarn: "Warning",
     configwarn: "Warning Configuration",
     resolve: "Resolved",
     level: "Level",
@@ -487,6 +489,8 @@ export const messages = {
     remindAlert: "Please check this error!",
     accountLockAlert:
       "Your account is currently locked. Please contact the administrator to reactivate it!",
+
+    //ALERT DISPATCH
     alert_0: "Username or password is incorrect!",
     alert_1: "Password changed successfully",
     alert_2: "Your link has expired, please try again!",
@@ -497,8 +501,7 @@ export const messages = {
     alert_7: "Setup unsuccessful!",
     alert_8: "Please access your Email for confirmation!!",
     alert_9: "Sign up successfully!",
-    alert_10:
-      "This username has been used, please try using a different username!",
+    alert_10: "This username has been used, please try using a different username!",
     alert_11: "This email has been used, please try using a different email!",
     alert_12: "OTP is incorrect!",
     alert_13: "Send OTP successfully!",
@@ -540,6 +543,9 @@ export const messages = {
     alert_49: "This error has been already existed.",
     alert_50: "Atleast one cause is required.",
     alert_51: "Atleast one solution is required.",
+    alert_52: "Delete role successfully!",
+    // --------------------------------- //
+
     sologon: "Energy solution platform",
     version: "Version",
     previous: "Back",
@@ -805,6 +811,7 @@ export const messages = {
     newRule: "Tạo quyền mới",
     device: "Thiết bị",
     warn: "Cảnh báo",
+    unresolvewarn: "Chưa khắc phục",
     configwarn: "Cài đặt cảnh báo",
     resolve: "Đã khắc phục",
     level: "Mức độ",
@@ -1238,8 +1245,9 @@ export const messages = {
     delrulemess: "Bạn có chắc muốn xóa phân quyền người dùng này không?",
     deleteDenied: "Bạn không thể xóa phân quyền Master",
     remindAlert: "Vui lòng kiểm tra!",
-    accountLockAlert:
-      "Tài khoản của bạn hiện đang bị khoá vui lòng liên hệ quản trị viên để kích hoạt lại!",
+    accountLockAlert: "Tài khoản của bạn hiện đang bị khoá vui lòng liên hệ quản trị viên để kích hoạt lại!",
+
+    //ALERT DISPATCH
     alert_0: "Tài khoản hoặc mật khẩu không đúng!",
     alert_1: "Đổi mật khẩu thành công!",
     alert_2: "Link đã hết hiệu lực, bạn vui lòng thực hiện lại!",
@@ -1292,6 +1300,9 @@ export const messages = {
     alert_49: "Lỗi này đã tồn tại.",
     alert_50: "Ít nhất phải tồn tại 1 nguyên nhân.",
     alert_51: "Ít nhất phải tồn tại 1 biện pháp.",
+    alert_52: "Xóa phân quyền thành công!",
+    // --------------------------------- //
+
     version: "Phiên bản",
     sologon: "Nền tảng giải pháp năng lượng",
     previous: "Quay lại",
