@@ -19,7 +19,6 @@ import { useIntl } from "react-intl";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
-
 import { FaCheckCircle, FaRegFileAlt, FaStar } from "react-icons/fa";
 import { MdOutlineError, MdEdit, MdDelete, MdAddchart } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";

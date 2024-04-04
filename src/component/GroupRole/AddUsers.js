@@ -43,7 +43,6 @@ export default function AddUsers(props) {
       if (d.status === true) {
         alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
         groupUser.value = [...groupUser.value, d.data];
-        // datafilter.value = groupUser.value;
         props.handleClose();
       } else {
         if (d.number === 0) {

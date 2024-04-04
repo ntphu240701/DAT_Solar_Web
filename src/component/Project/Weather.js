@@ -20,11 +20,10 @@ export default function Weather() {
   const lang = useSelector((state) => state.admin.lang);
   const lat = projectData.value.lat;
   const lon = projectData.value.long;
-  const url = `${host.WEATHER}/forecast.json?key=${process.env.REACT_APP_WEATHERKEY}&q=${lat},${lon}&days=7&aqi=no&alerts=no&lang=${lang}`
+  const url = `${host.WEATHER}/forecast.json?key=${process.env.REACT_APP_WEATHERKEY}&q=${lat},${lon}&days=7&aqi=no&alerts=no&lang=${lang}`;
 
   //CALL DATA BY AXIOS
   const [forecastdata, setForecastdata] = useState([]);
-
   useEffect(() => {
     axios.get(url).then((response) => {
       setData(response.data);
