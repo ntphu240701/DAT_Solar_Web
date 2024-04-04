@@ -51,7 +51,7 @@ export default function Warn(props) {
 
   const listTab = [
     { id: "all", name: dataLang.formatMessage({ id: "total" }) },
-    { id: "open", name: dataLang.formatMessage({ id: "warn" }) },
+    { id: "open", name: dataLang.formatMessage({ id: "unresolvewarn" }) },
     { id: "closed", name: dataLang.formatMessage({ id: "resolve" }) },
   ];
 

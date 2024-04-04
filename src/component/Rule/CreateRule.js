@@ -138,9 +138,10 @@ export default function CreateRule(props) {
         datarule.value = [...datarule.value, createRule.data];
         props.handleClose();
         alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
-      } else {
-        alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
       }
+    }
+    else {
+      alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
   };
 
