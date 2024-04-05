@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./Project.scss";
 
-// import { cal } from './ProjectData';
-
 export default function Graph(props) {
-
-
 
     return (
         <div className="DAT_ProjectData_Dashboard_Data_Center_Graph">
@@ -31,7 +27,6 @@ const GraphGrid = (props) => {
     const [lineA_, setLinA] = useState("Default");
 
     useEffect(() => {
-        console.log(props.cal)
         if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
             setLinA("moveLtoR");
         } else {
@@ -164,7 +159,6 @@ const GraphConsumption = (props) => {
     const [lineD_, setLinD] = useState("Default");
 
     useEffect(() => {
-        console.log(props.cal)
         if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
             setLinA("moveLtoR");
         } else {
@@ -308,9 +302,6 @@ const GraphFull = (props) => {
     const [lineD_, setLinD] = useState("Default");
 
     useEffect(() => {
-        
-        console.log(props.cal)
-
         if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
             setLinA("moveLtoR");
         } else {

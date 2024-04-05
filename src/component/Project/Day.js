@@ -1,7 +1,7 @@
 import React from "react";
 import "./Project.scss";
 
-import { cal, filterchart } from "./ProjectData";
+import { filterchart } from "./ProjectData";
 import { projectData } from "./Project";
 import {
   XAxis,
@@ -13,9 +13,11 @@ import {
   Area,
 } from "recharts";
 import { useIntl } from "react-intl";
+import { useSelector } from 'react-redux';
 
 export default function Day(props) {
   const dataLang = useIntl();
+  const cal = useSelector((state) => state.tool.cal);
 
   return (
     <div className="DAT_ProjectData_Dashboard_History_Day">
@@ -24,9 +26,8 @@ export default function Day(props) {
           kW
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {/* {props.v}: {cal.value.pro_1} kW */}
           {dataLang.formatMessage({ id: "production" })}:{" "}
-          {parseFloat(cal.value.pro_1 / 1000).toFixed(2)} kW
+          {parseFloat(cal.pro_1 / 1000).toFixed(2)} kW
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">

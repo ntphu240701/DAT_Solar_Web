@@ -6,13 +6,10 @@ import { useIntl } from 'react-intl';
 import { CiClock1 } from 'react-icons/ci';
 import Graph from './Graph';
 import { useSelector } from 'react-redux';
-// import { cal } from './ProjectData';
 
 export default function GraphComponent(props) {
     const dataLang = useIntl();
     const cal = useSelector((state) => state.tool.cal);
-
-
 
     return (
         <div className="DAT_ProjectData_Dashboard_Data_Center">

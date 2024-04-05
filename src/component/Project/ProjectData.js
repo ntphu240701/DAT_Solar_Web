@@ -48,7 +48,6 @@ const tabLableAlert = signal("");
 const tabAlert = signal("all");
 const open = signal([]);
 const close = signal([]);
-export const cal = signal({});
 const viewNav = signal(false);
 const viewStateNav = signal([false, false]);
 const dataMeter = [];
@@ -813,10 +812,8 @@ export default function ProjectData(props) {
       value: cal_.pro_3,
     };
 
-    cal.value = {...cal_};
-
     rootDispatch(toolslice.actions.setcal(cal_));
-    
+
     document.addEventListener("mousedown", handleOutsideUser);
     return () => {
       document.removeEventListener("mousedown", handleOutsideUser);
@@ -833,21 +830,69 @@ export default function ProjectData(props) {
                 case "dashboard":
                   return (
                     <div className="DAT_ProjectData_Header_LeftDashboard">
-                      <div style={{ fontSize: 22, paddingBottom: 5 }}>
-                        {tit[view]}
-                      </div>
-
-                      <div style={{ color: "grey", fontSize: 14 }}>
-                        {dataLang.formatMessage({ id: "lastupdate" })}
-                        &nbsp;
-                        {projectData.value.lastupdate}
+                      <div className="DAT_ProjectData_Header_LeftDashboard_Top"
+                        style={{ fontSize: 22 }}
+                      >
+                        <img
+                          src={
+                            projectData.value.img
+                              ? projectData.value.img
+                              : "/dat_picture/solar_panel.png"
+                          }
+                          alt=""
+                        />
+                        <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content">
+                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Name">
+                            {projectData.value.plantname}
+                            {projectData.value.state === 1 ? (
+                              <>
+                                <FaCheckCircle size={14} color="green" />
+                              </>
+                            ) : (
+                              <>
+                                <MdOutlineError size={14} color="red" />
+                              </>
+                            )}
+                          </div>
+                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Addr">
+                            {projectData.value.addr}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   );
                 case "device":
                   return (
-                    <div className="DAT_ProjectData_Header_LeftDevice">
-                      <div style={{ fontSize: 22 }}>{tit[view]}</div>
+                    <div className="DAT_ProjectData_Header_LeftDashboard">
+                      <div className="DAT_ProjectData_Header_LeftDashboard_Top"
+                        style={{ fontSize: 22 }}
+                      >
+                        <img
+                          src={
+                            projectData.value.img
+                              ? projectData.value.img
+                              : "/dat_picture/solar_panel.png"
+                          }
+                          alt=""
+                        />
+                        <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content">
+                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Name">
+                            {projectData.value.plantname}
+                            {projectData.value.state === 1 ? (
+                              <>
+                                <FaCheckCircle size={14} color="green" />
+                              </>
+                            ) : (
+                              <>
+                                <MdOutlineError size={14} color="red" />
+                              </>
+                            )}
+                          </div>
+                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Addr">
+                            {projectData.value.addr}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   );
                 case "alert":
@@ -862,36 +907,23 @@ export default function ProjectData(props) {
             })()}
 
             <div className="DAT_ProjectData_Header_Right">
-              <div
-                className="DAT_ProjectData_Header_Right_More"
-                onClick={() => setDropState(false)}
-              >
-                <BsThreeDotsVertical size={20} color="#9e9e9e" />
-              </div>
-              {ruleInfor.value.setting.device.add ? (
-                <div
-                  className="DAT_ProjectData_Header_Right_Add"
-                  style={{ display: view === "device" ? "block" : "none" }}
-                >
-                  <button id="add" onClick={() => setPopupAddGateway(true)}>
-                    <IoAddOutline size={25} color="white" />
-                  </button>
-                </div>
-              ) : (
-                <div></div>
-              )}
-
-              <div
-                className="DAT_ProjectData_Header_Right_Close"
-                onClick={() => (plantState.value = "default")}
-              >
-                <IoClose
-                  size={25}
-                  color="rgba(11, 25, 103)"
-                  id="Popup"
-                  onMouseEnter={(e) => handlePopup("new")}
-                  onMouseLeave={(e) => handlePopup("pre")}
+              <div className="DAT_ProjectData_Header_Right_More">
+                <BsThreeDotsVertical
+                  size={20}
+                  color="#9e9e9e"
+                  onClick={() => {
+                    setDropState(!dropState);
+                  }}
                 />
+              </div>
+
+              <div className="DAT_ProjectData_Header_Right_Close"
+                onClick={() => {
+                  plantState.value = "default";
+                  setDropState(false);
+                }}
+              >
+                <IoClose size={25} color="rgba(11, 25, 103)" />
               </div>
             </div>
           </div>
@@ -940,9 +972,6 @@ export default function ProjectData(props) {
                   );
                 case "device":
                   return (
-                    // <div className="DAT_ProjectData_Header_LeftDevice">
-                    //   <div style={{ fontSize: 22 }}>{tit[view]}</div>
-                    // </div>
                     <div className="DAT_ProjectData_Header_LeftDashboard">
                       <div
                         className="DAT_ProjectData_Header_LeftDashboard_Top"
@@ -972,10 +1001,6 @@ export default function ProjectData(props) {
                           <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Addr">
                             {projectData.value.addr}
                           </div>
-                          {/* <div style={{ color: "grey", fontSize: 14 }}>
-                            {dataLang.formatMessage({ id: "lastupdate" })}{" "}
-                            {projectData.value.lastupdate}
-                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -1004,12 +1029,12 @@ export default function ProjectData(props) {
                   onMouseLeave={() => handleOutsideView()}
                 />
               </div>
+
               {ruleInfor.value.setting.device.add ? (
                 projectData.value.shared == 1 ? (
                   <></>
                 ) : (
-                  <div
-                    className="DAT_ProjectData_Header_Right_Add"
+                  <div className="DAT_ProjectData_Header_Right_Add"
                     style={{ display: view === "device" ? "block" : "none" }}
                   >
                     <button
@@ -1026,8 +1051,7 @@ export default function ProjectData(props) {
               ) : (
                 <div></div>
               )}
-              <div
-                className="DAT_ProjectData_Header_Right_Close"
+              <div className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => {
                   plantState.value = "default";
                   setDropState(false);
@@ -1085,6 +1109,26 @@ export default function ProjectData(props) {
                             <IoIosArrowForward />
                           )}
                         </button>
+                        {ruleInfor.value.setting.device.add ? (
+                          projectData.value.shared == 1 ? (
+                            <></>
+                          ) : (
+                            <div className="DAT_ProjectData_Header_Right_Add"
+                              style={{ display: view === "device" ? "block" : "none" }}
+                            >
+                              <button
+                                id="add"
+                                onClick={() => {
+                                  setPopupAddGateway(true);
+                                  setDropState(false);
+                                }}>
+                                <IoAddOutline size={25} color="white" />
+                              </button>
+                            </div>
+                          )
+                        ) : (
+                          <div></div>
+                        )}
                         {tabMobile.value ? (
                           <div
                             className="DAT_Toollist_Tab_Mobile_list"
@@ -1115,17 +1159,11 @@ export default function ProjectData(props) {
                               <>
                                 {temp.value?.map((item, i) => {
                                   return (
-                                    <div
-                                      key={i}
-                                      className="DAT_ProjectData_Device_TableMobile_Content"
-                                    >
+                                    <div key={i} className="DAT_ProjectData_Device_TableMobile_Content">
                                       <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
                                         <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left">
                                           <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Name">
-                                            {dataLang.formatMessage({
-                                              id: "name",
-                                            })}
-                                            : {item.name}
+                                            {dataLang.formatMessage({ id: "name", })}: {item.name}
                                           </div>
 
                                           <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Sn">
@@ -1134,28 +1172,22 @@ export default function ProjectData(props) {
                                         </div>
 
                                         <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right">
-                                          {ruleInfor.value.setting.device
-                                            .modify === true ? (
-                                            <div
-                                              className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
+                                          {ruleInfor.value.setting.device.modify === true ? (
+                                            <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
+                                              id={`${item.sn}_${item.name}_edit`}
                                               onClick={(e) => handleEdit(e)}
                                             >
-                                              <MdEdit
-                                                size={20}
-                                                color="#216990"
-                                              />
+                                              <FiEdit size={20} />
                                             </div>
                                           ) : (
                                             <div></div>
                                           )}
-                                          {ruleInfor.value.setting.device
-                                            .remove === true ? (
-                                            <div
-                                              className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
-                                              id={item.sn}
+                                          {ruleInfor.value.setting.device.remove === true ? (
+                                            <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
+                                              id={`${item.sn}_remove`}
                                               onClick={(e) => handleDelete(e)}
                                             >
-                                              <MdDelete size={20} color="red" />
+                                              <IoTrashOutline size={20} />
                                             </div>
                                           ) : (
                                             <div></div>
@@ -1167,36 +1199,23 @@ export default function ProjectData(props) {
                                         <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_State">
                                           {item.state ? (
                                             <>
-                                              <FaCheckCircle
-                                                size={20}
-                                                color="green"
-                                              />
+                                              <FaCheckCircle size={20} color="green" />
                                               <span>
-                                                {dataLang.formatMessage({
-                                                  id: "online",
-                                                })}
+                                                {dataLang.formatMessage({ id: "online", })}
                                               </span>
                                             </>
                                           ) : (
                                             <>
-                                              <MdOutlineError
-                                                size={22}
-                                                color="red"
-                                              />
+                                              <MdOutlineError size={22} color="red" />
                                               <span>
-                                                {dataLang.formatMessage({
-                                                  id: "offline",
-                                                })}
+                                                {dataLang.formatMessage({ id: "offline", })}
                                               </span>
                                             </>
                                           )}
                                         </div>
 
                                         <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_Type">
-                                          {dataLang.formatMessage({
-                                            id: "type",
-                                          })}
-                                          : {item.type}
+                                          {dataLang.formatMessage({ id: "type", })}: {item.type}
                                         </div>
                                       </div>
                                     </div>
@@ -1205,7 +1224,71 @@ export default function ProjectData(props) {
                               </>
                             );
                           case "inverter":
-                            return <></>;
+                            return (
+                              <>
+                                {inverterDB.value?.map((item, i) => {
+                                  return (
+                                    <div key={i} className="DAT_ProjectData_Device_TableMobile_Content">
+                                      <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left">
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Name">
+                                            {dataLang.formatMessage({ id: "name", })}: {item.name}
+                                          </div>
+
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Sn">
+                                            SN: {item.sn}
+                                          </div>
+
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_OgLog">
+                                            {dataLang.formatMessage({ id: "ogLog", })}: {item.logger_}
+                                          </div>
+
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_OgLog">
+                                            {dataLang.formatMessage({ id: "daily", })}: {item.data.daily?.register
+                                              ? parseFloat(invt[item.logger_]?.[item.data.daily.register] * item.data.daily?.cal).toFixed(2)
+                                              : 0}
+                                            kWh
+                                          </div>
+                                        </div>
+
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right">
+                                          {ruleInfor.value.setting.device.modify === true ? (
+                                            <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
+                                              id={`${item.sn}_${item.name}_edit`}
+                                              onClick={(e) => handleEdit(e)}
+                                            >
+                                              <FiEdit size={20} />
+                                            </div>
+                                          ) : (
+                                            <div></div>
+                                          )}
+                                        </div>
+                                      </div>
+
+                                      <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom">
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_State">
+                                          {invt[item.logger_]?.[item.data.status] == 2 ? (
+                                            <>
+                                              <FaCheckCircle size={20} color="green" />
+                                              <span>
+                                                {dataLang.formatMessage({ id: "online", })}
+                                              </span>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <MdOutlineError size={22} color="red" />
+                                              <span>
+                                                {dataLang.formatMessage({ id: "offline", })}
+                                              </span>
+                                            </>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </>
+                            );
                           case "meter":
                             return (
                               <>
