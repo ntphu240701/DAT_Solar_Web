@@ -3,15 +3,12 @@ import { createSlice } from "@reduxjs/toolkit";
 export default createSlice({
     name:'tool',
     initialState:{
-        type: 'default',
-        status: false,
+        cal: {},
     },
     reducers:{
-        settype: (state,action) =>{
-                state.type = action.payload;
+        setcal: (state,action) =>{
+                state.cal = action.payload;
         },// type: 'tool/settype'
-        setstatus: (state,action) =>{
-                state.status =  action.payload;
-        }
+      
     }
 })

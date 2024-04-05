@@ -88,8 +88,6 @@ export default function EditRule(props) {
   };
 
   const handleSave = async () => {
-    // let newData = datarule.value.filter((item) => rulenameRef.current.value == item.rulename_)
-    // if (rulenameRef.current.value !== "" && newData.length == 0) {
     if (rulenameRef.current.value !== "") {
       let d = await callApi("post", host.DATA + "/updateRule", {
         ruleid: editruledata.value.ruleid_,

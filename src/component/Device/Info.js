@@ -480,11 +480,13 @@ const PowerGrid = (props) => {
 
 const ElectricityConsumption = (props) => {
   const [display, setDisplay] = useState(true);
-
+  const dataLang = useIntl();
   return (
     <div className="DAT_Info_Databox" id="ElectricityConsumption">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Tiêu thụ điện</div>
+        <div className="DAT_Info_Databox_Title_Left">
+          {dataLang.formatMessage({ id: "electricConsumption" })}
+        </div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -504,13 +506,13 @@ const ElectricityConsumption = (props) => {
         {display ? (
           <div className="DAT_Info_Databox_Content">
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Tổng công suất tiêu thụ: 0,00 W</p>
+              <p>{dataLang.formatMessage({ id: "totalConsumption" })}: 0,00 W</p>
             </div>
             <div className="DAT_Info_Databox_Content_Column">
               <p>Tiêu thụ tích lũy: 0,00 kWh</p>
             </div>
             <div className="DAT_Info_Databox_Content_Column">
-              <p>Tiêu thụ hàng ngày: 0,00 kWh</p>
+              <p>{dataLang.formatMessage({ id: "dailyConsumption" })}:  kWh</p>
             </div>
           </div>
         ) : (
@@ -567,116 +569,6 @@ const Temperature = (props) => {
           <></>
         )}
       </div> */}
-    </div>
-  );
-};
-
-const Other = (props) => {
-  const [display, setDisplay] = useState(true);
-  return (
-    <div className="DAT_Info_Databox" id="Other">
-      <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Khác</div>
-        <div className="DAT_Info_Databox_Title_Right"
-          onClick={() => setDisplay(!display)}
-        >
-          <IoIosArrowDown
-            size={20}
-            style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
-              transition: "0.5s",
-            }}
-          />
-        </div>
-      </div>
-
-      <div className="Animation"
-        style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
-      >
-        {display ? (
-          <div className="DAT_Info_Databox_Content">
-            <div className="DAT_Info_Databox_Content_Column">
-              <p>Năm: 24</p>
-              <p>Giờ: 15</p>
-              <p>Tuần: 4</p>
-              <p>Ngưỡng bảo vệ áp suất thấp: 340.0 V</p>
-              <p>Ngưỡng bảo vệ tần số cao: 52.50 Hz</p>
-              <p>Thời gian trễ khởi động: 30 s</p>
-              <p>Thông tin gỡ lỗi ARM2: 0</p>
-              <p>Thông tin gỡ lỗi ARM5: 0</p>
-              <p>Thông tin gỡ lỗi ARM8: 0</p>
-              <p>Thông tin gỡ lỗi DSP BT3: 0</p>
-              <p>Thông tin gỡ lỗi DSP BT6: 0</p>
-              <p>Thông tin gỡ lỗi DSP INV1: 33</p>
-              <p>Thông tin gỡ lỗi DSP INV4: 0</p>
-              <p>Thông tin gỡ lỗi DSP INV7: 0</p>
-              <p>Xóa hệ số hiệu chỉnh và hồ sơ lỗi: 0</p>
-              <p>Điện áp khởi động AC cao: 440.00</p>
-              <p>Tần số khởi động AC thấp: 49.50</p>
-              <p>Giá trị điện áp quá áp phản ứng đường cong Q/U: 280.00</p>
-              <p>Địa chỉ giao tiếp 485_2: 0</p>
-            </div>
-            <div className="DAT_Info_Databox_Content_Column">
-              <p>Tháng: 1</p>
-              <p>Phút: 37</p>
-              <p>Ngưỡng bảo vệ chống áp suất quá mức: 440.00 V</p>
-              <p>Ngưỡng bảo vệ chống áp suất dưới mức: 280.00 V</p>
-              <p>Ngưỡng bảo vệ chống tần số thấp: 47.50 Hz</p>
-              <p>Chọn chức năng bảo vệ: O701</p>
-              <p>Thông tin gỡ lỗi ARM3: 0</p>
-              <p>Thông tin gỡ lỗi ARM5: 0</p>
-              <p>Thông tin gỡ lỗi DSP BT1: 0</p>
-              <p>Thông tin gỡ lỗi DSP BT4: 0</p>
-              <p>Thông tin gỡ lỗi DSP BT7: 0</p>
-              <p>Thông tin gỡ lỗi DSP INV2: I</p>
-              <p>Thông tin gỡ lỗi DSP INV5: </p>
-              <p>Thông tin gỡ lỗi DSP INV8: </p>
-              <p>Chế độ hiệu chỉnh tuổi: </p>
-              <p>Điện áp khởi động AC thấp: </p>
-              <p>Thời gian trễ khởi động lại: </p>
-              <p>Tỉ lệ công suất phản ứng tối đa quá áp đường cong Q/U: </p>
-              <p>Cài đặt ngưỡng phát hiện chuỗi: </p>
-              <p>Điểm khởi đầu áp suất thấp: </p>
-              <p>Giá trị điện áp ban đầu quá áp phản ứng đường cong Q/U: </p>
-              <p>Dốc tải khởi động lại: </p>
-              <p>Tốc độ baud giao tiếp 485_2: </p>
-            </div>
-            <div className="DAT_Info_Databox_Content_Column">
-              <p>Ngày: 18</p>
-              <p>Giây: 41</p>
-              <p>Ngưỡng bảo vệ áp suất quá mức: 480.00 V</p>
-              <p>Ngưỡng bảo vệ áp suất thấp: 280.00 V</p>
-              <p>Ngưỡng bảo vệ tần số thấp: 47.50 Hz</p>
-              <p>Chức năng bảo vệ: O701</p>
-              <p>Thông tin gỡ lỗi ARM1: 0</p>
-              <p>Thông tin gỡ lỗi ARM4: 0</p>
-              <p>Thông tin gỡ lỗi ARM7: 0</p>
-              <p>Thông tin gỡ lỗi DSP BT2: 0</p>
-              <p>Thông tin gỡ lỗi DSP BT5: 0</p>
-              <p>Thông tin gỡ lỗi DSP BT8: 0</p>
-              <p>Thông tin gỡ lỗi DSP INV3: 0</p>
-              <p>Thông tin gỡ lỗi DSP INV6: 0</p>
-              <p>Bit lỗi: 0</p>
-              <p>Cài đặt tốc độ Baud: 9600</p>
-              <p>Tần số AC khởi động cao: 51.50</p>
-              <p>Kích hoạt chức năng thấm thấp thấp: 0</p>
-              <p>
-                Giá trị ban đầu của đường cong phản ứng công suất điện áp quá
-                thấp và quá cao: 210.00
-              </p>
-              <p>Điểm bắt đầu giảm áp suất cao: 280.00</p>
-              <p>Điểm kết thúc giảm áp suất thấp: 170.00</p>
-              <p>
-                Giá trị điện áp cuối cùng của đường cong phản ứng công suất điện
-                áp quá thấp và quá cao: 190.00
-              </p>
-              <p>Bật và kích hoạt chức năng phần mềm bảo vệ -</p>
-            </div>
-          </div>
-        ) : (
-          <></>
-        )}
-      </div>
     </div>
   );
 };
@@ -3826,7 +3718,6 @@ export default function Info(props) {
                           {/* <PowerGrid /> */}
                           {/* <ElectricityConsumption /> */}
                           <Temperature />
-                          {/* <Other /> */}
                           <State />
                           {/* <Control /> */}
                           <HistoricalData />

@@ -220,7 +220,7 @@ export default function Create(props) {
   const handleCreate = async () => {
     const today = new Date();
     if (reportnameRef.current === "") {
-      alertDispatch("Please enter report name");
+      alertDispatch(dataLang.formatMessage({ id: "alert_22" }));
     } else {
       const addReport = await callApi("post", host.DATA + "/addReport", {
         usr: usr,

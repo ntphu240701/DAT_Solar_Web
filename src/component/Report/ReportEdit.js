@@ -220,6 +220,8 @@ export default function ReportEdit(props) {
         name: reportname.value,
       };
       alertDispatch(dataLang.formatMessage({ id: "alert_41" }));
+    } else {
+      alertDispatch(dataLang.formatMessage({ id: "alert_22" }));
     }
   };
 
