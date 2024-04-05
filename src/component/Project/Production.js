@@ -7,9 +7,12 @@ import PopupState, { bindHover, bindPopper } from "material-ui-popup-state";
 import { Fade, Paper, Popper, Typography } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { convertUnit, showUnit, showUnitk } from '../../App';
+import { useSelector } from 'react-redux';
 
 export default function Production(props) {
     const dataLang = useIntl();
+    const month = useSelector((state) => state.tool.month);
+    const year = useSelector((state) => state.tool.year);
     const in_max = 100;
     const in_min = 0;
     const out_max = -10;
@@ -184,11 +187,11 @@ export default function Production(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Left_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.pro_year || 0))).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(year.pro_year))).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.pro_year || 0)}Wh
+                                    {showUnitk(year.pro_year)}Wh
                                 </span>
                             </div>
                         </div>
@@ -208,11 +211,11 @@ export default function Production(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Production_Total_Right_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.pro_month || 0))).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(month.pro_month))).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.pro_month || 0)}Wh
+                                    {showUnitk(month.pro_month)}Wh
                                 </span>
                             </div>
                         </div>

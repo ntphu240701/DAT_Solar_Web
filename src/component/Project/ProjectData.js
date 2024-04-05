@@ -23,10 +23,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useIntl } from "react-intl";
 
-import { IoIosArrowDown, IoIosArrowForward, IoMdMore, } from "react-icons/io";
-import { IoAddOutline, IoClose, IoTrashOutline, } from "react-icons/io5";
+import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
+import { IoAddOutline, IoClose, IoTrashOutline } from "react-icons/io5";
 import { MdDelete, MdEdit, MdOutlineError } from "react-icons/md";
-import { FaCheckCircle, } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import toolslice from "../Redux/toolslice";
@@ -48,85 +48,10 @@ const tabLableAlert = signal("");
 const tabAlert = signal("all");
 const open = signal([]);
 const close = signal([]);
-export const cal = signal({});
 const viewNav = signal(false);
 const viewStateNav = signal([false, false]);
 const dataMeter = [];
 const dataAlert = [];
-
-export const filterchart = signal({
-  grid: {
-    date: {
-      productionData: true,
-    },
-    month: {
-      productionData: true,
-    },
-    year: {
-      productionData: true,
-    },
-    total: {
-      productionData: true,
-    },
-  },
-  consumption: {
-    date: {
-      productionData: true,
-      gridData: true,
-      consumptionData: true,
-    },
-    month: {
-      productionData: true,
-      consumptionData: true,
-      dailygridin: true,
-      dailygridout: true,
-    },
-    year: {
-      productionData: true,
-      consumptionData: true,
-      dailygridin: true,
-      dailygridout: true,
-    },
-    total: {
-      productionData: true,
-      consumptionData: true,
-      dailygridin: true,
-      dailygridout: true,
-    },
-  },
-  hybrid: {
-    date: {
-      productionData: true,
-      gridData: true,
-      consumptionData: true,
-      batteryData: true,
-    },
-    month: {
-      productionData: true,
-      consumptionData: true,
-      dailygridin: true,
-      dailygridout: true,
-      charge: true,
-      discharge: true,
-    },
-    year: {
-      productionData: true,
-      consumptionData: true,
-      dailygridin: true,
-      dailygridout: true,
-      charge: true,
-      discharge: true,
-    },
-    total: {
-      productionData: true,
-      consumptionData: true,
-      dailygridin: true,
-      dailygridout: true,
-      charge: true,
-      discharge: true,
-    },
-  },
-});
 
 export default function ProjectData(props) {
   const dataLang = useIntl();
@@ -135,12 +60,15 @@ export default function ProjectData(props) {
   const [dropState, setDropState] = useState(false);
   const [infoState, setInfoState] = useState(false);
   const [popupAddGateway, setPopupAddGateway] = useState(false);
-  const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [snlogger, setSnlogger] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
   const [devname, setDevname] = useState("");
   const [devtype, setDevtype] = useState("");
   const [type, setType] = useState("");
   const [invt, setInvt] = useState({});
   const box = useRef();
+  const filterchart = useSelector((state) => state.tool.filterchart);
   const rootDispatch = useDispatch();
 
   const tit = {
@@ -229,9 +157,9 @@ export default function ProjectData(props) {
         <>
           {row.data.daily?.register
             ? parseFloat(
-              invt[row.logger_]?.[row.data.daily.register] *
-              row.data.daily?.cal
-            ).toFixed(2)
+                invt[row.logger_]?.[row.data.daily.register] *
+                  row.data.daily?.cal
+              ).toFixed(2)
             : 0}{" "}
           kWh
         </>
@@ -250,7 +178,7 @@ export default function ProjectData(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify === true ||
-            ruleInfor.value.setting.project.delete === true ? (
+          ruleInfor.value.setting.project.delete === true ? (
             projectData.value.shared == 1 ? (
               <></>
             ) : (
@@ -390,7 +318,7 @@ export default function ProjectData(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify === true ||
-            ruleInfor.value.setting.project.delete === true ? (
+          ruleInfor.value.setting.project.delete === true ? (
             projectData.value.shared == 1 ? (
               <></>
             ) : (
@@ -744,7 +672,7 @@ export default function ProjectData(props) {
       pro_2: [],
       pro_3: [],
     };
-    var cal_ = {}
+    var cal_ = {};
     temp.value.map(async (item, i) => {
       Object.entries(item.data).map(([key, value]) => {
         switch (value.type) {
@@ -813,10 +741,8 @@ export default function ProjectData(props) {
       value: cal_.pro_3,
     };
 
-    cal.value = {...cal_};
-
     rootDispatch(toolslice.actions.setcal(cal_));
-    
+
     document.addEventListener("mousedown", handleOutsideUser);
     return () => {
       document.removeEventListener("mousedown", handleOutsideUser);
@@ -833,21 +759,71 @@ export default function ProjectData(props) {
                 case "dashboard":
                   return (
                     <div className="DAT_ProjectData_Header_LeftDashboard">
-                      <div style={{ fontSize: 22, paddingBottom: 5 }}>
-                        {tit[view]}
-                      </div>
-
-                      <div style={{ color: "grey", fontSize: 14 }}>
-                        {dataLang.formatMessage({ id: "lastupdate" })}
-                        &nbsp;
-                        {projectData.value.lastupdate}
+                      <div
+                        className="DAT_ProjectData_Header_LeftDashboard_Top"
+                        style={{ fontSize: 22 }}
+                      >
+                        <img
+                          src={
+                            projectData.value.img
+                              ? projectData.value.img
+                              : "/dat_picture/solar_panel.png"
+                          }
+                          alt=""
+                        />
+                        <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content">
+                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Name">
+                            {projectData.value.plantname}
+                            {projectData.value.state === 1 ? (
+                              <>
+                                <FaCheckCircle size={14} color="green" />
+                              </>
+                            ) : (
+                              <>
+                                <MdOutlineError size={14} color="red" />
+                              </>
+                            )}
+                          </div>
+                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Addr">
+                            {projectData.value.addr}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   );
                 case "device":
                   return (
-                    <div className="DAT_ProjectData_Header_LeftDevice">
-                      <div style={{ fontSize: 22 }}>{tit[view]}</div>
+                    <div className="DAT_ProjectData_Header_LeftDashboard">
+                      <div
+                        className="DAT_ProjectData_Header_LeftDashboard_Top"
+                        style={{ fontSize: 22 }}
+                      >
+                        <img
+                          src={
+                            projectData.value.img
+                              ? projectData.value.img
+                              : "/dat_picture/solar_panel.png"
+                          }
+                          alt=""
+                        />
+                        <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content">
+                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Name">
+                            {projectData.value.plantname}
+                            {projectData.value.state === 1 ? (
+                              <>
+                                <FaCheckCircle size={14} color="green" />
+                              </>
+                            ) : (
+                              <>
+                                <MdOutlineError size={14} color="red" />
+                              </>
+                            )}
+                          </div>
+                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Addr">
+                            {projectData.value.addr}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   );
                 case "alert":
@@ -862,36 +838,24 @@ export default function ProjectData(props) {
             })()}
 
             <div className="DAT_ProjectData_Header_Right">
-              <div
-                className="DAT_ProjectData_Header_Right_More"
-                onClick={() => setDropState(false)}
-              >
-                <BsThreeDotsVertical size={20} color="#9e9e9e" />
+              <div className="DAT_ProjectData_Header_Right_More">
+                <BsThreeDotsVertical
+                  size={20}
+                  color="#9e9e9e"
+                  onClick={() => {
+                    setDropState(!dropState);
+                  }}
+                />
               </div>
-              {ruleInfor.value.setting.device.add ? (
-                <div
-                  className="DAT_ProjectData_Header_Right_Add"
-                  style={{ display: view === "device" ? "block" : "none" }}
-                >
-                  <button id="add" onClick={() => setPopupAddGateway(true)}>
-                    <IoAddOutline size={25} color="white" />
-                  </button>
-                </div>
-              ) : (
-                <div></div>
-              )}
 
               <div
                 className="DAT_ProjectData_Header_Right_Close"
-                onClick={() => (plantState.value = "default")}
+                onClick={() => {
+                  plantState.value = "default";
+                  setDropState(false);
+                }}
               >
-                <IoClose
-                  size={25}
-                  color="rgba(11, 25, 103)"
-                  id="Popup"
-                  onMouseEnter={(e) => handlePopup("new")}
-                  onMouseLeave={(e) => handlePopup("pre")}
-                />
+                <IoClose size={25} color="rgba(11, 25, 103)" />
               </div>
             </div>
           </div>
@@ -940,9 +904,6 @@ export default function ProjectData(props) {
                   );
                 case "device":
                   return (
-                    // <div className="DAT_ProjectData_Header_LeftDevice">
-                    //   <div style={{ fontSize: 22 }}>{tit[view]}</div>
-                    // </div>
                     <div className="DAT_ProjectData_Header_LeftDashboard">
                       <div
                         className="DAT_ProjectData_Header_LeftDashboard_Top"
@@ -972,10 +933,6 @@ export default function ProjectData(props) {
                           <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Addr">
                             {projectData.value.addr}
                           </div>
-                          {/* <div style={{ color: "grey", fontSize: 14 }}>
-                            {dataLang.formatMessage({ id: "lastupdate" })}{" "}
-                            {projectData.value.lastupdate}
-                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -1004,6 +961,7 @@ export default function ProjectData(props) {
                   onMouseLeave={() => handleOutsideView()}
                 />
               </div>
+
               {ruleInfor.value.setting.device.add ? (
                 projectData.value.shared == 1 ? (
                   <></>
@@ -1085,6 +1043,30 @@ export default function ProjectData(props) {
                             <IoIosArrowForward />
                           )}
                         </button>
+                        {ruleInfor.value.setting.device.add ? (
+                          projectData.value.shared == 1 ? (
+                            <></>
+                          ) : (
+                            <div
+                              className="DAT_ProjectData_Header_Right_Add"
+                              style={{
+                                display: view === "device" ? "block" : "none",
+                              }}
+                            >
+                              <button
+                                id="add"
+                                onClick={() => {
+                                  setPopupAddGateway(true);
+                                  setDropState(false);
+                                }}
+                              >
+                                <IoAddOutline size={25} color="white" />
+                              </button>
+                            </div>
+                          )
+                        ) : (
+                          <div></div>
+                        )}
                         {tabMobile.value ? (
                           <div
                             className="DAT_Toollist_Tab_Mobile_list"
@@ -1138,12 +1120,10 @@ export default function ProjectData(props) {
                                             .modify === true ? (
                                             <div
                                               className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
+                                              id={`${item.sn}_${item.name}_edit`}
                                               onClick={(e) => handleEdit(e)}
                                             >
-                                              <MdEdit
-                                                size={20}
-                                                color="#216990"
-                                              />
+                                              <FiEdit size={20} />
                                             </div>
                                           ) : (
                                             <div></div>
@@ -1152,10 +1132,10 @@ export default function ProjectData(props) {
                                             .remove === true ? (
                                             <div
                                               className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
-                                              id={item.sn}
+                                              id={`${item.sn}_remove`}
                                               onClick={(e) => handleDelete(e)}
                                             >
-                                              <MdDelete size={20} color="red" />
+                                              <IoTrashOutline size={20} />
                                             </div>
                                           ) : (
                                             <div></div>
@@ -1205,7 +1185,102 @@ export default function ProjectData(props) {
                               </>
                             );
                           case "inverter":
-                            return <></>;
+                            return (
+                              <>
+                                {inverterDB.value?.map((item, i) => {
+                                  return (
+                                    <div
+                                      key={i}
+                                      className="DAT_ProjectData_Device_TableMobile_Content"
+                                    >
+                                      <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left">
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Name">
+                                            {dataLang.formatMessage({
+                                              id: "name",
+                                            })}
+                                            : {item.name}
+                                          </div>
+
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_Sn">
+                                            SN: {item.sn}
+                                          </div>
+
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_OgLog">
+                                            {dataLang.formatMessage({
+                                              id: "ogLog",
+                                            })}
+                                            : {item.logger_}
+                                          </div>
+
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Left_OgLog">
+                                            {dataLang.formatMessage({
+                                              id: "daily",
+                                            })}
+                                            :{" "}
+                                            {item.data.daily?.register
+                                              ? parseFloat(
+                                                  invt[item.logger_]?.[
+                                                    item.data.daily.register
+                                                  ] * item.data.daily?.cal
+                                                ).toFixed(2)
+                                              : 0}
+                                            kWh
+                                          </div>
+                                        </div>
+
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Right">
+                                          {ruleInfor.value.setting.device
+                                            .modify === true ? (
+                                            <div
+                                              className="DAT_ProjectData_Device_TableMobile_Content_Top_Right_Item"
+                                              id={`${item.sn}_${item.name}_edit`}
+                                              onClick={(e) => handleEdit(e)}
+                                            >
+                                              <FiEdit size={20} />
+                                            </div>
+                                          ) : (
+                                            <div></div>
+                                          )}
+                                        </div>
+                                      </div>
+
+                                      <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom">
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Bottom_State">
+                                          {invt[item.logger_]?.[
+                                            item.data.status
+                                          ] == 2 ? (
+                                            <>
+                                              <FaCheckCircle
+                                                size={20}
+                                                color="green"
+                                              />
+                                              <span>
+                                                {dataLang.formatMessage({
+                                                  id: "online",
+                                                })}
+                                              </span>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <MdOutlineError
+                                                size={22}
+                                                color="red"
+                                              />
+                                              <span>
+                                                {dataLang.formatMessage({
+                                                  id: "offline",
+                                                })}
+                                              </span>
+                                            </>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </>
+                            );
                           case "meter":
                             return (
                               <>
@@ -1630,7 +1705,8 @@ export default function ProjectData(props) {
         </>
       )}
 
-      <div className="DAT_DeviceInfor"
+      <div
+        className="DAT_DeviceInfor"
         style={{ height: infoState ? "100%" : "0px", transition: "0.5s" }}
       >
         {infoState ? <Info handleClose={handleCloseInfo} /> : <></>}

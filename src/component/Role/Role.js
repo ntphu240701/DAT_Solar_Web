@@ -22,6 +22,7 @@ import { IoMdMore } from "react-icons/io";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { LuUserSquare } from "react-icons/lu";
 import { FiEdit } from "react-icons/fi";
+import { lowercasedata } from "../ErrorSetting/ErrorSetting";
 
 export const roleData = signal({});
 export const Usr_ = signal([]);
@@ -177,15 +178,19 @@ export default function Role(props) {
   };
 
   const handleFilter = (e) => {
-    const searchterm = e.currentTarget.value.toLowerCase();
+    const searchterm = lowercasedata(e.currentTarget.value);
     if (searchterm == "") {
       setdatafilter(Usr_.value);
     } else {
       let df = Usr_.value.filter((item) => {
-        const roleName = item.name_.toLowerCase();
-        const rolePhone = item.phone_.toLowerCase();
-        const roleMail = item.mail_.toLowerCase();
-        return roleName.includes(searchterm) || rolePhone.includes(searchterm) || roleMail.includes(searchterm)
+        const roleName = lowercasedata(item.name_);
+        const rolePhone = lowercasedata(item.phone_);
+        const roleMail = lowercasedata(item.mail_);
+        return (
+          roleName.includes(searchterm) ||
+          rolePhone.includes(searchterm) ||
+          roleMail.includes(searchterm)
+        );
       });
       setdatafilter(df);
     }
@@ -198,7 +203,7 @@ export default function Role(props) {
       });
       if (d.status === true) {
         Usr_.value = d.data;
-        setdatafilter(d.data)
+        setdatafilter(d.data);
         Usr_.value = Usr_.value.sort((a, b) => a.ruleid_ - b.ruleid_);
       }
     };
@@ -219,8 +224,8 @@ export default function Role(props) {
   }, [partnerInfor.value.partnerid]);
 
   useEffect(() => {
-    setdatafilter(Usr_.value)
-  }, [Usr_.value])
+    setdatafilter(Usr_.value);
+  }, [Usr_.value]);
 
   return (
     <>
@@ -353,7 +358,8 @@ export default function Role(props) {
       ) : (
         <>
           <div className="DAT_Role">
-            <div className="DAT_Role_Header"
+            <div
+              className="DAT_Role_Header"
               style={{
                 padding: "15px",
                 backgroundColor: "rgba(233, 233, 233, 0.5)",
@@ -377,7 +383,8 @@ export default function Role(props) {
         </>
       )}
 
-      <div className="DAT_RoleInfor"
+      <div
+        className="DAT_RoleInfor"
         style={{
           height: roleState === "default" ? "0px" : "100vh",
           transition: "0.5s",
@@ -393,7 +400,8 @@ export default function Role(props) {
         })()}
       </div>
 
-      <div className="DAT_RolePopup"
+      <div
+        className="DAT_RolePopup"
         style={{
           height: popupState === "default" ? "0px" : "100vh",
         }}

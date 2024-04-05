@@ -4,12 +4,16 @@ import "./Project.scss";
 import { useIntl } from 'react-intl';
 import { convertUnit, showUnit, showUnitk } from '../../App';
 import { isMobile } from '../Navigation/Navigation';
+import { useSelector } from 'react-redux';
 
 import { FaArrowLeftLong, FaArrowRightLong } from 'react-icons/fa6';
 
 export default function Battery(props) {
     const dataLang = useIntl();
     const [state, setState] = useState(false);
+    const month = useSelector((state) => state.tool.month);
+    const year = useSelector((state) => state.tool.year);
+    const total = useSelector((state) => state.tool.total);
 
     useEffect(() => {
         if (parseFloat(props.cal?.bat_1) > 0) {
@@ -109,11 +113,11 @@ export default function Battery(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.bat_in_month || 0))).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(month.bat_in_month))).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.bat_in_month || 0)}Wh
+                                    {showUnitk(month.bat_in_month)}Wh
                                 </span>
                             </div>
                         </div>
@@ -124,11 +128,11 @@ export default function Battery(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.bat_in_year || 0))).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(year.bat_in_year))).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.bat_in_year || 0)}Wh
+                                    {showUnitk(year.bat_in_year)}Wh
                                 </span>
                             </div>
                         </div>
@@ -139,11 +143,11 @@ export default function Battery(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.bat_in_total || 0))).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(total.bat_in_total))).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.bat_in_total || 0)}Wh
+                                    {showUnitk(total.bat_in_total)}Wh
                                 </span>
                             </div>
                         </div>
@@ -192,11 +196,11 @@ export default function Battery(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.bat_out_month || 0))).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(month.bat_out_month))).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.bat_out_month || 0)}Wh
+                                    {showUnitk(month.bat_out_month)}Wh
                                 </span>
                             </div>
                         </div>
@@ -207,11 +211,11 @@ export default function Battery(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.bat_out_year || 0))).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(year.bat_out_year))).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.bat_out_year || 0)}Wh
+                                    {showUnitk(year.bat_out_year)}Wh
                                 </span>
                             </div>
                         </div>
@@ -222,11 +226,11 @@ export default function Battery(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Battery_Row_Left_Data_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.bat_out_total || 0))).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(total.bat_out_total))).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.bat_out_total || 0)}Wh
+                                    {showUnitk(total.bat_out_total)}Wh
                                 </span>
                             </div>
                         </div>

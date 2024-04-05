@@ -13,9 +13,12 @@ import {
   Area,
 } from "recharts";
 import { useIntl } from "react-intl";
+import { useSelector } from "react-redux";
 
 export default function Day(props) {
   const dataLang = useIntl();
+  const filterchart = useSelector((state) => state.tool.filterchart);
+  const cal = useSelector((state) => state.tool.cal);
 
   return (
     <div className="DAT_ProjectData_Dashboard_History_Day">
@@ -24,9 +27,8 @@ export default function Day(props) {
           kW
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {/* {props.v}: {cal.value.pro_1} kW */}
           {dataLang.formatMessage({ id: "production" })}:{" "}
-          {parseFloat(cal.value.pro_1 / 1000).toFixed(2)} kW
+          {parseFloat(cal.pro_1 / 1000).toFixed(2)} kW
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
@@ -79,9 +81,8 @@ export default function Day(props) {
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
+                    {filterchart[projectData.value.plantmode][props.dateType]
+                      .productionData ? (
                       <Area
                         type="monotone"
                         dataKey={props.v}
@@ -182,9 +183,8 @@ export default function Day(props) {
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
+                    {filterchart[projectData.value.plantmode][props.dateType]
+                      .productionData ? (
                       <Area
                         type="monotone"
                         dataKey={props.v}
@@ -196,9 +196,8 @@ export default function Day(props) {
                       <></>
                     )}
 
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].consumptionData ? (
+                    {filterchart[projectData.value.plantmode][props.dateType]
+                      .consumptionData ? (
                       <Area
                         type="monotone"
                         dataKey={props.v2}
@@ -210,9 +209,8 @@ export default function Day(props) {
                       <></>
                     )}
 
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].gridData ? (
+                    {filterchart[projectData.value.plantmode][props.dateType]
+                      .gridData ? (
                       <Area
                         type="monotone"
                         dataKey={props.v3}
@@ -223,9 +221,8 @@ export default function Day(props) {
                     ) : (
                       <></>
                     )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].batteryData ? (
+                    {filterchart[projectData.value.plantmode][props.dateType]
+                      .batteryData ? (
                       <Area
                         type="monotone"
                         dataKey={props.v4}
@@ -292,9 +289,8 @@ export default function Day(props) {
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].productionData ? (
+                    {filterchart[projectData.value.plantmode][props.dateType]
+                      .productionData ? (
                       <Area
                         type="monotone"
                         dataKey={props.v}
@@ -306,9 +302,8 @@ export default function Day(props) {
                       <></>
                     )}
 
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].consumptionData ? (
+                    {filterchart[projectData.value.plantmode][props.dateType]
+                      .consumptionData ? (
                       <Area
                         type="monotone"
                         dataKey={props.v2}
@@ -320,9 +315,8 @@ export default function Day(props) {
                       <></>
                     )}
 
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].gridData ? (
+                    {filterchart[projectData.value.plantmode][props.dateType]
+                      .gridData ? (
                       <Area
                         type="monotone"
                         dataKey={props.v3}
@@ -333,9 +327,8 @@ export default function Day(props) {
                     ) : (
                       <></>
                     )}
-                    {filterchart.value[projectData.value.plantmode][
-                      props.dateType
-                    ].batteryData ? (
+                    {filterchart[projectData.value.plantmode][props.dateType]
+                      .batteryData ? (
                       <Area
                         type="monotone"
                         dataKey={props.v4}

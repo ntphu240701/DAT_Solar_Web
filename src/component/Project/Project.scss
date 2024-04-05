@@ -831,12 +831,10 @@
                             gap: 8px;
 
                             &_Item {
-                                // width: 100%;
                                 padding: 8px;
                                 border-radius: 5px;
                                 display: flex;
                                 align-items: center;
-                                // justify-content: center;
                                 gap: 10px;
                                 border: solid 1px rgba(198, 197, 197, 0.5);
 
@@ -858,12 +856,10 @@
                             gap: 8px;
 
                             &_Item {
-                                // width: 100%;
                                 padding: 8px;
                                 border-radius: 5px;
                                 display: flex;
                                 align-items: center;
-                                // justify-content: center;
                                 gap: 10px;
                                 border: solid 1px rgba(198, 197, 197, 0.5);
 
@@ -898,14 +894,13 @@
                     &_Total {
                         padding: 16px;
                         display: flex;
-                        justify-content: center;
                         gap: 10px;
 
                         &_Left {
                             flex: 5;
                             display: flex;
                             flex-direction: column;
-                            gap: 10px;
+                            gap: 8px;
 
                             &_Item {
                                 padding: 16px;
@@ -930,7 +925,7 @@
                             flex: 5;
                             display: flex;
                             flex-direction: column;
-                            gap: 10px;
+                            gap: 8px;
 
                             &_Item {
                                 padding: 16px;
@@ -1583,76 +1578,6 @@
         position: relative;
         margin-top: 16px;
         margin-bottom: 16px;
-        // background-color: white;
-        // height: calc(100vh - 180px);
-
-        // &_Analysis {
-        // width: 98%;
-        // margin: auto;
-        // border-radius: 5px;
-
-        // &_Func {
-        //     display: flex;
-        //     justify-content: space-between;
-        //     padding: 16px;
-
-        //     &_Select {
-        //         display: flex;
-        //         gap: 16px;
-
-        //         & select {
-        //             // width: 100%;
-        //             // height: 40px;
-        //             border-radius: 5px;
-        //             border: solid 1px rgb(199, 199, 199);
-        //             padding: 4px;
-        //         }
-        //     }
-
-        //     & button {
-        //         width: 80px;
-        //         padding: 4px;
-        //         background-color: white;
-        //         border: solid 1px rgb(199, 199, 199);
-        //         border-radius: 5px;
-        //         cursor: pointer;
-
-        //         &:hover {
-        //             border: solid 1px #6495ed;
-        //             color: #6495ed;
-        //         }
-        //     }
-        // }
-
-        // &_Line {
-        //     width: 98%;
-        //     margin: auto;
-        //     border-bottom: solid 1px rgb(199, 199, 199);
-        // }
-
-        // &_Nav {
-        //     // padding-top: 16px;
-        //     padding-left: 16px;
-        //     padding-right: 16px;
-
-        //     & button {
-        //         width: 80px;
-        //         padding: 4px;
-        //         background-color: white;
-        //         border: none;
-        //         border-radius: 0px;
-        //         cursor: pointer;
-
-        //         &:hover {
-        //             color: #6495ed;
-        //         }
-
-        //         &:focus {
-        //             border-bottom: solid 2px rgb(92, 165, 255);
-        //             color: rgb(92, 165, 255);
-        //         }
-        //     }
-        // }
 
         &_TableMobile {
             width: 95%;
@@ -1671,21 +1596,8 @@
                     padding: 10px;
                     box-sizing: border-box;
 
-                    &_Avatar {
-                        width: 100px;
-                        height: 100px;
-                        border-radius: 5px;
-                        overflow: hidden;
-
-                        & img {
-                            width: 100%;
-                            height: 100%;
-                            object-fit: cover;
-                        }
-                    }
-
                     &_Left {
-                        flex: 1;
+                        flex: 9;
 
                         &_Name {
                             color: black;
@@ -1693,42 +1605,23 @@
                             margin-bottom: 5px;
                             display: flex;
                             align-items: center;
-                            // justify-content: center;
-                            cursor: pointer;
-
-                            &:hover {
-                                color: #6495ed;
-                            }
                         }
 
                         &_Sn {
                             color: black;
                             font-size: 16px;
-                            // margin-bottom: 5px;
+                            margin-bottom: 5px;
                             display: flex;
                             align-items: center;
-                            // justify-content: center;
-                            cursor: pointer;
-
-                            &:hover {
-                                color: #6495ed;
-                            }
                         }
 
-                        // &_Data {
-                        //     width: 100%;
-                        //     display: flex;
-                        //     align-items: center;
-                        //     justify-content: space-between;
-
-                        //     &_Item {
-                        //         &_Name {
-                        //             color: gray;
-                        //             font-size: 15px;
-                        //         }
-
-                        //     }
-                        // }
+                        &_OgLog {
+                            color: black;
+                            font-size: 16px;
+                            margin-bottom: 5px;
+                            display: flex;
+                            align-items: center;
+                        }
                     }
 
                     &_Right {
@@ -1786,8 +1679,6 @@
                 box-sizing: border-box;
             }
         }
-
-        // }
     }
 
     &_Alert {
@@ -2022,13 +1913,13 @@
             overflow: hidden;
 
             &_Left {
-                flex: 5;
+                flex: 9;
                 font-family: Montserrat-SemiBold;
                 color: COLOR.$Primary-color;
             }
 
             &_Right {
-                flex: 5;
+                flex: 1;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -2065,6 +1956,12 @@
                         -webkit-box-sizing: border-box;
                         -moz-box-sizing: border-box;
                         font-family: Montserrat-Regular;
+                    }
+
+                    & input::-webkit-outer-spin-button,
+                    input::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
                     }
 
                     & select {
@@ -2128,13 +2025,13 @@
             overflow: hidden;
 
             &_Left {
-                flex: 5;
+                flex: 9;
                 font-family: Montserrat-SemiBold;
                 color: COLOR.$Primary-color;
             }
 
             &_Right {
-                flex: 5;
+                flex: 1;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -2259,13 +2156,13 @@
             overflow: hidden;
 
             &_Left {
-                flex: 5;
+                flex: 9;
                 font-family: Montserrat-SemiBold;
                 color: COLOR.$Primary-color;
             }
 
             &_Right {
-                flex: 5;
+                flex: 1;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -2358,13 +2255,13 @@
             overflow: hidden;
 
             &_Left {
-                flex: 5;
+                flex: 9;
                 font-family: Montserrat-SemiBold;
                 color: COLOR.$Primary-color;
             }
 
             &_Right {
-                flex: 5;
+                flex: 1;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -2437,12 +2334,6 @@
                         -moz-box-sizing: border-box;
                         font-family: Montserrat-Regular;
                     }
-
-                    & input::-webkit-outer-spin-button,
-                    input::-webkit-inner-spin-button {
-                        -webkit-appearance: none;
-                        margin: 0;
-                    }
                 }
             }
 
@@ -2497,13 +2388,13 @@
             overflow: hidden;
 
             &_Left {
-                flex: 5;
+                flex: 9;
                 font-family: Montserrat-SemiBold;
                 color: COLOR.$Primary-color;
             }
 
             &_Right {
-                flex: 5;
+                flex: 1;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -2647,13 +2538,13 @@
             overflow: hidden;
 
             &_Left {
-                flex: 5;
+                flex: 9;
                 font-family: Montserrat-SemiBold;
                 color: COLOR.$Primary-color;
             }
 
             &_Right {
-                flex: 5;
+                flex: 1;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -2759,13 +2650,13 @@
             overflow: hidden;
 
             &_Left {
-                flex: 5;
+                flex: 9;
                 font-family: Montserrat-SemiBold;
                 color: COLOR.$Primary-color;
             }
 
             &_Right {
-                flex: 5;
+                flex: 1;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -2890,13 +2781,13 @@
             overflow: hidden;
 
             &_Left {
-                flex: 5;
+                flex: 9;
                 font-family: Montserrat-SemiBold;
                 color: COLOR.$Primary-color;
             }
 
             &_Right {
-                flex: 5;
+                flex: 1;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -2989,13 +2880,13 @@
             overflow: hidden;
 
             &_Left {
-                flex: 5;
+                flex: 9;
                 font-family: Montserrat-SemiBold;
                 color: COLOR.$Primary-color;
             }
 
             &_Right {
-                flex: 5;
+                flex: 1;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -3122,13 +3013,13 @@
             overflow: hidden;
 
             &_Left {
-                flex: 5;
+                flex: 9;
                 font-family: Montserrat-SemiBold;
                 color: COLOR.$Primary-color;
             }
 
             &_Right {
-                flex: 5;
+                flex: 1;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -3769,25 +3660,40 @@
     .DAT_ProjectData {
         &_Header {
             &_LeftDashboard {
-                flex: 3;
-                // min-width: 180px;
-                // padding: 16px;
-            }
+                flex: 8;
+                padding: 8px;
 
-            &_LeftDevice {
-                flex: 5;
-                // min-width: 180px;
-                padding: 16px;
+                &_Top {
+                    display: flex;
+                    gap: 8px;
+
+                    &_Content {
+                        display: flex;
+                        gap: 4px;
+
+                        &_Name {
+                            font-size: 12px;
+                            font-family: Montserrat-SemiBold;
+                        }
+
+                        &_Addr {
+                            font-size: 11px;
+                        }
+                    }
+                }
             }
 
             &_Right {
-                flex: 7;
+                flex: 2;
+                display: flex;
+                gap: 0px;
+                padding: 8px;
             }
         }
 
         &_Dashboard {
             margin-top: 16px;
-            margin-bottom: 100px;
+            margin-bottom: 70px;
 
             &_Data {
                 display: contents;
@@ -3846,7 +3752,38 @@
                     &_Consumption {
                         &_Total {
                             display: flex;
-                            flex-direction: column;
+                            flex-wrap: wrap;
+                            gap: 10px;
+                            padding: 10px;
+                            -webkit-box-sizing: border-box;
+                            /* Safari/Chrome, other WebKit */
+                            -moz-box-sizing: border-box;
+                            /* Firefox, other Gecko */
+                            box-sizing: border-box;
+                            overflow: hidden;
+
+                            &_Item {
+                                width: 100%;
+                                padding: 16px;
+                                border-radius: 5px;
+                                -webkit-box-sizing: border-box;
+                                /* Safari/Chrome, other WebKit */
+                                -moz-box-sizing: border-box;
+                                /* Firefox, other Gecko */
+                                box-sizing: border-box;
+
+                                &_Tit {
+                                    font-size: 14px;
+                                    color: gray;
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                }
+
+                                &_Data {
+                                    margin: 4px 0px 0px 0px;
+                                }
+                            }
                         }
                     }
 
@@ -3854,10 +3791,22 @@
                         &_Row {
                             &_Left {
                                 display: flex;
-                                flex-direction: column;
+                                flex-wrap: wrap;
+                                -webkit-box-sizing: border-box;
+                                /* Safari/Chrome, other WebKit */
+                                -moz-box-sizing: border-box;
+                                /* Firefox, other Gecko */
+                                box-sizing: border-box;
+                                overflow: hidden;
 
                                 &_Tit {
-                                    width: 200px;
+                                    width: 100%;
+                                }
+
+                                &_Data {
+                                    &_Item {
+                                        padding: 8px 4px;
+                                    }
                                 }
                             }
                         }
@@ -3867,10 +3816,22 @@
                         &_Row {
                             &_Left {
                                 display: flex;
-                                flex-direction: column;
+                                flex-wrap: wrap;
+                                -webkit-box-sizing: border-box;
+                                /* Safari/Chrome, other WebKit */
+                                -moz-box-sizing: border-box;
+                                /* Firefox, other Gecko */
+                                box-sizing: border-box;
+                                overflow: hidden;
 
                                 &_Tit {
-                                    width: 200px;
+                                    width: 100%;
+                                }
+
+                                &_Data {
+                                    &_Item {
+                                        padding: 8px 4px;
+                                    }
                                 }
                             }
                         }
@@ -3883,26 +3844,19 @@
                     margin-bottom: 16px;
                 }
             }
-
-            &_History {}
-
-            &_More {}
         }
 
         &_Device {
             margin-top: 16px;
-            margin-bottom: 100px;
-            background-color: rgba(233, 233, 233, 0.5);
+            height: calc(100vh - 200px);
+            // margin-bottom: 100px;
+            background-color: rgba(240, 242, 245);
         }
     }
 
     .DAT_ProjectDataDrop {
-        top: 160px;
-        right: 60px;
-    }
-
-    .DAT_ProjectDataDrop2 {
-        top: 116px;
+        top: 130px;
+        right: 40px;
     }
 
     .DAT_AddProject {

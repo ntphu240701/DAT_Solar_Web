@@ -3,9 +3,13 @@ import "./Project.scss";
 
 import { useIntl } from 'react-intl';
 import { convertUnit, showUnitk } from '../../App';
+import { useSelector } from 'react-redux';
 
 export default function Consumption(props) {
     const dataLang = useIntl();
+    const month = useSelector((state) => state.tool.month);
+    const year = useSelector((state) => state.tool.year);
+    const total = useSelector((state) => state.tool.total);
 
     return (
         <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption">
@@ -62,11 +66,11 @@ export default function Consumption(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Left_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.con_year || 0)).toFixed(2)).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(year.con_year)).toFixed(2)).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.con_year || 0)}Wh
+                                    {showUnitk(year.con_year)}Wh
                                 </span>
                             </div>
                         </div>
@@ -86,11 +90,11 @@ export default function Consumption(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.con_month || 0)).toFixed(2)).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(month.con_month)).toFixed(2)).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.con_month || 0)}Wh
+                                    {showUnitk(month.con_month)}Wh
                                 </span>
                             </div>
                         </div>
@@ -108,11 +112,11 @@ export default function Consumption(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Consumption_Total_Right_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.con_total || 0)).toFixed(2)).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(total.con_total)).toFixed(2)).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.con_total || 0)}Wh
+                                    {showUnitk(total.con_total)}Wh
                                 </span>
                             </div>
                         </div>

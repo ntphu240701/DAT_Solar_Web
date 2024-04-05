@@ -4,9 +4,12 @@ import "./Project.scss";
 import { useIntl } from 'react-intl';
 import { convertUnit, showUnit, showUnitk } from '../../App';
 import { isMobile } from '../Navigation/Navigation';
+import { useSelector } from 'react-redux';
 
 export default function Grid(props) {
     const dataLang = useIntl();
+    const month = useSelector((state) => state.tool.month);
+    const year = useSelector((state) => state.tool.year);
 
     return (
         <div className="DAT_ProjectData_Dashboard_Data_Center_Grid">
@@ -67,11 +70,11 @@ export default function Grid(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.grid_in_month || 0)).toFixed(2)).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(month.grid_in_month)).toFixed(2)).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.grid_in_month || 0)}Wh
+                                    {showUnitk(month.grid_in_month)}Wh
                                 </span>
                             </div>
                         </div>
@@ -82,11 +85,11 @@ export default function Grid(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.grid_in_year || 0)).toFixed(2)).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(year.grid_in_year)).toFixed(2)).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.grid_in_year || 0)}Wh
+                                    {showUnitk(year.grid_in_year)}Wh
                                 </span>
                             </div>
                         </div>
@@ -147,11 +150,11 @@ export default function Grid(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.grid_out_month || 0)).toFixed(2)).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(month.grid_out_month)).toFixed(2)).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.grid_out_month || 0)}Wh
+                                    {showUnitk(month.grid_out_month)}Wh
                                 </span>
                             </div>
                         </div>
@@ -162,11 +165,11 @@ export default function Grid(props) {
                             </div>
                             <div className="DAT_ProjectData_Dashboard_Data_Center_Grid_Row_Left_Data_Item_Data">
                                 <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-                                    {Number(parseFloat(convertUnit(props.cal?.grid_out_year || 0)).toFixed(2)).toLocaleString("en-US")}
+                                    {Number(parseFloat(convertUnit(year.grid_out_year)).toFixed(2)).toLocaleString("en-US")}
                                 </span>
                                 &nbsp;
                                 <span style={{ fontSize: "12px", color: "grey" }}>
-                                    {showUnitk(props.cal?.grid_out_year || 0)}Wh
+                                    {showUnitk(year.grid_out_year)}Wh
                                 </span>
                             </div>
                         </div>
