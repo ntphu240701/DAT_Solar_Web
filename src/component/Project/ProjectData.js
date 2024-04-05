@@ -23,10 +23,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useIntl } from "react-intl";
 
-import { IoIosArrowDown, IoIosArrowForward, IoMdMore, } from "react-icons/io";
-import { IoAddOutline, IoClose, IoTrashOutline, } from "react-icons/io5";
+import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
+import { IoAddOutline, IoClose, IoTrashOutline } from "react-icons/io5";
 import { MdDelete, MdEdit, MdOutlineError } from "react-icons/md";
-import { FaCheckCircle, } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import toolslice from "../Redux/toolslice";
@@ -54,80 +54,6 @@ const viewStateNav = signal([false, false]);
 const dataMeter = [];
 const dataAlert = [];
 
-export const filterchart = signal({
-  grid: {
-    date: {
-      productionData: true,
-    },
-    month: {
-      productionData: true,
-    },
-    year: {
-      productionData: true,
-    },
-    total: {
-      productionData: true,
-    },
-  },
-  consumption: {
-    date: {
-      productionData: true,
-      gridData: true,
-      consumptionData: true,
-    },
-    month: {
-      productionData: true,
-      consumptionData: true,
-      dailygridin: true,
-      dailygridout: true,
-    },
-    year: {
-      productionData: true,
-      consumptionData: true,
-      dailygridin: true,
-      dailygridout: true,
-    },
-    total: {
-      productionData: true,
-      consumptionData: true,
-      dailygridin: true,
-      dailygridout: true,
-    },
-  },
-  hybrid: {
-    date: {
-      productionData: true,
-      gridData: true,
-      consumptionData: true,
-      batteryData: true,
-    },
-    month: {
-      productionData: true,
-      consumptionData: true,
-      dailygridin: true,
-      dailygridout: true,
-      charge: true,
-      discharge: true,
-    },
-    year: {
-      productionData: true,
-      consumptionData: true,
-      dailygridin: true,
-      dailygridout: true,
-      charge: true,
-      discharge: true,
-    },
-    total: {
-      productionData: true,
-      consumptionData: true,
-      dailygridin: true,
-      dailygridout: true,
-      charge: true,
-      discharge: true,
-    },
-  },
-});
-
 export default function ProjectData(props) {
   const dataLang = useIntl();
   const lang = useSelector((state) => state.admin.lang);
@@ -135,12 +61,15 @@ export default function ProjectData(props) {
   const [dropState, setDropState] = useState(false);
   const [infoState, setInfoState] = useState(false);
   const [popupAddGateway, setPopupAddGateway] = useState(false);
-  const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [snlogger, setSnlogger] = useState(
+    dataLang.formatMessage({ id: "unknown" })
+  );
   const [devname, setDevname] = useState("");
   const [devtype, setDevtype] = useState("");
   const [type, setType] = useState("");
   const [invt, setInvt] = useState({});
   const box = useRef();
+  const filterchart = useSelector((state) => state.tool.filterchart);
   const rootDispatch = useDispatch();
 
   const tit = {
@@ -229,9 +158,9 @@ export default function ProjectData(props) {
         <>
           {row.data.daily?.register
             ? parseFloat(
-              invt[row.logger_]?.[row.data.daily.register] *
-              row.data.daily?.cal
-            ).toFixed(2)
+                invt[row.logger_]?.[row.data.daily.register] *
+                  row.data.daily?.cal
+              ).toFixed(2)
             : 0}{" "}
           kWh
         </>
@@ -250,7 +179,7 @@ export default function ProjectData(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify === true ||
-            ruleInfor.value.setting.project.delete === true ? (
+          ruleInfor.value.setting.project.delete === true ? (
             projectData.value.shared == 1 ? (
               <></>
             ) : (
@@ -390,7 +319,7 @@ export default function ProjectData(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify === true ||
-            ruleInfor.value.setting.project.delete === true ? (
+          ruleInfor.value.setting.project.delete === true ? (
             projectData.value.shared == 1 ? (
               <></>
             ) : (
@@ -744,7 +673,7 @@ export default function ProjectData(props) {
       pro_2: [],
       pro_3: [],
     };
-    var cal_ = {}
+    var cal_ = {};
     temp.value.map(async (item, i) => {
       Object.entries(item.data).map(([key, value]) => {
         switch (value.type) {
@@ -813,10 +742,10 @@ export default function ProjectData(props) {
       value: cal_.pro_3,
     };
 
-    cal.value = {...cal_};
+    cal.value = { ...cal_ };
 
     rootDispatch(toolslice.actions.setcal(cal_));
-    
+
     document.addEventListener("mousedown", handleOutsideUser);
     return () => {
       document.removeEventListener("mousedown", handleOutsideUser);
@@ -1630,7 +1559,8 @@ export default function ProjectData(props) {
         </>
       )}
 
-      <div className="DAT_DeviceInfor"
+      <div
+        className="DAT_DeviceInfor"
         style={{ height: infoState ? "100%" : "0px", transition: "0.5s" }}
       >
         {infoState ? <Info handleClose={handleCloseInfo} /> : <></>}

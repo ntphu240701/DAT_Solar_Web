@@ -65,7 +65,7 @@ export const ruleInfor = signal({
     report: { add: false, modify: false, remove: false },
     rule: { add: false, active: false, modify: false, remove: false },
     user: { add: false, modify: false, remove: false },
-    warn: { remove: false }
+    warn: { remove: false },
   },
 });
 
@@ -135,7 +135,6 @@ export default function App() {
   const usr = useSelector((state) => state.admin.usr);
   const status = useSelector((state) => state.admin.status);
   const rootDispatch = useDispatch();
-
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -209,7 +208,7 @@ export default function App() {
       }
     };
 
-    const checkApi = async () => { };
+    const checkApi = async () => {};
     checkAuth();
 
     if (status) {
@@ -228,7 +227,9 @@ export default function App() {
         type: type,
       });
       if (warn.status) {
-        let newdb = warn.data.sort((a, b) => new Date(b.opentime_) - new Date(a.opentime_));
+        let newdb = warn.data.sort(
+          (a, b) => new Date(b.opentime_) - new Date(a.opentime_)
+        );
         newdb.map((item, index) => {
           dataWarn.value = [
             ...dataWarn.value,
@@ -259,28 +260,38 @@ export default function App() {
     localStorage.clear();
     sessionStorage.clear();
     window.location.reload();
-  }
+  };
 
   return (
     <>
-      {userInfor.value.partnerid === "0"
-        ? <div className="DAT_Clock" >
+      {userInfor.value.partnerid === "0" ? (
+        <div className="DAT_Clock">
           <div className="DAT_Clock_Infor">
-            <div className="DAT_Clock_Infor_Tit">{dataLang.formatMessage({ id: 'notification' })}</div>
-            <div className="DAT_Clock_Infor_Content">{dataLang.formatMessage({ id: 'accountLockAlert' })}</div>
-            <div className="DAT_Clock_Infor_Btn">
-              <button onClick={() => { handleOut() }}>{dataLang.formatMessage({ id: 'quit' })}</button>
+            <div className="DAT_Clock_Infor_Tit">
+              {dataLang.formatMessage({ id: "notification" })}
             </div>
-
+            <div className="DAT_Clock_Infor_Content">
+              {dataLang.formatMessage({ id: "accountLockAlert" })}
+            </div>
+            <div className="DAT_Clock_Infor_Btn">
+              <button
+                onClick={() => {
+                  handleOut();
+                }}
+              >
+                {dataLang.formatMessage({ id: "quit" })}
+              </button>
+            </div>
           </div>
         </div>
-        : <></>
-      }
+      ) : (
+        <></>
+      )}
       <Router>
         <Alert />
         {loading ? (
           window.location.pathname === "/Verify" ||
-            window.location.pathname === "/VerifyRegister" ? (
+          window.location.pathname === "/VerifyRegister" ? (
             <Verify path={window.location.pathname} />
           ) : (
             <div className="DAT_Loading">
@@ -290,8 +301,6 @@ export default function App() {
         ) : (
           <>
             {status ? (
-
-
               <>
                 <Navigation />
 
@@ -560,10 +569,7 @@ export default function App() {
                     </Routes>
                   </div>
                 </div>
-
               </>
-
-
             ) : (
               <Login />
             )}

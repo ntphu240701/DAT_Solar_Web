@@ -21,6 +21,7 @@ import { IoMdMore } from "react-icons/io";
 import { MdDelete, MdEdit, MdOutlineAdminPanelSettings } from "react-icons/md";
 import { GrUserAdmin } from "react-icons/gr";
 import { FiEdit } from "react-icons/fi";
+import { lowercasedata } from "../ErrorSetting/ErrorSetting";
 
 export const datarule = signal([]);
 
@@ -55,9 +56,9 @@ export default function Rule() {
   }, [partnerInfor.value.partnerid]);
 
   useEffect(() => {
-    setdatafilter(datarule.value)
-    console.log(datarule.value)
-  }, [datarule.value])
+    setdatafilter(datarule.value);
+    console.log(datarule.value);
+  }, [datarule.value]);
 
   const columnrule = [
     {
@@ -159,14 +160,14 @@ export default function Rule() {
   };
 
   const handleFilter = (e) => {
-    const searchterm = e.currentTarget.value.toLowerCase();
+    const searchterm = lowercasedata(e.currentTarget.value);
     if (searchterm == "") {
       setdatafilter(datarule.value);
     } else {
       let df = datarule.value.filter((item) => {
-        return item.rulename_.toLowerCase().includes(searchterm);
+        return lowercasedata(item.rulename_).includes(searchterm);
       });
-      setdatafilter(df)
+      setdatafilter(df);
     }
   };
 
@@ -181,13 +182,15 @@ export default function Rule() {
         {isMobile.value ? (
           <>
             <div className="DAT_Modify">
-              <div className="DAT_Modify_Item"
+              <div
+                className="DAT_Modify_Item"
                 onClick={() => setFilter(!filter)}
               >
                 <CiSearch color="white" size={20} />
               </div>
-              <div className="DAT_Modify_Add"
-                onClick={() => (setCreateruleState(true))}
+              <div
+                className="DAT_Modify_Add"
+                onClick={() => setCreateruleState(true)}
               >
                 <IoAddOutline color="white" size={20} />
               </div>
@@ -199,7 +202,8 @@ export default function Rule() {
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterName" })}
                 />
-                <div className="DAT_Modify_Filter_Close"
+                <div
+                  className="DAT_Modify_Filter_Close"
                   onClick={() => setFilter(!filter)}
                 >
                   <RxCross2 size={20} color="white" />
@@ -219,8 +223,9 @@ export default function Rule() {
               />
               <CiSearch color="gray" size={20} />
             </div>
-            <button className="DAT_RuleHeader_New"
-              onClick={() => (setCreateruleState(true))}
+            <button
+              className="DAT_RuleHeader_New"
+              onClick={() => setCreateruleState(true)}
             >
               <span>
                 <GrUserAdmin color="white" size={20} />
@@ -293,16 +298,22 @@ export default function Rule() {
         </div>
       )}
 
-      <div className="DAT_RuleBG"
+      <div
+        className="DAT_RuleBG"
         style={{
           height: createruleState ? "100vh" : "0px",
           transition: "0.5s",
         }}
       >
-        {createruleState ? <CreateRule handleClose={handleCloseCreate} /> : <></>}
+        {createruleState ? (
+          <CreateRule handleClose={handleCloseCreate} />
+        ) : (
+          <></>
+        )}
       </div>
 
-      <div className="DAT_RuleBG"
+      <div
+        className="DAT_RuleBG"
         style={{
           height: editRuleState ? "100vh" : "0px",
           transition: "0.5s",

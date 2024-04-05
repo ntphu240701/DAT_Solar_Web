@@ -37,6 +37,7 @@ const datafilter = signal();
 
 const GroupUsers = (props) => {
   const dataLang = useIntl();
+  const [groupUserfilter, setGroupUserfilter] = useState(groupUser.value);
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: "row" }),
@@ -248,7 +249,7 @@ const GroupUsers = (props) => {
             <DataTable
               className="DAT_Table_GroupRole"
               columns={columnGroupRole}
-              data={groupUser.value}
+              data={datafilter.value}
               pagination
               paginationComponentOptions={paginationComponentOptions}
               fixedHeader={true}
@@ -275,10 +276,10 @@ export default function GroupRole(props) {
     if (groupID.value !== 0) {
       datafilter.value = groupUser.value.filter((item) => {
         return (
-          item.mail_.toLowerCase().includes(t) ||
-          item.name_.toLowerCase().includes(t) ||
-          item.phone_.toLowerCase().includes(t) ||
-          item.usr_.toLowerCase().includes(t)
+          lowercasedata(item.mail_).includes(t) ||
+          lowercasedata(item.name_).includes(t) ||
+          lowercasedata(item.phone_).includes(t) ||
+          lowercasedata(item.usr_).includes(t)
         );
       });
     }
@@ -390,21 +391,21 @@ export default function GroupRole(props) {
                   groupID.value === 0 ? "rgba(233, 233, 233, 0.5)" : "white",
               }}
             >
-              {groupID.value === 0 ?
-                (
-                  <input
-                    disabled
-                    type="text"
-                    autoComplete="off"
-                    placeholder={dataLang.formatMessage({ id: "enterInfo" })}
-                  />)
-                :
-                (<input
+              {groupID.value === 0 ? (
+                <input
+                  disabled
+                  type="text"
+                  autoComplete="off"
+                  placeholder={dataLang.formatMessage({ id: "enterInfo" })}
+                />
+              ) : (
+                <input
                   type="text"
                   autoComplete="on"
                   placeholder={dataLang.formatMessage({ id: "enterInfo" })}
                   onChange={(e) => handleFilter(e)}
-                />)}
+                />
+              )}
               <CiSearch color="gray" size={20} />
             </div>
             <button

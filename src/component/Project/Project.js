@@ -12,7 +12,15 @@ import { sidebartab, sidebartabli } from "../Sidenar/Sidenar";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
-import { ruleInfor, Token, partnerInfor, userInfor, convertUnit, showUnitk, showUnit } from "../../App";
+import {
+  ruleInfor,
+  Token,
+  partnerInfor,
+  userInfor,
+  convertUnit,
+  showUnitk,
+  showUnit,
+} from "../../App";
 import { useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
 import { useIntl } from "react-intl";
@@ -28,6 +36,7 @@ import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { FiEdit, FiFilter } from "react-icons/fi";
 import { RiShareForwardLine } from "react-icons/ri";
+import { lowercasedata } from "../ErrorSetting/ErrorSetting";
 
 const tabLable = signal("");
 const tabMobile = signal(false);
@@ -185,50 +194,55 @@ export default function Project(props) {
     },
     {
       name: dataLang.formatMessage({ id: "inCapacity" }),
-      selector: (row) =>
+      selector: (row) => (
         <>
-          {Number(parseFloat(convertUnit(row.capacity)).toFixed(2)).toLocaleString("en-US")}
+          {Number(
+            parseFloat(convertUnit(row.capacity)).toFixed(2)
+          ).toLocaleString("en-US")}
           &nbsp;
           {showUnitk(row.capacity)}Wp
-        </>,
+        </>
+      ),
       sortable: true,
       width: "160px",
     },
     {
       name: dataLang.formatMessage({ id: "daily" }),
       selector: (row) =>
-        parseFloat(dailyProduction[row.plantid_]).toFixed(2) === "NaN"
-          ?
+        parseFloat(dailyProduction[row.plantid_]).toFixed(2) === "NaN" ? (
           <>
-            0
+            0 &nbsp;
+            {showUnitk(dailyProduction[row.plantid_])}Wh
+          </>
+        ) : (
+          <>
+            {Number(
+              parseFloat(convertUnit(dailyProduction[row.plantid_])).toFixed(2)
+            ).toLocaleString("en-US")}
             &nbsp;
             {showUnitk(dailyProduction[row.plantid_])}Wh
           </>
-          :
-          <>
-            {Number(parseFloat(convertUnit(dailyProduction[row.plantid_])).toFixed(2)).toLocaleString("en-US")}
-            &nbsp;
-            {showUnitk(dailyProduction[row.plantid_])}Wh
-          </>,
+        ),
       sortable: true,
       width: "160px",
     },
     {
       name: dataLang.formatMessage({ id: "power" }),
       selector: (row) =>
-        parseFloat(power[row.plantid_]).toFixed(2) === "NaN"
-          ?
+        parseFloat(power[row.plantid_]).toFixed(2) === "NaN" ? (
           <>
-            0
-            &nbsp;
+            0 &nbsp;
             {showUnitk(power[row.plantid_])}W
           </>
-          :
+        ) : (
           <>
-            {Number(parseFloat(convertUnit(power[row.plantid_] / 1000)).toFixed(2)).toLocaleString("en-US")}
+            {Number(
+              parseFloat(convertUnit(power[row.plantid_] / 1000)).toFixed(2)
+            ).toLocaleString("en-US")}
             &nbsp;
             {showUnit(power[row.plantid_])}W
-          </>,
+          </>
+        ),
       sortable: true,
       width: "160px",
     },
@@ -256,9 +270,11 @@ export default function Project(props) {
           }}
         >
           {ruleInfor.value.setting.project.modify == true ||
-            ruleInfor.value.setting.project.remove == true ? (
-            row.shared == 1 ? <></>
-              : <div className="DAT_TableEdit">
+          ruleInfor.value.setting.project.remove == true ? (
+            row.shared == 1 ? (
+              <></>
+            ) : (
+              <div className="DAT_TableEdit">
                 <span
                   id={row.plantid_ + "_MORE"}
                   onClick={(e) => handleModify(e, "block")}
@@ -266,16 +282,19 @@ export default function Project(props) {
                   <IoMdMore size={20} />
                 </span>
               </div>
+            )
           ) : (
             <div></div>
           )}
-          <div className="DAT_ModifyBox"
+          <div
+            className="DAT_ModifyBox"
             id={row.plantid_ + "_Modify"}
             style={{ display: "none", marginTop: "3px", marginRight: "3px" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             {ruleInfor.value.setting.project.modify === true ? (
-              <div className="DAT_ModifyBox_Fix"
+              <div
+                className="DAT_ModifyBox_Fix"
                 id={row.plantid_}
                 style={{
                   display: "flex",
@@ -292,7 +311,8 @@ export default function Project(props) {
               <div></div>
             )}
             {ruleInfor.value.setting.project.remove === true ? (
-              <div className="DAT_ModifyBox_Remove"
+              <div
+                className="DAT_ModifyBox_Remove"
                 id={row.plantid_}
                 style={{
                   display: "flex",
@@ -308,7 +328,8 @@ export default function Project(props) {
             ) : (
               <div></div>
             )}
-            <div className="DAT_ModifyBox_Share"
+            <div
+              className="DAT_ModifyBox_Share"
               id={row.plantid_}
               style={{
                 display: "flex",
@@ -424,23 +445,22 @@ export default function Project(props) {
     if (e.target.value == "") {
       setDatafilter(dataproject.value);
     } else {
-      const t = e.target.value;
+      const t = lowercasedata(e.target.value);
       const db = dataproject.value.filter((row) => {
         switch (type) {
           case "inCapacity":
-            return String(row.capacity) == t;
+            return lowercasedata(String(row.capacity)) == t;
           case "production":
-            return String(row.production) == t;
+            return lowercasedata(String(row.production)) == t;
           case "power":
-            return String(row.power) == t;
+            return lowercasedata(String(row.power)) == t;
           default:
             return (
-              row.plantname.includes(t) ||
-              row.plantname.toLowerCase().includes(t)
+              lowercasedata(row.plantname).includes(t) ||
+              lowercasedata(row.plantname).includes(t)
             );
         }
-      }
-      );
+      });
       setDatafilter(db);
     }
   };
@@ -475,41 +495,46 @@ export default function Project(props) {
 
   const closeFilter = () => {
     setDisplay(false);
-  }
+  };
 
   const handleResetFilter = () => {
     setSaveDataInputFilter({
       min: 0,
       max: 10000,
-      location: ""
-    })
+      location: "",
+    });
     setDisplay(false);
     setDatafilter(dataproject.value);
   };
 
   const handleApproveFilter = (_min, _max, _location) => {
-    let temp = []
+    let temp = [];
     let min_ = _min === "" ? 0 : _min;
     let max_ = _max === "" ? 10000 : _max;
     setSaveDataInputFilter({
       min: parseFloat(min_),
       max: parseFloat(max_),
-      location: _location
-    })
+      location: _location,
+    });
     if (_location) {
-      dataproject.value.filter(item => {
-        if (parseFloat(item.capacity) >= parseFloat(min_) &&
+      dataproject.value.filter((item) => {
+        if (
+          parseFloat(item.capacity) >= parseFloat(min_) &&
           parseFloat(item.capacity) <= parseFloat(max_) &&
-          item.addr.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(_location.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase())) {
-          temp = [...temp, item]
+          lowercasedata(item.addr).includes(lowercasedata(_location))
+        ) {
+          temp = [...temp, item];
         }
-      })
+      });
     } else {
-      dataproject.value.filter(item => {
-        if (parseFloat(item.capacity) >= parseFloat(min_) && parseFloat(item.capacity) <= parseFloat(max_)) {
-          temp = [...temp, item]
+      dataproject.value.filter((item) => {
+        if (
+          parseFloat(item.capacity) >= parseFloat(min_) &&
+          parseFloat(item.capacity) <= parseFloat(max_)
+        ) {
+          temp = [...temp, item];
         }
-      })
+      });
     }
     setDatafilter(temp);
     setDisplay(false);
@@ -534,6 +559,7 @@ export default function Project(props) {
       });
       if (d.status === true) {
         dataproject.value = d.data;
+        console.log(d.data);
       }
     };
     getPlant();
@@ -594,8 +620,8 @@ export default function Project(props) {
             let inum = [];
             let register_ = JSON.parse(value.register);
             register_.map((reg, j) => {
-              inum[j] = parseFloat(invt[item.psn]?.[reg] || 0)
-            })
+              inum[j] = parseFloat(invt[item.psn]?.[reg] || 0);
+            });
 
             num_[key][i] = inum.reduce((accumulator, currentValue) => {
               return Number(accumulator) + Number(currentValue);
@@ -603,8 +629,8 @@ export default function Project(props) {
 
             if (key == "pro_1") {
               if (invt[item.psn]?.enabled == "1") {
-                power_[item.pplantid] = inum.reduce(
-                  (accumulator, currentValue) => {
+                power_[item.pplantid] =
+                  inum.reduce((accumulator, currentValue) => {
                     return Number(accumulator) + Number(currentValue);
                   }, 0) * parseFloat(value.cal);
               } else {
@@ -641,7 +667,8 @@ export default function Project(props) {
 
             if (key == "pro_1") {
               if (invt[item.psn]?.enabled == "1") {
-                power_[item.pplantid] = convertToDoublewordAndFloat(e, "int") * parseFloat(value.cal);
+                power_[item.pplantid] =
+                  convertToDoublewordAndFloat(e, "int") * parseFloat(value.cal);
               } else {
                 power_[item.pplantid] = 0;
               }
@@ -690,13 +717,17 @@ export default function Project(props) {
               <input
                 id="search"
                 type="text"
-                placeholder={dataLang.formatMessage({ id: "enter" }) + dataLang.formatMessage({ id: "project" })}
+                placeholder={
+                  dataLang.formatMessage({ id: "enter" }) +
+                  dataLang.formatMessage({ id: "project" })
+                }
                 autoComplete="off"
                 onChange={(e) => handleSearch(e)}
               />
             </div>
             {ruleInfor.value.setting.project.add === true ? (
-              <button className="DAT_ProjectHeaderMobile_Top_New"
+              <button
+                className="DAT_ProjectHeaderMobile_Top_New"
                 onClick={() => (plantState.value = "add")}
               >
                 <IoAddOutline color="white" size={20} />
@@ -716,20 +747,24 @@ export default function Project(props) {
           <div className="DAT_ProjectHeader_Title">
             <GoProject color="gray" size={25} />
             <span>{dataLang.formatMessage({ id: "project" })}</span>
-          </div >
+          </div>
 
           <div className="DAT_ProjectHeader_Filter">
             <input
               id="search"
               type="text"
-              placeholder={dataLang.formatMessage({ id: "enter" }) + dataLang.formatMessage({ id: "project" })}
+              placeholder={
+                dataLang.formatMessage({ id: "enter" }) +
+                dataLang.formatMessage({ id: "project" })
+              }
               autoComplete="off"
               onChange={(e) => handleSearch(e)}
             />
             <CiSearch color="gray" size={20} />
           </div>
           {ruleInfor.value.setting.project.add === true ? (
-            <button className="DAT_ProjectHeader_New"
+            <button
+              className="DAT_ProjectHeader_New"
               onClick={() => (plantState.value = "add")}
             >
               <span value={"createdate"}>
@@ -747,7 +782,8 @@ export default function Project(props) {
       {isMobile.value ? (
         <div className="DAT_ProjectMobile">
           <div className="DAT_Toollist_Tab_Mobile">
-            <button className="DAT_Toollist_Tab_Mobile_content"
+            <button
+              className="DAT_Toollist_Tab_Mobile_content"
               onClick={() => (tabMobile.value = !tabMobile.value)}
             >
               <span>{tabLable.value}</span>
@@ -757,12 +793,14 @@ export default function Project(props) {
               </div>
             </button>
             {tabMobile.value ? (
-              <div className="DAT_Toollist_Tab_Mobile_list"
+              <div
+                className="DAT_Toollist_Tab_Mobile_list"
                 onMouseLeave={() => (tabMobile.value = false)}
               >
                 {listTab.map((item, i) => {
                   return (
-                    <div className="DAT_Toollist_Tab_Mobile_list_item"
+                    <div
+                      className="DAT_Toollist_Tab_Mobile_list_item"
                       key={"tabmobile_" + i}
                       id={item.id}
                       onClick={(e) => handleTabMobile(e)}
@@ -801,7 +839,8 @@ export default function Project(props) {
 
                             <div className="DAT_ProjectMobile_Content_Top_Info">
                               <div className="DAT_ProjectMobile_Content_Top_Info_Name">
-                                <div className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
+                                <div
+                                  className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
                                   id={item.plantid_}
                                   onClick={(e) => handlePlant(e)}
                                 >
@@ -813,7 +852,9 @@ export default function Project(props) {
                                     size={14}
                                     id={item.plantid_}
                                     style={{
-                                      color: item.mark ? "rgb(255, 233, 39)" : "rgb(190, 190, 190)",
+                                      color: item.mark
+                                        ? "rgb(255, 233, 39)"
+                                        : "rgb(190, 190, 190)",
                                       cursor: "pointer",
                                     }}
                                     onClick={(e) => handleLike(e)}
@@ -869,10 +910,16 @@ export default function Project(props) {
                               <div className="DAT_ProjectMobile_Content_Top_Info_Data">
                                 <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
                                   <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name">
-                                    {dataLang.formatMessage({ id: "inCapacity" })}
+                                    {dataLang.formatMessage({
+                                      id: "inCapacity",
+                                    })}
                                   </div>
                                   <div>
-                                    {Number(parseFloat(convertUnit(item.capacity)).toFixed(2)).toLocaleString("en-US")}
+                                    {Number(
+                                      parseFloat(
+                                        convertUnit(item.capacity)
+                                      ).toFixed(2)
+                                    ).toLocaleString("en-US")}
                                     &nbsp;
                                     {showUnitk(item.capacity)}Wp
                                   </div>
@@ -883,20 +930,32 @@ export default function Project(props) {
                                     {dataLang.formatMessage({ id: "daily" })}
                                   </div>
                                   <div>
-                                    {parseFloat(dailyProduction[item.plantid_]).toFixed(2) === "NaN"
-                                      ?
+                                    {parseFloat(
+                                      dailyProduction[item.plantid_]
+                                    ).toFixed(2) === "NaN" ? (
                                       <>
-                                        0
-                                        &nbsp;
-                                        {showUnitk(dailyProduction[item.plantid_])}Wh
+                                        0 &nbsp;
+                                        {showUnitk(
+                                          dailyProduction[item.plantid_]
+                                        )}
+                                        Wh
                                       </>
-                                      :
+                                    ) : (
                                       <>
-                                        {Number(parseFloat(convertUnit(dailyProduction[item.plantid_])).toFixed(2)).toLocaleString("en-US")}
+                                        {Number(
+                                          parseFloat(
+                                            convertUnit(
+                                              dailyProduction[item.plantid_]
+                                            )
+                                          ).toFixed(2)
+                                        ).toLocaleString("en-US")}
                                         &nbsp;
-                                        {showUnitk(dailyProduction[item.plantid_])}Wh
+                                        {showUnitk(
+                                          dailyProduction[item.plantid_]
+                                        )}
+                                        Wh
                                       </>
-                                    }
+                                    )}
                                   </div>
                                 </div>
 
@@ -905,20 +964,26 @@ export default function Project(props) {
                                     {dataLang.formatMessage({ id: "power" })}
                                   </div>
                                   <div>
-                                    {parseFloat(power[item.plantid_]).toFixed(2) === "NaN"
-                                      ?
+                                    {parseFloat(power[item.plantid_]).toFixed(
+                                      2
+                                    ) === "NaN" ? (
                                       <>
-                                        0
-                                        &nbsp;
+                                        0 &nbsp;
                                         {showUnitk(power[item.plantid_])}W
                                       </>
-                                      :
+                                    ) : (
                                       <>
-                                        {Number(parseFloat(convertUnit(power[item.plantid_] / 1000)).toFixed(2)).toLocaleString("en-US")}
+                                        {Number(
+                                          parseFloat(
+                                            convertUnit(
+                                              power[item.plantid_] / 1000
+                                            )
+                                          ).toFixed(2)
+                                        ).toLocaleString("en-US")}
                                         &nbsp;
                                         {showUnit(power[item.plantid_])}W
                                       </>
-                                    }
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -943,8 +1008,9 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
-                                <div className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                              true ? (
+                                <div
+                                  className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
                                   onClick={(e) => handleEdit(e)}
                                 >
@@ -954,8 +1020,9 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
-                                <div className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                              true ? (
+                                <div
+                                  className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
                                   onClick={(e) => handleDelete(e)}
                                 >
@@ -993,7 +1060,8 @@ export default function Project(props) {
 
                             <div className="DAT_ProjectMobile_Content_Top_Info">
                               <div className="DAT_ProjectMobile_Content_Top_Info_Name">
-                                <div className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
+                                <div
+                                  className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
                                   id={item.plantid_}
                                   onClick={(e) => handlePlant(e)}
                                 >
@@ -1005,7 +1073,9 @@ export default function Project(props) {
                                     size={14}
                                     id={item.plantid_}
                                     style={{
-                                      color: item.mark ? "rgb(255, 233, 39)" : "rgb(190, 190, 190)",
+                                      color: item.mark
+                                        ? "rgb(255, 233, 39)"
+                                        : "rgb(190, 190, 190)",
                                       cursor: "pointer",
                                     }}
                                     onClick={(e) => handleLike(e)}
@@ -1112,8 +1182,9 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
-                                <div className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                              true ? (
+                                <div
+                                  className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
                                   onClick={(e) => handleEdit(e)}
                                 >
@@ -1123,8 +1194,9 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
-                                <div className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                              true ? (
+                                <div
+                                  className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
                                   onClick={(e) => handleDelete(e)}
                                 >
@@ -1162,7 +1234,8 @@ export default function Project(props) {
 
                             <div className="DAT_ProjectMobile_Content_Top_Info">
                               <div className="DAT_ProjectMobile_Content_Top_Info_Name">
-                                <div className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
+                                <div
+                                  className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
                                   id={item.plantid_}
                                   onClick={(e) => handlePlant(e)}
                                 >
@@ -1174,7 +1247,9 @@ export default function Project(props) {
                                     size={14}
                                     id={item.plantid_}
                                     style={{
-                                      color: item.mark ? "rgb(255, 233, 39)" : "rgb(190, 190, 190)",
+                                      color: item.mark
+                                        ? "rgb(255, 233, 39)"
+                                        : "rgb(190, 190, 190)",
                                       cursor: "pointer",
                                     }}
                                     onClick={(e) => handleLike(e)}
@@ -1281,8 +1356,9 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
-                                <div className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                              true ? (
+                                <div
+                                  className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
                                   onClick={(e) => handleEdit(e)}
                                 >
@@ -1292,8 +1368,9 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
-                                <div className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                              true ? (
+                                <div
+                                  className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
                                   onClick={(e) => handleDelete(e)}
                                 >
@@ -1331,7 +1408,8 @@ export default function Project(props) {
 
                             <div className="DAT_ProjectMobile_Content_Top_Info">
                               <div className="DAT_ProjectMobile_Content_Top_Info_Name">
-                                <div className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
+                                <div
+                                  className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
                                   id={item.plantid_}
                                   onClick={(e) => handlePlant(e)}
                                 >
@@ -1343,7 +1421,9 @@ export default function Project(props) {
                                     size={14}
                                     id={item.plantid_}
                                     style={{
-                                      color: item.mark ? "rgb(255, 233, 39)" : "rgb(190, 190, 190)",
+                                      color: item.mark
+                                        ? "rgb(255, 233, 39)"
+                                        : "rgb(190, 190, 190)",
                                       cursor: "pointer",
                                     }}
                                     onClick={(e) => handleLike(e)}
@@ -1450,8 +1530,9 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
-                                <div className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                              true ? (
+                                <div
+                                  className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
                                   onClick={(e) => handleEdit(e)}
                                 >
@@ -1461,8 +1542,9 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
-                                <div className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                              true ? (
+                                <div
+                                  className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
                                   onClick={(e) => handleDelete(e)}
                                 >
@@ -1500,7 +1582,8 @@ export default function Project(props) {
 
                             <div className="DAT_ProjectMobile_Content_Top_Info">
                               <div className="DAT_ProjectMobile_Content_Top_Info_Name">
-                                <div className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
+                                <div
+                                  className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
                                   id={item.plantid_}
                                   onClick={(e) => handlePlant(e)}
                                 >
@@ -1512,7 +1595,9 @@ export default function Project(props) {
                                     size={14}
                                     id={item.plantid_}
                                     style={{
-                                      color: item.mark ? "rgb(255, 233, 39)" : "rgb(190, 190, 190)",
+                                      color: item.mark
+                                        ? "rgb(255, 233, 39)"
+                                        : "rgb(190, 190, 190)",
                                       cursor: "pointer",
                                     }}
                                     onClick={(e) => handleLike(e)}
@@ -1619,8 +1704,9 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
-                                <div className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                              true ? (
+                                <div
+                                  className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
                                   onClick={(e) => handleEdit(e)}
                                 >
@@ -1630,8 +1716,9 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
-                                <div className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                              true ? (
+                                <div
+                                  className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
                                   onClick={(e) => handleDelete(e)}
                                 >
@@ -1669,7 +1756,8 @@ export default function Project(props) {
 
                             <div className="DAT_ProjectMobile_Content_Top_Info">
                               <div className="DAT_ProjectMobile_Content_Top_Info_Name">
-                                <div className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
+                                <div
+                                  className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
                                   id={item.plantid_}
                                   onClick={(e) => handlePlant(e)}
                                 >
@@ -1681,7 +1769,9 @@ export default function Project(props) {
                                     size={14}
                                     id={item.plantid_}
                                     style={{
-                                      color: item.mark ? "rgb(255, 233, 39)" : "rgb(190, 190, 190)",
+                                      color: item.mark
+                                        ? "rgb(255, 233, 39)"
+                                        : "rgb(190, 190, 190)",
                                       cursor: "pointer",
                                     }}
                                     onClick={(e) => handleLike(e)}
@@ -1788,8 +1878,9 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
-                                <div className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                              true ? (
+                                <div
+                                  className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
                                   onClick={(e) => handleEdit(e)}
                                 >
@@ -1799,8 +1890,9 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
-                                <div className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                              true ? (
+                                <div
+                                  className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
                                   onClick={(e) => handleDelete(e)}
                                 >
@@ -1828,7 +1920,8 @@ export default function Project(props) {
               return projtab.value === item.id ? (
                 <div key={"tab_" + i} className="DAT_Toollist_Tab_main">
                   <p className="DAT_Toollist_Tab_main_left"></p>
-                  <span className="DAT_Toollist_Tab_main_content1"
+                  <span
+                    className="DAT_Toollist_Tab_main_content1"
                     id={item.id}
                     style={{
                       backgroundColor: "White",
@@ -1842,7 +1935,8 @@ export default function Project(props) {
                   <p className="DAT_Toollist_Tab_main_right"></p>
                 </div>
               ) : (
-                <span className="DAT_Toollist_Tab_main_content2"
+                <span
+                  className="DAT_Toollist_Tab_main_content2"
                   key={"tab_" + i}
                   id={item.id}
                   style={{ backgroundColor: "#dadada" }}
@@ -1853,7 +1947,8 @@ export default function Project(props) {
               );
             })}
 
-            <div className="DAT_Project_Filter"
+            <div
+              className="DAT_Project_Filter"
               onClick={(e) => setDisplay(!display)}
             >
               <FiFilter />
@@ -1958,7 +2053,8 @@ export default function Project(props) {
         </div>
       )}
 
-      <div className="DAT_ProjectInfor"
+      <div
+        className="DAT_ProjectInfor"
         style={{
           height: plantState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",
@@ -1989,8 +2085,7 @@ export default function Project(props) {
         </div>
       ) : (
         <></>
-      )
-      }
+      )}
 
       {shareState.value ? (
         <div className="DAT_DevicePopup">
@@ -1998,8 +2093,7 @@ export default function Project(props) {
         </div>
       ) : (
         <></>
-      )
-      }
+      )}
     </>
   );
 }
