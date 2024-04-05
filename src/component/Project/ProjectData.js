@@ -10,16 +10,10 @@ import ProjectInfo from "./ProjectInfo";
 import Benefit from "./Benefit";
 import GraphComponent from "./GraphComponent";
 import Data from "./Data";
-import DashboardHistory from "./DashboardHistory";
-import ProjectInfo from "./ProjectInfo";
-import Benefit from "./Benefit";
-import GraphComponent from "./GraphComponent";
-import Data from "./Data";
 import { Empty, plantState, projectData, popupState } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { Token, ruleInfor } from "../../App";
 import { Token, ruleInfor } from "../../App";
 import { info, tab } from "../Device/Device";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,11 +25,7 @@ import { useIntl } from "react-intl";
 
 import { IoIosArrowDown, IoIosArrowForward, IoMdMore, } from "react-icons/io";
 import { IoAddOutline, IoClose, IoTrashOutline, } from "react-icons/io5";
-
-import { IoIosArrowDown, IoIosArrowForward, IoMdMore, } from "react-icons/io";
-import { IoAddOutline, IoClose, IoTrashOutline, } from "react-icons/io5";
 import { MdDelete, MdEdit, MdOutlineError } from "react-icons/md";
-import { FaCheckCircle, } from "react-icons/fa";
 import { FaCheckCircle, } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
@@ -145,7 +135,6 @@ export default function ProjectData(props) {
   const [dropState, setDropState] = useState(false);
   const [infoState, setInfoState] = useState(false);
   const [popupAddGateway, setPopupAddGateway] = useState(false);
-  const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [devname, setDevname] = useState("");
   const [devtype, setDevtype] = useState("");
@@ -728,16 +717,12 @@ export default function ProjectData(props) {
     };
     getLogger();
 
-
     return () => {
       // cal.value = {};
       tab_.value = "logger";
       // temp.value = [];
       // inverterDB.value = [];
     };
-
-    // eslint-disable-next-line
-  }, [lang]);
 
     // eslint-disable-next-line
   }, [lang]);
@@ -1076,11 +1061,8 @@ export default function ProjectData(props) {
                   </div>
 
                   <DashboardHistory />
-                  <DashboardHistory />
 
                   <div className="DAT_ProjectData_Dashboard_More">
-                    <ProjectInfo />
-                    <Benefit />
                     <ProjectInfo />
                     <Benefit />
                   </div>
@@ -1648,7 +1630,6 @@ export default function ProjectData(props) {
         </>
       )}
 
-      <div className="DAT_DeviceInfor"
       <div className="DAT_DeviceInfor"
         style={{ height: infoState ? "100%" : "0px", transition: "0.5s" }}
       >
