@@ -18,6 +18,8 @@ import { useSelector } from "react-redux";
 export default function Total(props) {
   const filterchart = useSelector((state) => state.tool.filterchart);
 
+  const total = useSelector((state) => state.tool.total);
+
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
 
@@ -43,7 +45,7 @@ export default function Total(props) {
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           {/* {props.v}: {cal.value.pro_total} kWh */}
-          {props.v}: {cal.value.pro_total} kWh
+          {props.v}: {total.pro_total} kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">

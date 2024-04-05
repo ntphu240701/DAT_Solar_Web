@@ -10,23 +10,22 @@ import { COLOR } from "../../App";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { projectData } from "./Project";
-import { cal } from "./ProjectData";
 import { useIntl } from "react-intl";
 import DatePicker from "react-datepicker";
 import moment from "moment-timezone";
 import { signal } from "@preact/signals-react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { IoCalendarOutline } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
 import toolslice from "../Redux/toolslice";
 
 export default function DashboardHistory(props) {
   const dataLang = useIntl();
+  const lang = useSelector((state) => state.admin.lang);
   const [dateType, setDateType] = useState("date");
   const [dropConfig, setDropConfig] = useState(false);
   const filterchart = useSelector((state) => state.tool.filterchart);
   const filterchartTemp = signal(filterchart);
-  const [chartfill, setChartfill] = useState(filterchart);
   const rootDispatch = useDispatch();
   const [configname, setConfigname] = useState(
     dataLang.formatMessage({ id: "choosePara" })
@@ -105,6 +104,10 @@ export default function DashboardHistory(props) {
   const [vTotal6, setVTotal6] = useState(
     dataLang.formatMessage({ id: "unknown" })
   );
+
+  const [month, setMonth] = useState({
+    pro_month: 0,
+  });
 
   const color = {
     cur: COLOR.value.PrimaryColor,
@@ -225,24 +228,28 @@ export default function DashboardHistory(props) {
             // }
 
             if (i == d.data.data.length - 1) {
-              cal.value["pro_month"] = parseFloat(
-                sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2);
-              cal.value["con_month"] = parseFloat(
-                sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2);
-              cal.value["grid_in_month"] = parseFloat(
-                sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2);
-              cal.value["grid_out_month"] = parseFloat(
-                sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2);
-              cal.value["bat_in_month"] = parseFloat(
-                sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2);
-              cal.value["bat_out_month"] = parseFloat(
-                sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2);
+              rootDispatch(
+                toolslice.actions.setmonth({
+                  pro_month: parseFloat(
+                    sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+                  ).toFixed(2),
+                  con_month: parseFloat(
+                    sum_month2.reduce((a, b) => Number(a) + Number(b), 0)
+                  ).toFixed(2),
+                  grid_in_month: parseFloat(
+                    sum_month3.reduce((a, b) => Number(a) + Number(b), 0)
+                  ).toFixed(2),
+                  grid_out_month: parseFloat(
+                    sum_month4.reduce((a, b) => Number(a) + Number(b), 0)
+                  ).toFixed(2),
+                  bat_in_month: parseFloat(
+                    sum_month5.reduce((a, b) => Number(a) + Number(b), 0)
+                  ).toFixed(2),
+                  bat_out_month: parseFloat(
+                    sum_month6.reduce((a, b) => Number(a) + Number(b), 0)
+                  ).toFixed(2),
+                })
+              );
               // }
             }
           });
@@ -318,24 +325,28 @@ export default function DashboardHistory(props) {
             sum_year5[i] = item.value5;
             sum_year6[i] = item.value6;
             if (i == d.data.data.length - 1) {
-              cal.value["pro_year"] = parseFloat(
-                sum_year.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2);
-              cal.value["con_year"] = parseFloat(
-                sum_year2.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2);
-              cal.value["grid_in_year"] = parseFloat(
-                sum_year3.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2);
-              cal.value["grid_out_year"] = parseFloat(
-                sum_year4.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2);
-              cal.value["bat_in_year"] = parseFloat(
-                sum_year5.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2);
-              cal.value["bat_out_year"] = parseFloat(
-                sum_year6.reduce((a, b) => Number(a) + Number(b), 0)
-              ).toFixed(2);
+              rootDispatch(
+                toolslice.actions.setyear({
+                  pro_year: parseFloat(
+                    sum_year.reduce((a, b) => Number(a) + Number(b), 0)
+                  ).toFixed(2),
+                  con_year: parseFloat(
+                    sum_year2.reduce((a, b) => Number(a) + Number(b), 0)
+                  ).toFixed(2),
+                  grid_in_year: parseFloat(
+                    sum_year3.reduce((a, b) => Number(a) + Number(b), 0)
+                  ).toFixed(2),
+                  grid_out_year: parseFloat(
+                    sum_year4.reduce((a, b) => Number(a) + Number(b), 0)
+                  ).toFixed(2),
+                  bat_in_year: parseFloat(
+                    sum_year5.reduce((a, b) => Number(a) + Number(b), 0)
+                  ).toFixed(2),
+                  bat_out_year: parseFloat(
+                    sum_year6.reduce((a, b) => Number(a) + Number(b), 0)
+                  ).toFixed(2),
+                })
+              );
             }
           });
           setVYear(vYear);
@@ -677,24 +688,28 @@ export default function DashboardHistory(props) {
           sum_month6[i] = item?.value6 || 0;
 
           if (i == d.data.data.length - 1) {
-            cal.value["pro_month"] = parseFloat(
-              sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["con_month"] = parseFloat(
-              sum_month2.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["grid_in_month"] = parseFloat(
-              sum_month3.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["grid_out_month"] = parseFloat(
-              sum_month4.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["bat_in_month"] = parseFloat(
-              sum_month5.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["bat_out_month"] = parseFloat(
-              sum_month6.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
+            rootDispatch(
+              toolslice.actions.setmonth({
+                pro_month: parseFloat(
+                  sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                con_month: parseFloat(
+                  sum_month2.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                grid_in_month: parseFloat(
+                  sum_month3.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                grid_out_month: parseFloat(
+                  sum_month4.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                bat_in_month: parseFloat(
+                  sum_month5.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                bat_out_month: parseFloat(
+                  sum_month6.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+              })
+            );
           }
         });
         setVMonth(vMonth);
@@ -765,24 +780,28 @@ export default function DashboardHistory(props) {
           sum_year5[i] = item?.value5 || 0;
           sum_year6[i] = item?.value6 || 0;
           if (i == d.data.data.length - 1) {
-            cal.value["pro_year"] = parseFloat(
-              sum_year.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["con_year"] = parseFloat(
-              sum_year2.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["grid_in_year"] = parseFloat(
-              sum_year3.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["grid_out_year"] = parseFloat(
-              sum_year4.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["bat_in_year"] = parseFloat(
-              sum_year5.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["bat_out_year"] = parseFloat(
-              sum_year6.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
+            rootDispatch(
+              toolslice.actions.setyear({
+                pro_year: parseFloat(
+                  sum_year.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                con_year: parseFloat(
+                  sum_year2.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                grid_in_year: parseFloat(
+                  sum_year3.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                grid_out_year: parseFloat(
+                  sum_year4.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                bat_in_year: parseFloat(
+                  sum_year5.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                bat_out_year: parseFloat(
+                  sum_year6.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+              })
+            );
           }
         });
         setVYear(vYear);
@@ -844,24 +863,28 @@ export default function DashboardHistory(props) {
           sum_total5[i] = item?.value5 || 0;
           sum_total6[i] = item?.value6 || 0;
           if (i == d.data.data.length - 1) {
-            cal.value["pro_total"] = parseFloat(
-              sum_total.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["con_total"] = parseFloat(
-              sum_total2.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["grid_in_total"] = parseFloat(
-              sum_total3.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["grid__out_total"] = parseFloat(
-              sum_total4.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["bat_in_total"] = parseFloat(
-              sum_total5.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
-            cal.value["bat_out_total"] = parseFloat(
-              sum_total6.reduce((a, b) => Number(a) + Number(b), 0)
-            ).toFixed(2);
+            rootDispatch(
+              toolslice.actions.settotal({
+                pro_total: parseFloat(
+                  sum_total.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                con_total: parseFloat(
+                  sum_total2.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                grid_in_total: parseFloat(
+                  sum_total3.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                grid_out_total: parseFloat(
+                  sum_total4.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                bat_in_total: parseFloat(
+                  sum_total5.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+                bat_out_total: parseFloat(
+                  sum_total6.reduce((a, b) => Number(a) + Number(b), 0)
+                ).toFixed(2),
+              })
+            );
           }
         });
         setVTotal(vTotal);
@@ -881,13 +904,6 @@ export default function DashboardHistory(props) {
       }
     };
     getTotal();
-
-    //data Logger
-    return () => {
-      cal.value = {};
-      // tab_.value = "logger";
-      // infoState.value = false;
-    };
 
     // eslint-disable-next-line
   }, [lang]);
@@ -999,6 +1015,7 @@ export default function DashboardHistory(props) {
               return (
                 <Month
                   data={dataMonth}
+                  month={month}
                   dateType={dateType}
                   v={vMonth}
                   v2={vMonth2}

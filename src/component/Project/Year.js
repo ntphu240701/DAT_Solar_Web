@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 export default function Year(props) {
   const dataLang = useIntl();
   const filterchart = useSelector((state) => state.tool.filterchart);
+  const year = useSelector((state) => state.tool.year);
 
   const TriangleBar = (props) => {
     const { fill, x, y, width, height } = props;
@@ -44,9 +45,7 @@ export default function Year(props) {
           kWh
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {/* {props.v}: {cal.value.pro_year} kWh */}
-          {dataLang.formatMessage({ id: "yearOutput" })}: {cal.value.pro_year}{" "}
-          kWh
+          {dataLang.formatMessage({ id: "yearOutput" })}: {year.pro_year} kWh
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
