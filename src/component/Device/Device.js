@@ -151,24 +151,26 @@ export default function Device(props) {
     {
       name: dataLang.formatMessage({ id: "production" }),
       selector: (row) => {
-        let power = 0
-        let d = JSON.parse(row.pdata.total?.register || "[]")
+        let power = 0;
+        let d = JSON.parse(row.pdata.total?.register || "[]");
         if (row.pdata.mode === "HYBRID") {
-          let num = []
+          let num = [];
           d.map((item, i) => {
-            num[i] = invt[row.plogger]?.[item]
-          })
-          power = parseFloat(num.reduce((a, b) => Number(a) + Number(b), 0) * row.pdata.total?.cal).toFixed(2)
+            num[i] = invt[row.plogger]?.[item];
+          });
+          power = parseFloat(
+            num.reduce((a, b) => Number(a) + Number(b), 0) *
+              row.pdata.total?.cal
+          ).toFixed(2);
         }
         if (row.pdata.mode === "GRID") {
-          power = (convertToDoublewordAndFloat([invt[row.plogger]?.[d[0]], invt[row.plogger]?.[d[1]]], "int") * row.pdata.total?.cal)
+          power =
+            convertToDoublewordAndFloat(
+              [invt[row.plogger]?.[d[0]], invt[row.plogger]?.[d[1]]],
+              "int"
+            ) * row.pdata.total?.cal;
         }
-        return (
-          <div>
-            {parseFloat(power / 1000).toFixed(2)}{" "}
-            kW
-          </div>
-        );
+        return <div>{parseFloat(power / 1000).toFixed(2)} kW</div>;
       },
       sortable: true,
       width: "150px",
@@ -178,9 +180,15 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {row.pdata.daily?.register
-            ? Number(parseFloat(convertUnit(invt[row.plogger]?.[row.pdata.daily.register] * row.pdata.daily?.cal)).toFixed(2)).toLocaleString("en-US")
-            : 0
-          }
+            ? Number(
+                parseFloat(
+                  convertUnit(
+                    invt[row.plogger]?.[row.pdata.daily.register] *
+                      row.pdata.daily?.cal
+                  )
+                ).toFixed(2)
+              ).toLocaleString("en-US")
+            : 0}
           kWh
         </>
       ),
@@ -198,7 +206,7 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
-            ruleInfor.value.setting.device.delete === true ? (
+          ruleInfor.value.setting.device.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.psn + "_MORE"}
@@ -210,12 +218,14 @@ export default function Device(props) {
           ) : (
             <div></div>
           )}
-          <div className="DAT_ModifyBox"
+          <div
+            className="DAT_ModifyBox"
             id={row.psn + "_Modify"}
             style={{ display: "none" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            <div className="DAT_ModifyBox_Fix"
+            <div
+              className="DAT_ModifyBox_Fix"
               // id={row.psn + "_" + tab.value + "_" + row.plogger}
               id={`${row.psn}-${row.pname}-edit`}
               onClick={(e) => handleEdit(e)}
@@ -289,7 +299,7 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
-            ruleInfor.value.setting.device.delete === true ? (
+          ruleInfor.value.setting.device.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.psn + "_MORE"}
@@ -301,12 +311,14 @@ export default function Device(props) {
           ) : (
             <div></div>
           )}
-          <div className="DAT_ModifyBox"
+          <div
+            className="DAT_ModifyBox"
             id={row.psn + "_Modify"}
             style={{ display: "none", marginTop: "2px" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
-            <div className="DAT_ModifyBox_Fix"
+            <div
+              className="DAT_ModifyBox_Fix"
               id={`${row.psn}-${row.pname}-edit`}
               onClick={(e) => handleEdit(e)}
             >
@@ -314,7 +326,8 @@ export default function Device(props) {
               &nbsp;
               {dataLang.formatMessage({ id: "change" })}
             </div>
-            <div className="DAT_ModifyBox_Remove"
+            <div
+              className="DAT_ModifyBox_Remove"
               id={row.psn + "_" + row.pplantid + "_remove"}
               onClick={(e) => handleRemove(e)}
             >
@@ -607,9 +620,7 @@ export default function Device(props) {
       {isMobile.value ? (
         <>
           <div className="DAT_Modify">
-            <div className="DAT_Modify_Item"
-              onClick={() => setFilter(!filter)}
-            >
+            <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}>
               <CiSearch color="white" size={20} />
             </div>
           </div>
@@ -620,7 +631,8 @@ export default function Device(props) {
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterDev" })}
               />
-              <div className="DAT_Modify_Filter_Close"
+              <div
+                className="DAT_Modify_Filter_Close"
                 onClick={() => setFilter(!filter)}
               >
                 <RxCross2 size={20} color="white" />
@@ -712,7 +724,7 @@ export default function Device(props) {
 
                             <div className="DAT_DeviceMobile_Content_Top_Right">
                               {ruleInfor.value.setting.device.modify ===
-                                true ? (
+                              true ? (
                                 <div className="DAT_DeviceMobile_Content_Top_Right_Item">
                                   <MdEdit size={20} color="#216990" />
                                 </div>
@@ -720,7 +732,7 @@ export default function Device(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.device.delete ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_DeviceMobile_Content_Top_Right_Item"
                                   id={item.psn + "_" + item.pplantid}
@@ -798,7 +810,7 @@ export default function Device(props) {
 
                             <div className="DAT_DeviceMobile_Content_Top_Right">
                               {ruleInfor.value.setting.device.modify ===
-                                true ? (
+                              true ? (
                                 <div className="DAT_DeviceMobile_Content_Top_Right_Item">
                                   <MdEdit size={20} color="#216990" />
                                 </div>
@@ -806,7 +818,7 @@ export default function Device(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.device.remove ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_DeviceMobile_Content_Top_Right_Item"
                                   id={item.psn + "_" + item.pplantid}
@@ -888,7 +900,8 @@ export default function Device(props) {
               );
             })}
 
-            <div className="DAT_Device_Filter"
+            <div
+              className="DAT_Device_Filter"
               onClick={(e) => setDisplay(!display)}
             >
               <FiFilter />
@@ -957,7 +970,8 @@ export default function Device(props) {
         </div>
       )}
 
-      <div className="DAT_DeviceInfor"
+      <div
+        className="DAT_DeviceInfor"
         style={{ height: infoState ? "100%" : "0px", transition: "0.5s" }}
       >
         {infoState ? <Info handleClose={handleCloseInfo} /> : <></>}
@@ -971,7 +985,8 @@ export default function Device(props) {
             name={devname}
             type={type}
             devtype={devtype}
-            handleClose={handleClosePopup} />
+            handleClose={handleClosePopup}
+          />
         </div>
       ) : (
         <></>

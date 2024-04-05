@@ -803,7 +803,7 @@ export const messages = {
     projData: "Dữ liệu dự án",
     online: "Trực tuyến",
     offline: "Ngoại tuyến",
-    demo: "Chia sẻ",
+    demo: "Được chia sẻ",
     care: "DS Theo dõi",
     project: "Dự án",
     total: "Tổng",
