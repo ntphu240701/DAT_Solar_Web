@@ -467,9 +467,6 @@ export default function Device(props) {
             return (
               lowercasedata(item.pname).includes(searchTerm) ||
               lowercasedata(item.psn).includes(searchTerm) ||
-              lowercasedata(item.pplantname).includes(searchTerm) ||
-              lowercasedata(item.pname).includes(searchTerm) ||
-              lowercasedata(item.psn).includes(searchTerm) ||
               lowercasedata(item.pplantname).includes(searchTerm)
             );
           });
