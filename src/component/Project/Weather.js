@@ -76,8 +76,8 @@ export default function Weather() {
       <PacmanLoader color="#0082CA" size={20} />
     </div>
   ) : (
-    <div className="DAT_ProjectData_Dashboard_Data_Right">
-      <div className="DAT_ProjectData_Dashboard_Data_Right_Weather">
+    // <div className="DAT_ProjectData_Dashboard_Data_Right">
+    //   <div className="DAT_ProjectData_Dashboard_Data_Right_Weather">
         <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside">
           <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current">
             <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Left">
@@ -165,7 +165,5 @@ export default function Weather() {
             })}
           </div>
         </div>
-      </div>
-    </div>
   );
 }

@@ -16,7 +16,7 @@ import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { Token, ruleInfor } from "../../App";
 import { info, tab } from "../Device/Device";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
 import DataTable from "react-data-table-component";
 import "react-datepicker/dist/react-datepicker.css";
@@ -29,6 +29,7 @@ import { MdDelete, MdEdit, MdOutlineError } from "react-icons/md";
 import { FaCheckCircle, } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
+import toolslice from "../Redux/toolslice";
 
 export const temp = signal([]);
 export const inverterDB = signal([]);
@@ -140,6 +141,7 @@ export default function ProjectData(props) {
   const [type, setType] = useState("");
   const [invt, setInvt] = useState({});
   const box = useRef();
+  const rootDispatch = useDispatch();
 
   const tit = {
     dashboard: projectData.value.plantname,
@@ -716,10 +718,10 @@ export default function ProjectData(props) {
     getLogger();
 
     return () => {
-      cal.value = {};
+      // cal.value = {};
       tab_.value = "logger";
-      temp.value = [];
-      inverterDB.value = [];
+      // temp.value = [];
+      // inverterDB.value = [];
     };
 
     // eslint-disable-next-line
@@ -742,6 +744,7 @@ export default function ProjectData(props) {
       pro_2: [],
       pro_3: [],
     };
+    var cal_ = {}
     temp.value.map(async (item, i) => {
       Object.entries(item.data).map(([key, value]) => {
         switch (value.type) {
@@ -757,7 +760,7 @@ export default function ProjectData(props) {
             }, 0);
 
             if (i == temp.value.length - 1) {
-              cal.value[key] = parseFloat(
+              cal_[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
                 }, 0) * parseFloat(value.cal)
@@ -782,7 +785,7 @@ export default function ProjectData(props) {
             num_[key][i] = convertToDoublewordAndFloat(e, "int");
 
             if (i == temp.value.length - 1) {
-              cal.value[key] = parseFloat(
+              cal_[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return Number(accumulator) + Number(currentValue);
                 }, 0) * parseFloat(value.cal)
@@ -794,7 +797,7 @@ export default function ProjectData(props) {
               parseFloat(invt[item.sn]?.[value.register] || 0) *
               parseFloat(value.cal);
             if (i == temp.value.length - 1) {
-              cal.value[key] = parseFloat(
+              cal_[key] = parseFloat(
                 num_[key].reduce((accumulator, currentValue) => {
                   return accumulator + currentValue;
                 })
@@ -807,9 +810,13 @@ export default function ProjectData(props) {
 
     coalsave.value = {
       ...coalsave.value,
-      value: cal.value.pro_3,
+      value: cal_.pro_3,
     };
 
+    cal.value = {...cal_};
+
+    rootDispatch(toolslice.actions.setcal(cal_));
+    
     document.addEventListener("mousedown", handleOutsideUser);
     return () => {
       document.removeEventListener("mousedown", handleOutsideUser);
@@ -1046,7 +1053,11 @@ export default function ProjectData(props) {
                   <div className="DAT_ProjectData_Dashboard_Data">
                     <Data />
                     <GraphComponent />
-                    <Weather />
+                    <div className="DAT_ProjectData_Dashboard_Data_Right">
+                      <div className="DAT_ProjectData_Dashboard_Data_Right_Weather">
+                        <Weather />
+                      </div>
+                    </div>
                   </div>
 
                   <DashboardHistory />

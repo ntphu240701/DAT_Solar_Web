@@ -604,61 +604,57 @@ export default function Device(props) {
 
   return (
     <>
-      <div className="DAT_DeviceHeader">
+      {isMobile.value ? (
+        <>
+          <div className="DAT_Modify">
+            <div className="DAT_Modify_Item"
+              onClick={() => setFilter(!filter)}
+            >
+              <CiSearch color="white" size={20} />
+            </div>
+          </div>
 
-
-        {isMobile.value ? (
-          <>
-            <div className="DAT_Modify">
-              <div className="DAT_Modify_Item"
+          {filter ? (
+            <div className="DAT_Modify_Filter">
+              <input
+                type="text"
+                placeholder={dataLang.formatMessage({ id: "enterDev" })}
+              />
+              <div className="DAT_Modify_Filter_Close"
                 onClick={() => setFilter(!filter)}
               >
-                <CiSearch color="white" size={20} />
+                <RxCross2 size={20} color="white" />
               </div>
             </div>
-
-            {filter ? (
-              <div className="DAT_Modify_Filter">
-                <input
-                  type="text"
-                  placeholder={dataLang.formatMessage({ id: "enterDev" })}
-                />
-                <div className="DAT_Modify_Filter_Close"
-                  onClick={() => setFilter(!filter)}
-                >
-                  <RxCross2 size={20} color="white" />
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
-          </>
-        ) : (
-          <>
-            <div className="DAT_DeviceHeader">
-              <div className="DAT_DeviceHeader_Title">
-                <MdDevices color="gray" size={25} />
-                <span>{dataLang.formatMessage({ id: "device" })}</span>
-              </div>
-              <div className="DAT_DeviceHeader_Filter">
-                <input
-                  type="text"
-                  id="search"
-                  placeholder={
-                    tab.value == "logger"
-                      ? dataLang.formatMessage({ id: "enterLogger" })
-                      : dataLang.formatMessage({ id: "enterInverter" })
-                  }
-                  autoComplete="off"
-                  onChange={(e) => handleSearch(e)}
-                />
-                <CiSearch color="gray" size={20} />
-              </div>
-              <div></div>
+          ) : (
+            <></>
+          )}
+        </>
+      ) : (
+        <>
+          <div className="DAT_DeviceHeader">
+            <div className="DAT_DeviceHeader_Title">
+              <MdDevices color="gray" size={25} />
+              <span>{dataLang.formatMessage({ id: "device" })}</span>
             </div>
-          </>
-        )}
-      </div>
+            <div className="DAT_DeviceHeader_Filter">
+              <input
+                type="text"
+                id="search"
+                placeholder={
+                  tab.value == "logger"
+                    ? dataLang.formatMessage({ id: "enterLogger" })
+                    : dataLang.formatMessage({ id: "enterInverter" })
+                }
+                autoComplete="off"
+                onChange={(e) => handleSearch(e)}
+              />
+              <CiSearch color="gray" size={20} />
+            </div>
+            <div></div>
+          </div>
+        </>
+      )}
 
       {isMobile.value ? (
         <div className="DAT_DeviceMobile">
