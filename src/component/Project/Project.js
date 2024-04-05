@@ -28,8 +28,6 @@ import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { FiEdit, FiFilter } from "react-icons/fi";
 import { RiShareForwardLine } from "react-icons/ri";
-import { lowerCase } from "lodash";
-import { lowercasedata } from "../ErrorSetting/ErrorSetting";
 
 const tabLable = signal("");
 const tabMobile = signal(false);
@@ -426,18 +424,19 @@ export default function Project(props) {
     if (e.target.value == "") {
       setDatafilter(dataproject.value);
     } else {
-      const t = lowercasedata(e.target.value);
+      const t = e.target.value;
       const db = dataproject.value.filter((row) => {
         switch (type) {
           case "inCapacity":
-            return lowercasedata(String(row.capacity)) == t;
+            return String(row.capacity) == t;
           case "production":
-            return lowercasedata(String(row.production)) == t;
+            return String(row.production) == t;
           case "power":
-            return lowercasedata(String(row.power)) == t;
+            return String(row.power) == t;
           default:
             return (
-              lowercasedata(row.plantname).includes(t)
+              row.plantname.includes(t) ||
+              row.plantname.toLowerCase().includes(t)
             );
         }
       }
@@ -537,7 +536,6 @@ export default function Project(props) {
         dataproject.value = d.data;
       }
     };
-    console.log(dataproject.value);
     getPlant();
 
     const getLogger = async () => {

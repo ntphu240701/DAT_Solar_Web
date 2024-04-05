@@ -21,7 +21,6 @@ import { IoTrashOutline } from "react-icons/io5";
 import { FiFilter } from "react-icons/fi";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { lowercasedata } from "../ErrorSetting/ErrorSetting";
 
 export const tabLable = signal("");
 export const open = signal([]);
@@ -244,7 +243,7 @@ export default function Warn(props) {
 
   // by Mr Loc
   const handleSearch = (e) => {
-    const searchTerm = lowercasedata(e.currentTarget.value);
+    const searchTerm = e.currentTarget.value.toLowerCase();
 
     if (searchTerm === "") {
       setDatafilter([...dataWarn.value]);
@@ -252,10 +251,10 @@ export default function Warn(props) {
       projectwarnfilter.value = 0;
     } else {
       let temp = dataWarn.value.filter(
-        (item) => lowercasedata(item.plant).includes(searchTerm) ||
-          lowercasedata(item.device).includes(searchTerm) ||
-          lowercasedata(item.boxid).includes(searchTerm) ||
-          lowercasedata(dataLang.formatMessage({ id: item.boxid, defaultMessage: item.boxid })).includes(searchTerm)
+        (item) => item.plant.toLowerCase().includes(searchTerm) ||
+          item.device.toLowerCase().includes(searchTerm) ||
+          item.boxid.toLowerCase().includes(searchTerm) ||
+          dataLang.formatMessage({ id: item.boxid, defaultMessage: item.boxid }).toLowerCase().includes(searchTerm)
       );
       setDatafilter([...temp]);
       console.log(temp);
