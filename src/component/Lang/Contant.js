@@ -545,7 +545,6 @@ export const messages = {
     alert_50: "Atleast one cause is required.",
     alert_51: "Atleast one solution is required.",
     alert_52: "Delete role successfully!",
-    alert_53: "Your new password cannot be the same as your old password.",
     // --------------------------------- //
 
     sologon: "Energy solution platform",
@@ -1304,7 +1303,6 @@ export const messages = {
     alert_50: "Ít nhất phải tồn tại 1 nguyên nhân.",
     alert_51: "Ít nhất phải tồn tại 1 biện pháp.",
     alert_52: "Xóa phân quyền thành công!",
-    alert_53: "Mật khẩu mới không được trùng với mật khẩu cũ.",
     // --------------------------------- //
 
     version: "Phiên bản",
