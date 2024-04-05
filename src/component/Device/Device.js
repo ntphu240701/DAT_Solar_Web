@@ -466,14 +466,10 @@ export default function Device(props) {
         } else {
           const dbInvert = inverterList.value.filter((item) => {
             return (
-              item.psn.toLowerCase().includes(searchTerm) ||
-              item.psn.toLowerCase().toLowerCase().includes(searchTerm) ||
-              item.pname.toLowerCase().includes(searchTerm) ||
-              item.pname.toLowerCase().toLowerCase().includes(searchTerm) ||
-              item.plogger.toLowerCase().includes(searchTerm) ||
-              item.plogger.toLowerCase().toLowerCase().includes(searchTerm) ||
-              item.pplantname.toLowerCase().includes(searchTerm) ||
-              item.pplantname.toLowerCase().includes(searchTerm)
+              lowercasedata(item.pname).includes(searchTerm) ||
+              lowercasedata(item.psn).includes(searchTerm) ||
+              lowercasedata(item.pplantname).includes(searchTerm) ||
+              lowercasedata(item.plogger).includes(searchTerm)
             );
           });
           setDatafilterInvert([...dbInvert]);

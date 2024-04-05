@@ -98,11 +98,11 @@ export default function Filter(props) {
                             </th>
                             <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
                               <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                <input type="number" id="min" ref={min}
+                                <input type="number" id="min" ref={min} placeholder={dataLang.formatMessage({ id: "minkWp" })}
                                   defaultValue={props.data.min !== 0 ? props.data.min : ""}
                                 />
                                 ~
-                                <input type="number" id="max" ref={max}
+                                <input type="number" id="max" ref={max} placeholder={dataLang.formatMessage({ id: "maxkWp" })}
                                   defaultValue={props.data.max !== 10000 ? props.data.max : ""}
                                 />
                               </div>
@@ -121,6 +121,7 @@ export default function Filter(props) {
                                   id="location"
                                   defaultValue={props.data.location !== "" ? props.data.location : ""}
                                   ref={location}
+                                  placeholder={dataLang.formatMessage({ id: "enterLocation" })}
                                 />
                               </div>
                             </td>

@@ -547,6 +547,9 @@ export const messages = {
     alert_52: "Delete role successfully!",
     // --------------------------------- //
 
+    maxkWp: "Max kWp",
+    minkWp: "Min kWp",
+    enterlocation: "Enter location",
     sologon: "Energy solution platform",
     version: "Version",
     previous: "Back",
@@ -1305,6 +1308,9 @@ export const messages = {
     alert_52: "Xóa phân quyền thành công!",
     // --------------------------------- //
 
+    maxkWp: "Tối đa kWp",
+    minkWp: "Tối thiểu kWp",
+    enterLocation: "Nhập vị trí...",
     version: "Phiên bản",
     sologon: "Nền tảng giải pháp năng lượng",
     previous: "Quay lại",

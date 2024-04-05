@@ -103,8 +103,8 @@ export default function Home(props) {
     {
       name: dataLang.formatMessage({ id: "ordinalNumber" }),
       selector: (row, i) => i + 1,
-      sortable: true,
       width: "80px",
+      sortable: true,
       style: {
         justifyContent: "center",
       },

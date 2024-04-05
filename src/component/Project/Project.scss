@@ -1182,32 +1182,16 @@
                             gap: 5px;
                             align-items: center;
                             overflow: hidden;
-                            overflow-x: auto;
+                            overflow-x: scroll;
+                            cursor: grab;
+                            scrollbar-width: none;
 
-                            &::-webkit-scrollbar {
-                                width: 8px;
-                                height: 10px;
-                            }
-
-                            /* Track */
-                            &::-webkit-scrollbar-track {
-                                background-color: rgba(0, 0, 0, 0);
-                                border-radius: 3px;
-                            }
-
-                            /* Handle */
-                            &::-webkit-scrollbar-thumb {
-                                background: #888;
-                                border-radius: 10px;
-                            }
-
-                            /* Handle on hover */
-                            &::-webkit-scrollbar-thumb:hover {
-                                background: #555;
+                            &:active {
+                                cursor: grabbing;
                             }
 
                             &_Box {
-                                min-width: 70px;
+                                min-width: 90px;
                                 max-width: 20%;
                                 color: gray;
                                 font-size: 13px;
@@ -4144,4 +4128,27 @@
 // input::-webkit-inner-spin-button {
 //     -webkit-appearance: none;
 //     margin: 0;
+// }
+
+//Edit Scrollbar 
+// &::-webkit-scrollbar {
+//     width: 8px;
+//     height: 10px;
+// }
+
+/* Track */
+// &::-webkit-scrollbar-track {
+//     background-color: rgba(0, 0, 0, 0);
+//     border-radius: 3px;
+// }
+
+/* Handle */
+// &::-webkit-scrollbar-thumb {
+//     background: #888;
+//     border-radius: 10px;
+// }
+
+/* Handle on hover */
+// &::-webkit-scrollbar-thumb:hover {
+//     background: #555;
 // }

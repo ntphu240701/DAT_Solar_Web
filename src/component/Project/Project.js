@@ -254,7 +254,6 @@ export default function Project(props) {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            // gap: "15px",
           }}
         >
           {ruleInfor.value.setting.project.modify == true ||
@@ -330,7 +329,6 @@ export default function Project(props) {
               style={{
                 color: row.mark ? "rgb(255, 233, 39)" : "rgb(190, 190, 190)",
                 cursor: "pointer",
-                // color: "grey"
               }}
               onClick={(e) => handleLike(e)}
               size={17}
@@ -339,7 +337,6 @@ export default function Project(props) {
         </div>
       ),
       width: "110px",
-      // display: "flex",
       justifyContent: "center",
       alignItems: "center",
     },
