@@ -21,6 +21,7 @@ import { PiUsersFour } from "react-icons/pi";
 import { CiSearch } from "react-icons/ci";
 import { AiOutlineUserAdd, AiOutlineUsergroupAdd } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
+import { lowercasedata } from "../ErrorSetting/ErrorSetting";
 
 //DATA TEMP
 export const group = signal([]);
@@ -270,7 +271,7 @@ export default function GroupRole(props) {
   const [groupDelState, setGroupDelState] = useState(false);
 
   const handleFilter = (e) => {
-    const t = e.currentTarget.value.toLowerCase();
+    const t = lowercasedata(e.currentTarget.value);
     if (groupID.value !== 0) {
       datafilter.value = groupUser.value.filter((item) => {
         return (
@@ -389,13 +390,21 @@ export default function GroupRole(props) {
                   groupID.value === 0 ? "rgba(233, 233, 233, 0.5)" : "white",
               }}
             >
-              <input
-                disabled={groupID.value === 0 ? true : false}
-                type="text"
-                autoComplete="off"
-                placeholder={dataLang.formatMessage({ id: "enterInfo" })}
-                onChange={(e) => handleFilter(e)}
-              />
+              {groupID.value === 0 ?
+                (
+                  <input
+                    disabled
+                    type="text"
+                    autoComplete="off"
+                    placeholder={dataLang.formatMessage({ id: "enterInfo" })}
+                  />)
+                :
+                (<input
+                  type="text"
+                  autoComplete="on"
+                  placeholder={dataLang.formatMessage({ id: "enterInfo" })}
+                  onChange={(e) => handleFilter(e)}
+                />)}
               <CiSearch color="gray" size={20} />
             </div>
             <button
