@@ -161,7 +161,7 @@ export default function Device(props) {
           });
           power = parseFloat(
             num.reduce((a, b) => Number(a) + Number(b), 0) *
-              row.pdata.total?.cal
+            row.pdata.total?.cal
           ).toFixed(2);
         }
         if (row.pdata.mode === "GRID") {
@@ -182,13 +182,13 @@ export default function Device(props) {
         <>
           {row.pdata.daily?.register
             ? Number(
-                parseFloat(
-                  convertUnit(
-                    invt[row.plogger]?.[row.pdata.daily.register] *
-                      row.pdata.daily?.cal
-                  )
-                ).toFixed(2)
-              ).toLocaleString("en-US")
+              parseFloat(
+                convertUnit(
+                  invt[row.plogger]?.[row.pdata.daily.register] *
+                  row.pdata.daily?.cal
+                )
+              ).toFixed(2)
+            ).toLocaleString("en-US")
             : 0}
           kWh
         </>
@@ -207,7 +207,7 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
-          ruleInfor.value.setting.device.delete === true ? (
+            ruleInfor.value.setting.device.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.psn + "_MORE"}
@@ -300,7 +300,7 @@ export default function Device(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.device.modify === true ||
-          ruleInfor.value.setting.device.delete === true ? (
+            ruleInfor.value.setting.device.delete === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.psn + "_MORE"}
@@ -467,9 +467,6 @@ export default function Device(props) {
             return (
               lowercasedata(item.pname).includes(searchTerm) ||
               lowercasedata(item.psn).includes(searchTerm) ||
-              lowercasedata(item.pplantname).includes(searchTerm) ||
-              lowercasedata(item.pname).includes(searchTerm) ||
-              lowercasedata(item.psn).includes(searchTerm) ||
               lowercasedata(item.pplantname).includes(searchTerm)
             );
           });
@@ -482,14 +479,10 @@ export default function Device(props) {
         } else {
           const dbInvert = inverterList.value.filter((item) => {
             return (
-              lowercasedata(item.psn).includes(searchTerm) ||
-              lowercasedata(item.psn).includes(searchTerm) ||
               lowercasedata(item.pname).includes(searchTerm) ||
-              lowercasedata(item.pname).includes(searchTerm) ||
-              lowercasedata(item.plogger).includes(searchTerm) ||
-              lowercasedata(item.plogger).includes(searchTerm) ||
+              lowercasedata(item.psn).includes(searchTerm) ||
               lowercasedata(item.pplantname).includes(searchTerm) ||
-              lowercasedata(item.pplantname).includes(searchTerm)
+              lowercasedata(item.plogger).includes(searchTerm)
             );
           });
           setDatafilterInvert([...dbInvert]);
@@ -725,7 +718,7 @@ export default function Device(props) {
 
                             <div className="DAT_DeviceMobile_Content_Top_Right">
                               {ruleInfor.value.setting.device.modify ===
-                              true ? (
+                                true ? (
                                 <div className="DAT_DeviceMobile_Content_Top_Right_Item">
                                   <MdEdit size={20} color="#216990" />
                                 </div>
@@ -733,7 +726,7 @@ export default function Device(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.device.delete ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_DeviceMobile_Content_Top_Right_Item"
                                   id={item.psn + "_" + item.pplantid}
@@ -811,7 +804,7 @@ export default function Device(props) {
 
                             <div className="DAT_DeviceMobile_Content_Top_Right">
                               {ruleInfor.value.setting.device.modify ===
-                              true ? (
+                                true ? (
                                 <div className="DAT_DeviceMobile_Content_Top_Right_Item">
                                   <MdEdit size={20} color="#216990" />
                                 </div>
@@ -819,7 +812,7 @@ export default function Device(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.device.remove ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_DeviceMobile_Content_Top_Right_Item"
                                   id={item.psn + "_" + item.pplantid}

@@ -264,7 +264,7 @@ export default function Login(props) {
                                     : <></>
                                 }
 
-                                <button>{dataLang.formatMessage({ id: 'update' })}</button>
+                                <button>{dataLang.formatMessage({ id: 'register' })}</button>
 
                                 <div className="DAT_Login_Form-footer">
                                     <span onClick={() => tab.value = 'register_1'}>
