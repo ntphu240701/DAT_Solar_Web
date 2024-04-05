@@ -7,6 +7,12 @@ import { CiClock1 } from "react-icons/ci";
 import Graph from "./Graph";
 import { useSelector } from "react-redux";
 // import { cal } from './ProjectData';
+import { projectData } from "./Project";
+import { useIntl } from "react-intl";
+import { CiClock1 } from "react-icons/ci";
+import Graph from "./Graph";
+import { useSelector } from "react-redux";
+// import { cal } from './ProjectData';
 
 export default function GraphComponent(props) {
   const dataLang = useIntl();
