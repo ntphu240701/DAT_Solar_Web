@@ -22,6 +22,7 @@ import { CiSearch } from "react-icons/ci";
 import { RxCross2 } from "react-icons/rx";
 import { FiEdit, FiFilter } from "react-icons/fi";
 import { IoTrashOutline } from "react-icons/io5";
+import { lowercasedata } from "../ErrorSetting/ErrorSetting";
 
 export const tab = signal("logger");
 export const info = signal({});
@@ -443,7 +444,7 @@ export default function Device(props) {
   };
 
   const handleSearch = (e) => {
-    const searchTerm = e.currentTarget.value.toLowerCase();
+    const searchTerm = lowercasedata(e.currentTarget.value);
     switch (tab.value) {
       case "logger":
         if (searchTerm == "") {
@@ -451,12 +452,9 @@ export default function Device(props) {
         } else {
           const db = loggerList.value.filter((item) => {
             return (
-              item.pname.toLowerCase().includes(searchTerm) ||
-              item.psn.toLowerCase().includes(searchTerm) ||
-              item.pplantname.toLowerCase().includes(searchTerm) ||
-              item.pname.toLowerCase().toLowerCase().includes(searchTerm) ||
-              item.psn.toLowerCase().toLowerCase().includes(searchTerm) ||
-              item.pplantname.toLowerCase().includes(searchTerm)
+              lowercasedata(item.pname).includes(searchTerm) ||
+              lowercasedata(item.psn).includes(searchTerm) ||
+              lowercasedata(item.pplantname).includes(searchTerm)
             );
           });
           setDatafilter([...db]);

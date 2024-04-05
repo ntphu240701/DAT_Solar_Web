@@ -66,7 +66,7 @@ export default function Filter(props) {
   };
 
   useEffect(() => {
-    console.log(props.data);
+    // console.log(props.data);
   }, [props.data])
 
   return (
