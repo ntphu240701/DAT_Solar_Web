@@ -3,6 +3,10 @@ import "./Project.scss";
 
 import axios from "axios";
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
+import "./Project.scss";
+
+import axios from "axios";
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 import { PacmanLoader } from "react-spinners";
 import { projectData } from "./Project";
 import { useSelector } from "react-redux";
@@ -78,92 +82,116 @@ export default function Weather() {
   ) : (
     // <div className="DAT_ProjectData_Dashboard_Data_Right">
     //   <div className="DAT_ProjectData_Dashboard_Data_Right_Weather">
-        <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside">
-          <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current">
-            <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Left">
-              <img
-                src={"/dat_picture/station.jpg"}
-                style={{ width: "140px", height: "80px" }}
-                alt=""
-              />
+    <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside">
+      <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current">
+        <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Left">
+          <img
+            src={"/dat_picture/station.jpg"}
+            style={{ width: "140px", height: "80px" }}
+            alt=""
+          />
+        </div>
+        <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right">
+          <img
+            src={"https:" + data.current.condition.icon}
+            style={{ width: "70px", height: "70px" }}
+            alt=""
+          />
+          <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit">
+            <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit_Temp">
+              {data.current.temp_c}°C
             </div>
-            <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right">
-              <img
-                src={"https:" + data.current.condition.icon}
-                style={{ width: "70px", height: "70px" }}
-                alt=""
-              />
-              <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit">
-                <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit_Temp">
-                  {data.current.temp_c}°C
-                </div>
-                <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit_Des">
-                  {data.current.condition.text}
-                </div>
-              </div>
+            <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Current_Right_Tit_Des">
+              {data.current.condition.text}
             </div>
-          </div>
-          <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Describe">
-            <IoLocation color="rgba(97,88,194,0.8)" size={15} />
-            {data.location.name},{data.location.country}, {data.location.localtime}
-          </div>
-          <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Forecast">
-            <ResponsiveContainer width={"100%"} height={150}>
-              <AreaChart
-                data={forecastdata}
-                margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
-              >
-                <defs>
-                  <linearGradient
-                    id="colorforecastdata"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="5%" stopColor="rgba(97,88,194,0.8)" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="rgba(97,88,194,0.8)" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="name" hide={true} />
-                <Tooltip animationEasing="ease-in-out" />
-                <Area
-                  type="monotone"
-                  dataKey={v}
-                  stroke="rgba(97,88,194,0.8)"
-                  fillOpacity={20}
-                  fill="url(#colorforecastdata)"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom">
-            {data.forecast.forecastday.map((item, index) => {
-              let weekdays = [];
-              if (lang === "en") {
-                weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-              } else if (lang === "vi") {
-                weekdays = ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
-              }
-              const dateObj = new Date(item.date);
-              const weekday = weekdays[dateObj.getUTCDay()];
-              return (
-                <div
-                  key={index}
-                  className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom_Box"
-                >
-                  <div>{weekday}</div>
-                  <div>
-                    <img
-                      src={"https:" + item.day.condition.icon}
-                      style={{ width: "40px", height: "40px" }}
-                      alt=""
-                    />
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
+      </div>
+      <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Describe">
+        <IoLocation color="rgba(97,88,194,0.8)" size={15} />
+        {data.location.name},{data.location.country}, {data.location.localtime}
+      </div>
+      <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Forecast">
+        <ResponsiveContainer width={"100%"} height={150}>
+          <AreaChart
+            data={forecastdata}
+            margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+          >
+            <defs>
+              <linearGradient
+                id="colorforecastdata"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop
+                  offset="5%"
+                  stopColor="rgba(97,88,194,0.8)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="rgba(97,88,194,0.8)"
+                  stopOpacity={0}
+                />
+              </linearGradient>
+            </defs>
+            <XAxis dataKey="name" hide={true} />
+            <Tooltip animationEasing="ease-in-out" />
+            <Area
+              type="monotone"
+              dataKey={v}
+              stroke="rgba(97,88,194,0.8)"
+              fillOpacity={20}
+              fill="url(#colorforecastdata)"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+      <div className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom">
+        {data.forecast.forecastday.map((item, index) => {
+          let weekdays = [];
+          if (lang === "en") {
+            weekdays = [
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ];
+          } else if (lang === "vi") {
+            weekdays = [
+              "Chủ nhật",
+              "Thứ hai",
+              "Thứ ba",
+              "Thứ tư",
+              "Thứ năm",
+              "Thứ sáu",
+              "Thứ bảy",
+            ];
+          }
+          const dateObj = new Date(item.date);
+          const weekday = weekdays[dateObj.getUTCDay()];
+          return (
+            <div
+              key={index}
+              className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom_Box"
+            >
+              <div>{weekday}</div>
+              <div>
+                <img
+                  src={"https:" + item.day.condition.icon}
+                  style={{ width: "40px", height: "40px" }}
+                  alt=""
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
