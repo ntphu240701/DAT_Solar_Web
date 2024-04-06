@@ -280,7 +280,7 @@ const GroupUsers = (props) => {
                               </div>
 
                               <div className="DAT_ProjectMobile_Content_Bottom_Right">
-                                {ruleInfor.value.setting.project.modify ===
+                                {/* {ruleInfor.value.setting.project.modify ===
                                 true ? (
                                   <div
                                     className="DAT_ProjectMobile_Content_Bottom_Right_Item"
@@ -291,13 +291,12 @@ const GroupUsers = (props) => {
                                   </div>
                                 ) : (
                                   <div></div>
-                                )}
-                                {ruleInfor.value.setting.project.modify ===
-                                true ? (
+                                )} */}
+                                {item.type_ !== "master" ? (
                                   <div
                                     className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                     id={item.id_}
-                                    // onClick={(e) => handleDelete_(e)}
+                                    onClick={(e) => handleDeleteUser(e)}
                                   >
                                     <IoTrashOutline size={16} />
                                   </div>
@@ -652,7 +651,7 @@ export default function GroupRole(props) {
               </div>
               <button
                 className="DAT_ProjectHeaderMobile_Top_New"
-                // onClick={() => setRoleState("create")}
+              // onClick={() => setRoleState("create")}
               >
                 <IoAddOutline color="white" size={20} />
               </button>
