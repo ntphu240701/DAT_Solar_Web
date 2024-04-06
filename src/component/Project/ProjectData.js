@@ -157,9 +157,9 @@ export default function ProjectData(props) {
         <>
           {row.data.daily?.register
             ? parseFloat(
-                invt[row.logger_]?.[row.data.daily.register] *
-                  row.data.daily?.cal
-              ).toFixed(2)
+              invt[row.logger_]?.[row.data.daily.register] *
+              row.data.daily?.cal
+            ).toFixed(2)
             : 0}{" "}
           kWh
         </>
@@ -178,7 +178,7 @@ export default function ProjectData(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify === true ||
-          ruleInfor.value.setting.project.delete === true ? (
+            ruleInfor.value.setting.project.delete === true ? (
             projectData.value.shared == 1 ? (
               <></>
             ) : (
@@ -318,7 +318,7 @@ export default function ProjectData(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.project.modify === true ||
-          ruleInfor.value.setting.project.delete === true ? (
+            ruleInfor.value.setting.project.delete === true ? (
             projectData.value.shared == 1 ? (
               <></>
             ) : (
@@ -1034,7 +1034,7 @@ export default function ProjectData(props) {
                       <div className="DAT_Toollist_Tab_Mobile">
                         <button
                           className="DAT_Toollist_Tab_Mobile_content"
-                          onClick={() => (tabMobile.value = !tabMobile.value)}
+                          onClick={() => (tabMobile.value = true)}
                         >
                           <span> {tabLable.value}</span>
                           {tabMobile.value ? (
@@ -1048,7 +1048,7 @@ export default function ProjectData(props) {
                             <></>
                           ) : (
                             <div
-                              className="DAT_ProjectData_Header_Right_Add"
+                              className="DAT_ProjectData_Device_Add"
                               style={{
                                 display: view === "device" ? "block" : "none",
                               }}
@@ -1070,7 +1070,8 @@ export default function ProjectData(props) {
                         {tabMobile.value ? (
                           <div
                             className="DAT_Toollist_Tab_Mobile_list"
-                            onMouseLeave={() => (tabMobile.value = false)}
+                            style={{ marginTop: "120px" }}
+                          // onMouseLeave={() => (tabMobile.value = false)}
                           >
                             {listDeviceTab.map((item, i) => {
                               return (
@@ -1078,7 +1079,11 @@ export default function ProjectData(props) {
                                   className="DAT_Toollist_Tab_Mobile_list_item"
                                   key={"tabmobile_" + i}
                                   id={item.id}
-                                  onClick={(e) => handleTabMobileDevice(e)}
+                                  onClick={(e) => {
+                                    handleTabMobileDevice(e);
+                                    tabMobile.value = false;
+
+                                  }}
                                 >
                                   {i + 1}: {item.name}
                                 </div>
@@ -1220,10 +1225,10 @@ export default function ProjectData(props) {
                                             :{" "}
                                             {item.data.daily?.register
                                               ? parseFloat(
-                                                  invt[item.logger_]?.[
-                                                    item.data.daily.register
-                                                  ] * item.data.daily?.cal
-                                                ).toFixed(2)
+                                                invt[item.logger_]?.[
+                                                item.data.daily.register
+                                                ] * item.data.daily?.cal
+                                              ).toFixed(2)
                                               : 0}
                                             kWh
                                           </div>
