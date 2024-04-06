@@ -10,7 +10,7 @@ import { isMobile } from "../Navigation/Navigation";
 import { useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { Token, convertUnit, ruleInfor, userInfor } from "../../App";
+import { COLOR, Token, convertUnit, ruleInfor, userInfor } from "../../App";
 import { useIntl } from "react-intl";
 import Filter from "../Project/Filter";
 import axios from "axios";
@@ -707,20 +707,26 @@ export default function Device(props) {
                       return (
                         <div key={i} className="DAT_DeviceMobile_Content">
                           <div className="DAT_DeviceMobile_Content_Top">
-                            <div className="DAT_DeviceMobile_Content_Top_Name"
+                            <div className="DAT_DeviceMobile_Content_Top_Type"
+                              style={{ backgroundColor: COLOR.value.DarkGreenColor }}
                               id={`${item.psn}_${tab.value}_${item.plogger}`}
                               onClick={(e) => handleShowInfo(e)}
                             >
-                              {dataLang.formatMessage({ id: "name" })}: {item.pname}
+                              {item.pdata.mode}
                             </div>
-                            <div className="DAT_DeviceMobile_Content_Top_Sn">
-                              SN: {item.psn}
-                            </div>
-                            <div className="DAT_DeviceMobile_Content_Top_OgLog">
-                              {dataLang.formatMessage({ id: "ogLog" })}: {item.plogger}
-                            </div>
-                            <div className="DAT_DeviceMobile_Content_Top_Type">
-                              {dataLang.formatMessage({ id: "project" })}: {item.pplantname}
+                            <div className="DAT_DeviceMobile_Content_Top_Info">
+                              <div className="DAT_DeviceMobile_Content_Top_Info_Name"
+                                id={`${item.psn}_${tab.value}_${item.plogger}`}
+                                onClick={(e) => handleShowInfo(e)}
+                              >
+                                {item.pname}
+                              </div>
+                              <div className="DAT_DeviceMobile_Content_Top_Info_Sn">
+                                SN: {item.psn}
+                              </div>
+                              <div className="DAT_DeviceMobile_Content_Top_Info_OgLog">
+                                {dataLang.formatMessage({ id: "ogLog" })}: {item.plogger}
+                              </div>
                             </div>
                           </div>
 
@@ -772,19 +778,25 @@ export default function Device(props) {
                       return (
                         <div key={i} className="DAT_DeviceMobile_Content">
                           <div className="DAT_DeviceMobile_Content_Top">
-                            <div className="DAT_DeviceMobile_Content_Top_Name"
+                            <div className="DAT_DeviceMobile_Content_Top_Type"
                               id={`${item.pid}_${tab.value}`}
                               onClick={(e) => handleShowInfo(e)}
                             >
-                              {dataLang.formatMessage({ id: "name" })}:{" "}
-                              {item.pname}
+                              {item.ptype}
                             </div>
-                            <div className="DAT_DeviceMobile_Content_Top_Sn">
-                              SN: {item.psn}
-                            </div>
-                            <div className="DAT_DeviceMobile_Content_Top_Type">
-                              {dataLang.formatMessage({ id: "project" })}:{" "}
-                              {item.pplantname}
+                            <div className="DAT_DeviceMobile_Content_Top_Info">
+                              <div className="DAT_DeviceMobile_Content_Top_Info_Name"
+                                id={`${item.pid}_${tab.value}`}
+                                onClick={(e) => handleShowInfo(e)}
+                              >
+                                {item.pname}
+                              </div>
+                              <div className="DAT_DeviceMobile_Content_Top_Info_Sn">
+                                SN: {item.psn}
+                              </div>
+                              <div className="DAT_DeviceMobile_Content_Top_Info_Plant">
+                                {dataLang.formatMessage({ id: "project" })}: {item.pplantname}
+                              </div>
                             </div>
                           </div>
 

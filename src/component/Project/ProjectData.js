@@ -14,7 +14,7 @@ import { Empty, plantState, projectData, popupState } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { Token, ruleInfor } from "../../App";
+import { COLOR, Token, ruleInfor } from "../../App";
 import { info, tab } from "../Device/Device";
 import { useDispatch, useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
@@ -646,10 +646,7 @@ export default function ProjectData(props) {
     getLogger();
 
     return () => {
-      // cal.value = {};
       tab_.value = "logger";
-      // temp.value = [];
-      // inverterDB.value = [];
     };
 
     // eslint-disable-next-line
@@ -1100,25 +1097,18 @@ export default function ProjectData(props) {
                                   return (
                                     <div className="DAT_ProjectData_Device_TableMobile_Content" key={i}>
                                       <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
-                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Name"
-                                          onClick={(e) => handleInfoLogger(e)}
-                                        >
-                                          <span>
-                                            {dataLang.formatMessage({ id: "name", })}:
-                                          </span>
-                                          {item.name}
-                                        </div>
-                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Sn">
-                                          <span>
-                                            SN:
-                                          </span>
-                                          {item.sn}
-                                        </div>
                                         <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Type">
-                                          <span>
-                                            {dataLang.formatMessage({ id: "type", })}:
-                                          </span>
                                           {item.type}
+                                        </div>
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info">
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_Name"
+                                            onClick={(e) => handleInfoLogger(e)}
+                                          >
+                                            {item.name}
+                                          </div>
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_Sn">
+                                            SN: {item.sn}
+                                          </div>
                                         </div>
                                       </div>
 
@@ -1178,32 +1168,25 @@ export default function ProjectData(props) {
                               <>
                                 {inverterDB.value?.map((item, i) => {
                                   return (
-                                    <div
-                                      key={i}
-                                      className="DAT_ProjectData_Device_TableMobile_Content"
-                                    >
+                                    <div key={i} className="DAT_ProjectData_Device_TableMobile_Content">
                                       <div className="DAT_ProjectData_Device_TableMobile_Content_Top">
-                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Name"
-                                          onClick={(e) => handleInfoInverter(e)}
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Type"
+                                          style={{ backgroundColor: COLOR.value.DarkGreenColor }}
                                         >
-                                          <span>
-                                            {dataLang.formatMessage({ id: "name", })}:
-                                          </span>
-                                          {item.name}
+                                          {item.data.mode}
                                         </div>
-
-                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Sn">
-                                          <span>
-                                            SN:
-                                          </span>
-                                          {item.sn}
-                                        </div>
-
-                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_OgLog">
-                                          <span>
-                                            {dataLang.formatMessage({ id: "ogLog", })}:
-                                          </span>
-                                          {item.logger_}
+                                        <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info">
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_Name"
+                                            onClick={(e) => handleInfoInverter(e)}
+                                          >
+                                            {item.name}
+                                          </div>
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_Sn">
+                                            SN: {item.sn}
+                                          </div>
+                                          <div className="DAT_ProjectData_Device_TableMobile_Content_Top_Info_OgLog">
+                                            {dataLang.formatMessage({ id: "ogLog", })}: {item.logger_}
+                                          </div>
                                         </div>
                                       </div>
 
