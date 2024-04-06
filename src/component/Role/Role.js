@@ -9,7 +9,7 @@ import DeleteRole from "./DeleteRole";
 import EditRole from "./EditRole";
 import { host } from "../Lang/Contant";
 import { callApi } from "../Api/Api";
-import { partnerInfor } from "../../App";
+import { partnerInfor, ruleInfor } from "../../App";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 import { datarule } from "../Rule/Rule";
@@ -23,6 +23,8 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { LuUserSquare } from "react-icons/lu";
 import { FiEdit } from "react-icons/fi";
 import { lowercasedata } from "../ErrorSetting/ErrorSetting";
+import { MdAddchart } from "react-icons/md";
+import { GoProject } from "react-icons/go";
 
 export const roleData = signal({});
 export const Usr_ = signal([]);
@@ -227,75 +229,79 @@ export default function Role(props) {
     setdatafilter(Usr_.value);
   }, [Usr_.value]);
 
+  useEffect(() => {
+    console.log(ruleInfor.value);
+  }, [ruleInfor.value]);
+
   return (
     <>
-      <div className="DAT_RoleHeader">
-        <div className="DAT_RoleHeader_Title">
-          <LuUserSquare color="gray" size={25} />
-          <span>{dataLang.formatMessage({ id: "role" })}</span>
-        </div>
-
-        {isMobile.value ? (
-          <>
-            <div className="DAT_Modify">
-              <div
-                className="DAT_Modify_Item"
-                onClick={() => setFilter(!filter)}
-              >
-                <CiSearch color="white" size={20} />
-              </div>
-              <div
-                className="DAT_Modify_Add"
-                onClick={() => setRoleState("create")}
-              >
-                <IoAddOutline color="white" size={20} />
-              </div>
-            </div>
-
-            {filter ? (
-              <div className="DAT_Modify_Filter">
-                <input
-                  type="text"
-                  placeholder={dataLang.formatMessage({ id: "enterName" })}
-                  onChange={(e) => handleFilter(e)}
-                />
-                <div
-                  className="DAT_Modify_Filter_Close"
-                  onClick={() => setFilter(!filter)}
-                >
-                  <RxCross2 size={20} color="white" />
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
-          </>
-        ) : (
-          <>
-            <div className="DAT_RoleHeader_Filter">
+      {isMobile.value ? (
+        <div className="DAT_ProjectHeaderMobile">
+          <div className="DAT_ProjectHeaderMobile_Top">
+            <div className="DAT_ProjectHeaderMobile_Top_Filter">
+              <CiSearch color="gray" size={20} />
               <input
+                id="search"
                 type="text"
+                placeholder={
+                  dataLang.formatMessage({ id: "enter" }) +
+                  dataLang.formatMessage({ id: "role" })
+                }
                 autoComplete="off"
-                placeholder={dataLang.formatMessage({ id: "enterName" })}
                 onChange={(e) => handleFilter(e)}
               />
-              <CiSearch color="gray" size={20} />
             </div>
             <button
-              className="DAT_RoleHeader_New"
+              className="DAT_ProjectHeaderMobile_Top_New"
               onClick={() => setRoleState("create")}
             >
-              <span>
-                <AiOutlineUserAdd color="white" size={20} />
+              <IoAddOutline color="white" size={20} />
+            </button>
+          </div>
+
+          <div className="DAT_ProjectHeaderMobile_Title">
+            <GoProject color="gray" size={25} />
+            <span>{dataLang.formatMessage({ id: "role" })}</span>
+          </div>
+        </div>
+      ) : (
+        <div className="DAT_ProjectHeader">
+          <div className="DAT_ProjectHeader_Title">
+            <LuUserSquare color="gray" size={25} />
+            <span>{dataLang.formatMessage({ id: "role" })}</span>
+          </div>
+
+          <div className="DAT_ProjectHeader_Filter">
+            <input
+              id="search"
+              type="text"
+              placeholder={
+                dataLang.formatMessage({ id: "enter" }) +
+                dataLang.formatMessage({ id: "role" })
+              }
+              autoComplete="off"
+              onChange={(e) => handleFilter(e)}
+            />
+            <CiSearch color="gray" size={20} />
+          </div>
+          {ruleInfor.value.setting.project.add === true ? (
+            <button
+              className="DAT_ProjectHeader_New"
+              onClick={() => setRoleState("create")}
+            >
+              <span value={"createdate"}>
+                <MdAddchart color="white" size={20} />
                 &nbsp;
                 {dataLang.formatMessage({ id: "createNew" })}
               </span>
             </button>
-          </>
-        )}
-      </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
+      )}
 
-      {isMobile.value ? (
+      {/* {isMobile.value ? (
         <>
           <div className="DAT_RoleMobile">
             <div className="DAT_RoleMobile_Header" style={{ padding: "15px" }}>
@@ -381,7 +387,7 @@ export default function Role(props) {
             </div>
           </div>
         </>
-      )}
+      )} */}
 
       <div
         className="DAT_RoleInfor"

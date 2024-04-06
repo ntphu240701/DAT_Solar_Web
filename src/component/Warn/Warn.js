@@ -15,7 +15,12 @@ import moment from "moment-timezone";
 import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { LuMailWarning } from "react-icons/lu";
-import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore } from "react-icons/io";
+import {
+  IoIosArrowDown,
+  IoIosArrowForward,
+  IoIosArrowUp,
+  IoMdMore,
+} from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { IoTrashOutline } from "react-icons/io5";
 import { FiFilter } from "react-icons/fi";
@@ -37,6 +42,8 @@ export default function Warn(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
   const [datafilter, setDatafilter] = useState([]);
+  const [datafilteropen, setDatafilteropen] = useState(open.value);
+  const [datafilterclosed, setDatafilterclosed] = useState(closed.value);
   const [boxid, setBoxid] = useState("");
   const [level, setLevel] = useState("");
   const [plant, setPlant] = useState("");
@@ -70,13 +77,15 @@ export default function Warn(props) {
     },
     {
       name: dataLang.formatMessage({ id: "errname" }),
-      selector: (row) =>
-        <div style={{ cursor: "pointer" }}
+      selector: (row) => (
+        <div
+          style={{ cursor: "pointer" }}
           onClick={(e) => handleInfo(e)}
           id={row.boxid + "_" + row.level + "_" + row.plant + "_" + row.device} // E_1_3_warn....
         >
           {dataLang.formatMessage({ id: row.boxid, defaultMessage: row.boxid })}
-        </div>,
+        </div>
+      ),
       sortable: true,
       width: "180px",
       style: {
@@ -141,7 +150,7 @@ export default function Warn(props) {
       selector: (row) => (
         <>
           {ruleInfor.value.setting.warn.modify === true ||
-            ruleInfor.value.setting.warn.remove === true ? (
+          ruleInfor.value.setting.warn.remove === true ? (
             <div className="DAT_TableEdit">
               <span
                 id={row.boxid + "_" + row.warnid + "_MORE"}
@@ -192,26 +201,25 @@ export default function Warn(props) {
 
     let req = await callApi("post", `${host.DATA}/getWarninf`, {
       boxid: id,
-    })
+    });
     console.log(req);
     if (req.status) {
       setInfowarnState(true);
-      setBoxid(id)
-      setLevel(temp[3])
-      setPlant(temp[4])
-      setDevice(temp[5])
-      setCause(req.data.cause_)
-      setSolution(req.data.solution_)
+      setBoxid(id);
+      setLevel(temp[3]);
+      setPlant(temp[4]);
+      setDevice(temp[5]);
+      setCause(req.data.cause_);
+      setSolution(req.data.solution_);
     } else {
       setInfowarnState(true);
-      setBoxid(id)
-      setLevel(temp[3])
-      setPlant(temp[4])
-      setDevice(temp[5])
-      setCause([])
-      setSolution([])
+      setBoxid(id);
+      setLevel(temp[3]);
+      setPlant(temp[4]);
+      setDevice(temp[5]);
+      setCause([]);
+      setSolution([]);
     }
-
   };
 
   const handleCloseInfo = () => {
@@ -230,7 +238,9 @@ export default function Warn(props) {
   const handleModify = (e, type) => {
     const id = e.currentTarget.id;
     var arr = id.split("_");
-    const mod = document.getElementById(`${arr[0]}_${arr[1]}_${arr[2]}_${arr[3]}_Modify`);
+    const mod = document.getElementById(
+      `${arr[0]}_${arr[1]}_${arr[2]}_${arr[3]}_Modify`
+    );
     mod.style.display = type;
   };
 
@@ -240,6 +250,11 @@ export default function Warn(props) {
     const newLabel = listTab.find((item) => item.id == id);
     tabLable.value = newLabel.name;
   };
+
+  useEffect(() => {
+    setDatafilteropen(open.value);
+    setDatafilterclosed(closed.value);
+  }, [open.value, closed.value]);
 
   // by Mr Loc
   const handleSearch = (e) => {
@@ -251,13 +266,40 @@ export default function Warn(props) {
       projectwarnfilter.value = 0;
     } else {
       let temp = dataWarn.value.filter(
-        (item) => item.plant.toLowerCase().includes(searchTerm) ||
+        (item) =>
+          item.plant.toLowerCase().includes(searchTerm) ||
           item.device.toLowerCase().includes(searchTerm) ||
           item.boxid.toLowerCase().includes(searchTerm) ||
-          dataLang.formatMessage({ id: item.boxid, defaultMessage: item.boxid }).toLowerCase().includes(searchTerm)
+          dataLang
+            .formatMessage({ id: item.boxid, defaultMessage: item.boxid })
+            .toLowerCase()
+            .includes(searchTerm)
       );
       setDatafilter([...temp]);
-      console.log(temp);
+      let temp2 = open.value.filter(
+        (item) =>
+          item.plant.toLowerCase().includes(searchTerm) ||
+          item.device.toLowerCase().includes(searchTerm) ||
+          item.boxid.toLowerCase().includes(searchTerm) ||
+          dataLang
+            .formatMessage({ id: item.boxid, defaultMessage: item.boxid })
+            .toLowerCase()
+            .includes(searchTerm)
+      );
+      setDatafilteropen([...temp2]);
+      let temp3 = closed.value.filter(
+        (item) =>
+          item.plant.toLowerCase().includes(searchTerm) ||
+          item.device.toLowerCase().includes(searchTerm) ||
+          item.boxid.toLowerCase().includes(searchTerm) ||
+          dataLang
+            .formatMessage({ id: item.boxid, defaultMessage: item.boxid })
+            .toLowerCase()
+            .includes(searchTerm)
+      );
+      setDatafilterclosed([...temp3]);
+      // console.log(temp);
+
       warnfilter.value = {};
     }
   };
@@ -269,17 +311,17 @@ export default function Warn(props) {
 
   const handleCloseFilter = () => {
     setDisplay(false);
-  }
+  };
 
   const handleWarnFilter = (opentime, closetime) => {
     //Bật tắt filter layout
-    setDisplay(false)
+    setDisplay(false);
 
     //Gọi biến thời gian nhập vào
     const openInput = moment(opentime).format("MM/DD/YYYY");
     const closeInput = moment(closetime).format("MM/DD/YYYY");
 
-    console.log('openINPUT', openInput, closeInput);
+    console.log("openINPUT", openInput, closeInput);
 
     const newdb = dataWarn.value.filter((item) => {
       // Gọi biến thời gian trong dataWarn
@@ -288,7 +330,8 @@ export default function Warn(props) {
 
       // Nếu người dùng không chỉnh ngày thì vẫn chạy điều kiện checkbox
       if (openInput == "Invalid date" && closeInput == "Invalid date") {
-        const levelChange = item.level == warn.value || item.level == notice.value
+        const levelChange =
+          item.level == warn.value || item.level == notice.value;
         return levelChange;
       }
 
@@ -306,12 +349,16 @@ export default function Warn(props) {
 
       // Nếu người dùng không check type warning thì vẫn chạy điều kiện thời gian
       else if (warn.value == null && notice.value == null) {
-        const timeChange = (openData >= openInput && openData <= closeInput) || (closeData >= openInput && closeData < closeInput);
+        const timeChange =
+          (openData >= openInput && openData <= closeInput) ||
+          (closeData >= openInput && closeData < closeInput);
         return timeChange;
-      }
-      else {
-        const levelChange = item.level == warn.value || item.level == notice.value
-        const timeChange = (openData >= openInput && openData <= closeInput) || (closeData >= openInput && closeData < closeInput);
+      } else {
+        const levelChange =
+          item.level == warn.value || item.level == notice.value;
+        const timeChange =
+          (openData >= openInput && openData <= closeInput) ||
+          (closeData >= openInput && closeData < closeInput);
         return levelChange && timeChange;
       }
     });
@@ -351,7 +398,7 @@ export default function Warn(props) {
     }
     return () => {
       warntab.value = "all";
-    }
+    };
   }, [dataWarn.value]);
 
   return (
@@ -365,7 +412,8 @@ export default function Warn(props) {
         {isMobile.value ? (
           <>
             <div className="DAT_Modify">
-              <div className="DAT_Modify_Item"
+              <div
+                className="DAT_Modify_Item"
                 onClick={() => setFilter(!filter)}
               >
                 <CiSearch color="white" size={20} />
@@ -378,7 +426,8 @@ export default function Warn(props) {
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterWarn" })}
                 />
-                <div className="DAT_Modify_Filter_Close"
+                <div
+                  className="DAT_Modify_Filter_Close"
                   onClick={() => setFilter(!filter)}
                 >
                   <RxCross2 size={20} color="white" />
@@ -653,7 +702,8 @@ export default function Warn(props) {
               );
             })}
 
-            <div className="DAT_Warn_Filter"
+            <div
+              className="DAT_Warn_Filter"
               onClick={(e) => setDisplay(!display)}
             >
               <FiFilter />
@@ -686,7 +736,7 @@ export default function Warn(props) {
                     <DataTable
                       className="DAT_Table_Container"
                       columns={columnWarn}
-                      data={open.value}
+                      data={datafilteropen}
                       pagination
                       paginationComponentOptions={paginationComponentOptions}
                       fixedHeader={true}
@@ -698,7 +748,7 @@ export default function Warn(props) {
                     <DataTable
                       className="DAT_Table_Container"
                       columns={columnWarn}
-                      data={closed.value}
+                      data={datafilterclosed}
                       pagination
                       paginationComponentOptions={paginationComponentOptions}
                       fixedHeader={true}

@@ -36,7 +36,7 @@ export default function Weather() {
   const dragging = (e) => {
     if (!isDragging) return;
     const x = e.clientX - boxRef.current.offsetLeft;
-    const scrollLeft = (x - startX);
+    const scrollLeft = x - startX;
     boxRef.current.scrollLeft -= scrollLeft;
   };
 
@@ -145,8 +145,16 @@ export default function Weather() {
                 x2="0"
                 y2="1"
               >
-                <stop offset="5%" stopColor="rgba(97,88,194,0.8)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="rgba(97,88,194,0.8)" stopOpacity={0} />
+                <stop
+                  offset="5%"
+                  stopColor="rgba(97,88,194,0.8)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="rgba(97,88,194,0.8)"
+                  stopOpacity={0}
+                />
               </linearGradient>
             </defs>
             <XAxis dataKey="name" hide={true} />
@@ -167,14 +175,30 @@ export default function Weather() {
         onMouseLeave={stopDragging}
         onMouseMove={dragging}
         ref={boxRef}
-        selectionColor={"black"}
-        className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom">
+        className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom"
+      >
         {data.forecast.forecastday.map((item, index) => {
           let weekdays = [];
           if (lang === "en") {
-            weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            weekdays = [
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ];
           } else if (lang === "vi") {
-            weekdays = ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
+            weekdays = [
+              "Chủ nhật",
+              "Thứ hai",
+              "Thứ ba",
+              "Thứ tư",
+              "Thứ năm",
+              "Thứ sáu",
+              "Thứ bảy",
+            ];
           }
           const dateObj = new Date(item.date);
           const weekday = weekdays[dateObj.getUTCDay()];
@@ -184,7 +208,16 @@ export default function Weather() {
               key={index}
               className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom_Box"
             >
-              <div style={{ fontFamily: isToday ? "Montserrat-Bold" : "Montserrat-Regular", color: "rgba(11, 25, 103)" }}>{weekday}</div>
+              <div
+                style={{
+                  fontFamily: isToday
+                    ? "Montserrat-Bold"
+                    : "Montserrat-Regular",
+                  color: "rgba(11, 25, 103)",
+                }}
+              >
+                {weekday}
+              </div>
               <div>
                 <img
                   draggable="true" // Enable drag for images
@@ -198,6 +231,6 @@ export default function Weather() {
           );
         })}
       </div>
-    </div >
+    </div>
   );
 }
