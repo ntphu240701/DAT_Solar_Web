@@ -1603,45 +1603,58 @@
                 border: solid 1px rgba(198, 197, 197, 0.5);
 
                 &_Top {
-                    display: flex;
-                    gap: 10px;
-                    border-bottom: solid 1px rgb(199, 199, 199);
+                    border-bottom: solid 1px rgba(198, 197, 197, 0.5);
                     padding: 10px;
                     box-sizing: border-box;
+                    display: flex;
+                    justify-content: space-between;
 
-                    &_Left {
-                        flex: 9;
+                    &_Name {
+                        color: black;
+                        font-size: 16px;
+                        display: flex;
+                        flex-direction: column;
 
-                        &_Name {
-                            color: black;
-                            font-size: 16px;
-                            margin-bottom: 5px;
-                            display: flex;
-                            align-items: center;
-                        }
-
-                        &_Sn {
-                            color: black;
-                            font-size: 16px;
-                            margin-bottom: 5px;
-                            display: flex;
-                            align-items: center;
-                        }
-
-                        &_OgLog {
-                            color: black;
-                            font-size: 16px;
-                            margin-bottom: 5px;
-                            display: flex;
-                            align-items: center;
+                        & span {
+                            font-size: 14px;
+                            color: gray;
                         }
                     }
 
-                    &_Right {
-                        flex: 1;
+                    &_Sn {
+                        color: black;
+                        font-size: 16px;
                         display: flex;
-                        justify-content: flex-end;
-                        gap: 5px;
+                        flex-direction: column;
+
+                        & span {
+                            font-size: 14px;
+                            color: gray;
+                        }
+                    }
+
+                    &_OgLog {
+                        color: black;
+                        font-size: 16px;
+                        display: flex;
+                        flex-direction: column;
+
+                        & span {
+                            font-size: 14px;
+                            color: gray;
+                        }
+                    }
+
+                    &_Type {
+                        color: black;
+                        font-size: 16px;
+                        display: flex;
+                        flex-direction: column;
+
+                        & span {
+                            font-size: 14px;
+                            color: gray;
+                        }
                     }
                 }
 
@@ -1652,15 +1665,17 @@
                     justify-content: space-between;
 
                     &_State {
-                        // display: flex;
-                        // gap: 10px;
-                        // margin-bottom: 5px;
+                        flex: 9;
                         display: flex;
                         align-items: center;
-                        justify-content: center;
                         gap: 5px;
+                    }
 
-                        &_Item {}
+                    &_Right {
+                        flex: 1;
+                        display: flex;
+                        justify-content: flex-end;
+                        gap: 5px;
                     }
                 }
             }

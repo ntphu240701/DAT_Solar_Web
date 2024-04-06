@@ -778,8 +778,7 @@ export default function Project(props) {
       {isMobile.value ? (
         <div className="DAT_ProjectMobile">
           <div className="DAT_Toollist_Tab_Mobile">
-            <button
-              className="DAT_Toollist_Tab_Mobile_content"
+            <button className="DAT_Toollist_Tab_Mobile_content"
               onClick={() => (tabMobile.value = !tabMobile.value)}
             >
               <span>{tabLable.value}</span>
@@ -791,7 +790,8 @@ export default function Project(props) {
             <div className="DAT_Toollist_Tab_Mobile_list"
               style={{
                 top: "50px",
-                height: tabMobile.value ? "200px" : "0", transition: "0.5s",
+                height: tabMobile.value ? "200px" : "0",
+                transition: "0.5s",
                 boxShadow: tabMobile.value ? "0 0 4px 4px rgba(193, 193, 193, 0.5)" : "none"
               }}
             >
@@ -886,18 +886,14 @@ export default function Project(props) {
                                     <>
                                       <FaCheckCircle size={14} color="green" />
                                       <span>
-                                        {dataLang.formatMessage({
-                                          id: "noAlert",
-                                        })}
+                                        {dataLang.formatMessage({ id: "noAlert", })}
                                       </span>
                                     </>
                                   ) : (
                                     <>
                                       <MdOutlineError size={16} color="red" />
                                       <span>
-                                        {dataLang.formatMessage({
-                                          id: "alert",
-                                        })}
+                                        {dataLang.formatMessage({ id: "alert", })}
                                       </span>
                                     </>
                                   )}
