@@ -62,7 +62,7 @@ export default function Login(props) {
         e.preventDefault();
 
         let auth = async () => {
-            let res = await callApi('post', host.AUTH + '/Login', { username: user, password: pass })
+            let res = await callApi('post', host.AUTH + '/Login', { username: user, password: pass, lang: lang })
             if (res.status) {
                 if (savepwd) {
                     localStorage.setItem('token', JSON.stringify(res.accessToken))

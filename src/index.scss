@@ -524,7 +524,7 @@ iframe {
     transition: all 0.5s ease-in;
     z-index: 1;
     background-color: white;
-    box-shadow: 0 0 3px 3px rgba(193, 193, 193, 0.5);
+    border: solid 1px rgba(198, 197, 197, 0.5);
 
     &_Icon {
       display: flex;
@@ -532,67 +532,64 @@ iframe {
       justify-content: flex-end;
     }
 
-    &::before,
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      width: 0;
-      height: 100%;
-      transform: skew(15deg);
-      transition: all 0.5s;
-      overflow: hidden;
-      z-index: -1;
-    }
+    // &::before,
+    // &::after {
+    //   content: "";
+    //   position: absolute;
+    //   top: 0;
+    //   width: 0;
+    //   height: 100%;
+    //   transform: skew(15deg);
+    //   transition: all 0.5s;
+    //   overflow: hidden;
+    //   z-index: -1;
+    // }
 
-    &::before {
-      left: -10px;
-      background: #89cff3;
-    }
+    // &::before {
+    //   left: -10px;
+    //   background: #89cff3;
+    // }
 
-    &::after {
-      right: -10px;
-      background: #89cff3;
-    }
+    // &::after {
+    //   right: -10px;
+    //   background: #89cff3;
+    // }
 
-    &:hover::before,
-    &:hover::after {
-      width: 58%;
-    }
+    // &:hover::before,
+    // &:hover::after {
+    //   width: 58%;
+    // }
 
-    &:hover span {
-      color: #000000;
-      transition: 0.3s;
-    }
+    // &:hover span {
+    //   color: #000000;
+    //   transition: 0.3s;
+    // }
 
     & span {
       color: #03045e;
       font-size: 16px;
       transition: all 0.3s ease-in;
-    }
-
-    &:hover {
-      background-color: #c6c6c6;
-    }
-
-    & span {
       width: 100%;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    // &:hover {
+    //   background-color: #c6c6c6;
+    // }
   }
 
   &_list {
-    right: 0;
-    margin-top: 110px;
+    left: 0;
+    // margin-top: 260px;
     position: absolute;
     z-index: 20;
-    width: 200px;
+    width: 100%;
     background-color: white;
     border-radius: 5px;
     overflow: hidden;
-    box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
+    // box-shadow: 0 0 4px 4px rgba(193, 193, 193, 0.5);
 
     &_item {
       font-size: 14px;
