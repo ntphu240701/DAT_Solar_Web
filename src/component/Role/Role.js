@@ -236,10 +236,10 @@ export default function Role(props) {
     setdatafilter(Usr_.value);
   }, [Usr_.value]);
 
-  useEffect(() => {
-    console.log(ruleInfor.value);
-    console.log(datafilter);
-  }, [ruleInfor.value, datafilter]);
+  // useEffect(() => {
+  //   console.log(ruleInfor.value);
+  //   console.log(datafilter);
+  // }, [ruleInfor.value, datafilter]);
 
   return (
     <>
