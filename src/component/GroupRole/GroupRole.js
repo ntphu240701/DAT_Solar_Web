@@ -328,22 +328,23 @@ const GroupUsers = (props) => {
                   <div
                     className="DAT_GR_Content_DevideTable_Left_ItemList_Item"
                     key={index}
-                    id={item.id_}
                     style={{
                       backgroundColor:
                         groupID.value === item.id_
                           ? "rgb(207, 207, 207, 0.4)"
                           : "",
                     }}
-                    onClick={(e) => {
-                      handleChangeGroup(e);
-                      setUserlist(true);
-                    }}
+                    id={item.id_}
                   >
                     <div>
                       <div
                         className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
                         style={{ fontSize: "15px" }}
+                        id={item.id_}
+                        onClick={(e) => {
+                          handleChangeGroup(e);
+                          setUserlist(true);
+                        }}
                       >
                         {item.name_}
                       </div>
@@ -379,9 +380,10 @@ const GroupUsers = (props) => {
                         <div
                           className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Delete"
                           id={item.id_}
-                          onClick={() => props.groupDelState()}
+                          onClick={(e) => handleDeleteUser(e)}
+                          style={{ cursor: "pointer" }}
                         >
-                          <IoTrashOutline size={18} />
+                          {/* <IoTrashOutline size={18} /> */}
                         </div>
                       )}
                       <div
