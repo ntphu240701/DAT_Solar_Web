@@ -9,20 +9,23 @@ import DeleteRole from "./DeleteRole";
 import EditRole from "./EditRole";
 import { host } from "../Lang/Contant";
 import { callApi } from "../Api/Api";
-import { partnerInfor } from "../../App";
+import { partnerInfor, ruleInfor } from "../../App";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 import { datarule } from "../Rule/Rule";
-
+import { FaCheckCircle, FaRegFileAlt, FaStar } from "react-icons/fa";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { IoMdMore } from "react-icons/io";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdOutlineError } from "react-icons/md";
 import { LuUserSquare } from "react-icons/lu";
 import { FiEdit } from "react-icons/fi";
 import { lowercasedata } from "../ErrorSetting/ErrorSetting";
+import { MdAddchart } from "react-icons/md";
+import { GoProject } from "react-icons/go";
+import { RiShareForwardLine } from "react-icons/ri";
 
 export const roleData = signal({});
 export const Usr_ = signal([]);
@@ -40,6 +43,12 @@ export default function Role(props) {
     rangeSeparatorText: dataLang.formatMessage({ id: "to" }),
     selectAllRowsItem: true,
     selectAllRowsItemText: dataLang.formatMessage({ id: "showAll" }),
+  };
+
+  const colorbackground = {
+    master: "rgba(255, 0, 0)",
+    user: "rgba(247, 148, 29)",
+    admin: "rgba(11, 25, 103)",
   };
 
   const columnrole = [
@@ -227,77 +236,85 @@ export default function Role(props) {
     setdatafilter(Usr_.value);
   }, [Usr_.value]);
 
+  useEffect(() => {
+    console.log(ruleInfor.value);
+    console.log(datafilter);
+  }, [ruleInfor.value, datafilter]);
+
   return (
     <>
-      <div className="DAT_RoleHeader">
-        <div className="DAT_RoleHeader_Title">
-          <LuUserSquare color="gray" size={25} />
-          <span>{dataLang.formatMessage({ id: "role" })}</span>
-        </div>
-
-        {isMobile.value ? (
-          <>
-            <div className="DAT_Modify">
-              <div
-                className="DAT_Modify_Item"
-                onClick={() => setFilter(!filter)}
-              >
-                <CiSearch color="white" size={20} />
-              </div>
-              <div
-                className="DAT_Modify_Add"
-                onClick={() => setRoleState("create")}
-              >
-                <IoAddOutline color="white" size={20} />
-              </div>
-            </div>
-
-            {filter ? (
-              <div className="DAT_Modify_Filter">
-                <input
-                  type="text"
-                  placeholder={dataLang.formatMessage({ id: "enterName" })}
-                  onChange={(e) => handleFilter(e)}
-                />
-                <div
-                  className="DAT_Modify_Filter_Close"
-                  onClick={() => setFilter(!filter)}
-                >
-                  <RxCross2 size={20} color="white" />
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
-          </>
-        ) : (
-          <>
-            <div className="DAT_RoleHeader_Filter">
+      {isMobile.value ? (
+        <div className="DAT_ProjectHeaderMobile">
+          <div className="DAT_ProjectHeaderMobile_Top">
+            <div className="DAT_ProjectHeaderMobile_Top_Filter">
+              <CiSearch color="gray" size={20} />
               <input
+                id="search"
                 type="text"
+                placeholder={
+                  dataLang.formatMessage({ id: "enter" }) +
+                  dataLang.formatMessage({ id: "role" })
+                }
                 autoComplete="off"
-                placeholder={dataLang.formatMessage({ id: "enterName" })}
                 onChange={(e) => handleFilter(e)}
               />
-              <CiSearch color="gray" size={20} />
             </div>
             <button
-              className="DAT_RoleHeader_New"
+              className="DAT_ProjectHeaderMobile_Top_New"
               onClick={() => setRoleState("create")}
             >
-              <span>
-                <AiOutlineUserAdd color="white" size={20} />
+              <IoAddOutline color="white" size={20} />
+            </button>
+          </div>
+
+          <div
+            className="DAT_ProjectHeaderMobile_Title"
+            style={{ marginBottom: "10px" }}
+          >
+            <GoProject color="gray" size={25} />
+            <span>{dataLang.formatMessage({ id: "role" })}</span>
+          </div>
+        </div>
+      ) : (
+        <div className="DAT_ProjectHeader">
+          <div className="DAT_ProjectHeader_Title">
+            <LuUserSquare color="gray" size={25} />
+            <span>{dataLang.formatMessage({ id: "role" })}</span>
+          </div>
+
+          <div className="DAT_ProjectHeader_Filter">
+            <input
+              id="search"
+              type="text"
+              placeholder={
+                dataLang.formatMessage({ id: "enter" }) +
+                dataLang.formatMessage({ id: "role" })
+              }
+              autoComplete="off"
+              onChange={(e) => handleFilter(e)}
+            />
+            <CiSearch color="gray" size={20} />
+          </div>
+          {ruleInfor.value.setting.user.add === true ? (
+            <button
+              className="DAT_ProjectHeader_New"
+              onClick={() => setRoleState("create")}
+            >
+              <span value={"createdate"}>
+                <MdAddchart color="white" size={20} />
                 &nbsp;
                 {dataLang.formatMessage({ id: "createNew" })}
               </span>
             </button>
-          </>
-        )}
-      </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
+      )}
 
       {isMobile.value ? (
         <>
-          <div className="DAT_RoleMobile">
+          {/* <div className="DAT_RoleMobile">
             <div className="DAT_RoleMobile_Header" style={{ padding: "15px" }}>
               {dataLang.formatMessage({ id: "roleList" })}
             </div>
@@ -353,7 +370,100 @@ export default function Role(props) {
                 </div>
               );
             })}
-          </div>
+          </div> */}
+          {datafilter?.map((item, i) => {
+            return (
+              <div key={i} className="DAT_ProjectMobile_Content">
+                <div className="DAT_ProjectMobile_Content_Top">
+                  <div
+                    className="DAT_ProjectMobile_Content_Top_Avatar"
+                    style={{
+                      minWidth: "40px",
+                      minHeight: "40px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      fontSize: "12px",
+                      backgroundColor: colorbackground[item.type_],
+                      color: "white",
+                      padding: "5px",
+                    }}
+                  >
+                    <span>{dataLang.formatMessage({ id: item.type_ })}</span>
+                  </div>
+                  <div className="DAT_ProjectMobile_Content_Top_Info">
+                    <div className="DAT_ProjectMobile_Content_Top_Info_Name">
+                      <div
+                        className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
+                        id={item.id_}
+                        style={{ cursor: "pointer", fontSize: "17px" }}
+                      >
+                        {item.name_}
+                      </div>
+                    </div>
+
+                    <div
+                      className="DAT_ProjectMobile_Content_Top_Info_Data"
+                      style={{ color: "rgba(95, 95, 98)", fontSize: "12px" }}
+                    >
+                      <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
+                        <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name"></div>
+                        <div>
+                          {dataLang.formatMessage({ id: "phone" })}:{" "}
+                          {item.phone_}
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="DAT_ProjectMobile_Content_Top_Info_Data"
+                      style={{ color: "rgba(95, 95, 98)", fontSize: "12px" }}
+                    >
+                      <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
+                        <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name"></div>
+                        <div>
+                          {dataLang.formatMessage({ id: "email" })}:{" "}
+                          {item.mail_}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="DAT_ProjectMobile_Content_Bottom">
+                  <div className="DAT_ProjectMobile_Content_Bottom_Left">
+                    <span>{dataLang.formatMessage({ id: "rule" })}:</span>
+                    &nbsp;
+                    <span>{item.rulename_}</span>
+                  </div>
+
+                  <div className="DAT_ProjectMobile_Content_Bottom_Right">
+                    {ruleInfor.value.setting.project.modify === true ? (
+                      <div
+                        className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                        id={item.id_}
+                        onClick={(e) => handleEdit(e)}
+                      >
+                        <FiEdit size={14} />
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    {ruleInfor.value.setting.project.modify === true ? (
+                      <div
+                        className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                        id={item.id_}
+                        onClick={(e) => handleDelete_(e)}
+                      >
+                        <IoTrashOutline size={16} />
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </>
       ) : (
         <>
@@ -382,6 +492,8 @@ export default function Role(props) {
           </div>
         </>
       )}
+
+      {isMobile.value ? <></> : <></>}
 
       <div
         className="DAT_RoleInfor"
