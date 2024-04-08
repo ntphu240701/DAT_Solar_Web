@@ -12,7 +12,7 @@ import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
-
+import { Loader } from "@googlemaps/js-api-loader";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoClose, IoSaveOutline } from "react-icons/io5";
 
@@ -52,36 +52,67 @@ const BasicInfo = (props) => {
     zoom: 7.0,
   };
 
-  const handleMap = (e) => {
-    const addr = document.getElementById("addr")
+  const handleMap = async (e) => {
+    const addr = document.getElementById("addr");
     setKey(process.env.REACT_APP_GGKEY);
     geocode(RequestType.ADDRESS, addr.value)
       .then((response) => {
-        var long_ = document.getElementById("long")
-        var lat_ = document.getElementById("lat")
-        lat_.value = response.results[0].geometry.location.lat
-        long_.value = response.results[0].geometry.location.lng
+        var long_ = document.getElementById("long");
+        var lat_ = document.getElementById("lat");
+        lat_.value = response.results[0].geometry.location.lat;
+        long_.value = response.results[0].geometry.location.lng;
         plantData.value = {
           ...plantData.value,
           lat: response.results[0].geometry.location.lat,
           long: response.results[0].geometry.location.lng,
-        }
+        };
+
+        // initMap(
+        //   response.results[0].geometry.location.lat,
+        //   response.results[0].geometry.location.lng
+        // );
+        console.log(plantData.value);
       })
       .catch((error) => {
-        alertDispatch(dataLang.formatMessage({ id: "alert_19" }))
+        alertDispatch(dataLang.formatMessage({ id: "alert_19" }));
       });
-  }
+  };
 
   const handleBasic = (e) => {
     plantData.value[e.currentTarget.id] = e.currentTarget.value;
   };
+
+  const loader = new Loader({
+    apiKey: process.env.REACT_APP_GGKEY,
+    version: "weekly",
+    libraries: ["places"],
+  });
+
+  const initMap = async () => {
+    const { AdvancedMarkerElement } = await loader.importLibrary("marker");
+    const { Map } = await loader.importLibrary("maps");
+
+    let map = new Map(document.getElementById("map"), defaultProps);
+
+    const marker = { lat: 16.054083398111068, lng: 108.20361013247235 };
+    const markerElement = new AdvancedMarkerElement({
+      map,
+      position: marker,
+    });
+  };
+
+  useEffect(() => {
+    initMap();
+    console.log(plantData.value);
+  }, []);
 
   return (
     <div className="DAT_AddProject_BasicInfo">
       <div className="DAT_AddProject_BasicInfo_Tit">
         <div className="DAT_AddProject_BasicInfo_Tit_Left">{props.tit}</div>
 
-        <div className="DAT_AddProject_BasicInfo_Tit_Right"
+        <div
+          className="DAT_AddProject_BasicInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -107,7 +138,9 @@ const BasicInfo = (props) => {
               <div className="DAT_AddProject_BasicInfo_Body_Left_Item">
                 <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'projname' })}</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "projname" })}
+                  </span>
                 </div>
                 <input
                   id="plantname"
@@ -119,24 +152,24 @@ const BasicInfo = (props) => {
               <div className="DAT_AddProject_BasicInfo_Body_Left_Item">
                 <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'address' })}:</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "address" })}:
+                  </span>
                 </div>
-                <input
-                  id="addr"
-                  type="text"
-                  onChange={(e) => handleBasic(e)}
-                />
+                <input id="addr" type="text" onChange={(e) => handleBasic(e)} />
               </div>
 
               <div className="DAT_AddProject_BasicInfo_Body_Left_Item">
                 <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'coord' })}</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "coord" })}
+                  </span>
                 </div>
                 <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Posi">
                   <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Posi_Content">
                     <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Posi_Content_Tit">
-                      {dataLang.formatMessage({ id: 'longitude' })}
+                      {dataLang.formatMessage({ id: "longitude" })}
                     </div>
                     <input
                       id="long"
@@ -148,7 +181,7 @@ const BasicInfo = (props) => {
                   </div>
                   <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Posi_Content">
                     <div className="DAT_AddProject_BasicInfo_Body_Left_Item_Posi_Content_Tit">
-                      {dataLang.formatMessage({ id: 'latitude' })}
+                      {dataLang.formatMessage({ id: "latitude" })}
                     </div>
                     <input
                       id="lat"
@@ -166,15 +199,18 @@ const BasicInfo = (props) => {
               <div className="DAT_AddProject_BasicInfo_Body_Right_Item">
                 <div className="DAT_AddProject_BasicInfo_Body_Right_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'location' })}</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "location" })}
+                  </span>
                 </div>
                 <div className="DAT_AddProject_BasicInfo_Body_Right_Item_Content">
-                  <GoogleMap
+                  {/* <GoogleMap
                     apiKey={process.env.REACT_APP_GGKEY}
                     defaultCenter={defaultProps.center}
                     defaultZoom={defaultProps.zoom}
                   //onGoogleApiLoaded={onGoogleApiLoaded}
-                  />
+                  /> */}
+                  <div id="map" style={{ width: "100%", height: "100%" }}></div>
                 </div>
               </div>
             </div>
@@ -210,7 +246,8 @@ const SystemInfo = (props) => {
       <div className="DAT_AddProject_SystemInfo_Tit">
         <div className="DAT_AddProject_SystemInfo_Tit_Left">{props.tit}</div>
 
-        <div className="DAT_AddProject_SystemInfo_Tit_Right"
+        <div
+          className="DAT_AddProject_SystemInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -236,31 +273,45 @@ const SystemInfo = (props) => {
               <div className="DAT_AddProject_SystemInfo_Body_Left_Item">
                 <div className="DAT_AddProject_SystemInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'projType' })}</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "projType" })}
+                  </span>
                 </div>
                 <select
                   id="planttype"
                   defaultValue={plantData.value["planttype"]}
                   onChange={(e) => handleSystem(e)}
                 >
-                  <option value="residential">{dataLang.formatMessage({ id: 'household' })}</option>
-                  <option value="industrial">{dataLang.formatMessage({ id: 'factory' })}</option>
+                  <option value="residential">
+                    {dataLang.formatMessage({ id: "household" })}
+                  </option>
+                  <option value="industrial">
+                    {dataLang.formatMessage({ id: "factory" })}
+                  </option>
                 </select>
               </div>
 
               <div className="DAT_AddProject_SystemInfo_Body_Left_Item">
                 <div className="DAT_AddProject_SystemInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'electricType' })}</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "electricType" })}
+                  </span>
                 </div>
                 <select
                   id="plantmode"
                   defaultValue={plantData.value["plantmode"]}
                   onChange={(e) => handleSystem(e)}
                 >
-                  <option value="grid">{dataLang.formatMessage({ id: 'gridType' })}</option>
-                  <option value="consumption">{dataLang.formatMessage({ id: 'consumptionType' })}</option>
-                  <option value="hybrid">{dataLang.formatMessage({ id: 'hybridType' })}</option>
+                  <option value="grid">
+                    {dataLang.formatMessage({ id: "gridType" })}
+                  </option>
+                  <option value="consumption">
+                    {dataLang.formatMessage({ id: "consumptionType" })}
+                  </option>
+                  <option value="hybrid">
+                    {dataLang.formatMessage({ id: "hybridType" })}
+                  </option>
                   {/* <option value="ESS">{dataLang.formatMessage({ id: 'ESS' })}</option> */}
                   {/* <option value="pump">Hệ thống solar pump</option> */}
                 </select>
@@ -271,7 +322,9 @@ const SystemInfo = (props) => {
               <div className="DAT_AddProject_SystemInfo_Body_Center_Item">
                 <div className="DAT_AddProject_SystemInfo_Body_Center_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'capacity' })} (kWp):</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "capacity" })} (kWp):
+                  </span>
                 </div>
                 <input
                   id="capacity"
@@ -284,7 +337,9 @@ const SystemInfo = (props) => {
               <div className="DAT_AddProject_SystemInfo_Body_Center_Item">
                 <div className="DAT_AddProject_SystemInfo_Body_Center_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'gridData' })}:</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "gridData" })}:
+                  </span>
                 </div>
                 <input
                   id="griddate"
@@ -299,7 +354,9 @@ const SystemInfo = (props) => {
               <div className="DAT_AddProject_SystemInfo_Body_Right_Item">
                 <div className="DAT_AddProject_SystemInfo_Body_Right_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'tiltAngle' })}:</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "tiltAngle" })}:
+                  </span>
                 </div>
                 <input
                   id="angle"
@@ -319,7 +376,7 @@ const SystemInfo = (props) => {
 };
 
 const YieldInfo = (props) => {
-  const dataLang = useIntl()
+  const dataLang = useIntl();
   const [state, setState] = useState(true);
 
   const handleYield = (e) => {
@@ -331,7 +388,8 @@ const YieldInfo = (props) => {
       <div className="DAT_AddProject_YieldInfo_Tit">
         <div className="DAT_AddProject_YieldInfo_Tit_Left">{props.tit}</div>
 
-        <div className="DAT_AddProject_YieldInfo_Tit_Right"
+        <div
+          className="DAT_AddProject_YieldInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -357,7 +415,9 @@ const YieldInfo = (props) => {
               <div className="DAT_AddProject_YieldInfo_Body_Left_Item">
                 <div className="DAT_AddProject_YieldInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'currency' })}:</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "currency" })}:
+                  </span>
                 </div>
                 <select
                   id="currency"
@@ -374,7 +434,9 @@ const YieldInfo = (props) => {
               <div className="DAT_AddProject_YieldInfo_Body_Center_Item">
                 <div className="DAT_AddProject_YieldInfo_Body_Center_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'unitPrice' })} (VND/kWh):</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "unitPrice" })} (VND/kWh):
+                  </span>
                 </div>
                 <input
                   id="price"
@@ -395,7 +457,7 @@ const YieldInfo = (props) => {
 };
 
 const OwnerInfo = (props) => {
-  const dataLang = useIntl()
+  const dataLang = useIntl();
   const [state, setState] = useState(true);
 
   const handleOwner = (e) => {
@@ -407,7 +469,8 @@ const OwnerInfo = (props) => {
       <div className="DAT_AddProject_OwnerInfo_Tit">
         <div className="DAT_AddProject_OwnerInfo_Tit_Left">{props.tit}</div>
 
-        <div className="DAT_AddProject_OwnerInfo_Tit_Right"
+        <div
+          className="DAT_AddProject_OwnerInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -433,7 +496,9 @@ const OwnerInfo = (props) => {
               <div className="DAT_AddProject_OwnerInfo_Body_Left_Item">
                 <div className="DAT_AddProject_OwnerInfo_Body_Left_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'contactName' })}:</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "contactName" })}:
+                  </span>
                 </div>
                 <input
                   id="contact"
@@ -447,7 +512,9 @@ const OwnerInfo = (props) => {
               <div className="DAT_AddProject_OwnerInfo_Body_Center_Item">
                 <div className="DAT_AddProject_OwnerInfo_Body_Center_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'phone' })}:</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "phone" })}:
+                  </span>
                 </div>
                 <input
                   id="phone"
@@ -461,7 +528,9 @@ const OwnerInfo = (props) => {
               <div className="DAT_AddProject_OwnerInfo_Body_Right_Item">
                 <div className="DAT_AddProject_OwnerInfo_Body_Right_Item_Tit">
                   <span style={{ color: "red" }}>* </span>
-                  <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'companyName' })}:</span>
+                  <span style={{ color: "grey" }}>
+                    {dataLang.formatMessage({ id: "companyName" })}:
+                  </span>
                 </div>
                 <input
                   id="business"
@@ -563,10 +632,10 @@ export default function AddProject(props) {
     });
 
     if (check !== 0) {
-      alertDispatch(dataLang.formatMessage({ id: "alert_22" }))
+      alertDispatch(dataLang.formatMessage({ id: "alert_22" }));
     } else {
       const addProject = async () => {
-        let d = await callApi('post', host.DATA + '/addPlant', {
+        let d = await callApi("post", host.DATA + "/addPlant", {
           usr: props.usr,
           name: plantData.value.plantname,
           company: plantData.value.company,
@@ -585,10 +654,10 @@ export default function AddProject(props) {
           price: plantData.value.price,
           production: plantData.value.production,
           power: plantData.value.power,
-          partnerid: userInfor.value.partnerid
-        })
+          partnerid: userInfor.value.partnerid,
+        });
         if (d.status === true) {
-          alertDispatch(dataLang.formatMessage({ id: "alert_29" }))
+          alertDispatch(dataLang.formatMessage({ id: "alert_29" }));
           dataproject.value = [...dataproject.value, d.data];
           plantState.value = "default";
           plantData.value = {
@@ -625,18 +694,21 @@ export default function AddProject(props) {
     <div className="DAT_AddProject">
       <div className="DAT_AddProject_Header">
         <div className="DAT_AddProject_Header_Left">
-          {dataLang.formatMessage({ id: 'addProj' })}
+          {dataLang.formatMessage({ id: "addProj" })}
         </div>
 
         <div className="DAT_AddProject_Header_Right">
-          <div className="DAT_AddProject_Header_Right_Save"
+          <div
+            className="DAT_AddProject_Header_Right_Save"
             onClick={() => handleSaveBasic()}
           >
             <IoSaveOutline size={20} color="white" />
-            <span>{dataLang.formatMessage({ id: 'save' })}</span>
+            <span>{dataLang.formatMessage({ id: "save" })}</span>
           </div>
-          <div className="DAT_AddProject_Header_Right_Close"
-            onClick={() => (plantState.value = "default")}>
+          <div
+            className="DAT_AddProject_Header_Right_Close"
+            onClick={() => (plantState.value = "default")}
+          >
             <IoClose
               size={25}
               id="Popup"
@@ -648,22 +720,22 @@ export default function AddProject(props) {
       </div>
 
       <BasicInfo
-        tit={dataLang.formatMessage({ id: 'basicInfo' })}
+        tit={dataLang.formatMessage({ id: "basicInfo" })}
         height={isMobile.value ? "580px" : "300px"}
       />
 
       <SystemInfo
-        tit={dataLang.formatMessage({ id: 'systemInfo' })}
+        tit={dataLang.formatMessage({ id: "systemInfo" })}
         height={isMobile.value ? "440px" : "190px"}
       />
 
       <YieldInfo
-        tit={dataLang.formatMessage({ id: 'yieldInfo' })}
+        tit={dataLang.formatMessage({ id: "yieldInfo" })}
         height={isMobile.value ? "180px" : "100px"}
       />
 
       <OwnerInfo
-        tit={dataLang.formatMessage({ id: 'ownerInfo' })}
+        tit={dataLang.formatMessage({ id: "ownerInfo" })}
         height={isMobile.value ? "270px" : "100px"}
       />
 
