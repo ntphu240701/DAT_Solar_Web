@@ -7,6 +7,7 @@ import DataTable from "react-data-table-component";
 
 import { CiSearch } from 'react-icons/ci';
 import { MdOutlineManageHistory } from "react-icons/md";
+import { isMobile } from '../Navigation/Navigation';
 
 export default function Log(props) {
     const dataLang = useIntl()
@@ -75,34 +76,55 @@ export default function Log(props) {
 
     return (
         <>
-            <div className="DAT_LogHeader">
-                <div className="DAT_LogHeader_Title">
-                    <MdOutlineManageHistory color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'log' })}</span>
-                </div>
-                <div className="DAT_LogHeader_Filter">
-                    <input type="text" placeholder={dataLang.formatMessage({ id: 'enterDev' })} />
-                    <CiSearch color="gray" size={20} />
-                </div>
-                <div></div>
-            </div>
+            {isMobile.value ?
+                <>
+                    <div className="DAT_LogHeaderMobile">
+                        <div className="DAT_LogHeaderMobile_Top">
+                            <div className="DAT_LogHeaderMobile_Top_Filter">
+                                <input type="text" placeholder={dataLang.formatMessage({ id: 'enterDev' })} />
+                                <CiSearch color="gray" size={20} />
+                            </div>
+                        </div>
 
-            <div className='DAT_Log'>
-                <div className='DAT_Log_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>
-                    {dataLang.formatMessage({ id: 'logList' })}
-                </div>
+                        <div className="DAT_LogHeaderMobile_Title">
+                            <MdOutlineManageHistory color="gray" size={25} />
+                            <span>{dataLang.formatMessage({ id: "log" })}</span>
+                        </div>
+                    </div>
 
-                <div className="DAT_Log_Content">
-                    <DataTable
-                        className="DAT_Table_Container"
-                        columns={columnLog}
-                        data={dataLog}
-                        pagination
-                        paginationComponentOptions={paginationComponentOptions}
-                        fixedHeader={true}
-                        noDataComponent={<Empty />}
-                    />
-                </div>
-            </div>
+                    <div></div>
+                </>
+                :
+                <>
+                    <div className="DAT_LogHeader">
+                        <div className="DAT_LogHeader_Title">
+                            <MdOutlineManageHistory color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'log' })}</span>
+                        </div>
+                        <div className="DAT_LogHeader_Filter">
+                            <input type="text" placeholder={dataLang.formatMessage({ id: 'enterDev' })} />
+                            <CiSearch color="gray" size={20} />
+                        </div>
+                        <div></div>
+                    </div>
+                    <div className='DAT_Log'>
+                        <div className='DAT_Log_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>
+                            {dataLang.formatMessage({ id: 'logList' })}
+                        </div>
+
+                        <div className="DAT_Log_Content">
+                            <DataTable
+                                className="DAT_Table_Container"
+                                columns={columnLog}
+                                data={dataLog}
+                                pagination
+                                paginationComponentOptions={paginationComponentOptions}
+                                fixedHeader={true}
+                                noDataComponent={<Empty />}
+                            />
+                        </div>
+                    </div>
+                </>
+            }
         </>
     );
 }

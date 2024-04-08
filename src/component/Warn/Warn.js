@@ -15,7 +15,12 @@ import moment from "moment-timezone";
 import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { LuMailWarning } from "react-icons/lu";
-import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore } from "react-icons/io";
+import {
+  IoIosArrowDown,
+  IoIosArrowForward,
+  IoIosArrowUp,
+  IoMdMore,
+} from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { IoTrashOutline } from "react-icons/io5";
 import { FiFilter } from "react-icons/fi";
@@ -37,6 +42,8 @@ export default function Warn(props) {
   const dataLang = useIntl();
   const [filter, setFilter] = useState(false);
   const [datafilter, setDatafilter] = useState([]);
+  const [datafilteropen, setDatafilteropen] = useState(open.value);
+  const [datafilterclosed, setDatafilterclosed] = useState(closed.value);
   const [boxid, setBoxid] = useState("");
   const [level, setLevel] = useState("");
   const [plant, setPlant] = useState("");
@@ -70,13 +77,15 @@ export default function Warn(props) {
     },
     {
       name: dataLang.formatMessage({ id: "errname" }),
-      selector: (row) =>
-        <div style={{ cursor: "pointer" }}
+      selector: (row) => (
+        <div
+          style={{ cursor: "pointer" }}
           onClick={(e) => handleInfo(e)}
           id={row.boxid + "_" + row.level + "_" + row.plant + "_" + row.device} // E_1_3_warn....
         >
           {dataLang.formatMessage({ id: row.boxid, defaultMessage: row.boxid })}
-        </div>,
+        </div>
+      ),
       sortable: true,
       width: "180px",
       style: {
@@ -192,26 +201,25 @@ export default function Warn(props) {
 
     let req = await callApi("post", `${host.DATA}/getWarninf`, {
       boxid: id,
-    })
+    });
     console.log(req);
     if (req.status) {
       setInfowarnState(true);
-      setBoxid(id)
-      setLevel(temp[3])
-      setPlant(temp[4])
-      setDevice(temp[5])
-      setCause(req.data.cause_)
-      setSolution(req.data.solution_)
+      setBoxid(id);
+      setLevel(temp[3]);
+      setPlant(temp[4]);
+      setDevice(temp[5]);
+      setCause(req.data.cause_);
+      setSolution(req.data.solution_);
     } else {
       setInfowarnState(true);
-      setBoxid(id)
-      setLevel(temp[3])
-      setPlant(temp[4])
-      setDevice(temp[5])
-      setCause([])
-      setSolution([])
+      setBoxid(id);
+      setLevel(temp[3]);
+      setPlant(temp[4]);
+      setDevice(temp[5]);
+      setCause([]);
+      setSolution([]);
     }
-
   };
 
   const handleCloseInfo = () => {
@@ -230,7 +238,9 @@ export default function Warn(props) {
   const handleModify = (e, type) => {
     const id = e.currentTarget.id;
     var arr = id.split("_");
-    const mod = document.getElementById(`${arr[0]}_${arr[1]}_${arr[2]}_${arr[3]}_Modify`);
+    const mod = document.getElementById(
+      `${arr[0]}_${arr[1]}_${arr[2]}_${arr[3]}_Modify`
+    );
     mod.style.display = type;
   };
 
@@ -240,6 +250,11 @@ export default function Warn(props) {
     const newLabel = listTab.find((item) => item.id == id);
     tabLable.value = newLabel.name;
   };
+
+  useEffect(() => {
+    setDatafilteropen(open.value);
+    setDatafilterclosed(closed.value);
+  }, [open.value, closed.value]);
 
   // by Mr Loc
   const handleSearch = (e) => {
@@ -251,13 +266,40 @@ export default function Warn(props) {
       projectwarnfilter.value = 0;
     } else {
       let temp = dataWarn.value.filter(
-        (item) => item.plant.toLowerCase().includes(searchTerm) ||
+        (item) =>
+          item.plant.toLowerCase().includes(searchTerm) ||
           item.device.toLowerCase().includes(searchTerm) ||
           item.boxid.toLowerCase().includes(searchTerm) ||
-          dataLang.formatMessage({ id: item.boxid, defaultMessage: item.boxid }).toLowerCase().includes(searchTerm)
+          dataLang
+            .formatMessage({ id: item.boxid, defaultMessage: item.boxid })
+            .toLowerCase()
+            .includes(searchTerm)
       );
       setDatafilter([...temp]);
-      console.log(temp);
+      let temp2 = open.value.filter(
+        (item) =>
+          item.plant.toLowerCase().includes(searchTerm) ||
+          item.device.toLowerCase().includes(searchTerm) ||
+          item.boxid.toLowerCase().includes(searchTerm) ||
+          dataLang
+            .formatMessage({ id: item.boxid, defaultMessage: item.boxid })
+            .toLowerCase()
+            .includes(searchTerm)
+      );
+      setDatafilteropen([...temp2]);
+      let temp3 = closed.value.filter(
+        (item) =>
+          item.plant.toLowerCase().includes(searchTerm) ||
+          item.device.toLowerCase().includes(searchTerm) ||
+          item.boxid.toLowerCase().includes(searchTerm) ||
+          dataLang
+            .formatMessage({ id: item.boxid, defaultMessage: item.boxid })
+            .toLowerCase()
+            .includes(searchTerm)
+      );
+      setDatafilterclosed([...temp3]);
+      // console.log(temp);
+
       warnfilter.value = {};
     }
   };
@@ -269,17 +311,17 @@ export default function Warn(props) {
 
   const handleCloseFilter = () => {
     setDisplay(false);
-  }
+  };
 
   const handleWarnFilter = (opentime, closetime) => {
     //Bật tắt filter layout
-    setDisplay(false)
+    setDisplay(false);
 
     //Gọi biến thời gian nhập vào
     const openInput = moment(opentime).format("MM/DD/YYYY");
     const closeInput = moment(closetime).format("MM/DD/YYYY");
 
-    console.log('openINPUT', openInput, closeInput);
+    console.log("openINPUT", openInput, closeInput);
 
     const newdb = dataWarn.value.filter((item) => {
       // Gọi biến thời gian trong dataWarn
@@ -288,7 +330,8 @@ export default function Warn(props) {
 
       // Nếu người dùng không chỉnh ngày thì vẫn chạy điều kiện checkbox
       if (openInput == "Invalid date" && closeInput == "Invalid date") {
-        const levelChange = item.level == warn.value || item.level == notice.value
+        const levelChange =
+          item.level == warn.value || item.level == notice.value;
         return levelChange;
       }
 
@@ -306,12 +349,16 @@ export default function Warn(props) {
 
       // Nếu người dùng không check type warning thì vẫn chạy điều kiện thời gian
       else if (warn.value == null && notice.value == null) {
-        const timeChange = (openData >= openInput && openData <= closeInput) || (closeData >= openInput && closeData < closeInput);
+        const timeChange =
+          (openData >= openInput && openData <= closeInput) ||
+          (closeData >= openInput && closeData < closeInput);
         return timeChange;
-      }
-      else {
-        const levelChange = item.level == warn.value || item.level == notice.value
-        const timeChange = (openData >= openInput && openData <= closeInput) || (closeData >= openInput && closeData < closeInput);
+      } else {
+        const levelChange =
+          item.level == warn.value || item.level == notice.value;
+        const timeChange =
+          (openData >= openInput && openData <= closeInput) ||
+          (closeData >= openInput && closeData < closeInput);
         return levelChange && timeChange;
       }
     });
@@ -351,47 +398,15 @@ export default function Warn(props) {
     }
     return () => {
       warntab.value = "all";
-    }
+    };
   }, [dataWarn.value]);
 
   return (
     <>
-      <div className="DAT_WarnHeader">
-        <div className="DAT_WarnHeader_Title">
-          <LuMailWarning color="gray" size={25} />
-          <span>{dataLang.formatMessage({ id: "warn" })}</span>
-        </div>
-
-        {isMobile.value ? (
-          <>
-            <div className="DAT_Modify">
-              <div className="DAT_Modify_Item"
-                onClick={() => setFilter(!filter)}
-              >
-                <CiSearch color="white" size={20} />
-              </div>
-            </div>
-
-            {filter ? (
-              <div className="DAT_Modify_Filter">
-                <input
-                  type="text"
-                  placeholder={dataLang.formatMessage({ id: "enterWarn" })}
-                  onChange={(e) => handleSearch(e)}
-                />
-                <div className="DAT_Modify_Filter_Close"
-                  onClick={() => setFilter(!filter)}
-                >
-                  <RxCross2 size={20} color="white" />
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
-          </>
-        ) : (
-          <>
-            <div className="DAT_WarnHeader_Filter">
+      {isMobile.value ? (
+        <div className="DAT_WarnHeaderMobile">
+          <div className="DAT_WarnHeaderMobile_Top">
+            <div className="DAT_WarnHeaderMobile_Top_Filter">
               <input
                 type="text"
                 placeholder={dataLang.formatMessage({ id: "enterWarn" })}
@@ -401,10 +416,32 @@ export default function Warn(props) {
               />
               <CiSearch color="gray" size={20} />
             </div>
-            <div></div>
-          </>
-        )}
-      </div>
+          </div>
+
+          <div className="DAT_WarnHeaderMobile_Title">
+            <LuMailWarning color="gray" size={25} />
+            <span>{dataLang.formatMessage({ id: "warn" })}</span>
+          </div>
+        </div>
+      ) : (
+        <div className="DAT_WarnHeader">
+          <div className="DAT_WarnHeader_Title">
+            <LuMailWarning color="gray" size={25} />
+            <span>{dataLang.formatMessage({ id: "warn" })}</span>
+          </div>
+          <div className="DAT_WarnHeader_Filter">
+            <input
+              type="text"
+              placeholder={dataLang.formatMessage({ id: "enterWarn" })}
+              id="warnsearch"
+              autoComplete="off"
+              onChange={(e) => handleSearch(e)}
+            />
+            <CiSearch color="gray" size={20} />
+          </div>
+          <div></div>
+        </div>
+      )}
 
       {isMobile.value ? (
         <div className="DAT_WarnMobile">
@@ -414,26 +451,36 @@ export default function Warn(props) {
               onClick={() => (tabMobile.value = !tabMobile.value)}
             >
               <span> {tabLable.value}</span>
-              {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}
-            </button>
-            {tabMobile.value ? (
-              <div className="DAT_Toollist_Tab_Mobile_list">
-                {listTab.map((item, i) => {
-                  return (
-                    <div
-                      className="DAT_Toollist_Tab_Mobile_list_item"
-                      key={i}
-                      id={item.id}
-                      onClick={(e) => handleTabMobile(e)}
-                    >
-                      {i + 1}: {item.name}
-                    </div>
-                  );
-                })}
+              <div className="DAT_Toollist_Tab_Mobile_content_Icon">
+                <FiFilter />
+                {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}
               </div>
-            ) : (
-              <></>
-            )}
+            </button>
+
+            <div className="DAT_Toollist_Tab_Mobile_list"
+              style={{
+                top: "50px",
+                height: tabMobile.value ? "100px" : "0",
+                transition: "0.5s",
+                boxShadow: tabMobile.value ? "0 0 4px 4px rgba(193, 193, 193, 0.5)" : "none"
+              }}
+            >
+              {listTab.map((item, i) => {
+                return (
+                  <div
+                    className="DAT_Toollist_Tab_Mobile_list_item"
+                    key={i}
+                    id={item.id}
+                    onClick={(e) => {
+                      handleTabMobile(e);
+                      tabMobile.value = false
+                    }}
+                  >
+                    {i + 1}: {item.name}
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           {(() => {
@@ -441,55 +488,64 @@ export default function Warn(props) {
               case "all":
                 return (
                   <>
-                    {dataWarn.value?.map((item, i) => {
+                    {datafilter?.map((item, i) => {
                       return (
                         <div key={i} className="DAT_WarnMobile_Content">
                           <div className="DAT_WarnMobile_Content_Top">
-                            <div className="DAT_WarnMobile_Content_Top_Left">
-                              <div className="DAT_WarnMobile_Content_Top_Left_Name">
-                                {dataLang.formatMessage({ id: "errcode" })}:{" "}
-                                {item.boxid}
+                            <div className="DAT_WarnMobile_Content_Top_Level">
+                              {item.level === "warn" ? (
+                                <div className="DAT_WarnMobile_Content_Top_Warning"
+                                  onClick={(e) => handleInfo(e)}
+                                  id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
+                                >
+                                  {dataLang.formatMessage({ id: "warn" })}
+                                </div>
+                              ) : (
+                                <div className="DAT_WarnMobile_Content_Top_Notice"
+                                  onClick={(e) => handleInfo(e)}
+                                  id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
+                                >
+                                  {dataLang.formatMessage({ id: "notice" })}
+                                </div>
+                              )}
+                            </div>
+                            <div className="DAT_WarnMobile_Content_Top_Info">
+                              <div className="DAT_WarnMobile_Content_Top_Info_Name"
+                                onClick={(e) => handleInfo(e)}
+                                id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
+                              >
+                                {dataLang.formatMessage({ id: item.boxid, defaultMessage: item.boxid })}
                               </div>
-                              <div className="DAT_WarnMobile_Content_Top_Left_Device">
+                              <div className="DAT_WarnMobile_Content_Top_Info_Device">
                                 {dataLang.formatMessage({ id: "device" })}:{" "}
                                 {item.device}
                               </div>
-                              <div className="DAT_WarnMobile_Content_Top_Left_Project">
+                              <div className="DAT_WarnMobile_Content_Top_Info_Project">
                                 {dataLang.formatMessage({ id: "project" })}:{" "}
                                 {item.plant}
-                              </div>
-                              <div className="DAT_WarnMobile_Content_Top_Left_Level">
-                                {item.level === "warn" ? (
-                                  <div className="DAT_TableWarning">
-                                    {dataLang.formatMessage({ id: "warn" })}
-                                  </div>
-                                ) : (
-                                  <div className="DAT_TableNotice">
-                                    {dataLang.formatMessage({ id: "notice" })}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-
-                            <div className="DAT_WarnMobile_Content_Top_Right">
-                              <div
-                                className="DAT_DeviceMobile_Content_Top_Right_Item"
-                                id={item.boxid + "_" + item.device}
-                                onClick={(e) => handleDeleteWarn(e)}
-                              >
-                                <MdDelete size={20} color="red" />
                               </div>
                             </div>
                           </div>
 
                           <div className="DAT_WarnMobile_Content_Bottom">
-                            <div className="DAT_WarnMobile_Content_Bottom_Open">
-                              {dataLang.formatMessage({ id: "openWarnTime" })}:{" "}
-                              {item.opentime}
+                            <div className="DAT_WarnMobile_Content_Bottom_Left">
+                              <div className="DAT_WarnMobile_Content_Bottom_Left_Open">
+                                {dataLang.formatMessage({ id: "openWarnTime" })}:{" "}
+                                {item.opentime}
+                              </div>
+                              <div className="DAT_WarnMobile_Content_Bottom_Left_Close">
+                                {dataLang.formatMessage({ id: "closeWarnTime" })}:{" "}
+                                {item.closedtime}
+                              </div>
                             </div>
-                            <div className="DAT_WarnMobile_Content_Bottom_Close">
-                              {dataLang.formatMessage({ id: "closeWarnTime" })}:{" "}
-                              {item.closedtime}
+                            <div className="DAT_WarnMobile_Content_Bottom_Right">
+                              <div
+                                className="DAT_WarnMobile_Content_Bottom_Right_Item"
+                                id={item.boxid + "_" + item.device}
+                                onClick={(e) => handleDeleteWarn(e)}
+                              >
+                                <IoTrashOutline size={16} />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -500,55 +556,64 @@ export default function Warn(props) {
               case "open":
                 return (
                   <>
-                    {open.value?.map((item, i) => {
+                    {datafilteropen?.map((item, i) => {
                       return (
                         <div key={i} className="DAT_WarnMobile_Content">
                           <div className="DAT_WarnMobile_Content_Top">
-                            <div className="DAT_WarnMobile_Content_Top_Left">
-                              <div className="DAT_WarnMobile_Content_Top_Left_Name">
-                                {dataLang.formatMessage({ id: "errcode" })}:{" "}
-                                {item.boxid}
+                            <div className="DAT_WarnMobile_Content_Top_Level">
+                              {item.level === "warn" ? (
+                                <div className="DAT_WarnMobile_Content_Top_Warning"
+                                  onClick={(e) => handleInfo(e)}
+                                  id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
+                                >
+                                  {dataLang.formatMessage({ id: "warn" })}
+                                </div>
+                              ) : (
+                                <div className="DAT_WarnMobile_Content_Top_Notice"
+                                  onClick={(e) => handleInfo(e)}
+                                  id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
+                                >
+                                  {dataLang.formatMessage({ id: "notice" })}
+                                </div>
+                              )}
+                            </div>
+                            <div className="DAT_WarnMobile_Content_Top_Info">
+                              <div className="DAT_WarnMobile_Content_Top_Info_Name"
+                                onClick={(e) => handleInfo(e)}
+                                id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
+                              >
+                                {dataLang.formatMessage({ id: item.boxid, defaultMessage: item.boxid })}
                               </div>
-                              <div className="DAT_WarnMobile_Content_Top_Left_Device">
+                              <div className="DAT_WarnMobile_Content_Top_Info_Device">
                                 {dataLang.formatMessage({ id: "device" })}:{" "}
                                 {item.device}
                               </div>
-                              <div className="DAT_WarnMobile_Content_Top_Left_Project">
+                              <div className="DAT_WarnMobile_Content_Top_Info_Project">
                                 {dataLang.formatMessage({ id: "project" })}:{" "}
                                 {item.plant}
-                              </div>
-                              <div className="DAT_WarnMobile_Content_Top_Left_Level">
-                                {item.level === "warn" ? (
-                                  <div className="DAT_TableWarning">
-                                    {dataLang.formatMessage({ id: "warn" })}
-                                  </div>
-                                ) : (
-                                  <div className="DAT_TableNotice">
-                                    {dataLang.formatMessage({ id: "notice" })}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-
-                            <div className="DAT_WarnMobile_Content_Top_Right">
-                              <div
-                                className="DAT_DeviceMobile_Content_Top_Right_Item"
-                                id={item.boxid + "_" + item.device}
-                                onClick={(e) => handleDeleteWarn(e)}
-                              >
-                                <MdDelete size={20} color="red" />
                               </div>
                             </div>
                           </div>
 
                           <div className="DAT_WarnMobile_Content_Bottom">
-                            <div className="DAT_WarnMobile_Content_Bottom_Open">
-                              {dataLang.formatMessage({ id: "openWarnTime" })}:{" "}
-                              {item.opentime}
+                            <div className="DAT_WarnMobile_Content_Bottom_Left">
+                              <div className="DAT_WarnMobile_Content_Bottom_Left_Open">
+                                {dataLang.formatMessage({ id: "openWarnTime" })}:{" "}
+                                {item.opentime}
+                              </div>
+                              <div className="DAT_WarnMobile_Content_Bottom_Left_Close">
+                                {dataLang.formatMessage({ id: "closeWarnTime" })}:{" "}
+                                {item.closedtime}
+                              </div>
                             </div>
-                            <div className="DAT_WarnMobile_Content_Bottom_Close">
-                              {dataLang.formatMessage({ id: "closeWarnTime" })}:{" "}
-                              {item.closedtime}
+                            <div className="DAT_WarnMobile_Content_Bottom_Right">
+                              <div
+                                className="DAT_WarnMobile_Content_Bottom_Right_Item"
+                                id={item.boxid + "_" + item.device}
+                                onClick={(e) => handleDeleteWarn(e)}
+                              >
+                                <IoTrashOutline size={16} />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -559,55 +624,64 @@ export default function Warn(props) {
               case "closed":
                 return (
                   <>
-                    {closed.value?.map((item, i) => {
+                    {datafilterclosed?.map((item, i) => {
                       return (
                         <div key={i} className="DAT_WarnMobile_Content">
                           <div className="DAT_WarnMobile_Content_Top">
-                            <div className="DAT_WarnMobile_Content_Top_Left">
-                              <div className="DAT_WarnMobile_Content_Top_Left_Name">
-                                {dataLang.formatMessage({ id: "errcode" })}:{" "}
-                                {item.boxid}
+                            <div className="DAT_WarnMobile_Content_Top_Level">
+                              {item.level === "warn" ? (
+                                <div className="DAT_WarnMobile_Content_Top_Warning"
+                                  onClick={(e) => handleInfo(e)}
+                                  id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
+                                >
+                                  {dataLang.formatMessage({ id: "warn" })}
+                                </div>
+                              ) : (
+                                <div className="DAT_WarnMobile_Content_Top_Notice"
+                                  onClick={(e) => handleInfo(e)}
+                                  id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
+                                >
+                                  {dataLang.formatMessage({ id: "notice" })}
+                                </div>
+                              )}
+                            </div>
+                            <div className="DAT_WarnMobile_Content_Top_Info">
+                              <div className="DAT_WarnMobile_Content_Top_Info_Name"
+                                onClick={(e) => handleInfo(e)}
+                                id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
+                              >
+                                {dataLang.formatMessage({ id: item.boxid, defaultMessage: item.boxid })}
                               </div>
-                              <div className="DAT_WarnMobile_Content_Top_Left_Device">
+                              <div className="DAT_WarnMobile_Content_Top_Info_Device">
                                 {dataLang.formatMessage({ id: "device" })}:{" "}
                                 {item.device}
                               </div>
-                              <div className="DAT_WarnMobile_Content_Top_Left_Project">
+                              <div className="DAT_WarnMobile_Content_Top_Info_Project">
                                 {dataLang.formatMessage({ id: "project" })}:{" "}
                                 {item.plant}
-                              </div>
-                              <div className="DAT_WarnMobile_Content_Top_Left_Level">
-                                {item.level === "warn" ? (
-                                  <div className="DAT_TableWarning">
-                                    {dataLang.formatMessage({ id: "warn" })}
-                                  </div>
-                                ) : (
-                                  <div className="DAT_TableNotice">
-                                    {dataLang.formatMessage({ id: "notice" })}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-
-                            <div className="DAT_WarnMobile_Content_Top_Right">
-                              <div
-                                className="DAT_DeviceMobile_Content_Top_Right_Item"
-                                id={item.boxid + "_" + item.device}
-                                onClick={(e) => handleDeleteWarn(e)}
-                              >
-                                <MdDelete size={20} color="red" />
                               </div>
                             </div>
                           </div>
 
                           <div className="DAT_WarnMobile_Content_Bottom">
-                            <div className="DAT_WarnMobile_Content_Bottom_Open">
-                              {dataLang.formatMessage({ id: "openWarnTime" })}:{" "}
-                              {item.opentime}
+                            <div className="DAT_WarnMobile_Content_Bottom_Left">
+                              <div className="DAT_WarnMobile_Content_Bottom_Left_Open">
+                                {dataLang.formatMessage({ id: "openWarnTime" })}:{" "}
+                                {item.opentime}
+                              </div>
+                              <div className="DAT_WarnMobile_Content_Bottom_Left_Close">
+                                {dataLang.formatMessage({ id: "closeWarnTime" })}:{" "}
+                                {item.closedtime}
+                              </div>
                             </div>
-                            <div className="DAT_WarnMobile_Content_Bottom_Close">
-                              {dataLang.formatMessage({ id: "closeWarnTime" })}:{" "}
-                              {item.closedtime}
+                            <div className="DAT_WarnMobile_Content_Bottom_Right">
+                              <div
+                                className="DAT_WarnMobile_Content_Bottom_Right_Item"
+                                id={item.boxid + "_" + item.device}
+                                onClick={(e) => handleDeleteWarn(e)}
+                              >
+                                <IoTrashOutline size={16} />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -654,7 +728,8 @@ export default function Warn(props) {
               );
             })}
 
-            <div className="DAT_Warn_Filter"
+            <div
+              className="DAT_Warn_Filter"
               onClick={(e) => setDisplay(!display)}
             >
               <FiFilter />
@@ -687,7 +762,7 @@ export default function Warn(props) {
                     <DataTable
                       className="DAT_Table_Container"
                       columns={columnWarn}
-                      data={open.value}
+                      data={datafilteropen}
                       pagination
                       paginationComponentOptions={paginationComponentOptions}
                       fixedHeader={true}
@@ -699,7 +774,7 @@ export default function Warn(props) {
                     <DataTable
                       className="DAT_Table_Container"
                       columns={columnWarn}
-                      data={closed.value}
+                      data={datafilterclosed}
                       pagination
                       paginationComponentOptions={paginationComponentOptions}
                       fixedHeader={true}

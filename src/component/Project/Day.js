@@ -290,6 +290,32 @@ export default function Day(props) {
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <Tooltip />
                     {filterchart[projectData.value.plantmode][props.dateType]
+                      .gridData ? (
+                      <Area
+                        type="monotone"
+                        dataKey={props.v3}
+                        stroke="rgba(0, 163, 0,0.7)"
+                        fillOpacity={1}
+                        fill="rgba(0, 163, 0, 0.2)"
+                      />
+                    ) : (
+                      <></>
+                    )}
+
+                    {filterchart[projectData.value.plantmode][props.dateType]
+                      .batteryData ? (
+                      <Area
+                        type="monotone"
+                        dataKey={props.v4}
+                        stroke="rgba(120, 90, 0,0.7)"
+                        fillOpacity={1}
+                        fill="rgba(196, 147, 2, 0.1)"
+                      />
+                    ) : (
+                      <></>
+                    )}
+
+                    {filterchart[projectData.value.plantmode][props.dateType]
                       .productionData ? (
                       <Area
                         type="monotone"
@@ -310,31 +336,6 @@ export default function Day(props) {
                         stroke="rgba(247, 148, 29,0.7)"
                         fillOpacity={1}
                         fill="rgba(247, 148, 29,0.2)"
-                      />
-                    ) : (
-                      <></>
-                    )}
-
-                    {filterchart[projectData.value.plantmode][props.dateType]
-                      .gridData ? (
-                      <Area
-                        type="monotone"
-                        dataKey={props.v3}
-                        stroke="rgba(0, 163, 0,0.7)"
-                        fillOpacity={1}
-                        fill="rgba(0, 163, 0, 0.2)"
-                      />
-                    ) : (
-                      <></>
-                    )}
-                    {filterchart[projectData.value.plantmode][props.dateType]
-                      .batteryData ? (
-                      <Area
-                        type="monotone"
-                        dataKey={props.v4}
-                        stroke="rgba(120, 90, 0,0.7)"
-                        fillOpacity={1}
-                        fill="rgba(196, 147, 2, 0.1)"
                       />
                     ) : (
                       <></>

@@ -10,7 +10,7 @@ import { isMobile } from "../Navigation/Navigation";
 import { useSelector } from "react-redux";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { Token, convertUnit, ruleInfor, userInfor } from "../../App";
+import { COLOR, Token, convertUnit, ruleInfor, userInfor } from "../../App";
 import { useIntl } from "react-intl";
 import Filter from "../Project/Filter";
 import axios from "axios";
@@ -227,7 +227,6 @@ export default function Device(props) {
           >
             <div
               className="DAT_ModifyBox_Fix"
-              // id={row.psn + "_" + tab.value + "_" + row.plogger}
               id={`${row.psn}-${row.pname}-edit`}
               onClick={(e) => handleEdit(e)}
             >
@@ -612,38 +611,9 @@ export default function Device(props) {
   return (
     <>
       {isMobile.value ? (
-        <>
-          <div className="DAT_Modify">
-            <div className="DAT_Modify_Item" onClick={() => setFilter(!filter)}>
-              <CiSearch color="white" size={20} />
-            </div>
-          </div>
-
-          {filter ? (
-            <div className="DAT_Modify_Filter">
-              <input
-                type="text"
-                placeholder={dataLang.formatMessage({ id: "enterDev" })}
-              />
-              <div
-                className="DAT_Modify_Filter_Close"
-                onClick={() => setFilter(!filter)}
-              >
-                <RxCross2 size={20} color="white" />
-              </div>
-            </div>
-          ) : (
-            <></>
-          )}
-        </>
-      ) : (
-        <>
-          <div className="DAT_DeviceHeader">
-            <div className="DAT_DeviceHeader_Title">
-              <MdDevices color="gray" size={25} />
-              <span>{dataLang.formatMessage({ id: "device" })}</span>
-            </div>
-            <div className="DAT_DeviceHeader_Filter">
+        <div className="DAT_DeviceHeaderMobile">
+          <div className="DAT_DeviceHeaderMobile_Top">
+            <div className="DAT_DeviceHeaderMobile_Top_Filter">
               <input
                 type="text"
                 id="search"
@@ -657,40 +627,75 @@ export default function Device(props) {
               />
               <CiSearch color="gray" size={20} />
             </div>
-            <div></div>
           </div>
-        </>
+
+          <div className="DAT_DeviceHeaderMobile_Title">
+            <MdDevices color="gray" size={25} />
+            <span>{dataLang.formatMessage({ id: "device" })}</span>
+          </div>
+        </div>
+      ) : (
+        <div className="DAT_DeviceHeader">
+          <div className="DAT_DeviceHeader_Title">
+            <MdDevices color="gray" size={25} />
+            <span>{dataLang.formatMessage({ id: "device" })}</span>
+          </div>
+          <div className="DAT_DeviceHeader_Filter">
+            <input
+              type="text"
+              id="search"
+              placeholder={
+                tab.value == "logger"
+                  ? dataLang.formatMessage({ id: "enterLogger" })
+                  : dataLang.formatMessage({ id: "enterInverter" })
+              }
+              autoComplete="off"
+              onChange={(e) => handleSearch(e)}
+            />
+            <CiSearch color="gray" size={20} />
+          </div>
+          <div></div>
+        </div>
+
       )}
 
       {isMobile.value ? (
         <div className="DAT_DeviceMobile">
           <div className="DAT_Toollist_Tab_Mobile">
-            <button
-              className="DAT_Toollist_Tab_Mobile_content"
+            <button className="DAT_Toollist_Tab_Mobile_content"
               onClick={() => (tabMobile.value = !tabMobile.value)}
             >
               <span> {tabLable.value}</span>
-              {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}
+              <div className="DAT_Toollist_Tab_Mobile_content_Icon">
+                <FiFilter />
+                {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}
+              </div>
             </button>
 
-            {tabMobile.value ? (
-              <div className="DAT_Toollist_Tab_Mobile_list">
-                {listTab.map((item, i) => {
-                  return (
-                    <div
-                      className="DAT_Toollist_Tab_Mobile_list_item"
-                      key={i}
-                      id={item.id}
-                      onClick={(e) => handleTabMobile(e)}
-                    >
-                      {i + 1}: {item.name}
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <></>
-            )}
+            <div className="DAT_Toollist_Tab_Mobile_list"
+              style={{
+                top: "50px",
+                height: tabMobile.value ? "66px" : "0",
+                transition: "0.5s",
+                boxShadow: tabMobile.value ? "0 0 4px 4px rgba(193, 193, 193, 0.5)" : "none"
+              }}
+            >
+              {listTab.map((item, i) => {
+                return (
+                  <div
+                    className="DAT_Toollist_Tab_Mobile_list_item"
+                    key={i}
+                    id={item.id}
+                    onClick={(e) => {
+                      handleTabMobile(e);
+                      tabMobile.value = false
+                    }}
+                  >
+                    {i + 1}: {item.name}
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           {(() => {
@@ -702,56 +707,41 @@ export default function Device(props) {
                       return (
                         <div key={i} className="DAT_DeviceMobile_Content">
                           <div className="DAT_DeviceMobile_Content_Top">
-                            <div
-                              className="DAT_DeviceMobile_Content_Top_Left"
-                              id={item.pid + "_" + tab.value}
+                            <div className="DAT_DeviceMobile_Content_Top_Type"
+                              style={{ backgroundColor: COLOR.value.DarkGreenColor }}
+                              id={`${item.psn}_${tab.value}_${item.plogger}`}
                               onClick={(e) => handleShowInfo(e)}
                             >
-                              <div className="DAT_DeviceMobile_Content_Top_Left_Name">
-                                {dataLang.formatMessage({ id: "name" })}:{" "}
+                              {item.pdata.mode}
+                            </div>
+                            <div className="DAT_DeviceMobile_Content_Top_Info">
+                              <div className="DAT_DeviceMobile_Content_Top_Info_Name"
+                                id={`${item.psn}_${tab.value}_${item.plogger}`}
+                                onClick={(e) => handleShowInfo(e)}
+                              >
                                 {item.pname}
                               </div>
-                              <div className="DAT_DeviceMobile_Content_Top_Left_Sn">
+                              <div className="DAT_DeviceMobile_Content_Top_Info_Sn">
                                 SN: {item.psn}
                               </div>
-                            </div>
-
-                            <div className="DAT_DeviceMobile_Content_Top_Right">
-                              {ruleInfor.value.setting.device.modify ===
-                                true ? (
-                                <div className="DAT_DeviceMobile_Content_Top_Right_Item">
-                                  <MdEdit size={20} color="#216990" />
-                                </div>
-                              ) : (
-                                <div></div>
-                              )}
-                              {ruleInfor.value.setting.device.delete ===
-                                true ? (
-                                <div
-                                  className="DAT_DeviceMobile_Content_Top_Right_Item"
-                                  id={item.psn + "_" + item.pplantid}
-                                  onClick={(e) => handleRemove(e)}
-                                >
-                                  <MdDelete size={20} color="red" />
-                                </div>
-                              ) : (
-                                <div></div>
-                              )}
+                              <div className="DAT_DeviceMobile_Content_Top_Info_OgLog">
+                                {dataLang.formatMessage({ id: "ogLog" })}: {item.plogger}
+                              </div>
                             </div>
                           </div>
 
                           <div className="DAT_DeviceMobile_Content_Bottom">
                             <div className="DAT_DeviceMobile_Content_Bottom_State">
-                              {item.pstate ? (
+                              {invt[item.plogger]?.[item.pdata.status] == 2 ? (
                                 <>
-                                  <FaCheckCircle size={20} color="green" />
+                                  <FaCheckCircle size={16} color="green" />
                                   <span>
                                     {dataLang.formatMessage({ id: "online" })}
                                   </span>
                                 </>
                               ) : (
                                 <>
-                                  <MdOutlineError size={22} color="red" />
+                                  <MdOutlineError size={16} color="red" />
                                   <span>
                                     {dataLang.formatMessage({ id: "offline" })}
                                   </span>
@@ -759,9 +749,19 @@ export default function Device(props) {
                               )}
                             </div>
 
-                            <div className="DAT_DeviceMobile_Content_Bottom_Type">
-                              {dataLang.formatMessage({ id: "project" })}:{" "}
-                              {item.pplantname}
+                            <div className="DAT_DeviceMobile_Content_Bottom_Right">
+                              {ruleInfor.value.setting.device.modify ===
+                                true ? (
+                                <div className="DAT_DeviceMobile_Content_Bottom_Right_Item">
+                                  <FiEdit
+                                    size={14}
+                                    id={`${item.psn}-${item.pname}-edit`}
+                                    onClick={(e) => handleEdit(e)}
+                                  />
+                                </div>
+                              ) : (
+                                <div></div>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -770,17 +770,7 @@ export default function Device(props) {
                   </>
                 );
               case "meter":
-                return (
-                  <DataTable
-                    className="DAT_Table_Container"
-                    columns={columnDevice}
-                    data={dataMeter}
-                    pagination
-                    paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
-                    noDataComponent={<Empty />}
-                  />
-                );
+                return (<></>);
               case "logger":
                 return (
                   <>
@@ -788,25 +778,55 @@ export default function Device(props) {
                       return (
                         <div key={i} className="DAT_DeviceMobile_Content">
                           <div className="DAT_DeviceMobile_Content_Top">
-                            <div
-                              className="DAT_DeviceMobile_Content_Top_Left"
-                              id={item.pid + "_" + tab.value}
+                            <div className="DAT_DeviceMobile_Content_Top_Type"
+                              id={`${item.pid}_${tab.value}`}
                               onClick={(e) => handleShowInfo(e)}
                             >
-                              <div className="DAT_DeviceMobile_Content_Top_Left_Name">
-                                {dataLang.formatMessage({ id: "name" })}:{" "}
+                              {item.ptype}
+                            </div>
+                            <div className="DAT_DeviceMobile_Content_Top_Info">
+                              <div className="DAT_DeviceMobile_Content_Top_Info_Name"
+                                id={`${item.pid}_${tab.value}`}
+                                onClick={(e) => handleShowInfo(e)}
+                              >
                                 {item.pname}
                               </div>
-                              <div className="DAT_DeviceMobile_Content_Top_Left_Sn">
+                              <div className="DAT_DeviceMobile_Content_Top_Info_Sn">
                                 SN: {item.psn}
                               </div>
+                              <div className="DAT_DeviceMobile_Content_Top_Info_Plant">
+                                {dataLang.formatMessage({ id: "project" })}: {item.pplantname}
+                              </div>
                             </div>
+                          </div>
 
-                            <div className="DAT_DeviceMobile_Content_Top_Right">
+                          <div className="DAT_DeviceMobile_Content_Bottom">
+                            <div className="DAT_DeviceMobile_Content_Bottom_State">
+                              {item.pstate === 1 ? (
+                                <>
+                                  <FaCheckCircle size={16} color="green" />
+                                  <span>
+                                    {dataLang.formatMessage({ id: "online" })}
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <MdOutlineError size={16} color="red" />
+                                  <span>
+                                    {dataLang.formatMessage({ id: "offline" })}
+                                  </span>
+                                </>
+                              )}
+                            </div>
+                            <div className="DAT_DeviceMobile_Content_Bottom_Right">
                               {ruleInfor.value.setting.device.modify ===
                                 true ? (
-                                <div className="DAT_DeviceMobile_Content_Top_Right_Item">
-                                  <MdEdit size={20} color="#216990" />
+                                <div className="DAT_DeviceMobile_Content_Bottom_Right_Item">
+                                  <FiEdit
+                                    size={14}
+                                    id={`${item.psn}-${item.pname}-edit`}
+                                    onClick={(e) => handleEdit(e)}
+                                  />
                                 </div>
                               ) : (
                                 <div></div>
@@ -814,40 +834,15 @@ export default function Device(props) {
                               {ruleInfor.value.setting.device.remove ===
                                 true ? (
                                 <div
-                                  className="DAT_DeviceMobile_Content_Top_Right_Item"
-                                  id={item.psn + "_" + item.pplantid}
+                                  className="DAT_DeviceMobile_Content_Bottom_Right_Item"
+                                  id={`${item.psn}_${item.pplantid}_remove`}
                                   onClick={(e) => handleRemove(e)}
                                 >
-                                  <MdDelete size={20} color="red" />
+                                  <IoTrashOutline size={16} />
                                 </div>
                               ) : (
                                 <div></div>
                               )}
-                            </div>
-                          </div>
-
-                          <div className="DAT_DeviceMobile_Content_Bottom">
-                            <div className="DAT_DeviceMobile_Content_Bottom_State">
-                              {item.pstate ? (
-                                <>
-                                  <FaCheckCircle size={20} color="green" />
-                                  <span>
-                                    {dataLang.formatMessage({ id: "online" })}
-                                  </span>
-                                </>
-                              ) : (
-                                <>
-                                  <MdOutlineError size={22} color="red" />
-                                  <span>
-                                    {dataLang.formatMessage({ id: "offline" })}
-                                  </span>
-                                </>
-                              )}
-                            </div>
-
-                            <div className="DAT_DeviceMobile_Content_Bottom_Type">
-                              {dataLang.formatMessage({ id: "project" })}:{" "}
-                              {item.pplantname}
                             </div>
                           </div>
                         </div>
