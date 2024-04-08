@@ -409,6 +409,10 @@ export default function Device(props) {
     // }
   };
 
+  const closeFilter = () => {
+    setDisplay(false);
+  };
+
   const handleClosePopup = () => {
     setPopupState(false);
   };
@@ -954,6 +958,7 @@ export default function Device(props) {
               handlefilterdevice={handleFilterDevice}
               handleReset={handleReset}
               handleClose={handleCloseFilter}
+              handleCancel={closeFilter}
             />
           </div>
         </div>
@@ -975,6 +980,7 @@ export default function Device(props) {
             type={type}
             devtype={devtype}
             handleClose={handleClosePopup}
+            handleCancel={closeFilter}
           />
         </div>
       ) : (

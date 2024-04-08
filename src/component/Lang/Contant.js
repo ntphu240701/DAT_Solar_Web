@@ -347,7 +347,7 @@ export const messages = {
     setup: "Setup",
     //Grid Voltage/Frequency Protection
     //level 1
-    GridVFreqP: "Grid Volt/Freq Protect",
+    GridVFreqP: "Grid Volt / Freq Protect",
     ACUnderVolt1: "AC Under Volt level 1",
     ACOverVolt1: "AC Over Volt level 1",
     ACUnderVolt1Time: "AC Under Volt 1 Time",
@@ -549,7 +549,7 @@ export const messages = {
 
     maxkWp: "Max kWp",
     minkWp: "Min kWp",
-    enterlocation: "Enter location",
+    enterLocation: "Enter location",
     sologon: "Energy solution platform",
     version: "Version",
     previous: "Back",
@@ -1043,7 +1043,7 @@ export const messages = {
     OTP: "Mã OTP",
     sendOTP: "Gửi mã OTP",
     causeViEn: "Nguyên nhân (Tiếng Việt - Tiếng Anh)",
-    solutionViEn: "Bịện pháp (Tiếng Việt - Tiếng Anh)",
+    solutionViEn: "Biện pháp (Tiếng Việt - Tiếng Anh)",
     // DATA PLATFORM
     //TAB Settings
     BatchCommand: "Cài đặt nhiều lệnh",
@@ -1108,7 +1108,7 @@ export const messages = {
     setup: "Thiết lập",
     //---Bảo vệ điện áp/tần số---
     //level 1
-    GridVFreqP: "Bảo vệ điện áp/tần số",
+    GridVFreqP: "Bảo vệ điện áp / tần số",
     ACUnderVolt1: "Giá trị bảo vệ thiếu áp cấp 1",
     ACOverVolt1: "Giá trị bảo vệ quá áp cấp 1",
     ACUnderVolt1Time: "Thời gian bảo vệ thiếu áp cấp 1",

@@ -13,19 +13,14 @@ import { partnerInfor, ruleInfor } from "../../App";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 import { datarule } from "../Rule/Rule";
-import { FaCheckCircle, FaRegFileAlt, FaStar } from "react-icons/fa";
-import { AiOutlineUserAdd } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
-import { RxCross2 } from "react-icons/rx";
 import { IoMdMore } from "react-icons/io";
-import { MdOutlineError } from "react-icons/md";
 import { LuUserSquare } from "react-icons/lu";
 import { FiEdit } from "react-icons/fi";
 import { lowercasedata } from "../ErrorSetting/ErrorSetting";
 import { MdAddchart } from "react-icons/md";
 import { GoProject } from "react-icons/go";
-import { RiShareForwardLine } from "react-icons/ri";
 
 export const roleData = signal({});
 export const Usr_ = signal([]);
@@ -45,10 +40,10 @@ export default function Role(props) {
     selectAllRowsItemText: dataLang.formatMessage({ id: "showAll" }),
   };
 
-  const colorbackground = {
-    master: "rgba(255, 0, 0)",
-    user: "rgba(247, 148, 29)",
-    admin: "rgba(11, 25, 103)",
+  const img = {
+    master: "/dat_picture/manager.png",
+    user: "/dat_picture/programmer.png",
+    admin: "/dat_picture/bussiness-man.png",
   };
 
   const columnrole = [
@@ -236,11 +231,6 @@ export default function Role(props) {
     setdatafilter(Usr_.value);
   }, [Usr_.value]);
 
-  // useEffect(() => {
-  //   console.log(ruleInfor.value);
-  //   console.log(datafilter);
-  // }, [ruleInfor.value, datafilter]);
-
   return (
     <>
       {isMobile.value ? (
@@ -385,12 +375,11 @@ export default function Role(props) {
                         justifyContent: "center",
                         alignItems: "center",
                         fontSize: "12px",
-                        backgroundColor: colorbackground[item.type_],
                         color: "white",
                         padding: "5px",
                       }}
                     >
-                      <span>{dataLang.formatMessage({ id: item.type_ })}</span>
+                      <img src={img[item.type_]} alt="" onError={(e) => e.target.src = "./dat_picture/profile.png"} />
                     </div>
                     <div className="DAT_ProjectMobile_Content_Top_Info">
                       <div className="DAT_ProjectMobile_Content_Top_Info_Name">
@@ -415,6 +404,7 @@ export default function Role(props) {
                           </div>
                         </div>
                       </div>
+
                       <div
                         className="DAT_ProjectMobile_Content_Top_Info_Data"
                         style={{ color: "rgba(95, 95, 98)", fontSize: "12px" }}
@@ -424,6 +414,19 @@ export default function Role(props) {
                           <div>
                             {dataLang.formatMessage({ id: "email" })}:{" "}
                             {item.mail_}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        className="DAT_ProjectMobile_Content_Top_Info_Data"
+                        style={{ color: "rgba(95, 95, 98)", fontSize: "12px" }}
+                      >
+                        <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
+                          <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name"></div>
+                          <div>
+                            {dataLang.formatMessage({ id: "account" })}:{" "}
+                            <span style={{ fontFamily: "Montserrat-Bold" }}>{dataLang.formatMessage({ id: item.type_ })}</span>
                           </div>
                         </div>
                       </div>
