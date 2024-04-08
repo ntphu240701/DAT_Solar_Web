@@ -167,7 +167,6 @@ export default function Weather() {
         onMouseLeave={stopDragging}
         onMouseMove={dragging}
         ref={boxRef}
-        selectionColor={"black"}
         className="DAT_ProjectData_Dashboard_Data_Right_Weather_Inside_Bottom">
         {data.forecast.forecastday.map((item, index) => {
           let weekdays = [];

@@ -377,6 +377,7 @@ export default function Warn(props) {
                 <input
                   type="text"
                   placeholder={dataLang.formatMessage({ id: "enterWarn" })}
+                  onChange={(e) => handleSearch(e)}
                 />
                 <div className="DAT_Modify_Filter_Close"
                   onClick={() => setFilter(!filter)}

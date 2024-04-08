@@ -65,10 +65,12 @@ const GraphGrid = (props) => {
                         width: "100%",
                         height: "100%",
                         fill: "none",
-                        stroke: "rgba(43, 195, 253)",
+                        stroke: "rgba(0, 163, 0)",
                         strokeWidth: props.strokeWidth,
                         strokeLinecap: "round",
+                        // strokeDasharray: "20",
                         overflow: "hidden",
+                        // animation: `${lineA_} ${props.dur} linear infinite`,
                     }}
                 />
 
@@ -85,10 +87,12 @@ const GraphGrid = (props) => {
                     height="100%"
                     style={{
                         fill: "none",
-                        stroke: "rgba(43, 195, 253)",
+                        stroke: "rgba(247, 148, 29)",
                         strokeWidth: props.strokeWidth,
                         strokeLinecap: "round",
                         overflow: "hidden",
+                        strokeDasharray: "20",
+                        animation: `moveRtoL ${props.dur} linear infinite`,
                     }}
                 />
 
@@ -134,18 +138,18 @@ const GraphGrid = (props) => {
                     <Solar src="/dat_icon/production.png" width="30" color="black" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
-                <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+                <foreignObject x="193" y="233" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
                     <SolarImg src="/dat_icon/consumption.png" width="30" height="30" />
                 </foreignObject>
 
 
-                <foreignObject x="193" y="233" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+                <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
                     <SolarImg src="/dat_icon/grid.png" width="30" height="30" />
                 </foreignObject>
 
                 <foreignObject x="193" y="92" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", backgroundColor: "white", borderRadius: "3px" }}>
-                        DC/AC
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", backgroundColor: "white", borderRadius: "3px" }}>
+                        <img src="/dat_icon/Inverter.png" width="60" height="60" alt="" />
                     </div>
                 </foreignObject>
             </svg>
@@ -165,19 +169,34 @@ const GraphConsumption = (props) => {
             setLinA("Default");
         }
 
-        if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
+        // if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
+        //     setLinB("moveRtoL");
+        // } else {
+        //     setLinB("Default");
+        // }
+        if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
+            setLinB("moveLtoR");
+        } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
             setLinB("moveRtoL");
         } else {
             setLinB("Default");
         }
 
-        if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
+        // if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
+        //     setLinD("moveRtoL");
+        // } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
+        //     setLinD("moveLtoR");
+        // } else {
+        //     setLinD("Default");
+        // }
+
+
+        if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
             setLinD("moveRtoL");
-        } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
-            setLinD("moveLtoR");
         } else {
             setLinD("Default");
         }
+
     }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1]);
 
     const LineA = (props) => {
@@ -211,7 +230,7 @@ const GraphConsumption = (props) => {
                         width: "100%",
                         height: "100%",
                         fill: "none",
-                        stroke: lineB_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(247, 148, 29)",
+                        stroke: lineB_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(0, 163, 0)",
                         strokeWidth: props.strokeWidth,
                         strokeLinecap: "round",
                         overflow: "hidden",
@@ -234,7 +253,7 @@ const GraphConsumption = (props) => {
                     height="100%"
                     style={{
                         fill: "none",
-                        stroke: lineD_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(0, 163, 0)",
+                        stroke: lineD_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(247, 148, 29)",
                         strokeWidth: props.strokeWidth,
                         strokeLinecap: "round",
                         overflow: "hidden",
@@ -269,25 +288,25 @@ const GraphConsumption = (props) => {
                     backgroundColor: "white"
                 }}
             >
-                <LineA dur="10s" />
-                <LineB dur="10s" />
-                <LineD dur="10s" />
+                <LineA dur="10s" strokeWidth="3" />
+                <LineB dur="10s" strokeWidth="3" />
+                <LineD dur="10s" strokeWidth="3" />
 
                 <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
                     <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
-                <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+                <foreignObject x="193" y="233" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
                     <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
-                <foreignObject x="193" y="233" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+                <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
                     <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="193" y="92" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", border: "1px solid rgba(233, 233, 233, 0.8)", backgroundColor: "white", borderRadius: "3px" }}>
-                        DC/AC
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", backgroundColor: "white", borderRadius: "3px" }}>
+                        <img src="/dat_icon/Inverter.png" width="60" height="60" alt="" />
                     </div>
                 </foreignObject>
             </svg>
@@ -308,7 +327,14 @@ const GraphFull = (props) => {
             setLinA("Default");
         }
 
-        if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
+        // if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
+        //     setLinB("moveRtoL");
+        // } else {
+        //     setLinB("Default");
+        // }
+        if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
+            setLinB("moveLtoR");
+        } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
             setLinB("moveRtoL");
         } else {
             setLinB("Default");
@@ -322,13 +348,19 @@ const GraphFull = (props) => {
             setLinC("Default");
         }
 
-        if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
-            setLinD("moveLtoR");
-        } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
+        // if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
+        //     setLinD("moveLtoR");
+        // } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
+        //     setLinD("moveRtoL");
+        // } else {
+        //     setLinD("Default");
+        // }
+        if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
             setLinD("moveRtoL");
         } else {
             setLinD("Default");
         }
+
     }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1, props.cal.bat_1]);
 
     const LineA = (props) => {
@@ -362,7 +394,7 @@ const GraphFull = (props) => {
                         width: "100%",
                         height: "100%",
                         fill: "none",
-                        stroke: lineB_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(247, 148, 29)",
+                        stroke: lineB_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(0, 163, 0)",
                         strokeWidth: props.strokeWidth,
                         strokeLinecap: "round",
                         overflow: "hidden",
@@ -409,7 +441,7 @@ const GraphFull = (props) => {
                     height="100%"
                     style={{
                         fill: "none",
-                        stroke: lineD_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(0, 163, 0)",
+                        stroke: lineD_ === "Default" ? "rgb(182, 182, 182,0.3)" : "rgba(247, 148, 29)",
                         strokeWidth: props.strokeWidth,
                         strokeLinecap: "round",
                         overflow: "hidden",
@@ -453,21 +485,28 @@ const GraphFull = (props) => {
                     <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
-                <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+                {/* <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
                     <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+                </foreignObject> */}
+                <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+                    <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="5" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
                     <Solar src="/dat_icon/bat.png" width="20" height="30" color={props.cal?.bat_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.bat_1) / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
-                <foreignObject x="395" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+                {/* <foreignObject x="395" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
                     <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+                </foreignObject> */}
+
+                <foreignObject x="395" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
+                    <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="193" y="112" width="102" height="68" style={{ overflow: "hidden", padding: "2px" }}>
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", backgroundColor: "white", border: "1px solid rgba(233, 233, 233, 0.8)", borderRadius: "3px" }}>
-                        DC/AC
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", backgroundColor: "white", borderRadius: "3px" }}>
+                        <img src="/dat_icon/Inverter.png" width="60" height="60" alt="" />
                     </div>
                 </foreignObject>
             </svg>
