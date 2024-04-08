@@ -23,6 +23,14 @@ export default function Filter(props) {
   const todayString = today.toISOString().split('T')[0];
   const [deviceF, setDeviceF] = useState("all");
 
+  const displayFilter = {
+    greyFilter: "calc(100vh - 180px)",
+    noneheight: "0px",
+    plantHeight: "200px",
+    deviceHeight: "140px",
+    warnHeight: "180px",
+  };
+
   const handleResetWarn = () => {
     setWarnChecked(false);
     setNoticeChecked(false);
@@ -66,8 +74,18 @@ export default function Filter(props) {
   };
 
   useEffect(() => {
-    console.log(props.data);
-  }, [props.data])
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape" && props.display) {
+        props.handleCancel();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [props.display]);
 
   return (
     <>
@@ -77,15 +95,15 @@ export default function Filter(props) {
             return (
               <div className="DAT_Filter"
                 style={{
-                  height: props.display ? "567px" : "0px",
-                  transition: "0.5s",
+                  height: props.display ? displayFilter.greyFilter : displayFilter.noneheight,
+                  transition: "0.4s ease-in-out",
                 }}
               >
                 {props.display ? (
                   <div className="DAT_Filter_Dropdown"
                     style={{
-                      height: props.display ? "200px" : "0px",
-                      transition: "0.5s",
+                      height: props.display ? displayFilter.plantHeight : displayFilter.noneheight,
+                      transition: "0.9s",
                     }}
                   >
                     <div className="DAT_Filter_Dropdown_Item">
@@ -169,19 +187,16 @@ export default function Filter(props) {
               <div
                 className="DAT_Filter"
                 style={{
-                  height: props.display ? "567px" : "0px",
-                  transition: "0.5s",
+                  height: props.display ? displayFilter.greyFilter : displayFilter.noneheight,
+                  transition: "0.4s ease-in-out",
                 }}
               >
                 {props.display ? (
                   <form
                     className="DAT_Filter_Dropdown"
-                    // onSubmit={() =>
-
-                    // }
                     style={{
-                      height: props.display ? "140px" : "0px",
-                      transition: "0.5s",
+                      height: props.display ? displayFilter.deviceHeight : displayFilter.noneheight,
+                      transition: "0.9s",
                     }}
                   >
                     <div className="DAT_Filter_Dropdown_Item">
@@ -289,15 +304,15 @@ export default function Filter(props) {
             return (
               <div className="DAT_Filter"
                 style={{
-                  height: props.display ? "calc(100vh - 180px)" : "0px",
-                  transition: "0.3s",
+                  height: props.display ? displayFilter.greyFilter : displayFilter.noneheight,
+                  transition: "0.4s ease-in-out",
                 }}
               >
                 {props.display ? (
                   <form className="DAT_Filter_Dropdown"
                     style={{
-                      height: props.display ? "180px" : "0px",
-                      transition: "0.5s",
+                      height: props.display ? displayFilter.warnHeight : displayFilter.noneheight,
+                      transition: "0.9s",
                     }}
                   >
                     <div className="DAT_Filter_Dropdown_Item">

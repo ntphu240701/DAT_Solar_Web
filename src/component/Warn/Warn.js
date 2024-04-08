@@ -23,9 +23,12 @@ import {
 } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { IoTrashOutline } from "react-icons/io5";
-import { FiFilter } from "react-icons/fi";
+import { FiAlertCircle, FiFilter } from "react-icons/fi";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { AiOutlineAlert } from "react-icons/ai";
+import { HiOutlineBellAlert } from "react-icons/hi2";
+import { GoAlert } from "react-icons/go";
 
 export const tabLable = signal("");
 export const open = signal([]);
@@ -233,6 +236,10 @@ export default function Warn(props) {
 
   const handleCloseDel = () => {
     setDelWarnState(false);
+  };
+
+  const closeFilter = () => {
+    setDisplay(false);
   };
 
   const handleModify = (e, type) => {
@@ -495,16 +502,20 @@ export default function Warn(props) {
                             <div className="DAT_WarnMobile_Content_Top_Level">
                               {item.level === "warn" ? (
                                 <div className="DAT_WarnMobile_Content_Top_Warning"
+                                  style={{ flexDirection: "column" }}
                                   onClick={(e) => handleInfo(e)}
                                   id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
                                 >
+                                  <GoAlert size={25} style={{ marginBottom: "5px" }} />
                                   {dataLang.formatMessage({ id: "warn" })}
                                 </div>
                               ) : (
                                 <div className="DAT_WarnMobile_Content_Top_Notice"
+                                  style={{ flexDirection: "column" }}
                                   onClick={(e) => handleInfo(e)}
                                   id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
                                 >
+                                  <AiOutlineAlert size={25} style={{ marginBottom: "5px" }} />
                                   {dataLang.formatMessage({ id: "notice" })}
                                 </div>
                               )}
@@ -563,16 +574,20 @@ export default function Warn(props) {
                             <div className="DAT_WarnMobile_Content_Top_Level">
                               {item.level === "warn" ? (
                                 <div className="DAT_WarnMobile_Content_Top_Warning"
+                                  style={{ flexDirection: "column" }}
                                   onClick={(e) => handleInfo(e)}
                                   id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
                                 >
+                                  <GoAlert size={25} style={{ marginBottom: "5px" }} />
                                   {dataLang.formatMessage({ id: "warn" })}
                                 </div>
                               ) : (
                                 <div className="DAT_WarnMobile_Content_Top_Notice"
+                                  style={{ flexDirection: "column" }}
                                   onClick={(e) => handleInfo(e)}
                                   id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
                                 >
+                                  <AiOutlineAlert size={25} style={{ marginBottom: "5px" }} />
                                   {dataLang.formatMessage({ id: "notice" })}
                                 </div>
                               )}
@@ -631,16 +646,20 @@ export default function Warn(props) {
                             <div className="DAT_WarnMobile_Content_Top_Level">
                               {item.level === "warn" ? (
                                 <div className="DAT_WarnMobile_Content_Top_Warning"
+                                  style={{ flexDirection: "column" }}
                                   onClick={(e) => handleInfo(e)}
                                   id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
                                 >
+                                  <GoAlert size={25} style={{ marginBottom: "5px" }} />
                                   {dataLang.formatMessage({ id: "warn" })}
                                 </div>
                               ) : (
                                 <div className="DAT_WarnMobile_Content_Top_Notice"
+                                  style={{ flexDirection: "column" }}
                                   onClick={(e) => handleInfo(e)}
                                   id={item.boxid + "_" + item.level + "_" + item.plant + "_" + item.device}
                                 >
+                                  <AiOutlineAlert size={25} style={{ marginBottom: "5px" }} />
                                   {dataLang.formatMessage({ id: "notice" })}
                                 </div>
                               )}
@@ -794,6 +813,7 @@ export default function Warn(props) {
               handleFilter={handleWarnFilter}
               handleClose={handleCloseFilter}
               handleReset={handleResetFilter}
+              handleCancel={closeFilter}
             />
           </div>
         </div>

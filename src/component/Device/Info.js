@@ -798,7 +798,7 @@ const HistoricalData = (props) => {
           ]
         })
 
-        for (let i = x.length; i < 287; i++) {
+        for (let i = x.length; i < 500; i++) {
           if (
             moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
           ) {
@@ -919,7 +919,7 @@ const HistoricalData = (props) => {
           ]
         })
 
-        for (let i = x.length; i < 287; i++) {
+        for (let i = x.length; i < 500; i++) {
           if (
             moment(x[x.length - 1].time, "HH:mm") < moment("23:55", "HH:mm")
           ) {
@@ -1058,151 +1058,26 @@ const HistoricalData = (props) => {
                       <ResponsiveContainer
                         style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                       >
-                        {/* <AreaChart width={100} height={500} data={chart}>
-                          <defs>
-                            <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
-                              <stop
-                                offset="5%"
-                                stopColor="rgb(4,143,255)"
-                                stopOpacity={0.7}
-                              />
-                              <stop
-                                offset="90%"
-                                stopColor="rgb(4,143,255)"
-                                stopOpacity={0}
-                              />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday2"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop offset="5%" stopColor="red" stopOpacity={0.7} />
-                              <stop offset="90%" stopColor="red" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday3"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop offset="5%" stopColor="green" stopOpacity={0.7} />
-                              <stop offset="90%" stopColor="green" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday4"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="purple"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="purple" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday5"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="yellow"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="yellow" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday6"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="gray"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="gray" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday6"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="pink"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="pink" stopOpacity={0} />
-                            </linearGradient>
 
-                          </defs>
-                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                          <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                          // domain={[
-                          //   props.data.reduce((min, item) => {
-                          //     // console.log(item)
-                          //     const values = Object.values({
-                          //       x: item[props.v],
-                          //       y: item[props.v2],
-                          //       z: item[props.v3],
-                          //       t: item[props.v4],
-                          //     });
-                          //     const currentMin = Math.min(...values.map(Number));
-                          //     // console.log(currentMax)
-                          //     return currentMin < min ? currentMin : min;
-                          //   }, Infinity),
-                          //   props.data.reduce((max, item) => {
-                          //     // console.log(item)/
-                          //     const values = Object.values({
-                          //       x: item[props.v],
-                          //       y: item[props.v2],
-                          //       z: item[props.v3],
-                          //       t: item[props.v4],
-                          //     });
-                          //     const currentMax = Math.max(...values.map(Number));
-                          //     // console.log(currentMax)
-                          //     return currentMax > max ? currentMax : max;
-                          //   }, -Infinity),
-                          // ]}
-                          />
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                          <Tooltip />
-
-
-                          <Area
-                            type="monotone"
-                            dataKey={acfre}
-                            stroke="red"
-                            fillOpacity={1}
-                            fill="url(#colorday2)"
-                          />
-
-
-
-
-                        </AreaChart> */}
 
                         <LineChart width={100} height={500} data={chart}>
                           <XAxis dataKey="time" axisLine={false} tickLine={false} />
                           <YAxis
                             axisLine={false}
-                            tickLine={false} />
+                            tickLine={false}
+                            domain={[
+                              0,
+                              chart.reduce((max, item) => {
+                                // console.log(item)
+                                const values = Object.values({
+                                  x: item[acfre],
+                                });
+                                const currentMax = Math.max(...values.map(Number));
+                                // console.log(currentMax)
+                                return currentMax > max ? currentMax : max;
+                              }, -Infinity),
+                            ]}
+                          />
                           <CartesianGrid strokeDasharray="3 3" vertical={false} />
                           <Tooltip />
                           <Legend />
@@ -1220,165 +1095,27 @@ const HistoricalData = (props) => {
                       <ResponsiveContainer
                         style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                       >
-                        {/* <AreaChart width={100} height={500} data={chart}>
-                          <defs>
-                            <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
-                              <stop
-                                offset="5%"
-                                stopColor="rgb(4,143,255)"
-                                stopOpacity={0.7}
-                              />
-                              <stop
-                                offset="90%"
-                                stopColor="rgb(4,143,255)"
-                                stopOpacity={0}
-                              />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday2"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop offset="5%" stopColor="red" stopOpacity={0.7} />
-                              <stop offset="90%" stopColor="red" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday3"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop offset="5%" stopColor="green" stopOpacity={0.7} />
-                              <stop offset="90%" stopColor="green" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday4"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="purple"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="purple" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday5"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="yellow"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="yellow" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday6"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="gray"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="gray" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday6"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="pink"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="pink" stopOpacity={0} />
-                            </linearGradient>
 
-                          </defs>
-                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                          <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                          // domain={[
-                          //   props.data.reduce((min, item) => {
-                          //     // console.log(item)
-                          //     const values = Object.values({
-                          //       x: item[props.v],
-                          //       y: item[props.v2],
-                          //       z: item[props.v3],
-                          //       t: item[props.v4],
-                          //     });
-                          //     const currentMin = Math.min(...values.map(Number));
-                          //     // console.log(currentMax)
-                          //     return currentMin < min ? currentMin : min;
-                          //   }, Infinity),
-                          //   props.data.reduce((max, item) => {
-                          //     // console.log(item)/
-                          //     const values = Object.values({
-                          //       x: item[props.v],
-                          //       y: item[props.v2],
-                          //       z: item[props.v3],
-                          //       t: item[props.v4],
-                          //     });
-                          //     const currentMax = Math.max(...values.map(Number));
-                          //     // console.log(currentMax)
-                          //     return currentMax > max ? currentMax : max;
-                          //   }, -Infinity),
-                          // ]}
-                          />
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                          <Tooltip />
-
-
-                          <Area
-                            type="monotone"
-                            dataKey={acrvolt}
-                            stroke="red"
-                            fillOpacity={1}
-                            fill="url(#colorday2)"
-                          />
-
-                          <Area
-                            type="monotone"
-                            dataKey={acsvolt}
-                            stroke="green"
-                            fillOpacity={1}
-                            fill="url(#colorday3)"
-                          />
-
-                          <Area
-                            type="monotone"
-                            dataKey={actvolt}
-                            stroke="purple"
-                            fillOpacity={1}
-                            fill="url(#colorday4)"
-                          />
-
-
-                        </AreaChart> */}
 
                         <LineChart width={100} height={500} data={chart}>
                           <XAxis dataKey="time" axisLine={false} tickLine={false} />
                           <YAxis
                             axisLine={false}
-                            tickLine={false} />
+                            tickLine={false}
+                            domain={[
+                              0,
+                              chart.reduce((max, item) => {
+                                // console.log(item)
+                                const values = Object.values({
+                                  x: item[acrvolt],
+                                  y: item[acsvolt],
+                                  z: item[actvolt],
+                                });
+                                const currentMax = Math.max(...values.map(Number));
+                                // console.log(currentMax)
+                                return currentMax > max ? currentMax : max;
+                              }, -Infinity),
+                            ]} />
                           <CartesianGrid strokeDasharray="3 3" vertical={false} />
                           <Tooltip />
                           <Legend />
@@ -1410,163 +1147,28 @@ const HistoricalData = (props) => {
                       <ResponsiveContainer
                         style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                       >
-                        {/* <AreaChart width={100} height={500} data={chart}>
-                          <defs>
-                            <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
-                              <stop
-                                offset="5%"
-                                stopColor="rgb(4,143,255)"
-                                stopOpacity={0.7}
-                              />
-                              <stop
-                                offset="90%"
-                                stopColor="rgb(4,143,255)"
-                                stopOpacity={0}
-                              />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday2"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop offset="5%" stopColor="red" stopOpacity={0.7} />
-                              <stop offset="90%" stopColor="red" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday3"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop offset="5%" stopColor="green" stopOpacity={0.7} />
-                              <stop offset="90%" stopColor="green" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday4"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="purple"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="purple" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday5"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="yellow"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="yellow" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday6"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="gray"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="gray" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday6"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="pink"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="pink" stopOpacity={0} />
-                            </linearGradient>
-
-                          </defs>
-                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                          <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                          // domain={[
-                          //   props.data.reduce((min, item) => {
-                          //     // console.log(item)
-                          //     const values = Object.values({
-                          //       x: item[props.v],
-                          //       y: item[props.v2],
-                          //       z: item[props.v3],
-                          //       t: item[props.v4],
-                          //     });
-                          //     const currentMin = Math.min(...values.map(Number));
-                          //     // console.log(currentMax)
-                          //     return currentMin < min ? currentMin : min;
-                          //   }, Infinity),
-                          //   props.data.reduce((max, item) => {
-                          //     // console.log(item)/
-                          //     const values = Object.values({
-                          //       x: item[props.v],
-                          //       y: item[props.v2],
-                          //       z: item[props.v3],
-                          //       t: item[props.v4],
-                          //     });
-                          //     const currentMax = Math.max(...values.map(Number));
-                          //     // console.log(currentMax)
-                          //     return currentMax > max ? currentMax : max;
-                          //   }, -Infinity),
-                          // ]}
-                          />
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                          <Tooltip />
-
-
-
-                          <Area
-                            type="monotone"
-                            dataKey={acrcur}
-                            stroke="orange"
-                            fillOpacity={1}
-                            fill="url(#colorday5)"
-                          />
-                          <Area
-                            type="monotone"
-                            dataKey={acscur}
-                            stroke="gray"
-                            fillOpacity={1}
-                            fill="url(#colorday6)"
-                          />
-                          <Area
-                            type="monotone"
-                            dataKey={actcur}
-                            stroke="pink"
-                            fillOpacity={1}
-                            fill="url(#colorday7)"
-                          />
-
-                        </AreaChart> */}
 
                         <LineChart width={100} height={500} data={chart}>
                           <XAxis dataKey="time" axisLine={false} tickLine={false} />
                           <YAxis
                             axisLine={false}
-                            tickLine={false} />
+                            tickLine={false}
+                            domain={[
+                              0,
+                              chart.reduce((max, item) => {
+                                // console.log(item)
+                                const values = Object.values({
+                                  x: item[acrcur],
+                                  y: item[acscur],
+                                  z: item[actcur],
+
+                                });
+                                const currentMax = Math.max(...values.map(Number));
+                                // console.log(currentMax)
+                                return currentMax > max ? currentMax : max;
+                              }, -Infinity),
+                            ]}
+                          />
                           <CartesianGrid strokeDasharray="3 3" vertical={false} />
                           <Tooltip />
                           <Legend />
@@ -1598,172 +1200,29 @@ const HistoricalData = (props) => {
                       <ResponsiveContainer
                         style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                       >
-                        {/* <AreaChart width={100} height={500} data={chart}>
-                          <defs>
-                            <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
-                              <stop
-                                offset="5%"
-                                stopColor="rgb(4,143,255)"
-                                stopOpacity={0.7}
-                              />
-                              <stop
-                                offset="90%"
-                                stopColor="rgb(4,143,255)"
-                                stopOpacity={0}
-                              />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday2"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop offset="5%" stopColor="red" stopOpacity={0.7} />
-                              <stop offset="90%" stopColor="red" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday3"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop offset="5%" stopColor="green" stopOpacity={0.7} />
-                              <stop offset="90%" stopColor="green" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday4"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="purple"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="purple" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday5"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="yellow"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="yellow" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday6"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="gray"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="gray" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday6"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="pink"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="pink" stopOpacity={0} />
-                            </linearGradient>
-
-                          </defs>
-                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                          <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                          // domain={[
-                          //   props.data.reduce((min, item) => {
-                          //     // console.log(item)
-                          //     const values = Object.values({
-                          //       x: item[props.v],
-                          //       y: item[props.v2],
-                          //       z: item[props.v3],
-                          //       t: item[props.v4],
-                          //     });
-                          //     const currentMin = Math.min(...values.map(Number));
-                          //     // console.log(currentMax)
-                          //     return currentMin < min ? currentMin : min;
-                          //   }, Infinity),
-                          //   props.data.reduce((max, item) => {
-                          //     // console.log(item)/
-                          //     const values = Object.values({
-                          //       x: item[props.v],
-                          //       y: item[props.v2],
-                          //       z: item[props.v3],
-                          //       t: item[props.v4],
-                          //     });
-                          //     const currentMax = Math.max(...values.map(Number));
-                          //     // console.log(currentMax)
-                          //     return currentMax > max ? currentMax : max;
-                          //   }, -Infinity),
-                          // ]}
-                          />
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                          <Tooltip />
-
-                          <Area
-                            type="monotone"
-                            dataKey={pv1cur}
-                            stroke="rgb(4,143,255)"
-                            fillOpacity={1}
-                            fill="url(#colorday)"
-                          />
-
-                          <Area
-                            type="monotone"
-                            dataKey={pv2cur}
-                            stroke="red"
-                            fillOpacity={1}
-                            fill="url(#colorday2)"
-                          />
-
-                          <Area
-                            type="monotone"
-                            dataKey={pv3cur}
-                            stroke="green"
-                            fillOpacity={1}
-                            fill="url(#colorday3)"
-                          />
-
-                          <Area
-                            type="monotone"
-                            dataKey={pv4cur}
-                            stroke="purple"
-                            fillOpacity={1}
-                            fill="url(#colorday4)"
-                          />
-
-
-                        </AreaChart> */}
 
                         <LineChart width={100} height={500} data={chart}>
                           <XAxis dataKey="time" axisLine={false} tickLine={false} />
                           <YAxis
                             axisLine={false}
-                            tickLine={false} />
+                            tickLine={false}
+                            domain={[
+                              0,
+                              chart.reduce((max, item) => {
+                                // console.log(item)/
+                                const values = Object.values({
+                                  x: item[pv1cur],
+                                  y: item[pv2cur],
+                                  z: item[pv3cur],
+                                  t: item[pv4cur],
+                                });
+                                const currentMax = Math.max(...values.map(Number));
+                                // console.log(currentMax)
+                                return currentMax > max ? currentMax : max;
+                              }, -Infinity),
+                            ]}
+                          />
+
                           <CartesianGrid strokeDasharray="3 3" vertical={false} />
                           <Tooltip />
                           <Legend />
@@ -1802,172 +1261,28 @@ const HistoricalData = (props) => {
                       <ResponsiveContainer
                         style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                       >
-                        {/* <AreaChart width={100} height={500} data={chart}>
-                          <defs>
-                            <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
-                              <stop
-                                offset="5%"
-                                stopColor="rgb(4,143,255)"
-                                stopOpacity={0.7}
-                              />
-                              <stop
-                                offset="90%"
-                                stopColor="rgb(4,143,255)"
-                                stopOpacity={0}
-                              />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday2"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop offset="5%" stopColor="red" stopOpacity={0.7} />
-                              <stop offset="90%" stopColor="red" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday3"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop offset="5%" stopColor="green" stopOpacity={0.7} />
-                              <stop offset="90%" stopColor="green" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday4"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="purple"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="purple" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday5"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="yellow"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="yellow" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday6"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="gray"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="gray" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday6"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="pink"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="pink" stopOpacity={0} />
-                            </linearGradient>
-
-                          </defs>
-                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                          <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                          // domain={[
-                          //   props.data.reduce((min, item) => {
-                          //     // console.log(item)
-                          //     const values = Object.values({
-                          //       x: item[props.v],
-                          //       y: item[props.v2],
-                          //       z: item[props.v3],
-                          //       t: item[props.v4],
-                          //     });
-                          //     const currentMin = Math.min(...values.map(Number));
-                          //     // console.log(currentMax)
-                          //     return currentMin < min ? currentMin : min;
-                          //   }, Infinity),
-                          //   props.data.reduce((max, item) => {
-                          //     // console.log(item)/
-                          //     const values = Object.values({
-                          //       x: item[props.v],
-                          //       y: item[props.v2],
-                          //       z: item[props.v3],
-                          //       t: item[props.v4],
-                          //     });
-                          //     const currentMax = Math.max(...values.map(Number));
-                          //     // console.log(currentMax)
-                          //     return currentMax > max ? currentMax : max;
-                          //   }, -Infinity),
-                          // ]}
-                          />
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                          <Tooltip />
-
-                          <Area
-                            type="monotone"
-                            dataKey={pv1volt}
-                            stroke="rgb(4,143,255)"
-                            fillOpacity={1}
-                            fill="url(#colorday)"
-                          />
-
-                          <Area
-                            type="monotone"
-                            dataKey={pv2volt}
-                            stroke="red"
-                            fillOpacity={1}
-                            fill="url(#colorday2)"
-                          />
-
-                          <Area
-                            type="monotone"
-                            dataKey={pv3volt}
-                            stroke="green"
-                            fillOpacity={1}
-                            fill="url(#colorday3)"
-                          />
-
-                          <Area
-                            type="monotone"
-                            dataKey={pv4volt}
-                            stroke="purple"
-                            fillOpacity={1}
-                            fill="url(#colorday4)"
-                          />
-
-
-                        </AreaChart> */}
 
                         <LineChart width={100} height={500} data={chart}>
                           <XAxis dataKey="time" axisLine={false} tickLine={false} />
                           <YAxis
                             axisLine={false}
-                            tickLine={false} />
+                            tickLine={false}
+                            domain={[
+                              0,
+                              chart.reduce((max, item) => {
+                                // console.log(item)
+                                const values = Object.values({
+                                  x: item[pv1volt],
+                                  y: item[pv2volt],
+                                  z: item[pv3volt],
+                                  w: item[pv4volt],
+                                });
+                                const currentMax = Math.max(...values.map(Number));
+                                // console.log(currentMax)
+                                return currentMax > max ? currentMax : max;
+                              }, -Infinity),
+                            ]}
+                          />
                           <CartesianGrid strokeDasharray="3 3" vertical={false} />
                           <Tooltip />
                           <Legend />
@@ -2006,172 +1321,28 @@ const HistoricalData = (props) => {
                       <ResponsiveContainer
                         style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                       >
-                        {/* <AreaChart width={100} height={500} data={chart}>
-                          <defs>
-                            <linearGradient id="colorday" x1="0" y1="0" x2="0" y2="1">
-                              <stop
-                                offset="5%"
-                                stopColor="rgb(4,143,255)"
-                                stopOpacity={0.7}
-                              />
-                              <stop
-                                offset="90%"
-                                stopColor="rgb(4,143,255)"
-                                stopOpacity={0}
-                              />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday2"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop offset="5%" stopColor="red" stopOpacity={0.7} />
-                              <stop offset="90%" stopColor="red" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday3"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop offset="5%" stopColor="green" stopOpacity={0.7} />
-                              <stop offset="90%" stopColor="green" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday4"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="purple"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="purple" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday5"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="yellow"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="yellow" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday6"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="gray"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="gray" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient
-                              id="colorday6"
-                              x1="0"
-                              y1="0"
-                              x2="0"
-                              y2="1"
-                            >
-                              <stop
-                                offset="5%"
-                                stopColor="pink"
-                                stopOpacity={0.7}
-                              />
-                              <stop offset="90%" stopColor="pink" stopOpacity={0} />
-                            </linearGradient>
-
-                          </defs>
-                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                          <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                          // domain={[
-                          //   props.data.reduce((min, item) => {
-                          //     // console.log(item)
-                          //     const values = Object.values({
-                          //       x: item[props.v],
-                          //       y: item[props.v2],
-                          //       z: item[props.v3],
-                          //       t: item[props.v4],
-                          //     });
-                          //     const currentMin = Math.min(...values.map(Number));
-                          //     // console.log(currentMax)
-                          //     return currentMin < min ? currentMin : min;
-                          //   }, Infinity),
-                          //   props.data.reduce((max, item) => {
-                          //     // console.log(item)/
-                          //     const values = Object.values({
-                          //       x: item[props.v],
-                          //       y: item[props.v2],
-                          //       z: item[props.v3],
-                          //       t: item[props.v4],
-                          //     });
-                          //     const currentMax = Math.max(...values.map(Number));
-                          //     // console.log(currentMax)
-                          //     return currentMax > max ? currentMax : max;
-                          //   }, -Infinity),
-                          // ]}
-                          />
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                          <Tooltip />
-
-                          <Area
-                            type="monotone"
-                            dataKey={pv1power}
-                            stroke="rgb(4,143,255)"
-                            fillOpacity={1}
-                            fill="url(#colorday)"
-                          />
-
-                          <Area
-                            type="monotone"
-                            dataKey={pv2power}
-                            stroke="red"
-                            fillOpacity={1}
-                            fill="url(#colorday2)"
-                          />
-
-                          <Area
-                            type="monotone"
-                            dataKey={pv3power}
-                            stroke="green"
-                            fillOpacity={1}
-                            fill="url(#colorday3)"
-                          />
-
-                          <Area
-                            type="monotone"
-                            dataKey={pv4power}
-                            stroke="purple"
-                            fillOpacity={1}
-                            fill="url(#colorday4)"
-                          />
-
-
-                        </AreaChart> */}
 
                         <LineChart width={100} height={500} data={chart}>
                           <XAxis dataKey="time" axisLine={false} tickLine={false} />
                           <YAxis
                             axisLine={false}
-                            tickLine={false} />
+                            tickLine={false}
+                            domain={[
+                              0,
+                              chart.reduce((max, item) => {
+                                // console.log(item)
+                                const values = Object.values({
+                                  x: item[pv1power],
+                                  y: item[pv2power],
+                                  z: item[pv3power],
+                                  w: item[pv4power],
+                                });
+                                const currentMax = Math.max(...values.map(Number));
+                                // console.log(currentMax)
+                                return currentMax > max ? currentMax : max;
+                              }, -Infinity),
+                            ]}
+                          />
                           <CartesianGrid strokeDasharray="3 3" vertical={false} />
                           <Tooltip />
                           <Legend />
@@ -2267,7 +1438,7 @@ const GridStartSettings = (props) => {
                   </div>
                   <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Content">
                     <input />
-                    Hz
+                    V
                   </div>
                 </div>
               </div>
