@@ -555,7 +555,7 @@ export default function Project(props) {
         type: userInfor.value.type,
       });
       if (d.status === true) {
-        dataproject.value = d.data;
+        dataproject.value = d.data.sort((a, b) => a.plantid_ - b.plantid_);
       }
     };
     getPlant();

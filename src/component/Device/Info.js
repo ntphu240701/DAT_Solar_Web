@@ -21,6 +21,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { MdOutlineError } from "react-icons/md";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useSelector } from "react-redux";
+import { isMobile } from "../Navigation/Navigation";
 
 const data = [
   {
@@ -732,22 +733,16 @@ const HistoricalData = (props) => {
   const [dateType, setDateType] = useState("date");
   const [mode, setMode] = useState('ACVOLT');
   const [d, setD] = useState({
-    date: moment(new Date()).format("YYYY-MM-DD"),
-    month: moment(new Date()).format("YYYY-MM"),
-    year: moment(new Date()).format("YYYY"),
-    total: "Tổng",
+    date: moment(new Date()).format("MM/DD/YYYY"),
   });
 
   useEffect(() => {
-    // console.log(info.value.psn, moment(new Date()).format("MM/DD/YYYY"))
     const getChart = async () => {
       const req = await callApi("post", host.DATA + "/getInverterChart", {
         sn: info.value.psn,
         date: moment(new Date()).format("MM/DD/YYYY")
       });
-      console.log(req);
       if (req.status) {
-        console.log(req)
         let vACFre_ = dataLang.formatMessage({ id: "acfre" });
         let vACRcur_ = dataLang.formatMessage({ id: "acrcur" });
         let vACScur_ = dataLang.formatMessage({ id: "acscur" });
@@ -860,15 +855,13 @@ const HistoricalData = (props) => {
   }, [lang])
 
   const handleChart = (date) => {
-    console.log(date)
+    setD({ ...d, date: moment(date).format("MM/DD/YYYY") })
     const getChart = async () => {
       const req = await callApi("post", host.DATA + "/getInverterChart", {
         sn: info.value.psn,
         date: moment(date).format("MM/DD/YYYY")
       });
-      console.log(req);
       if (req.status) {
-        console.log(req)
         let vACFre_ = dataLang.formatMessage({ id: "acfre" });
         let vACRcur_ = dataLang.formatMessage({ id: "acrcur" });
         let vACScur_ = dataLang.formatMessage({ id: "acscur" });
@@ -975,8 +968,6 @@ const HistoricalData = (props) => {
       } else {
         setChart([])
       }
-
-
     }
 
     getChart()
@@ -988,6 +979,10 @@ const HistoricalData = (props) => {
     } else {
       setMode('AC')
     }
+  }
+
+  const handleChartMode = (e) => {
+    setMode(e.target.value)
   }
 
   return (
@@ -1010,388 +1005,745 @@ const HistoricalData = (props) => {
       <div className="Animation"
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
-        {display ? (
-          <div className="DAT_Info_Databox_HistoriccalData">
-            <div className="DAT_Info_Databox_HistoricalData_Picker">
-              <div></div>
-              {/* <div className="DAT_Info_Databox_HistoricalData_Picker_Type">
+        {display ?
+          <>
+            {isMobile.value ?
+              <div className="DAT_Info_Databox_HistoriccalData">
+                <div className="DAT_Info_Databox_HistoricalData_Picker">
+                  <select onChange={(e) => handleChartMode(e)}>
+                    <option value={"ACVOLT"}>{dataLang.formatMessage({ id: "ACVolt" })}(V)</option>
+                    <option value={"ACCUR"}>{dataLang.formatMessage({ id: "ACCurrent" })}(A)</option>
+                    <option value={"ACFRE"}>{dataLang.formatMessage({ id: "acfre" })}(Hz)</option>
+                    <option value={"DCVOLT"}>{dataLang.formatMessage({ id: "DCVolt" })}(V)</option>
+                    <option value={"DCCUR"}>{dataLang.formatMessage({ id: "DCCurrent" })}(A)</option>
+                    <option value={"DCPOWER"}>{dataLang.formatMessage({ id: "DCPower" })}(kW)</option>
+                  </select>
+                  {/* <div className="DAT_Info_Databox_HistoricalData_Picker_Type">
+            <p>{dataLang.formatMessage({ id: "day" })}</p>
+            <p>{dataLang.formatMessage({ id: "month" })}</p>
+            <p>{dataLang.formatMessage({ id: "year" })}</p>
+            <p>{dataLang.formatMessage({ id: "total" })}</p>
+          </div>
+          <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
+            <div>{dataLang.formatMessage({ id: "choosePara" })}</div>
+          </div>
+          <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
+            <div>{dataLang.formatMessage({ id: "export" })}</div>
+          </div> */}
+                  <DatePicker
+                    onChange={(date) => handleChart(date)}
+                    customInput={
+                      <button className="DAT_CustomPicker" >
+                        <span>{d[dateType]}</span>
+                        <IoCalendarOutline color="gray" />
+                      </button>
+                    }
+                  />
+                </div>
+                <div className="DAT_Info_Databox_HistoricalData_Chart">
+                  {(() => {
+                    switch (mode) {
+                      case "ACFRE":
+                        return (
+                          <ResponsiveContainer
+                            style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                          >
+
+
+                            <LineChart width={100} height={500} data={chart}>
+                              <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                              <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                domain={[
+                                  0,
+                                  chart.reduce((max, item) => {
+                                    // console.log(item)
+                                    const values = Object.values({
+                                      x: item[acfre],
+                                    });
+                                    const currentMax = Math.max(...values.map(Number));
+                                    // console.log(currentMax)
+                                    return currentMax > max ? currentMax : max;
+                                  }, -Infinity),
+                                ]}
+                              />
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                              <Tooltip />
+                              <Legend />
+                              <Line
+                                type="monotone"
+                                dataKey={acfre}
+                                stroke="red"
+                                dot={false}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        )
+                      case "ACVOLT":
+                        return (
+                          <ResponsiveContainer
+                            style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                          >
+
+
+                            <LineChart width={100} height={500} data={chart}>
+                              <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                              <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                domain={[
+                                  0,
+                                  chart.reduce((max, item) => {
+                                    // console.log(item)
+                                    const values = Object.values({
+                                      x: item[acrvolt],
+                                      y: item[acsvolt],
+                                      z: item[actvolt],
+                                    });
+                                    const currentMax = Math.max(...values.map(Number));
+                                    // console.log(currentMax)
+                                    return currentMax > max ? currentMax : max;
+                                  }, -Infinity),
+                                ]} />
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                              <Tooltip />
+                              <Legend />
+                              <Line
+                                type="monotone"
+                                dataKey={acrvolt}
+                                stroke="red"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={acsvolt}
+                                stroke="green"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={actvolt}
+                                stroke="purple"
+                                dot={false}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        )
+                      case "ACCUR":
+                        return (
+                          <ResponsiveContainer
+                            style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                          >
+
+                            <LineChart width={100} height={500} data={chart}>
+                              <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                              <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                domain={[
+                                  0,
+                                  chart.reduce((max, item) => {
+                                    // console.log(item)
+                                    const values = Object.values({
+                                      x: item[acrcur],
+                                      y: item[acscur],
+                                      z: item[actcur],
+
+                                    });
+                                    const currentMax = Math.max(...values.map(Number));
+                                    // console.log(currentMax)
+                                    return currentMax > max ? currentMax : max;
+                                  }, -Infinity),
+                                ]}
+                              />
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                              <Tooltip />
+                              <Legend />
+                              <Line
+                                type="monotone"
+                                dataKey={acrcur}
+                                stroke="orange"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={acscur}
+                                stroke="gray"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={actcur}
+                                stroke="pink"
+                                dot={false}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        )
+                      case "DCCUR":
+                        return (
+                          <ResponsiveContainer
+                            style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                          >
+
+                            <LineChart width={100} height={500} data={chart}>
+                              <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                              <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                domain={[
+                                  0,
+                                  chart.reduce((max, item) => {
+                                    // console.log(item)/
+                                    const values = Object.values({
+                                      x: item[pv1cur],
+                                      y: item[pv2cur],
+                                      z: item[pv3cur],
+                                      t: item[pv4cur],
+                                    });
+                                    const currentMax = Math.max(...values.map(Number));
+                                    // console.log(currentMax)
+                                    return currentMax > max ? currentMax : max;
+                                  }, -Infinity),
+                                ]}
+                              />
+
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                              <Tooltip />
+                              <Legend />
+                              <Line
+                                type="monotone"
+                                dataKey={pv1cur}
+                                stroke="rgb(4,143,255)"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv2cur}
+                                stroke="red"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv3cur}
+                                stroke="green"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv4cur}
+                                stroke="purple"
+                                dot={false}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        )
+                      case 'DCVOLT':
+                        return (
+                          <ResponsiveContainer
+                            style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                          >
+
+                            <LineChart width={100} height={500} data={chart}>
+                              <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                              <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                domain={[
+                                  0,
+                                  chart.reduce((max, item) => {
+                                    // console.log(item)
+                                    const values = Object.values({
+                                      x: item[pv1volt],
+                                      y: item[pv2volt],
+                                      z: item[pv3volt],
+                                      w: item[pv4volt],
+                                    });
+                                    const currentMax = Math.max(...values.map(Number));
+                                    // console.log(currentMax)
+                                    return currentMax > max ? currentMax : max;
+                                  }, -Infinity),
+                                ]}
+                              />
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                              <Tooltip />
+                              <Legend />
+                              <Line
+                                type="monotone"
+                                dataKey={pv1volt}
+                                stroke="rgb(4,143,255)"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv2volt}
+                                stroke="red"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv3volt}
+                                stroke="green"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv4volt}
+                                stroke="purple"
+                                dot={false}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        )
+                      case 'DCPOWER':
+                        return (
+                          <ResponsiveContainer
+                            style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                          >
+
+                            <LineChart width={100} height={500} data={chart}>
+                              <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                              <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                domain={[
+                                  0,
+                                  chart.reduce((max, item) => {
+                                    // console.log(item)
+                                    const values = Object.values({
+                                      x: item[pv1power],
+                                      y: item[pv2power],
+                                      z: item[pv3power],
+                                      w: item[pv4power],
+                                    });
+                                    const currentMax = Math.max(...values.map(Number));
+                                    // console.log(currentMax)
+                                    return currentMax > max ? currentMax : max;
+                                  }, -Infinity),
+                                ]}
+                              />
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                              <Tooltip />
+                              <Legend />
+                              <Line
+                                type="monotone"
+                                dataKey={pv1power}
+                                stroke="rgb(4,143,255)"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv2power}
+                                stroke="red"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv3power}
+                                stroke="green"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv4power}
+                                stroke="purple"
+                                dot={false}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        )
+                      default:
+                        return <></>;
+                    }
+                  })()}
+                </div>
+              </div>
+              :
+              <div className="DAT_Info_Databox_HistoriccalData">
+                <div className="DAT_Info_Databox_HistoricalData_Picker">
+                  {/* <div className="DAT_Info_Databox_HistoricalData_Picker_Type">
                 <p>{dataLang.formatMessage({ id: "day" })}</p>
                 <p>{dataLang.formatMessage({ id: "month" })}</p>
                 <p>{dataLang.formatMessage({ id: "year" })}</p>
                 <p>{dataLang.formatMessage({ id: "total" })}</p>
-              </div> */}
-              {/* <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
+              </div>
+              <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
                 <div>{dataLang.formatMessage({ id: "choosePara" })}</div>
               </div>
               <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
                 <div>{dataLang.formatMessage({ id: "export" })}</div>
               </div> */}
-              <DatePicker
-                onChange={(date) => handleChart(date)}
+                  <DatePicker
+                    onChange={(date) => handleChart(date)}
+                    customInput={
+                      <button className="DAT_CustomPicker" >
+                        <span>{d[dateType]}</span>
+                        <IoCalendarOutline color="gray" />
+                      </button>
+                    }
+                  />
+                </div>
+                <div className="DAT_Info_Databox_HistoricalData_Chart">
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "40px", marginBottom: "16px" }}>
+                    <div style={{ cursor: "pointer", color: mode === "ACVOLT" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACVOLT')}>{dataLang.formatMessage({ id: "ACVolt" })}(V)</div>
+                    <div style={{ cursor: "pointer", color: mode === "ACCUR" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACCUR')}>{dataLang.formatMessage({ id: "ACCurrent" })}(A)</div>
+                    <div style={{ cursor: "pointer", color: mode === "ACFRE" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACFRE')}>{dataLang.formatMessage({ id: "acfre" })}(Hz)</div>
+                    <div style={{ cursor: "pointer", color: mode === "DCVOLT" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCVOLT')}>{dataLang.formatMessage({ id: "DCVolt" })}(V)</div>
+                    <div style={{ cursor: "pointer", color: mode === "DCCUR" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCCUR')}>{dataLang.formatMessage({ id: "DCCurrent" })}(A)</div>
+                    <div style={{ cursor: "pointer", color: mode === "DCPOWER" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCPOWER')}>{dataLang.formatMessage({ id: "DCPower" })}(kW)</div>
+                  </div>
+                  {(() => {
+                    switch (mode) {
+                      case "ACFRE":
+                        return (
+                          <ResponsiveContainer
+                            style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                          >
 
-                customInput={
 
-                  <button className="DAT_CustomPicker" >
-                    <span>{d[dateType]}</span>
-                    <IoCalendarOutline color="gray" />
-                  </button>
-                }
-              />
-              {/* <div className="DAT_Info_Databox_HistoricalData_Picker_DatePicker">
-                <input type="date"></input>
-              </div> */}
-            </div>
-            <div className="DAT_Info_Databox_HistoricalData_Chart">
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "20px" }}>
+                            <LineChart width={100} height={500} data={chart}>
+                              <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                              <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                domain={[
+                                  0,
+                                  chart.reduce((max, item) => {
+                                    // console.log(item)
+                                    const values = Object.values({
+                                      x: item[acfre],
+                                    });
+                                    const currentMax = Math.max(...values.map(Number));
+                                    // console.log(currentMax)
+                                    return currentMax > max ? currentMax : max;
+                                  }, -Infinity),
+                                ]}
+                              />
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                              <Tooltip />
+                              <Legend />
+                              <Line
+                                type="monotone"
+                                dataKey={acfre}
+                                stroke="red"
+                                dot={false}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        )
+                      case "ACVOLT":
+                        return (
+                          <ResponsiveContainer
+                            style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                          >
 
-                <div style={{ cursor: "pointer", color: mode === "ACVOLT" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACVOLT')}>{dataLang.formatMessage({ id: "ACVolt" })}(V)</div>
-                <div style={{ cursor: "pointer", color: mode === "ACCUR" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACCUR')}>{dataLang.formatMessage({ id: "ACCurrent" })}(A)</div>
-                <div style={{ cursor: "pointer", color: mode === "ACFRE" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACFRE')}>{dataLang.formatMessage({ id: "acfre" })}(Hz)</div>
-                <div style={{ cursor: "pointer", color: mode === "DCVOLT" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCVOLT')}>{dataLang.formatMessage({ id: "DCVolt" })}(V)</div>
-                <div style={{ cursor: "pointer", color: mode === "DCCUR" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCCUR')}>{dataLang.formatMessage({ id: "DCCurrent" })}(A)</div>
-                <div style={{ cursor: "pointer", color: mode === "DCPOWER" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('DCPOWER')}>{dataLang.formatMessage({ id: "DCPower" })}(kW)</div>
+
+                            <LineChart width={100} height={500} data={chart}>
+                              <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                              <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                domain={[
+                                  0,
+                                  chart.reduce((max, item) => {
+                                    // console.log(item)
+                                    const values = Object.values({
+                                      x: item[acrvolt],
+                                      y: item[acsvolt],
+                                      z: item[actvolt],
+                                    });
+                                    const currentMax = Math.max(...values.map(Number));
+                                    // console.log(currentMax)
+                                    return currentMax > max ? currentMax : max;
+                                  }, -Infinity),
+                                ]} />
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                              <Tooltip />
+                              <Legend />
+                              <Line
+                                type="monotone"
+                                dataKey={acrvolt}
+                                stroke="red"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={acsvolt}
+                                stroke="green"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={actvolt}
+                                stroke="purple"
+                                dot={false}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        )
+                      case "ACCUR":
+                        return (
+                          <ResponsiveContainer
+                            style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                          >
+
+                            <LineChart width={100} height={500} data={chart}>
+                              <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                              <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                domain={[
+                                  0,
+                                  chart.reduce((max, item) => {
+                                    // console.log(item)
+                                    const values = Object.values({
+                                      x: item[acrcur],
+                                      y: item[acscur],
+                                      z: item[actcur],
+
+                                    });
+                                    const currentMax = Math.max(...values.map(Number));
+                                    // console.log(currentMax)
+                                    return currentMax > max ? currentMax : max;
+                                  }, -Infinity),
+                                ]}
+                              />
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                              <Tooltip />
+                              <Legend />
+                              <Line
+                                type="monotone"
+                                dataKey={acrcur}
+                                stroke="orange"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={acscur}
+                                stroke="gray"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={actcur}
+                                stroke="pink"
+                                dot={false}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        )
+                      case "DCCUR":
+                        return (
+                          <ResponsiveContainer
+                            style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                          >
+
+                            <LineChart width={100} height={500} data={chart}>
+                              <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                              <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                domain={[
+                                  0,
+                                  chart.reduce((max, item) => {
+                                    // console.log(item)/
+                                    const values = Object.values({
+                                      x: item[pv1cur],
+                                      y: item[pv2cur],
+                                      z: item[pv3cur],
+                                      t: item[pv4cur],
+                                    });
+                                    const currentMax = Math.max(...values.map(Number));
+                                    // console.log(currentMax)
+                                    return currentMax > max ? currentMax : max;
+                                  }, -Infinity),
+                                ]}
+                              />
+
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                              <Tooltip />
+                              <Legend />
+                              <Line
+                                type="monotone"
+                                dataKey={pv1cur}
+                                stroke="rgb(4,143,255)"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv2cur}
+                                stroke="red"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv3cur}
+                                stroke="green"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv4cur}
+                                stroke="purple"
+                                dot={false}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        )
+                      case 'DCVOLT':
+                        return (
+                          <ResponsiveContainer
+                            style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                          >
+
+                            <LineChart width={100} height={500} data={chart}>
+                              <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                              <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                domain={[
+                                  0,
+                                  chart.reduce((max, item) => {
+                                    // console.log(item)
+                                    const values = Object.values({
+                                      x: item[pv1volt],
+                                      y: item[pv2volt],
+                                      z: item[pv3volt],
+                                      w: item[pv4volt],
+                                    });
+                                    const currentMax = Math.max(...values.map(Number));
+                                    // console.log(currentMax)
+                                    return currentMax > max ? currentMax : max;
+                                  }, -Infinity),
+                                ]}
+                              />
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                              <Tooltip />
+                              <Legend />
+                              <Line
+                                type="monotone"
+                                dataKey={pv1volt}
+                                stroke="rgb(4,143,255)"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv2volt}
+                                stroke="red"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv3volt}
+                                stroke="green"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv4volt}
+                                stroke="purple"
+                                dot={false}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        )
+                      case 'DCPOWER':
+                        return (
+                          <ResponsiveContainer
+                            style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
+                          >
+
+                            <LineChart width={100} height={500} data={chart}>
+                              <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                              <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                domain={[
+                                  0,
+                                  chart.reduce((max, item) => {
+                                    // console.log(item)
+                                    const values = Object.values({
+                                      x: item[pv1power],
+                                      y: item[pv2power],
+                                      z: item[pv3power],
+                                      w: item[pv4power],
+                                    });
+                                    const currentMax = Math.max(...values.map(Number));
+                                    // console.log(currentMax)
+                                    return currentMax > max ? currentMax : max;
+                                  }, -Infinity),
+                                ]}
+                              />
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                              <Tooltip />
+                              <Legend />
+                              <Line
+                                type="monotone"
+                                dataKey={pv1power}
+                                stroke="rgb(4,143,255)"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv2power}
+                                stroke="red"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv3power}
+                                stroke="green"
+                                dot={false}
+                              />
+
+                              <Line
+                                type="monotone"
+                                dataKey={pv4power}
+                                stroke="purple"
+                                dot={false}
+                              />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        )
+                      default:
+                        return <></>;
+                    }
+                  })()}
+                </div>
               </div>
-              {(() => {
-                switch (mode) {
-                  case "ACFRE":
-                    return (
-                      <ResponsiveContainer
-                        style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                      >
-
-
-                        <LineChart width={100} height={500} data={chart}>
-                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                          <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                            domain={[
-                              0,
-                              chart.reduce((max, item) => {
-                                // console.log(item)
-                                const values = Object.values({
-                                  x: item[acfre],
-                                });
-                                const currentMax = Math.max(...values.map(Number));
-                                // console.log(currentMax)
-                                return currentMax > max ? currentMax : max;
-                              }, -Infinity),
-                            ]}
-                          />
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                          <Tooltip />
-                          <Legend />
-                          <Line
-                            type="monotone"
-                            dataKey={acfre}
-                            stroke="red"
-                            dot={false}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    )
-                  case "ACVOLT":
-                    return (
-                      <ResponsiveContainer
-                        style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                      >
-
-
-                        <LineChart width={100} height={500} data={chart}>
-                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                          <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                            domain={[
-                              0,
-                              chart.reduce((max, item) => {
-                                // console.log(item)
-                                const values = Object.values({
-                                  x: item[acrvolt],
-                                  y: item[acsvolt],
-                                  z: item[actvolt],
-                                });
-                                const currentMax = Math.max(...values.map(Number));
-                                // console.log(currentMax)
-                                return currentMax > max ? currentMax : max;
-                              }, -Infinity),
-                            ]} />
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                          <Tooltip />
-                          <Legend />
-                          <Line
-                            type="monotone"
-                            dataKey={acrvolt}
-                            stroke="red"
-                            dot={false}
-                          />
-
-                          <Line
-                            type="monotone"
-                            dataKey={acsvolt}
-                            stroke="green"
-                            dot={false}
-                          />
-
-                          <Line
-                            type="monotone"
-                            dataKey={actvolt}
-                            stroke="purple"
-                            dot={false}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    )
-                  case "ACCUR":
-                    return (
-                      <ResponsiveContainer
-                        style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                      >
-
-                        <LineChart width={100} height={500} data={chart}>
-                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                          <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                            domain={[
-                              0,
-                              chart.reduce((max, item) => {
-                                // console.log(item)
-                                const values = Object.values({
-                                  x: item[acrcur],
-                                  y: item[acscur],
-                                  z: item[actcur],
-
-                                });
-                                const currentMax = Math.max(...values.map(Number));
-                                // console.log(currentMax)
-                                return currentMax > max ? currentMax : max;
-                              }, -Infinity),
-                            ]}
-                          />
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                          <Tooltip />
-                          <Legend />
-                          <Line
-                            type="monotone"
-                            dataKey={acrcur}
-                            stroke="orange"
-                            dot={false}
-                          />
-
-                          <Line
-                            type="monotone"
-                            dataKey={acscur}
-                            stroke="gray"
-                            dot={false}
-                          />
-
-                          <Line
-                            type="monotone"
-                            dataKey={actcur}
-                            stroke="pink"
-                            dot={false}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    )
-                  case "DCCUR":
-                    return (
-                      <ResponsiveContainer
-                        style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                      >
-
-                        <LineChart width={100} height={500} data={chart}>
-                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                          <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                            domain={[
-                              0,
-                              chart.reduce((max, item) => {
-                                // console.log(item)/
-                                const values = Object.values({
-                                  x: item[pv1cur],
-                                  y: item[pv2cur],
-                                  z: item[pv3cur],
-                                  t: item[pv4cur],
-                                });
-                                const currentMax = Math.max(...values.map(Number));
-                                // console.log(currentMax)
-                                return currentMax > max ? currentMax : max;
-                              }, -Infinity),
-                            ]}
-                          />
-
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                          <Tooltip />
-                          <Legend />
-                          <Line
-                            type="monotone"
-                            dataKey={pv1cur}
-                            stroke="rgb(4,143,255)"
-                            dot={false}
-                          />
-
-                          <Line
-                            type="monotone"
-                            dataKey={pv2cur}
-                            stroke="red"
-                            dot={false}
-                          />
-
-                          <Line
-                            type="monotone"
-                            dataKey={pv3cur}
-                            stroke="green"
-                            dot={false}
-                          />
-
-                          <Line
-                            type="monotone"
-                            dataKey={pv4cur}
-                            stroke="purple"
-                            dot={false}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    )
-                  case 'DCVOLT':
-                    return (
-                      <ResponsiveContainer
-                        style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                      >
-
-                        <LineChart width={100} height={500} data={chart}>
-                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                          <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                            domain={[
-                              0,
-                              chart.reduce((max, item) => {
-                                // console.log(item)
-                                const values = Object.values({
-                                  x: item[pv1volt],
-                                  y: item[pv2volt],
-                                  z: item[pv3volt],
-                                  w: item[pv4volt],
-                                });
-                                const currentMax = Math.max(...values.map(Number));
-                                // console.log(currentMax)
-                                return currentMax > max ? currentMax : max;
-                              }, -Infinity),
-                            ]}
-                          />
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                          <Tooltip />
-                          <Legend />
-                          <Line
-                            type="monotone"
-                            dataKey={pv1volt}
-                            stroke="rgb(4,143,255)"
-                            dot={false}
-                          />
-
-                          <Line
-                            type="monotone"
-                            dataKey={pv2volt}
-                            stroke="red"
-                            dot={false}
-                          />
-
-                          <Line
-                            type="monotone"
-                            dataKey={pv3volt}
-                            stroke="green"
-                            dot={false}
-                          />
-
-                          <Line
-                            type="monotone"
-                            dataKey={pv4volt}
-                            stroke="purple"
-                            dot={false}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    )
-                  case 'DCPOWER':
-                    return (
-                      <ResponsiveContainer
-                        style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
-                      >
-
-                        <LineChart width={100} height={500} data={chart}>
-                          <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                          <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                            domain={[
-                              0,
-                              chart.reduce((max, item) => {
-                                // console.log(item)
-                                const values = Object.values({
-                                  x: item[pv1power],
-                                  y: item[pv2power],
-                                  z: item[pv3power],
-                                  w: item[pv4power],
-                                });
-                                const currentMax = Math.max(...values.map(Number));
-                                // console.log(currentMax)
-                                return currentMax > max ? currentMax : max;
-                              }, -Infinity),
-                            ]}
-                          />
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                          <Tooltip />
-                          <Legend />
-                          <Line
-                            type="monotone"
-                            dataKey={pv1power}
-                            stroke="rgb(4,143,255)"
-                            dot={false}
-                          />
-
-                          <Line
-                            type="monotone"
-                            dataKey={pv2power}
-                            stroke="red"
-                            dot={false}
-                          />
-
-                          <Line
-                            type="monotone"
-                            dataKey={pv3power}
-                            stroke="green"
-                            dot={false}
-                          />
-
-                          <Line
-                            type="monotone"
-                            dataKey={pv4power}
-                            stroke="purple"
-                            dot={false}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    )
-                  default:
-                    return <></>;
-                }
-              })()}
-
-
-
-
-            </div>
-
-          </div>
-        ) : (
+            }
+          </>
+          :
           <></>
-        )}
+        }
       </div>
-    </div>
+    </div >
   );
 };
 
@@ -1423,7 +1775,7 @@ const GridStartSettings = (props) => {
           <div className="DAT_Info_Databox_GridStartSettings">
             <div className="DAT_Info_Databox_GridStartSettings_Content">
               <div className="DAT_Info_Databox_GridStartSettings_Content_Left">
-                <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Tit">
                     {dataLang.formatMessage({ id: 'ACStartHighVoltage' })}:
                   </div>
@@ -1507,7 +1859,7 @@ const GridVolt = (props) => {
           <div className="DAT_Info_Databox_GridVolt">
             <div className="DAT_Info_Databox_GridVolt_Content">
               <div className="DAT_Info_Databox_GridVolt_Content_Left">
-                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
                     {dataLang.formatMessage({ id: 'ACUnderVolt1' })}:
                   </div>
@@ -1516,7 +1868,7 @@ const GridVolt = (props) => {
                     V
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
                     {dataLang.formatMessage({ id: 'ACUnderVolt1Time' })}:
                   </div>
@@ -1525,7 +1877,7 @@ const GridVolt = (props) => {
                     ms
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
                     {dataLang.formatMessage({ id: 'ACUnderVolt2Time' })}:
                   </div>
@@ -1543,7 +1895,7 @@ const GridVolt = (props) => {
                     ms
                   </div>
                 </div> */}
-                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
                     {/* AC Under Freq 1 Time: */}
                     {dataLang.formatMessage({ id: 'ACUnderFreq1Time' })}:
@@ -1553,7 +1905,7 @@ const GridVolt = (props) => {
                     ms
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
                     {/* AC Over Freq 2 Time: */}
                     {dataLang.formatMessage({ id: 'ACOverFreq2Time' })}:
@@ -1578,7 +1930,7 @@ const GridVolt = (props) => {
                 </div>
               </div>
               <div className="DAT_Info_Databox_GridVolt_Content_Center">
-                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
                     {/* AC Over Volt 1: */}
                     {dataLang.formatMessage({ id: 'ACOverVolt1' })}:
@@ -1588,7 +1940,7 @@ const GridVolt = (props) => {
                     V
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
                     {/* AC Under Volt 2: */}
                     {dataLang.formatMessage({ id: 'ACUnderVolt2' })}:
@@ -1598,7 +1950,7 @@ const GridVolt = (props) => {
                     V
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
                     {/* AC Over Volt 2 Time: */}
                     {dataLang.formatMessage({ id: 'ACOverVolt2Time' })}:
@@ -1608,7 +1960,7 @@ const GridVolt = (props) => {
                     ms
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
                     {/* AC Under Freq 1: */}
                     {dataLang.formatMessage({ id: 'ACUnderFreq1' })}:
@@ -1618,7 +1970,7 @@ const GridVolt = (props) => {
                     Hz
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
                     {/* AC Over Freq 1 Time: */}
                     {dataLang.formatMessage({ id: 'ACOverFreq1Time' })}:
@@ -1628,7 +1980,7 @@ const GridVolt = (props) => {
                     ms
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
                     {/* AC Under Freq 2 Time: */}
                     {dataLang.formatMessage({ id: 'ACUnderFreq2Time' })}:
@@ -1640,7 +1992,7 @@ const GridVolt = (props) => {
                 </div>
               </div>
               <div className="DAT_Info_Databox_GridVolt_Content_Right">
-                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
                     {/* AC Under Volt 1 Time: */}
                     {dataLang.formatMessage({ id: 'ACUnderVolt1Time' })}:
@@ -1650,7 +2002,7 @@ const GridVolt = (props) => {
                     ms
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
                     {/* AC Over Volt 2: */}
                     {dataLang.formatMessage({ id: 'ACOverVolt2' })}:
@@ -1669,7 +2021,7 @@ const GridVolt = (props) => {
                     V
                   </div>
                 </div> */}
-                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
                     {/* AC Over Freq 1: */}
                     {dataLang.formatMessage({ id: 'ACOverFreq1' })}:
@@ -1679,7 +2031,7 @@ const GridVolt = (props) => {
                     Hz
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
                     {/* AC Under Freq 2: */}
                     {dataLang.formatMessage({ id: 'ACUnderFreq2' })}:
@@ -1689,7 +2041,7 @@ const GridVolt = (props) => {
                     Hz
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
                     {/* AC Over Freq 2 Time: */}
                     {dataLang.formatMessage({ id: 'ACOverFreq2Time' })}:
@@ -1747,7 +2099,7 @@ const ExportPowerSettings = (props) => {
           <div className="DAT_Info_Databox_ExportPowerSettings">
             <div className="DAT_Info_Databox_ExportPowerSettings_Content">
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left">
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
                     {dataLang.formatMessage({ id: 'ExportPEnable' })}:
                   </div>
@@ -1795,7 +2147,7 @@ const ExportPowerSettings = (props) => {
                 </div>
               </div>
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right">
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
                     {/* Meter Type: */}
                     {dataLang.formatMessage({ id: 'MetterType' })} :
@@ -1861,7 +2213,7 @@ const DeviceSettings = (props) => {
           <div className="DAT_Info_Databox_DeviceSettings">
             <div className="DAT_Info_Databox_DeviceSettings_Content">
               <div className="DAT_Info_Databox_DeviceSettings_Content_Left">
-                <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
                     {/* Remote Control: */}
                     {dataLang.formatMessage({ id: 'RemoteControl' })}:
@@ -1873,7 +2225,7 @@ const DeviceSettings = (props) => {
                     </select>
                   </div>
                 </div>
-                <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
                     {/* Safety Setting: */}
                     {dataLang.formatMessage({ id: 'SafetySetting' })}:
@@ -1923,7 +2275,7 @@ const DeviceSettings = (props) => {
                 </div> */}
               </div>
               <div className="DAT_Info_Databox_DeviceSettings_Content_Center">
-                <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Tit">
                     {/* Active Power Setting: */}
                     {dataLang.formatMessage({ id: 'ActivePowerSetting' })}:
@@ -1946,7 +2298,7 @@ const DeviceSettings = (props) => {
                 </div>
               </div>
               <div className="DAT_Info_Databox_DeviceSettings_Content_Right">
-                <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item_Tit">
                     {/* Reactive Power Control Way: */}
                     {dataLang.formatMessage({ id: 'ReactivePowerSetting' })}:

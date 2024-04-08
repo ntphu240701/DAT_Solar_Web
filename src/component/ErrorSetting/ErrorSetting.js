@@ -11,11 +11,13 @@ import { IoMdMore, IoIosAddCircleOutline } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { MdOutlineManageHistory } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
-import { IoTrashOutline } from "react-icons/io5";
+import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import RemoveErr from "./RemoveErr";
 import { alertDispatch } from "../Alert/Alert";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
+import { isMobile } from "../Navigation/Navigation";
+import { forEach } from "lodash";
 
 export const lowercasedata = (str) => {
   return str
@@ -459,16 +461,14 @@ export default function ErrorSetting(props) {
           ...bigdata[index].solution_,
           {
             id: bigdata[index].solution_[solutionlength - 1].id + 1,
-            vi: `Giải pháp ${
-              bigdata[index].solution_[solutionlength - 1].id + 1
-            }`,
-            en: `Solution ${
-              bigdata[index].solution_[solutionlength - 1].id + 1
-            }`,
+            vi: `Giải pháp ${bigdata[index].solution_[solutionlength - 1].id + 1
+              }`,
+            en: `Solution ${bigdata[index].solution_[solutionlength - 1].id + 1
+              }`,
           },
         ];
         setData([...bigdata]);
-        console.log(bigdata);
+        // console.log(bigdata);
         break;
       default:
         break;
@@ -508,7 +508,6 @@ export default function ErrorSetting(props) {
       if (req.status) {
         let newData = req.data.sort((a, b) => a.warnid_ - b.warnid_);
         setDataApi(newData);
-        console.log(dataApi);
       }
     };
     getWarnBox();
@@ -520,91 +519,247 @@ export default function ErrorSetting(props) {
 
   return (
     <>
-      <div className="DAT_ErrSetting">
-        <div className="DAT_ErrSetting_Title">
-          <MdOutlineManageHistory color="gray" size={25} />
-          <span>{dataLang.formatMessage({ id: "errorsetting" })}</span>
-        </div>
+      {isMobile.value ?
+        <>
+          <div className="DAT_ErrSettingHeaderMobile">
+            <div className="DAT_ErrSettingHeaderMobile_Top">
+              <div className="DAT_ErrSettingHeaderMobile_Top_Filter">
+                <CiSearch color="gray" size={20} />
+                <input
+                  type="text"
+                  placeholder={dataLang.formatMessage({ id: "enterError" }) + "..."}
+                  ref={filterRef}
+                  onChange={(e) => { handleFilter(e); }}
+                />
+              </div>
+              <button className="DAT_ErrSettingHeaderMobile_Top_New"
+                onClick={() => setCreateState(true)}
+              >
+                <IoAddOutline color="white" size={20} />
+              </button>
+            </div>
 
-        <div className="DAT_ErrSetting_Filter">
-          <input
-            type="text"
-            placeholder={dataLang.formatMessage({ id: "enterError" }) + "..."}
-            ref={filterRef}
-            onChange={(e) => {
-              handleFilter(e);
-            }}
-          />
-          <CiSearch color="gray" size={20} />
-        </div>
+            <div className="DAT_ErrSettingHeaderMobile_Title"
+              style={{ marginBottom: "10px" }}
+            >
+              <MdOutlineManageHistory color="gray" size={25} />
+              <span>{dataLang.formatMessage({ id: "errorsetting" })}</span>
+            </div>
+          </div>
 
-        <button
-          className="DAT_ErrSetting_New"
-          onClick={() => setCreateState(true)}
-        >
-          <span>
-            <MdOutlineManageHistory color="white" size={20} />
-            &nbsp;
-            {dataLang.formatMessage({ id: "createNew" })}
-          </span>
-        </button>
-      </div>
+          <div className="DAT_ErrSetMobile">
+            {data.map((item, index) => {
+              return (
+                <div key={index} className="DAT_ErrSetMobile_Content">
+                  <div className="DAT_ErrSetMobile_Content_Top">
+                    <div className="DAT_ErrSetMobile_Content_Top_Type">{item.boxid_}</div>
+                    <div className="DAT_ErrSetMobile_Content_Top_Info">
+                      <div className="DAT_ErrSetMobile_Content_Top_Info_Cause">
+                        <span>{dataLang.formatMessage({ id: "causeViEn" })}</span>
+                        <div className="DAT_ErrSetMobile_Content_Top_Info_Cause_Row1">
+                          <div className="DAT_ErrSetMobile_Content_Top_Info_Cause_Row1_Vi">
+                            vi:
+                          </div>
+                          <div className="DAT_ErrSetMobile_Content_Top_Info_Cause_Row1_En">
+                            en:
+                          </div>
+                        </div>
 
-      <div className="DAT_ErrSet">
-        <div className="DAT_ErrSet_Header">
-          {dataLang.formatMessage({ id: "errlist" })}
-        </div>
+                        <div>
+                          {item.cause_.map((cause, i) => {
+                            return (
+                              <div key={i} className="DAT_ErrSetMobile_Content_Top_Info_Cause_Row2">
+                                <div className="DAT_ErrSetMobile_Content_Top_Info_Cause_Row2_Vi">
+                                  {i + 1}. {cause.vi}
+                                </div>
+                                <div className="DAT_ErrSetMobile_Content_Top_Info_Cause_Row2_En">
+                                  {i + 1}. {cause.en}
+                                </div>
+                                <div className="DAT_ErrSetMobile_Content_Top_Info_Cause_Row2_Func">
+                                  <FiEdit
+                                    size={14}
+                                    id={`${item.boxid_}-${cause.id}-EDITCAUSE`}
+                                    onClick={(e) => handleEdit(e)}
+                                  />
+                                  <IoTrashOutline
+                                    size={16}
+                                    id={`${item.boxid_}_${cause.id}_REMOVECAUSE`}
+                                    onClick={(e) => handleDelete(e)}
+                                  />
+                                  {parseInt(i) === item.cause_.length - 1 ?
+                                    <IoIosAddCircleOutline
+                                      size={16}
+                                      id={`${item.boxid_}-ADDCAUSE`}
+                                      onClick={(e) => handleAdd(e)}
+                                    />
+                                    :
+                                    <></>
+                                  }
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
 
-        <div className="DAT_ErrSet_Content">
-          <DataTable
-            className="DAT_Table_Container"
-            columns={columnLog}
-            data={data}
-            pagination
-            paginationComponentOptions={paginationComponentOptions}
-            fixedHeader={true}
-            noDataComponent={<Empty />}
-          />
-        </div>
-      </div>
+                      <div className="DAT_ErrSetMobile_Content_Top_Info_Solution">
+                        <span>{dataLang.formatMessage({ id: "solutionViEn" })}</span>
+                        <div className="DAT_ErrSetMobile_Content_Top_Info_Solution_Row1">
+                          <div className="DAT_ErrSetMobile_Content_Top_Info_Solution_Row1_Vi">
+                            vi:
+                          </div>
+                          <div className="DAT_ErrSetMobile_Content_Top_Info_Solution_Row1_En">
+                            en:
+                          </div>
+                        </div>
 
-      {createState ? (
-        <div className="DAT_ErrSettingBG">
-          <CreateErrSetting
-            handleClose={handleCloseCreate}
-            handleConfirm={handleConfirmCreate}
-          />
-        </div>
-      ) : (
-        <></>
-      )}
+                        <div>
+                          {item.solution_.map((solution, i) => {
+                            return (
+                              <div key={i} className="DAT_ErrSetMobile_Content_Top_Info_Solution_Row2">
+                                <div className="DAT_ErrSetMobile_Content_Top_Info_Solution_Row2_Vi">
+                                  {i + 1}. {solution.vi}
+                                </div>
+                                <div className="DAT_ErrSetMobile_Content_Top_Info_Solution_Row2_En">
+                                  {i + 1}. {solution.en}
+                                </div>
+                                <div className="DAT_ErrSetMobile_Content_Top_Info_Solution_Row2_Func">
+                                  <FiEdit
+                                    size={14}
+                                    id={`${item.boxid_}-${solution.id}-EDITSOLUTION`}
+                                    onClick={(e) => handleEdit(e)}
+                                  />
+                                  <IoTrashOutline
+                                    size={16}
+                                    id={`${item.boxid_}_${solution.id}_REMOVESOLUTION`}
+                                    onClick={(e) => handleDelete(e)}
+                                  />
+                                  {parseInt(i) === item.solution_.length - 1 ?
+                                    <IoIosAddCircleOutline
+                                      size={16}
+                                      id={`${item.boxid_}-ADDSOLUTION`}
+                                      onClick={(e) => handleAdd(e)}
+                                    />
+                                    :
+                                    <></>
+                                  }
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-      {editState ? (
-        <div className="DAT_ErrSettingBG">
-          <EditErr
-            type={editType}
-            handleClose={handleCloseEdit}
-            editVi={editVi}
-            editEn={editEn}
-            confirmEdit={confirmEdit}
-          />
-        </div>
-      ) : (
-        <></>
-      )}
+                  <div className="DAT_ErrSetMobile_Content_Bottom">
+                    <div className="DAT_ErrSetMobile_Content_Bottom_Item"
+                      id={item.boxid_}
+                      onClick={(e) => handleDelete(e)}
+                    >
+                      <IoTrashOutline size={16} />
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </>
+        :
+        <>
+          <div className="DAT_ErrSetting">
+            <div className="DAT_ErrSetting_Title">
+              <MdOutlineManageHistory color="gray" size={25} />
+              <span>{dataLang.formatMessage({ id: "errorsetting" })}</span>
+            </div>
 
-      {removeState ? (
-        <div className="DAT_ErrSettingBG">
-          <RemoveErr
-            type={removeType}
-            handleClose={handleCloseRemove}
-            handleDel={handleDelete}
-            confirmDel={confirmDelete}
-          />
-        </div>
-      ) : (
-        <></>
-      )}
+            <div className="DAT_ErrSetting_Filter">
+              <input
+                type="text"
+                placeholder={dataLang.formatMessage({ id: "enterError" }) + "..."}
+                ref={filterRef}
+                onChange={(e) => {
+                  handleFilter(e);
+                }}
+              />
+              <CiSearch color="gray" size={20} />
+            </div>
+
+            <button
+              className="DAT_ErrSetting_New"
+              onClick={() => setCreateState(true)}
+            >
+              <span>
+                <MdOutlineManageHistory color="white" size={20} />
+                &nbsp;
+                {dataLang.formatMessage({ id: "createNew" })}
+              </span>
+            </button>
+          </div>
+
+          <div className="DAT_ErrSet">
+            <div className="DAT_ErrSet_Header">
+              {dataLang.formatMessage({ id: "errlist" })}
+            </div>
+
+            <div className="DAT_ErrSet_Content">
+              <DataTable
+                className="DAT_Table_Container"
+                columns={columnLog}
+                data={data}
+                pagination
+                paginationComponentOptions={paginationComponentOptions}
+                fixedHeader={true}
+                noDataComponent={<Empty />}
+              />
+            </div>
+          </div>
+        </>
+      }
+
+      {
+        createState ? (
+          <div className="DAT_ErrSettingBG">
+            <CreateErrSetting
+              handleClose={handleCloseCreate}
+              handleConfirm={handleConfirmCreate}
+            />
+          </div>
+        ) : (
+          <></>
+        )
+      }
+
+      {
+        editState ? (
+          <div className="DAT_ErrSettingBG">
+            <EditErr
+              type={editType}
+              handleClose={handleCloseEdit}
+              editVi={editVi}
+              editEn={editEn}
+              confirmEdit={confirmEdit}
+            />
+          </div>
+        ) : (
+          <></>
+        )
+      }
+
+      {
+        removeState ? (
+          <div className="DAT_ErrSettingBG">
+            <RemoveErr
+              type={removeType}
+              handleClose={handleCloseRemove}
+              handleDel={handleDelete}
+              confirmDel={confirmDelete}
+            />
+          </div>
+        ) : (
+          <></>
+        )
+      }
     </>
   );
 }
