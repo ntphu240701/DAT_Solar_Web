@@ -1043,7 +1043,7 @@ export const messages = {
     OTP: "Mã OTP",
     sendOTP: "Gửi mã OTP",
     causeViEn: "Nguyên nhân (Tiếng Việt - Tiếng Anh)",
-    solutionViEn: "Bịện pháp (Tiếng Việt - Tiếng Anh)",
+    solutionViEn: "Biện pháp (Tiếng Việt - Tiếng Anh)",
     // DATA PLATFORM
     //TAB Settings
     BatchCommand: "Cài đặt nhiều lệnh",
