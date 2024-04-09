@@ -365,7 +365,7 @@ export const messages = {
     ACUnderFreq2: "AC Under Frequency level 2",
     ACOverFreq2: "AC Over Frequency level 2",
     ACUnderFreq2Time: "AC Under Frequency 2 Time",
-    ACOverFreq2Time: "AC Over Frequency 2 Time",
+    ACOverFreq2Time: "AC Over Frequency level 2",
 
     //level 3
     ACUnderVolt3Time: "AC Under Volt 3 Time",
@@ -378,8 +378,8 @@ export const messages = {
     ExportPEnable: "Export power enable",
     ExportPLimit: "Export power limit",
     ExportLimitWay: "Export Limit Way",
-    LimitSinglePhase: "Limit Single Phase",
-    LimitThreePhase: "Limit Three Phase",
+    LimitSinglePhase: "Limit Single-Phase Power",
+    LimitThreePhase: "Limit Three-Phase Power",
     MetterType: "Metter Type",
     MultiExportLimit: "Multi-export limit",
     Enable: "Enable",
