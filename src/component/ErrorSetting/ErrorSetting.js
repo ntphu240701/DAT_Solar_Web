@@ -349,14 +349,20 @@ export default function ErrorSetting(props) {
       cause: data.find((item) => item.boxid_ === editarray[0]).cause_,
       solution: data.find((item) => item.boxid_ === editarray[0]).solution_,
     });
-    console.log(req);
+
+    console.log("Data with Stringified Cause and Solution:");
+    console.log(JSON.stringify(data, (key, value) => {
+      if (key === 'cause' || key === 'solution') {
+        return JSON.stringify(value);
+      }
+      return value;
+    }, 2));
     if (req.status) {
       alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
       setEditState(false);
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
-    console.log(data);
   };
 
   const handleCloseEdit = () => {
