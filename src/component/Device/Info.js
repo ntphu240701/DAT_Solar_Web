@@ -3914,9 +3914,9 @@ const GridInfo = (props) => {
                       <option>{dataLang.formatMessage({ id: 'StatusInit' })}</option>
                       <option>{dataLang.formatMessage({ id: 'StatusWait' })}</option>
                       <option>{dataLang.formatMessage({ id: 'StatusOnGrid' })}</option>
-                      <option>Fault</option>
-                      <option>Flash</option>
-                      <option>Off Grid</option>
+                      <option>{dataLang.formatMessage({ id: 'StatusFault' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'StatusFlash' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'StatusOffGrid' })}</option>
                     </select>
                   </div>
                 </div>
@@ -4015,29 +4015,148 @@ const SelectCommand = (props) => {
   const dataLang = useIntl();
 
   const commandName = [
+    // AC Start Voltage
     {
-      name: "Read AC Start High Volt",
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACStartHighVoltage' }),
     },
     {
-      name: "Set AC Start High Volt",
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACStartHighVoltage' }),
     },
     {
-      name: "Read AC Start Low Volt",
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACStartLowVoltage' }),
     },
     {
-      name: "Set AC Start Low Volt",
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACStartLowVoltage' }),
+    },
+    //AC Start Frequency 
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACStartHighFrequency' }),
     },
     {
-      name: "Read AC Start High Freq",
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACStartHighFrequency' }),
     },
     {
-      name: "Set AC Start High Freq",
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACStartLowFrequency' }),
     },
     {
-      name: "Read AC Start Low Freq",
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACStartLowFrequency' }),
+    },
+    //AC Start Volt level 1 
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACUnderVolt1' }),
     },
     {
-      name: "Set AC Start Low Freq",
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACUnderVolt1' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACOverVolt1' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACOverVolt1' }),
+    },
+    //AC Start Volt 1 Time
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACUnderVolt1Time' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACUnderVolt1Time' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACOverVolt1Time' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACOverVolt1Time' }),
+    },
+    //AC Start Volt 2
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACUnderVolt2' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACUnderVolt2' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACOverVolt2' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACOverVolt2' }),
+    },
+    //AC Start Volt 2 Time
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACUnderVolt2Time' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACUnderVolt2Time' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACOverVolt2Time' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACOverVolt2Time' }),
+    },
+    //AC Frequency level 1
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACUnderFreq1' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACUnderFreq1' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACOverFreq1' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACOverFreq1' }),
+    },
+    //AC Frequency 1 Time
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACUnderFreq1Time' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACUnderFreq1Time' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACOverFreq1Time' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACOverFreq1Time' }),
+    },
+    //AC Frequency level 2
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACUnderFreq2' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACUnderFreq2' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACOverFreq2' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACOverFreq2' }),
+    },
+    //AC Frequency 2 Time
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACUnderFreq2Time' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACUnderFreq2Time' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'read' }) + " " + dataLang.formatMessage({ id: 'ACOverFreq2Time' }),
+    },
+    {
+      name: dataLang.formatMessage({ id: 'Set' }) + " " + dataLang.formatMessage({ id: 'ACOverFreq2Time' }),
+    },
+    //Other Options
+    {
+      name: dataLang.formatMessage({ id: 'ReadInverters' })
+    },
+    {
+      name: dataLang.formatMessage({ id: 'SetInverters' })
+    },
+    {
+      name: dataLang.formatMessage({ id: 'ReadCTRatio' })
+    },
+    {
+      name: dataLang.formatMessage({ id: 'SetCTRatio' })
     },
   ];
 
@@ -4122,8 +4241,16 @@ const CustomizedCommand = (props) => {
           <div className="DAT_Info_Databox_CustomizedCommand_Foot">
             <div className="DAT_Info_Databox_CustomizedCommand_Foot_Func">
               <select>
+                <option>{dataLang.formatMessage({ id: 'OneminsTimeout' })}</option>
+                <option>{dataLang.formatMessage({ id: 'TwominsTimeout' })}</option>
                 <option>{dataLang.formatMessage({ id: 'ThreeminsTimeout' })}</option>
+                <option>{dataLang.formatMessage({ id: 'FourminsTimeout' })}</option>
+                <option>{dataLang.formatMessage({ id: 'FiveminsTimeout' })}</option>
                 <option>{dataLang.formatMessage({ id: 'SixminsTimeout' })}</option>
+                <option>{dataLang.formatMessage({ id: 'SevenminsTimeout' })}</option>
+                <option>{dataLang.formatMessage({ id: 'EightminsTimeout' })}</option>
+                <option>{dataLang.formatMessage({ id: 'NineminsTimeout' })}</option>
+                <option>{dataLang.formatMessage({ id: 'TenminsTimeout' })}</option>
               </select>
               <button>{dataLang.formatMessage({ id: 'ClickCalculateCRC' })}</button>
             </div>

@@ -356,6 +356,7 @@ export default function ErrorSetting(props) {
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
+    console.log(data);
   };
 
   const handleCloseEdit = () => {

@@ -610,6 +610,7 @@ export default function EditProject(props) {
           plantState.value = "default";
         }
       };
+      console.log(projectData.value);
       editProject();
     }
   };
