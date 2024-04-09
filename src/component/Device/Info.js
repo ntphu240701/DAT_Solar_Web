@@ -2352,7 +2352,7 @@ const SystemTime = (props) => {
   return (
     <div className="DAT_Info_Databox" id="SystemTime">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">System Time</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: "SystemTime" })}</div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -2375,7 +2375,7 @@ const SystemTime = (props) => {
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left">
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item">
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    System Time:
+                    {dataLang.formatMessage({ id: "SystemTime" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <DatePicker
@@ -2679,7 +2679,7 @@ const GridFirst = (props) => {
   return (
     <div className="DAT_Info_Databox" id="SystemTime">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Grid First</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: "GridFirst" })}</div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -2702,7 +2702,7 @@ const GridFirst = (props) => {
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left">
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    Grid First Start Time 1:
+                    {dataLang.formatMessage({ id: "GridFirstStartTime" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <select>
@@ -2723,7 +2723,7 @@ const GridFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    Grid First Start Time 2:
+                    {dataLang.formatMessage({ id: "GridFirstStartTime2" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <select>
@@ -2744,7 +2744,7 @@ const GridFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    Grid First Start Time 3:
+                    {dataLang.formatMessage({ id: "GridFirstStartTime3" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <select>
@@ -2765,7 +2765,7 @@ const GridFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    Discharge Power percentage Limit (Time Period 1):
+                    {dataLang.formatMessage({ id: 'DischargePowerLimit' })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <input placeholder="0 ~ 100" />
@@ -2775,7 +2775,7 @@ const GridFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item">
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    Stop SOC At Discharge:
+                    {dataLang.formatMessage({ id: 'StopSOCatDischarge' })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <input placeholder="0 ~ 100" />
@@ -2787,7 +2787,7 @@ const GridFirst = (props) => {
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center">
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    Grid First End Time 1:
+                    {dataLang.formatMessage({ id: 'GridFirstEndTime' })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
                     <select>
@@ -2808,7 +2808,7 @@ const GridFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    Grid First End Time 2:
+                    {dataLang.formatMessage({ id: 'GridFirstEndTime2' })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
                     <select>
@@ -2829,7 +2829,7 @@ const GridFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    Grid First End Time 3:
+                    {dataLang.formatMessage({ id: 'GridFirstEndTime3' })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
                     <select>
@@ -2850,7 +2850,7 @@ const GridFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item">
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    Discharge Power percentage Limit (Time Period 2):
+                    {dataLang.formatMessage({ id: 'DischargePowerLimit2' })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
                     <input placeholder="0 ~ 100" />
@@ -2862,7 +2862,7 @@ const GridFirst = (props) => {
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right">
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    Grid First Enable 1:
+                    {dataLang.formatMessage({ id: 'GridFirstEnable' })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
                     <select>
@@ -2874,7 +2874,7 @@ const GridFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    Grid First Enable 2:
+                    {dataLang.formatMessage({ id: 'GridFirstEnable2' })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
                     <select>
@@ -2886,7 +2886,7 @@ const GridFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    Grid First Enable 3:
+                    {dataLang.formatMessage({ id: 'GridFirstEnable3' })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
                     <select>
@@ -2898,7 +2898,7 @@ const GridFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item">
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    Discharge Power percentage Limit (Time Period 3):
+                    {dataLang.formatMessage({ id: 'DischargePowerLimit3' })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
                     <input placeholder="0 ~ 100" />
@@ -3190,7 +3190,7 @@ const BatteryFirst = (props) => {
   return (
     <div className="DAT_Info_Databox" id="BatteryFirst">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Battery First</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: "BatteryFirst" })}</div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -3213,7 +3213,7 @@ const BatteryFirst = (props) => {
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left">
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    Battery First Start Time 1:
+                    {dataLang.formatMessage({ id: "BatteryFirstStartTime" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <select>
@@ -3234,7 +3234,7 @@ const BatteryFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    Battery First Start Time 2:
+                    {dataLang.formatMessage({ id: "BatteryFirstStartTime2" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <select>
@@ -3255,7 +3255,7 @@ const BatteryFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    Battery First Start Time 3:
+                    {dataLang.formatMessage({ id: "BatteryFirstStartTime3" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <select>
@@ -3276,7 +3276,7 @@ const BatteryFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    Charging Power Percentage Limit (Time Period 1):
+                    {dataLang.formatMessage({ id: "ChargePowerLimit" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <input placeholder="0 ~ 100" />
@@ -3286,7 +3286,7 @@ const BatteryFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item">
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    Stop SOC While Charging:
+                    {dataLang.formatMessage({ id: "StopSOCatCharge" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <input placeholder="0 ~ 100" />
@@ -3298,7 +3298,7 @@ const BatteryFirst = (props) => {
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center">
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    Battery First End Time 1:
+                    {dataLang.formatMessage({ id: "BatteryFirstEndTime" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
                     <select>
@@ -3319,7 +3319,7 @@ const BatteryFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    Battery First End Time 2:
+                    {dataLang.formatMessage({ id: "BatteryFirstEndTime2" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
                     <select>
@@ -3340,7 +3340,7 @@ const BatteryFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    Battery First End Time 3:
+                    {dataLang.formatMessage({ id: "BatteryFirstEndTime3" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
                     <select>
@@ -3361,7 +3361,7 @@ const BatteryFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    Charging Power Percentage Limit (Time Period 2):
+                    {dataLang.formatMessage({ id: "ChargePowerLimit2" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
                     <input placeholder="0 ~ 100" />
@@ -3371,7 +3371,7 @@ const BatteryFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item">
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    Inverter Charge Enable:
+                    {dataLang.formatMessage({ id: "InverterChargeEnable" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
                     <select>
@@ -3385,7 +3385,7 @@ const BatteryFirst = (props) => {
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right">
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    Battery First Enable 1:
+                    {dataLang.formatMessage({ id: "BatteryFirstEnable" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
                     <select>
@@ -3397,7 +3397,7 @@ const BatteryFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    Battery First Enable 2:
+                    {dataLang.formatMessage({ id: "BatteryFirstEnable2" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
                     <select>
@@ -3409,7 +3409,7 @@ const BatteryFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    Battery First Enable 3:
+                    {dataLang.formatMessage({ id: "BatteryFirstEnable3" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
                     <select>
@@ -3421,7 +3421,7 @@ const BatteryFirst = (props) => {
 
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item">
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    Charging Power Percentage Limit (Time Period 3):
+                    {dataLang.formatMessage({ id: "ChargePowerLimit3" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
                     <input placeholder="0 ~ 100" />
@@ -3635,7 +3635,7 @@ const BatterySettings = (props) => {
   return (
     <div className="DAT_Info_Databox" id="BatterySettings">
       <div className="DAT_Info_Databox_Title">
-        <div className="DAT_Info_Databox_Title_Left">Battery Settings</div>
+        <div className="DAT_Info_Databox_Title_Left">{dataLang.formatMessage({ id: "BatterySettings" })}</div>
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
@@ -3658,12 +3658,12 @@ const BatterySettings = (props) => {
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left">
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item">
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    Battery Type:
+                    {dataLang.formatMessage({ id: "BatteryType" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
                     <select>
-                      <option>Lead Acid Battery</option>
-                      <option>Lithum Battery</option>
+                      <option>{dataLang.formatMessage({ id: "LeadAcidBattery" })}</option>
+                      <option>{dataLang.formatMessage({ id: "LithumBattery" })}</option>
                     </select>
                   </div>
                 </div>
@@ -3672,7 +3672,7 @@ const BatterySettings = (props) => {
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center">
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item">
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    Battery manufacturer:
+                    {dataLang.formatMessage({ id: "BatteryManu" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
                     <select>
@@ -3695,7 +3695,7 @@ const BatterySettings = (props) => {
               <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right">
                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item">
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    Battery DOD:
+                    {dataLang.formatMessage({ id: "BatteryDOD" })}:
                   </div>
                   <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
                     <input placeholder="0 ~ 100" /> %
@@ -3914,8 +3914,8 @@ const GridInfo = (props) => {
                       <option>{dataLang.formatMessage({ id: 'StatusInit' })}</option>
                       <option>{dataLang.formatMessage({ id: 'StatusWait' })}</option>
                       <option>{dataLang.formatMessage({ id: 'StatusOnGrid' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'StatusFault' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'StatusFlash' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'failure' })}</option>
+                      <option>{dataLang.formatMessage({ id: 'burn' })}</option>
                       <option>{dataLang.formatMessage({ id: 'StatusOffGrid' })}</option>
                     </select>
                   </div>
@@ -4206,7 +4206,7 @@ const SelectCommand = (props) => {
                         <Fade {...TransitionProps} timeout={350}>
                           <Paper sx={{ width: '400px', marginLeft: '200px', p: 2 }}>
                             <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
-                              {dataLang.formatMessage({ id: 'overview1' })}
+                              {dataLang.formatMessage({ id: 'timeoutInfo' })}
                             </Typography>
                           </Paper>
                         </Fade>
