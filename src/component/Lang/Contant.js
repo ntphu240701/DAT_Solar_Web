@@ -320,9 +320,19 @@ export const messages = {
     LoggerDownloadMethods: "Logger Download Methods",
     SelFirmwarePackage: "Select Firmware Package",
     ClickSelectFirmwarePackage: "Click Select Firmware Package",
+
+    //Timeout 
     Timeout: "Timeout",
+    OneminsTimeout: "1 mins timeout",
+    TwominsTimeout: "2 mins timeout",
     ThreeminsTimeout: "3 mins timeout",
+    FourminsTimeout: "4 mins timeout",
+    FiveminsTimeout: "5 mins timeout",
     SixminsTimeout: "6 mins timeout",
+    SevenminsTimeout: "7 mins timeout",
+    EightminsTimeout: "8 mins timeout",
+    NineminsTimeout: "9 mins timeout",
+    TenminsTimeout: "10 mins timeout",
     Minute: "Minute",
     IPDownload: "IP Download",
     StartUpgrading: "Start Upgrading",
@@ -448,6 +458,16 @@ export const messages = {
     StatusInit: "Init",
     StatusWait: "Wait",
     StatusOnGrid: "On Grid",
+    StatusFault: "Fault",
+    StatusFlash: "Flash",
+    StatusOffGrid: "Off Grid",
+
+    // Command Name
+    Set: "Set",
+    ReadInverters: "Number Of Inverters",
+    SetInverters: "Set Number Of Inverters",
+    ReadCTRatio: "Read CT Transformation Ratio",
+    SetCTRatio: "Set CT Transformation Ratio",
 
     //--------------------
     enter: "Enter ",
@@ -887,7 +907,7 @@ export const messages = {
     rule: "Quyền",
     partner: "Đối tác",
     rushhour: "Giờ nắng đỉnh",
-    environment: "Môi trường và lợi ích kinh tế",
+    environment: "Lợi ích môi trường và kinh tế",
     envi: "Môi trường",
     weather: "Thời tiết",
     temperature: "Nhiệt độ",
@@ -1081,9 +1101,19 @@ export const messages = {
     LoggerDownloadMethods: "Phương thức tải xuống",
     SelFirmwarePackage: "Chọn gói phần mềm",
     ClickSelectFirmwarePackage: "Nhấn để chọn gói phần mềm",
-    Timeout: "Thời gian cập nhật",
+
+    //Timeout 
+    Timeout: "Timeout",
+    OneminsTimeout: "Cập nhật sau 1 phút",
+    TwominsTimeout: "Cập nhật sau 2 phút",
     ThreeminsTimeout: "Cập nhật sau 3 phút",
+    FourminsTimeout: "Cập nhật sau 4 phút",
+    FiveminsTimeout: "Cập nhật sau 5 phút",
     SixminsTimeout: "Cập nhật sau 6 phút",
+    SevenminsTimeout: "Cập nhật sau 7 phút",
+    EightminsTimeout: "Cập nhật sau 8phút",
+    NineminsTimeout: "Cập nhật sau 9 phút",
+    TenminsTimeout: "Cập nhật sau 10 phút",
     Minute: "Phút",
     IPDownload: "Tải xuống theo IP",
     StartUpgrading: "Bắt đầu nâng cấp",
@@ -1210,6 +1240,16 @@ export const messages = {
     StatusInit: "Khởi tạo",
     StatusWait: "Kiểm tra",
     StatusOnGrid: "Kết nối lưới",
+    StatusFault: "Fault",
+    StatusFlash: "Flash",
+    StatusOffGrid: "Mất kết nối lưới",
+
+    // Command Name
+    Set: "Cài đặt",
+    ReadInverters: "Đọc nhiều biến tần",
+    SetInverters: "Cài đặt nhiều biến tần",
+    ReadCTRatio: "Read CT Transformation Ratio",
+    SetCTRatio: "Set CT Transformation Ratio",
 
     //--------------------
     enter: "Nhập ",
