@@ -2079,6 +2079,35 @@
                     }
                 }
             }
+
+            &_LastCommandRecord {
+                &_Content {
+                    display: contents;
+
+                    &_Left {
+                        margin-top: 16px;
+                    }
+
+                    &_Center {
+                        margin: 8px 0px;
+                    }
+
+                    &_Right {
+                        margin-bottom: 16px;
+                    }
+                }
+            }
+
+            &_SelectCommand {
+                &_Content {
+                    padding: 0px;
+
+                    &_Left {
+                        margin-top: 16px;
+                        margin-bottom: 16px;
+                    }
+                }
+            }
         }
     }
 }
