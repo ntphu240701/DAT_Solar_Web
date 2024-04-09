@@ -320,9 +320,19 @@ export const messages = {
     LoggerDownloadMethods: "Logger Download Methods",
     SelFirmwarePackage: "Select Firmware Package",
     ClickSelectFirmwarePackage: "Click Select Firmware Package",
+
+    //Timeout 
     Timeout: "Timeout",
+    OneminsTimeout: "1 mins timeout",
+    TwominsTimeout: "2 mins timeout",
     ThreeminsTimeout: "3 mins timeout",
+    FourminsTimeout: "4 mins timeout",
+    FiveminsTimeout: "5 mins timeout",
     SixminsTimeout: "6 mins timeout",
+    SevenminsTimeout: "7 mins timeout",
+    EightminsTimeout: "8 mins timeout",
+    NineminsTimeout: "9 mins timeout",
+    TenminsTimeout: "10 mins timeout",
     Minute: "Minute",
     IPDownload: "IP Download",
     StartUpgrading: "Start Upgrading",
@@ -338,7 +348,7 @@ export const messages = {
     ClickCalculateCRC: "Click Calculate CRC",
 
     //Grid Start Settings
-    Gridstartsettings: "Grid start settings",
+    Gridstartsettings: "Grid Start Settings",
     ACStartHighVoltage: "AC Start High Volt",
     ACStartLowVoltage: "AC Start Low Volt",
     ACStartHighFrequency: "AC Start High Frequency",
@@ -378,8 +388,8 @@ export const messages = {
     ExportPEnable: "Export power enable",
     ExportPLimit: "Export power limit",
     ExportLimitWay: "Export Limit Way",
-    LimitSinglePhase: "Limit Single Phase",
-    LimitThreePhase: "Limit Three Phase",
+    LimitSinglePhase: "Limit Single-Phase Power",
+    LimitThreePhase: "Limit Three-Phase Power",
     MetterType: "Metter Type",
     MultiExportLimit: "Multi-export limit",
     Enable: "Enable",
@@ -448,6 +458,68 @@ export const messages = {
     StatusInit: "Init",
     StatusWait: "Wait",
     StatusOnGrid: "On Grid",
+    StatusFault: "Fault",
+    StatusFlash: "Flash",
+    StatusOffGrid: "Off Grid",
+
+    // Command Name
+    Set: "Set",
+    ReadInverters: "Number Of Inverters",
+    SetInverters: "Set Number Of Inverters",
+    ReadCTRatio: "Read CT Transformation Ratio",
+    SetCTRatio: "Set CT Transformation Ratio",
+
+    // System Time
+    SystemTime: "System Time",
+
+    // Grid First 
+    GridFirst: "Grid First",
+    GridFirstStartTime: "Grid First Start Time 1",
+    GridFirstStartTime2: "Grid First Start Time 2",
+    GridFirstStartTime3: "Grid First Start Time 3",
+    DischargePowerLimit: "Discharge Power percentage Limit (Time Period 1)",
+    StopSOCatDischarge: "Stop SOC at Discharge",
+
+    // Grid End
+    GridFirstEndTime: "Grid First End Time 1",
+    GridFirstEndTime2: "Grid First End Time 2",
+    GridFirstEndTime3: "Grid First End Time 3",
+    DischargePowerLimit2: "Discharge Power percentage Limit (Time Period 2)",
+
+    // Grid Enable
+    GridFirstEnable: "Grid First Enable 1",
+    GridFirstEnable2: "Grid First Enable 2",
+    GridFirstEnable3: "Grid First Enable 3",
+    DischargePowerLimit3: "Discharge Power percentage Limit (Time Period 3)",
+
+    // Battery First 
+    BatteryFirst: "Battery First",
+    BatteryFirstStartTime: "Battery First Start Time 1",
+    BatteryFirstStartTime2: "Battery First Start Time 2",
+    BatteryFirstStartTime3: "Battery First Start Time 3",
+    ChargePowerLimit: "Charging Power percentage Limit (Time Period 1)",
+    StopSOCatCharge: "Stop SOC at Charging",
+
+    // Battery End
+    BatteryFirstEndTime: "Battery First End Time 1",
+    BatteryFirstEndTime2: "Battery First End Time 2",
+    BatteryFirstEndTime3: "Battery First End Time 3",
+    ChargePowerLimit2: "Charging Power percentage Limit (Time Period 2)",
+    InverterChargeEnable: "Inverter Charge Enable",
+
+    // Battery Enable
+    BatteryFirstEnable: "Battery First Enable 1",
+    BatteryFirstEnable2: "Battery First Enable 2",
+    BatteryFirstEnable3: "Battery First Enable 3",
+    ChargePowerLimit3: "Charging Power percentage Limit (Time Period 3)",
+
+    // Battery Settings
+    BatterySettings: "Battery Settings",
+    BatteryType: "Battery Type",
+    BatteryManu: "Battery Manufacturer",
+    BatteryDOD: "Battery DOD",
+    LeadAcidBattery: "Lead Acid Battery",
+    LithumBattery: "Lithum Battery",
 
     //--------------------
     enter: "Enter ",
@@ -564,6 +636,8 @@ export const messages = {
     kWhonkWp: "kWh/kWp",
     totalall: "Total Production",
     errorsetting: "Error setting",
+    timeoutInfo:
+      "System will automatically consider it as a failure if no command feedback is received after timeout. Please try again.",
     environment1:
       "Standard Coal Saved: The amount of coal needed to run the generator produces a total number of kWh of electricity equivalent to the PV system generated.",
     environment2:
@@ -887,7 +961,7 @@ export const messages = {
     rule: "Quyền",
     partner: "Đối tác",
     rushhour: "Giờ nắng đỉnh",
-    environment: "Môi trường và lợi ích kinh tế",
+    environment: "Lợi ích môi trường và kinh tế",
     envi: "Môi trường",
     weather: "Thời tiết",
     temperature: "Nhiệt độ",
@@ -1081,9 +1155,19 @@ export const messages = {
     LoggerDownloadMethods: "Phương thức tải xuống",
     SelFirmwarePackage: "Chọn gói phần mềm",
     ClickSelectFirmwarePackage: "Nhấn để chọn gói phần mềm",
-    Timeout: "Thời gian cập nhật",
+
+    //Timeout 
+    Timeout: "Timeout",
+    OneminsTimeout: "Cập nhật sau 1 phút",
+    TwominsTimeout: "Cập nhật sau 2 phút",
     ThreeminsTimeout: "Cập nhật sau 3 phút",
+    FourminsTimeout: "Cập nhật sau 4 phút",
+    FiveminsTimeout: "Cập nhật sau 5 phút",
     SixminsTimeout: "Cập nhật sau 6 phút",
+    SevenminsTimeout: "Cập nhật sau 7 phút",
+    EightminsTimeout: "Cập nhật sau 8phút",
+    NineminsTimeout: "Cập nhật sau 9 phút",
+    TenminsTimeout: "Cập nhật sau 10 phút",
     Minute: "Phút",
     IPDownload: "Tải xuống theo IP",
     StartUpgrading: "Bắt đầu nâng cấp",
@@ -1210,6 +1294,68 @@ export const messages = {
     StatusInit: "Khởi tạo",
     StatusWait: "Kiểm tra",
     StatusOnGrid: "Kết nối lưới",
+    StatusFault: "Fault",
+    StatusFlash: "Flash",
+    StatusOffGrid: "Mất kết nối lưới",
+
+    // Command Name
+    Set: "Cài đặt",
+    ReadInverters: "Đọc số biến tần ZE",
+    SetInverters: "Thiết lập số biến tần ZE",
+    ReadCTRatio: "Đọc tỉ số biến đổi CT",
+    SetCTRatio: "Thiết lập tỉ số biến đổi CT",
+
+    // System Time
+    SystemTime: "Thời gian hệ thống",
+
+    // Grid First 
+    GridFirst: "Ưu tiên lưới điện",
+    GridFirstStartTime: "Thời gian bắt đầu ưu tiên lưới 1",
+    GridFirstStartTime2: "Thời gian bắt đầu ưu tiên lưới 2",
+    GridFirstStartTime3: "Thời gian bắt đầu ưu tiên lưới 3",
+    DischargePowerLimit: "Tỉ lệ công suất giới hạn xả (ưu tiên 1)",
+    StopSOCatDischarge: "SOC ngừng xả",
+
+    // Grid End
+    GridFirstEndTime: "Thời gian kết thúc ưu tiên lưới 1",
+    GridFirstEndTime2: "Thời gian kết thúc ưu tiên lưới 2",
+    GridFirstEndTime3: "Thời gian kết thúc ưu tiên lưới 3",
+    DischargePowerLimit2: "Tỉ lệ công suất giới hạn xả (ưu tiên 2)",
+
+    // Grid Enable 
+    GridFirstEnable: "Kích hoạt chế độ ưu tiên lưới 1",
+    GridFirstEnable2: "Kích hoạt chế độ ưu tiên lưới 2",
+    GridFirstEnable3: "Kích hoạt chế độ ưu tiên lưới 3",
+    DischargePowerLimit3: "Tỉ lệ công suất giới hạn xả (ưu tiên 3)",
+
+    // Battery First 
+    BatteryFirst: "Ưu tiên ắc quy",
+    BatteryFirstStartTime: "Thời gian bắt đầu ưu tiên ắc quy 1",
+    BatteryFirstStartTime2: "Thời gian bắt đầu ưu tiên ắc quy 2",
+    BatteryFirstStartTime3: "Thời gian bắt đầu ưu tiên ắc quy 3",
+    ChargePowerLimit: "Tỉ lệ công suất giới hạn xả (ưu tiên 1)",
+    StopSOCatCharge: "SOC ngừng sạc",
+
+    // Battery End
+    BatteryFirstEndTime: "Thời gian kết thúc ưu tiên ắc quy 1",
+    BatteryFirstEndTime2: "Thời gian kết thúc ưu tiên ắc quy 2",
+    BatteryFirstEndTime3: "Thời gian kết thúc ưu tiên ắc quy 3",
+    ChargePowerLimit2: "Tỉ lệ công suất giới hạn xả (ưu tiên 2)",
+    InverterChargeEnable: "Kích hoạt inverter sạc",
+
+    // Battery Enable
+    BatteryFirstEnable: "Kích hoạt chế độ ưu tiên ắc quy 1",
+    BatteryFirstEnable2: "Kích hoạt chế độ ưu tiên ắc quy 2",
+    BatteryFirstEnable3: "Kích hoạt chế độ ưu tiên ắc quy 3",
+    ChargePowerLimit3: "Tỉ lệ công suất giới hạn xả (ưu tiên 3)",
+
+    // Battery Settings
+    BatterySettings: "Cài đặt ắc quy",
+    BatteryType: "Kiểu ắc quy",
+    BatteryManu: "Nhà sản xuất ắc quy",
+    BatteryDOD: "Mức xả sâu ắc quy DOD",
+    LeadAcidBattery: "Ắc quy axit chì",
+    LithumBattery: "Ắc quy Lithum",
 
     //--------------------
     enter: "Nhập ",
@@ -1325,6 +1471,8 @@ export const messages = {
     kWhonkWp: "kWh/kWp",
     totalall: "Tổng sản lượng điện",
     errorsetting: "Cài đặt lỗi",
+    timeoutInfo:
+      "Hệ thống sẽ tự động coi nó là một sự cố nếu không nhận được phản hồi lệnh sau khi thời gian chờ kết thúc. Vui lòng thử lại sau.",
     environment1:
       "Lượng than tiết kiệm: Khối lượng than cần để có thể chạy máy phát điện tạo ra tổng số kWh điện tương đương hệ PV phát ra.",
     environment2:

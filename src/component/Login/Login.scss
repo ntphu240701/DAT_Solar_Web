@@ -204,27 +204,28 @@ $colorWhite: rgb(229, 229, 229, 0.5);
         box-sizing: border-box;
         height: 40px;
         width: 100%;
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
+        background: none !important;
         border: none;
         outline: none;
-        background: none;
         color: white;
         -webkit-box-sizing: border-box;
         /* Safari/Chrome, other WebKit */
         -moz-box-sizing: border-box;
         /* Firefox, other Gecko */
-        box-sizing: border-box;
 
         &::placeholder {
           color: rgb(255, 255, 255);
         }
       }
-    }
 
-    input::-ms-reveal,
-    input::-ms-clear {
-      display: none;
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: #ffffff;
+        transition: background-color 5000s ease-in-out 0s;
+      }
     }
 
     &-note {
