@@ -281,8 +281,12 @@ export default function ErrorSetting(props) {
       } else {
         let req = await callApi("post", `${host.DATA}/addWarnBox`, {
           boxid: `${code}_${num1}_${num2}`,
-          cause: [{ id: 1, vi: "Nguyên nhân 1", en: "Cause 1" }],
-          solution: [{ id: 1, vi: "Giải pháp 1", en: "Solution 1" }],
+          cause: JSON.stringify([
+            { id: 1, vi: "Nguyên nhân 1", en: "Cause 1" },
+          ]),
+          solution: JSON.stringify([
+            { id: 1, vi: "Giải pháp 1", en: "Solution 1" },
+          ]),
         });
         if (req.status) {
           const newdata = req.data;
@@ -346,8 +350,12 @@ export default function ErrorSetting(props) {
     }
     let req = await callApi("post", `${host.DATA}/updateWarnBox`, {
       boxid: editarray[0],
-      cause: data.find((item) => item.boxid_ === editarray[0]).cause_,
-      solution: data.find((item) => item.boxid_ === editarray[0]).solution_,
+      cause: JSON.stringify(
+        data.find((item) => item.boxid_ === editarray[0]).cause_
+      ),
+      solution: JSON.stringify(
+        data.find((item) => item.boxid_ === editarray[0]).solution_
+      ),
     });
 
     console.log("Data with Stringified Cause and Solution:");
@@ -396,8 +404,12 @@ export default function ErrorSetting(props) {
         }
         let req1 = await callApi("post", `${host.DATA}/updateWarnBox`, {
           boxid: boxid,
-          cause: data.find((item) => item.boxid_ === boxid).cause_,
-          solution: data.find((item) => item.boxid_ === boxid).solution_,
+          cause: JSON.stringify(
+            data.find((item) => item.boxid_ === boxid).cause_
+          ),
+          solution: JSON.stringify(
+            data.find((item) => item.boxid_ === boxid).solution_
+          ),
         });
         console.log(req1);
         if (req1.status) {
@@ -419,8 +431,12 @@ export default function ErrorSetting(props) {
         }
         let req2 = await callApi("post", `${host.DATA}/updateWarnBox`, {
           boxid: boxid,
-          cause: data.find((item) => item.boxid_ === boxid).cause_,
-          solution: data.find((item) => item.boxid_ === boxid).solution_,
+          cause: JSON.stringify(
+            data.find((item) => item.boxid_ === boxid).cause_
+          ),
+          solution: JSON.stringify(
+            data.find((item) => item.boxid_ === boxid).solution_
+          ),
         });
         console.log(req2);
         if (req2.status) {
@@ -482,8 +498,10 @@ export default function ErrorSetting(props) {
     }
     await callApi("post", `${host.DATA}/updateWarnBox`, {
       boxid: arr[0],
-      cause: data.find((item) => item.boxid_ === arr[0]).cause_,
-      solution: data.find((item) => item.boxid_ === arr[0]).solution_,
+      cause: JSON.stringify(data.find((item) => item.boxid_ === arr[0]).cause_),
+      solution: JSON.stringify(
+        data.find((item) => item.boxid_ === arr[0]).solution_
+      ),
     });
   };
 
@@ -526,7 +544,7 @@ export default function ErrorSetting(props) {
 
   return (
     <>
-      {isMobile.value ?
+      {isMobile.value ? (
         <>
           <div className="DAT_ErrSettingHeaderMobile">
             <div className="DAT_ErrSettingHeaderMobile_Top">
@@ -534,19 +552,25 @@ export default function ErrorSetting(props) {
                 <CiSearch color="gray" size={20} />
                 <input
                   type="text"
-                  placeholder={dataLang.formatMessage({ id: "enterError" }) + "..."}
+                  placeholder={
+                    dataLang.formatMessage({ id: "enterError" }) + "..."
+                  }
                   ref={filterRef}
-                  onChange={(e) => { handleFilter(e); }}
+                  onChange={(e) => {
+                    handleFilter(e);
+                  }}
                 />
               </div>
-              <button className="DAT_ErrSettingHeaderMobile_Top_New"
+              <button
+                className="DAT_ErrSettingHeaderMobile_Top_New"
                 onClick={() => setCreateState(true)}
               >
                 <IoAddOutline color="white" size={20} />
               </button>
             </div>
 
-            <div className="DAT_ErrSettingHeaderMobile_Title"
+            <div
+              className="DAT_ErrSettingHeaderMobile_Title"
               style={{ marginBottom: "10px" }}
             >
               <MdOutlineManageHistory color="gray" size={25} />
@@ -559,10 +583,14 @@ export default function ErrorSetting(props) {
               return (
                 <div key={index} className="DAT_ErrSetMobile_Content">
                   <div className="DAT_ErrSetMobile_Content_Top">
-                    <div className="DAT_ErrSetMobile_Content_Top_Type">{item.boxid_}</div>
+                    <div className="DAT_ErrSetMobile_Content_Top_Type">
+                      {item.boxid_}
+                    </div>
                     <div className="DAT_ErrSetMobile_Content_Top_Info">
                       <div className="DAT_ErrSetMobile_Content_Top_Info_Cause">
-                        <span>{dataLang.formatMessage({ id: "causeViEn" })}</span>
+                        <span>
+                          {dataLang.formatMessage({ id: "causeViEn" })}
+                        </span>
                         <div className="DAT_ErrSetMobile_Content_Top_Info_Cause_Row1">
                           <div className="DAT_ErrSetMobile_Content_Top_Info_Cause_Row1_Vi">
                             vi:
@@ -575,7 +603,10 @@ export default function ErrorSetting(props) {
                         <div>
                           {item.cause_.map((cause, i) => {
                             return (
-                              <div key={i} className="DAT_ErrSetMobile_Content_Top_Info_Cause_Row2">
+                              <div
+                                key={i}
+                                className="DAT_ErrSetMobile_Content_Top_Info_Cause_Row2"
+                              >
                                 <div className="DAT_ErrSetMobile_Content_Top_Info_Cause_Row2_Vi">
                                   {i + 1}. {cause.vi}
                                 </div>
@@ -593,24 +624,26 @@ export default function ErrorSetting(props) {
                                     id={`${item.boxid_}_${cause.id}_REMOVECAUSE`}
                                     onClick={(e) => handleDelete(e)}
                                   />
-                                  {parseInt(i) === item.cause_.length - 1 ?
+                                  {parseInt(i) === item.cause_.length - 1 ? (
                                     <IoIosAddCircleOutline
                                       size={16}
                                       id={`${item.boxid_}-ADDCAUSE`}
                                       onClick={(e) => handleAdd(e)}
                                     />
-                                    :
+                                  ) : (
                                     <></>
-                                  }
+                                  )}
                                 </div>
                               </div>
-                            )
+                            );
                           })}
                         </div>
                       </div>
 
                       <div className="DAT_ErrSetMobile_Content_Top_Info_Solution">
-                        <span>{dataLang.formatMessage({ id: "solutionViEn" })}</span>
+                        <span>
+                          {dataLang.formatMessage({ id: "solutionViEn" })}
+                        </span>
                         <div className="DAT_ErrSetMobile_Content_Top_Info_Solution_Row1">
                           <div className="DAT_ErrSetMobile_Content_Top_Info_Solution_Row1_Vi">
                             vi:
@@ -623,7 +656,10 @@ export default function ErrorSetting(props) {
                         <div>
                           {item.solution_.map((solution, i) => {
                             return (
-                              <div key={i} className="DAT_ErrSetMobile_Content_Top_Info_Solution_Row2">
+                              <div
+                                key={i}
+                                className="DAT_ErrSetMobile_Content_Top_Info_Solution_Row2"
+                              >
                                 <div className="DAT_ErrSetMobile_Content_Top_Info_Solution_Row2_Vi">
                                   {i + 1}. {solution.vi}
                                 </div>
@@ -641,18 +677,18 @@ export default function ErrorSetting(props) {
                                     id={`${item.boxid_}_${solution.id}_REMOVESOLUTION`}
                                     onClick={(e) => handleDelete(e)}
                                   />
-                                  {parseInt(i) === item.solution_.length - 1 ?
+                                  {parseInt(i) === item.solution_.length - 1 ? (
                                     <IoIosAddCircleOutline
                                       size={16}
                                       id={`${item.boxid_}-ADDSOLUTION`}
                                       onClick={(e) => handleAdd(e)}
                                     />
-                                    :
+                                  ) : (
                                     <></>
-                                  }
+                                  )}
                                 </div>
                               </div>
-                            )
+                            );
                           })}
                         </div>
                       </div>
@@ -660,7 +696,8 @@ export default function ErrorSetting(props) {
                   </div>
 
                   <div className="DAT_ErrSetMobile_Content_Bottom">
-                    <div className="DAT_ErrSetMobile_Content_Bottom_Item"
+                    <div
+                      className="DAT_ErrSetMobile_Content_Bottom_Item"
                       id={item.boxid_}
                       onClick={(e) => handleDelete(e)}
                     >
@@ -668,11 +705,11 @@ export default function ErrorSetting(props) {
                     </div>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         </>
-        :
+      ) : (
         <>
           <div className="DAT_ErrSetting">
             <div className="DAT_ErrSetting_Title">
@@ -683,7 +720,9 @@ export default function ErrorSetting(props) {
             <div className="DAT_ErrSetting_Filter">
               <input
                 type="text"
-                placeholder={dataLang.formatMessage({ id: "enterError" }) + "..."}
+                placeholder={
+                  dataLang.formatMessage({ id: "enterError" }) + "..."
+                }
                 ref={filterRef}
                 onChange={(e) => {
                   handleFilter(e);
@@ -722,51 +761,45 @@ export default function ErrorSetting(props) {
             </div>
           </div>
         </>
-      }
+      )}
 
-      {
-        createState ? (
-          <div className="DAT_ErrSettingBG">
-            <CreateErrSetting
-              handleClose={handleCloseCreate}
-              handleConfirm={handleConfirmCreate}
-            />
-          </div>
-        ) : (
-          <></>
-        )
-      }
+      {createState ? (
+        <div className="DAT_ErrSettingBG">
+          <CreateErrSetting
+            handleClose={handleCloseCreate}
+            handleConfirm={handleConfirmCreate}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
 
-      {
-        editState ? (
-          <div className="DAT_ErrSettingBG">
-            <EditErr
-              type={editType}
-              handleClose={handleCloseEdit}
-              editVi={editVi}
-              editEn={editEn}
-              confirmEdit={confirmEdit}
-            />
-          </div>
-        ) : (
-          <></>
-        )
-      }
+      {editState ? (
+        <div className="DAT_ErrSettingBG">
+          <EditErr
+            type={editType}
+            handleClose={handleCloseEdit}
+            editVi={editVi}
+            editEn={editEn}
+            confirmEdit={confirmEdit}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
 
-      {
-        removeState ? (
-          <div className="DAT_ErrSettingBG">
-            <RemoveErr
-              type={removeType}
-              handleClose={handleCloseRemove}
-              handleDel={handleDelete}
-              confirmDel={confirmDelete}
-            />
-          </div>
-        ) : (
-          <></>
-        )
-      }
+      {removeState ? (
+        <div className="DAT_ErrSettingBG">
+          <RemoveErr
+            type={removeType}
+            handleClose={handleCloseRemove}
+            handleDel={handleDelete}
+            confirmDel={confirmDelete}
+          />
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

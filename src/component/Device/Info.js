@@ -3949,7 +3949,7 @@ const LastCommandRecord = (props) => {
       <div className="DAT_Info_Databox_LastCommandRecord">
         <div className="DAT_Info_Databox_LastCommandRecord_Content">
           <div className="DAT_Info_Databox_LastCommandRecord_Content_Left">
-            <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item" style={{ marginBottom: "24px" }}>
+            <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Left_Item_Tit">
                 {dataLang.formatMessage({ id: 'InverterStatus' })}:
               </div>
@@ -3967,7 +3967,7 @@ const LastCommandRecord = (props) => {
             </div>
           </div>
           <div className="DAT_Info_Databox_LastCommandRecord_Content_Center">
-            <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item" style={{ marginBottom: "24px" }}>
+            <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Center_Item_Tit">
                 {dataLang.formatMessage({ id: 'CommandType' })}:
               </div>
@@ -3985,7 +3985,7 @@ const LastCommandRecord = (props) => {
             </div>
           </div>
           <div className="DAT_Info_Databox_LastCommandRecord_Content_Right">
-            <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item" style={{ marginBottom: "24px" }}>
+            <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
               <div className="DAT_Info_Databox_LastCommandRecord_Content_Right_Item_Tit">
                 {dataLang.formatMessage({ id: 'CommandState' })}:
               </div>
