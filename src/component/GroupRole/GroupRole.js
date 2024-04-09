@@ -130,11 +130,14 @@ const GroupUsers = (props) => {
       });
       if (getUser.status) {
         groupUser.value = getUser.data.sort((a, b) => a.id_ - b.id_);
-        datafilter.value = groupUser.value;
       }
     };
     checkApi();
   };
+
+  useEffect(() => {
+    datafilter.value = groupUser.value.sort((a, b) => a.id_ - b.id_);
+  }, [groupUser.value]);
 
   const handleDeleteUser = (e) => {
     props.delState();
@@ -651,7 +654,7 @@ export default function GroupRole(props) {
               </div>
               <button
                 className="DAT_ProjectHeaderMobile_Top_New"
-              // onClick={() => setRoleState("create")}
+                // onClick={() => setRoleState("create")}
               >
                 <IoAddOutline color="white" size={20} />
               </button>

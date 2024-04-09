@@ -12,9 +12,10 @@ import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
-import { Loader } from "@googlemaps/js-api-loader";
+
 import { IoIosArrowDown } from "react-icons/io";
 import { IoClose, IoSaveOutline } from "react-icons/io5";
+import { Loader } from "@googlemaps/js-api-loader";
 
 export const plantData = signal({
   addr: "",
@@ -44,15 +45,49 @@ const BasicInfo = (props) => {
   const dataLang = useIntl();
   const [state, setState] = useState(true);
 
-  const defaultProps = {
-    center: {
-      lat: 16.054083398111068,
-      lng: 108.20361013247235,
-    },
-    zoom: 7.0,
+  const loader = new Loader({
+    apiKey: process.env.REACT_APP_GGKEY,
+    version: "weekly",
+    libraries: ["places"],
+  });
+
+  const initMap = async (name, lat, long, state) => {
+    const defaultProps = {
+      center: {
+        lat: lat,
+        lng: long,
+      },
+      zoom: 7.0,
+      mapId: "DEMO_MAP_ID",
+    };
+    console.log(state);
+
+    const { AdvancedMarkerElement } = await loader.importLibrary("marker");
+    const { Map } = await loader.importLibrary("maps");
+
+    let map = new Map(document.getElementById("map"), defaultProps);
+    if (state) {
+      const marker = { lat: parseFloat(lat), lng: parseFloat(long) };
+      const markerElement = new AdvancedMarkerElement({
+        position: marker,
+        map: map,
+        title: name,
+      });
+      markerElement.addListener("click", () => {
+        // plantState.value = "info";
+        // projectData.value = item;
+        // sidebartab.value = "Monitor";
+        // sidebartabli.value = "/Project";
+      });
+      return markerElement;
+    }
   };
 
-  const handleMap = async (e) => {
+  useEffect(() => {
+    initMap("", 16.123456789, 108.123456789, false);
+  }, []);
+
+  const handleMap = (e) => {
     const addr = document.getElementById("addr");
     setKey(process.env.REACT_APP_GGKEY);
     geocode(RequestType.ADDRESS, addr.value)
@@ -66,12 +101,13 @@ const BasicInfo = (props) => {
           lat: response.results[0].geometry.location.lat,
           long: response.results[0].geometry.location.lng,
         };
-
-        // initMap(
-        //   response.results[0].geometry.location.lat,
-        //   response.results[0].geometry.location.lng
-        // );
-        console.log(plantData.value);
+        // console.log(response.results[0].geometry.location)
+        initMap(
+          plantData.value.plantname,
+          response.results[0].geometry.location.lat,
+          response.results[0].geometry.location.lng,
+          true
+        );
       })
       .catch((error) => {
         alertDispatch(dataLang.formatMessage({ id: "alert_19" }));
@@ -81,30 +117,6 @@ const BasicInfo = (props) => {
   const handleBasic = (e) => {
     plantData.value[e.currentTarget.id] = e.currentTarget.value;
   };
-
-  const loader = new Loader({
-    apiKey: process.env.REACT_APP_GGKEY,
-    version: "weekly",
-    libraries: ["places"],
-  });
-
-  const initMap = async () => {
-    const { AdvancedMarkerElement } = await loader.importLibrary("marker");
-    const { Map } = await loader.importLibrary("maps");
-
-    let map = new Map(document.getElementById("map"), defaultProps);
-
-    const marker = { lat: 16.054083398111068, lng: 108.20361013247235 };
-    const markerElement = new AdvancedMarkerElement({
-      map,
-      position: marker,
-    });
-  };
-
-  useEffect(() => {
-    initMap();
-    console.log(plantData.value);
-  }, []);
 
   return (
     <div className="DAT_AddProject_BasicInfo">
@@ -204,13 +216,13 @@ const BasicInfo = (props) => {
                   </span>
                 </div>
                 <div className="DAT_AddProject_BasicInfo_Body_Right_Item_Content">
+                  <div id="map" style={{ width: "100%", height: "100%" }}></div>
                   {/* <GoogleMap
                     apiKey={process.env.REACT_APP_GGKEY}
                     defaultCenter={defaultProps.center}
                     defaultZoom={defaultProps.zoom}
                   //onGoogleApiLoaded={onGoogleApiLoaded}
                   /> */}
-                  <div id="map" style={{ width: "100%", height: "100%" }}></div>
                 </div>
               </div>
             </div>

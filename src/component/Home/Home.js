@@ -557,7 +557,7 @@ export default function Home(props) {
       });
       if (d.status === true) {
         console.log(d.data);
-        initMap(d.data);
+        // initMap(d.data);
         setProject(d.data);
         getChart(d.data);
         setTotal(d.data.length);
