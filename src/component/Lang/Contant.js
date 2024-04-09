@@ -348,7 +348,7 @@ export const messages = {
     ClickCalculateCRC: "Click Calculate CRC",
 
     //Grid Start Settings
-    Gridstartsettings: "Grid start settings",
+    Gridstartsettings: "Grid Start Settings",
     ACStartHighVoltage: "AC Start High Volt",
     ACStartLowVoltage: "AC Start Low Volt",
     ACStartHighFrequency: "AC Start High Frequency",
@@ -375,7 +375,7 @@ export const messages = {
     ACUnderFreq2: "AC Under Frequency level 2",
     ACOverFreq2: "AC Over Frequency level 2",
     ACUnderFreq2Time: "AC Under Frequency 2 Time",
-    ACOverFreq2Time: "AC Over Frequency level 2",
+    ACOverFreq2Time: "AC Over Frequency 2 Time",
 
     //level 3
     ACUnderVolt3Time: "AC Under Volt 3 Time",

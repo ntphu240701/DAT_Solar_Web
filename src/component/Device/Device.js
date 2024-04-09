@@ -112,10 +112,9 @@ export default function Device(props) {
           <div
             className="DAT_Table_Infor"
             style={{ cursor: "pointer" }}
-            id={row.psn + "_" + tab.value + "_" + row.plogger}
+            id={`${row.psn}_${tab.value}_${row.plogger}`}
             onClick={(e) => handleShowInfo(e)}
           >
-            {/* <div className="DAT_Table_Infor_Name">{row.SN}</div> */}
             <div className="DAT_Table_Infor_Name">{row.pname}</div>
             <div className="DAT_Table_Infor_Addr">{row.psn}</div>
           </div>
@@ -707,7 +706,7 @@ export default function Device(props) {
               case "inverter":
                 return (
                   <>
-                    {inverterList.value?.map((item, i) => {
+                    {datafilerInvert.map((item, i) => {
                       return (
                         <div key={i} className="DAT_DeviceMobile_Content">
                           <div className="DAT_DeviceMobile_Content_Top">
@@ -778,7 +777,7 @@ export default function Device(props) {
               case "logger":
                 return (
                   <>
-                    {loggerList.value?.map((item, i) => {
+                    {datafilter.map((item, i) => {
                       return (
                         <div key={i} className="DAT_DeviceMobile_Content">
                           <div className="DAT_DeviceMobile_Content_Top">
