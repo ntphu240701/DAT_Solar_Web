@@ -1,5 +1,4 @@
-$colorWhite: rgb(229, 229, 229, .5);
-
+$colorWhite: rgb(229, 229, 229, 0.5);
 
 .DAT_Login {
   position: fixed;
@@ -26,7 +25,6 @@ $colorWhite: rgb(229, 229, 229, .5);
   &::-webkit-scrollbar {
     display: none;
     /* Safari and Chrome */
-
   }
 
   &_Head {
@@ -35,9 +33,9 @@ $colorWhite: rgb(229, 229, 229, .5);
     margin: auto;
     margin-top: 40px;
     margin-bottom: 80px;
-    background-color: rgb(0, 62, 149, .7);
+    background-color: rgb(0, 62, 149, 0.7);
     padding: 20px;
-    border: solid 1px rgb(229, 229, 229, .5);
+    border: solid 1px rgb(229, 229, 229, 0.5);
     // box-shadow: 3px 3px 5px rgba(53, 53, 53, 0.4), -3px -3px 5px rgba(53, 53, 53, 0.4);
     -webkit-box-sizing: border-box;
     /* Safari/Chrome, other WebKit */
@@ -104,7 +102,9 @@ $colorWhite: rgb(229, 229, 229, .5);
         padding: 2px;
         border-radius: 3px;
         color: #fff;
-        box-shadow: 2px 2px 5px rgb(255, 255, 255, .5), -2px -2px 5px rgb(255, 255, 255, .5)fff;
+        box-shadow:
+          2px 2px 5px rgb(255, 255, 255, 0.5),
+          -2px -2px 5px rgb(255, 255, 255, 0.5) fff;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -114,14 +114,12 @@ $colorWhite: rgb(229, 229, 229, .5);
         color: white;
         display: flex;
         justify-content: center;
-
       }
 
       &:hover {
         background-color: #ccdefe;
       }
     }
-
   }
 
   &_Footer {
@@ -142,7 +140,6 @@ $colorWhite: rgb(229, 229, 229, .5);
         color: rgb(255, 255, 255);
       }
     }
-
   }
 
   &_Form {
@@ -154,9 +151,9 @@ $colorWhite: rgb(229, 229, 229, .5);
     padding-bottom: 20px;
     text-align: center;
     border-radius: 10px;
-    background-color: rgb(0, 62, 149, .7);
+    background-color: rgb(0, 62, 149, 0.7);
     // box-shadow: 3px 3px 5px rgba(53, 53, 53, 0.4), -3px -3px 5px rgba(53, 53, 53, 0.4);
-    border: solid 1px rgb(229, 229, 229, .5);
+    border: solid 1px rgb(229, 229, 229, 0.5);
     -webkit-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     /* Safari/Chrome, other WebKit */
@@ -219,7 +216,6 @@ $colorWhite: rgb(229, 229, 229, .5);
         &::placeholder {
           color: rgb(255, 255, 255);
         }
-
       }
 
       input:-webkit-autofill,
@@ -251,8 +247,6 @@ $colorWhite: rgb(229, 229, 229, .5);
       /* Firefox, other Gecko */
       box-sizing: border-box;
       //box-shadow: inset 2px 2px 5px #cbced1, inset -2px -2px 5px #fff;
-
-
     }
 
     &-box {
@@ -269,7 +263,7 @@ $colorWhite: rgb(229, 229, 229, .5);
         display: none;
       }
 
-      & input+label:before {
+      & input + label:before {
         cursor: pointer;
         margin-right: 10px;
         padding-bottom: 5px;
@@ -290,12 +284,12 @@ $colorWhite: rgb(229, 229, 229, .5);
         box-sizing: border-box;
       }
 
-      & input:checked+label:before {
+      & input:checked + label:before {
         //background-color: rgb(255, 255, 255);
         color: #6495ed;
       }
 
-      & input+label:active:before {
+      & input + label:active:before {
         transform: scale(0);
       }
     }
@@ -333,44 +327,19 @@ $colorWhite: rgb(229, 229, 229, .5);
         font-family: Montserrat-Regular;
       }
     }
-
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @media (min-width: 700px) {
-
   .DAT_Login_Head {
     width: 400px;
     border-radius: 5px;
   }
 
   .DAT_Login_Form {
-
     //margin-top: calc(15vh);
     width: 400px;
     border-radius: 5px;
-
-
-
   }
 
   .DAT_Login_Footer_Info {
@@ -383,5 +352,4 @@ $colorWhite: rgb(229, 229, 229, .5);
   //   background-repeat: no-repeat;
   //   background-size: cover;
   //}
-
 }

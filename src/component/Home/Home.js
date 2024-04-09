@@ -556,7 +556,8 @@ export default function Home(props) {
         type: userInfor.value.type,
       });
       if (d.status === true) {
-        initMap(d.data);
+        console.log(d.data);
+        // initMap(d.data);
         setProject(d.data);
         getChart(d.data);
         setTotal(d.data.length);

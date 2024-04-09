@@ -484,10 +484,12 @@ export default function ErrorSetting(props) {
           ...bigdata[index].solution_,
           {
             id: bigdata[index].solution_[solutionlength - 1].id + 1,
-            vi: `Giải pháp ${bigdata[index].solution_[solutionlength - 1].id + 1
-              }`,
-            en: `Solution ${bigdata[index].solution_[solutionlength - 1].id + 1
-              }`,
+            vi: `Giải pháp ${
+              bigdata[index].solution_[solutionlength - 1].id + 1
+            }`,
+            en: `Solution ${
+              bigdata[index].solution_[solutionlength - 1].id + 1
+            }`,
           },
         ];
         setData([...bigdata]);
