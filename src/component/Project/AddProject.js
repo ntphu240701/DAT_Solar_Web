@@ -15,6 +15,7 @@ import { useIntl } from "react-intl";
 
 import { IoIosArrowDown } from "react-icons/io";
 import { IoClose, IoSaveOutline } from "react-icons/io5";
+import { Loader } from "@googlemaps/js-api-loader";
 
 export const plantData = signal({
   addr: "",
@@ -44,13 +45,54 @@ const BasicInfo = (props) => {
   const dataLang = useIntl();
   const [state, setState] = useState(true);
 
-  const defaultProps = {
-    center: {
-      lat: 16.054083398111068,
-      lng: 108.20361013247235,
-    },
-    zoom: 7.0,
+
+
+
+  const loader = new Loader({
+    apiKey: process.env.REACT_APP_GGKEY,
+    version: "weekly",
+    libraries: ["places"],
+  });
+
+
+  const initMap = async (name, lat, long) => {
+
+
+    const defaultProps = {
+      center: {
+        lat: lat,
+        lng: long,
+      },
+      zoom: 7.0,
+      mapId: 'DEMO_MAP_ID'
+    };
+
+    const { AdvancedMarkerElement } = await loader.importLibrary("marker");
+    const { Map } = await loader.importLibrary("maps");
+
+    let map = new Map(document.getElementById("map"), defaultProps);
+
+    // data.map((item) => {
+    const marker = { lat: parseFloat(lat), lng: parseFloat(long) };
+    const markerElement = new AdvancedMarkerElement({
+      position: marker,
+      map: map,
+      title: name,
+    });
+    // markerElement.addListener("click", () => {
+    //   plantState.value = "info";
+    //   projectData.value = item;
+    //   sidebartab.value = "Monitor";
+    //   sidebartabli.value = "/Project";
+    // });
+    return markerElement;
+    // });
   };
+
+  useEffect(() => {
+    initMap('', 16.054083398111068, 108.20361013247235);
+  }, [])
+
 
   const handleMap = (e) => {
     const addr = document.getElementById("addr")
@@ -66,6 +108,8 @@ const BasicInfo = (props) => {
           lat: response.results[0].geometry.location.lat,
           long: response.results[0].geometry.location.lng,
         }
+        // console.log(response.results[0].geometry.location)
+        initMap(plantData.value.plantname, response.results[0].geometry.location.lat, response.results[0].geometry.location.lng)
       })
       .catch((error) => {
         alertDispatch(dataLang.formatMessage({ id: "alert_19" }))
@@ -169,12 +213,13 @@ const BasicInfo = (props) => {
                   <span style={{ color: "grey" }}>{dataLang.formatMessage({ id: 'location' })}</span>
                 </div>
                 <div className="DAT_AddProject_BasicInfo_Body_Right_Item_Content">
-                  <GoogleMap
+                  <div id="map" style={{ width: "100%", height: "100%" }}></div>
+                  {/* <GoogleMap
                     apiKey={process.env.REACT_APP_GGKEY}
                     defaultCenter={defaultProps.center}
                     defaultZoom={defaultProps.zoom}
                   //onGoogleApiLoaded={onGoogleApiLoaded}
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
@@ -620,6 +665,8 @@ export default function AddProject(props) {
       addProject();
     }
   };
+
+
 
   return (
     <div className="DAT_AddProject">
