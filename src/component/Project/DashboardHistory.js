@@ -1059,7 +1059,7 @@ export default function DashboardHistory(props) {
         <div
           className="DAT_ProjectData_Dashboard_History_SubConfig"
           style={{
-            height: dropConfig ? "500px" : "0px",
+            height: dropConfig ? "calc(100vh - 180px)" : "0px",
             transition: "0.5s",
           }}
         >

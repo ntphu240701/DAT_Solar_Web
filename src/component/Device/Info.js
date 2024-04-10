@@ -22,6 +22,7 @@ import { MdOutlineError } from "react-icons/md";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { isMobile } from "../Navigation/Navigation";
+import { CiSearch } from "react-icons/ci";
 
 const data = [
   {
@@ -536,7 +537,7 @@ const Temperature = (props) => {
             {parseFloat(info.value.invt[info.value.pdata.temp.register] * info.value.pdata.temp.cal).toFixed(2)} °C
           </span>
         </div>
-        <div className="DAT_Info_Databox_Title_Right"
+        {/* <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
           <IoIosArrowDown
@@ -546,7 +547,7 @@ const Temperature = (props) => {
               transition: "0.5s",
             }}
           />
-        </div>
+        </div> */}
       </div>
 
       {/* <div className="Animation"
@@ -625,7 +626,7 @@ const State = (props) => {
             }
           })()}
         </div>
-        <div className="DAT_Info_Databox_Title_Right"
+        {/* <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
           <IoIosArrowDown
@@ -635,7 +636,7 @@ const State = (props) => {
               transition: "0.5s",
             }}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
@@ -710,6 +711,8 @@ const HistoricalData = (props) => {
   const lang = useSelector((state) => state.admin.lang);
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
+  const [dropConfig, setDropConfig] = useState(false);
+  const [configname, setConfigname] = useState(dataLang.formatMessage({ id: "choosePara" }));
   const [chart, setChart] = useState([]);
   const [acfre, setACFre] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [acrcur, setACRcur] = useState(dataLang.formatMessage({ id: "unknown" }));
@@ -985,6 +988,14 @@ const HistoricalData = (props) => {
     setMode(e.target.value)
   }
 
+  const handleShowConfig = (e) => {
+    if (configname === dataLang.formatMessage({ id: "choosePara" })) {
+      setConfigname(dataLang.formatMessage({ id: "minimize" }));
+    } else if (configname === dataLang.formatMessage({ id: "minimize" })) {
+      setConfigname(dataLang.formatMessage({ id: "choosePara" }));
+    }
+  };
+
   return (
     <div className="DAT_Info_Databox" id="HistoricalData">
       <div className="DAT_Info_Databox_Title">
@@ -1030,6 +1041,9 @@ const HistoricalData = (props) => {
           <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
             <div>{dataLang.formatMessage({ id: "export" })}</div>
           </div> */}
+                  <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
+                    <button>{dataLang.formatMessage({ id: "choosePara" })}</button>
+                  </div>
                   <DatePicker
                     onChange={(date) => handleChart(date)}
                     customInput={
@@ -1380,13 +1394,20 @@ const HistoricalData = (props) => {
                 <p>{dataLang.formatMessage({ id: "month" })}</p>
                 <p>{dataLang.formatMessage({ id: "year" })}</p>
                 <p>{dataLang.formatMessage({ id: "total" })}</p>
-              </div>
-              <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
-                <div>{dataLang.formatMessage({ id: "choosePara" })}</div>
-              </div>
-              <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
+              </div> */}
+                  {/* <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
                 <div>{dataLang.formatMessage({ id: "export" })}</div>
               </div> */}
+                  <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
+                    <button
+                      onClick={(e) => {
+                        handleShowConfig(e);
+                        setDropConfig(!dropConfig);
+                      }}
+                    >
+                      {configname}
+                    </button>
+                  </div>
                   <DatePicker
                     onChange={(date) => handleChart(date)}
                     customInput={
@@ -1397,6 +1418,7 @@ const HistoricalData = (props) => {
                     }
                   />
                 </div>
+
                 <div className="DAT_Info_Databox_HistoricalData_Chart">
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "40px", marginBottom: "16px" }}>
                     <div style={{ cursor: "pointer", color: mode === "ACVOLT" ? "rgb(4,143,255)" : "black" }} onClick={() => setMode('ACVOLT')}>{dataLang.formatMessage({ id: "ACVolt" })}(V)</div>
@@ -1435,7 +1457,7 @@ const HistoricalData = (props) => {
                               />
                               <CartesianGrid strokeDasharray="3 3" vertical={false} />
                               <Tooltip />
-                              <Legend />
+                              {/* <Legend /> */}
                               <Line
                                 type="monotone"
                                 dataKey={acfre}
@@ -1473,7 +1495,7 @@ const HistoricalData = (props) => {
                                 ]} />
                               <CartesianGrid strokeDasharray="3 3" vertical={false} />
                               <Tooltip />
-                              <Legend />
+                              {/* <Legend /> */}
                               <Line
                                 type="monotone"
                                 dataKey={acrvolt}
@@ -1526,7 +1548,7 @@ const HistoricalData = (props) => {
                               />
                               <CartesianGrid strokeDasharray="3 3" vertical={false} />
                               <Tooltip />
-                              <Legend />
+                              {/* <Legend /> */}
                               <Line
                                 type="monotone"
                                 dataKey={acrcur}
@@ -1580,7 +1602,7 @@ const HistoricalData = (props) => {
 
                               <CartesianGrid strokeDasharray="3 3" vertical={false} />
                               <Tooltip />
-                              <Legend />
+                              {/* <Legend /> */}
                               <Line
                                 type="monotone"
                                 dataKey={pv1cur}
@@ -1640,7 +1662,7 @@ const HistoricalData = (props) => {
                               />
                               <CartesianGrid strokeDasharray="3 3" vertical={false} />
                               <Tooltip />
-                              <Legend />
+                              {/* <Legend /> */}
                               <Line
                                 type="monotone"
                                 dataKey={pv1volt}
@@ -1700,7 +1722,7 @@ const HistoricalData = (props) => {
                               />
                               <CartesianGrid strokeDasharray="3 3" vertical={false} />
                               <Tooltip />
-                              <Legend />
+                              {/* <Legend /> */}
                               <Line
                                 type="monotone"
                                 dataKey={pv1power}
@@ -1735,6 +1757,53 @@ const HistoricalData = (props) => {
                         return <></>;
                     }
                   })()}
+                </div>
+
+                <div className="DAT_Info_Databox_HistoricalData_SubConfig"
+                  style={{
+                    height: dropConfig ? "calc(100vh - 180px)" : "0px",
+                    transition: "0.5s",
+                  }}
+                >
+                  {dropConfig ?
+                    <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown"
+                      style={{
+                        height: dropConfig ? "auto" : "0px",
+                        transition: "0.5s",
+                      }}
+                    >
+                      <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Search">
+                        <input type="text" />
+                        <CiSearch color="gray" size={20} />
+                      </div>
+
+                      <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item">
+                        <table className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table">
+                          <tbody>
+                            <tr className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr">
+                              <th className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                {dataLang.formatMessage({ id: "basicInfo" })}:
+                              </th>
+                              <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"productionData_"}
+                                  />
+                                  <label
+                                    htmlFor={"productionData_"}
+                                  >
+                                    Rated Power
+                                  </label>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    : <></>
+                  }
                 </div>
               </div>
             }
@@ -4397,8 +4466,15 @@ const FirmwareUpgrade = (props) => {
         <div className="DAT_Info_Databox_FirmwareUpgrade">
           <div className="DAT_Info_Databox_FirmwareUpgrade_Current">
             <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left">
-              <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left_Item">
-                <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left_Item_Tit">
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left_Item"
+                style={{
+                  display: isMobile.value ? "block" : "flex",
+                  marginBottom: isMobile.value ? "16px" : "0px"
+                }}
+              >
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left_Item_Tit"
+                  style={{ marginBottom: isMobile.value ? "8px" : "0px" }}
+                >
                   {dataLang.formatMessage({ id: 'CertificationVersion' })}:
                 </div>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Left_Item_Content">
@@ -4407,8 +4483,16 @@ const FirmwareUpgrade = (props) => {
               </div>
             </div>
             <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center">
-              <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center_Item">
-                <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center_Item_Tit">
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center_Item"
+                style={{
+                  display: isMobile.value ? "block" : "flex",
+                  marginBottom: isMobile.value ? "16px" : "0px"
+                }}
+
+              >
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center_Item_Tit"
+                  style={{ marginBottom: isMobile.value ? "8px" : "0px" }}
+                >
                   {dataLang.formatMessage({ id: 'InternalSoftwareVersion' })}:
                 </div>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Center_Item_Content">
@@ -4417,8 +4501,13 @@ const FirmwareUpgrade = (props) => {
               </div>
             </div>
             <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right">
-              <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right_Item">
-                <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right_Item_Tit">
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right_Item"
+                style={{ display: isMobile.value ? "block" : "flex" }}
+
+              >
+                <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right_Item_Tit"
+                  style={{ marginBottom: isMobile.value ? "8px" : "0px" }}
+                >
                   {dataLang.formatMessage({ id: 'UpgradeFlagBit' })}:
                 </div>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Current_Right_Item_Content">
@@ -4440,7 +4529,7 @@ const FirmwareUpgrade = (props) => {
         <div className="DAT_Info_Databox_FirmwareUpgrade">
           <div className="DAT_Info_Databox_FirmwareUpgrade_Last">
             <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left">
-              <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item" style={{ marginBottom: "24px" }}>
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item" style={{ marginBottom: isMobile.value ? "16px" : "24px" }}>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item_Tit">
                   {dataLang.formatMessage({ id: "TargetVersion" })}:
                 </div>
@@ -4448,7 +4537,7 @@ const FirmwareUpgrade = (props) => {
                   XG5-10KTL_arm_203_Vietnam
                 </div>
               </div>
-              <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item">
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item" style={{ marginBottom: isMobile.value ? "16px" : "0px" }}>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Left_Item_Tit">
                   {dataLang.formatMessage({ id: 'UpgradePhase' })}:
                 </div>
@@ -4461,7 +4550,7 @@ const FirmwareUpgrade = (props) => {
               </div>
             </div>
             <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center">
-              <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item" style={{ marginBottom: "24px" }}>
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item" style={{ marginBottom: isMobile.value ? "16px" : "24px" }}>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item_Tit">
                   {dataLang.formatMessage({ id: "RelatedVersion" })}::
                 </div>
@@ -4469,7 +4558,7 @@ const FirmwareUpgrade = (props) => {
                   {dataLang.formatMessage({ id: "InternalSoftwareVersion" })}
                 </div>
               </div>
-              <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item">
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item" style={{ marginBottom: isMobile.value ? "16px" : "0px" }}>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Last_Center_Item_Tit">
                   {dataLang.formatMessage({ id: "FeedbackTime" })}:
                 </div>
@@ -4510,7 +4599,7 @@ const FirmwareUpgrade = (props) => {
         <div className="DAT_Info_Databox_FirmwareUpgrade">
           <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade">
             <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left">
-              <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item" style={{ marginBottom: "24px" }}>
+              <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
                 <div className="DAT_Info_Databox_FirmwareUpgrade_Upgrade_Left_Item_Tit">
                   {dataLang.formatMessage({ id: "SelFirmwarePackage" })}:
                 </div>
@@ -4722,55 +4811,102 @@ export default function Info(props) {
       <div className="DAT_Info_Header">
         <div className="DAT_Info_Header_Left">
           <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "16px" }}>
-            <p style={{ fontWeight: "bold" }}>
-              {info.value.pname}: {info.value.psn}
-            </p>
-            <p style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              {tab.value == "logger"
-                ? <>
-                  {info.value.pstate == 1 ? (
-                    <FaCheckCircle size={20} color="green" />
-                  ) : (
-                    <MdOutlineError size={22} color="red" />
-                  )}
-                </>
-                : <>
-                  {info.value.invt?.[info.value.pdata.status] == 2 ? (
-                    <FaCheckCircle size={20} color="green" />
-                  ) : (
-                    <MdOutlineError size={22} color="red" />
-                  )}
-                </>
-              }
-            </p>
+            {info.value.pname}: {info.value.psn}
+            {tab.value == "logger"
+              ? <>
+                {info.value.pstate == 1 ? (
+                  <FaCheckCircle size={20} color="green" />
+                ) : (
+                  <MdOutlineError size={22} color="red" />
+                )}
+              </>
+              : <>
+                {info.value.invt?.[info.value.pdata.status] == 2 ? (
+                  <FaCheckCircle size={20} color="green" />
+                ) : (
+                  <MdOutlineError size={22} color="red" />
+                )}
+              </>
+            }
           </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "16px" }}>
+            {(() => {
+              switch (tab.value) {
+                case 'logger':
+                  return (
+                    <div className="DAT_Info_Header_Left_Close" onClick={() => props.handleClose()}>
+                      <IoClose
+                        id="Popup"
+                        onMouseEnter={(e) => handlePopup("new")}
+                        onMouseLeave={(e) => handlePopup("pre")}
+                        size={25}
+                        color="rgba(11, 25, 103)"
+                      />
+                    </div>
+                  )
+                case 'inverter':
+                  return (
+                    <>
+                      <div className="DAT_Info_Header_Left_More">
+                        <BsThreeDotsVertical
+                          size={20}
+                          color="#9e9e9e"
+                          onClick={() => {
+                            setDropState(!dropState);
+                            viewNav.value = true;
+                            viewStateNav.value = [true, false];
+                          }}
+                          onMouseLeave={() => handleOutsideView()}
+                        />
+                      </div>
+
+                      <div className="DAT_Info_Header_Left_Close" onClick={() => props.handleClose()}>
+                        <IoClose
+                          id="Popup"
+                          onMouseEnter={(e) => handlePopup("new")}
+                          onMouseLeave={(e) => handlePopup("pre")}
+                          size={25}
+                          color="rgba(11, 25, 103)"
+                        />
+                      </div>
+                    </>
+                  )
+                default:
+                  return <></>
+              }
+            })()}
+          </div>
+        </div>
+
+        <div className="DAT_Info_Header_Right">
           {(() => {
             switch (view) {
               case "control":
                 return (
-                  <div style={{ display: "flex", alignItems: "center", gap: "20px", paddingLeft: "16px" }}>
-                    <button className="DAT_Info_Header_Left_Item"
+                  <div style={{ display: "flex", alignItems: "center", paddingLeft: isMobile.value ? "0px" : "16px", boxSizing: "border-box" }}>
+                    <button className="DAT_Info_Header_Right_Item"
                       id="batch"
                       onClick={() => { setNav("batch") }}
                       style={{ color: nav === "batch" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "batch" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       {dataLang.formatMessage({ id: "BatchCommand" })}
                     </button>
-                    <button className="DAT_Info_Header_Left_Item"
+                    <button className="DAT_Info_Header_Right_Item"
                       id="single"
                       onClick={() => { setNav("single") }}
                       style={{ color: nav === "single" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "single" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       {dataLang.formatMessage({ id: "SingleCommand" })}
                     </button>
-                    <button className="DAT_Info_Header_Left_Item"
+                    <button className="DAT_Info_Header_Right_Item"
                       id="customized"
                       onClick={() => { setNav("customized") }}
                       style={{ color: nav === "customized" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "customized" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       {dataLang.formatMessage({ id: "CustomizedCommand" })}
                     </button>
-                    <button className="DAT_Info_Header_Left_Item"
+                    <button className="DAT_Info_Header_Right_Item"
                       id="log"
                       onClick={() => { setNav("log") }}
                       style={{ color: nav === "log" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "log" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
@@ -4781,15 +4917,15 @@ export default function Info(props) {
                 )
               case "update":
                 return (
-                  <div style={{ display: "flex", alignItems: "center", gap: "20px", paddingLeft: "16px" }}>
-                    <button className="DAT_Info_Header_Left_Item"
+                  <div style={{ display: "flex", alignItems: "center", paddingLeft: isMobile.value ? "0px" : "16px", boxSizing: "border-box" }}>
+                    <button className="DAT_Info_Header_Right_Item"
                       id="firmware"
                       onClick={() => { setNav_("firmware") }}
                       style={{ color: nav_ === "firmware" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav_ === "firmware" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                     >
                       {dataLang.formatMessage({ id: "FirmwareUpgrade" })}
                     </button>
-                    <button className="DAT_Info_Header_Left_Item"
+                    <button className="DAT_Info_Header_Right_Item"
                       id="upgrade"
                       onClick={() => { setNav_("upgrade") }}
                       style={{ color: nav_ === "upgrade" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav_ === "upgrade" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
@@ -4797,54 +4933,6 @@ export default function Info(props) {
                       {dataLang.formatMessage({ id: "UpdateLog" })}
                     </button>
                   </div>
-                )
-              default:
-                return <></>
-            }
-          })()}
-        </div>
-
-        <div className="DAT_Info_Header_Right">
-          {(() => {
-            switch (tab.value) {
-              case 'logger':
-                return (
-                  <div className="DAT_Info_Header_Right_Close" onClick={() => props.handleClose()}>
-                    <IoClose
-                      id="Popup"
-                      onMouseEnter={(e) => handlePopup("new")}
-                      onMouseLeave={(e) => handlePopup("pre")}
-                      size={25}
-                      color="rgba(11, 25, 103)"
-                    />
-                  </div>
-                )
-              case 'inverter':
-                return (
-                  <>
-                    <div className="DAT_Info_Header_Right_More">
-                      <BsThreeDotsVertical
-                        size={20}
-                        color="#9e9e9e"
-                        onClick={() => {
-                          setDropState(!dropState);
-                          viewNav.value = true;
-                          viewStateNav.value = [true, false];
-                        }}
-                        onMouseLeave={() => handleOutsideView()}
-                      />
-                    </div>
-
-                    <div className="DAT_Info_Header_Right_Close" onClick={() => props.handleClose()}>
-                      <IoClose
-                        id="Popup"
-                        onMouseEnter={(e) => handlePopup("new")}
-                        onMouseLeave={(e) => handlePopup("pre")}
-                        size={25}
-                        color="rgba(11, 25, 103)"
-                      />
-                    </div>
-                  </>
                 )
               default:
                 return <></>

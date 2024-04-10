@@ -422,17 +422,13 @@
         font-family: Montserrat-Bold;
 
         &_Left {
-            flex: 7;
-
-            & p {
-                margin: 0;
-            }
+            flex: 9;
         }
 
         &_Right {
+            flex: 1;
             display: flex;
             justify-content: flex-end;
-            flex: 3;
 
             &_Icon {
                 display: flex;

@@ -42,7 +42,7 @@ export default function DeleteRole(props) {
     <div className="DAT_DeleteRole">
       <div className="DAT_DeleteRole_Head">
         <div className="DAT_DeleteRole_Head_Left">
-          <p>{dataLang.formatMessage({ id: "delAccount" })}</p>
+          {dataLang.formatMessage({ id: "delAccount" })}
         </div>
         <div className="DAT_DeleteRole_Head_Right">
           <div
@@ -58,7 +58,7 @@ export default function DeleteRole(props) {
       </div>
 
       <div className="DAT_DeleteRole_Body">
-        <p>{dataLang.formatMessage({ id: "delaccountmess" })}</p>
+        {dataLang.formatMessage({ id: "delaccountmess" })}
       </div>
 
       <div className="DAT_DeleteRole_Foot">

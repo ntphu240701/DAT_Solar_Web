@@ -44,7 +44,7 @@ export default function Popup(props) {
     <div className="DAT_PopupReport_Box">
       <div className="DAT_PopupReport_Box_Head">
         <div className="DAT_PopupReport_Box_Head_Left">
-          <p>{dataLang.formatMessage({ id: "delDevice" })}</p>
+          {dataLang.formatMessage({ id: "delDevice" })}
         </div>
         <div className="DAT_PopupReport_Box_Head_Right">
           <div
@@ -60,7 +60,7 @@ export default function Popup(props) {
       </div>
 
       <div className="DAT_PopupReport_Box_Body">
-        <p>{dataLang.formatMessage({ id: "delreportmess" })}</p>
+        {dataLang.formatMessage({ id: "delreportmess" })}
       </div>
 
       <div className="DAT_PopupReport_Box_Foot">

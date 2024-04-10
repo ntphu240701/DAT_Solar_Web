@@ -233,7 +233,7 @@ export default function ErrorSetting(props) {
           <div
             className="DAT_ModifyBox"
             id={row.warnid_ + "_Modify"}
-            style={{ display: "none" }}
+            style={{ display: "none", width: "80px" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             <div
@@ -248,7 +248,7 @@ export default function ErrorSetting(props) {
           </div>
         </>
       ),
-      width: "100px",
+      width: "80px",
       style: {
         height: "auto !important",
         display: "flex",
@@ -484,12 +484,10 @@ export default function ErrorSetting(props) {
           ...bigdata[index].solution_,
           {
             id: bigdata[index].solution_[solutionlength - 1].id + 1,
-            vi: `Giải pháp ${
-              bigdata[index].solution_[solutionlength - 1].id + 1
-            }`,
-            en: `Solution ${
-              bigdata[index].solution_[solutionlength - 1].id + 1
-            }`,
+            vi: `Giải pháp ${bigdata[index].solution_[solutionlength - 1].id + 1
+              }`,
+            en: `Solution ${bigdata[index].solution_[solutionlength - 1].id + 1
+              }`,
           },
         ];
         setData([...bigdata]);

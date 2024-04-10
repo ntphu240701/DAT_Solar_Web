@@ -1,11 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import './ErrorSetting.scss';
 
 import { COLOR } from '../../App';
 import { useIntl } from 'react-intl';
 
 import { IoClose } from 'react-icons/io5';
-import { alertDispatch } from '../Alert/Alert';
 
 export default function CreateErrSetting(props) {
     const dataLang = useIntl();
@@ -36,7 +35,7 @@ export default function CreateErrSetting(props) {
         }}>
             <div className="DAT_CreateErrSetting_Head">
                 <div className="DAT_CreateErrSetting_Head_Left">
-                    <p>{dataLang.formatMessage({ id: "createNew" })}</p>
+                    {dataLang.formatMessage({ id: "createNew" })}
                 </div>
                 <div className="DAT_CreateErrSetting_Head_Right">
                     <div className="DAT_CreateErrSetting_Head_Right_Icon"
@@ -49,6 +48,7 @@ export default function CreateErrSetting(props) {
                     </div>
                 </div>
             </div>
+
             <div className="DAT_CreateErrSetting_Body">
                 <span>{dataLang.formatMessage({ id: "errcode" })}:</span>
                 <select ref={codeRef1}>

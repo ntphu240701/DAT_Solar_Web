@@ -28,7 +28,7 @@ export default function Day(props) {
         </div>
         <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
           {dataLang.formatMessage({ id: "production" })}:{" "}
-          {parseFloat(cal.pro_1 / 1000).toFixed(2)} kW
+          {parseFloat(cal.pro_1 / 1000 || 0).toFixed(2)} kW
         </div>
       </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
