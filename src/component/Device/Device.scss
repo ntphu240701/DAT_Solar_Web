@@ -400,9 +400,53 @@
         background-color: white;
 
         &_Left {
+            flex: 9;
+
+            & p {
+                margin: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-transform: capitalize;
+            }
+
+            &_Item {
+                cursor: pointer;
+                font-size: 14px;
+                color: gray;
+                border: none;
+                background-color: white;
+                font-family: Montserrat-SemiBold;
+                padding: 8px;
+
+                &:hover {
+                    color: COLOR.$Primary-color;
+                }
+            }
+        }
+
+        &_Right {
+            flex: 1;
+            padding: 16px;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            justify-content: flex-end;
+            gap: 10px;
+
+            &_Save {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 30px;
+                padding: 0px 10px;
+                cursor: pointer;
+                background-color: #3e80fb;
+                border-radius: 5px;
+                gap: 5px;
+
+                & span {
+                    color: white;
+                }
+            }
 
             &_More {
                 width: 30px;
@@ -504,6 +548,7 @@
                 flex: 3.3;
                 min-width: 250px;
                 color: grey;
+                text-transform: capitalize;
                 font-size: 13px;
             }
 
@@ -1409,7 +1454,6 @@
                 padding: 16px;
                 display: flex;
                 justify-content: space-between;
-                padding-bottom: 0px;
 
                 &_Left {
                     &_Item {
