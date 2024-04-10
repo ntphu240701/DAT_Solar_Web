@@ -49,6 +49,7 @@ export default function ShareBox(props) {
             alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
             shareState.value = false;
         } else {
+            console.log("abc");
             alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
         }
     }
@@ -63,7 +64,7 @@ export default function ShareBox(props) {
 
             let newData = shared.filter((item) => item.mail != arr[0]);
             setShared(newData)
-            alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+            alertDispatch(dataLang.formatMessage({ id: "alert_53" }));
             // shareState.value = false;
         } else {
             alertDispatch(dataLang.formatMessage({ id: "alert_7" }));

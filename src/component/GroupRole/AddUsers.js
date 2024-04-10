@@ -41,7 +41,7 @@ export default function AddUsers(props) {
         partnerid: String(groupID.value),
       });
       if (d.status === true) {
-        alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+        alertDispatch(dataLang.formatMessage({ id: "alert_54" }));
         groupUser.value = [...groupUser.value, d.data];
         props.handleClose();
       } else {
@@ -93,7 +93,7 @@ export default function AddUsers(props) {
           {(() => {
             switch (addUserState) {
               case "AddSuccess":
-                return <p>{dataLang.formatMessage({ id: "alert_37" })} !</p>;
+                return <p>{dataLang.formatMessage({ id: "alert_54" })} !</p>;
               case "UserNotFound":
                 return <p>{dataLang.formatMessage({ id: "alert_38" })}</p>;
               case "UserAlreadyInGroup":
@@ -130,7 +130,7 @@ export default function AddUsers(props) {
                     color: "#505050",
                   }}
                 >
-                  Thoát
+                  {dataLang.formatMessage({ id: "quit" })}
                 </button>
               </div>
             );
@@ -148,7 +148,7 @@ export default function AddUsers(props) {
                     color: "#505050",
                   }}
                 >
-                  Thoát
+                  {dataLang.formatMessage({ id: "quit" })}
                 </button>
               </div>
             );
@@ -166,7 +166,7 @@ export default function AddUsers(props) {
                     color: "#505050",
                   }}
                 >
-                  Thoát
+                  {dataLang.formatMessage({ id: "quit" })}
                 </button>
               </div>
             );

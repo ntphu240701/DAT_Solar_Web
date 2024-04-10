@@ -44,9 +44,9 @@ export default function ConfirmDeleteGroup(props) {
         (item) => item.groupid_ != groupID.value
       );
       groupID.value = 0;
-      alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+      alertDispatch(dataLang.formatMessage({ id: "alert_56" }));
     } else {
-      alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+      alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
     }
   };
 

@@ -61,7 +61,7 @@ export default function CreateGroupRole(props) {
         name_: name,
       }
       props.handleClose();
-      alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+      alertDispatch(dataLang.formatMessage({ id: "alert_57" }));
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }

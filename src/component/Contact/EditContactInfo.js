@@ -38,7 +38,7 @@ export default function EditContactInfo(props) {
         Type.value = { ...Type.value, [key]: { ...Type.value[key], checked: !Type.value[key].checked } }
         const d = await callApi('post', host.DATA + '/updatePartner', { code: partnerInfor.value.code, type: 'businesstype', data: key })
         if (d.status) {
-          alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+          alertDispatch(dataLang.formatMessage({ id: "alert_58" }));
           partnerInfor.value = {
             ...partnerInfor.value,
             businesstype: key
@@ -58,7 +58,7 @@ export default function EditContactInfo(props) {
     if (data !== "") {
       const d = await callApi('post', host.DATA + '/updatePartner', { code: partnerInfor.value.code, type: id, data: data })
       if (d.status) {
-        alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+        alertDispatch(dataLang.formatMessage({ id: "alert_58" }));
         partnerInfor.value = {
           ...partnerInfor.value,
           [id]: data
@@ -237,7 +237,7 @@ export default function EditContactInfo(props) {
 
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
                   <input
-                    type="mail"
+                    type="email"
                     id="mail_input"
                     defaultValue={partnerInfor.value.mail}
                   />

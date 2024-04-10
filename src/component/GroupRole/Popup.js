@@ -39,7 +39,7 @@ export default function Popup(props) {
         (item) => item.id_ != parseInt(userDel.value)
       );
       props.handleClose();
-      alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+      alertDispatch(dataLang.formatMessage({ id: "alert_55" }));
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }

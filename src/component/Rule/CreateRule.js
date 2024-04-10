@@ -140,10 +140,10 @@ export default function CreateRule(props) {
       if (createRule.status) {
         datarule.value = [...datarule.value, createRule.data];
         props.handleClose();
-        alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+        alertDispatch(dataLang.formatMessage({ id: "alert_61" }));
       }
     } else {
-      alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
+      alertDispatch(dataLang.formatMessage({ id: "alert_17" }));
     }
   };
 

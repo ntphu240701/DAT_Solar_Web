@@ -56,10 +56,10 @@ export default function CreateErrSetting(props) {
                     <option value="E">E</option>
                 </select>
                 <input
-                    type='number' ref={codeRef2} max={1000}
+                    type='number' ref={codeRef2} max={1000} min={0}
                 />
                 <input
-                    type='number' ref={codeRef3} max={1000}
+                    type='number' ref={codeRef3} max={1000} min={0}
                 />
             </div>
 

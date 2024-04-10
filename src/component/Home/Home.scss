@@ -130,7 +130,7 @@
                             justify-content: center;
                             //background-color: #4caf50;
                             font-size: 15px;
-                            color: gray;
+                            color: black;
                         }
                     }
                 }
@@ -386,6 +386,7 @@
     &_Distribution {
         background-color: rgb(255, 255, 255);
         width: 100%;
+        min-height: 300px;
         border-radius: 3px;
         // box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
         border: solid 1px rgba(198, 197, 197, 0.5);

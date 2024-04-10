@@ -4537,7 +4537,7 @@ const FirmwareUpgrade = (props) => {
                               <Fade {...TransitionProps} timeout={350}>
                                 <Paper sx={{ width: '400px', marginLeft: '200px', p: 2 }}>
                                   <Typography sx={{ fontSize: '12px', textAlign: 'justify', marginBottom: 1.7 }}>
-                                    {dataLang.formatMessage({ id: 'overview1' })}
+                                    {dataLang.formatMessage({ id: 'timeoutInfo' })}
                                   </Typography>
                                 </Paper>
                               </Fade>
