@@ -1,20 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import "./Project.scss";
+import { signal } from "@preact/signals-react";
+
+const move = signal({
+    moveLtoR: 0,
+    moveRtoL: 200,
+    Default: 0
+})
 
 export default function Graph(props) {
+    const intervalIDRef = useReducer(null);
+    useEffect(function () {
+        const startTimer = () => {
+
+            intervalIDRef.current = setInterval(() => {
+                move.value = {
+                    moveLtoR: move.value.moveLtoR + 1,
+                    moveRtoL: move.value.moveRtoL - 1
+                }
+
+                if (move.value.moveLtoR === 200) {
+                    move.value.moveLtoR = 0
+                }
+                if (move.value.moveRtoL === 0) {
+                    move.value.moveRtoL = 200
+                }
+            }, 30);
+        };
+
+        const stopTimer = () => {
+            clearInterval(intervalIDRef.current);
+            intervalIDRef.current = null;
+        };
+        if (props.state) {
+            startTimer();
+        }
+
+        return () => {
+            stopTimer();
+        }
+
+    }, [])
 
     return (
         <div className="DAT_ProjectData_Dashboard_Data_Center_Graph">
             {(() => {
                 switch (props.type) {
                     case "grid":
-                        return <GraphGrid cal={props.cal} />;
+                        return <GraphGrid cal={props.cal} state={props.state} />;
                     case "consumption":
-                        return <GraphConsumption cal={props.cal} />;
+                        return <GraphConsumption cal={props.cal} state={props.state} />;
                     case "hybrid":
-                        return <GraphFull cal={props.cal} />;
+                        return <GraphFull cal={props.cal} state={props.state} />;
                     case "ESS":
-                        return <GraphFull cal={props.cal} />;
+                        return <GraphFull cal={props.cal} state={props.state} />;
                     default:
                         <></>;
                 }
@@ -24,13 +63,16 @@ export default function Graph(props) {
 }
 
 const GraphGrid = (props) => {
+
     const [lineA_, setLinA] = useState("Default");
 
     useEffect(() => {
-        if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
-            setLinA("moveLtoR");
-        } else {
-            setLinA("Default");
+        if (props.state) {
+            if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
+                setLinA("moveLtoR");
+            } else {
+                setLinA("Default");
+            }
         }
     }, [props.cal.pro_1]);
 
@@ -49,7 +91,8 @@ const GraphGrid = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                         strokeDasharray: lineA_ === "Default" ? "0" : "20",
-                        animation: `${lineA_} ${props.dur} linear infinite`,
+                        strokeDashoffset: move.value[lineA_],
+                        // animation: `${lineA_} ${props.dur} linear infinite`,
                     }}
                 />
             </>
@@ -92,7 +135,8 @@ const GraphGrid = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                         strokeDasharray: "20",
-                        animation: `moveRtoL ${props.dur} linear infinite`,
+                        strokeDashoffset: props.state ? move.value.moveRtoL : '0',
+                        // animation: `moveRtoL ${props.dur} linear infinite`,
                     }}
                 />
 
@@ -130,12 +174,12 @@ const GraphGrid = (props) => {
                     backgroundColor: "white"
                 }}
             >
-                <LineA dur="10s" strokeWidth="3" />
-                <LineB dur="10s" strokeWidth="3" />
-                <LineD dur="10s" strokeWidth="3" />
+                <LineA dur="10s" strokeWidth="3" state={props.state} />
+                <LineB dur="10s" strokeWidth="3" state={props.state} />
+                <LineD dur="10s" strokeWidth="3" state={props.state} />
 
                 <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/production.png" width="30" color="black" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(3) || 0).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/production.png" width="30" color="black" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000 || 0).toFixed(3)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="193" y="233" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
@@ -160,41 +204,44 @@ const GraphGrid = (props) => {
 const GraphConsumption = (props) => {
     const [lineA_, setLinA] = useState("Default");
     const [lineB_, setLinB] = useState("Default");
-    const [lineD_, setLinD] = useState("Default");
+    const [lineD_, setLinD] = useState("Default")
 
     useEffect(() => {
-        if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
-            setLinA("moveLtoR");
-        } else {
-            setLinA("Default");
-        }
+        console.log(props.state)
+        if (props.state) {
+            if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
+                setLinA("moveLtoR");
+            } else {
+                setLinA("Default");
+            }
 
-        // if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
-        //     setLinB("moveRtoL");
-        // } else {
-        //     setLinB("Default");
-        // }
-        if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
-            setLinB("moveLtoR");
-        } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
-            setLinB("moveRtoL");
-        } else {
-            setLinB("Default");
-        }
+            // if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
+            //     setLinB("moveRtoL");
+            // } else {
+            //     setLinB("Default");
+            // }
+            if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
+                setLinB("moveLtoR");
+            } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
+                setLinB("moveRtoL");
+            } else {
+                setLinB("Default");
+            }
 
-        // if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
-        //     setLinD("moveRtoL");
-        // } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
-        //     setLinD("moveLtoR");
-        // } else {
-        //     setLinD("Default");
-        // }
+            // if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
+            //     setLinD("moveRtoL");
+            // } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
+            //     setLinD("moveLtoR");
+            // } else {
+            //     setLinD("Default");
+            // }
 
 
-        if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
-            setLinD("moveRtoL");
-        } else {
-            setLinD("Default");
+            if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
+                setLinD("moveRtoL");
+            } else {
+                setLinD("Default");
+            }
         }
 
     }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1]);
@@ -214,7 +261,8 @@ const GraphConsumption = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                         strokeDasharray: lineA_ === "Default" ? "0" : "20",
-                        animation: `${lineA_} ${props.dur} linear infinite`,
+                        strokeDashoffset: move.value[lineA_],
+                        // animation: `${lineA_} ${props.dur} linear infinite`,
                     }}
                 />
             </>
@@ -235,7 +283,8 @@ const GraphConsumption = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                         strokeDasharray: lineB_ === "Default" ? "0" : "20",
-                        animation: `${lineB_}  ${props.dur} linear infinite`,
+                        strokeDashoffset: move.value[lineB_],
+                        // animation: `${lineB_}  ${props.dur} linear infinite`,
 
                     }}
                 />
@@ -258,7 +307,8 @@ const GraphConsumption = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                         strokeDasharray: lineD_ === "Default" ? "0" : "20",
-                        animation: `${lineD_} ${props.dur} linear infinite`,
+                        strokeDashoffset: move.value[lineD_],
+                        // animation: `${lineD_} ${props.dur} linear infinite`,
                     }}
                 />
 
@@ -293,15 +343,15 @@ const GraphConsumption = (props) => {
                 <LineD dur="10s" strokeWidth="3" />
 
                 <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="193" y="233" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="193" y="92" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
@@ -314,54 +364,64 @@ const GraphConsumption = (props) => {
     );
 };
 
+
+
 const GraphFull = (props) => {
     const [lineA_, setLinA] = useState("Default");
     const [lineB_, setLinB] = useState("Default");
     const [lineC_, setLinC] = useState("Default");
     const [lineD_, setLinD] = useState("Default");
 
+
     useEffect(() => {
-        if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
-            setLinA("moveLtoR");
-        } else {
-            setLinA("Default");
-        }
 
-        // if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
-        //     setLinB("moveRtoL");
-        // } else {
-        //     setLinB("Default");
-        // }
-        if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
-            setLinB("moveLtoR");
-        } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
-            setLinB("moveRtoL");
-        } else {
-            setLinB("Default");
-        }
+        if (props.state) {
+            if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
+                setLinA("moveLtoR");
+            } else {
+                setLinA("Default");
+            }
 
-        if (parseFloat(props.cal?.bat_1 / 1000).toFixed(2) > 0) {
-            setLinC("moveRtoL");
-        } else if (parseFloat(props.cal?.bat_1 / 1000).toFixed(2) < 0) {
-            setLinC("moveLtoR");
-        } else {
-            setLinC("Default");
-        }
+            // if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
+            //     setLinB("moveRtoL");
+            // } else {
+            //     setLinB("Default");
+            // }W
+            if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
+                setLinB("moveLtoR");
+            } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
+                setLinB("moveRtoL");
+            } else {
+                setLinB("Default");
+            }
 
-        // if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
-        //     setLinD("moveLtoR");
-        // } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
-        //     setLinD("moveRtoL");
-        // } else {
-        //     setLinD("Default");
-        // }
-        if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
-            setLinD("moveRtoL");
-        } else {
-            setLinD("Default");
+            if (parseFloat(props.cal?.bat_1 / 1000).toFixed(2) > 0) {
+                setLinC("moveRtoL");
+            } else if (parseFloat(props.cal?.bat_1 / 1000).toFixed(2) < 0) {
+                setLinC("moveLtoR");
+            } else {
+                setLinC("Default");
+            }
+
+
+            // if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
+            //     setLinD("moveLtoR");
+            // } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
+            //     setLinD("moveRtoL");
+            // } else {
+            //     setLinD("Default");
+            // }
+            if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
+                setLinD("moveRtoL");
+            } else {
+                setLinD("Default");
+            }
         }
 
     }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1, props.cal.bat_1]);
+
+
+
 
     const LineA = (props) => {
         return (
@@ -377,8 +437,9 @@ const GraphFull = (props) => {
                         strokeWidth: props.strokeWidth,
                         strokeLinecap: "round",
                         overflow: "hidden",
+                        strokeDashoffset: move.value[lineA_],
                         strokeDasharray: lineA_ === "Default" ? "0" : "20",
-                        animation: `${lineA_} ${props.dur} linear infinite`,
+                        // animation: `${lineA_} ${props.dur} linear infinite`,
                     }}
                 />
             </>
@@ -399,7 +460,8 @@ const GraphFull = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                         strokeDasharray: lineB_ === "Default" ? "0" : "20",
-                        animation: `${lineB_}  ${props.dur} linear infinite`,
+                        strokeDashoffset: move.value[lineB_],
+                        // animation: `${lineB_}  ${props.dur} linear infinite`,
 
                     }}
                 />
@@ -423,7 +485,8 @@ const GraphFull = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                         strokeDasharray: lineC_ === "Default" ? "0" : "20",
-                        animation: `${lineC_} ${props.dur} linear infinite`,
+                        strokeDashoffset: move.value[lineC_],
+                        // animation: `${lineC_} ${props.dur} linear infinite`,
 
                     }}
                 />
@@ -446,7 +509,8 @@ const GraphFull = (props) => {
                         strokeLinecap: "round",
                         overflow: "hidden",
                         strokeDasharray: lineD_ === "Default" ? "0" : "20",
-                        animation: `${lineD_} ${props.dur} linear infinite`,
+                        strokeDashoffset: move.value[lineD_],
+                        // animation: `${lineD_} ${props.dur} linear infinite`,
                     }}
                 />
 
@@ -482,18 +546,18 @@ const GraphFull = (props) => {
                 <LineD dur="10s" strokeWidth="3" />
 
                 <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 {/* <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
                     <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
                 </foreignObject> */}
                 <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="5" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/bat.png" width="20" height="30" color={props.cal?.bat_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.bat_1) / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/bat.png" width="20" height="30" color={props.cal?.bat_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.bat_1) / 1000 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 {/* <foreignObject x="395" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
@@ -501,7 +565,7 @@ const GraphFull = (props) => {
                 </foreignObject> */}
 
                 <foreignObject x="395" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="193" y="112" width="102" height="68" style={{ overflow: "hidden", padding: "2px" }}>

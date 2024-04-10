@@ -113,7 +113,7 @@ export default function Popup(props) {
       <div className="DAT_Popup_Box">
         <div className="DAT_Popup_Box_Head">
           <div className="DAT_Popup_Box_Head_Left">
-            <p>{dataLang.formatMessage({ id: 'delete' })}</p>
+            {dataLang.formatMessage({ id: 'delete' })}
           </div>
           <div className="DAT_Popup_Box_Head_Right">
             <div className="DAT_Popup_Box_Head_Right_Icon"
@@ -151,7 +151,7 @@ export default function Popup(props) {
       : <div className="DAT_Popup_Box">
         <div className="DAT_Popup_Box_Head">
           <div className="DAT_Popup_Box_Head_Left">
-            <p>{dataLang.formatMessage({ id: 'edits' })}</p>
+            {dataLang.formatMessage({ id: 'edits' })}
           </div>
           <div className="DAT_Popup_Box_Head_Right">
             <div className="DAT_Popup_Box_Head_Right_Icon"
@@ -166,6 +166,7 @@ export default function Popup(props) {
         </div>
 
         <div className="DAT_Popup_Box_Body">
+          <div style={{ marginBottom: "8px" }}>{dataLang.formatMessage({ id: 'name' })}:</div>
           <input type="text" ref={name} defaultValue={props.name} />
         </div>
 

@@ -233,7 +233,7 @@ export default function ErrorSetting(props) {
           <div
             className="DAT_ModifyBox"
             id={row.warnid_ + "_Modify"}
-            style={{ display: "none" }}
+            style={{ display: "none", width: "80px" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             <div
@@ -248,7 +248,7 @@ export default function ErrorSetting(props) {
           </div>
         </>
       ),
-      width: "100px",
+      width: "80px",
       style: {
         height: "auto !important",
         display: "flex",
@@ -293,6 +293,7 @@ export default function ErrorSetting(props) {
           setData([...data, newdata]);
           setCreateState(false);
         }
+        alertDispatch(dataLang.formatMessage({ id: "alert_59" }));
       }
     }
   };
@@ -358,7 +359,7 @@ export default function ErrorSetting(props) {
       ),
     });
 
-    console.log("Data with Stringified Cause and Solution:");
+    // console.log("Data with Stringified Cause and Solution:");
     console.log(JSON.stringify(data, (key, value) => {
       if (key === 'cause' || key === 'solution') {
         return JSON.stringify(value);
@@ -366,7 +367,7 @@ export default function ErrorSetting(props) {
       return value;
     }, 2));
     if (req.status) {
-      alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+      alertDispatch(dataLang.formatMessage({ id: "alert_58" }));
       setEditState(false);
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
@@ -450,6 +451,9 @@ export default function ErrorSetting(props) {
         if (req.status) {
           setData(data.filter((item) => item.boxid_ !== boxid));
           setRemoveState(false);
+          alertDispatch(dataLang.formatMessage({ id: "alert_60" }));
+        } else {
+          alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
         }
         break;
     }
@@ -484,12 +488,10 @@ export default function ErrorSetting(props) {
           ...bigdata[index].solution_,
           {
             id: bigdata[index].solution_[solutionlength - 1].id + 1,
-            vi: `Giải pháp ${
-              bigdata[index].solution_[solutionlength - 1].id + 1
-            }`,
-            en: `Solution ${
-              bigdata[index].solution_[solutionlength - 1].id + 1
-            }`,
+            vi: `Giải pháp ${bigdata[index].solution_[solutionlength - 1].id + 1
+              }`,
+            en: `Solution ${bigdata[index].solution_[solutionlength - 1].id + 1
+              }`,
           },
         ];
         setData([...bigdata]);

@@ -905,6 +905,11 @@ export default function DashboardHistory(props) {
     };
     getTotal();
 
+    return () => {
+      rootDispatch(toolslice.actions.setmonth({ pro_month: 0, con_month: 0, grid_in_month: 0, grid_out_month: 0, bat_in_month: 0, bat_out_month: 0 }));
+      rootDispatch(toolslice.actions.setyear({ pro_year: 0, con_year: 0, grid_in_year: 0, grid_out_year: 0, bat_in_year: 0, bat_out_year: 0 }));
+      rootDispatch(toolslice.actions.settotal({ pro_total: 0, con_total: 0, grid_in_total: 0, grid_out_total: 0, bat_in_total: 0, bat_out_total: 0 }));
+    };
     // eslint-disable-next-line
   }, [lang]);
 
@@ -1059,7 +1064,7 @@ export default function DashboardHistory(props) {
         <div
           className="DAT_ProjectData_Dashboard_History_SubConfig"
           style={{
-            height: dropConfig ? "500px" : "0px",
+            height: dropConfig ? "calc(100vh - 180px)" : "0px",
             transition: "0.5s",
           }}
         >

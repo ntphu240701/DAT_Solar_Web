@@ -267,7 +267,11 @@ export default function Navigation(props) {
         <div
           className="DAT_NavUser-item"
           style={{ cursor: "pointer", borderBottom: "1px solid gray" }}
-          onClick={() => navigate("/User")}
+          onClick={() => {
+            navigate("/User");
+            sidebartab.value = "Setting";
+            sidebartabli.value = "/User";
+          }}
         >
           <PiUserCircle size={18} />
           &nbsp;

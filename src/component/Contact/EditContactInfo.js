@@ -9,6 +9,7 @@ import { useIntl } from "react-intl";
 import { alertDispatch } from "../Alert/Alert";
 
 import { IoClose } from "react-icons/io5";
+import { isMobile } from "../Navigation/Navigation";
 
 const Type = signal({
   onm: { name: "onm", checked: false },
@@ -38,7 +39,7 @@ export default function EditContactInfo(props) {
         Type.value = { ...Type.value, [key]: { ...Type.value[key], checked: !Type.value[key].checked } }
         const d = await callApi('post', host.DATA + '/updatePartner', { code: partnerInfor.value.code, type: 'businesstype', data: key })
         if (d.status) {
-          alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+          alertDispatch(dataLang.formatMessage({ id: "alert_58" }));
           partnerInfor.value = {
             ...partnerInfor.value,
             businesstype: key
@@ -58,7 +59,7 @@ export default function EditContactInfo(props) {
     if (data !== "") {
       const d = await callApi('post', host.DATA + '/updatePartner', { code: partnerInfor.value.code, type: id, data: data })
       if (d.status) {
-        alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+        alertDispatch(dataLang.formatMessage({ id: "alert_58" }));
         partnerInfor.value = {
           ...partnerInfor.value,
           [id]: data
@@ -99,7 +100,9 @@ export default function EditContactInfo(props) {
         {props.mode === 'RegisterInf'
           ? <>
             <div className="DAT_EditContactInfo_Body_Row2">
-              <div className="DAT_EditContactInfo_Body_Row2_Item">
+              <div className="DAT_EditContactInfo_Body_Row2_Item"
+                style={{ marginBottom: isMobile.value ? "0px" : "16px" }}
+              >
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
                   {dataLang.formatMessage({ id: 'businessModel' })}
                 </div>
@@ -120,7 +123,9 @@ export default function EditContactInfo(props) {
                 </div>
               </div>
 
-              <div className="DAT_EditContactInfo_Body_Row2_Item">
+              <div className="DAT_EditContactInfo_Body_Row2_Item"
+                style={{ marginBottom: isMobile.value ? "0px" : "16px" }}
+              >
                 <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
                   {dataLang.formatMessage({ id: 'businessname' })}
                 </div>
@@ -187,73 +192,79 @@ export default function EditContactInfo(props) {
               </div>
             </div>
           </>
-          : <>
-            <div className="DAT_EditContactInfo_Body_Row2">
-              <div className="DAT_EditContactInfo_Body_Row2_Item">
-                <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
-                  {dataLang.formatMessage({ id: 'name' })}
-                </div>
-                <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
-                  <input
-                    type="text"
-                    id="name_input"
-                    defaultValue={partnerInfor.value.name}
-                  />
-                  <span
-                    style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }}
-                    id='name'
-                    onClick={(e) => handeUpdate(e)}
-                  >
-                    {dataLang.formatMessage({ id: 'save' })}
-                  </span>
-                </div>
+          :
+          <div className="DAT_EditContactInfo_Body_Row2">
+            <div className="DAT_EditContactInfo_Body_Row2_Item"
+              style={{ marginBottom: isMobile.value ? "0px" : "16px" }}
+            >
+              <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
+                {dataLang.formatMessage({ id: 'name' })}
               </div>
-
-              <div className="DAT_EditContactInfo_Body_Row2_Item">
-                <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
-                  {dataLang.formatMessage({ id: 'phone' })}
-                </div>
-
-                <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
-                  <input
-                    type="number"
-                    id="phone_input"
-                    defaultValue={partnerInfor.value.phone}
-                  />
-                  <span
-                    style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }}
-                    id="phone"
-                    onClick={(e) => handeUpdate(e)}
-                  >
-                    {dataLang.formatMessage({ id: 'save' })}
-                  </span>
-                </div>
-              </div>
-
-              <div className="DAT_EditContactInfo_Body_Row2_Item">
-                <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
-                  E-mail
-                </div>
-
-                <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
-                  <input
-                    type="mail"
-                    id="mail_input"
-                    defaultValue={partnerInfor.value.mail}
-                  />
-                  <span
-                    style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }}
-                    id="mail"
-                    onClick={(e) => handeUpdate(e)}
-                  >
-                    {dataLang.formatMessage({ id: 'save' })}
-                  </span>
-                </div>
+              <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
+                <input
+                  type="text"
+                  id="name_input"
+                  defaultValue={partnerInfor.value.name}
+                />
+                <span
+                  style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }}
+                  id='name'
+                  onClick={(e) => handeUpdate(e)}
+                >
+                  {dataLang.formatMessage({ id: 'save' })}
+                </span>
               </div>
             </div>
+
+            <div className="DAT_EditContactInfo_Body_Row2_Item"
+              style={{ marginBottom: isMobile.value ? "0px" : "16px" }}
+            >
+              <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
+                {dataLang.formatMessage({ id: 'phone' })}
+              </div>
+
+              <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
+                <input
+                  type="number"
+                  id="phone_input"
+                  defaultValue={partnerInfor.value.phone}
+                />
+                <span
+                  style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }}
+                  id="phone"
+                  onClick={(e) => handeUpdate(e)}
+                >
+                  {dataLang.formatMessage({ id: 'save' })}
+                </span>
+              </div>
+            </div>
+
+            <div className="DAT_EditContactInfo_Body_Row2_Item"
+              style={{ marginBottom: isMobile.value ? "16px" : "0px" }}
+            >
+              <div className="DAT_EditContactInfo_Body_Row2_Item_Tit">
+                E-mail
+              </div>
+
+              <div className="DAT_EditContactInfo_Body_Row2_Item_Content">
+                <input
+                  type="email"
+                  id="mail_input"
+                  defaultValue={partnerInfor.value.mail}
+                />
+                <span
+                  style={{ cursor: "pointer", color: "rgba(11, 25, 103)" }}
+                  id="mail"
+                  onClick={(e) => handeUpdate(e)}
+                >
+                  {dataLang.formatMessage({ id: 'save' })}
+                </span>
+              </div>
+            </div>
+          </div>
           </>
         }
-      </div>
     </div>
+    </div >
   );
 }

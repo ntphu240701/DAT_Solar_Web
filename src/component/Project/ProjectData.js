@@ -14,7 +14,7 @@ import { Empty, plantState, projectData, popupState } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { COLOR, Token, ruleInfor } from "../../App";
+import { COLOR, Token, ruleInfor, socket } from "../../App";
 import { info, tab } from "../Device/Device";
 import { useDispatch, useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
@@ -56,6 +56,7 @@ const dataAlert = [];
 export default function ProjectData(props) {
   const dataLang = useIntl();
   const lang = useSelector((state) => state.admin.lang);
+  const user = useSelector((state) => state.admin.usr);
   const [view, setView] = useState("dashboard");
   const [dropState, setDropState] = useState(false);
   const [infoState, setInfoState] = useState(false);
@@ -67,6 +68,7 @@ export default function ProjectData(props) {
   const [devtype, setDevtype] = useState("");
   const [type, setType] = useState("");
   const [invt, setInvt] = useState({});
+  const [getShared, setgetShared] = useState([]);
   const box = useRef();
   const filterchart = useSelector((state) => state.tool.filterchart);
   const rootDispatch = useDispatch();
@@ -603,6 +605,15 @@ export default function ProjectData(props) {
     tabLableAlert.value = listAlertTab[0].name;
     tabLable.value = listDeviceTab[0].name;
 
+    const getShared = async () => {
+      let req = await callApi("post", host.DATA + "/getmailPlantmem", { plantid: projectData.value.plantid_, usr: user });
+      console.log(req)
+      if (req.status) {
+        setgetShared(req.data)
+      }
+    }
+    getShared();
+
     //data Logger
     const getLogger = async () => {
       let d = await callApi("post", host.DATA + "/getLogger", {
@@ -646,9 +657,27 @@ export default function ProjectData(props) {
     getLogger();
 
     return () => {
+      console.log("unmount");
       tab_.value = "logger";
-    };
-
+      inverterDB.value = [];
+      temp.value = [];
+      rootDispatch(toolslice.actions.setcal({
+        pro_1: 0,
+        pro_2: 0,
+        pro_3: 0,
+        bat_1: 0,
+        bat_2: 0,
+        bat_in_1: 0,
+        bat_out_1: 0,
+        con_1: 0,
+        con_2: 0,
+        grid_1: 0,
+        grid_in_1: 0,
+        grid_in_2: 0,
+        grid_out_1: 0,
+        grid_out_2: 0,
+      }));
+    }
     // eslint-disable-next-line
   }, [lang]);
 
@@ -745,6 +774,27 @@ export default function ProjectData(props) {
       document.removeEventListener("mousedown", handleOutsideUser);
     };
   }, [invt]);
+
+  useEffect(() => {
+    if (temp.value.length > 0) {
+      temp.value.map((item) => {
+        socket.value.on("Server/" + item.sn, function (data) {
+          console.log("Toollist socket")
+          // console.log(data.data)
+          Object.keys(data.data).map((keyName, i) => {
+
+            setInvt(pre => ({
+              ...pre,
+              [item.sn]: {
+                ...pre[item.sn],
+                [keyName]: data.data[keyName]
+              }
+            }))
+          })
+        })
+      })
+    }
+  }, [temp.value])
 
   return (
     <div ref={box} style={{ width: "98%", margin: "auto" }}>
@@ -1018,7 +1068,7 @@ export default function ProjectData(props) {
                   <DashboardHistory />
 
                   <div className="DAT_ProjectData_Dashboard_More">
-                    <ProjectInfo />
+                    <ProjectInfo share={getShared} />
                     <Benefit />
                   </div>
                 </div>

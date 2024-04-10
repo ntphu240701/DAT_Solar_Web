@@ -29,15 +29,11 @@ export default function Info(props) {
           <div className="DAT_PopupReportInfo_Box_Head_Left">
             {props.level == 'warn' ? (
               <div className="DAT_PopupReportInfo_Box_Head_Left_TableWarning">
-                <p>
-                  {dataLang.formatMessage({ id: props.boxid, defaultMessage: props.boxid })}
-                </p>
+                {dataLang.formatMessage({ id: props.boxid, defaultMessage: props.boxid })}
               </div>
             ) : (
               <div className="DAT_PopupReportInfo_Box_Head_Left_TableNotice">
-                <p>
-                  {dataLang.formatMessage({ id: props.boxid, defaultMessage: props.boxid })}
-                </p>
+                {dataLang.formatMessage({ id: props.boxid, defaultMessage: props.boxid })}
               </div>
             )}
           </div>
@@ -55,47 +51,43 @@ export default function Info(props) {
           </div>
         </div>
 
-        <div className="DAT_PopupReportInfo_Box_Body" style={{ fontSize: '16px' }}>
-          <p>
-            {dataLang.formatMessage({ id: "project" })} :
-            &nbsp;
-            <span>
-              {props.plant}
-            </span>
-          </p>
-
+        <div className="DAT_PopupReportInfo_Box_Body">
           <div className="DAT_PopupReportInfo_Box_Body_Item">
-            <p>
-              {dataLang.formatMessage({ id: "device" })} :
-              &nbsp;
-            </p>
-            <span>
-              {props.device}
-            </span>
+            {dataLang.formatMessage({ id: "project" })}:
+            &nbsp;
+            {props.plant}
           </div>
 
-          <p>
-            {dataLang.formatMessage({ id: "cause" })} :
-          </p>
+          <div className="DAT_PopupReportInfo_Box_Body_Item">
+            {dataLang.formatMessage({ id: "device" })}:
+            &nbsp;
+            {props.device}
+          </div>
+
+          <div
+            style={{ marginBottom: "8px" }}
+          >
+            {dataLang.formatMessage({ id: "cause" })}:
+          </div>
 
           <div className="DAT_PopupReportInfo_Box_Body_Item_Box">
             {props.cause.map((item, index) => (
               <div key={index} style={{ marginBottom: "5px" }}>
                 {item[lang]}
-                <br />
               </div>
             ))}
           </div>
 
-          <p>
+          <div
+            style={{ marginBottom: "8px" }}
+          >
             {dataLang.formatMessage({ id: "solution" })} :
-          </p>
+          </div>
 
           <div className="DAT_PopupReportInfo_Box_Body_Item_Box">
             {props.solution.map((item, index) => (
               <div key={index} style={{ marginBottom: "5px" }}>
                 {item[lang]}
-                <br />
               </div>
             ))}
           </div>
