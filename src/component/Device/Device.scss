@@ -398,9 +398,6 @@
 
     &_Header {
         background-color: white;
-        display: flex;
-        left: 0px;
-        align-items: center;
 
         &_Left {
             flex: 9;
@@ -474,6 +471,17 @@
                 justify-content: center;
                 border-radius: 50%;
                 cursor: pointer;
+            }
+        }
+
+        &_Right {
+            &_Item {
+                cursor: pointer;
+                font-size: 14px;
+                border: none;
+                background-color: white;
+                font-family: Montserrat-SemiBold;
+                padding: 8px;
             }
         }
     }
@@ -648,8 +656,22 @@
                 }
 
                 &_ParametersPicker {
-                    border: 1px solid grey;
-                    padding: 5px;
+                    & button {
+                        display: flex;
+                        align-items: center;
+                        height: 25px;
+                        font-size: 14px;
+                        cursor: pointer;
+                        background-color: white;
+                        border: solid 1px rgb(199, 199, 199);
+                        border-radius: 5px;
+                        font-family: Montserrat-Regular;
+
+                        &:hover {
+                            border: solid 1px #6495ed;
+                            color: #6495ed;
+                        }
+                    }
                 }
 
                 &_Export {
@@ -683,6 +705,92 @@
                 box-sizing: border-box;
                 // border: 1px solid grey;
                 // margin-top: 20px;
+            }
+
+            &_SubConfig {
+                background-color: rgb(128, 128, 128, 0.5);
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 700px;
+                left: 0;
+
+                &_Dropdown {
+                    background-color: white;
+                    border-top: solid 1px rgba(198, 197, 197, 0.5);
+                    padding: 16px;
+                    height: 100%;
+
+                    &_Search {
+                        width: 200px;
+                        display: flex;
+                        align-items: center;
+                        gap: 4px;
+                        background-color: white;
+                        padding: 8px;
+                        border-radius: 5px;
+                        overflow: hidden;
+                        border: solid 1px rgba(198, 197, 197, 0.5);
+
+                        & input {
+                            width: 100%;
+                            border: none;
+                            outline: none;
+                            font-size: 14px;
+                            font-family: Montserrat-Regular;
+                        }
+
+                        & input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
+                        }
+                    }
+
+                    &_Item {
+                        padding-top: 16px;
+                        font-size: 15px;
+
+                        &_Table {
+                            border-top: solid 1px rgba(198, 197, 197, 0.5);
+                            border-left: solid 1px rgba(198, 197, 197, 0.5);
+                            border-right: solid 1px rgba(198, 197, 197, 0.5);
+
+                            & tr:first-child {
+                                border-bottom: solid 1px rgba(198, 197, 197, 0.5);
+                            }
+                        }
+
+                        &_Table {
+                            border-collapse: collapse;
+                            width: 100%;
+
+                            &_Tr {
+                                display: flex;
+                                align-items: center;
+
+                                &_Th {
+                                    padding: 12px;
+                                    background-color: #d4d4d4;
+                                    width: 140px;
+                                }
+
+                                &_Td {
+                                    padding-left: 16px;
+                                    display: flex;
+
+                                    &_Checkbox {
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 10px;
+                                        padding-left: 10px;
+                                        width: 200px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -2106,6 +2214,48 @@
                     &_Left {
                         margin-top: 16px;
                         margin-bottom: 16px;
+                    }
+                }
+            }
+
+            &_FirmwareUpgrade {
+                &_Current {
+                    display: contents;
+
+                    &_Left {
+                        margin-top: 16px;
+                    }
+
+                    &_Center {
+                        margin: 8px 0px;
+                    }
+
+                    &_Right {
+                        margin-bottom: 0px;
+                    }
+                }
+
+                &_Last {
+                    display: contents;
+
+                    &_Left {
+                        margin-top: 16px;
+                    }
+
+                    &_Center {
+                        margin: 8px 0px;
+                    }
+
+                    &_Right {
+                        margin-bottom: 0px;
+                    }
+                }
+
+                &_Upgrade {
+                    display: contents;
+
+                    &_Left {
+                        margin-top: 16px;
                     }
                 }
             }

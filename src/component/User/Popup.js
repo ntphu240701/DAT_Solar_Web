@@ -168,7 +168,7 @@ export default function Popup(props) {
     <div className="DAT_PopupUser_Box">
       <div className="DAT_PopupUser_Box_Head">
         <div className="DAT_PopupUser_Box_Head_Left">
-          <p>{dataLang.formatMessage({ id: 'edits' })}</p>
+          {dataLang.formatMessage({ id: 'edits' })}
         </div>
         <div className="DAT_PopupUser_Box_Head_Right">
           <div className="DAT_PopupUser_Box_Head_Right_Icon"

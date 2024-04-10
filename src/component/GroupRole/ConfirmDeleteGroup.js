@@ -54,7 +54,7 @@ export default function ConfirmDeleteGroup(props) {
     <div className="DAT_DeleteGroupPopup_Box">
       <div className="DAT_DeleteGroupPopup_Box_Head">
         <div className="DAT_DeleteGroupPopup_Box_Head_Left">
-          <p>{dataLang.formatMessage({ id: 'delGroupRole' })}</p>
+          {dataLang.formatMessage({ id: 'delGroupRole' })}
         </div>
 
         <div className="DAT_DeleteGroupPopup_Box_Head_Right">
@@ -70,9 +70,7 @@ export default function ConfirmDeleteGroup(props) {
       </div>
 
       <div className="DAT_DeleteGroupPopup_Box_Body">
-        <p>
-          {dataLang.formatMessage({ id: 'delgroupmess' })}
-        </p>
+        {dataLang.formatMessage({ id: 'delgroupmess' })}
       </div>
 
       <div className="DAT_DeleteGroupPopup_Box_Foot">

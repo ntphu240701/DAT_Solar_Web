@@ -233,7 +233,7 @@ export default function ErrorSetting(props) {
           <div
             className="DAT_ModifyBox"
             id={row.warnid_ + "_Modify"}
-            style={{ display: "none" }}
+            style={{ display: "none", width: "80px" }}
             onMouseLeave={(e) => handleModify(e, "none")}
           >
             <div
@@ -248,7 +248,7 @@ export default function ErrorSetting(props) {
           </div>
         </>
       ),
-      width: "100px",
+      width: "80px",
       style: {
         height: "auto !important",
         display: "flex",

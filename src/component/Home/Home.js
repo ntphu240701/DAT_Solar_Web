@@ -48,6 +48,7 @@ import { FaMoneyBill } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { VscDashboard } from "react-icons/vsc";
 import { IoCalendarOutline } from "react-icons/io5";
+import { isMobile } from "../Navigation/Navigation";
 
 const plant = signal([]);
 const logger = signal([]);
@@ -556,7 +557,6 @@ export default function Home(props) {
         type: userInfor.value.type,
       });
       if (d.status === true) {
-        console.log(d.data);
         initMap(d.data);
         setProject(d.data);
         getChart(d.data);
@@ -1363,17 +1363,51 @@ export default function Home(props) {
             </div>
           </div>
 
-          <div className="DAT_Home_Rank-Content">
-            <DataTable
-              className="DAT_Table_Home"
-              columns={columnHome}
-              data={plant.value}
-              pagination
-              paginationComponentOptions={paginationComponentOptions}
-              fixedHeader={true}
-              noDataComponent={<Empty />}
-            />
-          </div>
+          {isMobile.value ?
+            <>
+              {plant.value.map((item, index) => {
+                return (
+                  <div key={index} className="DAT_Home_Rank-ContentMobile">
+                    <div className="DAT_Home_Rank-ContentMobile_Top">
+                      <div className="DAT_Home_Rank-ContentMobile_Top_Ava">
+                        {index + 1}
+                      </div>
+
+                      <div className="DAT_Home_Rank-ContentMobile_Top_Info">
+                        <div className="DAT_Home_Rank-ContentMobile_Top_Info_Name"
+                          id={item.plantid_}
+                          onClick={(e) => handleInfo(e)}
+                        >
+                          {item.plantname}
+                        </div>
+                        <div className="DAT_Home_Rank-ContentMobile_Top_Info_Sun">
+                          kWh/kWp(h): {parseFloat(sun[item.plantid_]).toFixed(2) === "NaN"
+                            ? 0
+                            : Number(parseFloat(sun[item.plantid_] / item.capacity).toFixed(2)).toLocaleString("en-US")}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="DAT_Home_Rank-ContentMobile_Bottom">
+                      {item.addr}
+                    </div>
+                  </div>
+                )
+              })}
+            </>
+            :
+            <div className="DAT_Home_Rank-Content">
+              <DataTable
+                className="DAT_Table_Home"
+                columns={columnHome}
+                data={plant.value}
+                pagination
+                paginationComponentOptions={paginationComponentOptions}
+                fixedHeader={true}
+                noDataComponent={<Empty />}
+              />
+            </div>
+          }
         </div>
 
         <div className="DAT_Home_Benefit">

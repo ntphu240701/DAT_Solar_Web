@@ -54,7 +54,7 @@ export default function EditRole(props) {
     <div className="DAT_EditRole">
       <div className="DAT_EditRole_Head">
         <div className="DAT_EditRole_Head_Left">
-          <p>{dataLang.formatMessage({ id: "edits" })}</p>
+          {dataLang.formatMessage({ id: "edits" })}
         </div>
 
         <div className="DAT_EditRole_Head_Right">
@@ -95,7 +95,9 @@ export default function EditRole(props) {
           </select>
         </div>
 
-        <div className="DAT_EditRole_Body_Row">
+        <div className="DAT_EditRole_Body_Row"
+          style={{ marginBottom: "0px" }}
+        >
           <div className="DAT_EditRole_Body_Row_Left">
             <span style={{ color: "red" }}>* </span>
             <span style={{ color: "grey", marginRight: "18px" }}>

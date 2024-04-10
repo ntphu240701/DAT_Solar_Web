@@ -21,15 +21,11 @@ export default function RemoveErr(props) {
     popup.style.color = popup_state[state].color;
   };
 
-  // const handleSave = () => {
-  //     props.handleClose();
-  // };
-
   return (
     <div className="DAT_RemoveErr">
       <div className="DAT_RemoveErr_Head">
         <div className="DAT_RemoveErr_Head_Left">
-          <p>{dataLang.formatMessage({ id: "delete" })}</p>
+          {dataLang.formatMessage({ id: "delete" })}
         </div>
         <div className="DAT_RemoveErr_Head_Right">
           <div
@@ -49,19 +45,19 @@ export default function RemoveErr(props) {
           case "REMOVECAUSE":
             return (
               <div className="DAT_RemoveErr_Body">
-                <span>{dataLang.formatMessage({ id: 'delCause' })}</span>
+                {dataLang.formatMessage({ id: 'delCause' })}
               </div>
             )
           case "REMOVESOLUTION":
             return (
               <div className="DAT_RemoveErr_Body">
-                <span>{dataLang.formatMessage({ id: 'delSolution' })}</span>
+                {dataLang.formatMessage({ id: 'delSolution' })}
               </div>
             )
           default:
             return (
               <div className="DAT_RemoveErr_Body">
-                <span>{dataLang.formatMessage({ id: 'delErrorInfo' })}</span>
+                {dataLang.formatMessage({ id: 'delErrorInfo' })}
               </div>
             )
         }

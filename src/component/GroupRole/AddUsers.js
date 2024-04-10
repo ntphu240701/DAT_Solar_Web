@@ -72,7 +72,7 @@ export default function AddUsers(props) {
     <div className="DAT_AddUserPopup_Box">
       <div className="DAT_AddUserPopup_Box_Head">
         <div className="DAT_AddUserPopup_Box_Head_Left">
-          <p>{dataLang.formatMessage({ id: "createUser" })}</p>
+          {dataLang.formatMessage({ id: "createUser" })}
         </div>
 
         <div className="DAT_AddUserPopup_Box_Head_Right">

@@ -42,7 +42,7 @@ export default function RaiseBox(props) {
     <div className="DAT_PopupReport_Box">
       <div className="DAT_PopupReport_Box_Head">
         <div className="DAT_PopupReport_Box_Head_Left">
-          <p>{dataLang.formatMessage({ id: "delWarn" })}</p>
+          {dataLang.formatMessage({ id: "delWarn" })}
         </div>
         <div className="DAT_PopupReport_Box_Head_Right">
           <div
@@ -58,7 +58,7 @@ export default function RaiseBox(props) {
       </div>
 
       <div className="DAT_PopupReport_Box_Body">
-        <p>{dataLang.formatMessage({ id: "delWarnmess" })}</p>
+        {dataLang.formatMessage({ id: "delWarnmess" })}
       </div>
 
       <div className="DAT_PopupReport_Box_Foot">

@@ -12,7 +12,6 @@ import Info from "./Info";
 import Filter from "../Project/Filter";
 import moment from "moment-timezone";
 
-import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { LuMailWarning } from "react-icons/lu";
 import {
@@ -21,13 +20,11 @@ import {
   IoIosArrowUp,
   IoMdMore,
 } from "react-icons/io";
-import { RxCross2 } from "react-icons/rx";
 import { IoTrashOutline } from "react-icons/io5";
-import { FiAlertCircle, FiFilter } from "react-icons/fi";
+import { FiFilter } from "react-icons/fi";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { AiOutlineAlert } from "react-icons/ai";
-import { HiOutlineBellAlert } from "react-icons/hi2";
 import { GoAlert } from "react-icons/go";
 
 export const tabLable = signal("");

@@ -179,7 +179,7 @@ const GraphGrid = (props) => {
                 <LineD dur="10s" strokeWidth="3" state={props.state} />
 
                 <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/production.png" width="30" color="black" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/production.png" width="30" color="black" height="30" val={Number(parseFloat(props.cal?.pro_1 / 1000 || 0).toFixed(3)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="193" y="233" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
@@ -343,15 +343,15 @@ const GraphConsumption = (props) => {
                 <LineD dur="10s" strokeWidth="3" />
 
                 <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000 || 0).toFixed(2) ).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="193" y="233" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1 || 0).toFixed(2) ).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000 || 0).toFixed(2) ).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="193" y="92" width="102.628" height="68.353" style={{ overflow: "hidden", padding: "2px" }}>
@@ -402,21 +402,21 @@ const GraphFull = (props) => {
             } else {
                 setLinC("Default");
             }
-        
 
-        // if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
-        //     setLinD("moveLtoR");
-        // } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
-        //     setLinD("moveRtoL");
-        // } else {
-        //     setLinD("Default");
-        // }
-        if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
-            setLinD("moveRtoL");
-        } else {
-            setLinD("Default");
+
+            // if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) > 0) {
+            //     setLinD("moveLtoR");
+            // } else if (parseFloat(props.cal?.grid_1 / 1000).toFixed(2) < 0) {
+            //     setLinD("moveRtoL");
+            // } else {
+            //     setLinD("Default");
+            // }
+            if (parseFloat(props.cal?.con_1).toFixed(2) > 0) {
+                setLinD("moveRtoL");
+            } else {
+                setLinD("Default");
+            }
         }
-    }
 
     }, [props.cal.pro_1, props.cal.con_1, props.cal.grid_1, props.cal.bat_1]);
 
@@ -546,18 +546,18 @@ const GraphFull = (props) => {
                 <LineD dur="10s" strokeWidth="3" />
 
                 <foreignObject x="5" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000 || 0 ).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/production.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.pro_1 / 1000 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 {/* <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
                     <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
                 </foreignObject> */}
                 <foreignObject x="395" y="5" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000 || 0 ).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/grid.png" width="30" height="30" color={props.cal?.grid_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.grid_1) / 1000 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="5" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/bat.png" width="20" height="30" color={props.cal?.bat_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.bat_1) / 1000 || 0).toFixed(2) || 0).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/bat.png" width="20" height="30" color={props.cal?.bat_1 < 0 ? "red" : "black"} val={Number(parseFloat(Math.abs(props.cal?.bat_1) / 1000 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 {/* <foreignObject x="395" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
@@ -565,7 +565,7 @@ const GraphFull = (props) => {
                 </foreignObject> */}
 
                 <foreignObject x="395" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
-                    <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1 || 0).toFixed(2) ).toLocaleString("en-US")} unit="kW" />
+                    <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
 
                 <foreignObject x="193" y="112" width="102" height="68" style={{ overflow: "hidden", padding: "2px" }}>

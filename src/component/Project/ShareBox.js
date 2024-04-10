@@ -75,7 +75,7 @@ export default function ShareBox(props) {
         <form className="DAT_SharePopup_Box" onSubmit={(e) => handleShared(e)}>
             <div className="DAT_SharePopup_Box_Head">
                 <div className="DAT_SharePopup_Box_Head_Left">
-                    <p>{dataLang.formatMessage({ id: "share" })}</p>
+                    {dataLang.formatMessage({ id: "share" })}
                 </div>
 
                 <div className="DAT_SharePopup_Box_Head_Right">
@@ -102,12 +102,15 @@ export default function ShareBox(props) {
                     </input>
                 </div>
                 <div style={{ marginTop: "10px" }}>
-                    <span>{shared.map((mem) => <div key={mem.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '5px', padding: '5px' }} > <div>{mem.mail}</div> <IoTrashOutline size={14} color="red" id={`${mem.mail}_DEL`} style={{ cursor: 'pointer' }} onClick={(e) => handleDel(e)} /></div>)}</span>
+                    <span>{shared.map((mem) =>
+                        <div key={mem.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '5px', padding: '5px' }} >
+                            <div>{mem.mail}</div>
+                            <IoTrashOutline size={14} id={`${mem.mail}_DEL`} style={{ cursor: 'pointer' }} onClick={(e) => handleDel(e)} />
+                        </div>
+                    )}
+                    </span>
                 </div>
-
-
             </div>
-
 
             <div className="DAT_SharePopup_Box_Foot">
                 <button
