@@ -48,6 +48,7 @@ import { FaMoneyBill } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { VscDashboard } from "react-icons/vsc";
 import { IoCalendarOutline } from "react-icons/io5";
+import { isMobile } from "../Navigation/Navigation";
 
 const plant = signal([]);
 const logger = signal([]);
@@ -94,11 +95,11 @@ export default function Home(props) {
   const keyframes = `
   @keyframes home {
     0% { background-position: -1200px ${parseFloat(
-      per
-    )}px, -800px ${per}px, -400px ${per}px; }
+    per
+  )}px, -800px ${per}px, -400px ${per}px; }
     100% { background-position: 200px ${parseFloat(
-      per
-    )}px;, 100x ${per}px, 0px ${per}px; }
+    per
+  )}px;, 100x ${per}px, 0px ${per}px; }
   }
 `;
 
@@ -160,8 +161,8 @@ export default function Home(props) {
         parseFloat(sun[row.plantid_]).toFixed(2) === "NaN"
           ? 0
           : Number(
-              parseFloat(sun[row.plantid_] / row.capacity).toFixed(2)
-            ).toLocaleString("en-US"),
+            parseFloat(sun[row.plantid_] / row.capacity).toFixed(2)
+          ).toLocaleString("en-US"),
       sortable: true,
       width: "120px",
     },
@@ -316,7 +317,7 @@ export default function Home(props) {
               parseFloat(
                 Number(
                   datamonth_[index][
-                    dataLang.formatMessage({ id: "monthOutput" })
+                  dataLang.formatMessage({ id: "monthOutput" })
                   ]
                 ) + Number(item.value)
               ).toFixed(2);
@@ -404,7 +405,7 @@ export default function Home(props) {
                 parseFloat(
                   Number(
                     datamonth_[index][
-                      dataLang.formatMessage({ id: "monthOutput" })
+                    dataLang.formatMessage({ id: "monthOutput" })
                     ]
                   ) + Number(item.value)
                 ).toFixed(2);
@@ -456,7 +457,7 @@ export default function Home(props) {
                 parseFloat(
                   Number(
                     datayear_[index][
-                      dataLang.formatMessage({ id: "yearOutput" })
+                    dataLang.formatMessage({ id: "yearOutput" })
                     ]
                   ) + Number(item.value)
                 ).toFixed(2);
@@ -556,8 +557,7 @@ export default function Home(props) {
         type: userInfor.value.type,
       });
       if (d.status === true) {
-        console.log(d.data);
-        // initMap(d.data);
+        initMap(d.data);
         setProject(d.data);
         getChart(d.data);
         setTotal(d.data.length);
@@ -755,10 +755,10 @@ export default function Home(props) {
                     ).toLocaleString("en-US") === "NaN"
                       ? "--"
                       : Number(
-                          parseFloat(
-                            (production / 1000 / capacity) * 100
-                          ).toFixed(2)
-                        ).toLocaleString("en-US")}
+                        parseFloat(
+                          (production / 1000 / capacity) * 100
+                        ).toFixed(2)
+                      ).toLocaleString("en-US")}
                   </div>
                   <div className="DAT_Home_Overview-Main-Percent-Item-value_unit">
                     %
@@ -1115,11 +1115,11 @@ export default function Home(props) {
                 :{" "}
                 {chart === "year"
                   ? Number(
-                      parseFloat(convertUnit(yearlyproduction)).toFixed(2)
-                    ).toLocaleString("en-US")
+                    parseFloat(convertUnit(yearlyproduction)).toFixed(2)
+                  ).toLocaleString("en-US")
                   : Number(
-                      parseFloat(convertUnit(monthlyproduction)).toFixed(2)
-                    ).toLocaleString("en-US")}
+                    parseFloat(convertUnit(monthlyproduction)).toFixed(2)
+                  ).toLocaleString("en-US")}
                 &nbsp;
                 {chart === "year" ? (
                   <span
@@ -1184,7 +1184,7 @@ export default function Home(props) {
                           ...datamonth.map(
                             (item) =>
                               item[
-                                dataLang.formatMessage({ id: "monthOutput" })
+                              dataLang.formatMessage({ id: "monthOutput" })
                               ]
                           )
                         ),
@@ -1363,17 +1363,51 @@ export default function Home(props) {
             </div>
           </div>
 
-          <div className="DAT_Home_Rank-Content">
-            <DataTable
-              className="DAT_Table_Home"
-              columns={columnHome}
-              data={plant.value}
-              pagination
-              paginationComponentOptions={paginationComponentOptions}
-              fixedHeader={true}
-              noDataComponent={<Empty />}
-            />
-          </div>
+          {isMobile.value ?
+            <>
+              {plant.value.map((item, index) => {
+                return (
+                  <div key={index} className="DAT_Home_Rank-ContentMobile">
+                    <div className="DAT_Home_Rank-ContentMobile_Top">
+                      <div className="DAT_Home_Rank-ContentMobile_Top_Ava">
+                        {index + 1}
+                      </div>
+
+                      <div className="DAT_Home_Rank-ContentMobile_Top_Info">
+                        <div className="DAT_Home_Rank-ContentMobile_Top_Info_Name"
+                          id={item.plantid_}
+                          onClick={(e) => handleInfo(e)}
+                        >
+                          {item.plantname}
+                        </div>
+                        <div className="DAT_Home_Rank-ContentMobile_Top_Info_Sun">
+                          kWh/kWp(h): {parseFloat(sun[item.plantid_]).toFixed(2) === "NaN"
+                            ? 0
+                            : Number(parseFloat(sun[item.plantid_] / item.capacity).toFixed(2)).toLocaleString("en-US")}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="DAT_Home_Rank-ContentMobile_Bottom">
+                      {item.addr}
+                    </div>
+                  </div>
+                )
+              })}
+            </>
+            :
+            <div className="DAT_Home_Rank-Content">
+              <DataTable
+                className="DAT_Table_Home"
+                columns={columnHome}
+                data={plant.value}
+                pagination
+                paginationComponentOptions={paginationComponentOptions}
+                fixedHeader={true}
+                noDataComponent={<Empty />}
+              />
+            </div>
+          }
         </div>
 
         <div className="DAT_Home_Benefit">

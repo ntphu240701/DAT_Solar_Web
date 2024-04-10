@@ -21,6 +21,7 @@ import { signal } from "@preact/signals-react";
 import { closed, dataWarn, open } from "./component/Warn/Warn";
 import { useIntl } from "react-intl";
 import ErrorSetting from "./component/ErrorSetting/ErrorSetting";
+import { io } from "socket.io-client";
 
 const Home = React.lazy(() => import("./component/Home/Home"));
 const Project = React.lazy(() => import("./component/Project/Project"));
@@ -36,6 +37,7 @@ const Language = React.lazy(() => import("./component/Language/Language"));
 const Contact = React.lazy(() => import("./component/Contact/Contact"));
 const Rule = React.lazy(() => import("./component/Rule/Rule"));
 
+export const socket = signal(io.connect(process.env.REACT_APP_SOLAR));
 export const phuhosting = signal("http://192.168.68.6:3001");
 export const Token = signal({
   token: "",
@@ -208,7 +210,7 @@ export default function App() {
       }
     };
 
-    const checkApi = async () => {};
+    const checkApi = async () => { };
     checkAuth();
 
     if (status) {
@@ -291,7 +293,7 @@ export default function App() {
         <Alert />
         {loading ? (
           window.location.pathname === "/Verify" ||
-          window.location.pathname === "/VerifyRegister" ? (
+            window.location.pathname === "/VerifyRegister" ? (
             <Verify path={window.location.pathname} />
           ) : (
             <div className="DAT_Loading">

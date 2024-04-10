@@ -770,15 +770,14 @@
     }
 
     &_Body {
-        margin-top: -15px;
-        font-size: 13px;
+        font-size: 14px;
         padding: 16px;
         color: #505050;
-        // border-bottom: 0.5px solid rgb(194, 194, 194);
 
         &_Item {
             display: flex;
             align-items: center;
+            margin-bottom: 16px;
 
             &_Box {
                 padding: 10px;
@@ -788,12 +787,6 @@
                 outline: none;
                 margin-bottom: 10px;
             }
-        }
-
-
-        & input:disabled {
-            // background-color: white;
-            // color: black;
         }
     }
 }

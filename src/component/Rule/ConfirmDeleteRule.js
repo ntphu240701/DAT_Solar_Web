@@ -44,7 +44,7 @@ export default function ConfirmDeleteRule(props) {
     <div className="DAT_ConfirmPopup_Box">
       <div className="DAT_ConfirmPopup_Box_Head">
         <div className="DAT_ConfirmPopup_Box_Head_Left">
-          <p>{dataLang.formatMessage({ id: "delRule" })}</p>
+          {dataLang.formatMessage({ id: "delRule" })}
         </div>
         <div className="DAT_ConfirmPopup_Box_Head_Right">
           <div className="DAT_ConfirmPopup_Box_Head_Right_Icon"
@@ -60,8 +60,8 @@ export default function ConfirmDeleteRule(props) {
 
       <div className="DAT_ConfirmPopup_Box_Body">
         {del
-          ? <p>{dataLang.formatMessage({ id: "delrulemess" })}</p>
-          : <p>{dataLang.formatMessage({ id: "deleteDenied" })}</p>
+          ? <>{dataLang.formatMessage({ id: "delrulemess" })}</>
+          : <>{dataLang.formatMessage({ id: "deleteDenied" })}</>
         }
       </div>
 

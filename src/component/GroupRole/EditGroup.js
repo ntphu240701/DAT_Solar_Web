@@ -61,7 +61,7 @@ export default function CreateGroupRole(props) {
         name_: name,
       }
       props.handleClose();
-      alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+      alertDispatch(dataLang.formatMessage({ id: "alert_57" }));
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
@@ -87,7 +87,7 @@ export default function CreateGroupRole(props) {
     <div className="DAT_CreateGroupRole">
       <div className="DAT_CreateGroupRole_Header">
         <div className="DAT_CreateGroupRole_Header_Left">
-          <p>{dataLang.formatMessage({ id: 'editGroup' })}</p>
+          {dataLang.formatMessage({ id: 'editGroup' })}
         </div>
 
         <div className="DAT_CreateGroupRole_Header_Right">

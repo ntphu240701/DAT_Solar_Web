@@ -39,7 +39,7 @@ export default function Popup(props) {
         (item) => item.id_ != parseInt(userDel.value)
       );
       props.handleClose();
-      alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+      alertDispatch(dataLang.formatMessage({ id: "alert_55" }));
     } else {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
@@ -66,7 +66,7 @@ export default function Popup(props) {
       </div>
 
       <div className="DAT_Popup_Box_Body">
-        <p>{dataLang.formatMessage({ id: "delaccountmess" })}</p>
+        {dataLang.formatMessage({ id: "delaccountmess" })}
       </div>
 
       <div className="DAT_Popup_Box_Foot">

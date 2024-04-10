@@ -63,7 +63,7 @@ export default function PopupAva(props) {
   const handleSave = async (e) => {
     const d = await callApi('post', host.DATA + '/updatePartner', { code: partnerInfor.value.code, type: 'logo', data: ava })
     if (d.status) {
-      alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+      alertDispatch(dataLang.formatMessage({ id: "alert_58" }));
       partnerInfor.value = {
         ...partnerInfor.value,
         logo: ava

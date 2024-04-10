@@ -102,7 +102,7 @@ export default function EditRule(props) {
         newData[index].rulename_ = rulenameRef.current.value;
         datarule.value = [...newData];
         props.handleClose();
-        alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+        alertDispatch(dataLang.formatMessage({ id: "alert_62" }));
       }
     }
     else {
