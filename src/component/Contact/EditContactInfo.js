@@ -262,9 +262,8 @@ export default function EditContactInfo(props) {
               </div>
             </div>
           </div>
-          </>
         }
-    </div>
+      </div>
     </div >
   );
 }
