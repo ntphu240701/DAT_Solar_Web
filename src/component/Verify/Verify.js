@@ -60,8 +60,23 @@ export default function Verify(props) {
 
     return (
         <div className='DAT_Verify'>
+            <div className="DAT_Login_Head">
+                <div className="DAT_Login_Head_Logo">
+                    <img src={"/dat_icon/Embody_APP_24.png"} alt="" />
+                </div>
+
+                <div className="DAT_Login_Head_Title">
+                    <div className="DAT_Login_Head_Title_Main">
+                        {/* <img src={"/dat_icon/Embody_APP_27.png"} width={'150px'} height={'30px'} alt='' ></img> */}
+                        AIOT Energy
+                    </div>
+                    <div className="DAT_Login_Head_Title_Sub">
+                        {dataLang.formatMessage({ id: "sologon" })}{" "}
+                    </div>
+                </div>
+
+            </div>
             <div className='DAT_Verify_Form' >
-                <p>DAT GROUP</p>
                 <div className="DAT_Verify_Form-note" style={{ textAlign: 'justify' }} >
                     {notif}
                 </div>
@@ -70,6 +85,16 @@ export default function Verify(props) {
                     <span onClick={() => { window.location.href = '/Login' }} >{dataLang.formatMessage({ id: 'login' })}</span>
                 </div>
             </div>
+            <div className="DAT_Login_Footer">
+        <div className="DAT_Login_Footer_Info">
+          <span className="DAT_Login_Footer_Info_Version">
+            {dataLang.formatMessage({ id: "version" })}:{" "}
+            {process.env.REACT_APP_VER}
+          </span>
+          &nbsp;
+          <span className="DAT_Login_Footer_Info_Title">Embody Platform</span>
+        </div>
+      </div>
         </div>
     );
 }

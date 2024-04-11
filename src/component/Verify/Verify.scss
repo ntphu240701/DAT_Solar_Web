@@ -14,10 +14,15 @@
     // background-position: center bottom !important;
     // background-repeat: no-repeat;
     // background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #e4ebf5;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // background-color: #e4ebf5;
+
+    background-image: url("../../../public/dat_picture/Embody_APP_22.jpg");
+    background-position: center bottom !important;
+    background-repeat: no-repeat;
+    background-size: cover;
 
     &::-webkit-scrollbar {
         display: none;
@@ -27,14 +32,15 @@
 
     &_Form {
         width: 90%;
-        //Smargin: auto;
+        margin: auto;
         //margin-top: calc(15vh);
         padding-top: 20px;
         padding-bottom: 20px;
         text-align: center;
         border-radius: 5px;
-        background-color: #e4ebf5;
-        box-shadow: 3px 3px 5px #cbced1, -3px -3px 5px #fff;
+        background-color: rgb(0, 62, 149, 0.7);
+        // box-shadow: 3px 3px 5px rgba(53, 53, 53, 0.4), -3px -3px 5px rgba(53, 53, 53, 0.4);
+        border: solid 1px rgb(229, 229, 229, 0.5);
         -webkit-box-sizing: border-box;
         /* Safari/Chrome, other WebKit */
         -moz-box-sizing: border-box;
@@ -57,7 +63,7 @@
             margin: auto;
             height: 40px;
             margin-bottom: 15px;
-            color: #6495ed;
+            color: #ffffff;
             //border: solid 1px rgb(37, 186, 255);;
             border-radius: 10px;
             justify-content: center;
@@ -81,7 +87,7 @@
             margin: auto;
             display: flex;
             justify-content: space-between;
-            color: gray;
+            color: rgb(255, 255, 255);
             font-size: small;
             margin-top: 10px;
 
