@@ -731,7 +731,7 @@ iframe {
 
       &_Table {
         border-collapse: collapse;
-        width: 100%;
+        min-width: 100%;
 
         &_Tr {
           display: flex;
@@ -740,20 +740,23 @@ iframe {
           &_Th {
             padding: 12px;
             background-color: #d4d4d4;
-            width: 230px;
+            min-width: 200px;
+            min-height: 40px;
             text-align: left;
           }
 
           &_Td {
-            padding-left: 16px;
+            padding: 0px 16px;
             display: flex;
+            justify-content: space-between;
 
             &_Checkbox {
               display: flex;
               align-items: center;
-              gap: 10px;
+              justify-content: space-between;
               padding-left: 10px;
-              //  width: 200px;
+              height: 40px;
+              // min-width: 120px;
 
               & input {
                 outline: none;

@@ -91,6 +91,7 @@ export const messages = {
     reportType: "Report Type",
     household: "Household",
     factory: "Factory",
+    plantmode: "Plant Mode",
     electricType: "Type of Electrical System",
     gridType: "Grid-tied System",
     consumptionType: "Self-consumption",
@@ -321,7 +322,7 @@ export const messages = {
     SelFirmwarePackage: "Select Firmware Package",
     ClickSelectFirmwarePackage: "Click Select Firmware Package",
 
-    //Timeout 
+    //Timeout
     Timeout: "Timeout",
     OneminsTimeout: "1 mins timeout",
     TwominsTimeout: "2 mins timeout",
@@ -472,7 +473,7 @@ export const messages = {
     // System Time
     SystemTime: "System Time",
 
-    // Grid First 
+    // Grid First
     GridFirst: "Grid First",
     GridFirstStartTime: "Grid First Start Time 1",
     GridFirstStartTime2: "Grid First Start Time 2",
@@ -492,7 +493,7 @@ export const messages = {
     GridFirstEnable3: "Grid First Enable 3",
     DischargePowerLimit3: "Discharge Power percentage Limit (Time Period 3)",
 
-    // Battery First 
+    // Battery First
     BatteryFirst: "Battery First",
     BatteryFirstStartTime: "Battery First Start Time 1",
     BatteryFirstStartTime2: "Battery First Start Time 2",
@@ -574,7 +575,8 @@ export const messages = {
     alert_7: "Setup unsuccessful!",
     alert_8: "Please access your Email for confirmation!!",
     alert_9: "Sign up successfully!",
-    alert_10: "This username has been used, please try using a different username!",
+    alert_10:
+      "This username has been used, please try using a different username!",
     alert_11: "This email has been used, please try using a different email!",
     alert_12: "OTP is incorrect!",
     alert_13: "Send OTP successfully!",
@@ -926,6 +928,7 @@ export const messages = {
     reportType: "Loại báo cáo",
     household: "Dân dụng",
     factory: "Nhà máy",
+    plantmode: "Loại hệ thống",
     electricType: "Loại hệ thống điện",
     gridType: "Hệ thống hòa lưới",
     consumptionType: "Hệ thống hòa lưới bám tải",
@@ -1156,7 +1159,7 @@ export const messages = {
     SelFirmwarePackage: "Chọn gói phần mềm",
     ClickSelectFirmwarePackage: "Nhấn để chọn gói phần mềm",
 
-    //Timeout 
+    //Timeout
     Timeout: "Timeout",
     OneminsTimeout: "Cập nhật sau 1 phút",
     TwominsTimeout: "Cập nhật sau 2 phút",
@@ -1308,7 +1311,7 @@ export const messages = {
     // System Time
     SystemTime: "Thời gian hệ thống",
 
-    // Grid First 
+    // Grid First
     GridFirst: "Ưu tiên lưới điện",
     GridFirstStartTime: "Thời gian bắt đầu ưu tiên lưới 1",
     GridFirstStartTime2: "Thời gian bắt đầu ưu tiên lưới 2",
@@ -1322,13 +1325,13 @@ export const messages = {
     GridFirstEndTime3: "Thời gian kết thúc ưu tiên lưới 3",
     DischargePowerLimit2: "Tỉ lệ công suất giới hạn xả (ưu tiên 2)",
 
-    // Grid Enable 
+    // Grid Enable
     GridFirstEnable: "Kích hoạt chế độ ưu tiên lưới 1",
     GridFirstEnable2: "Kích hoạt chế độ ưu tiên lưới 2",
     GridFirstEnable3: "Kích hoạt chế độ ưu tiên lưới 3",
     DischargePowerLimit3: "Tỉ lệ công suất giới hạn xả (ưu tiên 3)",
 
-    // Battery First 
+    // Battery First
     BatteryFirst: "Ưu tiên ắc quy",
     BatteryFirstStartTime: "Thời gian bắt đầu ưu tiên ắc quy 1",
     BatteryFirstStartTime2: "Thời gian bắt đầu ưu tiên ắc quy 2",
@@ -1396,7 +1399,8 @@ export const messages = {
     delrulemess: "Bạn có chắc muốn xóa phân quyền người dùng này không?",
     deleteDenied: "Bạn không thể xóa phân quyền Master",
     remindAlert: "Vui lòng kiểm tra!",
-    accountLockAlert: "Tài khoản của bạn hiện đang bị khoá vui lòng liên hệ quản trị viên để kích hoạt lại!",
+    accountLockAlert:
+      "Tài khoản của bạn hiện đang bị khoá vui lòng liên hệ quản trị viên để kích hoạt lại!",
 
     //ALERT DISPATCH
     alert_0: "Tài khoản hoặc mật khẩu không đúng!",

@@ -102,6 +102,12 @@ export default function Project(props) {
     min: 0,
     max: 10000,
     location: "",
+    elecmode: {
+      grid: true,
+      consumption: true,
+      hybrid: true,
+      ESS: true,
+    },
   });
 
   const listTab = [
@@ -193,6 +199,14 @@ export default function Project(props) {
       width: "100px",
     },
     {
+      name: dataLang.formatMessage({
+        id: "electricType",
+        defaultMessage: "Plant Mode",
+      }),
+      selector: (row) => dataLang.formatMessage({ id: `${row.plantmode}Type` }),
+      width: "250px",
+    },
+    {
       name: dataLang.formatMessage({ id: "inCapacity" }),
       selector: (row) => (
         <>
@@ -269,7 +283,7 @@ export default function Project(props) {
           }}
         >
           {ruleInfor.value.setting.project.modify == true ||
-            ruleInfor.value.setting.project.remove == true ? (
+          ruleInfor.value.setting.project.remove == true ? (
             row.shared == 1 ? (
               <></>
             ) : (
@@ -499,40 +513,104 @@ export default function Project(props) {
       min: 0,
       max: 10000,
       location: "",
+      elecmode: {
+        grid: true,
+        consumption: true,
+        hybrid: true,
+        ESS: true,
+      },
     });
     setDisplay(false);
     setDatafilter(dataproject.value);
   };
 
-  const handleApproveFilter = (_min, _max, _location) => {
+  const handleApproveFilter = (_min, _max, _location, _elecmode) => {
     let temp = [];
     let min_ = _min === "" ? 0 : _min;
     let max_ = _max === "" ? 10000 : _max;
+    // let elecmode_ = _elecmode;
     setSaveDataInputFilter({
       min: parseFloat(min_),
       max: parseFloat(max_),
       location: _location,
+      elecmode: _elecmode,
     });
-    if (_location) {
-      dataproject.value.filter((item) => {
-        if (
-          parseFloat(item.capacity) >= parseFloat(min_) &&
-          parseFloat(item.capacity) <= parseFloat(max_) &&
-          lowercasedata(item.addr).includes(lowercasedata(_location))
-        ) {
-          temp = [...temp, item];
-        }
-      });
-    } else {
-      dataproject.value.filter((item) => {
-        if (
-          parseFloat(item.capacity) >= parseFloat(min_) &&
-          parseFloat(item.capacity) <= parseFloat(max_)
-        ) {
-          temp = [...temp, item];
-        }
-      });
+    console.log(_elecmode);
+    // if (_location) {
+    //   dataproject.value.filter((item) => {
+    //     if (
+    //       parseFloat(item.capacity) >= parseFloat(min_) &&
+    //       parseFloat(item.capacity) <= parseFloat(max_) &&
+    //       lowercasedata(item.addr).includes(lowercasedata(_location))
+    //     ) {
+    //       temp = [...temp, item];
+    //     }
+    //   });
+    // } else {
+    //   dataproject.value.filter((item) => {
+    //     if (
+    //       parseFloat(item.capacity) >= parseFloat(min_) &&
+    //       parseFloat(item.capacity) <= parseFloat(max_)
+    //     ) {
+    //       temp = [...temp, item];
+    //     }
+    //   });
+    // }
+    // setDatafilter(temp);
+    // setDisplay(false);
+    let filter1 = dataproject.value.filter((item) => {
+      if (
+        parseFloat(item.capacity) >= parseFloat(min_) &&
+        parseFloat(item.capacity) <= parseFloat(max_)
+      ) {
+        return item;
+      }
+    });
+    let filter2 = dataproject.value.filter((item) => {
+      if (_location) {
+        return lowercasedata(item.addr).includes(lowercasedata(_location));
+      } else {
+        return item;
+      }
+    });
+    let filter3 = [];
+    if (_elecmode.grid === true) {
+      let t = dataproject.value.filter((item) => item.plantmode === "grid");
+      filter3 = [...filter3, ...t];
     }
+    if (_elecmode.consumption === true) {
+      let t = dataproject.value.filter(
+        (item) => item.plantmode === "consumption"
+      );
+      filter3 = [...filter3, ...t];
+    }
+    if (_elecmode.hybrid === true) {
+      let t = dataproject.value.filter((item) => item.plantmode === "hybrid");
+      filter3 = [...filter3, ...t];
+    }
+    if (_elecmode.ESS === true) {
+      let t = dataproject.value.filter((item) => item.plantmode === "ESS");
+      filter3 = [...filter3, ...t];
+    }
+
+    const set1 = new Set(filter1.map((obj) => Object.values(obj)[0]));
+    const set2 = new Set(filter2.map((obj) => Object.values(obj)[0]));
+    const set3 = new Set(filter3.map((obj) => Object.values(obj)[0]));
+
+    //TRẢ LẠI ARRAY [45, 68]
+    const commonKeys = [...set1].filter(
+      (value) => set2.has(value) && set3.has(value)
+    );
+    console.log(commonKeys);
+
+    // TRẢ LẠI OBJECT {45, 68}
+    // const y = set1.intersection(set2, set3);
+    // console.log(y);
+
+    temp = dataproject.value.filter((item) =>
+      commonKeys.includes(item.plantid_)
+    );
+    // console.log(temp);
     setDatafilter(temp);
     setDisplay(false);
   };
@@ -545,6 +623,7 @@ export default function Project(props) {
     demo.value = dataproject.value.filter((item) => item.shared == 1);
     tabLable.value = listTab[0].name;
     setDatafilter(dataproject.value);
+    console.log(dataproject.value);
   }, [dataproject.value]);
 
   useEffect(() => {
@@ -778,7 +857,8 @@ export default function Project(props) {
       {isMobile.value ? (
         <div className="DAT_ProjectMobile">
           <div className="DAT_Toollist_Tab_Mobile">
-            <button className="DAT_Toollist_Tab_Mobile_content"
+            <button
+              className="DAT_Toollist_Tab_Mobile_content"
               onClick={() => (tabMobile.value = !tabMobile.value)}
             >
               <span>{tabLable.value}</span>
@@ -787,22 +867,26 @@ export default function Project(props) {
                 {tabMobile.value ? <IoIosArrowDown /> : <IoIosArrowForward />}
               </div>
             </button>
-            <div className="DAT_Toollist_Tab_Mobile_list"
+            <div
+              className="DAT_Toollist_Tab_Mobile_list"
               style={{
                 top: "50px",
                 height: tabMobile.value ? "200px" : "0",
                 transition: "0.5s",
-                boxShadow: tabMobile.value ? "0 0 4px 4px rgba(193, 193, 193, 0.5)" : "none"
+                boxShadow: tabMobile.value
+                  ? "0 0 4px 4px rgba(193, 193, 193, 0.5)"
+                  : "none",
               }}
             >
               {listTab.map((item, i) => {
                 return (
-                  <div className="DAT_Toollist_Tab_Mobile_list_item"
+                  <div
+                    className="DAT_Toollist_Tab_Mobile_list_item"
                     key={"tabmobile_" + i}
                     id={item.id}
                     onClick={(e) => {
                       handleTabMobile(e);
-                      tabMobile.value = false
+                      tabMobile.value = false;
                     }}
                   >
                     {i + 1}: {item.name}
@@ -886,14 +970,18 @@ export default function Project(props) {
                                     <>
                                       <FaCheckCircle size={14} color="green" />
                                       <span>
-                                        {dataLang.formatMessage({ id: "noAlert", })}
+                                        {dataLang.formatMessage({
+                                          id: "noAlert",
+                                        })}
                                       </span>
                                     </>
                                   ) : (
                                     <>
                                       <MdOutlineError size={16} color="red" />
                                       <span>
-                                        {dataLang.formatMessage({ id: "alert", })}
+                                        {dataLang.formatMessage({
+                                          id: "alert",
+                                        })}
                                       </span>
                                     </>
                                   )}
@@ -1001,7 +1089,7 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1013,7 +1101,7 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1175,7 +1263,7 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1187,7 +1275,7 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1349,7 +1437,7 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1361,7 +1449,7 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1523,7 +1611,7 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1535,7 +1623,7 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1697,7 +1785,7 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1709,7 +1797,7 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1871,7 +1959,7 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1883,7 +1971,7 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                                true ? (
+                              true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}

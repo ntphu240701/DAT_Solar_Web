@@ -20,13 +20,46 @@ export default function Filter(props) {
   const max = useRef(0);
   const location = useRef("");
   const today = new Date();
-  const todayString = today.toISOString().split('T')[0];
+  const todayString = today.toISOString().split("T")[0];
   const [deviceF, setDeviceF] = useState("all");
+  const [pre, setPre] = useState({
+    grid: true,
+    consumption: true,
+    hybrid: true,
+    ESS: true,
+  });
+  const [next, setNext] = useState({
+    grid: true,
+    consumption: true,
+    hybrid: true,
+    ESS: true,
+  });
+  useEffect(() => {
+    // mo filter la lay pre
+    console.log(pre, next);
+  }, [pre, next]);
+
+  useEffect(() => {
+    // mo filter la lay pre
+    if (props.display) {
+      console.log("next da lay cua pre");
+      setNext({
+        ...pre,
+      });
+    }
+  }, [props.display]);
+
+  useEffect(() => {
+    // nhan luu
+    console.log("save pre");
+    setPre(props.data.elecmode);
+    console.log(props.data.elecmode);
+  }, [props.data]);
 
   const displayFilter = {
     greyFilter: "calc(100vh - 180px)",
     noneheight: "0px",
-    plantHeight: "200px",
+    plantHeight: "280px",
     deviceHeight: "140px",
     warnHeight: "180px",
   };
@@ -42,16 +75,16 @@ export default function Filter(props) {
     if (document.getElementById("warn").checked) {
       props.warn.value = "warn";
       setWarnChecked(true);
-      console.log(props.warn.value)
+      console.log(props.warn.value);
     } else {
-      document.getElementById("warn").checked = false
+      document.getElementById("warn").checked = false;
       props.warn.value = {};
       setWarnChecked(false);
     }
     if (document.getElementById("notice").checked) {
       props.notice.value = "notice";
-      console.log(props.notice.value)
-      setNoticeChecked(true)
+      console.log(props.notice.value);
+      setNoticeChecked(true);
     } else {
       document.getElementById("notice").checked = false;
       props.notice.value = {};
@@ -87,22 +120,38 @@ export default function Filter(props) {
     };
   }, [props.display]);
 
+  const handleReadPlantMode = (e) => {
+    // console.log(e.target.checked);
+    // console.log(e.target.id);
+    setNext({
+      ...next,
+      [e.target.id]: e.target.checked,
+    });
+    // console.log(elecmode);
+  };
+
   return (
     <>
       {(() => {
         switch (props.type) {
           case "project":
             return (
-              <div className="DAT_Filter"
+              <div
+                className="DAT_Filter"
                 style={{
-                  height: props.display ? displayFilter.greyFilter : displayFilter.noneheight,
+                  height: props.display
+                    ? displayFilter.greyFilter
+                    : displayFilter.noneheight,
                   transition: "0.4s ease-in-out",
                 }}
               >
                 {props.display ? (
-                  <div className="DAT_Filter_Dropdown"
+                  <div
+                    className="DAT_Filter_Dropdown"
                     style={{
-                      height: props.display ? displayFilter.plantHeight : displayFilter.noneheight,
+                      height: props.display
+                        ? displayFilter.plantHeight
+                        : displayFilter.noneheight,
                       transition: "0.9s",
                     }}
                   >
@@ -116,12 +165,30 @@ export default function Filter(props) {
                             </th>
                             <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
                               <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                <input type="number" id="min" ref={min} placeholder={dataLang.formatMessage({ id: "minkWp" })}
-                                  defaultValue={props.data.min !== 0 ? props.data.min : ""}
+                                <input
+                                  type="number"
+                                  id="min"
+                                  ref={min}
+                                  placeholder={dataLang.formatMessage({
+                                    id: "minkWp",
+                                  })}
+                                  defaultValue={
+                                    props.data.min !== 0 ? props.data.min : ""
+                                  }
                                 />
                                 ~
-                                <input type="number" id="max" ref={max} placeholder={dataLang.formatMessage({ id: "maxkWp" })}
-                                  defaultValue={props.data.max !== 10000 ? props.data.max : ""}
+                                <input
+                                  type="number"
+                                  id="max"
+                                  ref={max}
+                                  placeholder={dataLang.formatMessage({
+                                    id: "maxkWp",
+                                  })}
+                                  defaultValue={
+                                    props.data.max !== 10000
+                                      ? props.data.max
+                                      : ""
+                                  }
                                 />
                               </div>
                             </td>
@@ -137,11 +204,72 @@ export default function Filter(props) {
                                 <input
                                   type="text"
                                   id="location"
-                                  defaultValue={props.data.location !== "" ? props.data.location : ""}
+                                  defaultValue={
+                                    props.data.location !== ""
+                                      ? props.data.location
+                                      : ""
+                                  }
                                   ref={location}
-                                  placeholder={dataLang.formatMessage({ id: "enterLocation" })}
+                                  placeholder={dataLang.formatMessage({
+                                    id: "enterLocation",
+                                  })}
                                 />
                               </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody>
+                          <tr className="DAT_Filter_Dropdown_Item_Table_Tr">
+                            <th className="DAT_Filter_Dropdown_Item_Table_Tr_Th">
+                              {dataLang.formatMessage({ id: "plantmode" })}:
+                            </th>
+                            <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
+                              <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                <input
+                                  id="grid"
+                                  type="checkbox"
+                                  checked={next.grid}
+                                  onChange={(e) => handleReadPlantMode(e)}
+                                />
+                                <label htmlFor="grid">
+                                  {dataLang.formatMessage({ id: "gridType" })}
+                                </label>
+                              </div>
+                              <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                <input
+                                  id="consumption"
+                                  type="checkbox"
+                                  checked={next.consumption}
+                                  onChange={(e) => handleReadPlantMode(e)}
+                                />
+                                <label htmlFor="consumption">
+                                  {dataLang.formatMessage({
+                                    id: "consumptionType",
+                                  })}
+                                </label>
+                              </div>
+                              <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                <input
+                                  id="hybrid"
+                                  type="checkbox"
+                                  checked={next.hybrid}
+                                  onChange={(e) => handleReadPlantMode(e)}
+                                />
+                                <label htmlFor="hybrid">
+                                  {dataLang.formatMessage({ id: "hybridType" })}
+                                </label>
+                              </div>
+                              {/* <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                <input
+                                  id="ESS"
+                                  type="checkbox"
+                                  checked={next.ESS}
+                                  onChange={(e) => handleReadPlantMode(e)}
+                                />
+                                <label htmlFor="ESS">
+                                  {dataLang.formatMessage({ id: "ESS" })}
+                                </label>
+                              </div> */}
                             </td>
                           </tr>
                         </tbody>
@@ -161,15 +289,19 @@ export default function Filter(props) {
                           props.handleReset();
                         }}
                       >
-                        {dataLang.formatMessage({ id: 'reset' })}
+                        {dataLang.formatMessage({ id: "reset" })}
                       </button>
                       <button
-                        style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
+                        style={{
+                          backgroundColor: COLOR.value.PrimaryColor,
+                          color: "white",
+                        }}
                         onClick={() =>
                           props.handleClose(
                             min.current.value,
                             max.current.value,
-                            location.current.value
+                            location.current.value,
+                            next
                           )
                         }
                       >
@@ -187,7 +319,9 @@ export default function Filter(props) {
               <div
                 className="DAT_Filter"
                 style={{
-                  height: props.display ? displayFilter.greyFilter : displayFilter.noneheight,
+                  height: props.display
+                    ? displayFilter.greyFilter
+                    : displayFilter.noneheight,
                   transition: "0.4s ease-in-out",
                 }}
               >
@@ -195,7 +329,9 @@ export default function Filter(props) {
                   <form
                     className="DAT_Filter_Dropdown"
                     style={{
-                      height: props.display ? displayFilter.deviceHeight : displayFilter.noneheight,
+                      height: props.display
+                        ? displayFilter.deviceHeight
+                        : displayFilter.noneheight,
                       transition: "0.9s",
                     }}
                   >
@@ -273,7 +409,9 @@ export default function Filter(props) {
                     <div className="DAT_Filter_Dropdown_Bot">
                       <button
                         style={{ backgroundColor: "white", color: "black" }}
-                        onClick={() => { props.handleClose(); }}
+                        onClick={() => {
+                          props.handleClose();
+                        }}
                       >
                         {dataLang.formatMessage({ id: "cancel" })}
                       </button>
@@ -285,10 +423,13 @@ export default function Filter(props) {
                           setDeviceF("all");
                         }}
                       >
-                        {dataLang.formatMessage({ id: 'reset' })}
+                        {dataLang.formatMessage({ id: "reset" })}
                       </button>
                       <button
-                        style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
+                        style={{
+                          backgroundColor: COLOR.value.PrimaryColor,
+                          color: "white",
+                        }}
                         onClick={(e) => props.handlefilterdevice(deviceF)}
                       >
                         {dataLang.formatMessage({ id: "confirm" })}
@@ -299,19 +440,25 @@ export default function Filter(props) {
                   <></>
                 )}
               </div>
-            )
+            );
           case "warn":
             return (
-              <div className="DAT_Filter"
+              <div
+                className="DAT_Filter"
                 style={{
-                  height: props.display ? displayFilter.greyFilter : displayFilter.noneheight,
+                  height: props.display
+                    ? displayFilter.greyFilter
+                    : displayFilter.noneheight,
                   transition: "0.4s ease-in-out",
                 }}
               >
                 {props.display ? (
-                  <form className="DAT_Filter_Dropdown"
+                  <form
+                    className="DAT_Filter_Dropdown"
                     style={{
-                      height: props.display ? displayFilter.warnHeight : displayFilter.noneheight,
+                      height: props.display
+                        ? displayFilter.warnHeight
+                        : displayFilter.noneheight,
                       transition: "0.9s",
                     }}
                   >
@@ -324,7 +471,9 @@ export default function Filter(props) {
                             </th>
                             <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
                               <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                <input id="warn" type="checkbox"
+                                <input
+                                  id="warn"
+                                  type="checkbox"
                                   checked={warnChecked}
                                   onChange={(e) => handleSelect(e)}
                                 />
@@ -337,7 +486,9 @@ export default function Filter(props) {
                             </td>
                             <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
                               <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                <input id="notice" type="checkbox"
+                                <input
+                                  id="notice"
+                                  type="checkbox"
                                   checked={noticeChecked}
                                   onChange={(e) => handleSelect(e)}
                                 />
@@ -358,7 +509,8 @@ export default function Filter(props) {
                             </th>
                             <td className="DAT_Filter_Dropdown_Item_Table_Tr_Td">
                               <div className="DAT_Filter_Dropdown_Item_Table_Tr_Td_Checkbox">
-                                <input type="date"
+                                <input
+                                  type="date"
                                   ref={opentime}
                                   value={startDate}
                                   onChange={handleStartDateChange}
@@ -366,7 +518,8 @@ export default function Filter(props) {
                                   max={endDate}
                                 />
                                 ~
-                                <input type="date"
+                                <input
+                                  type="date"
                                   ref={closetime}
                                   value={endDate}
                                   onChange={handleEndDateChange}
@@ -397,10 +550,18 @@ export default function Filter(props) {
                         {dataLang.formatMessage({ id: "reset" })}
                       </button>
                       <button
-                        style={{ backgroundColor: COLOR.value.PrimaryColor, color: "white" }}
-                        onClick={() => props.handleFilter(opentime.current.value, closetime.current.value)}
+                        style={{
+                          backgroundColor: COLOR.value.PrimaryColor,
+                          color: "white",
+                        }}
+                        onClick={() =>
+                          props.handleFilter(
+                            opentime.current.value,
+                            closetime.current.value
+                          )
+                        }
                       >
-                        {dataLang.formatMessage({ id: 'confirm' })}
+                        {dataLang.formatMessage({ id: "confirm" })}
                       </button>
                     </div>
                   </form>
@@ -408,9 +569,9 @@ export default function Filter(props) {
                   <></>
                 )}
               </div>
-            )
+            );
           default:
-            return <></>
+            return <></>;
         }
       })()}
     </>
