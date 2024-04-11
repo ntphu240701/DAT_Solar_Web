@@ -23,6 +23,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { isMobile } from "../Navigation/Navigation";
 import { CiSearch } from "react-icons/ci";
+import { COLOR } from "../../App";
 
 const data = [
   {
@@ -1784,22 +1785,610 @@ const HistoricalData = (props) => {
                               <th className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Th">
                                 {dataLang.formatMessage({ id: "basicInfo" })}:
                               </th>
-                              <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td">
+                              <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td" >
                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                   <input
                                     type="checkbox"
-                                    id={"productionData_"}
+                                    id={"RatedPower"}
                                   />
                                   <label
-                                    htmlFor={"productionData_"}
+                                    htmlFor={"RatedPower"}
                                   >
                                     Rated Power
                                   </label>
                                 </div>
                               </td>
                             </tr>
+
+                            <tr className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr">
+                              <th className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                {dataLang.formatMessage({ id: "ElectricityGeneration" })}:
+                              </th>
+                              <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td" >
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"DC Voltage PV1"}
+                                  />
+                                  <label
+                                    htmlFor={"DC Voltage PV1"}
+                                  >
+                                    DC Voltage PV1
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"DC Voltage PV2"}
+                                  />
+                                  <label
+                                    htmlFor={"DC Voltage PV2"}
+                                  >
+                                    DC Voltage PV2
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"DC Current PV1"}
+                                  />
+                                  <label
+                                    htmlFor={"DC Current PV1"}
+                                  >
+                                    DC Current PV1
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"DC Current PV2"}
+                                  />
+                                  <label
+                                    htmlFor={"DC Current PV2"}
+                                  >
+                                    DC Current PV2
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"DC Power PV1"}
+                                  />
+                                  <label
+                                    htmlFor={"DC Power PV1"}
+                                  >
+                                    DC Power PV1
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"DC Power PV2"}
+                                  />
+                                  <label
+                                    htmlFor={"DC Power PV2"}
+                                  >
+                                    DC Power PV2
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"AC Voltage R/U/A"}
+                                  />
+                                  <label
+                                    htmlFor={"AC Voltage R/U/A"}
+                                  >
+                                    AC Voltage R/U/A
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"AC Current R/U/A"}
+                                  />
+                                  <label
+                                    htmlFor={"AC Current R/U/A"}
+                                  >
+                                    AC Current R/U/A
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"AC Output Frequency R"}
+                                  />
+                                  <label
+                                    htmlFor={"AC Output Frequency R"}
+                                  >
+                                    AC Output Frequency R
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Total AC Output Power"}
+                                  />
+                                  <label
+                                    htmlFor={"Total AC Output Power"}
+                                  >
+                                    Total AC Output Power
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Reactive Power"}
+                                  />
+                                  <label
+                                    htmlFor={"Reactive Power"}
+                                  >
+                                    Reactive Power
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Daily Production (Active)"}
+                                  />
+                                  <label
+                                    htmlFor={"Daily Production (Active)"}
+                                  >
+                                    Daily Production (Active)
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Load Active Power"}
+                                  />
+                                  <label
+                                    htmlFor={"Load Active Power"}
+                                  >
+                                    Load Active Power
+                                  </label>
+                                </div>
+                              </td>
+                            </tr>
+
+                            <tr className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr">
+                              <th className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                Power Grid:
+                              </th>
+                              <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Leak Current"}
+                                  />
+                                  <label
+                                    htmlFor={"Leak Current"}
+                                  >
+                                    Leak Current
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Total Grid Power"}
+                                  />
+                                  <label
+                                    htmlFor={"Total Grid Power"}
+                                  >
+                                    Total Grid Power
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Cumulative Grid Feed-in"}
+                                  />
+                                  <label
+                                    htmlFor={"Cumulative Grid Feed-in"}
+                                  >
+                                    Cumulative Grid Feed-in
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Cumulative Energy Purchased"}
+                                  />
+                                  <label
+                                    htmlFor={"Cumulative Energy Purchased"}
+                                  >
+                                    Cumulative Energy Purchased
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Daily Grid Feed-in"}
+                                  />
+                                  <label
+                                    htmlFor={"Daily Grid Feed-in"}
+                                  >
+                                    Daily Grid Feed-in
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Daily Energy Purchased"}
+                                  />
+                                  <label
+                                    htmlFor={"Daily Energy Purchased"}
+                                  >
+                                    Daily Energy Purchased
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Meter Power"}
+                                  />
+                                  <label
+                                    htmlFor={"Meter Power"}
+                                  >
+                                    Meter Power
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"CT Current"}
+                                  />
+                                  <label
+                                    htmlFor={"CT Current"}
+                                  >
+                                    CT Current
+                                  </label>
+                                </div>
+                              </td>
+                            </tr>
+
+                            <tr className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr">
+                              <th className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                Electricity Consumption:
+                              </th>
+                              <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Total Consumption Power"}
+                                  />
+                                  <label
+                                    htmlFor={"Total Consumption Power"}
+                                  >
+                                    Total Consumption Power
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Cumulative Consumption"}
+                                  />
+                                  <label
+                                    htmlFor={"Cumulative Consumption"}
+                                  >
+                                    Cumulative Consumption
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Daily Consumption"}
+                                  />
+                                  <label
+                                    htmlFor={"Daily Consumption"}
+                                  >
+                                    Daily Consumption
+                                  </label>
+                                </div>
+                              </td>
+                            </tr>
+
+                            <tr className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr">
+                              <th className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                Battery:
+                              </th>
+                              <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Battery Voltage"}
+                                  />
+                                  <label
+                                    htmlFor={"Battery Voltage"}
+                                  >
+                                    Battery Voltage
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Battery Current"}
+                                  />
+                                  <label
+                                    htmlFor={"Battery Current"}
+                                  >
+                                    Battery Current
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Max. Charging Current"}
+                                  />
+                                  <label
+                                    htmlFor={"Max. Charging Current"}
+                                  >
+                                    Max. Charging Current
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Max. Discharging Current"}
+                                  />
+                                  <label
+                                    htmlFor={"Max. Discharging Current"}
+                                  >
+                                    Max. Discharging Current
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Battery Power"}
+                                  />
+                                  <label
+                                    htmlFor={"Battery Power"}
+                                  >
+                                    Battery Power
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"SoC"}
+                                  />
+                                  <label
+                                    htmlFor={"SoC"}
+                                  >
+                                    SoC
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"SoH"}
+                                  />
+                                  <label
+                                    htmlFor={"SoH"}
+                                  >
+                                    SoH
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Total Charging Energy"}
+                                  />
+                                  <label
+                                    htmlFor={"Total Charging Energy"}
+                                  >
+                                    Total Charging Energy
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Total Discharging Energy"}
+                                  />
+                                  <label
+                                    htmlFor={"Total Discharging Energy"}
+                                  >
+                                    Total Discharging Energy
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"Daily Charging Energy"}
+                                  />
+                                  <label
+                                    htmlFor={"Daily Charging Energy"}
+                                  >
+                                    Daily Charging Energy
+                                  </label>
+                                </div>
+                              </td>
+                            </tr>
+
+                            <tr className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr">
+                              <th className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                BMS:
+                              </th>
+                              <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"BMS Max Charge Current"}
+                                  />
+                                  <label
+                                    htmlFor={"BMS Max Charge Current"}
+                                  >
+                                    BMS Max Charge Current
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"BMS Max Discharge Current"}
+                                  />
+                                  <label
+                                    htmlFor={"BMS Max Discharge Current"}
+                                  >
+                                    BMS Max Discharge Current
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"BMS Charge Voltage"}
+                                  />
+                                  <label
+                                    htmlFor={"BMS Charge Voltage"}
+                                  >
+                                    BMS Charge Voltage
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"BMS Discharge Voltage"}
+                                  />
+                                  <label
+                                    htmlFor={"BMS Discharge Voltage"}
+                                  >
+                                    BMS Discharge Voltage
+                                  </label>
+                                </div>
+                              </td>
+                            </tr>
+
+                            <tr className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr">
+                              <th className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                State:
+                              </th>
+                              <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"DC Insulation Resistance"}
+                                  />
+                                  <label
+                                    htmlFor={"DC Insulation Resistance"}
+                                  >
+                                    DC Insulation Resistance
+                                  </label>
+                                </div>
+                              </td>
+                            </tr>
+
+                            <tr className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr">
+                              <th className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Th">
+                                EPS:
+                              </th>
+                              <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td">
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"R phase EPS voltage"}
+                                  />
+                                  <label
+                                    htmlFor={"R phase EPS voltage"}
+                                  >
+                                    R phase EPS voltage
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"R phase EPS current"}
+                                  />
+                                  <label
+                                    htmlFor={"R phase EPS current"}
+                                  >
+                                    R phase EPS current
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"EPSR phase active power"}
+                                  />
+                                  <label
+                                    htmlFor={"EPSR phase active power"}
+                                  >
+                                    EPSR phase active power
+                                  </label>
+                                </div>
+
+                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                  <input
+                                    type="checkbox"
+                                    id={"EPS Frequency"}
+                                  />
+                                  <label
+                                    htmlFor={"EPS Frequency"}
+                                  >
+                                    EPS Frequency
+                                  </label>
+                                </div>
+                              </td>
+                            </tr>
                           </tbody>
                         </table>
+                      </div>
+
+                      <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Bottom">
+                        <button
+                          style={{
+                            backgroundColor: "white",
+                            color: "black",
+                          }}
+                          onClick={(e) => {
+                            handleShowConfig(e);
+                            setDropConfig(!dropConfig);
+                          }}
+                        >
+                          {dataLang.formatMessage({ id: "cancel" })}
+                        </button>
+                        <button
+                          style={{
+                            backgroundColor: COLOR.value.PrimaryColor,
+                            color: "white",
+                          }}
+                        >
+                          {dataLang.formatMessage({ id: "confirm" })}
+                        </button>
                       </div>
                     </div>
                     : <></>
