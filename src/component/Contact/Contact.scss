@@ -43,7 +43,6 @@
             padding: 16px;
             border-radius: 5px;
             background-color: white;
-            margin-bottom: 10px;
             border: solid 1px rgba(198, 197, 197, 0.5);
 
             &_Tit {
@@ -309,7 +308,7 @@
 
 .DAT_EditContactInfo {
     position: relative;
-    width: 50%;
+    width: 400px;
     margin: auto;
     overflow: hidden;
     border-radius: 5px;
@@ -391,8 +390,9 @@
             }
 
             &_Content {
-                display: flex;
-                justify-content: space-between;
+                &_Item {
+                    padding: 8px;
+                }
             }
         }
 
@@ -400,7 +400,7 @@
             padding: 16px;
 
             &_Item {
-                margin-bottom: 16px;
+                // margin-bottom: 16px;
 
                 &_Tit {
                     margin-bottom: 8px;
@@ -444,6 +444,8 @@
     .DAT_EditContactInfo {
         &_Body {
             &_Row1 {
+                padding: 16px;
+
                 &_Content {
                     display: contents;
                     flex-wrap: wrap;
@@ -452,7 +454,6 @@
                     &_Item {
                         padding: 16px;
                         box-sizing: border-box;
-
                     }
                 }
             }
@@ -463,9 +464,8 @@
                 overflow: hidden;
 
                 &_Item {
-                    padding: 16px;
+                    padding: 16px 16px 0px 16px;
                     box-sizing: border-box;
-
                 }
             }
         }

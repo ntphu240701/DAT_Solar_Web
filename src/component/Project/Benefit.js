@@ -110,7 +110,7 @@ export default function Benefit(props) {
                             <div>
                                 {Number(
                                     parseFloat(
-                                        coalsave.value.value * coalsave.value.ef
+                                        coalsave.value.value * coalsave.value.ef || 0
                                     ).toFixed(2)
                                 ).toLocaleString("en-US")}
                                 &nbsp;
@@ -133,7 +133,7 @@ export default function Benefit(props) {
                             <div>
                                 {Number(
                                     parseFloat(
-                                        coalsave.value.value * coalsave.value.tree
+                                        coalsave.value.value * coalsave.value.tree || 0
                                     ).toFixed(2)
                                 ).toLocaleString("en-US")}
                                 &nbsp;
@@ -159,7 +159,7 @@ export default function Benefit(props) {
                             <div>
                                 {Number(
                                     parseFloat(
-                                        coalsave.value.value * coalsave.value.avr
+                                        coalsave.value.value * coalsave.value.avr || 0
                                     ).toFixed(2)
                                 ).toLocaleString("en-US")}
                                 &nbsp;
@@ -184,7 +184,7 @@ export default function Benefit(props) {
                                     parseFloat(
                                         (coalsave.value.value *
                                             projectData.value.price) /
-                                        1000
+                                        1000 || 0
                                     ).toFixed(2)
                                 ).toLocaleString("en-US")}
                                 &nbsp;

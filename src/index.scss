@@ -358,6 +358,7 @@ iframe {
 
   &_Infor {
     &_Name {
+      text-transform: capitalize;
       color: black;
       //margin-bottom: 8px;
     }
@@ -464,7 +465,6 @@ iframe {
 }
 
 .DAT_TableWarning {
-  border: solid 1px rgb(205, 205, 205);
   background-color: rgba(254, 9, 9, 0.8);
   padding: 7px;
   width: 70px;
@@ -477,7 +477,6 @@ iframe {
 }
 
 .DAT_TableNotice {
-  border: solid 1px rgb(205, 205, 205);
   background-color: rgb(253, 193, 39, 0.9);
   padding: 7px;
   width: 70px;

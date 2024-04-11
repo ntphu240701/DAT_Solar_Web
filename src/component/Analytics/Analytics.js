@@ -71,7 +71,7 @@ export default function Analytics(props) {
 
   return (
     <>
-      {isMobile
+      {isMobile.value
         ? <>
           <div className="DAT_AnaHeaderMobile">
             <div className="DAT_AnaHeaderMobile_Top">

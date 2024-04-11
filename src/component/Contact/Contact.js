@@ -7,6 +7,7 @@ import { partnerInfor, ruleInfor } from "../../App";
 import { useIntl } from "react-intl";
 
 import { MdOutlineContactPhone } from "react-icons/md";
+import { isMobile } from "../Navigation/Navigation";
 
 export default function Contact(props) {
   const dataLang = useIntl();
@@ -34,7 +35,9 @@ export default function Contact(props) {
 
       <div className="DAT_Contact">
         <div className="DAT_Contact_Item">
-          <div className="DAT_Contact_Item_Registation">
+          <div className="DAT_Contact_Item_Registation"
+            style={{ marginBottom: isMobile.value ? "0px" : "10px" }}
+          >
             <div className="DAT_Contact_Item_Registation_Tit">
               <div>{dataLang.formatMessage({ id: 'registerInfo' })}</div>
               {ruleInfor.value.setting.contact.edit === false

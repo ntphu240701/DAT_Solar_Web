@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import "./ErrorSetting.scss";
 
 import { COLOR } from "../../App";
@@ -23,9 +23,9 @@ export default function EditErr(props) {
     popup.style.color = popup_state[state].color;
   };
 
-  const handleSave = () => {
-    console.log(editVi.current.value, editEn.current.value);
-  };
+  // const handleSave = () => {
+  //   console.log(editVi.current.value, editEn.current.value);
+  // };
 
   //   useEffect(() => {
   //     console.log(editVi.current.value, editEn.current.value);
@@ -35,7 +35,7 @@ export default function EditErr(props) {
     <div className="DAT_EditErr">
       <div className="DAT_EditErr_Head">
         <div className="DAT_EditErr_Head_Left">
-          <p>{dataLang.formatMessage({ id: "edit" })}</p>
+          {dataLang.formatMessage({ id: "edit" })}
         </div>
         <div className="DAT_EditErr_Head_Right">
           <div
@@ -57,7 +57,9 @@ export default function EditErr(props) {
           <div className="DAT_EditErr_Body_Head">{dataLang.formatMessage({ id: "solution" })}</div>
         )}
         <div className="DAT_EditErr_Body_Content">
-          <div className="DAT_EditErr_Body_Content_Item">
+          <div className="DAT_EditErr_Body_Content_Item"
+            style={{ marginBottom: "16px" }}
+          >
             <span>Vi</span>
             <textarea defaultValue={props.editVi} ref={editVi} />
           </div>

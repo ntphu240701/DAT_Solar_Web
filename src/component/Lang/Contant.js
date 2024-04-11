@@ -40,7 +40,7 @@ export const messages = {
     projectInfo: "Project information",
     projectStatus: "Plant status",
     projectTotal: "Total plant:",
-    projectWarn: "Plant with alerts",
+    projectWarn: "Plant with warning",
     dataPref: "Data Preferences",
     projData: "Project Data",
     online: "Online",
@@ -619,6 +619,17 @@ export const messages = {
     alert_50: "Atleast one cause is required.",
     alert_51: "Atleast one solution is required.",
     alert_52: "Delete role successfully!",
+    alert_53: "Remove from shared successfully!",
+    alert_54: "Add user into group successfully!",
+    alert_55: "Remove from group role successfully!",
+    alert_56: "Delete group role successfully!",
+    alert_57: "Update group role successfully!",
+    alert_58: "Update successfully!",
+    alert_59: "Create new error code successfully!",
+    alert_60: "Delete error code successfully!",
+    alert_61: "Create new rule successfully!",
+    alert_62: "Update rule successfully!",
+
     // --------------------------------- //
 
     maxkWp: "Max kWp",
@@ -1456,6 +1467,17 @@ export const messages = {
     alert_50: "Ít nhất phải tồn tại 1 nguyên nhân.",
     alert_51: "Ít nhất phải tồn tại 1 biện pháp.",
     alert_52: "Xóa phân quyền thành công!",
+    alert_53: "Gỡ chia sẻ thành công!",
+    alert_54: "Thêm người dùng vào nhóm thành công!",
+    alert_55: "Gỡ tài khoản khỏi nhóm thành công!",
+    alert_56: "Xóa nhóm người dùng thành công!",
+    alert_57: "Chỉnh sửa nhóm người dùng thành công!",
+    alert_58: "Cập nhật thành công!",
+    alert_59: "Tạo thông tin mã lỗi thành công!",
+    alert_60: "Xóa thông tin mã lỗi thành công!",
+    alert_61: "Tạo phân quyền thành công!",
+    alert_62: "Cập nhật quyền thành công!",
+
     // --------------------------------- //
 
     maxkWp: "Tối đa kWp",

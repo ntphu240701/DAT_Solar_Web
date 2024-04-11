@@ -75,7 +75,7 @@ export default function Popup(props) {
       case "avatar":
         let d = await callApi("post", host.DATA + "/updateUser", { usr: user, type: "avatar", data: ava });
         if (d.status) {
-          alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+          alertDispatch(dataLang.formatMessage({ id: "alert_58" }));
           userInfor.value = {
             ...userInfor.value,
             avatar: ava
@@ -112,7 +112,7 @@ export default function Popup(props) {
         if (renameRef.current.value !== "") {
           let d = await callApi("post", host.DATA + "/updateUser", { usr: user, type: "name", data: renameRef.current.value });
           if (d.status) {
-            alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+            alertDispatch(dataLang.formatMessage({ id: "alert_58" }));
             userInfor.value = {
               ...userInfor.value,
               name: renameRef.current.value
@@ -129,7 +129,7 @@ export default function Popup(props) {
         if (phoneRef.current.value !== "") {
           let d = await callApi("post", host.DATA + "/updateUser", { usr: user, type: "phone", data: phoneRef.current.value });
           if (d.status) {
-            alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+            alertDispatch(dataLang.formatMessage({ id: "alert_58" }));
             userInfor.value = {
               ...userInfor.value,
               phone: phoneRef.current.value
@@ -146,7 +146,7 @@ export default function Popup(props) {
         if (addrRef.current.value !== "") {
           let d = await callApi("post", host.DATA + "/updateUser", { usr: user, type: "addr", data: addrRef.current.value });
           if (d.status) {
-            alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
+            alertDispatch(dataLang.formatMessage({ id: "alert_58" }));
             userInfor.value = {
               ...userInfor.value,
               addr: addrRef.current.value
@@ -168,7 +168,7 @@ export default function Popup(props) {
     <div className="DAT_PopupUser_Box">
       <div className="DAT_PopupUser_Box_Head">
         <div className="DAT_PopupUser_Box_Head_Left">
-          <p>{dataLang.formatMessage({ id: 'edits' })}</p>
+          {dataLang.formatMessage({ id: 'edits' })}
         </div>
         <div className="DAT_PopupUser_Box_Head_Right">
           <div className="DAT_PopupUser_Box_Head_Right_Icon"
