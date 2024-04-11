@@ -51,9 +51,10 @@ export default function Filter(props) {
 
   useEffect(() => {
     // nhan luu
-    console.log("save pre");
-    setPre(props.data.elecmode);
-    console.log(props.data.elecmode);
+    if (props.type == "project") {
+      setPre(props.data.elecmode);
+      console.log(props.data.elecmode);
+    }
   }, [props.data]);
 
   const displayFilter = {
