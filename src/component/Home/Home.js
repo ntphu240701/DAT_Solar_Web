@@ -1370,7 +1370,13 @@ export default function Home(props) {
                   <div key={index} className="DAT_Home_Rank-ContentMobile">
                     <div className="DAT_Home_Rank-ContentMobile_Top">
                       <div className="DAT_Home_Rank-ContentMobile_Top_Ava">
-                        {index + 1}
+                        <img
+                          src={item.img ? item.img : "/dat_picture/solar_panel.png"
+                          }
+                          alt=""
+                          id={item.plantid_}
+                          onClick={(e) => handleInfo(e)}
+                        />
                       </div>
 
                       <div className="DAT_Home_Rank-ContentMobile_Top_Info">
