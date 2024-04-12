@@ -13,7 +13,7 @@ import { alertDispatch } from "../Alert/Alert";
 import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
 
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
 import { IoClose, IoSaveOutline } from "react-icons/io5";
 import { Loader } from "@googlemaps/js-api-loader";
 
@@ -127,7 +127,7 @@ const BasicInfo = (props) => {
           className="DAT_AddProject_BasicInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
               transform: state ? "rotate(0deg)" : "rotate(180deg)",
@@ -262,7 +262,7 @@ const SystemInfo = (props) => {
           className="DAT_AddProject_SystemInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
               transform: state ? "rotate(0deg)" : "rotate(180deg)",
@@ -404,7 +404,7 @@ const YieldInfo = (props) => {
           className="DAT_AddProject_YieldInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
               transform: state ? "rotate(0deg)" : "rotate(180deg)",
@@ -485,7 +485,7 @@ const OwnerInfo = (props) => {
           className="DAT_AddProject_OwnerInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
               transform: state ? "rotate(0deg)" : "rotate(180deg)",
@@ -578,7 +578,7 @@ const OwnerInfo = (props) => {
 //         <div className="DAT_AddProject_ImgInfo_Tit_Right"
 //           onClick={() => setState(!state)}
 //         >
-//           <IoIosArrowDown
+//           <IoIosArrowUp
 //             size={20}
 //             style={{
 //               transform: state ? "rotate(0deg)" : "rotate(180deg)",

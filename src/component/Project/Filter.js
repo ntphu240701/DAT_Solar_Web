@@ -55,14 +55,15 @@ export default function Filter(props) {
       setPre(props.data.elecmode);
       console.log(props.data.elecmode);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data]);
 
   const displayFilter = {
     greyFilter: "calc(100vh - 180px)",
     noneheight: "0px",
-    plantHeight: "280px",
-    deviceHeight: "140px",
-    warnHeight: "180px",
+    plantHeight: "290px",
+    deviceHeight: "160px",
+    warnHeight: "230px",
   };
 
   const handleResetWarn = () => {
@@ -119,6 +120,7 @@ export default function Filter(props) {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.display]);
 
   const handleReadPlantMode = (e) => {
@@ -177,7 +179,9 @@ export default function Filter(props) {
                                     props.data.min !== 0 ? props.data.min : ""
                                   }
                                 />
+                                &nbsp;
                                 ~
+                                &nbsp;
                                 <input
                                   type="number"
                                   id="max"
@@ -450,7 +454,7 @@ export default function Filter(props) {
                   height: props.display
                     ? displayFilter.greyFilter
                     : displayFilter.noneheight,
-                  transition: "0.4s ease-in-out",
+                  transition: "0.3s ease-in-out",
                 }}
               >
                 {props.display ? (
@@ -460,7 +464,7 @@ export default function Filter(props) {
                       height: props.display
                         ? displayFilter.warnHeight
                         : displayFilter.noneheight,
-                      transition: "0.9s",
+                      transition: "1s ease-in-out",
                     }}
                   >
                     <div className="DAT_Filter_Dropdown_Item">
@@ -518,7 +522,9 @@ export default function Filter(props) {
                                   min={"2000-01-01"}
                                   max={endDate}
                                 />
+                                &nbsp;
                                 ~
+                                &nbsp;
                                 <input
                                   type="date"
                                   ref={closetime}

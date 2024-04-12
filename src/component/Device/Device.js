@@ -16,7 +16,7 @@ import Filter from "../Project/Filter";
 import axios from "axios";
 
 import { MdDelete, MdEdit, MdDevices, MdOutlineError } from "react-icons/md";
-import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { RxCross2 } from "react-icons/rx";
@@ -897,9 +897,9 @@ export default function Device(props) {
               onClick={(e) => setDisplay(!display)}
             >
               <FiFilter />
-              <IoIosArrowDown
+              <IoIosArrowUp
                 style={{
-                  transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+                  transform: display ? "rotate(180deg)" : "rotate(0deg)",
                   transition: "0.5s",
                 }}
                 onClick={() => handleFilterDevice()}

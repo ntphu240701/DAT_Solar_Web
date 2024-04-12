@@ -21,10 +21,10 @@ body {
   background-color: rgba(240, 242, 245, 1);
   overscroll-behavior-x: none;
   overflow-x: hidden;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  // -webkit-user-select: none;
+  // -moz-user-select: none;
+  // -ms-user-select: none;
+  // user-select: none;
   -webkit-box-sizing: border-box;
   /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;
@@ -742,6 +742,8 @@ iframe {
             min-width: 200px;
             min-height: 40px;
             text-align: left;
+            display: flex;
+            align-items: center;
           }
 
           &_Td {
@@ -771,6 +773,10 @@ iframe {
               input::-webkit-inner-spin-button {
                 -webkit-appearance: none;
                 margin: 0;
+              }
+
+              & label {
+                padding-left: 10px;
               }
             }
           }

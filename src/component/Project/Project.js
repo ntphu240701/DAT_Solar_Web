@@ -31,7 +31,7 @@ import { FaCheckCircle, FaRegFileAlt, FaStar } from "react-icons/fa";
 import { MdOutlineError, MdEdit, MdDelete, MdAddchart } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { GoProject } from "react-icons/go";
-import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore } from "react-icons/io";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { FiEdit, FiFilter } from "react-icons/fi";
@@ -283,7 +283,7 @@ export default function Project(props) {
           }}
         >
           {ruleInfor.value.setting.project.modify == true ||
-          ruleInfor.value.setting.project.remove == true ? (
+            ruleInfor.value.setting.project.remove == true ? (
             row.shared == 1 ? (
               <></>
             ) : (
@@ -1089,7 +1089,7 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1101,7 +1101,7 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1263,7 +1263,7 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1275,7 +1275,7 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1437,7 +1437,7 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1449,7 +1449,7 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1611,7 +1611,7 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1623,7 +1623,7 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1785,7 +1785,7 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1797,7 +1797,7 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1959,7 +1959,7 @@ export default function Project(props) {
                                 />
                               </div>
                               {ruleInfor.value.setting.project.modify ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -1971,7 +1971,7 @@ export default function Project(props) {
                                 <div></div>
                               )}
                               {ruleInfor.value.setting.project.modify ===
-                              true ? (
+                                true ? (
                                 <div
                                   className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                                   id={item.plantid_}
@@ -2033,9 +2033,9 @@ export default function Project(props) {
               onClick={(e) => setDisplay(!display)}
             >
               <FiFilter />
-              <IoIosArrowDown
+              <IoIosArrowUp
                 style={{
-                  transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+                  transform: display ? "rotate(180deg)" : "rotate(0deg)",
                   transition: "0.5s",
                 }}
               />
