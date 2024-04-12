@@ -7,7 +7,11 @@ import { userInfor } from "../../App";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 
-import { IoIosArrowForward, IoIosArrowDown, IoIosNotificationsOutline } from "react-icons/io";
+import {
+  IoIosArrowForward,
+  IoIosArrowDown,
+  IoIosNotificationsOutline,
+} from "react-icons/io";
 import { TbReportAnalytics } from "react-icons/tb";
 import { SiDatabricks } from "react-icons/si";
 import { RiSettingsLine } from "react-icons/ri";
@@ -29,44 +33,97 @@ export default function Sidenar(props) {
       icon: <SiDatabricks />,
       link: "none",
       li: [
-        { link: "/Project", name: dataLang.formatMessage({ id: 'project' }) },
-        { link: "/Device", name: dataLang.formatMessage({ id: 'device' }) },
-        { link: "/Warn", name: dataLang.formatMessage({ id: 'warn' }) },
+        { link: "/Project", name: dataLang.formatMessage({ id: "project" }) },
+        { link: "/Device", name: dataLang.formatMessage({ id: "device" }) },
+        { link: "/Warn", name: dataLang.formatMessage({ id: "warn" }) },
       ],
     },
     Analytics: {
       icon: <TbReportAnalytics />,
       link: "none",
       li: [
-        { link: "/Report", name: dataLang.formatMessage({ id: 'report' }) },
-        { link: "/Analytics", name: dataLang.formatMessage({ id: 'analytic' }) },
-        { link: "/Log", name: dataLang.formatMessage({ id: 'log' }) },
+        { link: "/Report", name: dataLang.formatMessage({ id: "report" }) },
+        {
+          link: "/Analytics",
+          name: dataLang.formatMessage({ id: "analytic" }),
+        },
+        { link: "/Log", name: dataLang.formatMessage({ id: "log" }) },
       ],
     },
     Setting: {
       icon: <RiSettingsLine />,
       link: "none",
-      li: userInfor.value.type === "master" ? [
-        { link: "/Role", name: dataLang.formatMessage({ id: 'role' }) },
-        { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
-        { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
-        { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
-        { link: "/ErrorSetting", name: dataLang.formatMessage({ id: 'errorsetting' }) },
-        { link: "/Rule", name: dataLang.formatMessage({ id: 'rule' }) },
-      ] : userInfor.value.type === "admin" ? [
-        { link: "/Role", name: dataLang.formatMessage({ id: 'role' }) },
-        // { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
-        { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
-        { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
-        { link: "/ErrorSetting", name: dataLang.formatMessage({ id: 'errorsetting' }) },
-        { link: "/Rule", name: dataLang.formatMessage({ id: 'rule' }) },
-      ] : [
-        // { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
-        { link: "/User", name: dataLang.formatMessage({ id: 'account' }) },
-        { link: "/Contact", name: dataLang.formatMessage({ id: 'contact' }) },
-      ],
+      li:
+        userInfor.value.type === "master"
+          ? [
+              { link: "/Role", name: dataLang.formatMessage({ id: "role" }) },
+              {
+                link: "/GroupRole",
+                name: dataLang.formatMessage({ id: "grouprole" }),
+              },
+              {
+                link: "/User",
+                name: dataLang.formatMessage({ id: "account" }),
+              },
+              {
+                link: "/Contact",
+                name: dataLang.formatMessage({ id: "contact" }),
+              },
+              {
+                link: "/ErrorSetting",
+                name: dataLang.formatMessage({ id: "errorsetting" }),
+              },
+              { link: "/Rule", name: dataLang.formatMessage({ id: "rule" }) },
+            ]
+          : userInfor.value.type === "mainadmin"
+          ? [
+              { link: "/Role", name: dataLang.formatMessage({ id: "role" }) },
+              // { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+              {
+                link: "/User",
+                name: dataLang.formatMessage({ id: "account" }),
+              },
+              {
+                link: "/Contact",
+                name: dataLang.formatMessage({ id: "contact" }),
+              },
+              {
+                link: "/ErrorSetting",
+                name: dataLang.formatMessage({ id: "errorsetting" }),
+              },
+              { link: "/Rule", name: dataLang.formatMessage({ id: "rule" }) },
+            ]
+          : userInfor.value.type === "admin"
+          ? [
+              { link: "/Role", name: dataLang.formatMessage({ id: "role" }) },
+              // { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+              {
+                link: "/User",
+                name: dataLang.formatMessage({ id: "account" }),
+              },
+              {
+                link: "/Contact",
+                name: dataLang.formatMessage({ id: "contact" }),
+              },
+              {
+                link: "/ErrorSetting",
+                name: dataLang.formatMessage({ id: "errorsetting" }),
+              },
+              { link: "/Rule", name: dataLang.formatMessage({ id: "rule" }) },
+            ]
+          : [
+              // { link: "/GroupRole", name: dataLang.formatMessage({ id: 'grouprole' }) },
+              {
+                link: "/User",
+                name: dataLang.formatMessage({ id: "account" }),
+              },
+              {
+                link: "/Contact",
+                name: dataLang.formatMessage({ id: "contact" }),
+              },
+            ],
     },
-  }
+  };
 
   const dataColor = {
     cur: { color: "rgba(11, 25, 103)" },
@@ -94,15 +151,20 @@ export default function Sidenar(props) {
 
   const Menu = (id, label) => {
     return (
-      <div className="DAT_Sidenar_Content"
+      <div
+        className="DAT_Sidenar_Content"
         id={id}
         onClick={(event) => {
           handleMenu(event);
         }}
       >
-        <div className="DAT_Sidenar_Content-icon"
+        <div
+          className="DAT_Sidenar_Content-icon"
           style={{
-            color: sidebartab.value === id ? dataColor.cur.color : dataColor.pre.color,
+            color:
+              sidebartab.value === id
+                ? dataColor.cur.color
+                : dataColor.pre.color,
           }}
         >
           {data[id].icon}
@@ -111,7 +173,9 @@ export default function Sidenar(props) {
           <label
             style={{
               color:
-                sidebartab.value === id ? dataColor.cur.color : dataColor.pre.color,
+                sidebartab.value === id
+                  ? dataColor.cur.color
+                  : dataColor.pre.color,
             }}
           >
             {label}
@@ -121,14 +185,17 @@ export default function Sidenar(props) {
             <label
               style={{
                 color:
-                  sidebartab.value === id ? dataColor.cur.color : dataColor.pre.color,
+                  sidebartab.value === id
+                    ? dataColor.cur.color
+                    : dataColor.pre.color,
               }}
             >
               {label}
             </label>
           </Link>
         )}
-        <div className="DAT_Sidenar_Content-arrow"
+        <div
+          className="DAT_Sidenar_Content-arrow"
           style={{ color: "rgb(141, 139, 139)" }}
         >
           {data[id].li.length === 0 ? (
@@ -184,35 +251,45 @@ export default function Sidenar(props) {
 
   return (
     <>
-      <div className="DAT_Sidenar"
+      <div
+        className="DAT_Sidenar"
         style={sidenar.value ? { width: "200px" } : { width: "0px" }}
       >
         <div style={sidenar.value ? { display: "block" } : { display: "none" }}>
-          {Menu("Dashboard", dataLang.formatMessage({ id: 'dashboard' }))}
+          {Menu("Dashboard", dataLang.formatMessage({ id: "dashboard" }))}
 
-          {Menu("Monitor", dataLang.formatMessage({ id: 'monitor' }))}
+          {Menu("Monitor", dataLang.formatMessage({ id: "monitor" }))}
           {sidebartab.value === "Monitor" ? <>{MenuLi("Monitor")}</> : <></>}
 
-          {Menu("Analytics", dataLang.formatMessage({ id: 'maintain' }))}
-          {sidebartab.value === "Analytics" ? <>{MenuLi("Analytics")}</> : <></>}
+          {Menu("Analytics", dataLang.formatMessage({ id: "maintain" }))}
+          {sidebartab.value === "Analytics" ? (
+            <>{MenuLi("Analytics")}</>
+          ) : (
+            <></>
+          )}
 
-          {Menu("Setting", dataLang.formatMessage({ id: 'setting' }))}
+          {Menu("Setting", dataLang.formatMessage({ id: "setting" }))}
           {sidebartab.value === "Setting" ? <>{MenuLi("Setting")}</> : <></>}
         </div>
       </div>
 
-      <div className="DAT_User"
+      <div
+        className="DAT_User"
         style={sidenar.value ? { width: "200px" } : { width: "0px" }}
       >
-        <div className="DAT_User-group"
+        <div
+          className="DAT_User-group"
           style={sidenar.value ? { display: "block" } : { display: "none" }}
         >
-          <div className="DAT_User-group-Tit">{dataLang.formatMessage({ id: 'loginWith' })}</div>
+          <div className="DAT_User-group-Tit">
+            {dataLang.formatMessage({ id: "loginWith" })}
+          </div>
           <div className="DAT_User-group-ID">{userInfor.value.name}</div>
         </div>
       </div>
 
-      <div className="DAT_Shadow"
+      <div
+        className="DAT_Shadow"
         id="DAT_Shadow"
         style={sidenar.value ? { display: "block" } : { display: "none" }}
         onClick={(event) => {

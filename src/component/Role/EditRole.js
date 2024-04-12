@@ -1,7 +1,7 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "./Role.scss";
 
-import { Usr_, roleData } from "./Role";
+import { Usr_, access, roleData } from "./Role";
 import { useIntl } from "react-intl";
 import { datarule } from "../Rule/Rule";
 import { host } from "../Lang/Contant";
@@ -9,6 +9,7 @@ import { callApi } from "../Api/Api";
 import { alertDispatch } from "../Alert/Alert";
 
 import { IoClose } from "react-icons/io5";
+import { partnerInfor, userInfor } from "../../App";
 
 export default function EditRole(props) {
   const dataLang = useIntl();
@@ -27,21 +28,39 @@ export default function EditRole(props) {
     popup.style.color = popup_state[state].color;
   };
 
+  useEffect(() => {
+    const getRule = async (partnerid) => {
+      const rule = await callApi("post", host.DATA + "/getRule", {
+        partnerid: partnerInfor.value.partnerid,
+      });
+      if (rule.status) {
+        datarule.value = rule.data;
+        datarule.value = datarule.value.sort((a, b) => a.ruleid_ - b.ruleid_);
+      }
+    };
+    getRule();
+  }, [partnerInfor.value.partnerid]);
+
   const handleConfirm = async () => {
     const updateRoleUser = await callApi(
-      "post", host.DATA + "/updateRoleUser", {
-      usr: roleData.value.usr_,
-      role: roleRef.current.value,
-      ruleid: parseInt(ruleidRef.current.value),
-    })
+      "post",
+      host.DATA + "/updateRoleUser",
+      {
+        usr: roleData.value.usr_,
+        role: roleRef.current.value,
+        ruleid: parseInt(ruleidRef.current.value),
+      }
+    );
 
     if (updateRoleUser.status) {
-      let newData = Usr_.value
+      let newData = Usr_.value;
       let index = Usr_.value.findIndex((d) => d.usr_ == roleData.value.usr_);
-      let rulename = datarule.value.find((d) => d.ruleid_ == parseInt(ruleidRef.current.value)).rulename_;
-      newData[index].type_ = roleRef.current.value
-      newData[index].ruleid_ = parseInt(ruleidRef.current.value)
-      newData[index].rulename_ = rulename
+      let rulename = datarule.value.find(
+        (d) => d.ruleid_ == parseInt(ruleidRef.current.value)
+      ).rulename_;
+      newData[index].type_ = roleRef.current.value;
+      newData[index].ruleid_ = parseInt(ruleidRef.current.value);
+      newData[index].rulename_ = rulename;
       Usr_.value = [...newData];
       props.handleClose();
       alertDispatch(dataLang.formatMessage({ id: "alert_43" }));
@@ -86,18 +105,38 @@ export default function EditRole(props) {
             </span>
           </div>
           <select defaultValue={roleData.value.type_} ref={roleRef}>
-            <option value="admin">
-              {dataLang.formatMessage({ id: "admin" })}
-            </option>
+            {(() => {
+              switch (userInfor.value.type) {
+                case "master":
+                  return (
+                    <>
+                      <option value="admin">
+                        {dataLang.formatMessage({ id: "admin" })}
+                      </option>
+                      <option value="mainadmin">
+                        {dataLang.formatMessage({ id: "mainadmin" })}
+                      </option>
+                    </>
+                  );
+                case "mainadmin":
+                  return (
+                    <>
+                      <option value="admin">
+                        {dataLang.formatMessage({ id: "admin" })}
+                      </option>
+                    </>
+                  );
+                default:
+                  return null;
+              }
+            })()}
             <option value="user">
               {dataLang.formatMessage({ id: "user" })}
             </option>
           </select>
         </div>
 
-        <div className="DAT_EditRole_Body_Row"
-          style={{ marginBottom: "0px" }}
-        >
+        <div className="DAT_EditRole_Body_Row" style={{ marginBottom: "0px" }}>
           <div className="DAT_EditRole_Body_Row_Left">
             <span style={{ color: "red" }}>* </span>
             <span style={{ color: "grey", marginRight: "18px" }}>
@@ -123,7 +162,7 @@ export default function EditRole(props) {
             handleConfirm(e);
           }}
         >
-          {dataLang.formatMessage({ id: 'confirm' })}
+          {dataLang.formatMessage({ id: "confirm" })}
         </button>
       </div>
     </div>
