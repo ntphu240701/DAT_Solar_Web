@@ -777,93 +777,40 @@
 
         &_GridStartSettings {
             &_Content {
-                padding: 16px;
-                display: flex;
-                justify-content: space-between;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 
-                &_Left {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
-                        }
+                &_Item {
+                    padding: 16px;
 
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
-
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
-                        }
+                    &_Tit {
+                        margin-bottom: 8px;
+                        color: gray;
+                        font-size: 14px;
                     }
-                }
 
-                &_Center {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
+                    &_Content {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        color: rgba(49, 49, 49, 0.5);
+
+                        & input {
+                            width: 200px;
+                            padding: 4px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: solid 1px rgba(49, 49, 49, 0.5);
+                            box-sizing: border-box;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            font-family: Montserrat-Regular;
                         }
 
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
-
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
-                        }
-                    }
-                }
-
-                &_Right {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
-                        }
-
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
-
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
+                        & input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
                         }
                     }
                 }
@@ -888,103 +835,50 @@
 
         &_GridVolt {
             &_Content {
-                padding: 16px;
-                display: flex;
-                justify-content: space-between;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 
-                &_Left {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
-                        }
+                &_Item {
+                    padding: 16px;
 
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
-
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
-
-                            & select {
-                                cursor: pointer;
-                                width: 140px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgb(199, 199, 199);
-                                padding: 4px;
-                                font-family: Montserrat-Regular;
-                            }
-                        }
+                    &_Tit {
+                        margin-bottom: 8px;
+                        color: gray;
+                        font-size: 14px;
                     }
-                }
 
-                &_Center {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
+                    &_Content {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        color: rgba(49, 49, 49, 0.5);
+
+                        & input {
+                            width: 200px;
+                            padding: 4px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: solid 1px rgba(49, 49, 49, 0.5);
+                            box-sizing: border-box;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            font-family: Montserrat-Regular;
                         }
 
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
-
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
-                        }
-                    }
-                }
-
-                &_Right {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
+                        & input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
                         }
 
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
-
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
+                        & select {
+                            cursor: pointer;
+                            width: 140px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: solid 1px rgb(199, 199, 199);
+                            padding: 4px;
+                            font-family: Montserrat-Regular;
                         }
                     }
                 }
@@ -1009,123 +903,118 @@
 
         &_ExportPowerSettings {
             &_Content {
-                padding: 16px;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+                &_Item {
+                    padding: 16px;
+
+                    &_Tit {
+                        margin-bottom: 8px;
+                        color: gray;
+                        font-size: 14px;
+                    }
+
+                    &_Content {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        color: rgba(49, 49, 49, 0.5);
+
+                        & input {
+                            width: 200px;
+                            padding: 4px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: solid 1px rgba(49, 49, 49, 0.5);
+                            box-sizing: border-box;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            font-family: Montserrat-Regular;
+                        }
+
+                        & input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
+                        }
+
+                        & select {
+                            cursor: pointer;
+                            // width: 140px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: solid 1px rgb(199, 199, 199);
+                            padding: 4px;
+                            font-family: Montserrat-Regular;
+                        }
+                    }
+                }
+            }
+
+            &_Foot {
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-end;
+                gap: 10px;
 
-                &_Left {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
-                        }
-
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
-
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
-
-                            & select {
-                                cursor: pointer;
-                                // width: 140px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgb(199, 199, 199);
-                                padding: 4px;
-                                font-family: Montserrat-Regular;
-                            }
-                        }
-                    }
+                & button {
+                    padding: 8px 16px;
+                    border-radius: 5px;
+                    border: none;
+                    background-color: COLOR.$Primary-color;
+                    color: white;
+                    cursor: pointer;
+                    font-family: Montserrat-SemiBold;
                 }
+            }
+        }
 
-                &_Center {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
-                        }
+        &_GridFirst {
+            &_Content {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
+                &_Item {
+                    padding: 16px;
 
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
-
-                            & select {
-                                cursor: pointer;
-                                // width: 140px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgb(199, 199, 199);
-                                padding: 4px;
-                                font-family: Montserrat-Regular;
-                            }
-                        }
+                    &_Tit {
+                        margin-bottom: 8px;
+                        color: gray;
+                        font-size: 14px;
                     }
-                }
 
-                &_Right {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
+                    &_Content {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        color: rgba(49, 49, 49, 0.5);
+
+                        & input {
+                            width: 200px;
+                            padding: 4px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: solid 1px rgba(49, 49, 49, 0.5);
+                            box-sizing: border-box;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            font-family: Montserrat-Regular;
                         }
 
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
+                        & input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
+                        }
 
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
-
-                            & select {
-                                cursor: pointer;
-                                // width: 140px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgb(199, 199, 199);
-                                padding: 4px;
-                                font-family: Montserrat-Regular;
-                            }
+                        & select {
+                            cursor: pointer;
+                            // width: 140px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: solid 1px rgb(199, 199, 199);
+                            padding: 4px;
+                            font-family: Montserrat-Regular;
                         }
                     }
                 }
@@ -1150,123 +1039,50 @@
 
         &_DeviceSettings {
             &_Content {
-                padding: 16px;
-                display: flex;
-                justify-content: space-between;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 
-                &_Left {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
-                        }
+                &_Item {
+                    padding: 16px;
 
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
-
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
-
-                            & select {
-                                cursor: pointer;
-                                // width: 140px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgb(199, 199, 199);
-                                padding: 4px;
-                                font-family: Montserrat-Regular;
-                            }
-                        }
+                    &_Tit {
+                        margin-bottom: 8px;
+                        color: gray;
+                        font-size: 14px;
                     }
-                }
 
-                &_Center {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
+                    &_Content {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        color: rgba(49, 49, 49, 0.5);
+
+                        & input {
+                            width: 200px;
+                            padding: 4px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: solid 1px rgba(49, 49, 49, 0.5);
+                            box-sizing: border-box;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            font-family: Montserrat-Regular;
                         }
 
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
-
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
-
-                            & select {
-                                cursor: pointer;
-                                // width: 140px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgb(199, 199, 199);
-                                padding: 4px;
-                                font-family: Montserrat-Regular;
-                            }
-                        }
-                    }
-                }
-
-                &_Right {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
+                        & input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
                         }
 
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
-
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
-
-                            & select {
-                                cursor: pointer;
-                                // width: 140px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgb(199, 199, 199);
-                                padding: 4px;
-                                font-family: Montserrat-Regular;
-                            }
+                        & select {
+                            cursor: pointer;
+                            // width: 140px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: solid 1px rgb(199, 199, 199);
+                            padding: 4px;
+                            font-family: Montserrat-Regular;
                         }
                     }
                 }
@@ -1291,123 +1107,50 @@
 
         &_GridInfo {
             &_Content {
-                padding: 16px;
-                display: flex;
-                justify-content: space-between;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 
-                &_Left {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
-                        }
+                &_Item {
+                    padding: 16px;
 
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
-
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
-
-                            & select {
-                                cursor: pointer;
-                                // width: 140px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgb(199, 199, 199);
-                                padding: 4px;
-                                font-family: Montserrat-Regular;
-                            }
-                        }
+                    &_Tit {
+                        margin-bottom: 8px;
+                        color: gray;
+                        font-size: 14px;
                     }
-                }
 
-                &_Center {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
+                    &_Content {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        color: rgba(49, 49, 49, 0.5);
+
+                        & input {
+                            width: 200px;
+                            padding: 4px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: solid 1px rgba(49, 49, 49, 0.5);
+                            box-sizing: border-box;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            font-family: Montserrat-Regular;
                         }
 
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
-
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
-
-                            & select {
-                                cursor: pointer;
-                                // width: 140px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgb(199, 199, 199);
-                                padding: 4px;
-                                font-family: Montserrat-Regular;
-                            }
-                        }
-                    }
-                }
-
-                &_Right {
-                    &_Item {
-                        &_Tit {
-                            margin-bottom: 8px;
-                            color: gray;
-                            font-size: 14px;
+                        & input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
                         }
 
-                        &_Content {
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: rgba(49, 49, 49, 0.5);
-
-                            & input {
-                                width: 200px;
-                                padding: 4px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgba(49, 49, 49, 0.5);
-                                box-sizing: border-box;
-                                -webkit-box-sizing: border-box;
-                                -moz-box-sizing: border-box;
-                                font-family: Montserrat-Regular;
-                            }
-
-                            & select {
-                                cursor: pointer;
-                                // width: 140px;
-                                border-radius: 5px;
-                                outline: none;
-                                border: solid 1px rgb(199, 199, 199);
-                                padding: 4px;
-                                font-family: Montserrat-Regular;
-                            }
+                        & select {
+                            cursor: pointer;
+                            // width: 140px;
+                            border-radius: 5px;
+                            outline: none;
+                            border: solid 1px rgb(199, 199, 199);
+                            padding: 4px;
+                            font-family: Montserrat-Regular;
                         }
                     }
                 }
