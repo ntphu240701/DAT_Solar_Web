@@ -24,6 +24,8 @@ import { FiEdit } from "react-icons/fi";
 import { lowercasedata } from "../ErrorSetting/ErrorSetting";
 import { IoCaretBackOutline } from "react-icons/io5";
 import { ruleInfor } from "../../App";
+import EditRole from "../Role/EditRole";
+import { Usr_, roleData } from "../Role/Role";
 
 //DATA TEMP
 export const group = signal([]);
@@ -37,289 +39,455 @@ export const groupEdit = signal();
 
 const datafilter = signal();
 
-const GroupUsers = (props) => {
+export default function GroupRole(props) {
   const dataLang = useIntl();
-  const [groupUserfilter, setGroupUserfilter] = useState(groupUser.value);
+  const [filter, setFilter] = useState(false);
+  const [createState, setCreateState] = useState(false);
+  const [addState, setAddState] = useState(false);
+  const [popupState, setPopupState] = useState(false);
+  const [editState, setEditState] = useState(false);
+  const [groupDelState, setGroupDelState] = useState(false);
+  const [editrole, setEditrole] = useState(false);
 
-  const paginationComponentOptions = {
-    rowsPerPageText: dataLang.formatMessage({ id: "row" }),
-    rangeSeparatorText: dataLang.formatMessage({ id: "to" }),
-    selectAllRowsItem: true,
-    selectAllRowsItemText: dataLang.formatMessage({ id: "showAll" }),
-  };
+  const GroupUsers = (props) => {
+    const dataLang = useIntl();
+    const paginationComponentOptions = {
+      rowsPerPageText: dataLang.formatMessage({ id: "row" }),
+      rangeSeparatorText: dataLang.formatMessage({ id: "to" }),
+      selectAllRowsItem: true,
+      selectAllRowsItemText: dataLang.formatMessage({ id: "showAll" }),
+    };
 
-  const columnGroupRole = [
-    {
-      name: dataLang.formatMessage({ id: "ordinalNumber" }),
-      selector: (row, index) => index + 1,
-      sortable: true,
-      width: "80px",
-    },
-    {
-      name: dataLang.formatMessage({ id: "account" }),
-      selector: (user) => user.usr_,
-      sortable: true,
-      minWidth: "200px",
-      style: {
-        justifyContent: "left !important",
+    const handleModify = (e, type) => {
+      const id = e.currentTarget.id;
+      var arr = id.split("_");
+
+      const mod = document.getElementById(arr[0] + "_Modify");
+      mod.style.display = type;
+    };
+
+    const columnGroupRole = [
+      {
+        name: dataLang.formatMessage({ id: "ordinalNumber" }),
+        selector: (row, index) => index + 1,
+        sortable: true,
+        width: "80px",
       },
-    },
-    {
-      name: dataLang.formatMessage({ id: "name" }),
-      selector: (user) => user.name_,
-      sortable: true,
-      maxWidth: "200px",
-      style: {
-        justifyContent: "left !important",
+      {
+        name: dataLang.formatMessage({ id: "account" }),
+        selector: (user) => user.usr_,
+        sortable: true,
+        minWidth: "200px",
+        style: {
+          justifyContent: "left !important",
+        },
       },
-    },
-    {
-      name: "Email",
-      selector: (user) => user.mail_,
-      sortable: true,
-      width: "250px",
-      style: {
-        justifyContent: "left !important",
+      {
+        name: dataLang.formatMessage({ id: "name" }),
+        selector: (user) => user.name_,
+        sortable: true,
+        maxWidth: "200px",
+        style: {
+          justifyContent: "left !important",
+        },
       },
-    },
-    {
-      name: dataLang.formatMessage({ id: "phone" }),
-      selector: (user) => user.phone_,
-      sortable: true,
-      minwidth: "200px",
-      style: {
-        justifyContent: "left !important",
+      {
+        name: "Email",
+        selector: (user) => user.mail_,
+        sortable: true,
+        width: "250px",
+        style: {
+          justifyContent: "left !important",
+        },
       },
-    },
-    {
-      name: dataLang.formatMessage({ id: "rule" }),
-      selector: (user) => dataLang.formatMessage({ id: user.type_ }),
-      sortable: true,
-      // width: "150px",
-      style: {
-        justifyContent: "left !important",
+      {
+        name: dataLang.formatMessage({ id: "phone" }),
+        selector: (user) => user.phone_,
+        sortable: true,
+        minwidth: "200px",
+        style: {
+          justifyContent: "left !important",
+        },
       },
-    },
-    {
-      name: dataLang.formatMessage({ id: "setting" }),
-      selector: (user) => (
-        <>
-          {user.type_ === "master" ? (
-            <></>
-          ) : (
+      {
+        name: dataLang.formatMessage({ id: "account" }),
+        selector: (user) => dataLang.formatMessage({ id: user.type_ }),
+        sortable: true,
+        // width: "150px",
+        style: {
+          justifyContent: "left !important",
+        },
+      },
+      {
+        name: dataLang.formatMessage({ id: "role" }),
+        selector: (user) => (
+          <div
+            style={{ cursor: "pointer" }}
+            id={user.id_}
+            onClick={(e) => handleEdit(e)}
+          >
+            {user.rulename_}
+          </div>
+        ),
+        sortable: true,
+        // width: "150px",
+        style: {
+          justifyContent: "left !important",
+        },
+      },
+      {
+        name: dataLang.formatMessage({ id: "setting" }),
+        selector: (user) => (
+          <>
+            {user.type_ === "master" ? (
+              <></>
+            ) : (
+              <div className="DAT_TableEdit">
+                <span
+                  id={user.id_ + "_MORE"}
+                  onClick={(e) => handleModify(e, "block")}
+                >
+                  <IoMdMore size={20} />
+                </span>
+              </div>
+            )}
             <div
-              className="DAT_GR_Content_DevideTable_Right_ItemList_Item_Delete"
-              id={user.id_}
-              onClick={(e) => handleDeleteUser(e)}
-              style={{ cursor: "pointer" }}
+              className="DAT_ModifyBox"
+              id={user.id_ + "_Modify"}
+              style={{ display: "none", marginRight: "4px", marginTop: "2px" }}
+              onMouseLeave={(e) => handleModify(e, "none")}
             >
-              <IoTrashOutline size={18} />
+              <div
+                className="DAT_ModifyBox_Fix"
+                id={user.id_}
+                onClick={(e) => handleEdit(e)}
+              >
+                <FiEdit size={14} />
+                &nbsp;
+                {dataLang.formatMessage({ id: "change" })}
+              </div>
+              <div
+                className="DAT_ModifyBox_Remove"
+                id={user.id_}
+                onClick={(e) => handleDeleteUser(e)}
+              >
+                <IoTrashOutline size={16} />
+                &nbsp;
+                {dataLang.formatMessage({ id: "remove" })}
+              </div>
             </div>
-          )}
-        </>
-      ),
-      width: "100px",
-    },
-  ];
+          </>
+        ),
+        width: "110px",
+      },
+    ];
 
-  const handleChangeGroup = (e) => {
-    groupID.value = Number(e.currentTarget.id);
-    const checkApi = async () => {
-      const getUser = await callApi("post", host.DATA + "/getallUser", {
-        partnerid: groupID.value,
-      });
-      if (getUser.status) {
-        groupUser.value = getUser.data.sort((a, b) => a.id_ - b.id_);
+    const handleEdit = (e) => {
+      const id = parseInt(e.currentTarget.id);
+      console.log(id);
+      roleData.value = Usr_.value.find((item) => item.id_ == id);
+      setEditrole(true);
+    };
+
+    const handleChangeGroup = (e) => {
+      groupID.value = Number(e.currentTarget.id);
+      const checkApi = async () => {
+        const getUser = await callApi("post", host.DATA + "/getallUser", {
+          partnerid: groupID.value,
+        });
+        if (getUser.status) {
+          Usr_.value = getUser.data.sort((a, b) => a.id_ - b.id_);
+          groupUser.value = getUser.data.sort((a, b) => a.id_ - b.id_);
+        }
+      };
+      checkApi();
+    };
+
+    useEffect(() => {
+      datafilter.value = groupUser.value.sort((a, b) => a.id_ - b.id_);
+    }, [groupUser.value]);
+
+    const handleDeleteUser = (e) => {
+      props.delState();
+      userDel.value = e.currentTarget.id;
+    };
+
+    const handleEditGroup = (e) => {
+      props.editState();
+      groupEdit.value = group.value.find(
+        (item) => item.id_ === Number(e.currentTarget.id)
+      );
+    };
+
+    const handleShowFunction = (e) => {
+      const id = e.currentTarget.id;
+      const idArr = id.split("_");
+
+      const mod = document.getElementById(idArr[0] + "_function");
+      const t = document.getElementById(idArr[0] + "_dot");
+      if (t.style.display === "none") {
+        t.style.display = "flex";
+        mod.style.display = "none";
+      } else {
+        t.style.display = "none";
+        mod.style.display = "flex";
       }
     };
-    checkApi();
-  };
+    const [userList, setUserlist] = useState(false);
 
-  useEffect(() => {
-    datafilter.value = groupUser.value.sort((a, b) => a.id_ - b.id_);
-  }, [groupUser.value]);
+    useEffect(() => {
+      console.log(datafilter.value);
+    }, [datafilter.value]);
 
-  const handleDeleteUser = (e) => {
-    props.delState();
-    userDel.value = e.currentTarget.id;
-  };
+    const colorbackground = {
+      master: "rgba(255, 0, 0)",
+      user: "rgba(247, 148, 29)",
+      admin: "rgba(11, 25, 103)",
+    };
 
-  const handleEditGroup = (e) => {
-    props.editState();
-    groupEdit.value = group.value.find(
-      (item) => item.id_ === Number(e.currentTarget.id)
-    );
-  };
+    return (
+      <div
+      // className="DAT_GR_Content_DevideTable"
+      // style={{ height: "100% !important", width: "100% !important" }}
+      >
+        {isMobile.value ? (
+          <>
+            {userList ? (
+              <>
+                <div className="DAT_GR_Content_DevideTable_Right">
+                  <div className="DAT_GR_Content_DevideTable_Right_Head">
+                    <IoCaretBackOutline
+                      style={{ cursor: "pointer" }}
+                      size={20}
+                      color="white"
+                      onClick={() => {
+                        setUserlist(false);
+                        groupID.value = 0;
+                      }}
+                    />
+                    <div>{dataLang.formatMessage({ id: "roleList" })}</div>
+                  </div>
+                  <div className="DAT_GR_Content_DevideTable_Right_MobileItem">
+                    {groupID.value === 0 ? (
+                      <Empty />
+                    ) : (
+                      <div className="DAT_ProjectMobile">
+                        {datafilter.value?.map((item, i) => {
+                          return (
+                            <div key={i} className="DAT_ProjectMobile_Content">
+                              <div className="DAT_ProjectMobile_Content_Top">
+                                <div
+                                  className="DAT_ProjectMobile_Content_Top_Avatar"
+                                  style={{
+                                    minWidth: "40px",
+                                    minHeight: "40px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    fontSize: "12px",
+                                    backgroundColor:
+                                      colorbackground[item.type_],
+                                    color: "white",
+                                    padding: "5px",
+                                  }}
+                                >
+                                  <span>
+                                    {dataLang.formatMessage({ id: item.type_ })}
+                                  </span>
+                                </div>
+                                <div className="DAT_ProjectMobile_Content_Top_Info">
+                                  <div className="DAT_ProjectMobile_Content_Top_Info_Name">
+                                    <div
+                                      className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
+                                      id={item.id_}
+                                      style={{
+                                        cursor: "pointer",
+                                        fontSize: "17px",
+                                      }}
+                                    >
+                                      {item.name_}
+                                    </div>
+                                  </div>
 
-  const handleShowFunction = (e) => {
-    const id = e.currentTarget.id;
-    const idArr = id.split("_");
-
-    const mod = document.getElementById(idArr[0] + "_function");
-    const t = document.getElementById(idArr[0] + "_dot");
-    if (t.style.display === "none") {
-      t.style.display = "flex";
-      mod.style.display = "none";
-    } else {
-      t.style.display = "none";
-      mod.style.display = "flex";
-    }
-  };
-  const [userList, setUserlist] = useState(false);
-
-  useEffect(() => {
-    console.log(datafilter.value);
-  }, [datafilter.value]);
-
-  const colorbackground = {
-    master: "rgba(255, 0, 0)",
-    user: "rgba(247, 148, 29)",
-    admin: "rgba(11, 25, 103)",
-  };
-
-  return (
-    <div
-    // className="DAT_GR_Content_DevideTable"
-    // style={{ height: "100% !important", width: "100% !important" }}
-    >
-      {isMobile.value ? (
-        <>
-          {userList ? (
-            <>
-              <div className="DAT_GR_Content_DevideTable_Right">
-                <div className="DAT_GR_Content_DevideTable_Right_Head">
-                  <IoCaretBackOutline
-                    style={{ cursor: "pointer" }}
-                    size={20}
-                    color="white"
-                    onClick={() => {
-                      setUserlist(false);
-                      groupID.value = 0;
-                    }}
-                  />
-                  <div>{dataLang.formatMessage({ id: "roleList" })}</div>
-                </div>
-                <div className="DAT_GR_Content_DevideTable_Right_MobileItem">
-                  {groupID.value === 0 ? (
-                    <Empty />
-                  ) : (
-                    <div className="DAT_ProjectMobile">
-                      {datafilter.value?.map((item, i) => {
-                        return (
-                          <div key={i} className="DAT_ProjectMobile_Content">
-                            <div className="DAT_ProjectMobile_Content_Top">
-                              <div
-                                className="DAT_ProjectMobile_Content_Top_Avatar"
-                                style={{
-                                  minWidth: "40px",
-                                  minHeight: "40px",
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  fontSize: "12px",
-                                  backgroundColor: colorbackground[item.type_],
-                                  color: "white",
-                                  padding: "5px",
-                                }}
-                              >
-                                <span>
-                                  {dataLang.formatMessage({ id: item.type_ })}
-                                </span>
-                              </div>
-                              <div className="DAT_ProjectMobile_Content_Top_Info">
-                                <div className="DAT_ProjectMobile_Content_Top_Info_Name">
                                   <div
-                                    className="DAT_ProjectMobile_Content_Top_Info_Name_Left"
-                                    id={item.id_}
+                                    className="DAT_ProjectMobile_Content_Top_Info_Data"
                                     style={{
-                                      cursor: "pointer",
-                                      fontSize: "17px",
+                                      color: "rgba(95, 95, 98)",
+                                      fontSize: "12px",
                                     }}
                                   >
-                                    {item.name_}
-                                  </div>
-                                </div>
-
-                                <div
-                                  className="DAT_ProjectMobile_Content_Top_Info_Data"
-                                  style={{
-                                    color: "rgba(95, 95, 98)",
-                                    fontSize: "12px",
-                                  }}
-                                >
-                                  <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
-                                    <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name"></div>
-                                    <div>
-                                      {dataLang.formatMessage({ id: "phone" })}:{" "}
-                                      {item.phone_}
+                                    <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
+                                      <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name"></div>
+                                      <div>
+                                        {dataLang.formatMessage({
+                                          id: "phone",
+                                        })}
+                                        : {item.phone_}
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                                <div
-                                  className="DAT_ProjectMobile_Content_Top_Info_Data"
-                                  style={{
-                                    color: "rgba(95, 95, 98)",
-                                    fontSize: "12px",
-                                  }}
-                                >
-                                  <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
-                                    <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name"></div>
-                                    <div>
-                                      {dataLang.formatMessage({ id: "email" })}:{" "}
-                                      {item.mail_}
+                                  <div
+                                    className="DAT_ProjectMobile_Content_Top_Info_Data"
+                                    style={{
+                                      color: "rgba(95, 95, 98)",
+                                      fontSize: "12px",
+                                    }}
+                                  >
+                                    <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item">
+                                      <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name"></div>
+                                      <div>
+                                        {dataLang.formatMessage({
+                                          id: "email",
+                                        })}
+                                        : {item.mail_}
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
 
-                            <div className="DAT_ProjectMobile_Content_Bottom">
-                              <div className="DAT_ProjectMobile_Content_Bottom_Left">
-                                <span>
-                                  {dataLang.formatMessage({ id: "rule" })}:
-                                </span>
-                                &nbsp;
-                                <span>{item.rulename_}</span>
-                              </div>
+                              <div className="DAT_ProjectMobile_Content_Bottom">
+                                <div className="DAT_ProjectMobile_Content_Bottom_Left">
+                                  <span>
+                                    {dataLang.formatMessage({ id: "rule" })}:
+                                  </span>
+                                  &nbsp;
+                                  <span>{item.rulename_}</span>
+                                </div>
 
-                              <div className="DAT_ProjectMobile_Content_Bottom_Right">
-                                {/* {ruleInfor.value.setting.project.modify ===
-                                true ? (
-                                  <div
-                                    className="DAT_ProjectMobile_Content_Bottom_Right_Item"
-                                    id={item.id_}
-                                    // onClick={(e) => handleEdit(e)}
-                                  >
-                                    <FiEdit size={14} />
-                                  </div>
-                                ) : (
-                                  <div></div>
-                                )} */}
-                                {item.type_ !== "master" ? (
-                                  <div
-                                    className="DAT_ProjectMobile_Content_Bottom_Right_Item"
-                                    id={item.id_}
-                                    onClick={(e) => handleDeleteUser(e)}
-                                  >
-                                    <IoTrashOutline size={16} />
-                                  </div>
-                                ) : (
-                                  <div></div>
-                                )}
+                                <div className="DAT_ProjectMobile_Content_Bottom_Right">
+                                  {/* {ruleInfor.value.setting.project.modify ===
+                                  true ? (
+                                    <div
+                                      className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                                      id={item.id_}
+                                      // onClick={(e) => handleEdit(e)}
+                                    >
+                                      <FiEdit size={14} />
+                                    </div>
+                                  ) : (
+                                    <div></div>
+                                  )} */}
+                                  {item.type_ !== "master" ? (
+                                    <div
+                                      className="DAT_ProjectMobile_Content_Bottom_Right_Item"
+                                      id={item.id_}
+                                      onClick={(e) => handleDeleteUser(e)}
+                                    >
+                                      <IoTrashOutline size={16} />
+                                    </div>
+                                  ) : (
+                                    <div></div>
+                                  )}
+                                </div>
                               </div>
                             </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div
+                className="DAT_GR_Content_DevideTable_Left"
+                style={{ width: "100% !important", height: "100%" }}
+              >
+                <div className="DAT_GR_Content_DevideTable_Left_Head">
+                  {dataLang.formatMessage({ id: "grouprole" })}
+                </div>
+
+                <div className="DAT_GR_Content_DevideTable_Left_ItemList">
+                  {group.value.map((item, index) => (
+                    <div
+                      className="DAT_GR_Content_DevideTable_Left_ItemList_Item"
+                      key={index}
+                      style={{
+                        backgroundColor:
+                          groupID.value === item.id_
+                            ? "rgb(207, 207, 207, 0.4)"
+                            : "",
+                      }}
+                      id={item.id_}
+                    >
+                      <div>
+                        <div
+                          className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
+                          style={{ fontSize: "15px" }}
+                          id={item.id_}
+                          onClick={(e) => {
+                            handleChangeGroup(e);
+                            setUserlist(true);
+                          }}
+                        >
+                          {item.name_}
+                        </div>
+
+                        <div
+                          className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
+                          style={{
+                            fontSize: "13px",
+                            color: "grey",
+                            maxWidth: "100px",
+                          }}
+                        >
+                          {item.code_}
+                        </div>
+                      </div>
+                      <div
+                        className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Shortcut"
+                        id={item.id_ + "_dot"}
+                        onClick={(e) => handleShowFunction(e)}
+                      >
+                        <IoMdMore size={20} color="grey" />
+                      </div>
+
+                      <div
+                        className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More"
+                        id={item.id_ + "_function"}
+                        style={{ display: "none" }}
+                        onMouseLeave={(e) => handleShowFunction(e)}
+                      >
+                        {item.id_ === 1 ? (
+                          <></>
+                        ) : (
+                          <div
+                            className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Delete"
+                            id={item.id_}
+                            onClick={(e) => handleDeleteUser(e)}
+                            style={{ cursor: "pointer" }}
+                          >
+                            {/* <IoTrashOutline size={18} /> */}
                           </div>
-                        );
-                      })}
+                        )}
+                        <div
+                          className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Edit"
+                          style={{ right: "40px" }}
+                          id={item.id_}
+                          onClick={(e) => handleEditGroup(e)}
+                        >
+                          <FiEdit size={18} />
+                        </div>
+
+                        <div
+                          className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
+                          onClick={() => props.addState()}
+                        >
+                          <AiOutlineUserAdd size={18} />
+                        </div>
+                      </div>
                     </div>
-                  )}
+                  ))}
                 </div>
               </div>
-            </>
-          ) : (
+            )}
+          </>
+        ) : (
+          <div className="DAT_GR_Content_DevideTable">
             <div
               className="DAT_GR_Content_DevideTable_Left"
-              style={{ width: "100% !important", height: "100%" }}
+              style={{ width: "300px" }}
             >
               <div className="DAT_GR_Content_DevideTable_Left_Head">
                 {dataLang.formatMessage({ id: "grouprole" })}
@@ -330,23 +498,19 @@ const GroupUsers = (props) => {
                   <div
                     className="DAT_GR_Content_DevideTable_Left_ItemList_Item"
                     key={index}
+                    id={item.id_}
                     style={{
                       backgroundColor:
                         groupID.value === item.id_
                           ? "rgb(207, 207, 207, 0.4)"
                           : "",
                     }}
-                    id={item.id_}
+                    onClick={(e) => handleChangeGroup(e)}
                   >
                     <div>
                       <div
                         className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
                         style={{ fontSize: "15px" }}
-                        id={item.id_}
-                        onClick={(e) => {
-                          handleChangeGroup(e);
-                          setUserlist(true);
-                        }}
                       >
                         {item.name_}
                       </div>
@@ -382,10 +546,9 @@ const GroupUsers = (props) => {
                         <div
                           className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Delete"
                           id={item.id_}
-                          onClick={(e) => handleDeleteUser(e)}
-                          style={{ cursor: "pointer" }}
+                          onClick={() => props.groupDelState()}
                         >
-                          {/* <IoTrashOutline size={18} /> */}
+                          <IoTrashOutline size={18} />
                         </div>
                       )}
                       <div
@@ -408,127 +571,28 @@ const GroupUsers = (props) => {
                 ))}
               </div>
             </div>
-          )}
-        </>
-      ) : (
-        <div className="DAT_GR_Content_DevideTable">
-          <div
-            className="DAT_GR_Content_DevideTable_Left"
-            style={{ width: "300px" }}
-          >
-            <div className="DAT_GR_Content_DevideTable_Left_Head">
-              {dataLang.formatMessage({ id: "grouprole" })}
-            </div>
-
-            <div className="DAT_GR_Content_DevideTable_Left_ItemList">
-              {group.value.map((item, index) => (
-                <div
-                  className="DAT_GR_Content_DevideTable_Left_ItemList_Item"
-                  key={index}
-                  id={item.id_}
-                  style={{
-                    backgroundColor:
-                      groupID.value === item.id_
-                        ? "rgb(207, 207, 207, 0.4)"
-                        : "",
-                  }}
-                  onClick={(e) => handleChangeGroup(e)}
-                >
-                  <div>
-                    <div
-                      className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Name"
-                      style={{ fontSize: "15px" }}
-                    >
-                      {item.name_}
-                    </div>
-
-                    <div
-                      className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Info"
-                      style={{
-                        fontSize: "13px",
-                        color: "grey",
-                        maxWidth: "100px",
-                      }}
-                    >
-                      {item.code_}
-                    </div>
-                  </div>
-                  <div
-                    className="DAT_GR_Content_DevideTable_Left_ItemList_Item_Shortcut"
-                    id={item.id_ + "_dot"}
-                    onClick={(e) => handleShowFunction(e)}
-                  >
-                    <IoMdMore size={20} color="grey" />
-                  </div>
-
-                  <div
-                    className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More"
-                    id={item.id_ + "_function"}
-                    style={{ display: "none" }}
-                    onMouseLeave={(e) => handleShowFunction(e)}
-                  >
-                    {item.id_ === 1 ? (
-                      <></>
-                    ) : (
-                      <div
-                        className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Delete"
-                        id={item.id_}
-                        onClick={() => props.groupDelState()}
-                      >
-                        <IoTrashOutline size={18} />
-                      </div>
-                    )}
-                    <div
-                      className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Edit"
-                      style={{ right: "40px" }}
-                      id={item.id_}
-                      onClick={(e) => handleEditGroup(e)}
-                    >
-                      <FiEdit size={18} />
-                    </div>
-
-                    <div
-                      className="DAT_GR_Content_DevideTable_Left_ItemList_Item_More_Add"
-                      onClick={() => props.addState()}
-                    >
-                      <AiOutlineUserAdd size={18} />
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div className="DAT_GR_Content_DevideTable_Right">
+              <div className="DAT_GR_Content_DevideTable_Right_ItemList">
+                {groupID.value === 0 ? (
+                  <Empty />
+                ) : (
+                  <DataTable
+                    className="DAT_Table_GroupRole"
+                    columns={columnGroupRole}
+                    data={datafilter.value}
+                    pagination
+                    paginationComponentOptions={paginationComponentOptions}
+                    fixedHeader={true}
+                    noDataComponent={<Empty />}
+                  />
+                )}
+              </div>
             </div>
           </div>
-          <div className="DAT_GR_Content_DevideTable_Right">
-            <div className="DAT_GR_Content_DevideTable_Right_ItemList">
-              {groupID.value === 0 ? (
-                <Empty />
-              ) : (
-                <DataTable
-                  className="DAT_Table_GroupRole"
-                  columns={columnGroupRole}
-                  data={datafilter.value}
-                  pagination
-                  paginationComponentOptions={paginationComponentOptions}
-                  fixedHeader={true}
-                  noDataComponent={<Empty />}
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default function GroupRole(props) {
-  const dataLang = useIntl();
-  const [filter, setFilter] = useState(false);
-  const [createState, setCreateState] = useState(false);
-  const [addState, setAddState] = useState(false);
-  const [popupState, setPopupState] = useState(false);
-  const [editState, setEditState] = useState(false);
-  const [groupDelState, setGroupDelState] = useState(false);
+        )}
+      </div>
+    );
+  };
 
   const handleFilter = (e) => {
     const t = lowercasedata(e.currentTarget.value);
@@ -589,6 +653,10 @@ export default function GroupRole(props) {
     };
     checkApi();
   }, []);
+
+  const handleCloseEditRole = () => {
+    setEditrole(false);
+  };
 
   return (
     <>
@@ -776,6 +844,14 @@ export default function GroupRole(props) {
       {editState ? (
         <div className="DAT_PopupBG">
           <EditGroup handleClose={handleCloseEdit} />
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {editrole ? (
+        <div className="DAT_RolePopup">
+          <EditRole handleClose={handleCloseEditRole} />
         </div>
       ) : (
         <></>
