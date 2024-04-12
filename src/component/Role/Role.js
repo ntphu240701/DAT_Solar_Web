@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./Role.scss";
-
 import DataTable from "react-data-table-component";
 import { Empty } from "../Project/Project";
 import { signal } from "@preact/signals-react";
@@ -9,7 +8,7 @@ import DeleteRole from "./DeleteRole";
 import EditRole from "./EditRole";
 import { host } from "../Lang/Contant";
 import { callApi } from "../Api/Api";
-import { partnerInfor, ruleInfor } from "../../App";
+import { partnerInfor, ruleInfor, userInfor } from "../../App";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 import { datarule } from "../Rule/Rule";
@@ -21,9 +20,38 @@ import { FiEdit } from "react-icons/fi";
 import { lowercasedata } from "../ErrorSetting/ErrorSetting";
 import { MdAddchart } from "react-icons/md";
 import { GoProject } from "react-icons/go";
+import { useDispatch, useSelector } from "react-redux";
+import { groupID } from "../GroupRole/GroupRole";
 
 export const roleData = signal({});
 export const Usr_ = signal([]);
+
+export const access = {
+  mastereditfor: {
+    master: true,
+    mainadmin: true,
+    admin: true,
+    user: true,
+  },
+  mainadmineditfor: {
+    master: false,
+    mainadmin: false,
+    admin: true,
+    user: true,
+  },
+  admineditfor: {
+    master: false,
+    mainadmin: false,
+    admin: false,
+    user: true,
+  },
+  usereditfor: {
+    master: false,
+    mainadmin: false,
+    admin: false,
+    user: false,
+  },
+};
 
 export default function Role(props) {
   const dataLang = useIntl();
@@ -45,6 +73,8 @@ export default function Role(props) {
     user: "/dat_picture/programmer.png",
     admin: "/dat_picture/bussiness-man.png",
   };
+
+  const type = userInfor.value.type;
 
   const columnrole = [
     {
@@ -87,7 +117,6 @@ export default function Role(props) {
         justifyContent: "left",
       },
     },
-
     {
       name: dataLang.formatMessage({ id: "account" }),
       selector: (row) => {
@@ -96,6 +125,8 @@ export default function Role(props) {
             return dataLang.formatMessage({ id: "master" });
           case "admin":
             return dataLang.formatMessage({ id: "admin" });
+          case "mainadmin":
+            return dataLang.formatMessage({ id: "mainadmin" });
           default:
             return dataLang.formatMessage({ id: "user" });
         }
@@ -113,11 +144,19 @@ export default function Role(props) {
           {row.type_ === "master" ? (
             <></>
           ) : (
-            <div className="DAT_TableEdit">
+            <div
+              className="DAT_TableEdit"
+              style={{
+                display: access[`${type}editfor`][row.type_] ? "block" : "none",
+              }}
+            >
               <span
                 id={row.id_ + "_MORE"}
                 // onMouseEnter={(e) => handleModify(e, "block")}
-                onClick={(e) => handleModify(e, "block")}
+                onClick={(e) => {
+                  handleModify(e, "block");
+                  groupID.value = 0;
+                }}
               >
                 <IoMdMore size={20} />
               </span>
@@ -214,18 +253,18 @@ export default function Role(props) {
     fetchUsr();
   }, []);
 
-  useEffect(() => {
-    const getRule = async (partnerid) => {
-      const rule = await callApi("post", host.DATA + "/getRule", {
-        partnerid: partnerInfor.value.partnerid,
-      });
-      if (rule.status) {
-        datarule.value = rule.data;
-        datarule.value = datarule.value.sort((a, b) => a.ruleid_ - b.ruleid_);
-      }
-    };
-    getRule();
-  }, [partnerInfor.value.partnerid]);
+  // useEffect(() => {
+  //   const getRule = async (partnerid) => {
+  //     const rule = await callApi("post", host.DATA + "/getRule", {
+  //       partnerid: partnerInfor.value.partnerid,
+  //     });
+  //     if (rule.status) {
+  //       datarule.value = rule.data;
+  //       datarule.value = datarule.value.sort((a, b) => a.ruleid_ - b.ruleid_);
+  //     }
+  //   };
+  //   getRule();
+  // }, [partnerInfor.value.partnerid]);
 
   useEffect(() => {
     setdatafilter(Usr_.value);
@@ -379,7 +418,13 @@ export default function Role(props) {
                         padding: "5px",
                       }}
                     >
-                      <img src={img[item.type_]} alt="" onError={(e) => e.target.src = "./dat_picture/profile.png"} />
+                      <img
+                        src={img[item.type_]}
+                        alt=""
+                        onError={(e) =>
+                          (e.target.src = "./dat_picture/profile.png")
+                        }
+                      />
                     </div>
                     <div className="DAT_ProjectMobile_Content_Top_Info">
                       <div className="DAT_ProjectMobile_Content_Top_Info_Name">
@@ -426,7 +471,9 @@ export default function Role(props) {
                           <div className="DAT_ProjectMobile_Content_Top_Info_Data_Item_Name"></div>
                           <div>
                             {dataLang.formatMessage({ id: "account" })}:{" "}
-                            <span style={{ fontFamily: "Montserrat-Bold" }}>{dataLang.formatMessage({ id: item.type_ })}</span>
+                            <span style={{ fontFamily: "Montserrat-Bold" }}>
+                              {dataLang.formatMessage({ id: item.type_ })}
+                            </span>
                           </div>
                         </div>
                       </div>

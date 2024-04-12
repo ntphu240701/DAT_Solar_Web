@@ -16,7 +16,7 @@ import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, A
 import { signal } from "@preact/signals-react";
 
 import { IoCalendarOutline, IoClose } from "react-icons/io5";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdOutlineError } from "react-icons/md";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -71,10 +71,10 @@ const BasicInformation = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -149,10 +149,10 @@ const VersionInformation = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -222,10 +222,10 @@ const OperationInformation = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -340,10 +340,10 @@ const ElectricityGeneration = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -444,10 +444,10 @@ const PowerGrid = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -497,10 +497,10 @@ const ElectricityConsumption = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -545,10 +545,10 @@ const Temperature = (props) => {
         {/* <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -634,10 +634,10 @@ const State = (props) => {
         {/* <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -658,10 +658,10 @@ const Control = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -717,7 +717,9 @@ const HistoricalData = (props) => {
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
   const [dropConfig, setDropConfig] = useState(false);
-  const [configname, setConfigname] = useState(dataLang.formatMessage({ id: "choosePara" }));
+  const chooseParaId = dataLang.formatMessage({ id: "choosePara" });
+  const minimizeId = dataLang.formatMessage({ id: "minimize" });
+  const [configname, setConfigname] = useState(chooseParaId);
   const [chart, setChart] = useState([]);
   const [acfre, setACFre] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [acrcur, setACRcur] = useState(dataLang.formatMessage({ id: "unknown" }));
@@ -994,10 +996,10 @@ const HistoricalData = (props) => {
   }
 
   const handleShowConfig = (e) => {
-    if (configname === dataLang.formatMessage({ id: "choosePara" })) {
-      setConfigname(dataLang.formatMessage({ id: "minimize" }));
-    } else if (configname === dataLang.formatMessage({ id: "minimize" })) {
-      setConfigname(dataLang.formatMessage({ id: "choosePara" }));
+    if (configname === chooseParaId) {
+      setConfigname(minimizeId);
+    } else if (configname === minimizeId) {
+      setConfigname(chooseParaId);
     }
   };
 
@@ -1008,10 +1010,10 @@ const HistoricalData = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -1067,8 +1069,6 @@ const HistoricalData = (props) => {
                           <ResponsiveContainer
                             style={{ width: "100%", height: "100%", marginLeft: "-20px" }}
                           >
-
-
                             <LineChart width={100} height={500} data={chart}>
                               <XAxis dataKey="time" axisLine={false} tickLine={false} />
                               <YAxis
@@ -1778,7 +1778,7 @@ const HistoricalData = (props) => {
                       }}
                     >
                       <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Search">
-                        <input type="text" />
+                        <input type="text" placeholder={dataLang.formatMessage({ id: "SearchbyPara" })} />
                         <CiSearch color="gray" size={20} />
                       </div>
 
@@ -1798,7 +1798,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"RatedPower"}
                                   >
-                                    Rated Power
+                                    {dataLang.formatMessage({ id: "RatedPower" })}
                                   </label>
                                 </div>
                               </td>
@@ -1817,7 +1817,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"DC Voltage PV1"}
                                   >
-                                    DC Voltage PV1
+                                    {dataLang.formatMessage({ id: "DCVolt" })} PV1
                                   </label>
                                 </div>
 
@@ -1829,7 +1829,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"DC Voltage PV2"}
                                   >
-                                    DC Voltage PV2
+                                    {dataLang.formatMessage({ id: "DCVolt" })} PV2
                                   </label>
                                 </div>
 
@@ -1841,7 +1841,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"DC Current PV1"}
                                   >
-                                    DC Current PV1
+                                    {dataLang.formatMessage({ id: "DCCurrent" })} PV1
                                   </label>
                                 </div>
 
@@ -1853,7 +1853,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"DC Current PV2"}
                                   >
-                                    DC Current PV2
+                                    {dataLang.formatMessage({ id: "DCCurrent" })} PV2
                                   </label>
                                 </div>
 
@@ -1865,7 +1865,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"DC Power PV1"}
                                   >
-                                    DC Power PV1
+                                    {dataLang.formatMessage({ id: "DCPower" })} PV1
                                   </label>
                                 </div>
 
@@ -1877,7 +1877,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"DC Power PV2"}
                                   >
-                                    DC Power PV2
+                                    {dataLang.formatMessage({ id: "DCPower" })} PV2
                                   </label>
                                 </div>
 
@@ -1889,7 +1889,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"AC Voltage R/U/A"}
                                   >
-                                    AC Voltage R/U/A
+                                    {dataLang.formatMessage({ id: "ACVolt" })} R/U/A
                                   </label>
                                 </div>
 
@@ -1901,7 +1901,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"AC Current R/U/A"}
                                   >
-                                    AC Current R/U/A
+                                    {dataLang.formatMessage({ id: "ACCurrent" })} R/U/A
                                   </label>
                                 </div>
 
@@ -1913,7 +1913,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"AC Output Frequency R"}
                                   >
-                                    AC Output Frequency R
+                                    {dataLang.formatMessage({ id: "ACOutputFreq" })}
                                   </label>
                                 </div>
 
@@ -1925,7 +1925,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Total AC Output Power"}
                                   >
-                                    Total AC Output Power
+                                    {dataLang.formatMessage({ id: "totalACOutput" })}
                                   </label>
                                 </div>
 
@@ -1937,7 +1937,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Reactive Power"}
                                   >
-                                    Reactive Power
+                                    {dataLang.formatMessage({ id: "reactivePower" })}
                                   </label>
                                 </div>
 
@@ -1949,7 +1949,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Daily Production (Active)"}
                                   >
-                                    Daily Production (Active)
+                                    {dataLang.formatMessage({ id: "dailyOutput" })}
                                   </label>
                                 </div>
 
@@ -1961,7 +1961,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Load Active Power"}
                                   >
-                                    Load Active Power
+                                    {/* Load Active Power */}
+                                    {dataLang.formatMessage({ id: "LoadActivePower" })}
                                   </label>
                                 </div>
                               </td>
@@ -1969,7 +1970,8 @@ const HistoricalData = (props) => {
 
                             <tr className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr">
                               <th className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                Power Grid:
+                                {/* Power Grid: */}
+                                {dataLang.formatMessage({ id: "PowerGrid" })}:
                               </th>
                               <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td">
                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
@@ -1980,7 +1982,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Leak Current"}
                                   >
-                                    Leak Current
+                                    {/* Leak Current */}
+                                    {dataLang.formatMessage({ id: "LeakCurrent" })}:
                                   </label>
                                 </div>
 
@@ -1992,7 +1995,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Total Grid Power"}
                                   >
-                                    Total Grid Power
+                                    {/* Total Grid Power */}
+                                    {dataLang.formatMessage({ id: "TotalGridPower" })}
                                   </label>
                                 </div>
 
@@ -2004,7 +2008,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Cumulative Grid Feed-in"}
                                   >
-                                    Cumulative Grid Feed-in
+                                    {dataLang.formatMessage({ id: "CumulativeGridFeedin" })}
                                   </label>
                                 </div>
 
@@ -2016,7 +2020,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Cumulative Energy Purchased"}
                                   >
-                                    Cumulative Energy Purchased
+                                    {dataLang.formatMessage({ id: "CumulativeEnergyPurchased" })}
                                   </label>
                                 </div>
 
@@ -2028,7 +2032,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Daily Grid Feed-in"}
                                   >
-                                    Daily Grid Feed-in
+                                    {dataLang.formatMessage({ id: "DailyGridFeedin" })}
                                   </label>
                                 </div>
 
@@ -2040,7 +2044,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Daily Energy Purchased"}
                                   >
-                                    Daily Energy Purchased
+                                    {dataLang.formatMessage({ id: "DailyEnergyPurchased" })}
                                   </label>
                                 </div>
 
@@ -2052,7 +2056,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Meter Power"}
                                   >
-                                    Meter Power
+                                    {/* Meter Power */}
+                                    {dataLang.formatMessage({ id: "MeterPower" })}
                                   </label>
                                 </div>
 
@@ -2064,7 +2069,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"CT Current"}
                                   >
-                                    CT Current
+                                    {dataLang.formatMessage({ id: "CTcur" })}
                                   </label>
                                 </div>
                               </td>
@@ -2072,7 +2077,7 @@ const HistoricalData = (props) => {
 
                             <tr className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr">
                               <th className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                Electricity Consumption:
+                                {dataLang.formatMessage({ id: "electricConsumption" })}:
                               </th>
                               <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td">
                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
@@ -2083,7 +2088,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Total Consumption Power"}
                                   >
-                                    Total Consumption Power
+                                    {dataLang.formatMessage({ id: "TotalConsumptionPower" })}
                                   </label>
                                 </div>
 
@@ -2095,7 +2100,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Cumulative Consumption"}
                                   >
-                                    Cumulative Consumption
+                                    {dataLang.formatMessage({ id: "CumulativeConsumption" })}
                                   </label>
                                 </div>
 
@@ -2107,7 +2112,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Daily Consumption"}
                                   >
-                                    Daily Consumption
+                                    {dataLang.formatMessage({ id: "DailyConsumptionPower" })}
                                   </label>
                                 </div>
                               </td>
@@ -2115,7 +2120,7 @@ const HistoricalData = (props) => {
 
                             <tr className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr">
                               <th className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                Battery:
+                                {dataLang.formatMessage({ id: "batteryData" })}:
                               </th>
                               <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td">
                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
@@ -2126,7 +2131,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Battery Voltage"}
                                   >
-                                    Battery Voltage
+                                    {dataLang.formatMessage({ id: "BatteryVolt" })}
                                   </label>
                                 </div>
 
@@ -2138,7 +2143,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Battery Current"}
                                   >
-                                    Battery Current
+                                    {dataLang.formatMessage({ id: "BatteryCurrent" })}
                                   </label>
                                 </div>
 
@@ -2150,7 +2155,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Max. Charging Current"}
                                   >
-                                    Max. Charging Current
+                                    {/* Max. Charging Current */}
+                                    {dataLang.formatMessage({ id: "MaxChargingCur" })}
                                   </label>
                                 </div>
 
@@ -2162,7 +2168,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Max. Discharging Current"}
                                   >
-                                    Max. Discharging Current
+                                    {/* Max. Discharging Current */}
+                                    {dataLang.formatMessage({ id: "MaxDischargingCur" })}
                                   </label>
                                 </div>
 
@@ -2174,7 +2181,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Battery Power"}
                                   >
-                                    Battery Power
+                                    {dataLang.formatMessage({ id: "BatteryPower" })}
                                   </label>
                                 </div>
 
@@ -2210,7 +2217,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Total Charging Energy"}
                                   >
-                                    Total Charging Energy
+                                    {dataLang.formatMessage({ id: "TotalchargingEnergy" })}
                                   </label>
                                 </div>
 
@@ -2222,7 +2229,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Total Discharging Energy"}
                                   >
-                                    Total Discharging Energy
+                                    {dataLang.formatMessage({ id: "TotaldischargingEnergy" })}
                                   </label>
                                 </div>
 
@@ -2234,7 +2241,7 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"Daily Charging Energy"}
                                   >
-                                    Daily Charging Energy
+                                    {dataLang.formatMessage({ id: "DailychargingEnergy" })}
                                   </label>
                                 </div>
                               </td>
@@ -2253,7 +2260,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"BMS Max Charge Current"}
                                   >
-                                    BMS Max Charge Current
+                                    {/* BMS Max Charge Current */}
+                                    {dataLang.formatMessage({ id: "BMSMaxChargingCur" })}
                                   </label>
                                 </div>
 
@@ -2265,7 +2273,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"BMS Max Discharge Current"}
                                   >
-                                    BMS Max Discharge Current
+                                    {/* BMS Max Discharge Current */}
+                                    {dataLang.formatMessage({ id: "MaxDischargingCur" })}
                                   </label>
                                 </div>
 
@@ -2277,7 +2286,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"BMS Charge Voltage"}
                                   >
-                                    BMS Charge Voltage
+                                    {/* BMS Charge Voltage */}
+                                    {dataLang.formatMessage({ id: "BMSChargeVoltage" })}
                                   </label>
                                 </div>
 
@@ -2289,7 +2299,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"BMS Discharge Voltage"}
                                   >
-                                    BMS Discharge Voltage
+                                    {/* BMS Discharge Voltage */}
+                                    {dataLang.formatMessage({ id: "BMSDischargeVoltage" })}
                                   </label>
                                 </div>
                               </td>
@@ -2297,7 +2308,8 @@ const HistoricalData = (props) => {
 
                             <tr className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr">
                               <th className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Th">
-                                State:
+                                {/* State: */}
+                                {dataLang.formatMessage({ id: "State" })}:
                               </th>
                               <td className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td">
                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
@@ -2308,7 +2320,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"DC Insulation Resistance"}
                                   >
-                                    DC Insulation Resistance
+                                    {/* DC Insulation Resistance */}
+                                    {dataLang.formatMessage({ id: "DCInsulationResistance" })}
                                   </label>
                                 </div>
                               </td>
@@ -2327,7 +2340,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"R phase EPS voltage"}
                                   >
-                                    R phase EPS voltage
+                                    {/* R phase EPS voltage */}
+                                    {dataLang.formatMessage({ id: "RphaseEPSvoltage" })}
                                   </label>
                                 </div>
 
@@ -2339,7 +2353,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"R phase EPS current"}
                                   >
-                                    R phase EPS current
+                                    {/* R phase EPS current */}
+                                    {dataLang.formatMessage({ id: "RphaseEPScurrent" })}
                                   </label>
                                 </div>
 
@@ -2351,7 +2366,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"EPSR phase active power"}
                                   >
-                                    EPSR phase active power
+                                    {/* EPSR phase active power */}
+                                    {dataLang.formatMessage({ id: "EPSRphaseActivePower" })}
                                   </label>
                                 </div>
 
@@ -2363,7 +2379,8 @@ const HistoricalData = (props) => {
                                   <label
                                     htmlFor={"EPS Frequency"}
                                   >
-                                    EPS Frequency
+                                    {/* EPS Frequency */}
+                                    {dataLang.formatMessage({ id: "EPSFrequency" })}
                                   </label>
                                 </div>
                               </td>
@@ -2386,6 +2403,10 @@ const HistoricalData = (props) => {
                           {dataLang.formatMessage({ id: "cancel" })}
                         </button>
                         <button
+                          onClick={(e) => {
+                            handleShowConfig(e);
+                            setDropConfig(!dropConfig);
+                          }}
                           style={{
                             backgroundColor: COLOR.value.PrimaryColor,
                             color: "white",
@@ -2625,10 +2646,10 @@ const GridStartSettings = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -2885,10 +2906,10 @@ const GridVolt = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -3489,10 +3510,10 @@ const SystemTime = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -3841,10 +3862,10 @@ const GridFirst = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -4379,10 +4400,10 @@ const BatteryFirst = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -4690,10 +4711,10 @@ const ExportPowerSettings = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -4975,10 +4996,10 @@ const BatterySettings = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -5089,10 +5110,10 @@ const DeviceSettings = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
@@ -5244,10 +5265,10 @@ const GridInfo = (props) => {
         <div className="DAT_Info_Databox_Title_Right"
           onClick={() => setDisplay(!display)}
         >
-          <IoIosArrowDown
+          <IoIosArrowUp
             size={20}
             style={{
-              transform: display ? "rotate(-180deg)" : "rotate(0deg)",
+              transform: display ? "rotate(180deg)" : "rotate(0deg)",
               transition: "0.5s",
             }}
           />
