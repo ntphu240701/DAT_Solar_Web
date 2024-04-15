@@ -21,19 +21,19 @@ export default function GridStartSettings(props) {
     const intervalIDRef = useReducer(null);
 
     const config_hybrid = [
-        'ac_high_fre',
-        'ac_low_fre',
-        'ac_high_voltage',
-        'ac_low_voltage',
-        'start_delay_time',
-        'restart_delay_time'
+        { key: 'ac_high_fre', type: 'number' },
+        { key: 'ac_low_fre', type: 'number' },
+        { key: 'ac_high_voltage', type: 'number' },
+        { key: 'ac_low_voltage', type: 'number' },
+        { key: 'start_delay_time', type: 'time' },
+        { key: 'restart_delay_time', type: 'time' },
     ]
 
     const config_grid = [
-        'ac_high_fre',
-        'ac_low_fre',
-        'ac_high_voltage',
-        'ac_low_voltage',
+        { key: 'ac_high_fre', type: 'number' },
+        { key: 'ac_low_fre', type: 'number' },
+        { key: 'ac_high_voltage', type: 'number' },
+        { key: 'ac_low_voltage', type: 'number' },
     ]
 
     const invtCloud = async (data, token) => {
@@ -95,7 +95,7 @@ export default function GridStartSettings(props) {
                 switch (info.value.pdata.mode) {
                     case 'CONSUMPTION':
                         if (remote.value < config_grid.length) {
-                            let key = config_grid[remote.value]
+                            let key = config_grid[remote.value].key
                             console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}')
                             let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}', Token.value.token)
                             console.log(res)
@@ -112,7 +112,7 @@ export default function GridStartSettings(props) {
                         break;
                     case 'HYBRID':
                         if (remote.value < config_hybrid.length) {
-                            let key = config_hybrid[remote.value]
+                            let key = config_hybrid[remote.value].key
                             console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}')
                             let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}', Token.value.token)
                             console.log(res)
@@ -129,7 +129,7 @@ export default function GridStartSettings(props) {
                         break;
                     default:
                         if (remote.value < config_grid.length) {
-                            let key = config_grid[remote.value]
+                            let key = config_grid[remote.value].key
                             console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}')
                             let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}', Token.value.token)
                             console.log(res)
@@ -173,18 +173,18 @@ export default function GridStartSettings(props) {
             setStep(0)
             switch (info.value.pdata.mode) {
                 case 'CONSUMPTION':
-                    config_grid.map((key) => {
-                        document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
+                    config_grid.map((data) => {
+                        document.getElementById(data.key).value = data.type === 'number' ? parseFloat(invt[info.value.psetting[data.key].register] * info.value.psetting[data.key].cal).toFixed(2) : parseInt(invt[info.value.psetting[data.key].register] * info.value.psetting[data.key].cal)
                     })
                     break;
                 case 'HYBRID':
-                    config_hybrid.map((key) => {
-                        document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
+                    config_hybrid.map((data) => {
+                        document.getElementById(data.key).value = data.type === 'number' ? parseFloat(invt[info.value.psetting[data.key].register] * info.value.psetting[data.key].cal).toFixed(2) : parseInt(invt[info.value.psetting[data.key].register] * info.value.psetting[data.key].cal)
                     })
                     break;
                 default:
-                    config_grid.map((key) => {
-                        document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
+                    config_grid.map((data) => {
+                        document.getElementById(data.key).value = data.type === 'number' ? parseFloat(invt[info.value.psetting[data.key].register] * info.value.psetting[data.key].cal).toFixed(2) : parseInt(invt[info.value.psetting[data.key].register] * info.value.psetting[data.key].cal)
                     })
                     break;
             }

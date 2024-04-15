@@ -27,16 +27,16 @@ import { useIntl } from "react-intl";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
+import { lowercasedata } from "../ErrorSetting/ErrorSetting";
+
 import { FaCheckCircle, FaRegFileAlt, FaStar } from "react-icons/fa";
-import { MdOutlineError, MdEdit, MdDelete, MdAddchart } from "react-icons/md";
+import { MdOutlineError, MdAddchart } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { GoProject } from "react-icons/go";
 import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore } from "react-icons/io";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
-import { RxCross2 } from "react-icons/rx";
 import { FiEdit, FiFilter } from "react-icons/fi";
 import { RiShareForwardLine } from "react-icons/ri";
-import { lowercasedata } from "../ErrorSetting/ErrorSetting";
 
 const tabLable = signal("");
 const tabMobile = signal(false);
@@ -623,7 +623,6 @@ export default function Project(props) {
     demo.value = dataproject.value.filter((item) => item.shared == 1);
     tabLable.value = listTab[0].name;
     setDatafilter(dataproject.value);
-    console.log(dataproject.value);
   }, [dataproject.value]);
 
   useEffect(() => {

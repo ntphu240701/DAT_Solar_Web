@@ -10,6 +10,7 @@ import { Token } from '../../App';
 import { alertDispatch } from '../Alert/Alert';
 
 import { IoIosArrowUp } from 'react-icons/io';
+import { type } from 'jquery';
 
 const remote = signal(255);
 
@@ -21,41 +22,41 @@ export default function GridVolt(props) {
     const intervalIDRef = useReducer(null);
 
     const config_grid = [
-        "ac_under_voltage_1",
-        "ac_over_voltage_1",
-        "ac_under_voltagetime_1",
-        "ac_over_voltagetime_1",
-        "ac_under_voltage_2",
-        "ac_over_voltage_2",
-        "ac_under_voltagetime_2",
-        "ac_over_voltagetime_2",
-        "ac_under_fre_1",
-        "ac_over_fre_1",
-        "ac_under_fretime_1",
-        "ac_over_fretime_1",
-        "ac_under_fre_2",
-        "ac_over_fre_2",
-        "ac_under_fretime_2",
-        "ac_over_fretime_2",
+        { key: "ac_under_voltage_1", type: "number" },
+        { key: "ac_over_voltage_1", type: "number" },
+        { key: "ac_under_voltagetime_1", type: "time" },
+        { key: "ac_over_voltagetime_1", type: "time" },
+        { key: "ac_under_voltage_2", type: "number" },
+        { key: "ac_over_voltage_2", type: "number" },
+        { key: "ac_under_voltagetime_2", type: "time" },
+        { key: "ac_over_voltagetime_2", type: "time" },
+        { key: "ac_under_fre_1", type: "number" },
+        { key: "ac_over_fre_1", type: "number" },
+        { key: "ac_under_fretime_1", type: "time" },
+        { key: "ac_over_fretime_1", type: "time" },
+        { key: "ac_under_fre_2", type: "number" },
+        { key: "ac_over_fre_2", type: "number" },
+        { key: "ac_under_fretime_2", type: "time" },
+        { key: "ac_over_fretime_2", type: "time" },
     ]
 
     const config_hybrid = [
-        "ac_under_voltage_1",
-        "ac_over_voltage_1",
-        "ac_under_voltagetime_1",
-        "ac_over_voltagetime_1",
-        "ac_under_voltage_2",
-        "ac_over_voltage_2",
-        "ac_under_voltagetime_2",
-        "ac_over_voltagetime_2",
-        "ac_under_fre_1",
-        "ac_over_fre_1",
-        "ac_under_fretime_1",
-        "ac_over_fretime_1",
-        "ac_under_fre_2",
-        "ac_over_fre_2",
-        "ac_under_fretime_2",
-        "ac_over_fretime_2",
+        { key: "ac_under_voltage_1", type: "number" },
+        { key: "ac_over_voltage_1", type: "number" },
+        { key: "ac_under_voltagetime_1", type: "time" },
+        { key: "ac_over_voltagetime_1", type: "time" },
+        { key: "ac_under_voltage_2", type: "number" },
+        { key: "ac_over_voltage_2", type: "number" },
+        { key: "ac_under_voltagetime_2", type: "time" },
+        { key: "ac_over_voltagetime_2", type: "time" },
+        { key: "ac_under_fre_1", type: "number" },
+        { key: "ac_over_fre_1", type: "number" },
+        { key: "ac_under_fretime_1", type: "time" },
+        { key: "ac_over_fretime_1", type: "time" },
+        { key: "ac_under_fre_2", type: "number" },
+        { key: "ac_over_fre_2", type: "number" },
+        { key: "ac_under_fretime_2", type: "time" },
+        { key: "ac_over_fretime_2", type: "time" },
     ]
 
     const invtCloud = async (data, token) => {
@@ -117,7 +118,7 @@ export default function GridVolt(props) {
                 switch (info.value.pdata.mode) {
                     case 'CONSUMPTION':
                         if (remote.value < config_grid.length) {
-                            let key = config_grid[remote.value]
+                            let key = config_grid[remote.value].key
                             console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}')
                             let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}', Token.value.token)
                             console.log(res)
@@ -134,7 +135,7 @@ export default function GridVolt(props) {
                         break;
                     case 'HYBRID':
                         if (remote.value < config_hybrid.length) {
-                            let key = config_hybrid[remote.value]
+                            let key = config_hybrid[remote.value].key
                             console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}')
                             let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}', Token.value.token)
                             console.log(res)
@@ -151,7 +152,7 @@ export default function GridVolt(props) {
                         break;
                     default:
                         if (remote.value < config_grid.length) {
-                            let key = config_grid[remote.value]
+                            let key = config_grid[remote.value].key
                             console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}')
                             let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}', Token.value.token)
                             console.log(res)
@@ -195,18 +196,18 @@ export default function GridVolt(props) {
             setStep(0)
             switch (info.value.pdata.mode) {
                 case 'CONSUMPTION':
-                    config_grid.map((key) => {
-                        document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
+                    config_grid.map((data) => {
+                        document.getElementById(data.key).value = data.type === 'number' ? parseFloat(invt[info.value.psetting[data.key].register] * info.value.psetting[data.key].cal).toFixed(2) : parseInt(invt[info.value.psetting[data.key].register] * info.value.psetting[data.key].cal)
                     })
                     break;
                 case 'HYBRID':
-                    config_hybrid.map((key) => {
-                        document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
+                    config_hybrid.map((data) => {
+                        document.getElementById(data.key).value = data.type === 'number' ? parseFloat(invt[info.value.psetting[data.key].register] * info.value.psetting[data.key].cal).toFixed(2) : parseInt(invt[info.value.psetting[data.key].register] * info.value.psetting[data.key].cal)
                     })
                     break;
                 default:
-                    config_grid.map((key) => {
-                        document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
+                    config_grid.map((data) => {
+                        document.getElementById(data.key).value = data.type === 'number' ? parseFloat(invt[info.value.psetting[data.key].register] * info.value.psetting[data.key].cal).toFixed(2) : parseInt(invt[info.value.psetting[data.key].register] * info.value.psetting[data.key].cal)
                     })
                     break;
             }
@@ -590,7 +591,7 @@ export default function GridVolt(props) {
                                                     ms
                                                 </div>
                                             </div>
-                                            <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                                            {/* <div className="DAT_Info_Databox_GridVolt_Content_Item">
                                                 <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
                                                     {dataLang.formatMessage({ id: 'FreqSetting' })}:
                                                 </div>
@@ -601,7 +602,7 @@ export default function GridVolt(props) {
                                                         <option>60Hz</option>
                                                     </select>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
 
                                         <div className="DAT_Info_Databox_GridVolt_Foot">
@@ -778,7 +779,7 @@ export default function GridVolt(props) {
                                                     ms
                                                 </div>
                                             </div>
-                                            <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                                            {/* <div className="DAT_Info_Databox_GridVolt_Content_Item">
                                                 <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
                                                     {dataLang.formatMessage({ id: 'FreqSetting' })}:
                                                 </div>
@@ -789,7 +790,7 @@ export default function GridVolt(props) {
                                                         <option>60Hz</option>
                                                     </select>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
 
                                         <div className="DAT_Info_Databox_GridVolt_Foot">

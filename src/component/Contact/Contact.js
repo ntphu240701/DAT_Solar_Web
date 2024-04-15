@@ -123,7 +123,6 @@ export default function Contact(props) {
       <div className="DAT_ContactInfo"
         style={{
           height: contactState === "default" ? "0px" : "100vh",
-          transition: "0.5s",
         }}
       >
         {(() => {

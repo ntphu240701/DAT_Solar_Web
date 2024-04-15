@@ -72,6 +72,7 @@ export default function Role(props) {
     master: "/dat_picture/manager.png",
     user: "/dat_picture/programmer.png",
     admin: "/dat_picture/bussiness-man.png",
+    mainadmin: "/dat_picture/admin.jpg",
   };
 
   const type = userInfor.value.type;

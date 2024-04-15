@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "./Device.scss"
 
 import { inverterList, loggerList } from "./Device";
@@ -79,8 +79,23 @@ export default function Popup(props) {
     }
   }
 
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    // props.devtype === "logger" ?
     props.type === "remove" ?
       <div className="DAT_Popup_Box">
         <div className="DAT_Popup_Box_Head">

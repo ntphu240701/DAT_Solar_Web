@@ -22,14 +22,14 @@ import DataTable from "react-data-table-component";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useIntl } from "react-intl";
+import toolslice from "../Redux/toolslice";
 
 import { IoIosArrowDown, IoIosArrowForward, IoMdMore } from "react-icons/io";
 import { IoAddOutline, IoClose, IoTrashOutline } from "react-icons/io5";
-import { MdDelete, MdEdit, MdOutlineError } from "react-icons/md";
+import { MdOutlineError } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit, FiFilter } from "react-icons/fi";
-import toolslice from "../Redux/toolslice";
 
 export const temp = signal([]);
 export const inverterDB = signal([]);
@@ -608,7 +608,7 @@ export default function ProjectData(props) {
 
     const getShared = async () => {
       let req = await callApi("post", host.DATA + "/getmailPlantmem", { plantid: projectData.value.plantid_, usr: user });
-      console.log(req)
+      // console.log(req)
       if (req.status) {
         setgetShared(req.data)
       }
@@ -658,7 +658,7 @@ export default function ProjectData(props) {
     getLogger();
 
     return () => {
-      console.log("unmount");
+      // console.log("unmount");
       tab_.value = "logger";
       inverterDB.value = [];
       temp.value = [];
@@ -801,7 +801,7 @@ export default function ProjectData(props) {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
-        plantState.value = "default";
+        // plantState.value = "default";
         setDropState(false);
       }
     };
@@ -812,7 +812,7 @@ export default function ProjectData(props) {
       document.removeEventListener("keydown", handleKeyDown);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plantState.value]);
+  }, []);
 
   return (
     <div ref={box} style={{ width: "98%", margin: "auto" }}>

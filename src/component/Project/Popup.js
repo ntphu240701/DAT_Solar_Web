@@ -122,7 +122,7 @@ export default function Popup(props) {
       document.removeEventListener("keydown", handleKeyDown);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [popupState.value]);
+  }, []);
 
   return (
     props.func === "remove" ?

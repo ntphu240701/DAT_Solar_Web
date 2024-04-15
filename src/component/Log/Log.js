@@ -100,11 +100,11 @@ export default function Log(props) {
                         <div className="DAT_LogHeader_Title">
                             <MdOutlineManageHistory color="gray" size={25} /> <span>{dataLang.formatMessage({ id: 'log' })}</span>
                         </div>
-                        <div className="DAT_LogHeader_Filter">
+                        {/* <div className="DAT_LogHeader_Filter">
                             <input type="text" placeholder={dataLang.formatMessage({ id: 'enterDev' })} />
                             <CiSearch color="gray" size={20} />
                         </div>
-                        <div></div>
+                        <div></div> */}
                     </div>
                     <div className='DAT_Log'>
                         <div className='DAT_Log_Header' style={{ padding: "15px", backgroundColor: "rgba(233, 233, 233, 0.5)" }}>

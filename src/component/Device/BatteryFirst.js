@@ -20,264 +20,6 @@ export default function BatteryFirst(props) {
     const [invt, setInvt] = useState({});
     const intervalIDRef = useReducer(null);
 
-    const hour = [
-        {
-            value: "00",
-        },
-        {
-            value: "01",
-        },
-        {
-            value: "02",
-        },
-        {
-            value: "03",
-        },
-        {
-            value: "04",
-        },
-        {
-            value: "05",
-        },
-        {
-            value: "06",
-        },
-        {
-            value: "07",
-        },
-        {
-            value: "08",
-        },
-        {
-            value: "09",
-        },
-        {
-            value: "10",
-        },
-        {
-            value: "11",
-        },
-        {
-            value: "12",
-        },
-        {
-            value: "13",
-        },
-        {
-            value: "14",
-        },
-        {
-            value: "15",
-        },
-        {
-            value: "16",
-        },
-        {
-            value: "17",
-        },
-        {
-            value: "18",
-        },
-        {
-            value: "19",
-        },
-        {
-            value: "20",
-        },
-        {
-            value: "21",
-        },
-        {
-            value: "22",
-        },
-        {
-            value: "23",
-        },
-    ]
-
-    const minute = [
-        {
-            value: "00",
-        },
-        {
-            value: "01",
-        },
-        {
-            value: "02",
-        },
-        {
-            value: "03",
-        },
-        {
-            value: "04",
-        },
-        {
-            value: "05",
-        },
-        {
-            value: "06",
-        },
-        {
-            value: "07",
-        },
-        {
-            value: "08",
-        },
-        {
-            value: "09",
-        },
-        {
-            value: "10",
-        },
-        {
-            value: "11",
-        },
-        {
-            value: "12",
-        },
-        {
-            value: "13",
-        },
-        {
-            value: "14",
-        },
-        {
-            value: "15",
-        },
-        {
-            value: "16",
-        },
-        {
-            value: "17",
-        },
-        {
-            value: "18",
-        },
-        {
-            value: "19",
-        },
-        {
-            value: "20",
-        },
-        {
-            value: "21",
-        },
-        {
-            value: "22",
-        },
-        {
-            value: "23",
-        },
-        {
-            value: "24",
-        },
-        {
-            value: "25",
-        },
-        {
-            value: "26",
-        },
-        {
-            value: "27",
-        },
-        {
-            value: "28",
-        },
-        {
-            value: "29",
-        },
-        {
-            value: "30",
-        },
-        {
-            value: "31",
-        },
-        {
-            value: "32",
-        },
-        {
-            value: "33",
-        },
-        {
-            value: "34",
-        },
-        {
-            value: "35",
-        },
-        {
-            value: "36",
-        },
-        {
-            value: "37",
-        },
-        {
-            value: "38",
-        },
-        {
-            value: "39",
-        },
-        {
-            value: "40",
-        },
-        {
-            value: "41",
-        },
-        {
-            value: "42",
-        },
-        {
-            value: "43",
-        },
-        {
-            value: "44",
-        },
-        {
-            value: "45",
-        },
-        {
-            value: "46",
-        },
-        {
-            value: "47",
-        },
-        {
-            value: "48",
-        },
-        {
-            value: "49",
-        },
-        {
-            value: "50",
-        },
-        {
-            value: "51",
-        },
-        {
-            value: "52",
-        },
-        {
-            value: "53",
-        },
-        {
-            value: "54",
-        },
-        {
-            value: "55",
-        },
-        {
-            value: "56",
-        },
-        {
-            value: "57",
-        },
-        {
-            value: "58",
-        },
-        {
-            value: "59",
-        },
-    ]
-
     const config = [
         "bat_starttime_1",
         "bat_endtime_1",
@@ -392,9 +134,9 @@ export default function BatteryFirst(props) {
             setStep(0)
             config.map((key) => {
                 if (key == "charge_powerperlimit_1" || key == "stop_soc_whilecharge") {
-                    document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
+                    document.getElementById(key).value = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal)
                 } else {
-                    document.getElementById(key).innerHTML = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
+                    document.getElementById(key).innerHTML = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal)
                 }
             });
         }
@@ -428,19 +170,9 @@ export default function BatteryFirst(props) {
                                     {dataLang.formatMessage({ id: "BatteryFirstStartTime" })}: <span id="bat_starttime_1"></span>
                                 </div>
                                 <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
-                                    <select>
-                                        {hour.map((item, i) => {
-                                            return <option key={i}>{item.value}</option>
-                                        }
-                                        )}
-                                    </select>
-                                    :
-                                    <select>
-                                        {minute.map((item, i) => {
-                                            return <option key={i}>{item.value}</option>
-                                        }
-                                        )}
-                                    </select>
+                                    <input
+                                        type='time'
+                                    />
                                 </div>
                             </div>
 
@@ -449,19 +181,9 @@ export default function BatteryFirst(props) {
                                     {dataLang.formatMessage({ id: "BatteryFirstEndTime" })}: <span id="bat_endtime_1"></span>
                                 </div>
                                 <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
-                                    <select>
-                                        {hour.map((item, i) => {
-                                            return <option key={i}>{item.value}</option>
-                                        }
-                                        )}
-                                    </select>
-                                    :
-                                    <select>
-                                        {minute.map((item, i) => {
-                                            return <option key={i}>{item.value}</option>
-                                        }
-                                        )}
-                                    </select>
+                                    <input
+                                        type='time'
+                                    />
                                 </div>
                             </div>
 
@@ -482,19 +204,9 @@ export default function BatteryFirst(props) {
                                     {dataLang.formatMessage({ id: "BatteryFirstStartTime2" })}: <span id="bat_starttime_2"></span>
                                 </div>
                                 <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
-                                    <select>
-                                        {hour.map((item, i) => {
-                                            return <option key={i}>{item.value}</option>
-                                        }
-                                        )}
-                                    </select>
-                                    :
-                                    <select>
-                                        {minute.map((item, i) => {
-                                            return <option key={i}>{item.value}</option>
-                                        }
-                                        )}
-                                    </select>
+                                    <input
+                                        type='time'
+                                    />
                                 </div>
                             </div>
 
@@ -503,19 +215,9 @@ export default function BatteryFirst(props) {
                                     {dataLang.formatMessage({ id: "BatteryFirstEndTime2" })}: <span id="bat_endtime_2"></span>
                                 </div>
                                 <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
-                                    <select>
-                                        {hour.map((item, i) => {
-                                            return <option key={i}>{item.value}</option>
-                                        }
-                                        )}
-                                    </select>
-                                    :
-                                    <select>
-                                        {minute.map((item, i) => {
-                                            return <option key={i}>{item.value}</option>
-                                        }
-                                        )}
-                                    </select>
+                                    <input
+                                        type='time'
+                                    />
                                 </div>
                             </div>
 
@@ -536,19 +238,9 @@ export default function BatteryFirst(props) {
                                     {dataLang.formatMessage({ id: "BatteryFirstStartTime3" })}: <span id="bat_starttime_3"></span>
                                 </div>
                                 <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
-                                    <select>
-                                        {hour.map((item, i) => {
-                                            return <option key={i}>{item.value}</option>
-                                        }
-                                        )}
-                                    </select>
-                                    :
-                                    <select>
-                                        {minute.map((item, i) => {
-                                            return <option key={i}>{item.value}</option>
-                                        }
-                                        )}
-                                    </select>
+                                    <input
+                                        type='time'
+                                    />
                                 </div>
                             </div>
 
@@ -557,19 +249,9 @@ export default function BatteryFirst(props) {
                                     {dataLang.formatMessage({ id: "BatteryFirstEndTime3" })}: <span id="bat_endtime_3"></span>
                                 </div>
                                 <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
-                                    <select>
-                                        {hour.map((item, i) => {
-                                            return <option key={i}>{item.value}</option>
-                                        }
-                                        )}
-                                    </select>
-                                    :
-                                    <select>
-                                        {minute.map((item, i) => {
-                                            return <option key={i}>{item.value}</option>
-                                        }
-                                        )}
-                                    </select>
+                                    <input
+                                        type='time'
+                                    />
                                 </div>
                             </div>
 
@@ -600,7 +282,7 @@ export default function BatteryFirst(props) {
                                     {dataLang.formatMessage({ id: "ChargePowerLimit2" })}:
                                 </div>
                                 <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
-                                    <input placeholder="0 ~ 100" type="number" min={0} max={100} step="any" />
+                                    <input placeholder="0 ~ 100" type="number" min={0} max={100} step="any" disabled />
                                     %
                                 </div>
                             </div>
@@ -610,7 +292,7 @@ export default function BatteryFirst(props) {
                                     {dataLang.formatMessage({ id: "ChargePowerLimit3" })}:
                                 </div>
                                 <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
-                                    <input placeholder="0 ~ 100" type="number" min={0} max={100} step="any" />
+                                    <input placeholder="0 ~ 100" type="number" min={0} max={100} step="any" disabled />
                                     %
                                 </div>
                             </div>
