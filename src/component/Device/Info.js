@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import "./Device.scss";
 
 import { info, tab } from "./Device";
@@ -23,7 +23,11 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { isMobile } from "../Navigation/Navigation";
 import { CiSearch } from "react-icons/ci";
-import { COLOR } from "../../App";
+import { COLOR, Token } from "../../App";
+import axios from "axios";
+import { alertDispatch } from "../Alert/Alert";
+
+const remote = signal(255);
 
 const data = [
   {
@@ -2426,9 +2430,214 @@ const HistoricalData = (props) => {
   );
 };
 
+// Cài đặt điện áp lưới khởi động
 const GridStartSettings = (props) => {
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
+  const [step, setStep] = useState(0);
+  const [invt, setInvt] = useState({});
+  const intervalIDRef = useReducer(null);
+
+  const config_hybrid = [
+    'ac_high_fre',
+    'ac_low_fre',
+    'ac_high_voltage',
+    'ac_low_voltage',
+    'start_delay_time',
+    'restart_delay_time'
+  ]
+
+  const config_grid = [
+    'ac_high_fre',
+    'ac_low_fre',
+    'ac_high_voltage',
+    'ac_low_voltage',
+  ]
+
+  const invtCloud = async (data, token) => {
+    var reqData = {
+      data: data,
+      token: token,
+    };
+
+    try {
+      const response = await axios({
+        url: host.CLOUD,
+        method: "post",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data: Object.keys(reqData)
+          .map(function (key) {
+            return (
+              encodeURIComponent(key) + "=" + encodeURIComponent(reqData[key])
+            );
+          })
+          .join("&"),
+      });
+
+      return response.data;
+    } catch (e) {
+      return { ret: 1, msg: "cloud err" };
+    }
+  };
+
+  const remotecloud = async (data, token) => {
+
+    var reqData = {
+      "data": data,
+      "token": token
+    };
+
+    try {
+
+      const response = await axios({
+        url: host.RMCLOUD,
+        method: "post",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data: Object.keys(reqData).map(function (key) { return encodeURIComponent(key) + '=' + encodeURIComponent(reqData[key]) }).join('&'),
+      });
+
+      return response.data
+
+    }
+
+    catch (e) {
+      return ({ ret: 1, msg: "cloud err" })
+    }
+
+
+  }
+
+  const stopTimer = () => {
+    clearInterval(intervalIDRef.current);
+    intervalIDRef.current = null;
+  };
+
+  const startTimer = () => {
+    intervalIDRef.current = setInterval(async () => {
+      if (remote.value !== 255) {
+        switch (info.value.pdata.mode) {
+          case 'CONSUMPTION':
+
+            if (remote.value < config_grid.length) {
+              let key = config_grid[remote.value]
+              console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}')
+              let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}', Token.value.token)
+              console.log(res)
+              if (res.ret === 0) {
+                alertDispatch(dataLang.formatMessage({ id: "alert_6" }))
+              } else {
+                alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
+              }
+              remote.value = remote.value + 1
+
+            } else {
+              remote.value = 255
+              stopTimer()
+
+            }
+            break;
+
+          case 'HYBRID':
+
+
+            if (remote.value < config_hybrid.length) {
+              let key = config_hybrid[remote.value]
+              console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}')
+              let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}', Token.value.token)
+              console.log(res)
+              if (res.ret === 0) {
+                alertDispatch(dataLang.formatMessage({ id: "alert_6" }))
+              } else {
+                alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
+              }
+              remote.value = remote.value + 1
+
+            } else {
+              remote.value = 255
+              stopTimer()
+
+            }
+
+
+
+
+            break;
+          default:
+
+            if (remote.value < config_grid.length) {
+              let key = config_grid[remote.value]
+              console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}')
+              let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}', Token.value.token)
+              console.log(res)
+              if (res.ret === 0) {
+                alertDispatch(dataLang.formatMessage({ id: "alert_6" }))
+              } else {
+                alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
+              }
+              remote.value = remote.value + 1
+
+            } else {
+              remote.value = 255
+              stopTimer()
+
+            }
+            break;
+
+        }
+      }
+
+    }, 500);
+  };
+
+  const handleSetup = async (e) => {
+    e.preventDefault();
+    remote.value = 0
+    startTimer()
+  }
+
+  const handleRead = async (e) => {
+    e.preventDefault();
+
+    if (step === 0) {
+      let res = await invtCloud('{"deviceCode": "' + info.value.plogger + '"}', Token.value.token)
+      console.log(res)
+      if (res.ret === 0) {
+        setInvt(res.data)
+        setStep(1)
+      }
+
+    }
+
+  }
+
+  useEffect(() => {
+    console.log(info.value)
+    if (step) {
+      setStep(0)
+      switch (info.value.pdata.mode) {
+        case 'CONSUMPTION':
+          config_grid.map((key) => {
+            document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
+          })
+          break;
+        case 'HYBRID':
+          config_hybrid.map((key) => {
+            document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
+          })
+          break;
+        default:
+          config_grid.map((key) => {
+            document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
+          })
+          break;
+      }
+
+    }
+  }, [step])
 
   return (
     <div className="DAT_Info_Databox" id="GridStartSettings">
@@ -2455,131 +2664,161 @@ const GridStartSettings = (props) => {
             {(() => {
               switch (info.value.pdata.mode) {
                 case "HYBRID":
-                  return <div className="DAT_Info_Databox_GridStartSettings">
+                  return <form className="DAT_Info_Databox_GridStartSettings" onSubmit={(e) => handleSetup(e)}>
                     <div className="DAT_Info_Databox_GridStartSettings_Content">
-                      <div className="DAT_Info_Databox_GridStartSettings_Content_Left">
-                        <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACStartHighVoltage' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Content">
-                            <input placeholder="10.0 ~ 1000.0" />
-                            V
-                          </div>
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACStartHighVoltage' })}:
                         </div>
-                        <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item">
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACStartLowFrequency' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Content">
-                            <input placeholder="45.00 ~ 65.00" />
-                            Hz
-                          </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id={"ac_high_voltage"} />
+                          V
                         </div>
                       </div>
-                      <div className="DAT_Info_Databox_GridStartSettings_Content_Center">
-                        <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACStartLowVoltage' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item_Content">
-                            <input placeholder="10.0 ~ 1000.0" />
-                            V
-                          </div>
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACStartLowVoltage' })}:
                         </div>
-                        <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item">
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item_Tit">
-                            {/* Start Delay Time: */}
-                            {dataLang.formatMessage({ id: 'StartDelayTime' })}
-                          </div>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item_Content">
-                            <input placeholder="20 ~ 600" />
-                            s
-                          </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id={"ac_low_voltage"} />
+                          V
                         </div>
                       </div>
-                      <div className="DAT_Info_Databox_GridStartSettings_Content_Right">
-                        <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACStartHighFrequency' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item_Content">
-                            <input placeholder="45.00 ~ 65.00" />
-                            Hz
-                          </div>
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACStartHighFrequency' })}:
                         </div>
-                        <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item">
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item_Tit">
-                            {/* Restart Delay Time: */}
-                            {dataLang.formatMessage({ id: 'RestartDelayTime' })}
-                          </div>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item_Content">
-                            <input placeholder="20 ~ 1000" />
-                            s
-                          </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id={"ac_high_fre"} />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACStartLowFrequency' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id={"ac_low_fre"} />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          Start Delay Time:
+                        </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="20 ~ 600" type="number" min={20} max={600} step="any" id={"start_delay_time"} />
+                          s
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          Restart Delay Time:
+                        </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="20 ~ 1000" type="number" min={20} max={1000} step="any" id={"restart_delay_time"} />
+                          s
                         </div>
                       </div>
                     </div>
 
                     <div className="DAT_Info_Databox_GridStartSettings_Foot">
-                      <button>{dataLang.formatMessage({ id: 'read' })}</button>
+                      <button onClick={(e) => handleRead(e)}>{dataLang.formatMessage({ id: 'read' })}</button>
                       <button>{dataLang.formatMessage({ id: 'setup' })}</button>
                     </div>
-                  </div>
+                  </form>
                 case "CONSUMPTION":
-                  return <></>
-                default:
-                  return <div className="DAT_Info_Databox_GridStartSettings">
+                  return <form className="DAT_Info_Databox_GridStartSettings" onSubmit={(e) => handleSetup(e)}>
                     <div className="DAT_Info_Databox_GridStartSettings_Content">
-                      <div className="DAT_Info_Databox_GridStartSettings_Content_Left">
-                        <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACStartHighVoltage' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Content">
-                            <input placeholder="10.0 ~ 1000.0" />
-                            V
-                          </div>
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACStartHighVoltage' })}:
                         </div>
-                        <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item">
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACStartLowFrequency' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Left_Item_Content">
-                            <input placeholder="45.00 ~ 65.00" />
-                            Hz
-                          </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id={"ac_high_voltage"} />
+                          V
                         </div>
                       </div>
-                      <div className="DAT_Info_Databox_GridStartSettings_Content_Center">
-                        <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item">
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACStartLowVoltage' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Center_Item_Content">
-                            <input placeholder="10.0 ~ 1000.0" />
-                            V
-                          </div>
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACStartLowVoltage' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id={"ac_low_voltage"} />
+                          V
                         </div>
                       </div>
-                      <div className="DAT_Info_Databox_GridStartSettings_Content_Right">
-                        <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item">
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACStartHighFrequency' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridStartSettings_Content_Right_Item_Content">
-                            <input placeholder="45.00 ~ 65.00" />
-                            Hz
-                          </div>
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACStartHighFrequency' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id={"ac_high_fre"} />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACStartLowFrequency' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id={"ac_low_fre"} />
+                          Hz
                         </div>
                       </div>
                     </div>
 
                     <div className="DAT_Info_Databox_GridStartSettings_Foot">
-                      <button>{dataLang.formatMessage({ id: 'read' })}</button>
+                      <button onClick={(e) => handleRead(e)}>{dataLang.formatMessage({ id: 'read' })}</button>
                       <button>{dataLang.formatMessage({ id: 'setup' })}</button>
                     </div>
-                  </div>
+                  </form>
+                default:
+                  return <form className="DAT_Info_Databox_GridStartSettings" onSubmit={(e) => handleSetup(e)}>
+                    <div className="DAT_Info_Databox_GridStartSettings_Content">
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACStartHighVoltage' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id={"ac_high_voltage"} />
+                          V
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACStartLowVoltage' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id={"ac_low_voltage"} />
+                          V
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACStartHighFrequency' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id={"ac_high_fre"} />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridStartSettings_Content_Item">
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACStartLowFrequency' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridStartSettings_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id={"ac_low_fre"} />
+                          Hz
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="DAT_Info_Databox_GridStartSettings_Foot">
+                      <button onClick={(e) => handleRead(e)}>{dataLang.formatMessage({ id: 'read' })}</button>
+                      <button>{dataLang.formatMessage({ id: 'setup' })}</button>
+                    </div>
+                  </form>
               }
             })()}
           </>
@@ -2591,9 +2830,74 @@ const GridStartSettings = (props) => {
   );
 };
 
+// Bảo vệ điện áp / tần số
 const GridVolt = (props) => {
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
+
+  const config = [
+    "ac_under_voltage_1",
+    "ac_over_voltage_1",
+    "ac_under_voltagetime_1",
+    "ac_over_voltagetime_1",
+    "ac_under_voltage_2",
+    "ac_over_voltage_2",
+    "ac_under_voltagetime_2",
+    "ac_over_voltagetime_2",
+    "ac_under_fre_1",
+    "ac_over_fre_1",
+    "ac_under_fretime_1",
+    "ac_over_fretime_1",
+    "ac_under_fre_2",
+    "ac_over_fre_2",
+    "ac_under_fretime_2",
+    "ac_over_fretime_2",
+  ]
+
+  const config_hybrid = [
+    "ac_under_voltage_1",
+    "ac_over_voltage_1",
+    "ac_under_voltagetime_1",
+    "ac_over_voltagetime_1",
+    "ac_under_voltage_2",
+    "ac_over_voltage_2",
+    "ac_under_voltagetime_2",
+    "ac_over_voltagetime_2",
+    "ac_under_fre_1",
+    "ac_over_fre_1",
+    "ac_under_fretime_1",
+    "ac_over_fretime_1",
+    "ac_under_fre_2",
+    "ac_over_fre_2",
+    "ac_under_fretime_2",
+    "ac_over_fretime_2",
+  ]
+
+  const handleSetup = (e) => {
+    e.preventDefault();
+    console.log("Setup");
+  };
+
+  const handleRead = (e) => {
+    e.preventDefault();
+    switch (info.value.pdata.mode) {
+      case "HYBRID":
+        config_hybrid.map((key) => {
+          return document.getElementById(key).value = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+        });
+        break;
+      case "CONSUMPTION":
+        config.map((key) => {
+          return document.getElementById(key).value = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+        });
+        break;
+      default:
+        config.map((key) => {
+          return document.getElementById(key).value = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+        });
+        break;
+    }
+  };
 
   return (
     <div className="DAT_Info_Databox" id="GridVolt">
@@ -2620,353 +2924,457 @@ const GridVolt = (props) => {
             {(() => {
               switch (info.value.pdata.mode) {
                 case "HYBRID":
-                  return <div className="DAT_Info_Databox_GridVolt">
+                  return <form className="DAT_Info_Databox_GridVolt" onSubmit={(e) => handleSetup(e)}>
                     <div className="DAT_Info_Databox_GridVolt_Content">
-                      <div className="DAT_Info_Databox_GridVolt_Content_Left">
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderVolt1' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                            <input placeholder="10.0 ~ 1000.0" />
-                            V
-                          </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderVolt1' })}:
                         </div>
-
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverVolt1Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
-                        </div>
-
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderVolt2Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
-                        </div>
-
-                        {/* <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                          {dataLang.formatMessage({ id: 'ACUnderVolt3Time' })}:
-                        </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                          <input />
-                          ms
-                        </div>
-                      </div> */}
-
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverFreq1' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                            <input placeholder="45.00 ~ 65.00" />
-                            Hz
-                          </div>
-                        </div>
-
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderFreq2' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                            <input placeholder="45.00 ~ 65.00" />
-                            Hz
-                          </div>
-                        </div>
-
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item">
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverFreq2Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="DAT_Info_Databox_GridVolt_Content_Center">
-                        <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverVolt1' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
-                            <input placeholder="10.0 ~ 1000.0" />
-                            V
-                          </div>
-                        </div>
-
-                        <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderVolt2' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
-                            <input placeholder="10.0 ~ 1000.0" />
-                            V
-                          </div>
-                        </div>
-
-                        <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverVolt2Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
-                        </div>
-
-                        <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderFreq1Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
-                        </div>
-
-                        <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" >
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverFreq2' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
-                            <input placeholder="45.00 ~ 65.00" />
-                            Hz
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="DAT_Info_Databox_GridVolt_Content_Right">
-                        <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderVolt1Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
-                        </div>
-
-                        <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverVolt2' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
-                            <input placeholder="10.0 ~ 1000.0" />
-                            V
-                          </div>
-                        </div>
-
-                        {/* <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                          AC Under Volt 3:
-                        </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
-                          <input />
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id="ac_under_voltage_1" />
                           V
                         </div>
-                      </div> */}
-
-                        <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderFreq1' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
-                            <input placeholder="45.00 ~ 65.00" />
-                            Hz
-                          </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverVolt1' })}:
                         </div>
-
-                        <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverFreq1Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
-                        </div>
-
-                        <div className="DAT_Info_Databox_GridVolt_Content_Right_Item">
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderFreq2Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id="ac_over_voltage_1" />
+                          V
                         </div>
                       </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderVolt1Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_under_voltagetime_1" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverVolt1Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_over_voltagetime_1" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderVolt2' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id="ac_under_voltage_2" />
+                          V
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverVolt2' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id="ac_over_voltage_2" />
+                          V
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderVolt2Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_under_voltagetime_2" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverVolt2Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_over_voltagetime_2" />
+                          ms
+                        </div>
+                      </div>
+                      {/* <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
+                        AC Under Volt 3:
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
+                        <input />
+                        V
+                      </div>
+                    </div> */}
+                      {/* <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
+                        {dataLang.formatMessage({ id: 'ACUnderVolt3Time' })}:
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
+                        <input />
+                        ms
+                      </div>
+                    </div> */}
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderFreq1' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id="ac_under_fre_1" />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverFreq1' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id="ac_over_fre_1" />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderFreq1Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_under_fretime_1" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverFreq1Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_over_fretime_1" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderFreq2' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id="ac_under_fre_2" />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverFreq2' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id="ac_over_fre_2" />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderFreq2Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_under_fretime_2" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item" >
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverFreq2Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_over_fretime_2" />
+                          ms
+                        </div>
+                      </div>
+                      {/* <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                        {dataLang.formatMessage({ id: 'FreqSetting' })}:
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                        <select>
+                          <option defaultValue={1} style={{ display: "none" }}>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
+                          <option>50Hz</option>
+                          <option>60Hz</option>
+                        </select>
+                      </div>
+                    </div> */}
                     </div>
 
                     <div className="DAT_Info_Databox_GridVolt_Foot">
-                      <button>
+                      <button onClick={(e) => handleRead(e)}>
                         {dataLang.formatMessage({ id: 'read' })}
                       </button>
                       <button>
                         {dataLang.formatMessage({ id: 'setup' })}
                       </button>
                     </div>
-                  </div>
+                  </form>
                 case "CONSUMPTION":
-                  return
-                default:
-                  return <div className="DAT_Info_Databox_GridVolt">
+                  return <form className="DAT_Info_Databox_GridVolt" onSubmit={(e) => handleSetup(e)}>
                     <div className="DAT_Info_Databox_GridVolt_Content">
-                      <div className="DAT_Info_Databox_GridVolt_Content_Left">
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderVolt1' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                            <input placeholder="10.0 ~ 1000.0" />
-                            V
-                          </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderVolt1' })}:
                         </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverVolt1Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id="ac_under_voltage_1" />
+                          V
                         </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderVolt2Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverVolt1' })}:
                         </div>
-                        {/* <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                          {dataLang.formatMessage({ id: 'ACUnderVolt3Time' })}:
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id="ac_over_voltage_1" />
+                          V
                         </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                          <input />
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderVolt1Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_under_voltagetime_1" />
                           ms
                         </div>
-                      </div> */}
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderFreq1Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverVolt1Time' })}:
                         </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverFreq2Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                            <input placeholder="45.00 ~ 65.00" />
-                            ms
-                          </div>
-                        </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item">
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'FreqSetting' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
-                            <select>
-                              <option defaultValue={1} style={{ display: "none" }}>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
-                              <option>50Hz</option>
-                              <option>60Hz</option>
-                            </select>
-                          </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_over_voltagetime_1" />
+                          ms
                         </div>
                       </div>
-                      <div className="DAT_Info_Databox_GridVolt_Content_Center">
-                        <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverVolt1' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
-                            <input placeholder="10.0 ~ 1000.0" />
-                            V
-                          </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderVolt2' })}:
                         </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderVolt2' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
-                            <input placeholder="10.0 ~ 1000.0" />
-                            V
-                          </div>
-                        </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverVolt2Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
-                        </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderFreq1' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
-                            <input placeholder="45.00 ~ 65.00" />
-                            Hz
-                          </div>
-                        </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverFreq1Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
-                        </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Center_Item">
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderFreq2Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Center_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id="ac_under_voltage_2" />
+                          V
                         </div>
                       </div>
-                      <div className="DAT_Info_Databox_GridVolt_Content_Right">
-                        <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderVolt1Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverVolt2' })}:
                         </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverVolt2' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
-                            <input placeholder="10.0 ~ 1000.0" />
-                            V
-                          </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id="ac_over_voltage_2" />
+                          V
                         </div>
-                        {/* <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderVolt2Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_under_voltagetime_2" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverVolt2Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_over_voltagetime_2" />
+                          ms
+                        </div>
+                      </div>
+                      {/* <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
+                        AC Under Volt 3:
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
+                        <input />
+                        V
+                      </div>
+                    </div> */}
+                      {/* <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
+                        {dataLang.formatMessage({ id: 'ACUnderVolt3Time' })}:
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
+                        <input />
+                        ms
+                      </div>
+                    </div> */}
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderFreq1' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id="ac_under_fre_1" />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverFreq1' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id="ac_over_fre_1" />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderFreq1Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_under_fretime_1" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverFreq1Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_over_fretime_1" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderFreq2' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id="ac_under_fre_2" />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverFreq2' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id="ac_over_fre_2" />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderFreq2Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_under_fretime_2" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item" >
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverFreq2Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_over_fretime_2" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'FreqSetting' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <select>
+                            <option defaultValue={1} style={{ display: "none" }}>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
+                            <option>50Hz</option>
+                            <option>60Hz</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="DAT_Info_Databox_GridVolt_Foot">
+                      <button onClick={(e) => handleRead(e)}>
+                        {dataLang.formatMessage({ id: 'read' })}
+                      </button>
+                      <button>
+                        {dataLang.formatMessage({ id: 'setup' })}
+                      </button>
+                    </div>
+                  </form>
+                default:
+                  return <form className="DAT_Info_Databox_GridVolt" onSubmit={(e) => handleSetup(e)}>
+                    <div className="DAT_Info_Databox_GridVolt_Content">
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderVolt1' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id="ac_under_voltage_1" />
+                          V
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverVolt1' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id="ac_over_voltage_1" />
+                          V
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderVolt1Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_under_voltagetime_1" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverVolt1Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_over_voltagetime_1" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderVolt2' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id="ac_under_voltage_2" />
+                          V
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverVolt2' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="10.0 ~ 1000.0" type="number" min={10} max={1000} step="any" id="ac_over_voltage_2" />
+                          V
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderVolt2Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_under_voltagetime_2" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverVolt2Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_over_voltagetime_2" />
+                          ms
+                        </div>
+                      </div>
+                      {/* <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: "24px" }}>
                         <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
                           AC Under Volt 3:
                         </div>
@@ -2975,48 +3383,112 @@ const GridVolt = (props) => {
                           V
                         </div>
                       </div> */}
-                        <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverFreq1' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
-                            <input placeholder="45.00 ~ 65.00" />
-                            Hz
-                          </div>
+                      {/* <div className="DAT_Info_Databox_GridVolt_Content_Left_Item" style={{ marginBottom: "24px" }}>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderVolt3Time' })}:
                         </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACUnderFreq2' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
-                            <input placeholder="45.00 ~ 65.00" />
-                            Hz
-                          </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Left_Item_Content">
+                          <input />
+                          ms
                         </div>
-                        <div className="DAT_Info_Databox_GridVolt_Content_Right_Item" >
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ACOverFreq2Time' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_GridVolt_Content_Right_Item_Content">
-                            <input placeholder="20 ~ 5000" />
-                            ms
-                          </div>
+                      </div> */}
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderFreq1' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id="ac_under_fre_1" />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverFreq1' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id="ac_over_fre_1" />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderFreq1Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_under_fretime_1" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverFreq1Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_over_fretime_1" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderFreq2' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id="ac_under_fre_2" />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverFreq2' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="45.00 ~ 65.00" type="number" min={45} max={65} step="any" id="ac_over_fre_2" />
+                          Hz
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACUnderFreq2Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_under_fretime_2" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item" >
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ACOverFreq2Time' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <input placeholder="20 ~ 5000" type="number" min={20} max={5000} step="any" id="ac_over_fretime_2" />
+                          ms
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_GridVolt_Content_Item">
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'FreqSetting' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_GridVolt_Content_Item_Content">
+                          <select>
+                            <option defaultValue={1} style={{ display: "none" }}>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
+                            <option>50Hz</option>
+                            <option>60Hz</option>
+                          </select>
                         </div>
                       </div>
                     </div>
 
                     <div className="DAT_Info_Databox_GridVolt_Foot">
-                      <button>
+                      <button onClick={(e) => handleRead(e)}>
                         {dataLang.formatMessage({ id: 'read' })}
                       </button>
                       <button>
                         {dataLang.formatMessage({ id: 'setup' })}
                       </button>
                     </div>
-                  </div>
+                  </form>
               }
             })()}
-
           </>
         ) : (
           <></>
@@ -3026,6 +3498,7 @@ const GridVolt = (props) => {
   );
 };
 
+// Thời gian hệ thống
 const SystemTime = (props) => {
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
@@ -3053,28 +3526,21 @@ const SystemTime = (props) => {
         {display ? (
           <div className="DAT_Info_Databox_ExportPowerSettings">
             <div className="DAT_Info_Databox_ExportPowerSettings_Content">
-              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left">
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item">
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: "SystemTime" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                    <DatePicker
-                      customInput={
-                        <button className="DAT_CustomPicker" >
-                          <span>{moment(new Date()).format("MM/DD/YYYY hh:mm:ss")}</span>
-                          &nbsp;
-                          <IoCalendarOutline color="gray" />
-                        </button>
-                      }
-                    />
-                  </div>
+              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "SystemTime" })}:
                 </div>
-              </div>
-
-              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center">
-              </div>
-              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right">
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                  <DatePicker
+                    customInput={
+                      <button className="DAT_CustomPicker" >
+                        <span>{moment(new Date()).format("MM/DD/YYYY hh:mm:ss")}</span>
+                        &nbsp;
+                        <IoCalendarOutline color="gray" />
+                      </button>
+                    }
+                  />
+                </div>
               </div>
             </div>
 
@@ -3095,6 +3561,7 @@ const SystemTime = (props) => {
   );
 };
 
+// Ưu tiên lưới điện
 const GridFirst = (props) => {
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
@@ -3357,6 +3824,37 @@ const GridFirst = (props) => {
     },
   ]
 
+  const config = [
+    "grid_starttime_1",
+    "grid_endtime_1",
+    "grid_enable_1",
+    "grid_starttime_2",
+    "grid_endtime_2",
+    "grid_enable_2",
+    "grid_starttime_3",
+    "grid_endtime_3",
+    "grid_enable_3",
+    "discharge_powerperlimit_1",
+    "stop_soc_atdischarge",
+  ]
+
+  const handleSetup = (e) => {
+    e.preventDefault();
+    console.log("Setup");
+  }
+
+  const handleRead = (e) => {
+    e.preventDefault();
+
+    config.map((key) => {
+      if (key == "discharge_powerperlimit_1" || key == "stop_soc_atdischarge") {
+        document.getElementById(key).value = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+      } else {
+        document.getElementById(key).innerHTML = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+      }
+    });
+  }
+
   return (
     <div className="DAT_Info_Databox" id="SystemTime">
       <div className="DAT_Info_Databox_Title">
@@ -3378,226 +3876,220 @@ const GridFirst = (props) => {
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
-          <div className="DAT_Info_Databox_ExportPowerSettings">
-            <div className="DAT_Info_Databox_ExportPowerSettings_Content">
-              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left">
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: "GridFirstStartTime" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                    <select>
-                      {hour.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                    :
-                    <select>
-                      {minute.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                  </div>
+          <form className="DAT_Info_Databox_GridFirst" onSubmit={(e) => handleSetup(e)}>
+            <div className="DAT_Info_Databox_GridFirst_Content">
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "GridFirstStartTime" })}: <span id="grid_starttime_1"></span>
                 </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: "GridFirstStartTime2" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                    <select>
-                      {hour.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                    :
-                    <select>
-                      {minute.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: "GridFirstStartTime3" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                    <select>
-                      {hour.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                    :
-                    <select>
-                      {minute.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: 'DischargePowerLimit' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                    <input placeholder="0 ~ 100" />
-                    %
-                  </div>
-                </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item">
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: 'StopSOCatDischarge' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                    <input placeholder="0 ~ 100" />
-                    %
-                  </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    {hour.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                  :
+                  <select>
+                    {minute.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
                 </div>
               </div>
 
-              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center">
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    {dataLang.formatMessage({ id: 'GridFirstEndTime' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                    <select>
-                      {hour.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                    :
-                    <select>
-                      {minute.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                  </div>
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'GridFirstEndTime' })}: <span id="grid_endtime_1"></span>
                 </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    {dataLang.formatMessage({ id: 'GridFirstEndTime2' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                    <select>
-                      {hour.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                    :
-                    <select>
-                      {minute.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    {dataLang.formatMessage({ id: 'GridFirstEndTime3' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                    <select>
-                      {hour.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                    :
-                    <select>
-                      {minute.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item">
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    {dataLang.formatMessage({ id: 'DischargePowerLimit2' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                    <input placeholder="0 ~ 100" />
-                    %
-                  </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    {hour.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                  :
+                  <select>
+                    {minute.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
                 </div>
               </div>
 
-              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right">
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    {dataLang.formatMessage({ id: 'GridFirstEnable' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
-                    <select>
-                      <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                    </select>
-                  </div>
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'GridFirstEnable' })}: <span id="grid_enable_1"></span>
                 </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    {dataLang.formatMessage({ id: 'GridFirstEnable2' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
-                    <select>
-                      <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                    </select>
-                  </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                  </select>
                 </div>
+              </div>
 
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    {dataLang.formatMessage({ id: 'GridFirstEnable3' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
-                    <select>
-                      <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                    </select>
-                  </div>
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "GridFirstStartTime2" })}: <span id="grid_starttime_2"></span>
                 </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    {hour.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                  :
+                  <select>
+                    {minute.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                </div>
+              </div>
 
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item">
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    {dataLang.formatMessage({ id: 'DischargePowerLimit3' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
-                    <input placeholder="0 ~ 100" />
-                    %
-                  </div>
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'GridFirstEndTime2' })}: <span id="grid_endtime_2"></span>
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    {hour.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                  :
+                  <select>
+                    {minute.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'GridFirstEnable2' })}: <span id="grid_enable_2"></span>
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "GridFirstStartTime3" })}: <span id="grid_starttime_3"></span>
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    {hour.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                  :
+                  <select>
+                    {minute.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'GridFirstEndTime3' })}: <span id="grid_endtime_3"></span>
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    {hour.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                  :
+                  <select>
+                    {minute.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'GridFirstEnable3' })}: <span id="grid_enable_3"></span>
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'DischargePowerLimit' })}:
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <input placeholder="0 ~ 100" type="number" min={0} max={100} step="any" id="discharge_powerperlimit_1" />
+                  %
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'DischargePowerLimit2' })}:
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <input placeholder="0 ~ 100" type="number" min={0} max={100} step="any" />
+                  %
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'DischargePowerLimit3' })}:
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <input placeholder="0 ~ 100" type="number" min={0} max={100} step="any" />
+                  %
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'StopSOCatDischarge' })}:
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <input placeholder="0 ~ 100" type="number" min={0} max={100} step="any" id="stop_soc_atdischarge" />
+                  %
                 </div>
               </div>
             </div>
 
-            <div className="DAT_Info_Databox_ExportPowerSettings_Foot">
-              <button>
+            <div className="DAT_Info_Databox_GridFirst_Foot">
+              <button onClick={(e) => handleRead(e)}>
                 {dataLang.formatMessage({ id: 'read' })}
               </button>
               <button>
                 {dataLang.formatMessage({ id: 'setup' })}
               </button>
             </div>
-          </div>
+          </form>
         ) : (
           <></>
         )}
@@ -3606,6 +4098,7 @@ const GridFirst = (props) => {
   );
 };
 
+// Ưu tiên ắc quy
 const BatteryFirst = (props) => {
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
@@ -3868,6 +4361,38 @@ const BatteryFirst = (props) => {
     },
   ]
 
+  const config = [
+    "bat_starttime_1",
+    "bat_endtime_1",
+    "bat_enable_1",
+    "bat_starttime_2",
+    "bat_endtime_2",
+    "bat_enable_2",
+    "bat_starttime_3",
+    "bat_endtime_3",
+    "bat_enable_3",
+    "charge_powerperlimit_1",
+    "stop_soc_whilecharge",
+    "inverter_charge_enable",
+  ]
+
+  const handleSetup = (e) => {
+    e.preventDefault();
+    console.log("Setup");
+  }
+
+  const handleRead = (e) => {
+    e.preventDefault();
+
+    config.map((key) => {
+      if (key == "charge_powerperlimit_1" || key == "stop_soc_whilecharge") {
+        document.getElementById(key).value = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+      } else {
+        document.getElementById(key).innerHTML = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+      }
+    });
+  }
+
   return (
     <div className="DAT_Info_Databox" id="BatteryFirst">
       <div className="DAT_Info_Databox_Title">
@@ -3889,238 +4414,232 @@ const BatteryFirst = (props) => {
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
-          <div className="DAT_Info_Databox_ExportPowerSettings">
-            <div className="DAT_Info_Databox_ExportPowerSettings_Content">
-              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left">
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: "BatteryFirstStartTime" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                    <select>
-                      {hour.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                    :
-                    <select>
-                      {minute.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                  </div>
+          <form className="DAT_Info_Databox_GridFirst" onSubmit={(e) => handleSetup(e)}>
+            <div className="DAT_Info_Databox_GridFirst_Content">
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "BatteryFirstStartTime" })}: <span id="bat_starttime_1"></span>
                 </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: "BatteryFirstStartTime2" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                    <select>
-                      {hour.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                    :
-                    <select>
-                      {minute.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: "BatteryFirstStartTime3" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                    <select>
-                      {hour.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                    :
-                    <select>
-                      {minute.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: "ChargePowerLimit" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                    <input placeholder="0 ~ 100" />
-                    %
-                  </div>
-                </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item">
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: "StopSOCatCharge" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                    <input placeholder="0 ~ 100" />
-                    %
-                  </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    {hour.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                  :
+                  <select>
+                    {minute.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
                 </div>
               </div>
 
-              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center">
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    {dataLang.formatMessage({ id: "BatteryFirstEndTime" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                    <select>
-                      {hour.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                    :
-                    <select>
-                      {minute.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                  </div>
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "BatteryFirstEndTime" })}: <span id="bat_endtime_1"></span>
                 </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    {dataLang.formatMessage({ id: "BatteryFirstEndTime2" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                    <select>
-                      {hour.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                    :
-                    <select>
-                      {minute.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    {dataLang.formatMessage({ id: "BatteryFirstEndTime3" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                    <select>
-                      {hour.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                    :
-                    <select>
-                      {minute.map((item, i) => {
-                        return <option key={i}>{item.value}</option>
-                      }
-                      )}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    {dataLang.formatMessage({ id: "ChargePowerLimit2" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                    <input placeholder="0 ~ 100" />
-                    %
-                  </div>
-                </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item">
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    {dataLang.formatMessage({ id: "InverterChargeEnable" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                    <select>
-                      <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                    </select>
-                  </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    {hour.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                  :
+                  <select>
+                    {minute.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
                 </div>
               </div>
 
-              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right">
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    {dataLang.formatMessage({ id: "BatteryFirstEnable" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
-                    <select>
-                      <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                    </select>
-                  </div>
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "BatteryFirstEnable" })}: <span id="bat_enable_1"></span>
                 </div>
-
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    {dataLang.formatMessage({ id: "BatteryFirstEnable2" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
-                    <select>
-                      <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                    </select>
-                  </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                  </select>
                 </div>
+              </div>
 
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    {dataLang.formatMessage({ id: "BatteryFirstEnable3" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
-                    <select>
-                      <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                    </select>
-                  </div>
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "BatteryFirstStartTime2" })}: <span id="bat_starttime_2"></span>
                 </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    {hour.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                  :
+                  <select>
+                    {minute.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                </div>
+              </div>
 
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item">
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    {dataLang.formatMessage({ id: "ChargePowerLimit3" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
-                    <input placeholder="0 ~ 100" />
-                    %
-                  </div>
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "BatteryFirstEndTime2" })}: <span id="bat_endtime_2"></span>
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    {hour.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                  :
+                  <select>
+                    {minute.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "BatteryFirstEnable2" })}: <span id="bat_enable_2"></span>
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "BatteryFirstStartTime3" })}: <span id="bat_starttime_3"></span>
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    {hour.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                  :
+                  <select>
+                    {minute.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "BatteryFirstEndTime3" })}: <span id="bat_endtime_3"></span>
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    {hour.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                  :
+                  <select>
+                    {minute.map((item, i) => {
+                      return <option key={i}>{item.value}</option>
+                    }
+                    )}
+                  </select>
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "BatteryFirstEnable3" })}: <span id="bat_enable_3"></span>
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "ChargePowerLimit" })}:
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <input placeholder="0 ~ 100" type="number" min={0} max={100} step="any" id="charge_powerperlimit_1" />
+                  %
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "ChargePowerLimit2" })}:
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <input placeholder="0 ~ 100" type="number" min={0} max={100} step="any" />
+                  %
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "ChargePowerLimit3" })}:
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <input placeholder="0 ~ 100" type="number" min={0} max={100} step="any" />
+                  %
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "StopSOCatCharge" })}:
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <input placeholder="0 ~ 100" type="number" min={0} max={100} step="any" id="stop_soc_whilecharge" />
+                  %
+                </div>
+              </div>
+
+              <div className="DAT_Info_Databox_GridFirst_Content_Item">
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "InverterChargeEnable" })}: <span id="inverter_charge_enable"></span>
+                </div>
+                <div className="DAT_Info_Databox_GridFirst_Content_Item_Content">
+                  <select>
+                    <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                  </select>
                 </div>
               </div>
             </div>
 
-            <div className="DAT_Info_Databox_ExportPowerSettings_Foot">
-              <button>
+            <div className="DAT_Info_Databox_GridFirst_Foot">
+              <button onClick={(e) => handleRead(e)}>
                 {dataLang.formatMessage({ id: 'read' })}
               </button>
               <button>
                 {dataLang.formatMessage({ id: 'setup' })}
               </button>
             </div>
-          </div>
+          </form>
         ) : (
           <></>
         )}
@@ -4129,9 +4648,61 @@ const BatteryFirst = (props) => {
   );
 };
 
+// Cài đặt công suất trả ngược
 const ExportPowerSettings = (props) => {
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
+
+  const config = [
+    "export_power_enable",
+    "export_power_limit",
+    "export_limitpower_type",
+    "meter_type",
+  ]
+
+  const config_hybrid = [
+    "export_power_enable",
+    "meter_type",
+    "export_power_limit",
+  ]
+
+  const handleSetup = (e) => {
+    e.preventDefault();
+    console.log("Setup");
+  };
+
+  const handleRead = (e) => {
+    e.preventDefault();
+    switch (info.value.pdata.mode) {
+      case "HYBRID":
+        config_hybrid.map((key) => {
+          if (key == "export_power_limit") {
+            document.getElementById(key).value = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+          } else {
+            document.getElementById(key).innerHTML = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+          }
+        });
+        break;
+      case "CONSUMPTION":
+        config.map((key) => {
+          if (key == "export_power_limit") {
+            document.getElementById(key).value = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+          } else {
+            document.getElementById(key).innerHTML = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+          }
+        });
+        break;
+      default:
+        config.map((key) => {
+          if (key == "export_power_limit") {
+            document.getElementById(key).value = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+          } else {
+            document.getElementById(key).innerHTML = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+          }
+        });
+        break;
+    }
+  };
 
   return (
     <div className="DAT_Info_Databox" id="ExportPowerSettings">
@@ -4158,93 +4729,177 @@ const ExportPowerSettings = (props) => {
             {(() => {
               switch (info.value.pdata.mode) {
                 case "HYBRID":
-                  return <div className="DAT_Info_Databox_ExportPowerSettings">
+                  return <form className="DAT_Info_Databox_ExportPowerSettings" onSubmit={(e) => handleSetup(e)}>
                     <div className="DAT_Info_Databox_ExportPowerSettings_Content">
-                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left">
-                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item">
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ExportPEnable' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                            <select>
-                              <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                              <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                            </select>
-                          </div>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ExportPEnable' })}: <span id="export_power_enable"></span>
+                        </div>
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                          <select>
+                            <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                            <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                          </select>
                         </div>
                       </div>
-
-                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center">
-                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item">
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'MetterType' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                            <select>
-                              <option defaultValue={1} style={{ display: "none" }}>No Meter</option>
-                              <option>Tandardel Meter</option>
-                              <option>DFUN Meter</option>
-                              <option>Eastron Meter</option>
-                              <option>Chint Meter</option>
-                              <option>Gridbox2</option>
-                              <option>Anti-Rejection Box</option>
-                              <option>Yada Meter</option>
-                            </select>
-                          </div>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'MetterType' })}: <span id="meter_type"></span>
+                        </div>
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                          <select>
+                            <option>CT</option>
+                            <option>Tandardel Meter</option>
+                            <option>DFUN Meter</option>
+                            <option>Eastron Meter</option>
+                            <option>Chint Meter</option>
+                            <option>Gridbox2</option>
+                            <option>Anti-Rejection Box</option>
+                            <option>Yada Meter</option>
+                          </select>
                         </div>
                       </div>
-
-                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right">
-                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item">
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ExportPLimit' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
-                            <input placeholder="-600.0 ~ 600.0" />
-                            kW
-                          </div>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ExportPLimit' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                          <input placeholder="-600.0 ~ 600.0" type="number" min={-600} max={600} step="any" id="export_power_limit" />
+                          kW
                         </div>
                       </div>
+                      {/* <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
+                        Multi ExportLimit:
+                        {dataLang.formatMessage({ id: 'MultiExportLimit' })}:
+                      </div>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
+                        <select>
+                          <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                          <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                        </select>
+                      </div>
+                    </div> */}
+                      {/* <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                        {dataLang.formatMessage({ id: 'ExportLimitWay' })}: <span id="export_limitpower_type"></span>
+                      </div>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                        <select>
+                          <option>{dataLang.formatMessage({ id: 'LimitSinglePhase' })}</option>
+                          <option>{dataLang.formatMessage({ id: 'LimitThreePhase' })}</option>
+                        </select>
+                      </div>
+                    </div> */}
                     </div>
 
                     <div className="DAT_Info_Databox_ExportPowerSettings_Foot">
-                      <button>
+                      <button onClick={(e) => handleRead(e)}>
                         {dataLang.formatMessage({ id: 'read' })}
                       </button>
                       <button>
                         {dataLang.formatMessage({ id: 'setup' })}
                       </button>
                     </div>
-                  </div>
+                  </form>
                 case "CONSUMPTION":
-                  return
-                default:
-                  return <div className="DAT_Info_Databox_ExportPowerSettings">
+                  return <form className="DAT_Info_Databox_ExportPowerSettings" onSubmit={(e) => handleSetup(e)}>
                     <div className="DAT_Info_Databox_ExportPowerSettings_Content">
-                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left">
-                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ExportPEnable' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                            <select>
-                              <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                              <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                            </select>
-                          </div>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ExportPEnable' })}: <span id="export_power_enable"></span>
                         </div>
-                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item">
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ExportPLimit' })}:
-                          </div>
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                            <input placeholder="-600.0 ~ 600.0" />
-                            kW
-                          </div>
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                          <select>
+                            <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                            <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                          </select>
                         </div>
                       </div>
-                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center">
-                        {/* <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ExportPLimit' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                          <input placeholder="-600.0 ~ 600.0" type="number" min={-600} max={600} step="any" id="export_power_limit" />
+                          kW
+                        </div>
+                      </div>
+                      {/* <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: "24px" }}>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
+                        Multi ExportLimit:
+                        {dataLang.formatMessage({ id: 'MultiExportLimit' })}:
+                      </div>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
+                        <select>
+                          <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                          <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                        </select>
+                      </div>
+                    </div> */}
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ExportLimitWay' })}: <span id="export_limitpower_type"></span>
+                        </div>
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                          <select>
+                            <option>{dataLang.formatMessage({ id: 'LimitSinglePhase' })}</option>
+                            <option>{dataLang.formatMessage({ id: 'LimitThreePhase' })}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'MetterType' })}: <span id="meter_type"></span>
+                        </div>
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                          <select>
+                            <option>CT</option>
+                            <option>Tandardel Meter</option>
+                            <option>DFUN Meter</option>
+                            <option>Eastron Meter</option>
+                            <option>Chint Meter</option>
+                            <option>Gridbox2</option>
+                            <option>Anti-Rejection Box</option>
+                            <option>Yada Meter</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="DAT_Info_Databox_ExportPowerSettings_Foot">
+                      <button onClick={(e) => handleRead(e)}>
+                        {dataLang.formatMessage({ id: 'read' })}
+                      </button>
+                      <button>
+                        {dataLang.formatMessage({ id: 'setup' })}
+                      </button>
+                    </div>
+                  </form>
+                default:
+                  return <form className="DAT_Info_Databox_ExportPowerSettings" onSubmit={(e) => handleSetup(e)}>
+                    <div className="DAT_Info_Databox_ExportPowerSettings_Content">
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ExportPEnable' })}: <span id="export_power_enable"></span>
+                        </div>
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                          <select>
+                            <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                            <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ExportPLimit' })}:
+                        </div>
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                          <input placeholder="-600.0 ~ 600.0" type="number" min={-600} max={600} step="any" id="export_power_limit" />
+                          kW
+                        </div>
+                      </div>
+                      {/* <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: "24px" }}>
                         <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
                           Multi ExportLimit:
                           {dataLang.formatMessage({ id: 'MultiExportLimit' })}:
@@ -4256,48 +4911,45 @@ const ExportPowerSettings = (props) => {
                           </select>
                         </div>
                       </div> */}
-                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item">
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                            {dataLang.formatMessage({ id: 'ExportLimitWay' })} :
-                          </div>
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                            <select>
-                              <option>{dataLang.formatMessage({ id: 'LimitSinglePhase' })}</option>
-                              <option>{dataLang.formatMessage({ id: 'LimitThreePhase' })}</option>
-                            </select>
-                          </div>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'ExportLimitWay' })}: <span id="export_limitpower_type"></span>
+                        </div>
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                          <select>
+                            <option>{dataLang.formatMessage({ id: 'LimitSinglePhase' })}</option>
+                            <option>{dataLang.formatMessage({ id: 'LimitThreePhase' })}</option>
+                          </select>
                         </div>
                       </div>
-                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right">
-                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                            {dataLang.formatMessage({ id: 'MetterType' })} :
-                          </div>
-                          <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
-                            <select>
-                              <option>CT</option>
-                              <option>Tandardel Meter</option>
-                              <option>DFUN Meter</option>
-                              <option>Eastron Meter</option>
-                              <option>Chint Meter</option>
-                              <option>Gridbox2</option>
-                              <option>Anti-Rejection Box</option>
-                              <option>Yada Meter</option>
-                            </select>
-                          </div>
+                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                          {dataLang.formatMessage({ id: 'MetterType' })}: <span id="meter_type"></span>
+                        </div>
+                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                          <select>
+                            <option>CT</option>
+                            <option>Tandardel Meter</option>
+                            <option>DFUN Meter</option>
+                            <option>Eastron Meter</option>
+                            <option>Chint Meter</option>
+                            <option>Gridbox2</option>
+                            <option>Anti-Rejection Box</option>
+                            <option>Yada Meter</option>
+                          </select>
                         </div>
                       </div>
                     </div>
 
                     <div className="DAT_Info_Databox_ExportPowerSettings_Foot">
-                      <button>
+                      <button onClick={(e) => handleRead(e)}>
                         {dataLang.formatMessage({ id: 'read' })}
                       </button>
                       <button>
                         {dataLang.formatMessage({ id: 'setup' })}
                       </button>
                     </div>
-                  </div>
+                  </form>
               }
             })()}
           </>
@@ -4309,9 +4961,33 @@ const ExportPowerSettings = (props) => {
   );
 };
 
+// Cài đặt ắc quy
 const BatterySettings = (props) => {
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
+
+  const config = [
+    "bat_type",
+    "bat_manufacture",
+    "bat_depthdiscarge_dod",
+  ]
+
+  const handleSetup = (e) => {
+    e.preventDefault();
+    console.log("Setup");
+  }
+
+  const handleRead = (e) => {
+    e.preventDefault();
+
+    config.map((key) => {
+      if (key == "bat_depthdiscarge_dod") {
+        document.getElementById(key).value = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+      } else {
+        document.getElementById(key).innerHTML = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+      }
+    });
+  }
 
   return (
     <div className="DAT_Info_Databox" id="BatterySettings">
@@ -4334,66 +5010,61 @@ const BatterySettings = (props) => {
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
-          <div className="DAT_Info_Databox_ExportPowerSettings">
+          <form className="DAT_Info_Databox_ExportPowerSettings" onSubmit={(e) => handleSetup(e)}>
             <div className="DAT_Info_Databox_ExportPowerSettings_Content">
-              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left">
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item">
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: "BatteryType" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Left_Item_Content">
-                    <select>
-                      <option>{dataLang.formatMessage({ id: "LeadAcidBattery" })}</option>
-                      <option>{dataLang.formatMessage({ id: "LithumBattery" })}</option>
-                    </select>
-                  </div>
+              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "BatteryType" })}: <span id="bat_type"></span>
+                </div>
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                  <select>
+                    <option>{dataLang.formatMessage({ id: "LeadAcidBattery" })}</option>
+                    <option>{dataLang.formatMessage({ id: "LithumBattery" })}</option>
+                  </select>
                 </div>
               </div>
 
-              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center">
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item">
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                    {dataLang.formatMessage({ id: "BatteryManu" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                    <select>
-                      <option>Lead Acid Battery</option>
-                      <option>ATL Battery</option>
-                      <option>PYLON Battery</option>
-                      <option>Vestwoods Battery</option>
-                      <option>Topband Battery</option>
-                      <option>Sunwoda Battery</option>
-                      <option>HANCHU Battery</option>
-                      <option>INVT Battery</option>
-                      <option>LiValley Battery</option>
-                      <option>DONGCI Battery</option>
-                      <option>JGNE Battery</option>
-                    </select>
-                  </div>
+              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "BatteryManu" })}: <span id="bat_manufacture"></span>
+                </div>
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                  <select>
+                    <option>Lead Acid Battery</option>
+                    <option>ATL Battery</option>
+                    <option>PYLON Battery</option>
+                    <option>Vestwoods Battery</option>
+                    <option>Topband Battery</option>
+                    <option>Sunwoda Battery</option>
+                    <option>HANCHU Battery</option>
+                    <option>INVT Battery</option>
+                    <option>LiValley Battery</option>
+                    <option>DONGCI Battery</option>
+                    <option>JGNE Battery</option>
+                  </select>
                 </div>
               </div>
 
-              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right">
-                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item">
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Tit">
-                    {dataLang.formatMessage({ id: "BatteryDOD" })}:
-                  </div>
-                  <div className="DAT_Info_Databox_ExportPowerSettings_Content_Right_Item_Content">
-                    <input placeholder="0 ~ 100" /> %
-                  </div>
+              <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: "BatteryDOD" })}:
+                </div>
+                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                  <input placeholder="0 ~ 100" type="number" min={0} max={100} step="any" id="bat_depthdiscarge_dod" />
+                  %
                 </div>
               </div>
             </div>
 
             <div className="DAT_Info_Databox_ExportPowerSettings_Foot">
-              <button>
+              <button onClick={(e) => handleRead(e)}>
                 {dataLang.formatMessage({ id: 'read' })}
               </button>
               <button>
                 {dataLang.formatMessage({ id: 'setup' })}
               </button>
             </div>
-          </div>
+          </form>
         ) : (
           <></>
         )}
@@ -4402,9 +5073,35 @@ const BatterySettings = (props) => {
   );
 };
 
+// Cài đặt thiết bị
 const DeviceSettings = (props) => {
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
+
+  const config = [
+    "remote_control",
+    "safety_setting",
+    "active_power_setting",
+    "reactive_power_control",
+    "input_mode_setting",
+  ]
+
+  const handleSetup = (e) => {
+    e.preventDefault();
+    console.log("Setup");
+  };
+
+  const handleRead = (e) => {
+    e.preventDefault();
+
+    config.map((key) => {
+      if (key == "active_power_setting") {
+        document.getElementById(key).value = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+      } else {
+        document.getElementById(key).innerHTML = parseFloat(info.value.invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+      }
+    });
+  };
 
   return (
     <div className="DAT_Info_Databox" id="DeviceSettings">
@@ -4427,57 +5124,56 @@ const DeviceSettings = (props) => {
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
-          <div className="DAT_Info_Databox_DeviceSettings">
+          <form className="DAT_Info_Databox_DeviceSettings" onSubmit={(e) => handleSetup(e)}>
             <div className="DAT_Info_Databox_DeviceSettings_Content">
-              <div className="DAT_Info_Databox_DeviceSettings_Content_Left">
-                <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: 'RemoteControl' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Content">
-                    <select>
-                      <option>{dataLang.formatMessage({ id: 'PowerOn' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'PowerOff' })}</option>
-                    </select>
-                  </div>
+              <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'RemoteControl' })}: <span id="remote_control"></span>
                 </div>
-                <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: 'SafetySetting' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Content">
-                    <select>
-                      <option defaultValue={1} disabled hidden>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
-                      <option>CQC2013</option>
-                      <option>SKYWORTH</option>
-                      <option>EN50549</option>
-                      <option>Brazil</option>
-                      <option>{dataLang.formatMessage({ id: 'Spain' })}</option>
-                      <option>Philippines</option>
-                      <option>{dataLang.formatMessage({ id: 'India' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Belgium' })}</option>
-                      <option>EU EN50438</option>
-                      <option>{dataLang.formatMessage({ id: 'SouthAfrica' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'WestAustralia' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Netherlands' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Thailand' })}</option>
-                      <option>Bangkok</option>
-                      <option>China CQC2018</option>
-                      <option>{dataLang.formatMessage({ id: 'Greece' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Norway' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'SouthKorea' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Germany' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'France' })}</option>
-                      <option>Ireland</option>
-                      <option>{dataLang.formatMessage({ id: 'Turkey' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Taiwan' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Italy' })}</option>
-                      <option>Slovakia</option>
-                      <option>Romania 280V</option>
-                    </select>
-                  </div>
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Content">
+                  <select>
+                    <option>{dataLang.formatMessage({ id: 'PowerOn' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'PowerOff' })}</option>
+                  </select>
                 </div>
-                {/* <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item">
+              </div>
+              <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'SafetySetting' })}: <span id="safety_setting"></span>
+                </div>
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Content">
+                  <select>
+                    <option defaultValue={1} disabled hidden>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
+                    <option>CQC2013</option>
+                    <option>SKYWORTH</option>
+                    <option>EN50549</option>
+                    <option>Brazil</option>
+                    <option>{dataLang.formatMessage({ id: 'Spain' })}</option>
+                    <option>Philippines</option>
+                    <option>{dataLang.formatMessage({ id: 'India' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Belgium' })}</option>
+                    <option>EU EN50438</option>
+                    <option>{dataLang.formatMessage({ id: 'SouthAfrica' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'WestAustralia' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Netherlands' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Thailand' })}</option>
+                    <option>Bangkok</option>
+                    <option>China CQC2018</option>
+                    <option>{dataLang.formatMessage({ id: 'Greece' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Norway' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'SouthKorea' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Germany' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'France' })}</option>
+                    <option>Ireland</option>
+                    <option>{dataLang.formatMessage({ id: 'Turkey' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Taiwan' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'Italy' })}</option>
+                    <option>Slovakia</option>
+                    <option>Romania 280V</option>
+                  </select>
+                </div>
+              </div>
+              {/* <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item">
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
                     AC High-Voltage Load Limit:
                   </div>
@@ -4488,19 +5184,17 @@ const DeviceSettings = (props) => {
                     </select>
                   </div>
                 </div> */}
-              </div>
-              <div className="DAT_Info_Databox_DeviceSettings_Content_Center">
-                <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Tit">
-                    {dataLang.formatMessage({ id: 'ActivePowerSetting' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Content">
-                    <input placeholder="0.0 ~ 100.0" />
-                    %
-                  </div>
+              <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'ActivePowerSetting' })}:
                 </div>
-                <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item">
-                  {/* <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Tit">
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Content">
+                  <input placeholder="0.0 ~ 100.0" type="number" min={0} max={100} step="any" id="active_power_setting" />
+                  %
+                </div>
+              </div>
+              {/* <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Tit">
                     Virtual Zero Line Enable:
                   </div>
                   <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Content">
@@ -4508,47 +5202,42 @@ const DeviceSettings = (props) => {
                       <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
                       <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
                     </select>
-                  </div> */}
+                  </div>
+              </div> */}
+              <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'ReactivePowerSetting' })}: <span id="reactive_power_control"></span>
+                </div>
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Content">
+                  <select>
+                    <option>{dataLang.formatMessage({ id: 'PowerFactor' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'ReactivePPercentage' })}</option>
+                  </select>
                 </div>
               </div>
-              <div className="DAT_Info_Databox_DeviceSettings_Content_Right">
-                <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item" style={{ marginBottom: isMobile.value ? "8px" : "24px" }}>
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item_Tit">
-                    {/* Reactive Power Control Way: */}
-                    {dataLang.formatMessage({ id: 'ReactivePowerSetting' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item_Content">
-                    <select>
-                      <option>{dataLang.formatMessage({ id: 'PowerFactor' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'ReactivePPercentage' })}</option>
-                    </select>
-                  </div>
+              <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'InputModeSetting' })}: <span id="input_mode_setting"></span>
                 </div>
-                <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item">
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item_Tit">
-                    {/* Input Mode Settings: */}
-                    {dataLang.formatMessage({ id: 'InputModeSetting' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Right_Item_Content">
-                    <select>
-                      <option>{dataLang.formatMessage({ id: 'IndependentMode' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'ParrallellMode' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'DCSourceMode' })}</option>
-                    </select>
-                  </div>
+                <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Content">
+                  <select>
+                    <option>{dataLang.formatMessage({ id: 'IndependentMode' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'ParrallellMode' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'DCSourceMode' })}</option>
+                  </select>
                 </div>
               </div>
             </div>
 
             <div className="DAT_Info_Databox_DeviceSettings_Foot">
-              <button>
+              <button onClick={(e) => handleRead(e)}>
                 {dataLang.formatMessage({ id: 'read' })}
               </button>
               <button>
                 {dataLang.formatMessage({ id: 'setup' })}
               </button>
             </div>
-          </div>
+          </form>
         ) : (
           <></>
         )}
@@ -4557,9 +5246,17 @@ const DeviceSettings = (props) => {
   );
 };
 
+// Thông tin lưới điện
 const GridInfo = (props) => {
   const dataLang = useIntl();
   const [display, setDisplay] = useState(true);
+
+  const config = []
+
+  const handleRead = (e) => {
+    e.preventDefault();
+    console.log("Read");
+  };
 
   return (
     <div className="DAT_Info_Databox" id="GridInfo">
@@ -4582,24 +5279,22 @@ const GridInfo = (props) => {
         style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
       >
         {display ? (
-          <div className="DAT_Info_Databox_GridInfo">
+          <form className="DAT_Info_Databox_GridInfo" onSubmit={(e) => handleRead(e)}>
             <div className="DAT_Info_Databox_GridInfo_Content">
-              <div className="DAT_Info_Databox_GridInfo_Content_Left">
-                <div className="DAT_Info_Databox_GridInfo_Content_Left_Item">
-                  <div className="DAT_Info_Databox_GridInfo_Content_Left_Item_Tit">
-                    {dataLang.formatMessage({ id: 'InverterStatus' })}:
-                  </div>
-                  <div className="DAT_Info_Databox_GridInfo_Content_Left_Item_Content">
-                    <select>
-                      <option defaultValue={1} style={{ display: "none" }}>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'StatusInit' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'StatusWait' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'StatusOnGrid' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'failure' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'burn' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'StatusOffGrid' })}</option>
-                    </select>
-                  </div>
+              <div className="DAT_Info_Databox_GridInfo_Content_Item">
+                <div className="DAT_Info_Databox_GridInfo_Content_Item_Tit">
+                  {dataLang.formatMessage({ id: 'InverterStatus' })}:
+                </div>
+                <div className="DAT_Info_Databox_GridInfo_Content_Item_Content">
+                  <select>
+                    <option defaultValue={1} style={{ display: "none" }}>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'StatusInit' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'StatusWait' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'StatusOnGrid' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'failure' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'burn' })}</option>
+                    <option>{dataLang.formatMessage({ id: 'StatusOffGrid' })}</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -4609,7 +5304,7 @@ const GridInfo = (props) => {
                 {dataLang.formatMessage({ id: 'read' })}
               </button>
             </div>
-          </div>
+          </form>
         ) : (
           <></>
         )}
@@ -5417,6 +6112,10 @@ export default function Info(props) {
       clearTimeout();
     }, 250);
   };
+
+  useEffect(() => {
+    console.log(info.value);
+  }, []);
 
   return (
     <div className="DAT_Info">

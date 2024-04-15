@@ -475,6 +475,7 @@ export default function ProjectData(props) {
       pname: inverterDB.value[0].name,
       pplantname: plantname,
       pdata: inverterDB.value[0].data,
+      psetting: inverterDB.value[0].setting,
     };
     info.value.invt = invt[inverterDB.value[0].logger_];
   };

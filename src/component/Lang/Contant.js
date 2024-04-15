@@ -2,6 +2,7 @@ export const host = {
   AUTH: process.env.REACT_APP_SOLAR + "/auth",
   DATA: process.env.REACT_APP_SOLAR + "/data",
   CLOUD: process.env.REACT_APP_CLOUD,
+  RMCLOUD: process.env.REACT_APP_RMCLOUD,
   WEATHER: process.env.REACT_APP_WEATHER,
 };
 
