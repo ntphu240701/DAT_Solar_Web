@@ -163,7 +163,7 @@ export default function App() {
             type: inf.data.type,
             avatar: inf.data.avatar,
           };
-          console.log(userInfor.value);
+          // console.log(userInfor.value);
           setLoading(false);
         } else {
           setLoading(false);
