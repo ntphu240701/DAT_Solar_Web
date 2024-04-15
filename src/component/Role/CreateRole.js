@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "./Role.scss";
 
 import { roleState } from "./Role";
@@ -71,6 +71,22 @@ export default function CreateRole(props) {
     popup.style.transition = popup_state[state].transition;
     popup.style.color = popup_state[state].color;
   };
+
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <form className="DAT_CreateRole" onSubmit={handleSave}>

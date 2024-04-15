@@ -108,6 +108,8 @@ export default function CreateRule(props) {
       console.log(rulenameRef.current)
     };
 
+
+
     return (
       <div className="DAT_CreateRule_Body_Item"
         style={{ borderBottom: "dashed 1px rgba(198, 197, 197, 0.5)" }}
@@ -154,6 +156,22 @@ export default function CreateRule(props) {
       setWidwidthCheckBox("25%");
     }
   }, [isMobile.value]);
+
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="DAT_CreateRule">

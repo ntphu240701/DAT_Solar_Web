@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./ErrorSetting.scss";
 
 import { COLOR } from "../../App";
@@ -20,6 +20,22 @@ export default function RemoveErr(props) {
     popup.style.transition = popup_state[state].transition;
     popup.style.color = popup_state[state].color;
   };
+
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="DAT_RemoveErr">

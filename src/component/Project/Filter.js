@@ -108,6 +108,7 @@ export default function Filter(props) {
     setDeviceF(e.target.id);
   };
 
+  // Handle close when press ESC
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape" && props.display) {

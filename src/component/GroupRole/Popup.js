@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./GroupRole.scss";
 
 import { groupID, groupUser, userDel } from "./GroupRole";
@@ -44,6 +44,22 @@ export default function Popup(props) {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
   };
+
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="DAT_Popup_Box">

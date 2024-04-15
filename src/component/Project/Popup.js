@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "./Project.scss";
 
 import { dataproject, popupState, projectData } from "./Project";
@@ -107,6 +107,22 @@ export default function Popup(props) {
         break;
     }
   }
+
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        popupState.value = false;
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [popupState.value]);
 
   return (
     props.func === "remove" ?

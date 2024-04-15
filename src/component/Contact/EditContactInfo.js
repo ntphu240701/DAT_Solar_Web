@@ -77,6 +77,22 @@ export default function EditContactInfo(props) {
     Type.value[partnerInfor.value.businesstype] = { ...Type.value[partnerInfor.value.businesstype], checked: true }
   }, [])
 
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="DAT_EditContactInfo">
       <div className="DAT_EditContactInfo_Header">
