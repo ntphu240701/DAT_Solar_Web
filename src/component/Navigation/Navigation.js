@@ -155,9 +155,21 @@ export default function Navigation(props) {
     };
   }, []);
 
+  // Handle close when press ESC
   useEffect(() => {
-    // console.log(dataWarn.value);
-  });
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        notifNav.value = false;
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

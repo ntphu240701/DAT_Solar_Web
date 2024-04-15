@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./GroupRole.scss";
 
 import { group, groupID, groupUser, groupDelState } from "./GroupRole";
@@ -49,6 +49,22 @@ export default function ConfirmDeleteGroup(props) {
       alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
     }
   };
+
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="DAT_DeleteGroupPopup_Box">

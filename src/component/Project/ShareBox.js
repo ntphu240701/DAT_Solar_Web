@@ -71,6 +71,22 @@ export default function ShareBox(props) {
         }
     }
 
+    // Handle close when press ESC
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") {
+                shareState.value = false
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shareState.value]);
+
     return (
         <form className="DAT_SharePopup_Box" onSubmit={(e) => handleShared(e)}>
             <div className="DAT_SharePopup_Box_Head">

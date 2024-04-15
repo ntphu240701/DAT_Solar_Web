@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Report.scss";
 
 import { idReport, ReportData } from "./Report";
@@ -39,6 +39,23 @@ export default function Popup(props) {
       ReportData.value = newDB;
     }
   };
+
+
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="DAT_PopupReport_Box">

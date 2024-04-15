@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Rule.scss";
 
 import { datarule } from "./Rule";
@@ -39,6 +39,22 @@ export default function ConfirmDeleteRule(props) {
       alertDispatch(dataLang.formatMessage({ id: "alert_52" }));
     }
   };
+
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="DAT_ConfirmPopup_Box">

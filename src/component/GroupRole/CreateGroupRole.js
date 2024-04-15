@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./GroupRole.scss";
 
 import { group } from "./GroupRole";
@@ -89,6 +89,22 @@ export default function CreateGroupRole(props) {
     popup.style.transition = popup_state[state].transition;
     popup.style.color = popup_state[state].color;
   };
+
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="DAT_CreateGroupRole">

@@ -797,6 +797,23 @@ export default function ProjectData(props) {
     }
   }, [temp.value])
 
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        plantState.value = "default";
+        setDropState(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [plantState.value]);
+
   return (
     <div ref={box} style={{ width: "98%", margin: "auto" }}>
       <div className="DAT_ProjectData">

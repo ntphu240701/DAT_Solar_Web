@@ -233,6 +233,22 @@ export default function ReportEdit(props) {
     }
   }, [isMobile.value]);
 
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="DAT_EditReport">
       <div className="DAT_EditReport_Header">
@@ -261,7 +277,6 @@ export default function ReportEdit(props) {
 
       <div className="DAT_EditReport_Body">
         <DataReport />
-
         <div className="DAT_EditReport_Body_Item">
           <div className="DAT_EditReport_Body_Item_Option">
             <label style={{ margin: "0" }}>

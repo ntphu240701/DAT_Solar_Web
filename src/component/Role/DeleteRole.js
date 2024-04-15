@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Role.scss";
 
 import { Usr_ } from "./Role";
@@ -37,6 +37,22 @@ export default function DeleteRole(props) {
       alertDispatch(dataLang.formatMessage({ id: 'alert_46' }))
     }
   };
+
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="DAT_DeleteRole">

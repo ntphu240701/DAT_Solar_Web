@@ -9,6 +9,7 @@ import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 
 import { IoClose } from "react-icons/io5";
+import { useEffect } from "react";
 
 export default function PopupAva(props) {
   const dataLang = useIntl();
@@ -73,6 +74,22 @@ export default function PopupAva(props) {
       alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
   }
+
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="DAT_PopupAva">

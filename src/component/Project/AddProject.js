@@ -60,7 +60,6 @@ const BasicInfo = (props) => {
       zoom: 7.0,
       mapId: "DEMO_MAP_ID",
     };
-    console.log(state);
 
     const { AdvancedMarkerElement } = await loader.importLibrary("marker");
     const { Map } = await loader.importLibrary("maps");
@@ -702,6 +701,21 @@ export default function AddProject(props) {
     }
   };
 
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        plantState.value = "default";
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [plantState.value]);
 
 
   return (

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "./ErrorSetting.scss";
 
 import { COLOR } from "../../App";
@@ -30,6 +30,22 @@ export default function EditErr(props) {
   //   useEffect(() => {
   //     console.log(editVi.current.value, editEn.current.value);
   //   }, [editVi.current.value, editEn.current.value]);
+
+  // Handle close when press ESC
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        props.handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="DAT_EditErr">
