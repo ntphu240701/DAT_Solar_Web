@@ -50,6 +50,75 @@ export default function HistoricalData(props) {
         date: moment(new Date()).format("MM/DD/YYYY"),
     });
 
+    const [dataoption, setDataoption] = useState({
+        basicinfo: {
+            RatedPower: true,
+        },
+        electricitygeneration: {
+            DCVoltPV1: true, //use
+            DCVoltPV2: true, //use
+            DCVoltPV3: true, //use
+            DCVoltPV4: true, //use
+            DCCurrentPV1: true, //use
+            DCCurrentPV2: true, //use
+            DCCurrentPV3: true, //use
+            DCCurrentPV4: true, //use
+            DCPowerPV1: true, //use
+            DCPowerPV2: true, //use
+            DCPowerPV3: true, //use
+            DCPowerPV4: true, //use
+            ACVoltRUA: true, //use
+            ACVoltSUA: true, //use
+            ACVoltTUA: true, //use
+            ACCurrentRUA: true, //use
+            ACCurrentSUA: true, //use
+            ACCurrentTUA: true, //use
+            ACOutputFreqR: true, //use
+            totalACOutput: true,
+            reactivePower: true,
+            dailyOutput: true,
+            LoadActivePower: true,
+        },
+        powergrid: {
+            LeakCurrent: true,
+            TotalGridPower: true,
+            CumulativeGridFeedin: true,
+            CumulativeEnergyPurchased: true,
+            DailyGridFeedin: true,
+            DailyEnergyPurchased: true,
+            MeterPower: true
+        },
+        batteryData: {
+            BatteryVolt: true,
+            BatteryCurrent: true,
+            MaxChargingCur: true,
+            MaxDischargingCur: true,
+            BatteryPower: true,
+            SoC: true,
+            SoH: true,
+            TotalchargingEnergy: true,
+            TotaldischargingEnergy: true,
+            DailychargingEnergy: true,
+        },
+        BMS: {
+            BMSMaxChargingCur: true,
+            MaxDischargingCur: true,
+            BMSChargeVoltage: true,
+            BMSDischargeVoltage: true,
+        },
+        state: {
+            DCInsulationResistance: true,
+
+        },
+        EPS: {
+            RphaseEPSvoltage: true,
+            RphaseEPScurrent: true,
+            EPSRphaseActivePower: true,
+            EPSFrequency: true,
+        }
+    });
+    const [option, setOption] = useState(dataoption);
+
     useEffect(() => {
         const getChart = async () => {
             const req = await callApi("post", host.DATA + "/getInverterChart", {
@@ -307,6 +376,34 @@ export default function HistoricalData(props) {
         }
     };
 
+    useEffect(() => {
+        setOption(dataoption);
+        console.log(option);
+    }, []);
+
+    const handleCheck = (e) => {
+        // console.log(option.electricitygeneration.ACOutputFreqR);
+        const arr = e.currentTarget.id.split("_");
+        setOption({
+            ...option,
+            [arr[0]]: {
+                ...option[arr[0]],
+                [arr[1]]: e.currentTarget.checked
+            }
+        })
+        console.log(option[arr[0]])
+        // console.log(`${e.currentTarget.id}: ${e.currentTarget.checked}`)
+
+    };
+
+    const handleCancelChangeChart = () => {
+        setOption(dataoption);
+    }
+
+    const handleConfirmChangeChart = () => {
+        setDataoption(option);
+    }
+
     return (
         <div className="DAT_Info_Databox" id="HistoricalData">
             <div className="DAT_Info_Databox_Title">
@@ -353,7 +450,9 @@ export default function HistoricalData(props) {
             <div>{dataLang.formatMessage({ id: "export" })}</div>
           </div> */}
                                     <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
-                                        <button>{dataLang.formatMessage({ id: "choosePara" })}</button>
+                                        <button onClick={() => { setOption(dataoption) }}>
+                                            {dataLang.formatMessage({ id: "choosePara" })}
+                                        </button>
                                     </div>
                                     <DatePicker
                                         onChange={(date) => handleChart(date)}
@@ -394,12 +493,15 @@ export default function HistoricalData(props) {
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                                             <Tooltip />
                                                             <Legend />
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={acfre}
-                                                                stroke="red"
-                                                                dot={false}
-                                                            />
+                                                            {dataoption.electricitygeneration.ACOutputFreqR ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={acfre}
+                                                                    stroke="red"
+                                                                    dot={false}
+                                                                />
+                                                                :
+                                                                <></>}
                                                         </LineChart>
                                                     </ResponsiveContainer>
                                                 )
@@ -432,26 +534,27 @@ export default function HistoricalData(props) {
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                                             <Tooltip />
                                                             <Legend />
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={acrvolt}
-                                                                stroke="red"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={acsvolt}
-                                                                stroke="green"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={actvolt}
-                                                                stroke="purple"
-                                                                dot={false}
-                                                            />
+                                                            {dataoption.electricitygeneration.ACVoltRUA ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={acrvolt}
+                                                                    stroke="red"
+                                                                    dot={false}
+                                                                /> : <></>}
+                                                            {dataoption.electricitygeneration.ACVoltSUA ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={acsvolt}
+                                                                    stroke="green"
+                                                                    dot={false}
+                                                                /> : <></>}
+                                                            {dataoption.electricitygeneration.ACVoltTUA ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={actvolt}
+                                                                    stroke="purple"
+                                                                    dot={false}
+                                                                /> : <></>}
                                                         </LineChart>
                                                     </ResponsiveContainer>
                                                 )
@@ -485,26 +588,27 @@ export default function HistoricalData(props) {
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                                             <Tooltip />
                                                             <Legend />
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={acrcur}
-                                                                stroke="orange"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={acscur}
-                                                                stroke="gray"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={actcur}
-                                                                stroke="pink"
-                                                                dot={false}
-                                                            />
+                                                            {dataoption.electricitygeneration.ACCurrentRUA ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={acrcur}
+                                                                    stroke="red"
+                                                                    dot={false}
+                                                                /> : <></>}
+                                                            {dataoption.electricitygeneration.ACCurrentSUA ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={acscur}
+                                                                    stroke="green"
+                                                                    dot={false}
+                                                                /> : <></>}
+                                                            {dataoption.electricitygeneration.ACCurrentTUA ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={actcur}
+                                                                    stroke="purple"
+                                                                    dot={false}
+                                                                /> : <></>}
                                                         </LineChart>
                                                     </ResponsiveContainer>
                                                 )
@@ -539,33 +643,38 @@ export default function HistoricalData(props) {
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                                             <Tooltip />
                                                             <Legend />
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv1cur}
-                                                                stroke="rgb(4,143,255)"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv2cur}
-                                                                stroke="red"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv3cur}
-                                                                stroke="green"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv4cur}
-                                                                stroke="purple"
-                                                                dot={false}
-                                                            />
+                                                            {dataoption.electricitygeneration.DCVoltPV1 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv1volt}
+                                                                    stroke="rgb(4,143,255)"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCVoltPV2 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv2volt}
+                                                                    stroke="red"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCVoltPV3 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv3volt}
+                                                                    stroke="green"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCVoltPV4 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv4volt}
+                                                                    stroke="purple"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
                                                         </LineChart>
                                                     </ResponsiveContainer>
                                                 )
@@ -599,33 +708,38 @@ export default function HistoricalData(props) {
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                                             <Tooltip />
                                                             <Legend />
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv1volt}
-                                                                stroke="rgb(4,143,255)"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv2volt}
-                                                                stroke="red"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv3volt}
-                                                                stroke="green"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv4volt}
-                                                                stroke="purple"
-                                                                dot={false}
-                                                            />
+                                                            {dataoption.electricitygeneration.DCVoltPV1 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv1volt}
+                                                                    stroke="rgb(4,143,255)"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCVoltPV2 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv2volt}
+                                                                    stroke="red"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCVoltPV3 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv3volt}
+                                                                    stroke="green"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCVoltPV4 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv4volt}
+                                                                    stroke="purple"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
                                                         </LineChart>
                                                     </ResponsiveContainer>
                                                 )
@@ -659,33 +773,38 @@ export default function HistoricalData(props) {
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                                             <Tooltip />
                                                             <Legend />
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv1power}
-                                                                stroke="rgb(4,143,255)"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv2power}
-                                                                stroke="red"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv3power}
-                                                                stroke="green"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv4power}
-                                                                stroke="purple"
-                                                                dot={false}
-                                                            />
+                                                            {dataoption.electricitygeneration.DCPowerPV1 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv1power}
+                                                                    stroke="rgb(4,143,255)"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCPowerPV2 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv2power}
+                                                                    stroke="red"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCPowerPV3 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv3power}
+                                                                    stroke="green"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCPowerPV4 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv4power}
+                                                                    stroke="purple"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
                                                         </LineChart>
                                                     </ResponsiveContainer>
                                                 )
@@ -712,6 +831,7 @@ export default function HistoricalData(props) {
                                             onClick={(e) => {
                                                 handleShowConfig(e);
                                                 setDropConfig(!dropConfig);
+                                                setOption(dataoption);
                                             }}
                                         >
                                             {configname}
@@ -766,13 +886,15 @@ export default function HistoricalData(props) {
                                                             />
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                                             <Tooltip />
-                                                            {/* <Legend /> */}
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={acfre}
-                                                                stroke="red"
-                                                                dot={false}
-                                                            />
+                                                            <Legend />
+                                                            {dataoption.electricitygeneration.ACOutputFreqR ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={acfre}
+                                                                    stroke="red"
+                                                                    dot={false}
+                                                                /> :
+                                                                <></>}
                                                         </LineChart>
                                                     </ResponsiveContainer>
                                                 )
@@ -804,27 +926,28 @@ export default function HistoricalData(props) {
                                                                 ]} />
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                                             <Tooltip />
-                                                            {/* <Legend /> */}
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={acrvolt}
-                                                                stroke="red"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={acsvolt}
-                                                                stroke="green"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={actvolt}
-                                                                stroke="purple"
-                                                                dot={false}
-                                                            />
+                                                            <Legend />
+                                                            {dataoption.electricitygeneration.ACVoltRUA ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={acrvolt}
+                                                                    stroke="red"
+                                                                    dot={false}
+                                                                /> : <></>}
+                                                            {dataoption.electricitygeneration.ACVoltSUA ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={acsvolt}
+                                                                    stroke="green"
+                                                                    dot={false}
+                                                                /> : <></>}
+                                                            {dataoption.electricitygeneration.ACVoltTUA ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={actvolt}
+                                                                    stroke="purple"
+                                                                    dot={false}
+                                                                /> : <></>}
                                                         </LineChart>
                                                     </ResponsiveContainer>
                                                 )
@@ -857,27 +980,28 @@ export default function HistoricalData(props) {
                                                             />
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                                             <Tooltip />
-                                                            {/* <Legend /> */}
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={acrcur}
-                                                                stroke="orange"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={acscur}
-                                                                stroke="gray"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={actcur}
-                                                                stroke="pink"
-                                                                dot={false}
-                                                            />
+                                                            <Legend />
+                                                            {dataoption.electricitygeneration.ACCurrentRUA ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={acrcur}
+                                                                    stroke="red"
+                                                                    dot={false}
+                                                                /> : <></>}
+                                                            {dataoption.electricitygeneration.ACCurrentSUA ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={acscur}
+                                                                    stroke="green"
+                                                                    dot={false}
+                                                                /> : <></>}
+                                                            {dataoption.electricitygeneration.ACCurrentTUA ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={actcur}
+                                                                    stroke="purple"
+                                                                    dot={false}
+                                                                /> : <></>}
                                                         </LineChart>
                                                     </ResponsiveContainer>
                                                 )
@@ -911,34 +1035,39 @@ export default function HistoricalData(props) {
 
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                                             <Tooltip />
-                                                            {/* <Legend /> */}
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv1cur}
-                                                                stroke="rgb(4,143,255)"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv2cur}
-                                                                stroke="red"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv3cur}
-                                                                stroke="green"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv4cur}
-                                                                stroke="purple"
-                                                                dot={false}
-                                                            />
+                                                            <Legend />
+                                                            {dataoption.electricitygeneration.DCCurrentPV1 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv1cur}
+                                                                    stroke="rgb(4,143,255)"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCCurrentPV2 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv2cur}
+                                                                    stroke="red"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCCurrentPV3 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv3cur}
+                                                                    stroke="green"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCCurrentPV4 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv4cur}
+                                                                    stroke="purple"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
                                                         </LineChart>
                                                     </ResponsiveContainer>
                                                 )
@@ -971,34 +1100,39 @@ export default function HistoricalData(props) {
                                                             />
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                                             <Tooltip />
-                                                            {/* <Legend /> */}
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv1volt}
-                                                                stroke="rgb(4,143,255)"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv2volt}
-                                                                stroke="red"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv3volt}
-                                                                stroke="green"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv4volt}
-                                                                stroke="purple"
-                                                                dot={false}
-                                                            />
+                                                            <Legend />
+                                                            {dataoption.electricitygeneration.DCVoltPV1 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv1volt}
+                                                                    stroke="rgb(4,143,255)"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCVoltPV2 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv2volt}
+                                                                    stroke="red"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCVoltPV3 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv3volt}
+                                                                    stroke="green"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCVoltPV4 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv4volt}
+                                                                    stroke="purple"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
                                                         </LineChart>
                                                     </ResponsiveContainer>
                                                 )
@@ -1031,34 +1165,39 @@ export default function HistoricalData(props) {
                                                             />
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
                                                             <Tooltip />
-                                                            {/* <Legend /> */}
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv1power}
-                                                                stroke="rgb(4,143,255)"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv2power}
-                                                                stroke="red"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv3power}
-                                                                stroke="green"
-                                                                dot={false}
-                                                            />
-
-                                                            <Line
-                                                                type="monotone"
-                                                                dataKey={pv4power}
-                                                                stroke="purple"
-                                                                dot={false}
-                                                            />
+                                                            <Legend />
+                                                            {dataoption.electricitygeneration.DCPowerPV1 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv1power}
+                                                                    stroke="rgb(4,143,255)"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCPowerPV2 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv2power}
+                                                                    stroke="red"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCPowerPV3 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv3power}
+                                                                    stroke="green"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
+                                                            {dataoption.electricitygeneration.DCPowerPV4 ?
+                                                                <Line
+                                                                    type="monotone"
+                                                                    dataKey={pv4power}
+                                                                    stroke="purple"
+                                                                    dot={false}
+                                                                />
+                                                                : <></>}
                                                         </LineChart>
                                                     </ResponsiveContainer>
                                                 )
@@ -1097,10 +1236,12 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"RatedPower"}
+                                                                        id={"basicinfo_RatedPower"}
+                                                                        checked={option.basicinfo.RatedPower}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"RatedPower"}
+                                                                        htmlFor={"basicinfo_RatedPower"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "RatedPower" })}
                                                                     </label>
@@ -1116,10 +1257,12 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"DC Voltage PV1"}
+                                                                        id={"electricitygeneration_DCVoltPV1"}
+                                                                        checked={option.electricitygeneration.DCVoltPV1}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"DC Voltage PV1"}
+                                                                        htmlFor={"electricitygeneration_DCVoltPV1"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "DCVolt" })} PV1
                                                                     </label>
@@ -1128,10 +1271,12 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"DC Voltage PV2"}
+                                                                        id={"electricitygeneration_DCVoltPV2"}
+                                                                        checked={option.electricitygeneration.DCVoltPV2}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"DC Voltage PV2"}
+                                                                        htmlFor={"electricitygeneration_DCVoltPV2"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "DCVolt" })} PV2
                                                                     </label>
@@ -1140,10 +1285,40 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"DC Current PV1"}
+                                                                        id={"electricitygeneration_DCVoltPV3"}
+                                                                        checked={option.electricitygeneration.DCVoltPV3}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"DC Current PV1"}
+                                                                        htmlFor={"electricitygeneration_DCVoltPV3"}
+                                                                    >
+                                                                        {dataLang.formatMessage({ id: "DCVolt" })} PV3
+                                                                    </label>
+                                                                </div>
+
+                                                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={"electricitygeneration_DCVoltPV4"}
+                                                                        checked={option.electricitygeneration.DCVoltPV4}
+                                                                        onChange={(e) => handleCheck(e)}
+                                                                    />
+                                                                    <label
+                                                                        htmlFor={"electricitygeneration_DCVoltPV4"}
+                                                                    >
+                                                                        {dataLang.formatMessage({ id: "DCVolt" })} PV4
+                                                                    </label>
+                                                                </div>
+
+                                                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={"electricitygeneration_DCCurrentPV1"}
+                                                                        checked={option.electricitygeneration.DCCurrentPV1}
+                                                                        onChange={(e) => handleCheck(e)}
+                                                                    />
+                                                                    <label
+                                                                        htmlFor={"electricitygeneration_DCCurrentPV1"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "DCCurrent" })} PV1
                                                                     </label>
@@ -1152,10 +1327,12 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"DC Current PV2"}
+                                                                        id={"electricitygeneration_DCCurrentPV2"}
+                                                                        checked={option.electricitygeneration.DCCurrentPV2}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"DC Current PV2"}
+                                                                        htmlFor={"electricitygeneration_DCCurrentPV2"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "DCCurrent" })} PV2
                                                                     </label>
@@ -1164,10 +1341,40 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"DC Power PV1"}
+                                                                        id={"electricitygeneration_DCCurrentPV3"}
+                                                                        checked={option.electricitygeneration.DCCurrentPV3}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"DC Power PV1"}
+                                                                        htmlFor={"electricitygeneration_DCCurrentPV3"}
+                                                                    >
+                                                                        {dataLang.formatMessage({ id: "DCCurrent" })} PV3
+                                                                    </label>
+                                                                </div>
+
+                                                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={"electricitygeneration_DCCurrentPV4"}
+                                                                        checked={option.electricitygeneration.DCCurrentPV4}
+                                                                        onChange={(e) => handleCheck(e)}
+                                                                    />
+                                                                    <label
+                                                                        htmlFor={"electricitygeneration_DCCurrentPV4"}
+                                                                    >
+                                                                        {dataLang.formatMessage({ id: "DCCurrent" })} PV4
+                                                                    </label>
+                                                                </div>
+
+                                                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={"electricitygeneration_DCPowerPV1"}
+                                                                        checked={option.electricitygeneration.DCPowerPV1}
+                                                                        onChange={(e) => handleCheck(e)}
+                                                                    />
+                                                                    <label
+                                                                        htmlFor={"electricitygeneration_DCPowerPV1"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "DCPower" })} PV1
                                                                     </label>
@@ -1176,10 +1383,12 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"DC Power PV2"}
+                                                                        id={"electricitygeneration_DCPowerPV2"}
+                                                                        checked={option.electricitygeneration.DCPowerPV2}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"DC Power PV2"}
+                                                                        htmlFor={"electricitygeneration_DCPowerPV2"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "DCPower" })} PV2
                                                                     </label>
@@ -1188,10 +1397,40 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"AC Voltage R/U/A"}
+                                                                        id={"electricitygeneration_DCPowerPV3"}
+                                                                        checked={option.electricitygeneration.DCPowerPV3}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"AC Voltage R/U/A"}
+                                                                        htmlFor={"electricitygeneration_DCPowerPV3"}
+                                                                    >
+                                                                        {dataLang.formatMessage({ id: "DCPower" })} PV3
+                                                                    </label>
+                                                                </div>
+
+                                                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={"electricitygeneration_DCPowerPV4"}
+                                                                        checked={option.electricitygeneration.DCPowerPV4}
+                                                                        onChange={(e) => handleCheck(e)}
+                                                                    />
+                                                                    <label
+                                                                        htmlFor={"electricitygeneration_DCPowerPV4"}
+                                                                    >
+                                                                        {dataLang.formatMessage({ id: "DCPower" })} PV4
+                                                                    </label>
+                                                                </div>
+
+                                                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={"electricitygeneration_ACVoltRUA"}
+                                                                        checked={option.electricitygeneration.ACVoltRUA}
+                                                                        onChange={(e) => handleCheck(e)}
+                                                                    />
+                                                                    <label
+                                                                        htmlFor={"electricitygeneration_ACVoltRUA"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "ACVolt" })} R/U/A
                                                                     </label>
@@ -1200,10 +1439,40 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"AC Current R/U/A"}
+                                                                        id={"electricitygeneration_ACVoltSUA"}
+                                                                        checked={option.electricitygeneration.ACVoltSUA}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"AC Current R/U/A"}
+                                                                        htmlFor={"electricitygeneration_ACVoltSUA"}
+                                                                    >
+                                                                        {dataLang.formatMessage({ id: "ACVolt" })} S/U/A
+                                                                    </label>
+                                                                </div>
+
+                                                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={"electricitygeneration_ACVoltTUA"}
+                                                                        checked={option.electricitygeneration.ACVoltTUA}
+                                                                        onChange={(e) => handleCheck(e)}
+                                                                    />
+                                                                    <label
+                                                                        htmlFor={"electricitygeneration_ACVoltTUA"}
+                                                                    >
+                                                                        {dataLang.formatMessage({ id: "ACVolt" })} T/U/A
+                                                                    </label>
+                                                                </div>
+
+                                                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={"electricitygeneration_ACCurrentRUA"}
+                                                                        checked={option.electricitygeneration.ACCurrentRUA}
+                                                                        onChange={(e) => handleCheck(e)}
+                                                                    />
+                                                                    <label
+                                                                        htmlFor={"electricitygeneration_ACCurrentRUA"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "ACCurrent" })} R/U/A
                                                                     </label>
@@ -1212,22 +1481,54 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"AC Output Frequency R"}
+                                                                        id={"electricitygeneration_ACCurrentSUA"}
+                                                                        checked={option.electricitygeneration.ACCurrentSUA}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"AC Output Frequency R"}
+                                                                        htmlFor={"electricitygeneration_ACCurrentSUA"}
                                                                     >
-                                                                        {dataLang.formatMessage({ id: "ACOutputFreq" })}
+                                                                        {dataLang.formatMessage({ id: "ACCurrent" })} S/U/A
                                                                     </label>
                                                                 </div>
 
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Total AC Output Power"}
+                                                                        id={"electricitygeneration_ACCurrentTUA"}
+                                                                        checked={option.electricitygeneration.ACCurrentTUA}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Total AC Output Power"}
+                                                                        htmlFor={"electricitygeneration_ACCurrentTUA"}
+                                                                    >
+                                                                        {dataLang.formatMessage({ id: "ACCurrent" })} T/U/A
+                                                                    </label>
+                                                                </div>
+
+                                                                <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={"electricitygeneration_ACOutputFreqR"}
+                                                                        checked={option.electricitygeneration.ACOutputFreqR}
+                                                                        onChange={(e) => handleCheck(e)}
+                                                                    />
+                                                                    <label
+                                                                        htmlFor={"electricitygeneration_ACOutputFreqR"}
+                                                                    >
+                                                                        {dataLang.formatMessage({ id: "ACOutputFreq" })}
+                                                                    </label>
+                                                                </div>
+
+                                                                {/* <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={"totalACOutput"}
+                                                                        defaultValue={option.electricitygeneration.totalACOutput}
+                                                                        onChange={(e) => handleCheck(e)}
+                                                                    />
+                                                                    <label
+                                                                        htmlFor={"totalACOutput"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "totalACOutput" })}
                                                                     </label>
@@ -1236,10 +1537,12 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Reactive Power"}
+                                                                        id={"reactivePower"}
+                                                                        defaultValue={option.electricitygeneration.reactivePower}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Reactive Power"}
+                                                                        htmlFor={"reactivePower"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "reactivePower" })}
                                                                     </label>
@@ -1248,27 +1551,31 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Daily Production (Active)"}
+                                                                        id={"dailyOutput"}
+                                                                        defaultValue={option.electricitygeneration.dailyOutput}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Daily Production (Active)"}
+                                                                        htmlFor={"dailyOutput"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "dailyOutput" })}
                                                                     </label>
-                                                                </div>
-
+                                                                </div> */}
+                                                                {/* 
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Load Active Power"}
+                                                                        id={"LoadActivePower"}
+                                                                        defaultValue={option.electricitygeneration.dailyOutput}
+                                                                        onChange={(e) => handleCheck(e)}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Load Active Power"}
+                                                                        htmlFor={"LoadActivePower"}
                                                                     >
                                                                         {/* Load Active Power */}
-                                                                        {dataLang.formatMessage({ id: "LoadActivePower" })}
-                                                                    </label>
-                                                                </div>
+                                                                {/* {dataLang.formatMessage({ id: "LoadActivePower" })} */}
+                                                                {/* </label> */}
+                                                                {/* </div> */}
                                                             </td>
                                                         </tr>
 
@@ -1281,10 +1588,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Leak Current"}
+                                                                        id={"LeakCurrent"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Leak Current"}
+                                                                        htmlFor={"LeakCurrent"}
                                                                     >
                                                                         {/* Leak Current */}
                                                                         {dataLang.formatMessage({ id: "LeakCurrent" })}:
@@ -1294,10 +1601,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Total Grid Power"}
+                                                                        id={"TotalGridPower"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Total Grid Power"}
+                                                                        htmlFor={"TotalGridPower"}
                                                                     >
                                                                         {/* Total Grid Power */}
                                                                         {dataLang.formatMessage({ id: "TotalGridPower" })}
@@ -1307,10 +1614,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Cumulative Grid Feed-in"}
+                                                                        id={"CumulativeGridFeedin"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Cumulative Grid Feed-in"}
+                                                                        htmlFor={"CumulativeGridFeedin"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "CumulativeGridFeedin" })}
                                                                     </label>
@@ -1319,10 +1626,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Cumulative Energy Purchased"}
+                                                                        id={"CumulativeEnergyPurchased"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Cumulative Energy Purchased"}
+                                                                        htmlFor={"CumulativeEnergyPurchased"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "CumulativeEnergyPurchased" })}
                                                                     </label>
@@ -1331,10 +1638,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Daily Grid Feed-in"}
+                                                                        id={"DailyGridFeedin"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Daily Grid Feed-in"}
+                                                                        htmlFor={"DailyGridFeedin"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "DailyGridFeedin" })}
                                                                     </label>
@@ -1343,10 +1650,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Daily Energy Purchased"}
+                                                                        id={"DailyEnergyPurchased"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Daily Energy Purchased"}
+                                                                        htmlFor={"DailyEnergyPurchased"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "DailyEnergyPurchased" })}
                                                                     </label>
@@ -1355,10 +1662,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Meter Power"}
+                                                                        id={"MeterPower"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Meter Power"}
+                                                                        htmlFor={"MeterPower"}
                                                                     >
                                                                         {/* Meter Power */}
                                                                         {dataLang.formatMessage({ id: "MeterPower" })}
@@ -1368,10 +1675,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"CT Current"}
+                                                                        id={"CTcur"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"CT Current"}
+                                                                        htmlFor={"CTcur"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "CTcur" })}
                                                                     </label>
@@ -1430,10 +1737,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Battery Voltage"}
+                                                                        id={"BatteryVolt"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Battery Voltage"}
+                                                                        htmlFor={"BatteryVolt"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "BatteryVolt" })}
                                                                     </label>
@@ -1442,10 +1749,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Battery Current"}
+                                                                        id={"BatteryCurrent"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Battery Current"}
+                                                                        htmlFor={"BatteryCurrent"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "BatteryCurrent" })}
                                                                     </label>
@@ -1454,10 +1761,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Max. Charging Current"}
+                                                                        id={"MaxChargingCur"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Max. Charging Current"}
+                                                                        htmlFor={"MaxChargingCur"}
                                                                     >
                                                                         {/* Max. Charging Current */}
                                                                         {dataLang.formatMessage({ id: "MaxChargingCur" })}
@@ -1467,10 +1774,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Max. Discharging Current"}
+                                                                        id={"MaxDischargingCur"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Max. Discharging Current"}
+                                                                        htmlFor={"MaxDischargingCur"}
                                                                     >
                                                                         {/* Max. Discharging Current */}
                                                                         {dataLang.formatMessage({ id: "MaxDischargingCur" })}
@@ -1480,10 +1787,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Battery Power"}
+                                                                        id={"BatteryPower"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Battery Power"}
+                                                                        htmlFor={"BatteryPower"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "BatteryPower" })}
                                                                     </label>
@@ -1516,10 +1823,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Total Charging Energy"}
+                                                                        id={"TotalchargingEnergy"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Total Charging Energy"}
+                                                                        htmlFor={"TotalchargingEnergy"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "TotalchargingEnergy" })}
                                                                     </label>
@@ -1528,10 +1835,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Total Discharging Energy"}
+                                                                        id={"TotaldischargingEnergy"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Total Discharging Energy"}
+                                                                        htmlFor={"TotaldischargingEnergy"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "TotaldischargingEnergy" })}
                                                                     </label>
@@ -1540,10 +1847,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"Daily Charging Energy"}
+                                                                        id={"DailychargingEnergy"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"Daily Charging Energy"}
+                                                                        htmlFor={"DailychargingEnergy"}
                                                                     >
                                                                         {dataLang.formatMessage({ id: "DailychargingEnergy" })}
                                                                     </label>
@@ -1559,10 +1866,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"BMS Max Charge Current"}
+                                                                        id={"BMSMaxChargingCur"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"BMS Max Charge Current"}
+                                                                        htmlFor={"BMSMaxChargingCur"}
                                                                     >
                                                                         {/* BMS Max Charge Current */}
                                                                         {dataLang.formatMessage({ id: "BMSMaxChargingCur" })}
@@ -1572,10 +1879,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"BMS Max Discharge Current"}
+                                                                        id={"MaxDischargingCur"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"BMS Max Discharge Current"}
+                                                                        htmlFor={"MaxDischargingCur"}
                                                                     >
                                                                         {/* BMS Max Discharge Current */}
                                                                         {dataLang.formatMessage({ id: "MaxDischargingCur" })}
@@ -1585,10 +1892,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"BMS Charge Voltage"}
+                                                                        id={"BMSChargeVoltage"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"BMS Charge Voltage"}
+                                                                        htmlFor={"BMSChargeVoltage"}
                                                                     >
                                                                         {/* BMS Charge Voltage */}
                                                                         {dataLang.formatMessage({ id: "BMSChargeVoltage" })}
@@ -1598,10 +1905,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"BMS Discharge Voltage"}
+                                                                        id={"BMSDischargeVoltage"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"BMS Discharge Voltage"}
+                                                                        htmlFor={"BMSDischargeVoltage"}
                                                                     >
                                                                         {/* BMS Discharge Voltage */}
                                                                         {dataLang.formatMessage({ id: "BMSDischargeVoltage" })}
@@ -1619,10 +1926,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"DC Insulation Resistance"}
+                                                                        id={"DCInsulationResistance"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"DC Insulation Resistance"}
+                                                                        htmlFor={"DCInsulationResistance"}
                                                                     >
                                                                         {/* DC Insulation Resistance */}
                                                                         {dataLang.formatMessage({ id: "DCInsulationResistance" })}
@@ -1639,10 +1946,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"R phase EPS voltage"}
+                                                                        id={"RphaseEPSvoltage"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"R phase EPS voltage"}
+                                                                        htmlFor={"RphaseEPSvoltage"}
                                                                     >
                                                                         {/* R phase EPS voltage */}
                                                                         {dataLang.formatMessage({ id: "RphaseEPSvoltage" })}
@@ -1652,23 +1959,22 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"R phase EPS current"}
+                                                                        id={"RphaseEPScurrent"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"R phase EPS current"}
+                                                                        htmlFor={"RphaseEPScurrent"}
                                                                     >
                                                                         {/* R phase EPS current */}
                                                                         {dataLang.formatMessage({ id: "RphaseEPScurrent" })}
                                                                     </label>
                                                                 </div>
-
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"EPSR phase active power"}
+                                                                        id={"EPSRphaseActivePower"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"EPSR phase active power"}
+                                                                        htmlFor={"EPSRphaseActivePower"}
                                                                     >
                                                                         {/* EPSR phase active power */}
                                                                         {dataLang.formatMessage({ id: "EPSRphaseActivePower" })}
@@ -1678,10 +1984,10 @@ export default function HistoricalData(props) {
                                                                 <div className="DAT_Info_Databox_HistoricalData_SubConfig_Dropdown_Item_Table_Tr_Td_Checkbox">
                                                                     <input
                                                                         type="checkbox"
-                                                                        id={"EPS Frequency"}
+                                                                        id={"EPSFrequency"}
                                                                     />
                                                                     <label
-                                                                        htmlFor={"EPS Frequency"}
+                                                                        htmlFor={"EPSFrequency"}
                                                                     >
                                                                         {/* EPS Frequency */}
                                                                         {dataLang.formatMessage({ id: "EPSFrequency" })}
@@ -1702,6 +2008,7 @@ export default function HistoricalData(props) {
                                                     onClick={(e) => {
                                                         handleShowConfig(e);
                                                         setDropConfig(!dropConfig);
+                                                        handleCancelChangeChart(e);
                                                     }}
                                                 >
                                                     {dataLang.formatMessage({ id: "cancel" })}
@@ -1710,6 +2017,7 @@ export default function HistoricalData(props) {
                                                     onClick={(e) => {
                                                         handleShowConfig(e);
                                                         setDropConfig(!dropConfig);
+                                                        handleConfirmChangeChart();
                                                     }}
                                                     style={{
                                                         backgroundColor: COLOR.value.PrimaryColor,
