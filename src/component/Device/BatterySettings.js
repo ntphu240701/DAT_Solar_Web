@@ -124,11 +124,7 @@ export default function BatterySettings(props) {
         if (step) {
             setStep(0)
             config.map((key) => {
-                if (key == "bat_depthdiscarge_dod") {
-                    document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
-                } else {
-                    document.getElementById(key).innerHTML = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
-                }
+                document.getElementById(key).value = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal);
             });
         }
     }, [step])
@@ -158,33 +154,37 @@ export default function BatterySettings(props) {
                         <div className="DAT_Info_Databox_ExportPowerSettings_Content">
                             <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
-                                    {dataLang.formatMessage({ id: "BatteryType" })}: <span id="bat_type"></span>
+                                    {dataLang.formatMessage({ id: "BatteryType" })}:
+                                    {/* &nbsp;
+                                    <span id="bat_type"></span> */}
                                 </div>
                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
-                                    <select>
-                                        <option>{dataLang.formatMessage({ id: "LeadAcidBattery" })}</option>
-                                        <option>{dataLang.formatMessage({ id: "LithumBattery" })}</option>
+                                    <select id="bat_type">
+                                        <option value={0}>{dataLang.formatMessage({ id: "LeadAcidBattery" })}</option>
+                                        <option value={1}>{dataLang.formatMessage({ id: "LithumBattery" })}</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
-                                    {dataLang.formatMessage({ id: "BatteryManu" })}: <span id="bat_manufacture"></span>
+                                    {dataLang.formatMessage({ id: "BatteryManu" })}:
+                                    {/* &nbsp;
+                                    <span id="bat_manufacture"></span> */}
                                 </div>
                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
-                                    <select>
-                                        <option>Lead Acid Battery</option>
-                                        <option>ATL Battery</option>
-                                        <option>PYLON Battery</option>
-                                        <option>Vestwoods Battery</option>
-                                        <option>Topband Battery</option>
-                                        <option>Sunwoda Battery</option>
-                                        <option>HANCHU Battery</option>
-                                        <option>INVT Battery</option>
-                                        <option>LiValley Battery</option>
+                                    <select id="bat_manufacture">
+                                        {/* <option>Lead Acid Battery</option> */}
+                                        <option value={1}>ATL Battery</option>
+                                        <option value={2}>PYLON Battery</option>
+                                        <option value={3}>Vestwoods Battery</option>
+                                        <option value={4}>Topband Battery</option>
+                                        <option value={5}>Sunwoda Battery</option>
+                                        <option value={6}>HANCHU Battery</option>
+                                        <option value={7}>INVT Battery</option>
+                                        {/* <option>LiValley Battery</option>
                                         <option>DONGCI Battery</option>
-                                        <option>JGNE Battery</option>
+                                        <option>JGNE Battery</option> */}
                                     </select>
                                 </div>
                             </div>

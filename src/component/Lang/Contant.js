@@ -498,7 +498,7 @@ export const messages = {
     GridInfor: "Grid Information",
     StatusInit: "Init",
     StatusWait: "Wait",
-    StatusOnGrid: "On Grid",
+    StatusOnGrid: "Grid Connection",
     StatusFault: "Fault",
     StatusFlash: "Flash",
     StatusOffGrid: "Off Grid",

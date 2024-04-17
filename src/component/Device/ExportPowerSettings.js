@@ -180,7 +180,6 @@ export default function ExportPowerSettings(props) {
             pha = parseFloat(invt[info.value.pdata.pha.voltage.register] * info.value.pdata.pha.voltage.cal).toFixed(2);
             phb = parseFloat(invt[info.value.pdata.phb.voltage.register] * info.value.pdata.phb.voltage.cal).toFixed(2);
             phc = parseFloat(invt[info.value.pdata.phc.voltage.register] * info.value.pdata.phc.voltage.cal).toFixed(2);
-            console.log(pha, phb, phc)
 
             if (pha > 180 && phb > 180 && phc > 180) {
                 setInverter("three_phase")
@@ -216,7 +215,6 @@ export default function ExportPowerSettings(props) {
 
                         if (key === "export_power_enable") {
                             document.getElementById(key).value = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal)
-                            console.log(parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal))
                         }
                     })
                     break;
@@ -232,7 +230,6 @@ export default function ExportPowerSettings(props) {
 
                         if (key === "export_power_enable") {
                             document.getElementById(key).value = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal)
-                            console.log(parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal))
                         }
                     })
                     break;
@@ -351,7 +348,7 @@ export default function ExportPowerSettings(props) {
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
                                                     {dataLang.formatMessage({ id: 'ExportPEnable' })}:
                                                     {/* &nbsp;
-                                                    <span id="export_power_enable"></span> */}
+                                                <span id="export_power_enable"></span> */}
                                                     &nbsp;
                                                     <span id="inverter">{inverter}</span>
                                                 </div>

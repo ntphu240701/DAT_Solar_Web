@@ -22,7 +22,7 @@ export default function DeviceSettings(props) {
 
     const config = [
         "remote_control",
-        "safety_setting",
+        // "safety_setting",
         "active_power_setting",
         "reactive_power_control",
         "input_mode_setting",
@@ -126,11 +126,11 @@ export default function DeviceSettings(props) {
         if (step) {
             setStep(0)
             config.map((key) => {
-                if (key == "active_power_setting") {
-                    document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
-                } else {
-                    document.getElementById(key).innerHTML = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2)
-                }
+                // if (key === "safety_setting") {
+                // document.getElementById(key).innerHTML = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal);
+                // } else {
+                document.getElementById(key).value = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal);
+                // }
             });
         }
     }, [step])
@@ -158,24 +158,29 @@ export default function DeviceSettings(props) {
                 {display ? (
                     <form className="DAT_Info_Databox_DeviceSettings" onSubmit={(e) => handleSetup(e)}>
                         <div className="DAT_Info_Databox_DeviceSettings_Content">
+                            {/* remote_control */}
                             <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
                                 <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Tit">
-                                    {dataLang.formatMessage({ id: 'RemoteControl' })}: <span id="remote_control"></span>
+                                    {dataLang.formatMessage({ id: 'RemoteControl' })}:
+                                    {/* &nbsp;
+                                    <span id="remote_control"></span> */}
                                 </div>
                                 <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Content">
-                                    <select>
-                                        <option>{dataLang.formatMessage({ id: 'PowerOn' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'PowerOff' })}</option>
+                                    <select id="remote_control">
+                                        <option value={21845}>{dataLang.formatMessage({ id: 'PowerOn' })}</option>
+                                        <option value={43690}>{dataLang.formatMessage({ id: 'PowerOff' })}</option>
                                     </select>
                                 </div>
                             </div>
-                            <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
+
+                            {/* safety_setting */}
+                            {/* <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
                                 <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Tit">
                                     {dataLang.formatMessage({ id: 'SafetySetting' })}: <span id="safety_setting"></span>
                                 </div>
                                 <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Content">
                                     <select>
-                                        <option defaultValue={1} disabled hidden>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
+                                        <option style={{ display: "none" }}>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
                                         <option>CQC2013</option>
                                         <option>SKYWORTH</option>
                                         <option>EN50549</option>
@@ -204,18 +209,21 @@ export default function DeviceSettings(props) {
                                         <option>Romania 280V</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> */}
+
                             {/* <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item">
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
-                    AC High-Voltage Load Limit:
-                  </div>
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Content">
-                    <select>
-                      <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                    </select>
-                  </div>
-                </div> */}
+                                <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
+                                    AC High-Voltage Load Limit:
+                                </div>
+                                <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Content">
+                                    <select>
+                                        <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                                        <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                                    </select>
+                                </div>
+                            </div> */}
+
+                            {/* active_power_setting */}
                             <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
                                 <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Tit">
                                     {dataLang.formatMessage({ id: 'ActivePowerSetting' })}:
@@ -225,37 +233,47 @@ export default function DeviceSettings(props) {
                                     %
                                 </div>
                             </div>
+
                             {/* <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
-                <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Tit">
-                    Virtual Zero Line Enable:
-                  </div>
-                  <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Content">
-                    <select>
-                      <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                      <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                    </select>
-                  </div>
-              </div> */}
+                                    <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Tit">
+                                        Virtual Zero Line Enable:
+                                    </div>
+                                    <div className="DAT_Info_Databox_DeviceSettings_Content_Center_Item_Content">
+                                        <select>
+                                        <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                                        <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                                        </select>
+                                    </div>
+                            </div> */}
+
+                            {/* reactive_power_control */}
                             <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
                                 <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Tit">
-                                    {dataLang.formatMessage({ id: 'ReactivePowerSetting' })}: <span id="reactive_power_control"></span>
+                                    {dataLang.formatMessage({ id: 'ReactivePowerSetting' })}:
+                                    {/* &nbsp;
+                                    <span id="reactive_power_control"></span> */}
                                 </div>
                                 <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Content">
-                                    <select>
-                                        <option>{dataLang.formatMessage({ id: 'PowerFactor' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'ReactivePPercentage' })}</option>
+                                    <select id="reactive_power_control">
+                                        <option value={0}>{dataLang.formatMessage({ id: 'PowerFactor' })}</option>
+                                        <option value={1}>{dataLang.formatMessage({ id: 'ReactivePPercentage' })}</option>
+                                        <option value={2}>QV curve control</option>
                                     </select>
                                 </div>
                             </div>
+
+                            {/* input_mode_setting */}
                             <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
                                 <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Tit">
-                                    {dataLang.formatMessage({ id: 'InputModeSetting' })}: <span id="input_mode_setting"></span>
+                                    {dataLang.formatMessage({ id: 'InputModeSetting' })}:
+                                    {/* &nbsp;
+                                    <span id="input_mode_setting"></span> */}
                                 </div>
                                 <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Content">
-                                    <select>
-                                        <option>{dataLang.formatMessage({ id: 'IndependentMode' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'ParrallellMode' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'DCSourceMode' })}</option>
+                                    <select id="input_mode_setting">
+                                        <option value={0}>{dataLang.formatMessage({ id: 'IndependentMode' })}</option>
+                                        <option value={1}>{dataLang.formatMessage({ id: 'ParrallellMode' })}</option>
+                                        <option value={2}>{dataLang.formatMessage({ id: 'DCSourceMode' })}</option>
                                     </select>
                                 </div>
                             </div>
