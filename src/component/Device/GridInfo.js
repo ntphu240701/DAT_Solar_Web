@@ -1,20 +1,66 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./Device.scss";
 
 import { useIntl } from 'react-intl';
 
 import { IoIosArrowUp } from 'react-icons/io';
+import axios from 'axios';
+import { host } from '../Lang/Contant';
+import { info } from './Device';
+import { Token } from '../../App';
 
 export default function GridInfo(props) {
     const dataLang = useIntl();
     const [display, setDisplay] = useState(true);
+    const [step, setStep] = useState(0);
+    const [invt, setInvt] = useState({});
 
-    const config = []
+    const invtCloud = async (data, token) => {
+        var reqData = {
+            data: data,
+            token: token,
+        };
 
-    const handleRead = (e) => {
-        e.preventDefault();
-        console.log("Read");
+        try {
+            const response = await axios({
+                url: host.CLOUD,
+                method: "post",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                data: Object.keys(reqData)
+                    .map(function (key) {
+                        return (
+                            encodeURIComponent(key) + "=" + encodeURIComponent(reqData[key])
+                        );
+                    })
+                    .join("&"),
+            });
+            return response.data;
+        } catch (e) {
+            return { ret: 1, msg: "cloud err" };
+        }
     };
+
+    const handleRead = async (e) => {
+        e.preventDefault();
+
+        if (step === 0) {
+            let res = await invtCloud('{"deviceCode": "' + info.value.plogger + '"}', Token.value.token)
+            console.log(res)
+            if (res.ret === 0) {
+                setInvt(res.data)
+                setStep(1)
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (step) {
+            setStep(0)
+            document.getElementById("inverter_status").value = parseInt(invt[info.value.psetting["inverter_status"].register] * info.value.psetting["inverter_status"].cal);
+        }
+    }, [step])
 
     return (
         <div className="DAT_Info_Databox" id="GridInfo">
@@ -44,14 +90,13 @@ export default function GridInfo(props) {
                                     {dataLang.formatMessage({ id: 'InverterStatus' })}:
                                 </div>
                                 <div className="DAT_Info_Databox_GridInfo_Content_Item_Content">
-                                    <select>
-                                        <option defaultValue={1} style={{ display: "none" }}>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'StatusInit' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'StatusWait' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'StatusOnGrid' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'failure' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'burn' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'StatusOffGrid' })}</option>
+                                    <select id='inverter_status'>
+                                        <option value={0}>{dataLang.formatMessage({ id: 'StatusInit' })}</option>
+                                        <option value={1}>{dataLang.formatMessage({ id: 'StatusWait' })}</option>
+                                        <option value={2}>{dataLang.formatMessage({ id: 'StatusOnGrid' })}</option>
+                                        <option value={3}>{dataLang.formatMessage({ id: 'failure' })}</option>
+                                        <option value={4}>{dataLang.formatMessage({ id: 'burn' })}</option>
+                                        <option value={5}>{dataLang.formatMessage({ id: 'StatusOffGrid' })}</option>
                                     </select>
                                 </div>
                             </div>
