@@ -19,19 +19,24 @@ export default function ExportPowerSettings(props) {
     const [step, setStep] = useState(0);
     const [invt, setInvt] = useState({});
     const intervalIDRef = useReducer(null);
+    const [inverter, setInverter] = useState();
 
     const config_grid = [
         "export_power_enable",
         "export_power_limit",
-        "export_limitpower_type",
         "meter_type",
+        "export_limitpower_type",
     ]
 
     const config_hybrid = [
         "export_power_enable",
-        "meter_type",
         "export_power_limit",
+        "meter_type",
     ]
+
+    const handleChange = (e) => {
+        console.log(e.target.value);
+    };
 
     const invtCloud = async (data, token) => {
         var reqData = {
@@ -168,31 +173,66 @@ export default function ExportPowerSettings(props) {
     useEffect(() => {
         if (step) {
             setStep(0)
+            let pha = 0;
+            let phb = 0;
+            let phc = 0;
+
+            pha = parseFloat(invt[info.value.pdata.pha.voltage.register] * info.value.pdata.pha.voltage.cal).toFixed(2);
+            phb = parseFloat(invt[info.value.pdata.phb.voltage.register] * info.value.pdata.phb.voltage.cal).toFixed(2);
+            phc = parseFloat(invt[info.value.pdata.phc.voltage.register] * info.value.pdata.phc.voltage.cal).toFixed(2);
+            console.log(pha, phb, phc)
+
+            if (pha > 180 && phb > 180 && phc > 180) {
+                setInverter("three_phase")
+            } else {
+                setInverter("single_phase")
+            }
+
             switch (info.value.pdata.mode) {
                 case 'CONSUMPTION':
                     config_grid.map((key) => {
-                        if (key == "export_power_limit") {
+                        if (key === "export_power_limit") {
                             document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
-                        } else {
-                            document.getElementById(key).innerHTML = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+                        }
+
+                        if (key === "meter_type" || key === "export_limitpower_type") {
+                            document.getElementById(key).value = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal);
+                        }
+
+                        if (key === "export_power_enable") {
+                            document.getElementById(key).value = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal)
                         }
                     })
                     break;
                 case 'HYBRID':
                     config_hybrid.map((key) => {
-                        if (key == "export_power_limit") {
+                        if (key === "export_power_limit") {
                             document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
-                        } else {
-                            document.getElementById(key).innerHTML = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+                        }
+
+                        if (key === "meter_type") {
+                            document.getElementById(key).value = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal);
+                        }
+
+                        if (key === "export_power_enable") {
+                            document.getElementById(key).value = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal)
+                            console.log(parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal))
                         }
                     })
                     break;
                 default:
                     config_grid.map((key) => {
-                        if (key == "export_power_limit") {
+                        if (key === "export_power_limit") {
                             document.getElementById(key).value = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
-                        } else {
-                            document.getElementById(key).innerHTML = parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2);
+                        }
+
+                        if (key === "meter_type" || key === "export_limitpower_type") {
+                            document.getElementById(key).value = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal);
+                        }
+
+                        if (key === "export_power_enable") {
+                            document.getElementById(key).value = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal)
+                            console.log(parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal))
                         }
                     })
                     break;
@@ -229,29 +269,35 @@ export default function ExportPowerSettings(props) {
                                         <div className="DAT_Info_Databox_ExportPowerSettings_Content">
                                             <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
-                                                    {dataLang.formatMessage({ id: 'ExportPEnable' })}: <span id="export_power_enable"></span>
+                                                    {dataLang.formatMessage({ id: 'ExportPEnable' })}:
+                                                    {/* &nbsp;
+                                                    <span id="export_power_enable"></span> */}
+                                                    &nbsp;
+                                                    <span id="inverter">{inverter}</span>
                                                 </div>
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
-                                                    <select>
-                                                        <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                                                        <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                                                    <select id="export_power_enable">
+                                                        <option value={inverter === "three_phase" ? 59 : 33}>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                                                        <option value={inverter === "three_phase" ? 58 : 32}>{dataLang.formatMessage({ id: 'Disable' })}</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
-                                                    {dataLang.formatMessage({ id: 'MetterType' })}: <span id="meter_type"></span>
+                                                    {dataLang.formatMessage({ id: 'MetterType' })}:
+                                                    {/* &nbsp;
+                                                    <span id="meter_type"></span> */}
                                                 </div>
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
-                                                    <select>
-                                                        <option>CT</option>
-                                                        <option>Tandardel Meter</option>
-                                                        <option>DFUN Meter</option>
-                                                        <option>Eastron Meter</option>
-                                                        <option>Chint Meter</option>
-                                                        <option>Gridbox2</option>
-                                                        <option>Anti-Rejection Box</option>
-                                                        <option>Yada Meter</option>
+                                                    <select id="meter_type" onChange={(e) => handleChange(e)}>
+                                                        <option value={0}>CT</option>
+                                                        <option value={1}>Tandardel Meter</option>
+                                                        <option value={2}>DFUN Meter</option>
+                                                        <option value={3}>Eastron Meter</option>
+                                                        <option value={4}>Chint Meter</option>
+                                                        <option value={5}>Gridbox2</option>
+                                                        <option value={6}>Anti-Rejection Box</option>
+                                                        <option value={7}>Yada Meter</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -265,28 +311,28 @@ export default function ExportPowerSettings(props) {
                                                 </div>
                                             </div>
                                             {/* <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: "24px" }}>
-                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                        Multi ExportLimit:
-                        {dataLang.formatMessage({ id: 'MultiExportLimit' })}:
-                      </div>
-                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                        <select>
-                          <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                          <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                        </select>
-                      </div>
-                    </div> */}
+                                                    <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
+                                                        Multi ExportLimit:
+                                                        {dataLang.formatMessage({ id: 'MultiExportLimit' })}:
+                                                    </div>
+                                                    <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
+                                                        <select>
+                                                        <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                                                        <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                                                        </select>
+                                                    </div>
+                                                </div> */}
                                             {/* <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
-                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
-                        {dataLang.formatMessage({ id: 'ExportLimitWay' })}: <span id="export_limitpower_type"></span>
-                      </div>
-                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
-                        <select>
-                          <option>{dataLang.formatMessage({ id: 'LimitSinglePhase' })}</option>
-                          <option>{dataLang.formatMessage({ id: 'LimitThreePhase' })}</option>
-                        </select>
-                      </div>
-                    </div> */}
+                                                    <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
+                                                        {dataLang.formatMessage({ id: 'ExportLimitWay' })}: <span id="export_limitpower_type"></span>
+                                                    </div>
+                                                    <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
+                                                        <select>
+                                                        <option>{dataLang.formatMessage({ id: 'LimitSinglePhase' })}</option>
+                                                        <option>{dataLang.formatMessage({ id: 'LimitThreePhase' })}</option>
+                                                        </select>
+                                                    </div>
+                                                </div> */}
                                         </div>
 
                                         <div className="DAT_Info_Databox_ExportPowerSettings_Foot">
@@ -303,12 +349,16 @@ export default function ExportPowerSettings(props) {
                                         <div className="DAT_Info_Databox_ExportPowerSettings_Content">
                                             <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
-                                                    {dataLang.formatMessage({ id: 'ExportPEnable' })}: <span id="export_power_enable"></span>
+                                                    {dataLang.formatMessage({ id: 'ExportPEnable' })}:
+                                                    {/* &nbsp;
+                                                    <span id="export_power_enable"></span> */}
+                                                    &nbsp;
+                                                    <span id="inverter">{inverter}</span>
                                                 </div>
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
-                                                    <select>
-                                                        <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                                                        <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                                                    <select id="export_power_enable">
+                                                        <option value={inverter === "single_phase" ? 33 : 59}>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                                                        <option value={inverter === "single_phase" ? 32 : 58}>{dataLang.formatMessage({ id: 'Disable' })}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -322,42 +372,46 @@ export default function ExportPowerSettings(props) {
                                                 </div>
                                             </div>
                                             {/* <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: "24px" }}>
-                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                        Multi ExportLimit:
-                        {dataLang.formatMessage({ id: 'MultiExportLimit' })}:
-                      </div>
-                      <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                        <select>
-                          <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                          <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                        </select>
-                      </div>
-                    </div> */}
+                                            <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
+                                            Multi ExportLimit:
+                                            {dataLang.formatMessage({ id: 'MultiExportLimit' })}:
+                                            </div>
+                                            <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
+                                            <select>
+                                                <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                                                <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                                            </select>
+                                            </div>
+                                        </div> */}
                                             <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
-                                                    {dataLang.formatMessage({ id: 'ExportLimitWay' })}: <span id="export_limitpower_type"></span>
+                                                    {dataLang.formatMessage({ id: 'ExportLimitWay' })}:
+                                                    {/* &nbsp;
+                                                <span id="export_limitpower_type"></span> */}
                                                 </div>
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
-                                                    <select>
-                                                        <option>{dataLang.formatMessage({ id: 'LimitSinglePhase' })}</option>
-                                                        <option>{dataLang.formatMessage({ id: 'LimitThreePhase' })}</option>
+                                                    <select id="export_limitpower_type" onChange={(e) => handleChange(e)}>
+                                                        <option value={0}>{dataLang.formatMessage({ id: 'LimitSinglePhase' })}</option>
+                                                        <option value={1}>{dataLang.formatMessage({ id: 'LimitThreePhase' })}</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
-                                                    {dataLang.formatMessage({ id: 'MetterType' })}: <span id="meter_type"></span>
+                                                    {dataLang.formatMessage({ id: 'MetterType' })}:
+                                                    {/* &nbsp;
+                                                <span id="meter_type"></span> */}
                                                 </div>
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
-                                                    <select>
-                                                        <option>CT</option>
-                                                        <option>Tandardel Meter</option>
-                                                        <option>DFUN Meter</option>
-                                                        <option>Eastron Meter</option>
-                                                        <option>Chint Meter</option>
-                                                        <option>Gridbox2</option>
-                                                        <option>Anti-Rejection Box</option>
-                                                        <option>Yada Meter</option>
+                                                    <select id="meter_type" onChange={(e) => handleChange(e)}>
+                                                        <option value={0}>CT</option>
+                                                        <option value={1}>Tandardel Meter</option>
+                                                        <option value={2}>DFUN Meter</option>
+                                                        <option value={3}>Eastron Meter</option>
+                                                        <option value={4}>Chint Meter</option>
+                                                        <option value={5}>Gridbox2</option>
+                                                        <option value={6}>Anti-Rejection Box</option>
+                                                        <option value={7}>Yada Meter</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -377,12 +431,16 @@ export default function ExportPowerSettings(props) {
                                         <div className="DAT_Info_Databox_ExportPowerSettings_Content">
                                             <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
-                                                    {dataLang.formatMessage({ id: 'ExportPEnable' })}: <span id="export_power_enable"></span>
+                                                    {dataLang.formatMessage({ id: 'ExportPEnable' })}:
+                                                    {/* &nbsp;
+                                                    <span id="export_power_enable"></span> */}
+                                                    &nbsp;
+                                                    <span id="inverter">{inverter}</span>
                                                 </div>
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
-                                                    <select>
-                                                        <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                                                        <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                                                    <select id="export_power_enable">
+                                                        <option value={inverter === "single_phase" ? 33 : 59}>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                                                        <option value={inverter === "single_phase" ? 32 : 58}>{dataLang.formatMessage({ id: 'Disable' })}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -396,42 +454,46 @@ export default function ExportPowerSettings(props) {
                                                 </div>
                                             </div>
                                             {/* <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item" style={{ marginBottom: "24px" }}>
-                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
-                          Multi ExportLimit:
-                          {dataLang.formatMessage({ id: 'MultiExportLimit' })}:
-                        </div>
-                        <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
-                          <select>
-                            <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
-                            <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
-                          </select>
-                        </div>
-                      </div> */}
+                                                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Tit">
+                                                Multi ExportLimit:
+                                                {dataLang.formatMessage({ id: 'MultiExportLimit' })}:
+                                                </div>
+                                                <div className="DAT_Info_Databox_ExportPowerSettings_Content_Center_Item_Content">
+                                                <select>
+                                                    <option>{dataLang.formatMessage({ id: 'Enable' })}</option>
+                                                    <option>{dataLang.formatMessage({ id: 'Disable' })}</option>
+                                                </select>
+                                                </div>
+                                            </div> */}
                                             <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
-                                                    {dataLang.formatMessage({ id: 'ExportLimitWay' })}: <span id="export_limitpower_type"></span>
+                                                    {dataLang.formatMessage({ id: 'ExportLimitWay' })}:
+                                                    {/* &nbsp;
+                                                    <span id="export_limitpower_type"></span> */}
                                                 </div>
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
-                                                    <select>
-                                                        <option>{dataLang.formatMessage({ id: 'LimitSinglePhase' })}</option>
-                                                        <option>{dataLang.formatMessage({ id: 'LimitThreePhase' })}</option>
+                                                    <select id="export_limitpower_type" onChange={(e) => handleChange(e)}>
+                                                        <option value={0}>{dataLang.formatMessage({ id: 'LimitSinglePhase' })}</option>
+                                                        <option value={1}>{dataLang.formatMessage({ id: 'LimitThreePhase' })}</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item">
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Tit">
-                                                    {dataLang.formatMessage({ id: 'MetterType' })}: <span id="meter_type"></span>
+                                                    {dataLang.formatMessage({ id: 'MetterType' })}:
+                                                    {/* &nbsp;
+                                                    <span id="meter_type"></span> */}
                                                 </div>
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
-                                                    <select>
-                                                        <option>CT</option>
-                                                        <option>Tandardel Meter</option>
-                                                        <option>DFUN Meter</option>
-                                                        <option>Eastron Meter</option>
-                                                        <option>Chint Meter</option>
-                                                        <option>Gridbox2</option>
-                                                        <option>Anti-Rejection Box</option>
-                                                        <option>Yada Meter</option>
+                                                    <select id="meter_type" onChange={(e) => handleChange(e)}>
+                                                        <option value={0}>CT</option>
+                                                        <option value={1}>Tandardel Meter</option>
+                                                        <option value={2}>DFUN Meter</option>
+                                                        <option value={3}>Eastron Meter</option>
+                                                        <option value={4}>Chint Meter</option>
+                                                        <option value={5}>Gridbox2</option>
+                                                        <option value={6}>Anti-Rejection Box</option>
+                                                        <option value={7}>Yada Meter</option>
                                                     </select>
                                                 </div>
                                             </div>

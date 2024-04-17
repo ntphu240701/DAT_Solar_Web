@@ -676,7 +676,7 @@ export default function AddProject(props) {
             angle: "",
             business: "",
             capacity: "",
-            company: "",
+            company: "DAT Group",
             contact: "",
             createdate: moment(new Date()).format("MM/DD/YYYY HH:mm:ss"),
             currency: "vnd",

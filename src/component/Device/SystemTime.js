@@ -23,11 +23,11 @@ export default function SystemTime(props) {
 
     const date = useRef(moment(new Date()).format("yyyy-MM-DD"));
     const time = useRef(moment(new Date()).format("HH:mm:ss"));
-    const [datetime, setDatetime] = useState({
-        yearmonth: 0,
-        minutesecond: 0,
-        dayhour: 0,
-    });
+    // const [datetime, setDatetime] = useState({
+    //     yearmonth: 0,
+    //     minutesecond: 0,
+    //     dayhour: 0,
+    // });
 
     const config = [
         "realtime_dayhour",
@@ -130,27 +130,10 @@ export default function SystemTime(props) {
         e.preventDefault();
         remote.value = 0
 
-        // console.log(date.current.value, time.current.value);
-        // console.log(datetime);
-        // let day = Number(date.current.value.split('-')[2]);
-        // let month = Number(date.current.value.split('-')[1]);
-        // let year = Number(date.current.value.split('-')[0].slice(2));
-        // let hour = Number(time.current.value.split(':')[0]);
-        // let minute = Number(time.current.value.split(':')[1]);
-        // let second = Number(time.current.value.split(':')[2]);
-        // console.log(day, month, year, hour, minute, second);
-
-
-
         let yearmonth = (Number(date.current.value.split('-')[0].slice(2)) << 8) | Number(date.current.value.split('-')[1]);
         let minutesecond = (Number(time.current.value.split(':')[1]) << 8) | Number(time.current.value.split(':')[2]);
         let dayhour = (Number(date.current.value.split('-')[2]) << 8) | Number(time.current.value.split(':')[0]);
-        // console.log(yearmonth, minutesecond, dayhour);
-        // setDatetime({
-        //     yearmonth: (Number(date.current.value.split('-')[0].slice(2)) << 8) | Number(date.current.value.split('-')[1]),
-        //     minutesecond: (Number(time.current.value.split(':')[1]) << 8) | Number(time.current.value.split(':')[2]),
-        //     dayhour: (Number(date.current.value.split('-')[2]) << 8) | Number(time.current.value.split(':')[0])
-        // })
+
         startTimer(yearmonth, minutesecond, dayhour)
     };
 
