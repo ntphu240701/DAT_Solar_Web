@@ -107,7 +107,7 @@ export default function ProjectData(props) {
       sortable: true,
       minWidth: "350px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
@@ -293,7 +293,7 @@ export default function ProjectData(props) {
       sortable: true,
       // minWidth: "350px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
