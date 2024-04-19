@@ -397,8 +397,8 @@
         overflow: hidden;
         box-shadow: 3px 3px 10px rgba(193, 193, 193, 0.5);
 
-        &_LeftDashboard {
-            flex: 8;
+        &_Left {
+            flex: 9;
             padding: 16px;
             min-width: 200px;
 
@@ -432,98 +432,14 @@
             }
         }
 
-        &_LeftDevice {
-            flex: 5;
-            padding: 16px;
-            min-width: 20px;
-            display: flex;
-            gap: 20px;
-
-            &_Item {
-                display: flex;
-
-                & button {
-                    width: 80px;
-                    padding: 4px;
-                    background-color: white;
-                    border: solid 1px rgb(199, 199, 199);
-                    border-radius: 0px;
-                    cursor: pointer;
-
-                    &:hover {
-                        border: solid 1px #6495ed;
-                        color: #6495ed;
-                    }
-
-                    &:focus {
-                        border: solid 1px rgb(92, 165, 255);
-                        color: rgb(92, 165, 255);
-                    }
-                }
-            }
-        }
-
-        &_LeftAlert {
-            flex: 8;
-            padding: 16px;
-            min-width: 200px;
-        }
-
         &_Right {
-            flex: 5;
+            flex: 1;
             padding: 16px;
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-end;
             align-items: center;
             gap: 8px;
-
-            &_Dashboard {
-                width: 30px;
-                height: 30px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 50%;
-                background-color: #3e80fb;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: #6495ed;
-                }
-            }
-
-            &_Device {
-                width: 30px;
-                height: 30px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 50%;
-
-                background-color: #4caf50;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: #66bb6a;
-                }
-            }
-
-            &_Alert {
-                width: 30px;
-                height: 30px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 50%;
-
-                background-color: #ffd600;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: #ffea00;
-                }
-            }
 
             &_Add {
                 & button {
@@ -1688,7 +1604,7 @@
 
             &_Content {
                 padding: 10px;
-                // height: calc(100vh - 180px);
+                // height: calc(100vh - 260px);
                 -webkit-box-sizing: border-box;
                 /* Safari/Chrome, other WebKit */
                 -moz-box-sizing: border-box;
@@ -1698,35 +1614,72 @@
         }
     }
 
-    &_Alert {
-        position: relative;
+    // &_Alert {
+    //     position: relative;
+    //     margin-top: 16px;
+    //     margin-bottom: 16px;
+
+    //     &_Data {
+    //         width: 98%;
+    //         margin: auto;
+    //         overflow: hidden;
+    //         -webkit-box-sizing: border-box;
+    //         /* Safari/Chrome, other WebKit */
+    //         -moz-box-sizing: border-box;
+    //         /* Firefox, other Gecko */
+    //         box-sizing: border-box;
+    //         border-radius: 5px;
+    //         background-color: rgb(255, 255, 255, 0.95);
+    //         box-shadow:
+    //             2px 2px 5px rgba(198, 197, 197, 0.4),
+    //             -2px -2px 5px rgba(198, 197, 197, 0.4);
+
+    //         &_Table {
+    //             padding: 10px;
+    //             // height: calc(100vh - 180px);
+    //             -webkit-box-sizing: border-box;
+    //             /* Safari/Chrome, other WebKit */
+    //             -moz-box-sizing: border-box;
+    //             /* Firefox, other Gecko */
+    //             box-sizing: border-box;
+    //         }
+    //     }
+    // }
+
+    &_Share {
+        width: 98%;
+        margin: auto;
         margin-top: 16px;
         margin-bottom: 16px;
+        // margin-top: 16px;
+        overflow: hidden;
+        -webkit-box-sizing: border-box;
+        /* Safari/Chrome, other WebKit */
+        -moz-box-sizing: border-box;
+        /* Firefox, other Gecko */
+        box-sizing: border-box;
+        border-radius: 5px;
+        background-color: rgb(255, 255, 255, 0.95);
+        box-shadow:
+            2px 2px 5px rgba(198, 197, 197, 0.4),
+            -2px -2px 5px rgba(198, 197, 197, 0.4);
 
-        &_Data {
-            width: 98%;
-            margin: auto;
-            overflow: hidden;
+        &_Header {
+            color: COLOR.$Primary-color;
+            font-family: Montserrat-SemiBold;
+            font-size: 16px;
+            padding: 16px;
+            background-color: rgba(233, 233, 233, 0.5);
+        }
+
+        &_Content {
+            padding: 10px;
+            // height: calc(100vh - 260px);
             -webkit-box-sizing: border-box;
             /* Safari/Chrome, other WebKit */
             -moz-box-sizing: border-box;
             /* Firefox, other Gecko */
             box-sizing: border-box;
-            border-radius: 5px;
-            background-color: rgb(255, 255, 255, 0.95);
-            box-shadow:
-                2px 2px 5px rgba(198, 197, 197, 0.4),
-                -2px -2px 5px rgba(198, 197, 197, 0.4);
-
-            &_Table {
-                padding: 10px;
-                // height: calc(100vh - 180px);
-                -webkit-box-sizing: border-box;
-                /* Safari/Chrome, other WebKit */
-                -moz-box-sizing: border-box;
-                /* Firefox, other Gecko */
-                box-sizing: border-box;
-            }
         }
     }
 }
@@ -1843,6 +1796,7 @@
 
     &_Item {
         padding: 8px;
+        border-bottom: solid 1px rgba(198, 197, 197, 0.5);
         cursor: pointer;
 
         &:hover {
@@ -3676,7 +3630,7 @@
 
     .DAT_ProjectData {
         &_Header {
-            &_LeftDashboard {
+            &_Left {
                 flex: 8;
                 padding: 8px;
 

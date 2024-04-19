@@ -43,15 +43,15 @@ export const coalsave = signal({
 const tabMobile = signal(false);
 const tabLable = signal("");
 const tab_ = signal("logger");
-const tabMobileAlert = signal(false);
-const tabLableAlert = signal("");
-const tabAlert = signal("all");
-const open = signal([]);
-const close = signal([]);
+// const tabMobileAlert = signal(false);
+// const tabLableAlert = signal("");
+// const tabAlert = signal("all");
+// const open = signal([]);
+// const close = signal([]);
 const viewNav = signal(false);
 const viewStateNav = signal([false, false]);
-const dataMeter = [];
-const dataAlert = [];
+// const dataMeter = [];
+// const dataAlert = [];
 
 export default function ProjectData(props) {
   const dataLang = useIntl();
@@ -61,23 +61,21 @@ export default function ProjectData(props) {
   const [dropState, setDropState] = useState(false);
   const [infoState, setInfoState] = useState(false);
   const [popupAddGateway, setPopupAddGateway] = useState(false);
-  const [snlogger, setSnlogger] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
+  const [snlogger, setSnlogger] = useState(dataLang.formatMessage({ id: "unknown" }));
   const [devname, setDevname] = useState("");
   const [devtype, setDevtype] = useState("");
   const [type, setType] = useState("");
   const [invt, setInvt] = useState({});
   const [getShared, setgetShared] = useState([]);
   const box = useRef();
-  const filterchart = useSelector((state) => state.tool.filterchart);
+  // const filterchart = useSelector((state) => state.tool.filterchart);
   const rootDispatch = useDispatch();
 
-  const tit = {
-    dashboard: projectData.value.plantname,
-    device: dataLang.formatMessage({ id: "device" }),
-    alert: "Cảnh báo",
-  };
+  // const tit = {
+  //   dashboard: projectData.value.plantname,
+  //   device: dataLang.formatMessage({ id: "device" }),
+  //   alert: "Cảnh báo",
+  // };
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: "row" }),
@@ -228,58 +226,58 @@ export default function ProjectData(props) {
     },
   ];
 
-  const columnMeter = [
-    {
-      name: "Tên",
-      selector: (row) => (
-        <div>
-          <div>{row.name}</div>
-          <div>{row.SN}</div>
-        </div>
-      ),
-      sortable: true,
-      // minWidth: "350px",
-      style: {
-        justifyContent: "left",
-      },
-    },
-    {
-      name: "Trạng thái",
-      selector: (row) => (
-        <>
-          {row.status ? (
-            <FaCheckCircle size={20} color="green" />
-          ) : (
-            <MdOutlineError size={22} color="red" />
-          )}
-        </>
-      ),
-      // width: "110px",
-    },
-    {
-      name: "Sản lượng(kW)",
-      selector: (row) => row.production,
-      sortable: true,
-      // width: "140px",
-    },
-    {
-      name: "SL tức thời(kWh)",
-      selector: (row) => row.dailyproduction,
-      sortable: true,
-      // width: "150px",
-    },
-    {
-      name: "Hiệu suất",
-      selector: (row) => "--",
-      sortable: true,
-    },
-    {
-      name: "Lần cập nhật cuối",
-      selector: (row) => row.updated,
-      sortable: true,
-      // width: "180px",
-    },
-  ];
+  // const columnMeter = [
+  //   {
+  //     name: "Tên",
+  //     selector: (row) => (
+  //       <div>
+  //         <div>{row.name}</div>
+  //         <div>{row.SN}</div>
+  //       </div>
+  //     ),
+  //     sortable: true,
+  //     // minWidth: "350px",
+  //     style: {
+  //       justifyContent: "left",
+  //     },
+  //   },
+  //   {
+  //     name: "Trạng thái",
+  //     selector: (row) => (
+  //       <>
+  //         {row.status ? (
+  //           <FaCheckCircle size={20} color="green" />
+  //         ) : (
+  //           <MdOutlineError size={22} color="red" />
+  //         )}
+  //       </>
+  //     ),
+  //     // width: "110px",
+  //   },
+  //   {
+  //     name: "Sản lượng(kW)",
+  //     selector: (row) => row.production,
+  //     sortable: true,
+  //     // width: "140px",
+  //   },
+  //   {
+  //     name: "SL tức thời(kWh)",
+  //     selector: (row) => row.dailyproduction,
+  //     sortable: true,
+  //     // width: "150px",
+  //   },
+  //   {
+  //     name: "Hiệu suất",
+  //     selector: (row) => "--",
+  //     sortable: true,
+  //   },
+  //   {
+  //     name: "Lần cập nhật cuối",
+  //     selector: (row) => row.updated,
+  //     sortable: true,
+  //     // width: "180px",
+  //   },
+  // ];
 
   const columnLogger = [
     {
@@ -368,80 +366,139 @@ export default function ProjectData(props) {
     },
   ];
 
-  const listAlertTab = [
-    { id: "all", name: "Tất cả" },
-    { id: "open", name: "Mở" },
-    { id: "closed", name: "Đóng" },
-  ];
-
-  const columnAlert = [
+  const columnShare = [
     {
-      name: "Tên",
-      selector: (row) => (
-        <div>
-          <div>{row.name}</div>
-        </div>
-      ),
+      name: dataLang.formatMessage({ id: "ordinalNumber" }),
+      selector: (row, i) => i + 1,
       sortable: true,
-      // minWidth: "350px",
+      width: "80px",
+    },
+    {
+      name: dataLang.formatMessage({ id: "name" }),
+      selector: (row) => row.name_,
+      sortable: true,
+      minWidth: "250px",
       style: {
-        justifyContent: "left",
+        justifyContent: "left !important",
       },
     },
     {
-      name: "Trạng thái",
-      selector: (row) => (
-        <>
-          {row.status ? (
-            <FaCheckCircle size={20} color="green" />
-          ) : (
-            <MdOutlineError size={22} color="red" />
-          )}
-        </>
-      ),
-      // width: "110px",
+      name: dataLang.formatMessage({ id: "phone" }),
+      selector: (row) => row.phone_,
+      minWidth: "200px",
+      style: {
+        justifyContent: "left !important",
+      },
     },
     {
-      name: "Mức quan trọng",
-      selector: (row) => row.importance,
-      sortable: true,
-      // width: "140px",
+      name: "E-mail",
+      selector: (row) => row.mail_,
+      minWidth: "250px",
+      style: {
+        justifyContent: "left !important",
+      },
     },
-    {
-      name: "Thiết bị",
-      selector: (row) => (
-        <div>
-          <div>{row.device}</div>
-          <div>{row.SN}</div>
-        </div>
-      ),
-      sortable: true,
-      // width: "150px",
-    },
-    {
-      name: "Giờ mở",
-      selector: (row) => row.openedtime,
-      sortable: true,
-    },
-    {
-      name: "Giờ đóng",
-      selector: (row) => row.closedtime,
-      sortable: true,
-      // width: "180px",
-    },
+    // {
+    //   name: dataLang.formatMessage({ id: "edits" }),
+    //   selector: (row) => (
+    //     <>
+    //       <div className="DAT_TableEdit">
+    //         <span
+    //           id={row.mail_ + "_MORE"}
+    //           onClick={(e) => handleModify(e, "block")}
+    //         >
+    //           <IoMdMore size={20} />
+    //         </span>
+    //       </div>
+
+    //       <div
+    //         className="DAT_ModifyBox"
+    //         id={row.mail_ + "_Modify"}
+    //         style={{ display: "none" }}
+    //         onMouseLeave={(e) => handleModify(e, "none")}
+    //       >
+    //         <div
+    //           className="DAT_ModifyBox_Remove"
+    //           id={row.mail_}
+    //           onClick={(e) => handleDeleteMem(e)}
+    //         >
+    //           <IoTrashOutline size={16} />
+    //           &nbsp;
+    //           {dataLang.formatMessage({ id: "remove" })}
+    //         </div>
+    //       </div>
+    //     </>
+    //   ),
+    //   width: "100px",
+    // },
   ];
 
+  // const listAlertTab = [
+  //   { id: "all", name: "Tất cả" },
+  //   { id: "open", name: "Mở" },
+  //   { id: "closed", name: "Đóng" },
+  // ];
+
+  // const columnAlert = [
+  //   {
+  //     name: "Tên",
+  //     selector: (row) => (
+  //       <div>
+  //         <div>{row.name}</div>
+  //       </div>
+  //     ),
+  //     sortable: true,
+  //     // minWidth: "350px",
+  //     style: {
+  //       justifyContent: "left",
+  //     },
+  //   },
+  //   {
+  //     name: "Trạng thái",
+  //     selector: (row) => (
+  //       <>
+  //         {row.status ? (
+  //           <FaCheckCircle size={20} color="green" />
+  //         ) : (
+  //           <MdOutlineError size={22} color="red" />
+  //         )}
+  //       </>
+  //     ),
+  //     // width: "110px",
+  //   },
+  //   {
+  //     name: "Mức quan trọng",
+  //     selector: (row) => row.importance,
+  //     sortable: true,
+  //     // width: "140px",
+  //   },
+  //   {
+  //     name: "Thiết bị",
+  //     selector: (row) => (
+  //       <div>
+  //         <div>{row.device}</div>
+  //         <div>{row.SN}</div>
+  //       </div>
+  //     ),
+  //     sortable: true,
+  //     // width: "150px",
+  //   },
+  //   {
+  //     name: "Giờ mở",
+  //     selector: (row) => row.openedtime,
+  //     sortable: true,
+  //   },
+  //   {
+  //     name: "Giờ đóng",
+  //     selector: (row) => row.closedtime,
+  //     sortable: true,
+  //     // width: "180px",
+  //   },
+  // ];
+
   const popup_state = {
-    pre: {
-      transform: "rotate(0deg)",
-      transition: "0.5s",
-      color: "rgba(11, 25, 103)",
-    },
-    new: {
-      transform: "rotate(90deg)",
-      transition: "0.5s",
-      color: "rgba(11, 25, 103)",
-    },
+    pre: { transform: "rotate(0deg)", transition: "0.5s", color: "rgba(11, 25, 103)", },
+    new: { transform: "rotate(90deg)", transition: "0.5s", color: "rgba(11, 25, 103)", },
   };
 
   const handlePopup = (state) => {
@@ -542,12 +599,12 @@ export default function ProjectData(props) {
     tabLable.value = newLabel.name;
   };
 
-  const handleTabMobileAlert = (e) => {
-    const id = e.currentTarget.id;
-    tabAlert.value = id;
-    const newLabel = listAlertTab.find((item) => item.id == id);
-    tabLableAlert.value = newLabel.name;
-  };
+  // const handleTabMobileAlert = (e) => {
+  //   const id = e.currentTarget.id;
+  //   tabAlert.value = id;
+  //   const newLabel = listAlertTab.find((item) => item.id == id);
+  //   tabLableAlert.value = newLabel.name;
+  // };
 
   const handleModify = (e, type) => {
     const id = e.currentTarget.id;
@@ -581,10 +638,7 @@ export default function ProjectData(props) {
   };
 
   const handleInvt = async (sn) => {
-    const res = await invtCloud(
-      '{"deviceCode":"' + sn + '"}',
-      Token.value.token
-    );
+    const res = await invtCloud('{"deviceCode":"' + sn + '"}', Token.value.token);
     if (res.ret === 0) {
       setInvt((pre) => ({ ...pre, [sn]: res.data }));
     }
@@ -602,14 +656,13 @@ export default function ProjectData(props) {
 
   useEffect(() => {
     // filter data AlertTable
-    open.value = dataAlert.filter((item) => item.status == true);
-    close.value = dataAlert.filter((item) => item.status == false);
-    tabLableAlert.value = listAlertTab[0].name;
+    // open.value = dataAlert.filter((item) => item.status == true);
+    // close.value = dataAlert.filter((item) => item.status == false);
+    // tabLableAlert.value = listAlertTab[0].name;
     tabLable.value = listDeviceTab[0].name;
 
     const getShared = async () => {
       let req = await callApi("post", host.DATA + "/getmailPlantmem", { plantid: projectData.value.plantid_, usr: user });
-      // console.log(req)
       if (req.status) {
         setgetShared(req.data)
       }
@@ -775,6 +828,8 @@ export default function ProjectData(props) {
     return () => {
       document.removeEventListener("mousedown", handleOutsideUser);
     };
+
+    // eslint-disable-next-line
   }, [invt]);
 
   useEffect(() => {
@@ -796,6 +851,8 @@ export default function ProjectData(props) {
         })
       })
     }
+
+    // eslint-disable-next-line
   }, [temp.value])
 
   // Handle close when press ESC
@@ -818,90 +875,24 @@ export default function ProjectData(props) {
   return (
     <div ref={box} style={{ width: "98%", margin: "auto" }}>
       <div className="DAT_ProjectData">
-        {isMobile.value ? (
-          <div className="DAT_ProjectData_Header">
-            {(() => {
-              switch (view) {
-                case "dashboard":
-                  return (
-                    <div className="DAT_ProjectData_Header_LeftDashboard">
-                      <div
-                        className="DAT_ProjectData_Header_LeftDashboard_Top"
-                        style={{ fontSize: 22 }}
-                      >
-                        <img
-                          src={
-                            projectData.value.img
-                              ? projectData.value.img
-                              : "/dat_picture/solar_panel.png"
-                          }
-                          alt=""
-                        />
-                        <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content">
-                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Name">
-                            {projectData.value.plantname}
-                            {projectData.value.state === 1 ? (
-                              <>
-                                <FaCheckCircle size={14} color="green" />
-                              </>
-                            ) : (
-                              <>
-                                <MdOutlineError size={14} color="red" />
-                              </>
-                            )}
-                          </div>
-                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Addr">
-                            {projectData.value.addr}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                case "device":
-                  return (
-                    <div className="DAT_ProjectData_Header_LeftDashboard">
-                      <div
-                        className="DAT_ProjectData_Header_LeftDashboard_Top"
-                        style={{ fontSize: 22 }}
-                      >
-                        <img
-                          src={
-                            projectData.value.img
-                              ? projectData.value.img
-                              : "/dat_picture/solar_panel.png"
-                          }
-                          alt=""
-                        />
-                        <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content">
-                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Name">
-                            {projectData.value.plantname}
-                            {projectData.value.state === 1 ? (
-                              <>
-                                <FaCheckCircle size={14} color="green" />
-                              </>
-                            ) : (
-                              <>
-                                <MdOutlineError size={14} color="red" />
-                              </>
-                            )}
-                          </div>
-                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Addr">
-                            {projectData.value.addr}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                case "alert":
-                  return (
-                    <div className="DAT_ProjectData_Header_LeftAlert">
-                      <div style={{ fontSize: 22 }}>{tit[view]}</div>
-                    </div>
-                  );
-                default:
-                  <></>;
-              }
-            })()}
+        {isMobile.value
+          ? <div className="DAT_ProjectData_Header">
+            <div className="DAT_ProjectData_Header_Left">
+              <div className="DAT_ProjectData_Header_Left_Top"
+                style={{ fontSize: 22 }}
+              >
+                <img src={projectData.value.img ? projectData.value.img : "/dat_picture/solar_panel.png"} alt="" />
+                <div className="DAT_ProjectData_Header_Left_Top_Content">
+                  <div className="DAT_ProjectData_Header_Left_Top_Content_Name">
+                    {projectData.value.plantname}
+                    {projectData.value.state === 1 ? <FaCheckCircle size={20} color="green" /> : <MdOutlineError size={20} color="red" />}
+                  </div>
+                  <div className="DAT_ProjectData_Header_Left_Top_Content_Addr">
+                    {projectData.value.addr}
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div className="DAT_ProjectData_Header_Right">
               <div className="DAT_ProjectData_Header_Right_More">
@@ -914,8 +905,7 @@ export default function ProjectData(props) {
                 />
               </div>
 
-              <div
-                className="DAT_ProjectData_Header_Right_Close"
+              <div className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => {
                   plantState.value = "default";
                   setDropState(false);
@@ -925,94 +915,24 @@ export default function ProjectData(props) {
               </div>
             </div>
           </div>
-        ) : (
-          <div className="DAT_ProjectData_Header">
-            {(() => {
-              switch (view) {
-                case "dashboard":
-                  return (
-                    <div className="DAT_ProjectData_Header_LeftDashboard">
-                      <div
-                        className="DAT_ProjectData_Header_LeftDashboard_Top"
-                        style={{ fontSize: 22 }}
-                      >
-                        <img
-                          src={
-                            projectData.value.img
-                              ? projectData.value.img
-                              : "/dat_picture/solar_panel.png"
-                          }
-                          alt=""
-                        />
-                        <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content">
-                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Name">
-                            {projectData.value.plantname}
-                            {projectData.value.state === 1 ? (
-                              <>
-                                <FaCheckCircle size={20} color="green" />
-                              </>
-                            ) : (
-                              <>
-                                <MdOutlineError size={20} color="red" />
-                              </>
-                            )}
-                          </div>
-                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Addr">
-                            {projectData.value.addr}
-                          </div>
-                          {/* <div style={{ color: "grey", fontSize: 14 }}>
-                            {dataLang.formatMessage({ id: "lastupdate" })}{" "}
-                            {projectData.value.lastupdate}
-                          </div> */}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                case "device":
-                  return (
-                    <div className="DAT_ProjectData_Header_LeftDashboard">
-                      <div
-                        className="DAT_ProjectData_Header_LeftDashboard_Top"
-                        style={{ fontSize: 22 }}
-                      >
-                        <img
-                          src={
-                            projectData.value.img
-                              ? projectData.value.img
-                              : "/dat_picture/solar_panel.png"
-                          }
-                          alt=""
-                        />
-                        <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content">
-                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Name">
-                            {projectData.value.plantname}
-                            {projectData.value.state === 1 ? (
-                              <>
-                                <FaCheckCircle size={20} color="green" />
-                              </>
-                            ) : (
-                              <>
-                                <MdOutlineError size={20} color="red" />
-                              </>
-                            )}
-                          </div>
-                          <div className="DAT_ProjectData_Header_LeftDashboard_Top_Content_Addr">
-                            {projectData.value.addr}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                case "alert":
-                  return (
-                    <div className="DAT_ProjectData_Header_LeftAlert">
-                      <div style={{ fontSize: 22 }}>{tit[view]}</div>
-                    </div>
-                  );
-                default:
-                  <></>;
-              }
-            })()}
+
+          : <div className="DAT_ProjectData_Header">
+            <div className="DAT_ProjectData_Header_Left">
+              <div className="DAT_ProjectData_Header_Left_Top"
+                style={{ fontSize: 22 }}
+              >
+                <img src={projectData.value.img ? projectData.value.img : "/dat_picture/solar_panel.png"} alt="" />
+                <div className="DAT_ProjectData_Header_Left_Top_Content">
+                  <div className="DAT_ProjectData_Header_Left_Top_Content_Name">
+                    {projectData.value.plantname}
+                    {projectData.value.state === 1 ? <FaCheckCircle size={20} color="green" /> : <MdOutlineError size={20} color="red" />}
+                  </div>
+                  <div className="DAT_ProjectData_Header_Left_Top_Content_Addr">
+                    {projectData.value.addr}
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div className="DAT_ProjectData_Header_Right">
               <div className="DAT_ProjectData_Header_Right_More">
@@ -1028,12 +948,10 @@ export default function ProjectData(props) {
                 />
               </div>
 
-              {ruleInfor.value.setting.device.add ? (
-                projectData.value.shared == 1 ? (
-                  <></>
-                ) : (
-                  <div
-                    className="DAT_ProjectData_Header_Right_Add"
+              {ruleInfor.value.setting.device.add
+                ? projectData.value.shared === 1
+                  ? <></>
+                  : <div className="DAT_ProjectData_Header_Right_Add"
                     style={{ display: view === "device" ? "block" : "none" }}
                   >
                     <button
@@ -1046,12 +964,10 @@ export default function ProjectData(props) {
                       <IoAddOutline size={25} color="white" />
                     </button>
                   </div>
-                )
-              ) : (
-                <div></div>
-              )}
-              <div
-                className="DAT_ProjectData_Header_Right_Close"
+                : <></>
+              }
+
+              <div className="DAT_ProjectData_Header_Right_Close"
                 onClick={() => {
                   plantState.value = "default";
                   setDropState(false);
@@ -1067,7 +983,7 @@ export default function ProjectData(props) {
               </div>
             </div>
           </div>
-        )}
+        }
 
         {(() => {
           switch (view) {
@@ -1087,7 +1003,7 @@ export default function ProjectData(props) {
                   <DashboardHistory />
 
                   <div className="DAT_ProjectData_Dashboard_More">
-                    <ProjectInfo share={getShared} />
+                    <ProjectInfo />
                     <Benefit />
                   </div>
                 </div>
@@ -1461,20 +1377,20 @@ export default function ProjectData(props) {
                                   noDataComponent={<Empty />}
                                 />
                               );
-                            case "meter":
-                              return (
-                                <DataTable
-                                  className="DAT_Table_Device"
-                                  columns={columnMeter}
-                                  data={dataMeter}
-                                  pagination
-                                  paginationComponentOptions={
-                                    paginationComponentOptions
-                                  }
-                                  fixedHeader={true}
-                                  noDataComponent={<Empty />}
-                                />
-                              );
+                            // case "meter":
+                            //   return (
+                            //     <DataTable
+                            //       className="DAT_Table_Device"
+                            //       columns={columnMeter}
+                            //       data={dataMeter}
+                            //       pagination
+                            //       paginationComponentOptions={
+                            //         paginationComponentOptions
+                            //       }
+                            //       fixedHeader={true}
+                            //       noDataComponent={<Empty />}
+                            //     />
+                            //   );
                             case "logger":
                               return (
                                 <DataTable
@@ -1498,133 +1414,158 @@ export default function ProjectData(props) {
                   )}
                 </div>
               );
-            case "alert":
-              return (
-                <div className="DAT_ProjectData_Alert">
-                  <div className="DAT_ProjectData_Alert_Data">
-                    {isMobile.value ? (
-                      <div className="DAT_Toollist_Tab_Mobile">
-                        <button
-                          className="DAT_Toollist_Tab_Mobile_content"
-                          onClick={() =>
-                            (tabMobileAlert.value = !tabMobileAlert.value)
-                          }
-                        >
-                          <span> {tabLableAlert.value}</span>
-                          {tabMobileAlert.value ? (
-                            <IoIosArrowDown />
-                          ) : (
-                            <IoIosArrowForward />
-                          )}
-                        </button>
-                        <div className="DAT_Toollist_Tab_Mobile_list">
-                          {listAlertTab.map((item, i) => {
-                            return (
-                              <div
-                                className="DAT_Toollist_Tab_Mobile_list_item"
-                                style={{
-                                  display: tabMobileAlert.value
-                                    ? "block"
-                                    : "none",
-                                }}
-                                key={"tabmobile_" + i}
-                                id={item.id}
-                                onClick={(e) => handleTabMobileAlert(e)}
-                              >
-                                {i + 1}: {item.name}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="DAT_Toollist_Tab">
-                        {listAlertTab.map((item, i) => {
-                          return tabAlert.value === item.id ? (
-                            <div
-                              className="DAT_Toollist_Tab_main"
-                              key={"tab_" + i}
-                            >
-                              <p className="DAT_Toollist_Tab_main_left"></p>
-                              <span
-                                className="DAT_Toollist_Tab_main_content1"
-                                id={item.id}
-                                style={{
-                                  backgroundColor: "White",
-                                  color: "black",
-                                  borderRadius: "10px 10px 0 0",
-                                }}
-                                onClick={(e) => (tabAlert.value = item.id)}
-                              >
-                                {item.name}
-                              </span>
-                              <p className="DAT_Toollist_Tab_main_right"></p>
-                            </div>
-                          ) : (
-                            <span
-                              className="DAT_Toollist_Tab_main_content2"
-                              key={"tab_" + i}
-                              id={item.id}
-                              style={{ backgroundColor: "#dadada" }}
-                              onClick={(e) => (tabAlert.value = item.id)}
-                            >
-                              {item.name}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    )}
+            // case "alert":
+            //   return (
+            //     <div className="DAT_ProjectData_Alert">
+            //       <div className="DAT_ProjectData_Alert_Data">
+            //         {isMobile.value ? (
+            //           <div className="DAT_Toollist_Tab_Mobile">
+            //             <button
+            //               className="DAT_Toollist_Tab_Mobile_content"
+            //               onClick={() =>
+            //                 (tabMobileAlert.value = !tabMobileAlert.value)
+            //               }
+            //             >
+            //               <span> {tabLableAlert.value}</span>
+            //               {tabMobileAlert.value ? (
+            //                 <IoIosArrowDown />
+            //               ) : (
+            //                 <IoIosArrowForward />
+            //               )}
+            //             </button>
+            //             <div className="DAT_Toollist_Tab_Mobile_list">
+            //               {listAlertTab.map((item, i) => {
+            //                 return (
+            //                   <div
+            //                     className="DAT_Toollist_Tab_Mobile_list_item"
+            //                     style={{
+            //                       display: tabMobileAlert.value
+            //                         ? "block"
+            //                         : "none",
+            //                     }}
+            //                     key={"tabmobile_" + i}
+            //                     id={item.id}
+            //                     onClick={(e) => handleTabMobileAlert(e)}
+            //                   >
+            //                     {i + 1}: {item.name}
+            //                   </div>
+            //                 );
+            //               })}
+            //             </div>
+            //           </div>
+            //         ) : (
+            //           <div className="DAT_Toollist_Tab">
+            //             {listAlertTab.map((item, i) => {
+            //               return tabAlert.value === item.id ? (
+            //                 <div
+            //                   className="DAT_Toollist_Tab_main"
+            //                   key={"tab_" + i}
+            //                 >
+            //                   <p className="DAT_Toollist_Tab_main_left"></p>
+            //                   <span
+            //                     className="DAT_Toollist_Tab_main_content1"
+            //                     id={item.id}
+            //                     style={{
+            //                       backgroundColor: "White",
+            //                       color: "black",
+            //                       borderRadius: "10px 10px 0 0",
+            //                     }}
+            //                     onClick={(e) => (tabAlert.value = item.id)}
+            //                   >
+            //                     {item.name}
+            //                   </span>
+            //                   <p className="DAT_Toollist_Tab_main_right"></p>
+            //                 </div>
+            //               ) : (
+            //                 <span
+            //                   className="DAT_Toollist_Tab_main_content2"
+            //                   key={"tab_" + i}
+            //                   id={item.id}
+            //                   style={{ backgroundColor: "#dadada" }}
+            //                   onClick={(e) => (tabAlert.value = item.id)}
+            //                 >
+            //                   {item.name}
+            //                 </span>
+            //               );
+            //             })}
+            //           </div>
+            //         )}
 
-                    <div className="DAT_ProjectData_Alert_Data_Table">
-                      {(() => {
-                        switch (tabAlert.value) {
-                          case "all":
-                            return (
-                              <DataTable
-                                className="DAT_Table_Alert"
-                                columns={columnAlert}
-                                data={dataAlert}
-                                pagination
-                                paginationComponentOptions={
-                                  paginationComponentOptions
-                                }
-                                fixedHeader={true}
-                                noDataComponent={<Empty />}
-                              />
-                            );
-                          case "open":
-                            return (
-                              <DataTable
-                                className="DAT_Table_Alert"
-                                columns={columnAlert}
-                                data={open.value}
-                                pagination
-                                paginationComponentOptions={
-                                  paginationComponentOptions
-                                }
-                                fixedHeader={true}
-                                noDataComponent={<Empty />}
-                              />
-                            );
-                          case "closed":
-                            return (
-                              <DataTable
-                                className="DAT_Table_Alert"
-                                columns={columnAlert}
-                                data={close.value}
-                                pagination
-                                paginationComponentOptions={
-                                  paginationComponentOptions
-                                }
-                                fixedHeader={true}
-                                noDataComponent={<Empty />}
-                              />
-                            );
-                          default:
-                            return <></>;
-                        }
-                      })()}
-                    </div>
+            //         <div className="DAT_ProjectData_Alert_Data_Table">
+            //           {(() => {
+            //             switch (tabAlert.value) {
+            //               case "all":
+            //                 return (
+            //                   <DataTable
+            //                     className="DAT_Table_Alert"
+            //                     columns={columnAlert}
+            //                     data={dataAlert}
+            //                     pagination
+            //                     paginationComponentOptions={
+            //                       paginationComponentOptions
+            //                     }
+            //                     fixedHeader={true}
+            //                     noDataComponent={<Empty />}
+            //                   />
+            //                 );
+            //               case "open":
+            //                 return (
+            //                   <DataTable
+            //                     className="DAT_Table_Alert"
+            //                     columns={columnAlert}
+            //                     data={open.value}
+            //                     pagination
+            //                     paginationComponentOptions={
+            //                       paginationComponentOptions
+            //                     }
+            //                     fixedHeader={true}
+            //                     noDataComponent={<Empty />}
+            //                   />
+            //                 );
+            //               case "closed":
+            //                 return (
+            //                   <DataTable
+            //                     className="DAT_Table_Alert"
+            //                     columns={columnAlert}
+            //                     data={close.value}
+            //                     pagination
+            //                     paginationComponentOptions={
+            //                       paginationComponentOptions
+            //                     }
+            //                     fixedHeader={true}
+            //                     noDataComponent={<Empty />}
+            //                   />
+            //                 );
+            //               default:
+            //                 return <></>;
+            //             }
+            //           })()}
+            //         </div>
+            //       </div>
+            //     </div>
+            //   );
+            case "share":
+              return (
+                <div className="DAT_ProjectData_Share">
+                  <div className="DAT_ProjectData_Share_Header"
+                    style={{
+                      padding: "15px",
+                      backgroundColor: "rgba(233, 233, 233, 0.5)",
+                    }}
+                  >
+                    {dataLang.formatMessage({ id: "share" })}
+                  </div>
+
+                  <div className="DAT_ProjectData_Share_Content">
+                    <DataTable
+                      className="DAT_Table_Device"
+                      columns={columnShare}
+                      data={getShared}
+                      pagination
+                      paginationComponentOptions={paginationComponentOptions}
+                      fixedHeader={true}
+                      noDataComponent={<Empty />}
+                    />
                   </div>
                 </div>
               );
@@ -1634,20 +1575,19 @@ export default function ProjectData(props) {
         })()}
       </div>
 
-      {popupAddGateway ? (
-        <div className="DAT_AddGatewayPopup">
+      {popupAddGateway
+        ? <div className="DAT_AddGatewayPopup">
           <AddGateway
             data={temp.value}
             handleInvt={handleInvt}
             handleClose={handleClosePopupAddGateway}
           />
         </div>
-      ) : (
-        <></>
-      )}
+        : <></>
+      }
 
-      {popupState.value ? (
-        <div className="DAT_DevicePopup">
+      {popupState.value
+        ? <div className="DAT_DevicePopup">
           <Popup
             plantid={projectData.value.plantid_}
             type="logger"
@@ -1658,45 +1598,78 @@ export default function ProjectData(props) {
             devtype={devtype}
           />
         </div>
-      ) : (
-        <> </>
-      )}
+        : <> </>
+      }
 
-      {isMobile.value ? (
-        <>
-          {dropState ? (
-            <div className="DAT_ProjectDataDrop">
-              {view === "dashboard" ? (
-                <>
-                  <div
-                    className="DAT_ProjectDataDrop_Item"
-                    id="device"
-                    onClick={(e) => handleView(e)}
-                  >
-                    {dataLang.formatMessage({ id: "device" })}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div
-                    className="DAT_ProjectDataDrop_Item"
-                    id="dashboard"
-                    onClick={(e) => handleView(e)}
-                  >
-                    {dataLang.formatMessage({ id: "monitor" })}
-                  </div>
-                </>
-              )}
+      {isMobile.value
+        ? <>
+          {dropState
+            ? <div className="DAT_ProjectDataDrop">
+              {(() => {
+                switch (view) {
+                  case "device":
+                    return (
+                      <>
+                        <div className="DAT_ProjectDataDrop_Item"
+                          id="dashboard"
+                          onClick={(e) => handleView(e)}
+                        >
+                          {dataLang.formatMessage({ id: "monitor" })}
+                        </div>
+
+                        <div className="DAT_ProjectDataDrop_Item"
+                          id="share"
+                          onClick={(e) => handleView(e)}
+                        >
+                          {dataLang.formatMessage({ id: "share" })}
+                        </div>
+                      </>
+                    );
+                  case "share":
+                    return (
+                      <>
+                        <div className="DAT_ProjectDataDrop_Item"
+                          id="dashboard"
+                          onClick={(e) => handleView(e)}
+                        >
+                          {dataLang.formatMessage({ id: "monitor" })}
+                        </div>
+
+                        <div className="DAT_ProjectDataDrop_Item"
+                          id="device"
+                          onClick={(e) => handleView(e)}
+                        >
+                          {dataLang.formatMessage({ id: "device" })}
+                        </div>
+                      </>
+                    );
+                  default:
+                    return (
+                      <>
+                        <div className="DAT_ProjectDataDrop_Item"
+                          id="device"
+                          onClick={(e) => handleView(e)}
+                        >
+                          {dataLang.formatMessage({ id: "device" })}
+                        </div>
+
+                        <div className="DAT_ProjectDataDrop_Item"
+                          id="share"
+                          onClick={(e) => handleView(e)}
+                        >
+                          {dataLang.formatMessage({ id: "share" })}
+                        </div>
+                      </>
+                    );
+                }
+              })()}
             </div>
-          ) : (
-            <></>
-          )}
+            : <></>
+          }
         </>
-      ) : (
-        <>
-          {dropState ? (
-            <div
-              className="DAT_ProjectDataDrop"
+        : <>
+          {dropState
+            ? <div className="DAT_ProjectDataDrop"
               style={{ display: viewNav.value ? "block" : "none" }}
               onMouseEnter={() => {
                 viewStateNav.value = [true, true];
@@ -1706,36 +1679,71 @@ export default function ProjectData(props) {
                 viewStateNav.value = [false, false];
               }}
             >
-              {view === "dashboard" ? (
-                <>
-                  <div
-                    className="DAT_ProjectDataDrop_Item"
-                    id="device"
-                    onClick={(e) => handleView(e)}
-                  >
-                    {dataLang.formatMessage({ id: "device" })}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div
-                    className="DAT_ProjectDataDrop_Item"
-                    id="dashboard"
-                    onClick={(e) => handleView(e)}
-                  >
-                    {dataLang.formatMessage({ id: "monitor" })}
-                  </div>
-                </>
-              )}
-            </div>
-          ) : (
-            <></>
-          )}
-        </>
-      )}
+              {(() => {
+                switch (view) {
+                  case "device":
+                    return (
+                      <>
+                        <div className="DAT_ProjectDataDrop_Item"
+                          id="dashboard"
+                          onClick={(e) => handleView(e)}
+                        >
+                          {dataLang.formatMessage({ id: "monitor" })}
+                        </div>
 
-      <div
-        className="DAT_DeviceInfor"
+                        <div className="DAT_ProjectDataDrop_Item"
+                          id="share"
+                          onClick={(e) => handleView(e)}
+                        >
+                          {dataLang.formatMessage({ id: "share" })}
+                        </div>
+                      </>
+                    );
+                  case "share":
+                    return (
+                      <>
+                        <div className="DAT_ProjectDataDrop_Item"
+                          id="dashboard"
+                          onClick={(e) => handleView(e)}
+                        >
+                          {dataLang.formatMessage({ id: "monitor" })}
+                        </div>
+
+                        <div className="DAT_ProjectDataDrop_Item"
+                          id="device"
+                          onClick={(e) => handleView(e)}
+                        >
+                          {dataLang.formatMessage({ id: "device" })}
+                        </div>
+                      </>
+                    );
+                  default:
+                    return (
+                      <>
+                        <div className="DAT_ProjectDataDrop_Item"
+                          id="device"
+                          onClick={(e) => handleView(e)}
+                        >
+                          {dataLang.formatMessage({ id: "device" })}
+                        </div>
+
+                        <div className="DAT_ProjectDataDrop_Item"
+                          id="share"
+                          onClick={(e) => handleView(e)}
+                        >
+                          {dataLang.formatMessage({ id: "share" })}
+                        </div>
+                      </>
+                    );
+                }
+              })()}
+            </div>
+            : <></>
+          }
+        </>
+      }
+
+      <div className="DAT_DeviceInfor"
         style={{ height: infoState ? "100%" : "0px", transition: "0.5s" }}
       >
         {infoState ? <Info handleClose={handleCloseInfo} /> : <></>}

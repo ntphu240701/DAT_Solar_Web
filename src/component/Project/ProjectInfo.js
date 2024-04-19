@@ -38,17 +38,6 @@ export default function ProjectInfo(props) {
                             {projectData.value.business}
                         </div>
                     </div>
-
-                    <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item" >
-                        <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Title">
-                            {dataLang.formatMessage({ id: "share" })}:
-                        </div>
-                        <div className="DAT_ProjectData_Dashboard_More_Left_Content_Left_Item_Content" style={{ overflow: "unset" }}>
-                            {props.share.map((mem) => <div key={mem.id}>
-                                <div>{mem.mail}</div>
-                            </div>)}
-                        </div>
-                    </div>
                 </div>
 
                 <div className="DAT_ProjectData_Dashboard_More_Left_Content_Right">

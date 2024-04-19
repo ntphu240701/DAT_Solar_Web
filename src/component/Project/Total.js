@@ -2,26 +2,15 @@ import React from "react";
 import "./Project.scss";
 
 import { projectData } from "./Project";
-import { cal } from "./ProjectData";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, } from "recharts";
 import { useSelector } from "react-redux";
+import { showUnitk } from "../../App";
 
 export default function Total(props) {
   const filterchart = useSelector((state) => state.tool.filterchart);
 
-  const total = useSelector((state) => state.tool.total);
-
   const TriangleBar = (props) => {
-    const { fill, x, y, width, height } = props;
+    const { x, y, width, height } = props;
 
     return (
       <rect
@@ -37,17 +26,26 @@ export default function Total(props) {
     );
   };
 
-  return (
-    <div className="DAT_ProjectData_Dashboard_History_Year">
-      <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
-        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Unit">
-          MWh
-        </div>
-        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {/* {props.v}: {cal.value.pro_total} kWh */}
-          {props.v}: {total.pro_total} kWh
+  const renderTooltipContent = (o) => {
+    const { payload = [], label } = o;
+    return (
+      <div className="customized-tooltip-content"
+        style={{ backgroundColor: "white", padding: "8px", border: "1px solid #ccc", borderRadius: "5px" }}
+      >
+        <span className="total">{`${label}`}</span>
+        <div className="list">
+          {payload.map((entry, index) => (
+            <div key={`item-${index}`} style={{ color: entry.color, marginTop: "8px" }}>
+              {`${entry.name}: ${entry.value}(${showUnitk(entry.name)}${"W"})`}
+            </div>
+          ))}
         </div>
       </div>
+    );
+  };
+
+  return (
+    <div className="DAT_ProjectData_Dashboard_History_Year">
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
         {(() => {
           switch (projectData.value.plantmode) {
@@ -67,8 +65,9 @@ export default function Total(props) {
                       ]}
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    <Legend />
+                    <Tooltip content={renderTooltipContent} />
+                    <Legend iconType="plainline" />
+
                     {filterchart[projectData.value.plantmode][props.dateType]
                       .productionData ? (
                       <Bar
@@ -101,8 +100,9 @@ export default function Total(props) {
                       ]}
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    <Legend />
+                    <Tooltip content={renderTooltipContent} />
+                    <Legend iconType="plainline" />
+
                     {filterchart[projectData.value.plantmode][props.dateType]
                       .productionData ? (
                       <Bar
@@ -174,8 +174,9 @@ export default function Total(props) {
                       ]}
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    <Legend />
+                    <Tooltip content={renderTooltipContent} />
+                    <Legend iconType="plainline" />
+
                     {filterchart[projectData.value.plantmode][props.dateType]
                       .productionData ? (
                       <Bar

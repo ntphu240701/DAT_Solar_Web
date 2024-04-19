@@ -15,9 +15,9 @@ import DatePicker from "react-datepicker";
 import moment from "moment-timezone";
 import { signal } from "@preact/signals-react";
 import { useDispatch, useSelector } from "react-redux";
+import toolslice from "../Redux/toolslice";
 
 import { IoCalendarOutline } from "react-icons/io5";
-import toolslice from "../Redux/toolslice";
 
 export default function DashboardHistory(props) {
   const dataLang = useIntl();
@@ -27,13 +27,9 @@ export default function DashboardHistory(props) {
   const filterchart = useSelector((state) => state.tool.filterchart);
   const filterchartTemp = signal(filterchart);
   const rootDispatch = useDispatch();
-  const [configname, setConfigname] = useState(
-    dataLang.formatMessage({ id: "choosePara" })
-  );
+  const [configname, setConfigname] = useState(dataLang.formatMessage({ id: "choosePara" }));
   const [exportReport, setExportReport] = useState(false);
-  const [datetime_, setDatatime_] = useState(
-    moment(new Date()).format("MM/DD/YYYY")
-  );
+  const [datetime_, setDatatime_] = useState(moment(new Date()).format("MM/DD/YYYY"));
   const [d, setD] = useState({
     date: moment(new Date()).format("MM/DD/YYYY"),
     month: moment(new Date()).format("MM/YYYY"),
@@ -48,62 +44,28 @@ export default function DashboardHistory(props) {
   const [vDay4, setVDay4] = useState(dataLang.formatMessage({ id: "unknown" }));
 
   const [dataMonth, setDataMonth] = useState([]);
-  const [vMonth, setVMonth] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth2, setVMonth2] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth3, setVMonth3] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth4, setVMonth4] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth5, setVMonth5] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vMonth6, setVMonth6] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
+  const [vMonth, setVMonth] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth2, setVMonth2] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth3, setVMonth3] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth4, setVMonth4] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth5, setVMonth5] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vMonth6, setVMonth6] = useState(dataLang.formatMessage({ id: "unknown" }));
 
   const [dataYear, setDataYear] = useState([]);
   const [vYear, setVYear] = useState(dataLang.formatMessage({ id: "unknown" }));
-  const [vYear2, setVYear2] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vYear3, setVYear3] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vYear4, setVYear4] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vYear5, setVYear5] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vYear6, setVYear6] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
+  const [vYear2, setVYear2] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear3, setVYear3] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear4, setVYear4] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear5, setVYear5] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vYear6, setVYear6] = useState(dataLang.formatMessage({ id: "unknown" }));
 
   const [dataTotal, setDataTotal] = useState([]);
-  const [vTotal, setVTotal] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal2, setVTotal2] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal3, setVTotal3] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal4, setVTotal4] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal5, setVTotal5] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
-  const [vTotal6, setVTotal6] = useState(
-    dataLang.formatMessage({ id: "unknown" })
-  );
+  const [vTotal, setVTotal] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal2, setVTotal2] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal3, setVTotal3] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal4, setVTotal4] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal5, setVTotal5] = useState(dataLang.formatMessage({ id: "unknown" }));
+  const [vTotal6, setVTotal6] = useState(dataLang.formatMessage({ id: "unknown" }));
 
   const [month, setMonth] = useState({
     pro_month: 0,
@@ -1061,16 +1023,14 @@ export default function DashboardHistory(props) {
           }
         })()}
 
-        <div
-          className="DAT_ProjectData_Dashboard_History_SubConfig"
+        <div className="DAT_ProjectData_Dashboard_History_SubConfig"
           style={{
             height: dropConfig ? "calc(100vh - 180px)" : "0px",
             transition: "0.5s",
           }}
         >
           {dropConfig ? (
-            <div
-              className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
+            <div className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown"
               style={{
                 height: dropConfig ? "auto" : "0px",
                 transition: "0.5s",
@@ -1573,7 +1533,6 @@ export default function DashboardHistory(props) {
                         default:
                           return <></>;
                       }
-
                     case "ESS":
                       return (
                         <table className="DAT_ProjectData_Dashboard_History_SubConfig_Dropdown_Item_Table">

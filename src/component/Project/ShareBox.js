@@ -4,12 +4,12 @@ import "./Project.scss";
 import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 import { callApi } from "../Api/Api";
-
-import { IoClose, IoTrashOutline } from "react-icons/io5";
-
 import { COLOR } from "../../App";
 import { host } from "../Lang/Contant";
 import { shareState } from "./Project";
+
+import { IoClose, IoTrashOutline } from "react-icons/io5";
+
 
 export default function ShareBox(props) {
     const dataLang = useIntl();
@@ -20,17 +20,6 @@ export default function ShareBox(props) {
         pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
         new: { transform: "rotate(90deg)", transition: "0.5s", color: "white" },
     };
-
-    useEffect(() => {
-
-        const getShared = async () => {
-            let req = await callApi("post", host.DATA + "/getmailPlantmem", { plantid: props.plantid, usr: props.usr });
-            if (req.status) {
-                setShared(req.data)
-            }
-        }
-        getShared();
-    }, [])
 
     const handlePopup = (state) => {
         const popup = document.getElementById("Popup");
@@ -44,32 +33,36 @@ export default function ShareBox(props) {
         let req = await callApi("post", host.DATA + "/addPlantmem", { mail: mail.current.value, plantid: props.plantid, usr: props.usr });
         console.log(req);
         if (req.status) {
-            // let newData = shared;
-            // newData.push({id:req.data.id, mail: mail.current.value });
+            mail.current.value = "";
+            setShared([...shared, req.data]);
             alertDispatch(dataLang.formatMessage({ id: "alert_6" }));
-            shareState.value = false;
         } else {
-            console.log("abc");
             alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
         }
     }
 
     const handleDel = async (e) => {
         e.preventDefault();
-        console.log(e.currentTarget.id, props.plantid)
         let arr = e.currentTarget.id.split('_');
         let req = await callApi("post", host.DATA + "/removePlantmem", { mail: arr[0], plantid: props.plantid });
-        console.log(req);
         if (req.status) {
-
-            let newData = shared.filter((item) => item.mail != arr[0]);
+            let newData = shared.filter((item) => item.mail_ != arr[0]);
             setShared(newData)
             alertDispatch(dataLang.formatMessage({ id: "alert_53" }));
-            // shareState.value = false;
         } else {
             alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
         }
     }
+
+    useEffect(() => {
+        const getShared = async () => {
+            let req = await callApi("post", host.DATA + "/getmailPlantmem", { plantid: props.plantid, usr: props.usr });
+            if (req.status) {
+                setShared(req.data)
+            }
+        }
+        getShared();
+    }, [])
 
     // Handle close when press ESC
     useEffect(() => {
@@ -120,8 +113,8 @@ export default function ShareBox(props) {
                 <div style={{ marginTop: "10px" }}>
                     <span>{shared.map((mem) =>
                         <div key={mem.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '5px', padding: '5px' }} >
-                            <div>{mem.mail}</div>
-                            <IoTrashOutline size={14} id={`${mem.mail}_DEL`} style={{ cursor: 'pointer' }} onClick={(e) => handleDel(e)} />
+                            <div>{mem.mail_}</div>
+                            <IoTrashOutline size={14} id={`${mem.mail_}_DEL`} style={{ cursor: 'pointer' }} onClick={(e) => handleDel(e)} />
                         </div>
                     )}
                     </span>

@@ -1,36 +1,34 @@
 import React from "react";
 import "./Project.scss";
 
-import { cal, filterchart } from "./ProjectData";
 import { projectData } from "./Project";
-import {
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-} from "recharts";
-import { useIntl } from "react-intl";
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, Legend, } from "recharts";
 import { useSelector } from "react-redux";
+import { showUnitk } from "../../App";
 
 export default function Day(props) {
-  const dataLang = useIntl();
   const filterchart = useSelector((state) => state.tool.filterchart);
-  const cal = useSelector((state) => state.tool.cal);
+
+  const renderTooltipContent = (o) => {
+    const { payload = [], label } = o;
+    return (
+      <div className="customized-tooltip-content"
+        style={{ backgroundColor: "white", padding: "8px", border: "1px solid #ccc", borderRadius: "5px" }}
+      >
+        <span className="total">{`${label}`}</span>
+        <div className="list">
+          {payload.map((entry, index) => (
+            <div key={`item-${index}`} style={{ color: entry.color, marginTop: "8px" }}>
+              {`${entry.name}: ${entry.value}(${showUnitk(entry.name)}${"W"})`}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="DAT_ProjectData_Dashboard_History_Day">
-      <div className="DAT_ProjectData_Dashboard_History_Year_Tit">
-        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Unit">
-          kW
-        </div>
-        <div className="DAT_ProjectData_Dashboard_History_Year_Tit-Label">
-          {dataLang.formatMessage({ id: "production" })}:{" "}
-          {parseFloat(cal.pro_1 / 1000 || 0).toFixed(2)} kW
-        </div>
-      </div>
       <div className="DAT_ProjectData_Dashboard_History_Year_Chart">
         {(() => {
           switch (projectData.value.plantmode) {
@@ -80,7 +78,9 @@ export default function Day(props) {
                       ]}
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
+                    <Tooltip content={renderTooltipContent} />
+                    <Legend iconType="plainline" />
+
                     {filterchart[projectData.value.plantmode][props.dateType]
                       .productionData ? (
                       <Area
@@ -182,7 +182,9 @@ export default function Day(props) {
                       ]}
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
+                    <Tooltip content={renderTooltipContent} />
+                    <Legend iconType="plainline" />
+
                     {filterchart[projectData.value.plantmode][props.dateType]
                       .productionData ? (
                       <Area
@@ -288,32 +290,8 @@ export default function Day(props) {
                       ]}
                     />
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <Tooltip />
-                    {filterchart[projectData.value.plantmode][props.dateType]
-                      .gridData ? (
-                      <Area
-                        type="monotone"
-                        dataKey={props.v3}
-                        stroke="rgba(0, 163, 0,0.7)"
-                        fillOpacity={1}
-                        fill="rgba(0, 163, 0, 0.2)"
-                      />
-                    ) : (
-                      <></>
-                    )}
-
-                    {filterchart[projectData.value.plantmode][props.dateType]
-                      .batteryData ? (
-                      <Area
-                        type="monotone"
-                        dataKey={props.v4}
-                        stroke="rgba(120, 90, 0,0.7)"
-                        fillOpacity={1}
-                        fill="rgba(196, 147, 2, 0.1)"
-                      />
-                    ) : (
-                      <></>
-                    )}
+                    <Tooltip content={renderTooltipContent} />
+                    <Legend iconType="plainline" />
 
                     {filterchart[projectData.value.plantmode][props.dateType]
                       .productionData ? (
@@ -336,6 +314,32 @@ export default function Day(props) {
                         stroke="rgba(247, 148, 29,0.7)"
                         fillOpacity={1}
                         fill="rgba(247, 148, 29,0.2)"
+                      />
+                    ) : (
+                      <></>
+                    )}
+
+                    {filterchart[projectData.value.plantmode][props.dateType]
+                      .gridData ? (
+                      <Area
+                        type="monotone"
+                        dataKey={props.v3}
+                        stroke="rgba(0, 163, 0,0.7)"
+                        fillOpacity={1}
+                        fill="rgba(0, 163, 0, 0.2)"
+                      />
+                    ) : (
+                      <></>
+                    )}
+
+                    {filterchart[projectData.value.plantmode][props.dateType]
+                      .batteryData ? (
+                      <Area
+                        type="monotone"
+                        dataKey={props.v4}
+                        stroke="rgba(120, 90, 0,0.7)"
+                        fillOpacity={1}
+                        fill="rgba(196, 147, 2, 0.1)"
                       />
                     ) : (
                       <></>
