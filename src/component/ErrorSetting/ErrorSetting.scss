@@ -190,6 +190,10 @@
 
             &_Info {
                 // width: 100%;
+                height: 160px;
+                overflow-y: scroll;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
 
                 & span {
                     color: black;

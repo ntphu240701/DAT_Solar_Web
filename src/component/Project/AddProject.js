@@ -4,7 +4,7 @@ import "./Project.scss";
 import { dataproject, plantState } from "./Project";
 import { isMobile } from "../Navigation/Navigation";
 import { signal } from "@preact/signals-react";
-import GoogleMap from "google-maps-react-markers";
+// import GoogleMap from "google-maps-react-markers";
 import moment from "moment-timezone";
 import { setKey, geocode, RequestType } from "react-geocode";
 import { callApi } from "../Api/Api";
@@ -16,6 +16,7 @@ import { useIntl } from "react-intl";
 import { IoIosArrowUp } from "react-icons/io";
 import { IoClose, IoSaveOutline } from "react-icons/io5";
 import { Loader } from "@googlemaps/js-api-loader";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 export const plantData = signal({
   addr: "",
@@ -51,35 +52,94 @@ const BasicInfo = (props) => {
     libraries: ["places"],
   });
 
+
+
+
   const initMap = async (name, lat, long, state) => {
-    const defaultProps = {
-      center: {
-        lat: lat,
-        lng: long,
-      },
-      zoom: 7.0,
-      mapId: "DEMO_MAP_ID",
-    };
 
-    const { AdvancedMarkerElement } = await loader.importLibrary("marker");
-    const { Map } = await loader.importLibrary("maps");
+    loader.load().then(async (google) => {
+      const defaultProps = {
+        center: {
+          lat: lat,
+          lng: long,
+        },
+        zoom: 15.0,
+        mapId: "DEMO_MAP_ID",
+      };
 
-    let map = new Map(document.getElementById("map"), defaultProps);
-    if (state) {
-      const marker = { lat: parseFloat(lat), lng: parseFloat(long) };
-      const markerElement = new AdvancedMarkerElement({
-        position: marker,
-        map: map,
-        title: name,
+      const { Map } = await google.maps.importLibrary("maps");
+      const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+      let map = new Map(document.getElementById("map"), defaultProps);
+
+      const myLatlng = { lat: lat, lng: long };
+
+      let infoWindow = new google.maps.InfoWindow({
+        content: 'Your position',
+        position: myLatlng,
       });
-      markerElement.addListener("click", () => {
-        // plantState.value = "info";
-        // projectData.value = item;
-        // sidebartab.value = "Monitor";
-        // sidebartabli.value = "/Project";
+
+      // Configure the click listener.
+      map.addListener("click", (mapsMouseEvent) => {
+        // Close the current InfoWindow.
+        infoWindow.close();
+        // Create a new InfoWindow.
+        infoWindow = new google.maps.InfoWindow({
+          position: mapsMouseEvent.latLng,
+        });
+        infoWindow.setContent(
+          JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2),
+        );
+        infoWindow.open(map);
+        // console.log(mapsMouseEvent.latLng.toJSON());
+        var long_ = document.getElementById("long");
+        var lat_ = document.getElementById("lat");
+        lat_.value = mapsMouseEvent.latLng.toJSON().lat;
+        long_.value = mapsMouseEvent.latLng.toJSON().lng;
+        plantData.value = {
+          ...plantData.value,
+          lat: mapsMouseEvent.latLng.toJSON().lat,
+          long: mapsMouseEvent.latLng.toJSON().lng,
+        };
+
       });
-      return markerElement;
-    }
+
+      if (state) {
+        const marker = { lat: parseFloat(lat), lng: parseFloat(long) };
+        const markerElement = new AdvancedMarkerElement({
+          position: marker,
+          map: map,
+          title: name,
+        });
+        return markerElement;
+      }
+
+
+    })
+
+
+
+
+    // const { AdvancedMarkerElement } = await loader.importLibrary("marker");
+    // const { Map } = await loader.importLibrary("maps");
+    // const { InfoWindow } = await loader.importLibrary("infowindow");
+
+
+    // let map = new Map(document.getElementById("map"), defaultProps);
+    // if (state) {
+    //   const marker = { lat: parseFloat(lat), lng: parseFloat(long) };
+    //   const markerElement = new AdvancedMarkerElement({
+    //     position: marker,
+    //     map: map,
+    //     title: name,
+    //   });
+    // markerElement.addListener("click", () => {
+    //   // plantState.value = "info";
+    //   // projectData.value = item;
+    //   // sidebartab.value = "Monitor";
+    //   // sidebartabli.value = "/Project";
+    // });
+    // return markerElement;
+    // }
   };
 
   useEffect(() => {
@@ -167,7 +227,14 @@ const BasicInfo = (props) => {
                     {dataLang.formatMessage({ id: "address" })}:
                   </span>
                 </div>
-                <input id="addr" type="text" onChange={(e) => handleBasic(e)} />
+                {/* <input id="addr" type="text" onChange={(e) => handleBasic(e)} /> */}
+
+                <label htmlFor="copy-button" style={{ display: "flex", position: 'relative', alignItems: "center", gap: "5px", cursor: "pointer" }}>
+                  <input name="copy-button" aria-label="copy-button" id="addr" type="text" style={{ padding: '5px' }} onChange={(e) => handleBasic(e)} />
+                  <FaMapMarkerAlt color="red" size={20} onClick={(e) => handleMap(e)} style={{ position: 'absolute', right: '10px', cursor: "pointer" }} />
+                </label>
+
+
               </div>
 
               <div className="DAT_AddProject_BasicInfo_Body_Left_Item">
@@ -185,8 +252,9 @@ const BasicInfo = (props) => {
                     <input
                       id="long"
                       type="text"
-                      onChange={(e) => handleBasic(e)}
-                      onClick={(e) => handleMap(e)}
+                      // onChange={(e) => handleBasic(e)}
+                      // onClick={(e) => handleMap(e)}
+                      disabled
                       required
                     />
                   </div>
@@ -197,8 +265,9 @@ const BasicInfo = (props) => {
                     <input
                       id="lat"
                       type="text"
-                      onChange={(e) => handleBasic(e)}
-                      onClick={(e) => handleMap(e)}
+                      // onChange={(e) => handleBasic(e)}
+                      // onClick={(e) => handleMap(e)}
+                      disabled
                       required
                     />
                   </div>

@@ -428,7 +428,7 @@ const GraphFull = (props) => {
             <>
                 <path
                     className="path"
-                    d="M 230.857 133.65 L 231.165 38.854 C 231.618 33.403 228.857 31.82 223.463 32.163 L 82.444 32.537"
+                    d="M 228.806 133.65 L 229.114 38.854 C 229.567 33.403 226.806 31.82 221.412 32.163 L 80.393 32.537"
                     style={{
                         width: "100%",
                         height: "100%",
@@ -450,7 +450,7 @@ const GraphFull = (props) => {
         return (
             <>
                 <path
-                    d="M 258.136 132.82 L 258.703 39.488 C 258.59 34.811 259.013 31.481 266.609 31.554 L 413.676 31.085"
+                    d="M 260.699 133.333 L 261.266 40.001 C 261.153 35.324 261.576 31.994 269.172 32.067 L 416.239 31.598"
                     style={{
                         width: "100%",
                         height: "100%",
@@ -475,7 +475,7 @@ const GraphFull = (props) => {
             <>
                 <path
                     className="path"
-                    d="M 226.842 164.494 L 227.12 262.111 C 227.543 270.476 225.304 271.397 217.555 271.123 L 76.035 270.736"
+                    d="M 228.667 160.393 L 228.945 258.01 C 229.368 266.375 227.129 267.296 219.38 267.022 L 77.86 266.635"
                     style={{
                         width: "100%",
                         height: "100%",
@@ -499,7 +499,7 @@ const GraphFull = (props) => {
         return (
             <>
                 <path
-                    d="M 259.334 162.907 L 259.913 261.215 C 259.941 268.812 260.465 270.05 268.772 270.188 L 417.31 270.833"
+                    d="M 259.847 158.807 L 260.426 257.115 C 260.454 264.712 260.978 265.95 269.285 266.088 L 417.823 266.733"
                     width="100%"
                     height="100%"
                     style={{
@@ -567,6 +567,12 @@ const GraphFull = (props) => {
                 <foreignObject x="395" y="235" width="100" height="60" style={{ overflow: "hidden", padding: "2px" }}>
                     <Solar src="/dat_icon/consumption.png" width="30" height="30" color="black" val={Number(parseFloat(props.cal?.con_1 || 0).toFixed(2)).toLocaleString("en-US")} unit="kW" />
                 </foreignObject>
+
+                <foreignObject x="5.138" y="215.936" width="99.953" height="22.554" style={{ overflow: "hidden", padding: "2px" }}>
+                    <div style={{color:"gray", fontSize:"13px", width:"100%", textAlign:"center", alignItems:"center"}} >SoC: <span style={{color:"black"}}>{parseInt(props.cal?.bat_2 || 0)}%</span></div>
+                </foreignObject>
+              
+
 
                 <foreignObject x="193" y="112" width="102" height="68" style={{ overflow: "hidden", padding: "2px" }}>
                     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%", backgroundColor: "white", borderRadius: "3px" }}>

@@ -378,7 +378,7 @@ export default function HistoricalData(props) {
 
     useEffect(() => {
         setOption(dataoption);
-        console.log(option);
+        // console.log(option);
     }, []);
 
     const handleCheck = (e) => {

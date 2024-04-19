@@ -21,8 +21,7 @@ import ExportPowerSettings from "./ExportPowerSettings";
 import BatterySettings from "./BatterySettings";
 import DeviceSettings from "./DeviceSettings";
 import GridInfo from "./GridInfo";
-import LastCommandRecord from "./LastCommandRecord";
-import SelectCommand from "./SelectCommand";
+import SingleCommand from "./SingleCommand";
 import CustomizedCommand from "./CustomizedCommand";
 import ControlLog from "./ControlLog";
 import FirmwareUpgrade from "./FirmwareUpgrade";
@@ -253,22 +252,15 @@ export default function Info(props) {
                               switch (nav) {
                                 case "single":
                                   return (
-                                    <>
-                                      <LastCommandRecord />
-                                      <SelectCommand />
-                                    </>
+                                    <SingleCommand />
                                   )
                                 case "customized":
                                   return (
-                                    <>
-                                      <CustomizedCommand />
-                                    </>
+                                    <CustomizedCommand />
                                   )
                                 case "log":
                                   return (
-                                    <>
-                                      <ControlLog />
-                                    </>
+                                    <ControlLog />
                                   )
                                 default:
                                   return (

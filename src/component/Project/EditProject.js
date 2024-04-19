@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Project.scss";
 
-import { plantState, projectData } from "./Project";
+import { dataproject, plantState, projectData } from "./Project";
 import GoogleMap from "google-maps-react-markers";
 import { isMobile } from "../Navigation/Navigation";
 import moment from "moment-timezone";
@@ -16,6 +16,7 @@ import Resizer from "react-image-file-resizer";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoClose, IoSaveOutline } from "react-icons/io5";
 import { Loader } from "@googlemaps/js-api-loader";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 const BasicInfo = (props) => {
   const dataLang = useIntl();
@@ -32,33 +33,103 @@ const BasicInfo = (props) => {
   });
 
   const initMap = async (name, lat, long) => {
-    const defaultProps = {
-      center: {
-        lat: lat,
-        lng: long,
-      },
-      zoom: 7.0,
-      mapId: "DEMO_MAP_ID",
-    };
 
-    const { AdvancedMarkerElement } = await loader.importLibrary("marker");
-    const { Map } = await loader.importLibrary("maps");
+    loader.load().then(async (google) => {
+      const defaultProps = {
+        center: {
+          lat: lat,
+          lng: long,
+        },
+        zoom: 15.0,
+        mapId: "DEMO_MAP_ID",
+      };
 
-    let map = new Map(document.getElementById("map"), defaultProps);
+      const { Map } = await google.maps.importLibrary("maps");
+      const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+      let map = new Map(document.getElementById("map"), defaultProps);
 
-    const marker = { lat: parseFloat(lat), lng: parseFloat(long) };
-    const markerElement = new AdvancedMarkerElement({
-      position: marker,
-      map: map,
-      title: name,
-    });
-    markerElement.addListener("click", () => {
-      // plantState.value = "info";
-      // projectData.value = item;
-      // sidebartab.value = "Monitor";
-      // sidebartabli.value = "/Project";
-    });
-    return markerElement;
+      const myLatlng = { lat: lat, lng: long };
+
+      let infoWindow = new google.maps.InfoWindow({
+        content: 'Your position',
+        position: myLatlng,
+      });
+
+      // Configure the click listener.
+      map.addListener("click", (mapsMouseEvent) => {
+        // Close the current InfoWindow.
+        infoWindow.close();
+        // Create a new InfoWindow.
+        infoWindow = new google.maps.InfoWindow({
+          position: mapsMouseEvent.latLng,
+        });
+        infoWindow.setContent(
+          JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2),
+        );
+        infoWindow.open(map);
+        // console.log(mapsMouseEvent.latLng.toJSON());
+        var long_ = document.getElementById("long");
+        var lat_ = document.getElementById("lat");
+        lat_.value = mapsMouseEvent.latLng.toJSON().lat;
+        long_.value = mapsMouseEvent.latLng.toJSON().lng;
+        projectData.value = {
+          ...projectData.value,
+          lat:  mapsMouseEvent.latLng.toJSON().lat,
+          long: mapsMouseEvent.latLng.toJSON().lng
+        };
+
+        const index = dataproject.value.findIndex(
+          (item) => item.plantid_ == projectData.value.plantid_
+        )
+        dataproject.value[index] = {
+          ...dataproject.value[index],
+          lat:  mapsMouseEvent.latLng.toJSON().lat,
+          long: mapsMouseEvent.latLng.toJSON().lng
+        }
+
+      });
+
+      if (state) {
+        const marker = { lat: parseFloat(lat), lng: parseFloat(long) };
+        const markerElement = new AdvancedMarkerElement({
+          position: marker,
+          map: map,
+          title: name,
+        });
+        return markerElement;
+      }
+
+
+    })
+
+
+    // const defaultProps = {
+    //   center: {
+    //     lat: lat,
+    //     lng: long,
+    //   },
+    //   zoom: 15.0,
+    //   mapId: "DEMO_MAP_ID",
+    // };
+
+    // const { AdvancedMarkerElement } = await loader.importLibrary("marker");
+    // const { Map } = await loader.importLibrary("maps");
+
+    // let map = new Map(document.getElementById("map"), defaultProps);
+
+    // const marker = { lat: parseFloat(lat), lng: parseFloat(long) };
+    // const markerElement = new AdvancedMarkerElement({
+    //   position: marker,
+    //   map: map,
+    //   title: name,
+    // });
+    // markerElement.addListener("click", () => {
+    //   // plantState.value = "info";
+    //   // projectData.value = item;
+    //   // sidebartab.value = "Monitor";
+    //   // sidebartabli.value = "/Project";
+    // });
+    // return markerElement;
   };
 
   useEffect(() => {
@@ -161,12 +232,17 @@ const BasicInfo = (props) => {
                     {dataLang.formatMessage({ id: "address" })}:
                   </span>
                 </div>
-                <input
+                {/* <input
                   id="addr"
                   type="text"
                   defaultValue={projectData.value.addr}
                   onChange={(e) => handleBasic(e)}
-                />
+                /> */}
+
+                <label htmlFor="copy-button" style={{ display: "flex", position: 'relative', alignItems: "center", gap: "5px", cursor: "pointer" }}>
+                  <input name="copy-button" aria-label="copy-button" id="addr" type="text" defaultValue={projectData.value.addr} style={{ padding: '5px' }}  onChange={(e) => handleBasic(e)} />
+                  <FaMapMarkerAlt color="red" size={20} onClick={(e) => handleMap(e)} style={{ position: 'absolute', right: '10px', cursor: "pointer" }} />
+                </label>
               </div>
 
               <div className="DAT_EditProject_BasicInfo_Body_Left_Item">
@@ -185,8 +261,9 @@ const BasicInfo = (props) => {
                       id="long"
                       type="text"
                       defaultValue={projectData.value.long}
-                      onChange={(e) => handleBasic(e)}
-                      onClick={(e) => handleMap(e)}
+                      disabled
+                    // onChange={(e) => handleBasic(e)}
+                    // onClick={(e) => handleMap(e)}
                     />
                   </div>
                   <div className="DAT_EditProject_BasicInfo_Body_Left_Item_Posi_Content">
@@ -197,8 +274,9 @@ const BasicInfo = (props) => {
                       id="lat"
                       type="text"
                       defaultValue={projectData.value.lat}
-                      onChange={(e) => handleBasic(e)}
-                      onClick={(e) => handleMap(e)}
+                      disabled
+                    // onChange={(e) => handleBasic(e)}
+                    // onClick={(e) => handleMap(e)}
                     />
                   </div>
                 </div>
