@@ -100,7 +100,7 @@ export default function Project(props) {
   const [display, setDisplay] = useState(false);
   const [saveDataInputFilter, setSaveDataInputFilter] = useState({
     min: 0,
-    max: 10000,
+    max: 1000000000000000,
     location: "",
     elecmode: {
       grid: true,
@@ -527,7 +527,7 @@ export default function Project(props) {
   const handleApproveFilter = (_min, _max, _location, _elecmode) => {
     let temp = [];
     let min_ = _min === "" ? 0 : _min;
-    let max_ = _max === "" ? 10000 : _max;
+    let max_ = _max === "" ? 1000000000000000 : _max;
     // let elecmode_ = _elecmode;
     setSaveDataInputFilter({
       min: parseFloat(min_),
@@ -536,28 +536,6 @@ export default function Project(props) {
       elecmode: _elecmode,
     });
     console.log(_elecmode);
-    // if (_location) {
-    //   dataproject.value.filter((item) => {
-    //     if (
-    //       parseFloat(item.capacity) >= parseFloat(min_) &&
-    //       parseFloat(item.capacity) <= parseFloat(max_) &&
-    //       lowercasedata(item.addr).includes(lowercasedata(_location))
-    //     ) {
-    //       temp = [...temp, item];
-    //     }
-    //   });
-    // } else {
-    //   dataproject.value.filter((item) => {
-    //     if (
-    //       parseFloat(item.capacity) >= parseFloat(min_) &&
-    //       parseFloat(item.capacity) <= parseFloat(max_)
-    //     ) {
-    //       temp = [...temp, item];
-    //     }
-    //   });
-    // }
-    // setDatafilter(temp);
-    // setDisplay(false);
     let filter1 = dataproject.value.filter((item) => {
       if (
         parseFloat(item.capacity) >= parseFloat(min_) &&
@@ -568,6 +546,7 @@ export default function Project(props) {
     });
     let filter2 = dataproject.value.filter((item) => {
       if (_location) {
+        console.log(lowercasedata(item.addr), lowercasedata(_location));
         return lowercasedata(item.addr).includes(lowercasedata(_location));
       } else {
         return item;
@@ -593,6 +572,8 @@ export default function Project(props) {
       filter3 = [...filter3, ...t];
     }
 
+    console.log(filter1, filter2, filter3);
+
     const set1 = new Set(filter1.map((obj) => Object.values(obj)[0]));
     const set2 = new Set(filter2.map((obj) => Object.values(obj)[0]));
     const set3 = new Set(filter3.map((obj) => Object.values(obj)[0]));
@@ -605,12 +586,10 @@ export default function Project(props) {
 
     // TRẢ LẠI OBJECT {45, 68}
     // const y = set1.intersection(set2, set3);
-    // console.log(y);
 
     temp = dataproject.value.filter((item) =>
       commonKeys.includes(item.plantid_)
     );
-    // console.log(temp);
     setDatafilter(temp);
     setDisplay(false);
   };
@@ -780,6 +759,10 @@ export default function Project(props) {
     setDailyProduction(daily_);
     setPower(power_);
   }, [invt, user]);
+
+  useEffect(() => {
+    console.log(datafilter)
+  }, [datafilter]);
 
   return (
     <>

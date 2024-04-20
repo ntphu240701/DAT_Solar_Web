@@ -191,7 +191,7 @@ export default function Filter(props) {
                                     id: "maxkWp",
                                   })}
                                   defaultValue={
-                                    props.data.max !== 10000
+                                    props.data.max !== 1000000000000000
                                       ? props.data.max
                                       : ""
                                   }
