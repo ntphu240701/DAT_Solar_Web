@@ -18,6 +18,8 @@ import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { isMobile } from "../Navigation/Navigation";
 import { forEach } from "lodash";
+import PopupState, { bindMenu, bindToggle } from "material-ui-popup-state";
+import { Menu, MenuItem } from "@mui/material";
 
 export const lowercasedata = (str) => {
   return str
@@ -221,16 +223,32 @@ export default function ErrorSetting(props) {
           {row.type_ === "master" ? (
             <></>
           ) : (
-            <div className="DAT_TableEdit">
-              <span
-                id={row.warnid_ + "_MORE"}
-                onClick={(e) => handleModify(e, "block")}
-              >
-                <IoMdMore size={20} />
-              </span>
-            </div>
+            // <div className="DAT_TableEdit">
+            //   <span
+            //     id={row.warnid_ + "_MORE"}
+            //     onClick={(e) => handleModify(e, "block")}
+            //   >
+            //     <IoMdMore size={20} />
+            //   </span>
+            // </div>
+            <PopupState variant="popper" popupId="demo-popup-popper">
+            {(popupState) => (<div className="DAT_TableEdit">
+              <IoMdMore size={20}   {...bindToggle(popupState)} />
+              <Menu {...bindMenu(popupState)}>
+
+                  <MenuItem id={row.boxid_} onClick={(e) => { handleDelete(e); popupState.close() }}>
+                    <IoTrashOutline size={16} />
+                    &nbsp;
+                    {dataLang.formatMessage({ id: "delete" })}
+                  </MenuItem>
+           
+
+               
+              </Menu>
+            </div>)}
+          </PopupState>
           )}
-          <div
+          {/* <div
             className="DAT_ModifyBox"
             id={row.warnid_ + "_Modify"}
             style={{ display: "none", width: "80px" }}
@@ -245,7 +263,7 @@ export default function ErrorSetting(props) {
               &nbsp;
               {dataLang.formatMessage({ id: "remove" })}
             </div>
-          </div>
+          </div> */}
         </>
       ),
       width: "80px",
@@ -759,7 +777,7 @@ export default function ErrorSetting(props) {
                 data={data}
                 pagination
                 paginationComponentOptions={paginationComponentOptions}
-                fixedHeader={true}
+                // fixedHeader={true}
                 noDataComponent={<Empty />}
               />
             </div>

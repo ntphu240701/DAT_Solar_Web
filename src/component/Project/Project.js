@@ -37,7 +37,12 @@ import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore } from "react
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { FiEdit, FiFilter } from "react-icons/fi";
 import { RiShareForwardLine } from "react-icons/ri";
-
+import PopupState, { bindPopper, bindHover, bindFocus, bindToggle, bindMenu } from "material-ui-popup-state";
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import Fade from "@mui/material/Fade";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
 const tabLable = signal("");
 const tabMobile = signal(false);
 const online = signal([]);
@@ -148,7 +153,7 @@ export default function Project(props) {
         </div>
       ),
       sortable: true,
-      minWidth: "400px",
+      width: "400px",
       style: {
         justifyContent: "left !important",
       },
@@ -287,19 +292,49 @@ export default function Project(props) {
             row.shared == 1 ? (
               <></>
             ) : (
-              <div className="DAT_TableEdit">
-                <span
-                  id={row.plantid_ + "_MORE"}
-                  onClick={(e) => handleModify(e, "block")}
-                >
-                  <IoMdMore size={20} />
-                </span>
-              </div>
+              <PopupState variant="popper" popupId="demo-popup-popper">
+                {(popupState) => (<div className="DAT_TableEdit">
+                  <IoMdMore size={20}   {...bindToggle(popupState)} />
+                  <Menu {...bindMenu(popupState)}>
+                    {ruleInfor.value.setting.project.modify === true ?
+                      <MenuItem id={row.plantid_} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                        <FiEdit size={14} />&nbsp;
+                        {dataLang.formatMessage({ id: "change" })}
+                      </MenuItem>
+                      : <></>
+                    }
+                    {ruleInfor.value.setting.project.remove === true ?
+                      <MenuItem id={row.plantid_} onClick={(e) => { handleDelete(e); popupState.close() }}>
+                        <IoTrashOutline size={16} />
+                        &nbsp;
+                        {dataLang.formatMessage({ id: "delete" })}
+                      </MenuItem>
+                      : <></>}
+
+                    <MenuItem id={row.plantid_} onClick={(e) => { handleShare(e); popupState.close() }}>
+                      <RiShareForwardLine size={16} />
+                      &nbsp;
+                      {dataLang.formatMessage({ id: "share" })}
+                    </MenuItem>
+                  </Menu>
+                </div>)}
+              </PopupState>
+              // <div className="DAT_TableEdit">
+              //   <span
+              //     id={row.plantid_ + "_MORE"}
+              //     onClick={(e) => handleModify(e, "block")}
+              //   >
+              //     <IoMdMore size={20} />
+              //   </span>
+              // </div>
             )
           ) : (
             <div></div>
           )}
-          <div
+
+
+
+          {/* <div
             className="DAT_ModifyBox"
             id={row.plantid_ + "_Modify"}
             style={{ display: "none", marginTop: "3px", marginRight: "3px" }}
@@ -355,7 +390,7 @@ export default function Project(props) {
               &nbsp;
               {dataLang.formatMessage({ id: "share" })}
             </div>
-          </div>
+          </div> */}
           <div className="DAT_TableMark">
             <FaStar
               id={row.plantid_}
@@ -2052,7 +2087,7 @@ export default function Project(props) {
                       data={datafilter}
                       pagination
                       paginationComponentOptions={paginationComponentOptions}
-                      fixedHeader={true}
+                      // fixedHeader={true}
                       noDataComponent={<Empty />}
                     />
                   );

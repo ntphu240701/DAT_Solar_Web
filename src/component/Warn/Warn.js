@@ -26,6 +26,8 @@ import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { AiOutlineAlert } from "react-icons/ai";
 import { GoAlert } from "react-icons/go";
+import PopupState, { bindMenu, bindToggle } from "material-ui-popup-state";
+import { Menu, MenuItem } from "@mui/material";
 
 export const tabLable = signal("");
 export const open = signal([]);
@@ -151,19 +153,36 @@ export default function Warn(props) {
         <>
           {ruleInfor.value.setting.warn.modify === true ||
             ruleInfor.value.setting.warn.remove === true ? (
-            <div className="DAT_TableEdit">
-              <span
-                id={row.boxid + "_" + row.warnid + "_MORE"}
-                onClick={(e) => handleModify(e, "block")}
-              >
-                <IoMdMore size={20} />
-              </span>
-            </div>
+              <PopupState variant="popper" popupId="demo-popup-popper">
+              {(popupState) => (<div className="DAT_TableEdit">
+                <IoMdMore size={20}   {...bindToggle(popupState)} />
+                <Menu {...bindMenu(popupState)}>
+                
+                  {ruleInfor.value.setting.warn.remove === true ?
+                    <MenuItem   id={row.boxid + "_" + row.device} onClick={(e) => { handleDeleteWarn(e); popupState.close() }}>
+                      <IoTrashOutline size={16} />
+                      &nbsp;
+                      {dataLang.formatMessage({ id: "delete" })}
+                    </MenuItem>
+                    : <></>}
+  
+                
+                </Menu>
+              </div>)}
+            </PopupState>
+            // <div className="DAT_TableEdit">
+            //   <span
+            //     id={row.boxid + "_" + row.warnid + "_MORE"}
+            //     onClick={(e) => handleModify(e, "block")}
+            //   >
+            //     <IoMdMore size={20} />
+            //   </span>
+            // </div>
           ) : (
             <div></div>
           )}
 
-          <div
+          {/* <div
             className="DAT_ModifyBox"
             id={row.boxid + "_" + row.warnid + "_Modify"}
             style={{ display: "none", marginTop: "3px", marginRight: "3px" }}
@@ -187,7 +206,7 @@ export default function Warn(props) {
             ) : (
               <div></div>
             )}
-          </div>
+          </div> */}
         </>
       ),
       width: "100px",
@@ -769,7 +788,7 @@ export default function Warn(props) {
                       data={datafilter}
                       pagination
                       paginationComponentOptions={paginationComponentOptions}
-                      fixedHeader={true}
+                      // fixedHeader={true}
                       noDataComponent={<Empty />}
                     />
                   );
@@ -781,7 +800,7 @@ export default function Warn(props) {
                       data={datafilteropen}
                       pagination
                       paginationComponentOptions={paginationComponentOptions}
-                      fixedHeader={true}
+                      // fixedHeader={true}
                       noDataComponent={<Empty />}
                     />
                   );
@@ -793,7 +812,7 @@ export default function Warn(props) {
                       data={datafilterclosed}
                       pagination
                       paginationComponentOptions={paginationComponentOptions}
-                      fixedHeader={true}
+                      // fixedHeader={true}
                       noDataComponent={<Empty />}
                     />
                   );

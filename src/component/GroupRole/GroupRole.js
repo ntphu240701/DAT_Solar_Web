@@ -26,6 +26,8 @@ import { IoCaretBackOutline } from "react-icons/io5";
 import { ruleInfor } from "../../App";
 import EditRole from "../Role/EditRole";
 import { Usr_, roleData } from "../Role/Role";
+import PopupState, { bindMenu, bindToggle } from "material-ui-popup-state";
+import { Menu, MenuItem } from "@mui/material";
 
 //DATA TEMP
 export const group = signal([]);
@@ -142,16 +144,37 @@ export default function GroupRole(props) {
             {user.type_ === "master" ? (
               <></>
             ) : (
-              <div className="DAT_TableEdit">
-                <span
-                  id={user.id_ + "_MORE"}
-                  onClick={(e) => handleModify(e, "block")}
-                >
-                  <IoMdMore size={20} />
-                </span>
-              </div>
+              // <div className="DAT_TableEdit">
+              //   <span
+              //     id={user.id_ + "_MORE"}
+              //     onClick={(e) => handleModify(e, "block")}
+              //   >
+              //     <IoMdMore size={20} />
+              //   </span>
+              // </div>
+              <PopupState variant="popper" popupId="demo-popup-popper">
+              {(popupState) => (<div className="DAT_TableEdit">
+                <IoMdMore size={20}   {...bindToggle(popupState)} />
+                <Menu {...bindMenu(popupState)}>
+                 
+                    <MenuItem  id={user.id_} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                      <FiEdit size={14} />&nbsp;
+                      {dataLang.formatMessage({ id: "change" })}
+                    </MenuItem>
+                  
+                 
+                    <MenuItem  id={user.id_} onClick={(e) => { handleDeleteUser(e); popupState.close() }}>
+                      <IoTrashOutline size={16} />
+                      &nbsp;
+                      {dataLang.formatMessage({ id: "delete" })}
+                    </MenuItem>
+                    
+                
+                </Menu>
+              </div>)}
+            </PopupState>
             )}
-            <div
+            {/* <div
               className="DAT_ModifyBox"
               id={user.id_ + "_Modify"}
               style={{ display: "none", marginRight: "4px", marginTop: "2px" }}
@@ -175,7 +198,7 @@ export default function GroupRole(props) {
                 &nbsp;
                 {dataLang.formatMessage({ id: "remove" })}
               </div>
-            </div>
+            </div> */}
           </>
         ),
         width: "110px",
@@ -582,7 +605,7 @@ export default function GroupRole(props) {
                     data={datafilter.value}
                     pagination
                     paginationComponentOptions={paginationComponentOptions}
-                    fixedHeader={true}
+                    // fixedHeader={true}
                     noDataComponent={<Empty />}
                   />
                 )}
