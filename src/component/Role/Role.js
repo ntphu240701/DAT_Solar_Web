@@ -22,6 +22,8 @@ import { MdAddchart } from "react-icons/md";
 import { GoProject } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import { groupID } from "../GroupRole/GroupRole";
+import PopupState, { bindMenu, bindToggle } from "material-ui-popup-state";
+import { Menu, MenuItem } from "@mui/material";
 
 export const roleData = signal({});
 export const Usr_ = signal([]);
@@ -145,25 +147,47 @@ export default function Role(props) {
           {row.type_ === "master" ? (
             <></>
           ) : (
-            <div
-              className="DAT_TableEdit"
-              style={{
-                display: access[`${type}editfor`][row.type_] ? "block" : "none",
-              }}
-            >
-              <span
-                id={row.id_ + "_MORE"}
-                // onMouseEnter={(e) => handleModify(e, "block")}
-                onClick={(e) => {
-                  handleModify(e, "block");
-                  groupID.value = 0;
-                }}
-              >
-                <IoMdMore size={20} />
-              </span>
-            </div>
+            // <div
+            //   className="DAT_TableEdit"
+            //   style={{
+            //     display: access[`${type}editfor`][row.type_] ? "block" : "none",
+            //   }}
+            // >
+            //   <span
+            //     id={row.id_ + "_MORE"}
+            //     // onMouseEnter={(e) => handleModify(e, "block")}
+            //     onClick={(e) => {
+            //       handleModify(e, "block");
+            //       groupID.value = 0;
+            //     }}
+            //   >
+            //     <IoMdMore size={20} />
+            //   </span>
+            // </div>
+            <PopupState variant="popper" popupId="demo-popup-popper">
+            {(popupState) => (<div className="DAT_TableEdit">
+              <IoMdMore size={20}   {...bindToggle(popupState)} />
+              <Menu {...bindMenu(popupState)}>
+        
+                  <MenuItem id={row.id_} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                    <FiEdit size={14} />&nbsp;
+                    {dataLang.formatMessage({ id: "change" })}
+                  </MenuItem>
+               
+           
+                  <MenuItem id={row.usr_} onClick={(e) => { handleDelete_(e); popupState.close() }}>
+                    <IoTrashOutline size={16} />
+                    &nbsp;
+                    {dataLang.formatMessage({ id: "delete" })}
+                  </MenuItem>
+              
+
+               
+              </Menu>
+            </div>)}
+          </PopupState>
           )}
-          <div
+          {/* <div
             className="DAT_ModifyBox"
             id={row.id_ + "_Modify"}
             style={{ display: "none", marginRight: "4px", marginTop: "2px" }}
@@ -187,7 +211,7 @@ export default function Role(props) {
               &nbsp;
               {dataLang.formatMessage({ id: "remove" })}
             </div>
-          </div>
+          </div> */}
         </>
       ),
       width: "110px",
@@ -538,7 +562,7 @@ export default function Role(props) {
                 data={datafilter}
                 pagination
                 paginationComponentOptions={paginationComponentOptions}
-                fixedHeader={true}
+                // fixedHeader={true}
                 noDataComponent={<Empty />}
               />
             </div>

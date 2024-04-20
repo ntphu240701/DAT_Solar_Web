@@ -30,6 +30,8 @@ import { MdOutlineError } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiEdit, FiFilter } from "react-icons/fi";
+import PopupState, { bindMenu, bindToggle } from "material-ui-popup-state";
+import { Menu, MenuItem } from "@mui/material";
 
 export const temp = signal([]);
 export const inverterDB = signal([]);
@@ -182,20 +184,35 @@ export default function ProjectData(props) {
             projectData.value.shared == 1 ? (
               <></>
             ) : (
-              <div className="DAT_TableEdit">
-                <span
-                  id={row.sn + "_MORE"}
-                  // onMouseEnter={(e) => handleModify(e, "block")}
-                  onClick={(e) => handleModify(e, "block")}
-                >
-                  <IoMdMore size={20} />
-                </span>
-              </div>
+              // <div className="DAT_TableEdit">
+              //   <span
+              //     id={row.sn + "_MORE"}
+              //     // onMouseEnter={(e) => handleModify(e, "block")}
+              //     onClick={(e) => handleModify(e, "block")}
+              //   >
+              //     <IoMdMore size={20} />
+              //   </span>
+              // </div>
+              <PopupState variant="popper" popupId="demo-popup-popper">
+              {(popupState) => (<div className="DAT_TableEdit">
+                <IoMdMore size={20}   {...bindToggle(popupState)} />
+                <Menu {...bindMenu(popupState)}>
+                  {ruleInfor.value.setting.project.modify === true ?
+                    <MenuItem  id={`${row.sn}_${row.name}_edit`} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                      <FiEdit size={14} />&nbsp;
+                      {dataLang.formatMessage({ id: "change" })}
+                    </MenuItem>
+                    : <></>
+                  }
+                 
+                </Menu>
+              </div>)}
+            </PopupState>
             )
           ) : (
             <div></div>
           )}
-          <div
+          {/* <div
             className="DAT_ModifyBox"
             id={row.sn + "_Modify"}
             style={{ display: "none" }}
@@ -210,16 +227,8 @@ export default function ProjectData(props) {
               &nbsp;
               {dataLang.formatMessage({ id: "change" })}
             </div>
-            {/* <div
-              className="DAT_ModifyBox_Remove"
-              id={row.sn + "_remove"}
-              onClick={(e) => handleDelete(e)}
-            >
-              <IoTrashOutline size={16} />
-              &nbsp;
-              {dataLang.formatMessage({ id: "remove" })}
-            </div> */}
-          </div>
+           
+          </div> */}
         </>
       ),
       width: "100px",
@@ -322,20 +331,43 @@ export default function ProjectData(props) {
             projectData.value.shared == 1 ? (
               <></>
             ) : (
-              <div className="DAT_TableEdit">
-                <span
-                  id={row.sn + "_MORE"}
-                  // onMouseEnter={(e) => handleModify(e, "block")}
-                  onClick={(e) => handleModify(e, "block")}
-                >
-                  <IoMdMore size={20} />
-                </span>
-              </div>
+              // <div className="DAT_TableEdit">
+              //   <span
+              //     id={row.sn + "_MORE"}
+              //     // onMouseEnter={(e) => handleModify(e, "block")}
+              //     onClick={(e) => handleModify(e, "block")}
+              //   >
+              //     <IoMdMore size={20} />
+              //   </span>
+              // </div>
+              <PopupState variant="popper" popupId="demo-popup-popper">
+              {(popupState) => (<div className="DAT_TableEdit">
+                <IoMdMore size={20}   {...bindToggle(popupState)} />
+                <Menu {...bindMenu(popupState)}>
+                  {ruleInfor.value.setting.project.modify === true ?
+                    <MenuItem  id={`${row.sn}_${row.name}_edit`} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                      <FiEdit size={14} />&nbsp;
+                      {dataLang.formatMessage({ id: "change" })}
+                    </MenuItem>
+                    : <></>
+                  }
+                  {ruleInfor.value.setting.project.remove === true ?
+                    <MenuItem id={row.sn + "_remove"} onClick={(e) => { handleDelete(e); popupState.close() }}>
+                      <IoTrashOutline size={16} />
+                      &nbsp;
+                      {dataLang.formatMessage({ id: "delete" })}
+                    </MenuItem>
+                    : <></>}
+
+                 
+                </Menu>
+              </div>)}
+            </PopupState>
             )
           ) : (
             <div></div>
           )}
-          <div
+          {/* <div
             className="DAT_ModifyBox"
             id={row.sn + "_Modify"}
             style={{ display: "none" }}
@@ -359,7 +391,7 @@ export default function ProjectData(props) {
               &nbsp;
               {dataLang.formatMessage({ id: "remove" })}
             </div>
-          </div>
+          </div> */}
         </>
       ),
       width: "100px",
@@ -615,7 +647,7 @@ export default function ProjectData(props) {
 
   const handleOutsideUser = (e) => {
     if (!box.current.contains(e.target)) {
-      plantState.value = "default";
+      // plantState.value = "default";
     }
   };
 
@@ -1373,7 +1405,7 @@ export default function ProjectData(props) {
                                   paginationComponentOptions={
                                     paginationComponentOptions
                                   }
-                                  fixedHeader={true}
+                                  // fixedHeader={true}
                                   noDataComponent={<Empty />}
                                 />
                               );
@@ -1401,7 +1433,7 @@ export default function ProjectData(props) {
                                   paginationComponentOptions={
                                     paginationComponentOptions
                                   }
-                                  fixedHeader={true}
+                                  // fixedHeader={true}
                                   noDataComponent={<Empty />}
                                 />
                               );
@@ -1563,7 +1595,7 @@ export default function ProjectData(props) {
                       data={getShared}
                       pagination
                       paginationComponentOptions={paginationComponentOptions}
-                      fixedHeader={true}
+                      // fixedHeader={true}
                       noDataComponent={<Empty />}
                     />
                   </div>

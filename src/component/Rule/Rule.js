@@ -22,6 +22,8 @@ import { MdDelete, MdEdit, MdOutlineAdminPanelSettings } from "react-icons/md";
 import { GrUserAdmin } from "react-icons/gr";
 import { FiEdit } from "react-icons/fi";
 import { lowercasedata } from "../ErrorSetting/ErrorSetting";
+import PopupState, { bindMenu, bindToggle } from "material-ui-popup-state";
+import { Menu, MenuItem } from "@mui/material";
 
 export const datarule = signal([]);
 
@@ -83,17 +85,39 @@ export default function Rule() {
           {row.ruleid_ == 1 ? (
             <></>
           ) : (
-            <div className="DAT_TableEdit">
-              <span
-                id={row.ruleid_ + "_MORE"}
-                onClick={(e) => handleModify(e, "block")}
-              >
-                <IoMdMore size={20} />
-              </span>
-            </div>
+            // <div className="DAT_TableEdit">
+            //   <span
+            //     id={row.ruleid_ + "_MORE"}
+            //     onClick={(e) => handleModify(e, "block")}
+            //   >
+            //     <IoMdMore size={20} />
+            //   </span>
+            // </div>
+            <PopupState variant="popper" popupId="demo-popup-popper">
+              {(popupState) => (<div className="DAT_TableEdit">
+                <IoMdMore size={20}   {...bindToggle(popupState)} />
+                <Menu {...bindMenu(popupState)}>
+                
+                    <MenuItem   id={row.ruleid_} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                      <FiEdit size={14} />&nbsp;
+                      {dataLang.formatMessage({ id: "change" })}
+                    </MenuItem>
+                  
+                
+                    <MenuItem   id={row.ruleid_} onClick={(e) => { handleDel(e); popupState.close() }}>
+                      <IoTrashOutline size={16} />
+                      &nbsp;
+                      {dataLang.formatMessage({ id: "delete" })}
+                    </MenuItem>
+                  
+
+                
+                </Menu>
+              </div>)}
+            </PopupState>
           )}
 
-          <div
+          {/* <div
             className="DAT_ModifyBox"
             id={row.ruleid_ + "_Modify"}
             style={{ display: "none", marginTop: "2px" }}
@@ -117,7 +141,7 @@ export default function Rule() {
               &nbsp;
               {dataLang.formatMessage({ id: "remove" })}
             </div>
-          </div>
+          </div> */}
         </>
       ),
       width: "103px",
@@ -275,7 +299,7 @@ export default function Rule() {
               data={datafilter}
               pagination
               paginationComponentOptions={paginationComponentOptions}
-              fixedHeader={true}
+              // fixedHeader={true}
               noDataComponent={<Empty />}
             />
           </div>
