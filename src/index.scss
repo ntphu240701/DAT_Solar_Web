@@ -313,7 +313,7 @@ iframe {
     border-right: solid 1px rgb(213, 213, 213);
     // box-shadow: 3px 3px 6px rgb(213, 213, 213);
     // background-color: #03045e;
- 
+
 
 
   }
@@ -384,9 +384,10 @@ iframe {
     left: 0;
     border-left: solid 1px rgb(213, 213, 213);
     border-right: solid 1px rgb(213, 213, 213);
+
     // box-shadow: 3px 3px 5px rgb(213, 213, 213,0.5);
-    &:hover{
-      background-color: rgba(231, 231, 231, 0.5);
+    &:hover {
+      background-color: rgba(231, 231, 231);
     }
 
   }
@@ -432,12 +433,12 @@ iframe {
     white-space: nowrap; // ngan xuong dong
     overflow: hidden; // an noi dung vuot ra ngoai
     text-overflow: ellipsis !important; // hien thi 3 cham khi vuot ra ngoai
-    
+
     &_Name {
       font-family: Montserrat-SemiBold;
       font-size: 15;
       color: black;
-   
+
       //margin-bottom: 8px;
     }
 
@@ -467,7 +468,7 @@ iframe {
   width: 120px;
   top: 0;
   right: 0px;
-  
+
   // bottom: 0;
   background-color: white;
   padding: 7px 0 7px 0;
@@ -783,7 +784,7 @@ iframe {
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 20;
+  z-index: 26;
   top: 0;
   left: 0;
 
