@@ -7,9 +7,9 @@ import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { useIntl } from "react-intl";
 import { alertDispatch } from "../Alert/Alert";
+import { isMobile } from "../Navigation/Navigation";
 
 import { IoClose } from "react-icons/io5";
-import { isMobile } from "../Navigation/Navigation";
 
 const Type = signal({
   onm: { name: "onm", checked: false },
@@ -35,7 +35,7 @@ export default function EditContactInfo(props) {
 
   const handeTypeChange = (e) => {
     Object.entries(Type.value).forEach(async ([key, value]) => {
-      if (key == e.target.id) {
+      if (key === e.target.id) {
         Type.value = { ...Type.value, [key]: { ...Type.value[key], checked: !Type.value[key].checked } }
         const d = await callApi('post', host.DATA + '/updatePartner', { code: partnerInfor.value.code, type: 'businesstype', data: key })
         if (d.status) {

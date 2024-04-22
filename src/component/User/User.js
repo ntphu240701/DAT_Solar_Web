@@ -121,7 +121,7 @@ export default function User(props) {
       </div>
 
       {popupState ? (
-        <div className="DAT_EditPopup">
+        <div className="DAT_PopupBG">
           <Popup handleClose={handleClose} editType={editType} />
         </div>
       ) : (

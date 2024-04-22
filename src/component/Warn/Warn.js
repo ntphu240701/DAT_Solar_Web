@@ -5,21 +5,15 @@ import DataTable from "react-data-table-component";
 import { signal } from "@preact/signals-react";
 import { Empty, projectwarnfilter } from "../Project/Project";
 import { isMobile, warnfilter } from "../Navigation/Navigation";
-import RaiseBox from "./RaiseBox";
+import WarnPopup from "./WarnPopup";
 import { useIntl } from "react-intl";
 import { ruleInfor } from "../../App";
-import Info from "./Info";
 import Filter from "../Project/Filter";
 import moment from "moment-timezone";
 
 import { CiSearch } from "react-icons/ci";
 import { LuMailWarning } from "react-icons/lu";
-import {
-  IoIosArrowDown,
-  IoIosArrowForward,
-  IoIosArrowUp,
-  IoMdMore,
-} from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore, } from "react-icons/io";
 import { IoTrashOutline } from "react-icons/io5";
 import { FiFilter } from "react-icons/fi";
 import { callApi } from "../Api/Api";
@@ -42,7 +36,7 @@ const tabMobile = signal(false);
 
 export default function Warn(props) {
   const dataLang = useIntl();
-  const [filter, setFilter] = useState(false);
+  // const [filter, setFilter] = useState(false);
   const [datafilter, setDatafilter] = useState([]);
   const [datafilteropen, setDatafilteropen] = useState(open.value);
   const [datafilterclosed, setDatafilterclosed] = useState(closed.value);
@@ -51,12 +45,12 @@ export default function Warn(props) {
   const [plant, setPlant] = useState("");
   const [device, setDevice] = useState("");
   const [display, setDisplay] = useState(false);
-  const warn = useRef();
-  const notice = useRef();
-  const [infowarnState, setInfowarnState] = useState(false);
-  const [delWarnState, setDelWarnState] = useState(false);
+  const [popupState, setPopupState] = useState(false);
+  const [type, setType] = useState("");
   const [cause, setCause] = useState([]);
   const [solution, setSolution] = useState([]);
+  const warn = useRef();
+  const notice = useRef();
 
   const listTab = [
     { id: "all", name: dataLang.formatMessage({ id: "total" }) },
@@ -153,20 +147,20 @@ export default function Warn(props) {
         <>
           {ruleInfor.value.setting.warn.modify === true ||
             ruleInfor.value.setting.warn.remove === true ? (
-              <PopupState variant="popper" popupId="demo-popup-popper">
+            <PopupState variant="popper" popupId="demo-popup-popper">
               {(popupState) => (<div className="DAT_TableEdit">
                 <IoMdMore size={20}   {...bindToggle(popupState)} />
                 <Menu {...bindMenu(popupState)}>
-                
+
                   {ruleInfor.value.setting.warn.remove === true ?
-                    <MenuItem   id={row.boxid + "_" + row.device} onClick={(e) => { handleDeleteWarn(e); popupState.close() }}>
+                    <MenuItem id={row.boxid + "_" + row.device} onClick={(e) => { handleDeleteWarn(e); popupState.close() }}>
                       <IoTrashOutline size={16} />
                       &nbsp;
                       {dataLang.formatMessage({ id: "delete" })}
                     </MenuItem>
                     : <></>}
-  
-                
+
+
                 </Menu>
               </div>)}
             </PopupState>
@@ -221,9 +215,10 @@ export default function Warn(props) {
     let req = await callApi("post", `${host.DATA}/getWarninf`, {
       boxid: id,
     });
-    console.log(req);
+    // console.log(req);
     if (req.status) {
-      setInfowarnState(true);
+      setPopupState(true);
+      setType("info");
       setBoxid(id);
       setLevel(temp[3]);
       setPlant(temp[4]);
@@ -231,7 +226,8 @@ export default function Warn(props) {
       setCause(req.data.cause_);
       setSolution(req.data.solution_);
     } else {
-      setInfowarnState(true);
+      setPopupState(true);
+      setType("info");
       setBoxid(id);
       setLevel(temp[3]);
       setPlant(temp[4]);
@@ -241,31 +237,28 @@ export default function Warn(props) {
     }
   };
 
-  const handleCloseInfo = () => {
-    setInfowarnState(false);
-  };
-
   const handleDeleteWarn = (e) => {
-    setDelWarnState(true);
+    setPopupState(true);
+    setType("delete");
     idDel.value = e.currentTarget.id;
   };
 
-  const handleCloseDel = () => {
-    setDelWarnState(false);
+  const handleClosePopup = () => {
+    setPopupState(false);
   };
 
   const closeFilter = () => {
     setDisplay(false);
   };
 
-  const handleModify = (e, type) => {
-    const id = e.currentTarget.id;
-    var arr = id.split("_");
-    const mod = document.getElementById(
-      `${arr[0]}_${arr[1]}_${arr[2]}_${arr[3]}_Modify`
-    );
-    mod.style.display = type;
-  };
+  // const handleModify = (e, type) => {
+  //   const id = e.currentTarget.id;
+  //   var arr = id.split("_");
+  //   const mod = document.getElementById(
+  //     `${arr[0]}_${arr[1]}_${arr[2]}_${arr[3]}_Modify`
+  //   );
+  //   mod.style.display = type;
+  // };
 
   const handleTabMobile = (e) => {
     const id = e.currentTarget.id;
@@ -277,6 +270,8 @@ export default function Warn(props) {
   useEffect(() => {
     setDatafilteropen(open.value);
     setDatafilterclosed(closed.value);
+
+    // eslint-disable-next-line
   }, [open.value, closed.value]);
 
   // by Mr Loc
@@ -408,6 +403,8 @@ export default function Warn(props) {
       setDatafilter([...t]);
     } else {
     }
+
+    // eslint-disable-next-line
   }, [dataWarn.value, warnfilter.value, projectwarnfilter.value]);
 
   // by Mr Loc
@@ -422,6 +419,8 @@ export default function Warn(props) {
     return () => {
       warntab.value = "all";
     };
+
+    // eslint-disable-next-line
   }, [dataWarn.value]);
 
   return (
@@ -835,27 +834,11 @@ export default function Warn(props) {
         </div>
       )}
 
-      {delWarnState ? (
-        <div className="DAT_ReportPopup">
-          <RaiseBox handleClose={handleCloseDel} />
+      {popupState
+        ? <div className="DAT_PopupBG">
+          <WarnPopup boxid={boxid} level={level} plant={plant} device={device} cause={cause} solution={solution} type={type} handleClose={handleClosePopup} />
         </div>
-      ) : (
-        <></>
-      )}
-
-      {infowarnState ? (
-        <Info
-          boxid={boxid}
-          level={level}
-          plant={plant}
-          device={device}
-          cause={cause}
-          solution={solution}
-          handleClose={handleCloseInfo}
-        />
-      ) : (
-        <></>
-      )}
+        : <> </>}
     </>
   );
 }

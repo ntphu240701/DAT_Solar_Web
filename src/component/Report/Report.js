@@ -13,7 +13,6 @@ import { host } from "../Lang/Contant";
 
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import { CiEdit } from "react-icons/ci";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdOutlinePostAdd } from "react-icons/md";
 import { IoTrashOutline } from "react-icons/io5";
 
@@ -25,32 +24,27 @@ export const ReportData = signal([]);
 export default function Report(props) {
   const dataLang = useIntl();
   const usr = useSelector((state) => state.admin.usr);
-  const [createState, setCreateState] = useState(false);
-  const [editState, setEditState] = useState(false);
+  const [viewState, setViewState] = useState("default");
   const [popupState, setPopupState] = useState(false);
-
-  const handleCloseCreate = () => {
-    setCreateState(false);
-  };
-
-  const handleCloseEdit = () => {
-    setEditState(false);
-  };
-
-  const handleCloseDel = () => {
-    setPopupState(false);
-  };
 
   const handleDeleteReport = (e) => {
     setPopupState(true);
     idReport.value = e.currentTarget.id;
   };
 
+  const handleCloseDel = () => {
+    setPopupState(false);
+  };
+
   const handleEditReport = (e) => {
-    setEditState(true);
+    setViewState("edit");
     editData.value = ReportData.value.find(
       (item) => item.id == e.currentTarget.id
     ); //[{},{},{},{}] filrter [{}], find =>{}
+  };
+
+  const handleCloseView = () => {
+    setViewState("default");
   };
 
   useEffect(() => {
@@ -77,7 +71,7 @@ export default function Report(props) {
         {ruleInfor.value.setting.report.add ? (
           <button
             className="DAT_ReportHeader_New"
-            onClick={() => setCreateState(true)}
+            onClick={() => setViewState("create")}
           >
             <span>
               <MdOutlinePostAdd color="white" size={20} />
@@ -144,26 +138,26 @@ export default function Report(props) {
         </div>
       </div>
 
-      <div className="DAT_ReportCreate"
+      <div className="DAT_ViewPopup"
         style={{
-          height: createState ? "100vh" : "0px",
+          height: viewState === "default" ? "0px" : "100vh",
           transition: "0.5s",
         }}
       >
-        {createState ? <Create handleClose={handleCloseCreate} /> : <></>}
-      </div>
-
-      <div className="DAT_ReportEdit"
-        style={{
-          height: editState ? "100vh" : "0px",
-          transition: "0.5s",
-        }}
-      >
-        {editState ? <ReportEdit handleClose={handleCloseEdit} /> : <></>}
+        {(() => {
+          switch (viewState) {
+            case "create":
+              return <Create handleClose={handleCloseView} />;
+            case "edit":
+              return <ReportEdit handleClose={handleCloseView} />;
+            default:
+              return <></>;
+          }
+        })()}
       </div>
 
       {popupState ? (
-        <div className="DAT_ReportPopup">
+        <div className="DAT_PopupBG">
           <Popup handleClose={handleCloseDel} />
         </div>
       ) : (

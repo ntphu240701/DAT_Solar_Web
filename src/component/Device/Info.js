@@ -196,13 +196,13 @@ export default function Info(props) {
                       >
                         {dataLang.formatMessage({ id: "SingleCommand" })}
                       </button>
-                      <button className="DAT_Info_Header_Right_Item"
+                      {/* <button className="DAT_Info_Header_Right_Item"
                         id="customized"
                         onClick={() => { setNav("customized") }}
                         style={{ color: nav === "customized" ? "rgba(11, 25, 103)" : "gray", borderBottom: nav === "customized" ? "solid 2px rgba(11, 25, 103)" : "solid 2px white" }}
                       >
                         {dataLang.formatMessage({ id: "CustomizedCommand" })}
-                      </button>
+                      </button> */}
                       <button className="DAT_Info_Header_Right_Item"
                         id="log"
                         onClick={() => { setNav("log") }}

@@ -13,21 +13,19 @@ import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { GoProject } from "react-icons/go";
-import { IoMdMore } from "react-icons/io";
-import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
-import { RxCross2 } from "react-icons/rx";
-import { PiUsersFour } from "react-icons/pi";
-import { CiSearch } from "react-icons/ci";
 import { AiOutlineUserAdd, AiOutlineUsergroupAdd } from "react-icons/ai";
-import { FiEdit } from "react-icons/fi";
 import { lowercasedata } from "../ErrorSetting/ErrorSetting";
-import { IoCaretBackOutline } from "react-icons/io5";
-import { ruleInfor } from "../../App";
 import EditRole from "../Role/EditRole";
 import { Usr_, roleData } from "../Role/Role";
 import PopupState, { bindMenu, bindToggle } from "material-ui-popup-state";
 import { Menu, MenuItem } from "@mui/material";
+
+import { IoCaretBackOutline } from "react-icons/io5";
+import { FiEdit } from "react-icons/fi";
+import { IoMdMore } from "react-icons/io";
+import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
+import { PiUsersFour } from "react-icons/pi";
+import { CiSearch } from "react-icons/ci";
 
 //DATA TEMP
 export const group = signal([]);
@@ -43,7 +41,7 @@ const datafilter = signal();
 
 export default function GroupRole(props) {
   const dataLang = useIntl();
-  const [filter, setFilter] = useState(false);
+  // const [filter, setFilter] = useState(false);
   const [createState, setCreateState] = useState(false);
   const [addState, setAddState] = useState(false);
   const [popupState, setPopupState] = useState(false);
@@ -60,13 +58,13 @@ export default function GroupRole(props) {
       selectAllRowsItemText: dataLang.formatMessage({ id: "showAll" }),
     };
 
-    const handleModify = (e, type) => {
-      const id = e.currentTarget.id;
-      var arr = id.split("_");
+    // const handleModify = (e, type) => {
+    //   const id = e.currentTarget.id;
+    //   var arr = id.split("_");
 
-      const mod = document.getElementById(arr[0] + "_Modify");
-      mod.style.display = type;
-    };
+    //   const mod = document.getElementById(arr[0] + "_Modify");
+    //   mod.style.display = type;
+    // };
 
     const columnGroupRole = [
       {
@@ -153,26 +151,26 @@ export default function GroupRole(props) {
               //   </span>
               // </div>
               <PopupState variant="popper" popupId="demo-popup-popper">
-              {(popupState) => (<div className="DAT_TableEdit">
-                <IoMdMore size={20}   {...bindToggle(popupState)} />
-                <Menu {...bindMenu(popupState)}>
-                 
-                    <MenuItem  id={user.id_} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                {(popupState) => (<div className="DAT_TableEdit">
+                  <IoMdMore size={20}   {...bindToggle(popupState)} />
+                  <Menu {...bindMenu(popupState)}>
+
+                    <MenuItem id={user.id_} onClick={(e) => { handleEdit(e); popupState.close() }}>
                       <FiEdit size={14} />&nbsp;
                       {dataLang.formatMessage({ id: "change" })}
                     </MenuItem>
-                  
-                 
-                    <MenuItem  id={user.id_} onClick={(e) => { handleDeleteUser(e); popupState.close() }}>
+
+
+                    <MenuItem id={user.id_} onClick={(e) => { handleDeleteUser(e); popupState.close() }}>
                       <IoTrashOutline size={16} />
                       &nbsp;
                       {dataLang.formatMessage({ id: "delete" })}
                     </MenuItem>
-                    
-                
-                </Menu>
-              </div>)}
-            </PopupState>
+
+
+                  </Menu>
+                </div>)}
+              </PopupState>
             )}
             {/* <div
               className="DAT_ModifyBox"
@@ -258,9 +256,9 @@ export default function GroupRole(props) {
     };
     const [userList, setUserlist] = useState(false);
 
-    useEffect(() => {
-      console.log(datafilter.value);
-    }, [datafilter.value]);
+    // useEffect(() => {
+    //   console.log(datafilter.value);
+    // }, [datafilter.value]);
 
     const colorbackground = {
       master: "rgba(255, 0, 0)",
@@ -745,7 +743,7 @@ export default function GroupRole(props) {
               </div>
               <button
                 className="DAT_ProjectHeaderMobile_Top_New"
-                // onClick={() => setRoleState("create")}
+              // onClick={() => setRoleState("create")}
               >
                 <IoAddOutline color="white" size={20} />
               </button>
@@ -873,7 +871,7 @@ export default function GroupRole(props) {
       )}
 
       {editrole ? (
-        <div className="DAT_RolePopup">
+        <div className="DAT_PopupBG">
           <EditRole handleClose={handleCloseEditRole} />
         </div>
       ) : (

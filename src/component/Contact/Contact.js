@@ -11,12 +11,7 @@ import { isMobile } from "../Navigation/Navigation";
 
 export default function Contact(props) {
   const dataLang = useIntl();
-  const [popupState, setPopupState] = useState(false);
   const [contactState, setContactState] = useState("default");
-
-  const handleCloseAva = () => {
-    setPopupState(false);
-  }
 
   const handleClose = () => {
     setContactState("default");
@@ -107,7 +102,7 @@ export default function Contact(props) {
               <div>Logo</div>
               {ruleInfor.value.setting.contact.edit === false
                 ? <div></div>
-                : <div onClick={() => (setPopupState(true))}>
+                : <div onClick={() => (setContactState("editAva"))}>
                   {dataLang.formatMessage({ id: 'edits' })}
                 </div>
               }
@@ -120,10 +115,8 @@ export default function Contact(props) {
         </div>
       </div>
 
-      <div className="DAT_ContactInfo"
-        style={{
-          height: contactState === "default" ? "0px" : "100vh",
-        }}
+      <div className="DAT_PopupBG"
+        style={{ height: contactState === "default" ? "0px" : "100vh" }}
       >
         {(() => {
           switch (contactState) {
@@ -131,19 +124,13 @@ export default function Contact(props) {
               return <EditContactInfo mode="RegisterInf" handleClose={handleClose} />;
             case "editContactInf":
               return <EditContactInfo mode="ContactInf" handleClose={handleClose} />;
+            case "editAva":
+              return <PopupAvatar handleClose={handleClose} />;
             default:
               return <></>;
           }
         })()}
       </div>
-
-      {popupState ? (
-        <div className="DAT_PopupAvatar">
-          <PopupAvatar handleClose={handleCloseAva} />
-        </div>
-      ) : (
-        <></>
-      )}
     </>
   );
 }

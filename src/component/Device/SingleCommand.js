@@ -2,15 +2,15 @@ import React, { useEffect, useReducer, useState } from 'react';
 import "./Device.scss";
 
 import { useIntl } from 'react-intl';
-
-import { FaCheckCircle } from 'react-icons/fa';
 import { signal } from '@preact/signals-react';
 import axios from 'axios';
 import { host } from '../Lang/Contant';
 import { info } from './Device';
-import { Token } from '../../App';
+import { COLOR, Token } from '../../App';
 import { alertDispatch } from '../Alert/Alert';
-import { set } from 'lodash';
+import { BeatLoader } from 'react-spinners';
+
+import { FaCheckCircle } from 'react-icons/fa';
 
 const remote = signal(255);
 
@@ -27,6 +27,7 @@ export default function SingleCommand(props) {
     const [min, setMin] = useState("");
     const [max, setMax] = useState("");
     const [result, setResult] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const commandData = [
         // AC Start Voltage
@@ -863,70 +864,43 @@ export default function SingleCommand(props) {
         }
     }
 
-    const stopTimer = () => {
-        clearInterval(intervalIDRef.current);
-        intervalIDRef.current = null;
-    };
+    const startTimer = () => {
+        intervalIDRef.current = setInterval(async () => {
+            clearInterval(intervalIDRef.current);
+            intervalIDRef.current = null;
 
-    const startTimer = async () => {
-        // intervalIDRef.current = setInterval(async () => {
-        if (remote.value !== 255) {
-            // switch (info.value.pdata.mode) {
-            //     case 'CONSUMPTION':
-            if (remote.value < commandData.length) {
-                // let key = commandData[remote.value]
-                // console.log(key)
+            if (commandtype === "read") {
+                if (step === 0) {
+                    let res = await invtCloud('{"deviceCode": "' + info.value.plogger + '"}', Token.value.token)
+                    console.log(res)
+                    if (res.ret === 0) {
+                        setLoading(false)
+                        setInvt(res.data)
+                        setStep(1)
+                    }
+                }
+            }
+
+            if (commandtype === "Set") {
+                remote.value = 0
                 console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}')
                 let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}', Token.value.token)
                 console.log(res)
                 if (res.ret === 0) {
+                    setLoading(false)
                     alertDispatch(dataLang.formatMessage({ id: "alert_6" }))
+
+                    let number = document.getElementById(key).value;
+                    setResult(number);
+                    let name = commandData.find(item => item.key === key && item.type === commandtype).name;
+                    setCommandName(name);
+                    let unit = commandData.find(item => item.key === key && item.type === commandtype).unit;
+                    setUnit(unit);
                 } else {
                     alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
                 }
-                remote.value = remote.value + 1
-            } else {
-                remote.value = 255
-                // stopTimer()
             }
-            //     break;
-            // case 'HYBRID':
-            //     if (remote.value < config_hybrid.length) {
-            //         let key = config_hybrid[remote.value].key
-            //         console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}')
-            //         let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}', Token.value.token)
-            //         console.log(res)
-            //         if (res.ret === 0) {
-            //             alertDispatch(dataLang.formatMessage({ id: "alert_6" }))
-            //         } else {
-            //             alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
-            //         }
-            //         remote.value = remote.value + 1
-            //     } else {
-            //         remote.value = 255
-            //         stopTimer()
-            //     }
-            //     break;
-            // default:
-            //     if (remote.value < config_grid.length) {
-            //         let key = config_grid[remote.value].key
-            //         console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}')
-            //         let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}', Token.value.token)
-            //         console.log(res)
-            //         if (res.ret === 0) {
-            //             alertDispatch(dataLang.formatMessage({ id: "alert_6" }))
-            //         } else {
-            //             alertDispatch(dataLang.formatMessage({ id: "alert_7" }))
-            //         }
-            //         remote.value = remote.value + 1
-            //     } else {
-            //         remote.value = 255
-            //         stopTimer()
-            //     }
-            //     break;
-            // }
-        }
-        // }, 500);
+        }, 2000)
     };
 
     const handleChange = (e) => {
@@ -935,34 +909,17 @@ export default function SingleCommand(props) {
         const datatype = e.target.value.split("-")[2];
         const min = e.target.value.split("-")[3];
         const max = e.target.value.split("-")[4];
-        const unit = e.target.value.split("-")[5];
         setCommandType(type);
         setKey(key);
         setDatatype(datatype);
         setMin(min);
         setMax(max);
-        setUnit(unit);
-        setResult("");
     };
 
     const handleSend = async (e) => {
         e.preventDefault();
-
-        if (commandtype === "read") {
-            if (step === 0) {
-                let res = await invtCloud('{"deviceCode": "' + info.value.plogger + '"}', Token.value.token)
-                console.log(res)
-                if (res.ret === 0) {
-                    setInvt(res.data)
-                    setStep(1)
-                }
-            }
-        }
-
-        if (commandtype === "Set") {
-            remote.value = 0
-            startTimer()
-        }
+        setLoading(true);
+        startTimer();
     };
 
     useEffect(() => {
@@ -972,14 +929,26 @@ export default function SingleCommand(props) {
                 case "HYBRID":
                     let number_hybrid = datatype === 'number' ? parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2) : parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal)
                     setResult(number_hybrid);
-                    let name_hybrid = commandData_hybrid.filter(item => item.key === key)[0].name;
+                    let name_hybrid = commandData_hybrid.find(item => item.key === key).name;
                     setCommandName(name_hybrid);
+                    let unit_hybrid = commandData_hybrid.find(item => item.key === key).unit;
+                    setUnit(unit_hybrid);
+                    break;
+                case "CONSUMPTION":
+                    let number_con = datatype === 'number' ? parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2) : parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal)
+                    setResult(number_con);
+                    let name_con = commandData.find(item => item.key === key).name;
+                    setCommandName(name_con);
+                    let unit_con = commandData.find(item => item.key === key).unit;
+                    setUnit(unit_con);
                     break;
                 default:
                     let number = datatype === 'number' ? parseFloat(invt[info.value.psetting[key].register] * info.value.psetting[key].cal).toFixed(2) : parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal)
                     setResult(number);
-                    let name = commandData.filter(item => item.key === key)[0].name;
+                    let name = commandData.find(item => item.key === key).name;
                     setCommandName(name);
+                    let unit = commandData.find(item => item.key === key).unit;
+                    setUnit(unit);
                     break;
             }
         }
@@ -998,24 +967,18 @@ export default function SingleCommand(props) {
                             <div className="DAT_Info_Databox_SingleCommand_Content_Item_Tit">
                                 {dataLang.formatMessage({ id: 'CommandName' })}:
                             </div>
-                            {result === "" ? <></>
-                                :
-                                <div className="DAT_Info_Databox_SingleCommand_Content_Item_Content">
-                                    {commandName}
-                                </div>
-                            }
+                            <div className="DAT_Info_Databox_SingleCommand_Content_Item_Content">
+                                {commandName}
+                            </div>
                         </div>
 
                         <div className="DAT_Info_Databox_SingleCommand_Content_Item">
                             <div className="DAT_Info_Databox_SingleCommand_Content_Item_Tit">
                                 {dataLang.formatMessage({ id: 'ReadResult' })}:
                             </div>
-                            {result === "" ? <></>
-                                :
-                                <div className="DAT_Info_Databox_SingleCommand_Content_Item_Content">
-                                    {result} {unit}
-                                </div>
-                            }
+                            <div className="DAT_Info_Databox_SingleCommand_Content_Item_Content">
+                                {result} {unit}
+                            </div>
                         </div>
 
                         <div className="DAT_Info_Databox_SingleCommand_Content_Item">
@@ -1023,13 +986,23 @@ export default function SingleCommand(props) {
                                 {dataLang.formatMessage({ id: 'CommandState' })}:
                             </div>
                             <div className="DAT_Info_Databox_SingleCommand_Content_Item_Content">
-                                {result === ""
-                                    ? <></>
-                                    : <>
-                                        <FaCheckCircle size={16} color="green" />
-                                        <span style={{ color: "green" }}>
-                                            {dataLang.formatMessage({ id: 'success' })}
+                                {loading
+                                    ? <>
+                                        <BeatLoader color={COLOR.value.SecondaryColor} size={10} />
+                                        <span style={{ color: COLOR.value.SecondaryColor }}>
+                                            {dataLang.formatMessage({ id: 'Loading' })}
                                         </span>
+                                    </>
+                                    : <>
+                                        {result === ""
+                                            ? <></>
+                                            : <>
+                                                <FaCheckCircle size={16} color="green" />
+                                                <span style={{ color: "green" }}>
+                                                    {dataLang.formatMessage({ id: 'success' })}
+                                                </span>
+                                            </>
+                                        }
                                     </>
                                 }
                             </div>
@@ -1075,7 +1048,16 @@ export default function SingleCommand(props) {
                                             <select onChange={(e) => handleChange(e)}>
                                                 <option style={{ display: "none" }}>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
                                                 {commandData_hybrid.map((item, i) => {
-                                                    return <option key={i} value={`${item.type}-${item.key}-${item.datatype}-${item.min}-${item.max}-${item.unit}`}>{item.name}</option>
+                                                    return <option key={i} value={`${item.type}-${item.key}-${item.datatype}-${item.min}-${item.max}`}>{item.name}</option>
+                                                })}
+                                            </select>
+                                        </div>
+                                    case "CONSUMPTION":
+                                        return <div className="DAT_Info_Databox_SingleCommand_Content_Item_Content">
+                                            <select onChange={(e) => handleChange(e)}>
+                                                <option style={{ display: "none" }}>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
+                                                {commandData.map((item, i) => {
+                                                    return <option key={i} value={`${item.type}-${item.key}-${item.datatype}-${item.min}-${item.max}`}>{item.name}</option>
                                                 })}
                                             </select>
                                         </div>
@@ -1084,7 +1066,7 @@ export default function SingleCommand(props) {
                                             <select onChange={(e) => handleChange(e)}>
                                                 <option style={{ display: "none" }}>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
                                                 {commandData.map((item, i) => {
-                                                    return <option key={i} value={`${item.type}-${item.key}-${item.datatype}-${item.min}-${item.max}-${item.unit}`}>{item.name}</option>
+                                                    return <option key={i} value={`${item.type}-${item.key}-${item.datatype}-${item.min}-${item.max}`}>{item.name}</option>
                                                 })}
                                             </select>
                                         </div>

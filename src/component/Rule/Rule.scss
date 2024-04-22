@@ -228,24 +228,6 @@
     }
 }
 
-.DAT_RuleBG {
-    height: 100vh;
-    width: 100%;
-    position: fixed;
-    background-color: rgb(188, 188, 188, 0.7);
-    top: 0px;
-    right: 0;
-    z-index: 30;
-    overflow: hidden;
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
-}
-
 .DAT_CreateRule {
     position: relative;
     width: 95%;
@@ -388,19 +370,6 @@
             }
         }
     }
-}
-
-.DAT_PopupBG {
-    height: 100vh;
-    width: 100%;
-    position: fixed;
-    background-color: rgb(128, 128, 128, 0.7);
-    top: 0;
-    right: 0;
-    z-index: 25;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .DAT_ConfirmPopup_Box {

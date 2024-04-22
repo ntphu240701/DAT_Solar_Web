@@ -1,31 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./Home.scss";
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, } from "recharts";
 import moment from "moment-timezone";
 import ProjectData from "../Project/ProjectData";
 import { Empty, plantState, projectData, projtab } from "../Project/Project";
 import { sidebartab, sidebartabli } from "../Sidenar/Sidenar";
 import DataTable from "react-data-table-component";
 import { useSelector } from "react-redux";
-import {
-  Token,
-  convertUnit,
-  partnerInfor,
-  showUnit,
-  showUnitk,
-  userInfor,
-  COLOR,
-} from "../../App";
+import { Token, convertUnit, partnerInfor, showUnit, showUnitk, userInfor, COLOR, } from "../../App";
 import { host } from "../Lang/Contant";
 import { callApi } from "../Api/Api";
 import { signal } from "@preact/signals-react";
@@ -40,15 +23,15 @@ import Fade from "@mui/material/Fade";
 import Paper from "@mui/material/Paper";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import DatePicker from "react-datepicker";
+import { isMobile } from "../Navigation/Navigation";
+import { useNavigate } from "react-router-dom";
 
 import { FaSolarPanel, FaTree } from "react-icons/fa6";
 import { IoIosCloud } from "react-icons/io";
 import { GiCoalWagon } from "react-icons/gi";
 import { FaMoneyBill } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import { VscDashboard } from "react-icons/vsc";
 import { IoCalendarOutline } from "react-icons/io5";
-import { isMobile } from "../Navigation/Navigation";
 
 const plant = signal([]);
 const logger = signal([]);
@@ -103,12 +86,12 @@ export default function Home(props) {
   }
 `;
 
-  const divStyle = {
-    animationName: "home",
-    animationDuration: "30s",
-    animationTimingFunction: "linear",
-    animationIterationCount: "infinite",
-  };
+  // const divStyle = {
+  //   animationName: "home",
+  //   animationDuration: "30s",
+  //   animationTimingFunction: "linear",
+  //   animationIterationCount: "infinite",
+  // };
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: "row" }),
