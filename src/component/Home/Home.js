@@ -1,14 +1,31 @@
 import React, { useEffect, useState } from "react";
 import "./Home.scss";
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import moment from "moment-timezone";
 import ProjectData from "../Project/ProjectData";
 import { Empty, plantState, projectData, projtab } from "../Project/Project";
 import { sidebartab, sidebartabli } from "../Sidenar/Sidenar";
 import DataTable from "react-data-table-component";
 import { useSelector } from "react-redux";
-import { Token, convertUnit, partnerInfor, showUnit, showUnitk, userInfor, COLOR, } from "../../App";
+import {
+  Token,
+  convertUnit,
+  partnerInfor,
+  showUnit,
+  showUnitk,
+  userInfor,
+  COLOR,
+} from "../../App";
 import { host } from "../Lang/Contant";
 import { callApi } from "../Api/Api";
 import { signal } from "@preact/signals-react";
@@ -23,15 +40,16 @@ import Fade from "@mui/material/Fade";
 import Paper from "@mui/material/Paper";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import DatePicker from "react-datepicker";
-import { isMobile } from "../Navigation/Navigation";
-import { useNavigate } from "react-router-dom";
 
 import { FaSolarPanel, FaTree } from "react-icons/fa6";
 import { IoIosCloud } from "react-icons/io";
 import { GiCoalWagon } from "react-icons/gi";
 import { FaMoneyBill } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { VscDashboard } from "react-icons/vsc";
 import { IoCalendarOutline } from "react-icons/io5";
+import { isMobile } from "../Navigation/Navigation";
+import { set } from "lodash";
 
 const plant = signal([]);
 const logger = signal([]);
@@ -74,6 +92,8 @@ export default function Home(props) {
       ((data - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min
     );
   };
+  const [step, setStep] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const keyframes = `
   @keyframes home {
@@ -86,12 +106,12 @@ export default function Home(props) {
   }
 `;
 
-  // const divStyle = {
-  //   animationName: "home",
-  //   animationDuration: "30s",
-  //   animationTimingFunction: "linear",
-  //   animationIterationCount: "infinite",
-  // };
+  const divStyle = {
+    animationName: "home",
+    animationDuration: "30s",
+    animationTimingFunction: "linear",
+    animationIterationCount: "infinite",
+  };
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: "row" }),
@@ -174,28 +194,7 @@ export default function Home(props) {
     plantState.value = "info";
   };
 
-  const initMap = async (data) => {
-    const { AdvancedMarkerElement } = await loader.importLibrary("marker");
-    const { Map } = await loader.importLibrary("maps");
 
-    let map = new Map(document.getElementById("map"), defaultProps);
-
-    data.map((item) => {
-      const marker = { lat: parseFloat(item.lat), lng: parseFloat(item.long) };
-      const markerElement = new AdvancedMarkerElement({
-        position: marker,
-        map: map,
-        title: item.plantname,
-      });
-      markerElement.addListener("click", () => {
-        plantState.value = "info";
-        projectData.value = item;
-        sidebartab.value = "Monitor";
-        sidebartabli.value = "/Project";
-      });
-      return markerElement;
-    });
-  };
 
   const invtCloud = async (data, token) => {
     var reqData = {
@@ -242,6 +241,166 @@ export default function Home(props) {
     );
   };
 
+
+
+  const handleChart = (date) => {
+    if (chart == "month") {
+      setD({ ...d, month: moment(date).format("MM/YYYY") });
+      let arr = moment(date).format("MM/YYYY").split("/");
+      const daysInMonth = new Date(arr[1], arr[0], 0).getDate();
+      let datamonth_ = [];
+      for (let i = 1; i <= daysInMonth; i++) {
+        datamonth_ = [
+          ...datamonth_,
+          {
+            date: i < 10 ? `0${i}` : `${i}`,
+            [dataLang.formatMessage({ id: "monthOutput" })]: 0,
+          },
+        ];
+      }
+      let sum_month = [];
+      plant.value.map(async (item_plant, i) => {
+        let chart = await callApi("post", host.DATA + "/getMonthChart", {
+          plantid: item_plant.plantid_,
+          month: moment(date).format("MM/YYYY"),
+        });
+
+        if (chart.status) {
+          // if (item_plant.state === 1) {
+          sum_month[i] = chart.data.data
+            .map((item) => item.value)
+            .reduce((a, b) => Number(a) + Number(b), 0);
+          chart.data.data.map((item, j) => {
+            let index = datamonth_.findIndex((d) => d.date == item.date);
+            datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })] =
+              parseFloat(
+                Number(
+                  datamonth_[index][
+                  dataLang.formatMessage({ id: "monthOutput" })
+                  ]
+                ) + Number(item.value)
+              ).toFixed(2);
+          });
+        } else {
+          sum_month[i] = 0;
+        }
+        // } else {
+        //   sum_month[i] = 0;
+        // }
+
+        if (i == plant.value.length - 1) {
+          let total_month = parseFloat(
+            sum_month.reduce((a, b) => Number(a) + Number(b), 0)
+          ).toFixed(2);
+          setMonthlyProduction(total_month);
+          setDatamonth(datamonth_);
+        }
+      });
+    } else if (chart === "year") {
+      setD({ ...d, year: moment(date).format("YYYY") });
+
+      let datayear_ = [];
+      for (let i = 1; i <= 12; i++) {
+        datayear_ = [
+          ...datayear_,
+          {
+            month: i < 10 ? `0${i}` : `${i}`,
+            [dataLang.formatMessage({ id: "yearOutput" })]: 0,
+          },
+        ];
+      }
+      let sum_year = [];
+
+      plant.value.map(async (item_plant, i) => {
+        let chartY = await callApi("post", host.DATA + "/getYearChart", {
+          plantid: item_plant.plantid_,
+          year: moment(date).format("YYYY"),
+        });
+
+        if (chartY.status) {
+          // if (item_plant.state === 1) {
+          sum_year[i] = chartY.data.data
+            .map((item) => item.value)
+            .reduce((a, b) => Number(a) + Number(b), 0);
+          chartY.data.data.map((item, j) => {
+            let index = datayear_.findIndex((d) => d.month == item.month);
+            datayear_[index][dataLang.formatMessage({ id: "yearOutput" })] =
+              parseFloat(
+                Number(
+                  datayear_[index][
+                  dataLang.formatMessage({ id: "yearOutput" })
+                  ]
+                ) + Number(item.value)
+              ).toFixed(2);
+          });
+        } else {
+          sum_year[i] = 0;
+        }
+        // } else {
+        //   sum_year[i] = 0;
+        // }
+
+        if (i == plant.value.length - 1) {
+
+          let total_year = parseFloat(
+            sum_year.reduce((a, b) => Number(a) + Number(b), 0)
+          ).toFixed(2);
+          setYearlyProduction(total_year);
+          setDatayear(datayear_);
+        }
+      });
+    }
+  };
+
+
+
+  const getPlant = async () => {
+    let d = await callApi("post", host.DATA + "/getPlant", {
+      usr: usr,
+      partnerid: partnerInfor.value.partnerid,
+      type: userInfor.value.type,
+    });
+    if (d.status === true) {
+      // initMap(d.data);
+      setProject(d.data);
+      // getChart(d.data);
+      setTotal(d.data.length);
+      setOnline(d.data.filter((data) => data.state == 1).length);
+      setOffline(d.data.filter((data) => data.state == 0).length);
+      setWarn(d.data.filter((data) => data.warn == 0).length);
+      setTrial(d.data.filter((data) => data.shared == 1).length);
+      plant.value = d.data;
+      plant.value = plant.value.sort((a, b) => a.plantid_ - b.plantid_);
+      setStep(1)
+    }
+  };
+
+  const getLogger = async () => {
+    let d = await callApi("post", host.DATA + "/getallLogger", {
+      usr: usr,
+      partnerid: partnerInfor.value.partnerid,
+      type: userInfor.value.type,
+    });
+    if (d.status) {
+      logger.value = d.data;
+      d.data.map(async (item,i) => {
+        const res = await invtCloud(
+          '{"deviceCode":"' + item.psn + '"}',
+          Token.value.token
+        );
+        if (res.ret === 0) {
+          setInvt((pre) => ({ ...pre, [item.psn]: res.data }));
+        } else {
+          setInvt((pre) => ({ ...pre, [item.psn]: {} }));
+        }
+        if(i == d.data.length - 1){
+          setStep(2)
+        }
+      });
+      setStep(2)
+    }
+  };
+
   const getChart = async (data) => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0 nên cần cộng thêm 1
@@ -274,11 +433,11 @@ export default function Home(props) {
     let sum_month = [];
     let sum_year = [];
     data.map(async (item_plant, i) => {
-      if (item_plant.state) {
-        cap[i] = item_plant.capacity;
-      } else {
-        cap[i] = 0;
-      }
+      // if (item_plant.state) {
+      cap[i] = item_plant.capacity;
+      // } else {
+      //   cap[i] = 0;
+      // }
 
       let chart = await callApi("post", host.DATA + "/getMonthChart", {
         plantid: item_plant.plantid_,
@@ -333,7 +492,7 @@ export default function Home(props) {
         sum_year[i] = 0;
       }
 
-      if (i == plant.value.length - 1) {
+      if (i == data.length - 1) {
         let total_month = parseFloat(
           sum_month.reduce((a, b) => Number(a) + Number(b), 0)
         ).toFixed(2);
@@ -348,120 +507,153 @@ export default function Home(props) {
           cap.reduce((a, b) => Number(a) + Number(b), 0)
         ).toFixed(2);
         setCapacity(total);
-
         setDatamonth(datamonth_);
         setDatayear(datayear_);
+        setStep(3);
       }
     });
   };
 
-  const handleChart = (date) => {
-    if (chart == "month") {
-      setD({ ...d, month: moment(date).format("MM/YYYY") });
-      let arr = moment(date).format("MM/YYYY").split("/");
-      const daysInMonth = new Date(arr[1], arr[0], 0).getDate();
-      let datamonth_ = [];
-      for (let i = 1; i <= daysInMonth; i++) {
-        datamonth_ = [
-          ...datamonth_,
-          {
-            date: i < 10 ? `0${i}` : `${i}`,
-            [dataLang.formatMessage({ id: "monthOutput" })]: 0,
-          },
-        ];
-      }
-      let sum_month = [];
-      plant.value.map(async (item_plant, i) => {
-        let chart = await callApi("post", host.DATA + "/getMonthChart", {
-          plantid: item_plant.plantid_,
-          month: moment(date).format("MM/YYYY"),
-        });
+  const initMap = async (data) => {
+    const { AdvancedMarkerElement } = await loader.importLibrary("marker");
+    const { Map } = await loader.importLibrary("maps");
 
-        if (chart.status) {
-          if (item_plant.state === 1) {
-            sum_month[i] = chart.data.data
-              .map((item) => item.value)
-              .reduce((a, b) => Number(a) + Number(b), 0);
-            chart.data.data.map((item, j) => {
-              let index = datamonth_.findIndex((d) => d.date == item.date);
-              datamonth_[index][dataLang.formatMessage({ id: "monthOutput" })] =
-                parseFloat(
-                  Number(
-                    datamonth_[index][
-                    dataLang.formatMessage({ id: "monthOutput" })
-                    ]
-                  ) + Number(item.value)
-                ).toFixed(2);
-            });
-          } else {
-            sum_month[i] = 0;
-          }
-        } else {
-          sum_month[i] = 0;
-        }
+    let map = new Map(document.getElementById("map"), defaultProps);
 
-        if (i == plant.value.length - 1) {
-          let total_month = parseFloat(
-            sum_month.reduce((a, b) => Number(a) + Number(b), 0)
-          ).toFixed(2);
-          setMonthlyProduction(total_month);
-          setDatamonth(datamonth_);
-        }
+    data.map((item) => {
+      const marker = { lat: parseFloat(item.lat), lng: parseFloat(item.long) };
+      const markerElement = new AdvancedMarkerElement({
+        position: marker,
+        map: map,
+        title: item.plantname,
       });
-    } else if (chart === "year") {
-      setD({ ...d, year: moment(date).format("YYYY") });
-
-      let datayear_ = [];
-      for (let i = 1; i <= 12; i++) {
-        datayear_ = [
-          ...datayear_,
-          {
-            month: i < 10 ? `0${i}` : `${i}`,
-            [dataLang.formatMessage({ id: "yearOutput" })]: 0,
-          },
-        ];
-      }
-      let sum_year = [];
-
-      plant.value.map(async (item_plant, i) => {
-        let chartY = await callApi("post", host.DATA + "/getYearChart", {
-          plantid: item_plant.plantid_,
-          year: moment(date).format("YYYY"),
-        });
-
-        if (chartY.status) {
-          if (item_plant.state === 1) {
-            sum_year[i] = chartY.data.data
-              .map((item) => item.value)
-              .reduce((a, b) => Number(a) + Number(b), 0);
-            chartY.data.data.map((item, j) => {
-              let index = datayear_.findIndex((d) => d.month == item.month);
-              datayear_[index][dataLang.formatMessage({ id: "yearOutput" })] =
-                parseFloat(
-                  Number(
-                    datayear_[index][
-                    dataLang.formatMessage({ id: "yearOutput" })
-                    ]
-                  ) + Number(item.value)
-                ).toFixed(2);
-            });
-          } else {
-            sum_year[i] = 0;
-          }
-        } else {
-          sum_year[i] = 0;
-        }
-
-        if (i == plant.value.length - 1) {
-          let total_year = parseFloat(
-            sum_year.reduce((a, b) => Number(a) + Number(b), 0)
-          ).toFixed(2);
-          setYearlyProduction(total_year);
-          setDatayear(datayear_);
-        }
+      markerElement.addListener("click", () => {
+        plantState.value = "info";
+        projectData.value = item;
+        sidebartab.value = "Monitor";
+        sidebartabli.value = "/Project";
       });
-    }
+      return markerElement;
+     
+    });
+    setStep(4)
   };
+
+  const getData = async (data) => {
+    var cal = {};
+    var num_ = {
+      bat_1: [],
+      bat_2: [],
+      bat_in_1: [],
+      bat_out_1: [],
+      con_1: [],
+      con_2: [],
+      grid_1: [],
+      grid_in_1: [],
+      grid_in_2: [],
+      grid_out_1: [],
+      grid_out_2: [],
+      pro_1: [],
+      pro_2: [],
+      pro_3: [],
+    };
+    let sun_ = {};
+
+    data.map((item, i) => {
+      Object.entries(item.pdata).map(([key, value]) => {
+        switch (value.type) {
+          case "sum":
+            let inum = [];
+            let register_ = JSON.parse(value.register);
+            register_.map((reg, j) => {
+              inum[j] = parseFloat(invt[item.psn]?.[reg] || 0);
+            });
+
+            // if (item.pstate) {
+            num_[key][i] = inum.reduce((accumulator, currentValue) => {
+              return Number(accumulator) + Number(currentValue);
+            }, 0);
+            // } else {
+            //   num_[key][i] = 0;
+            // }
+
+            if (i == data.length - 1) {
+              cal[key] = parseFloat(
+                num_[key].reduce((accumulator, currentValue) => {
+                  return Number(accumulator) + Number(currentValue);
+                }, 0) * parseFloat(value.cal)
+              ).toFixed(2);
+            }
+            break;
+          case "word":
+            let d = JSON.parse(value.register);
+            let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]] || 0];
+
+            const convertToDoublewordAndFloat = (word, type) => {
+              var doubleword = (word[1] << 16) | word[0];
+              var buffer = new ArrayBuffer(4);
+              var intView = new Int32Array(buffer);
+              var floatView = new Float32Array(buffer);
+              intView[0] = doubleword;
+              var float_value = floatView[0];
+
+              return type === "int"
+                ? parseFloat(doubleword).toFixed(2)
+                : parseFloat(float_value).toFixed(2) || 0;
+            };
+
+            // if (item.pstate) {
+            num_[key][i] = convertToDoublewordAndFloat(e, "int");
+            // } else {
+            //   num_[key][i] = 0;
+            // }
+
+            if (i == data.length - 1) {
+              cal[key] = parseFloat(
+                num_[key].reduce((accumulator, currentValue) => {
+                  return Number(accumulator) + Number(currentValue);
+                }, 0) * parseFloat(value.cal)
+              ).toFixed(2);
+            }
+            break;
+          default:
+            // if (item.pstate) {
+            num_[key][i] =
+              parseFloat(invt[item.psn]?.[value.register] || 0) *
+              parseFloat(value.cal);
+            if (key == "pro_2") {
+              sun_[item.pplantid] =
+                parseFloat(invt[item.psn]?.[value.register]) *
+                parseFloat(value.cal);
+            }
+            // } else {
+            //   num_[key][i] = 0;
+            //   sun_[item.pplantid] = 0;
+            // }
+
+            if (i == data.length - 1) {
+              cal[key] = parseFloat(
+                num_[key].reduce((accumulator, currentValue) => {
+                  return accumulator + currentValue;
+                })
+              ).toFixed(2);
+            }
+            break;
+        }
+      });
+    });
+    setSun(sun_);
+    // getPrice(plant.value, logger.value);
+    setProduction(cal?.pro_1 || 0);
+    setDailyProduction(cal?.pro_2 || 0);
+    setTotalProduction(cal?.pro_3 || 0);
+    console.log(cal, capacity);
+    let x = ((cal?.pro_1 / 1000) * 100) / capacity || 0;
+    console.log(x);
+    setPer(mapValue(x, in_min, in_max, out_min, out_max));
+    setStep(5);
+
+  }
 
   const getPrice = async (data, logger) => {
     var price = [];
@@ -494,11 +686,11 @@ export default function Home(props) {
                 ? parseFloat(doubleword).toFixed(2)
                 : parseFloat(float_value).toFixed(2) || 0;
             };
-            if (item.pstate) {
-              sum_logger[i] = convertToDoublewordAndFloat(e, "int");
-            } else {
-              sum_logger[i] = 0;
-            }
+            // if (item.pstate) {
+            sum_logger[i] = convertToDoublewordAndFloat(e, "int");
+            // } else {
+            //   sum_logger[i] = 0;
+            // }
 
             if (i == logger_.length - 1) {
               let total = parseFloat(
@@ -530,179 +722,54 @@ export default function Home(props) {
     });
   };
 
+
+  //step 1 get plant and logger 
   useEffect(() => {
-    let a = { is: 1 };
 
-    const getPlant = async () => {
-      let d = await callApi("post", host.DATA + "/getPlant", {
-        usr: usr,
-        partnerid: partnerInfor.value.partnerid,
-        type: userInfor.value.type,
-      });
-      if (d.status === true) {
-        initMap(d.data);
-        setProject(d.data);
-        getChart(d.data);
-        setTotal(d.data.length);
-        setOnline(d.data.filter((data) => data.state == 1).length);
-        setOffline(d.data.filter((data) => data.state == 0).length);
-        setWarn(d.data.filter((data) => data.warn == 0).length);
-        setTrial(d.data.filter((data) => data.shared == 1).length);
-        plant.value = d.data;
-        plant.value = plant.value.sort((a, b) => a.plantid_ - b.plantid_);
-      }
-    };
 
-    const getLogger = async () => {
-      let d = await callApi("post", host.DATA + "/getallLogger", {
-        usr: usr,
-        partnerid: partnerInfor.value.partnerid,
-        type: userInfor.value.type,
-      });
-      if (d.status) {
-        logger.value = d.data;
-        d.data.map(async (item) => {
-          const res = await invtCloud(
-            '{"deviceCode":"' + item.psn + '"}',
-            Token.value.token
-          );
-          if (res.ret === 0) {
-            setInvt((pre) => ({ ...pre, [item.psn]: res.data }));
-          } else {
-            setInvt((pre) => ({ ...pre, [item.psn]: {} }));
-          }
-        });
-      }
-    };
+    switch (step) {
+      case 0:
+        getPlant();
+        break;
+      case 1:
+        getLogger();
+        break;
+      case 2:
+        getChart(plant.value);
+        break;
+      case 3:
+        initMap(plant.value);
+        break;
+      case 4:
+        getData(logger.value);
+        break;
+      case 5:
+        getPrice(plant.value, logger.value);
+        coalsave.value = {
+          ...coalsave.value,
+          value: totalproduction,
+        };
+        break;
+      default:
+        break;
+    }
 
-    getPlant();
-    getLogger();
+
   }, [
-    lang,
-    usr,
-    partnerInfor.value.partnerid,
-    userInfor.value.type,
-    Token.value.token,
+    // lang,
+    // usr,
+    // partnerInfor.value.partnerid,
+    // userInfor.value.type,
+    // Token.value.token,
+    step
   ]);
 
   useEffect(() => {
-    var cal = {};
-    var num_ = {
-      bat_1: [],
-      bat_2: [],
-      bat_in_1: [],
-      bat_out_1: [],
-      con_1: [],
-      con_2: [],
-      grid_1: [],
-      grid_in_1: [],
-      grid_in_2: [],
-      grid_out_1: [],
-      grid_out_2: [],
-      pro_1: [],
-      pro_2: [],
-      pro_3: [],
-    };
-    let sun_ = {};
-
-    logger.value.map((item, i) => {
-      Object.entries(item.pdata).map(([key, value]) => {
-        switch (value.type) {
-          case "sum":
-            let inum = [];
-            let register_ = JSON.parse(value.register);
-            register_.map((reg, j) => {
-              inum[j] = parseFloat(invt[item.psn]?.[reg] || 0);
-            });
-
-            if (item.pstate) {
-              num_[key][i] = inum.reduce((accumulator, currentValue) => {
-                return Number(accumulator) + Number(currentValue);
-              }, 0);
-            } else {
-              num_[key][i] = 0;
-            }
-
-            if (i == logger.value.length - 1) {
-              cal[key] = parseFloat(
-                num_[key].reduce((accumulator, currentValue) => {
-                  return Number(accumulator) + Number(currentValue);
-                }, 0) * parseFloat(value.cal)
-              ).toFixed(2);
-            }
-            break;
-          case "word":
-            let d = JSON.parse(value.register);
-            let e = [invt[item.psn]?.[d[0]] || 0, invt[item.psn]?.[d[1]] || 0];
-
-            const convertToDoublewordAndFloat = (word, type) => {
-              var doubleword = (word[1] << 16) | word[0];
-              var buffer = new ArrayBuffer(4);
-              var intView = new Int32Array(buffer);
-              var floatView = new Float32Array(buffer);
-              intView[0] = doubleword;
-              var float_value = floatView[0];
-
-              return type === "int"
-                ? parseFloat(doubleword).toFixed(2)
-                : parseFloat(float_value).toFixed(2) || 0;
-            };
-
-            if (item.pstate) {
-              num_[key][i] = convertToDoublewordAndFloat(e, "int");
-            } else {
-              num_[key][i] = 0;
-            }
-
-            if (i == logger.value.length - 1) {
-              cal[key] = parseFloat(
-                num_[key].reduce((accumulator, currentValue) => {
-                  return Number(accumulator) + Number(currentValue);
-                }, 0) * parseFloat(value.cal)
-              ).toFixed(2);
-            }
-            break;
-          default:
-            if (item.pstate) {
-              num_[key][i] =
-                parseFloat(invt[item.psn]?.[value.register] || 0) *
-                parseFloat(value.cal);
-              if (key == "pro_2") {
-                sun_[item.pplantid] =
-                  parseFloat(invt[item.psn]?.[value.register]) *
-                  parseFloat(value.cal);
-              }
-            } else {
-              num_[key][i] = 0;
-              sun_[item.pplantid] = 0;
-            }
-
-            if (i == logger.value.length - 1) {
-              cal[key] = parseFloat(
-                num_[key].reduce((accumulator, currentValue) => {
-                  return accumulator + currentValue;
-                })
-              ).toFixed(2);
-            }
-            break;
-        }
-      });
-    });
-    setSun(sun_);
-    getPrice(plant.value, logger.value);
-    setProduction(cal?.pro_1 || 0);
-    setDailyProduction(cal?.pro_2 || 0);
-    setTotalProduction(cal?.pro_3 || 0);
-
-    let x = ((cal?.pro_1 / 1000) * 100) / capacity || 0;
-
-    setPer(mapValue(x, in_min, in_max, out_min, out_max));
-
-    coalsave.value = {
-      ...coalsave.value,
-      value: cal.pro_3,
-    };
-  }, [invt, usr]);
+    if(step === 5){
+      setStep(2)
+    }
+  
+  }, [lang]);
 
   return (
     <>
@@ -1345,9 +1412,9 @@ export default function Home(props) {
               {dataLang.formatMessage({ id: "rushhour" })}
             </div>
           </div>
-
+  
           {isMobile.value ? (
-            <>
+            <div className="DAT_Home_Rank-Container" >
               {plant.value.map((item, index) => {
                 return (
                   <div key={index} className="DAT_Home_Rank-ContentMobile">
@@ -1390,7 +1457,7 @@ export default function Home(props) {
                   </div>
                 );
               })}
-            </>
+            </div>
           ) : (
             <div className="DAT_Home_Rank-Content">
               <DataTable
@@ -1399,7 +1466,7 @@ export default function Home(props) {
                 data={plant.value}
                 pagination
                 paginationComponentOptions={paginationComponentOptions}
-                fixedHeader={true}
+                // fixedHeader={true}
                 noDataComponent={<Empty />}
               />
             </div>
