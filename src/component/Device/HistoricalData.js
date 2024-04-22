@@ -404,6 +404,24 @@ export default function HistoricalData(props) {
         setDataoption(option);
     }
 
+    const renderTooltipContent = (o) => {
+        const { payload = [], label } = o;
+        return (
+            <div className="customized-tooltip-content"
+                style={{ backgroundColor: "white", padding: "8px", border: "1px solid #ccc", borderRadius: "5px" }}
+            >
+                <span className="total">{`${label}`}</span>
+                <div className="list">
+                    {payload.map((entry, index) => (
+                        <div key={`item-${index}`} style={{ color: entry.color, marginTop: "8px" }}>
+                            {`${entry.name}: ${entry.value}`}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    };
+
     return (
         <div className="DAT_Info_Databox" id="HistoricalData">
             <div className="DAT_Info_Databox_Title">
@@ -885,8 +903,8 @@ export default function HistoricalData(props) {
                                                                 ]}
                                                             />
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                                            <Tooltip />
-                                                            <Legend />
+                                                            <Tooltip content={renderTooltipContent} />
+                                                            <Legend iconType="plainline" />
                                                             {dataoption.electricitygeneration.ACOutputFreqR ?
                                                                 <Line
                                                                     type="monotone"
@@ -925,8 +943,8 @@ export default function HistoricalData(props) {
                                                                     }, -Infinity),
                                                                 ]} />
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                                            <Tooltip />
-                                                            <Legend />
+                                                            <Tooltip content={renderTooltipContent} />
+                                                            <Legend iconType="plainline" />
                                                             {dataoption.electricitygeneration.ACVoltRUA ?
                                                                 <Line
                                                                     type="monotone"
@@ -979,8 +997,8 @@ export default function HistoricalData(props) {
                                                                 ]}
                                                             />
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                                            <Tooltip />
-                                                            <Legend />
+                                                            <Tooltip content={renderTooltipContent} />
+                                                            <Legend iconType="plainline" />
                                                             {dataoption.electricitygeneration.ACCurrentRUA ?
                                                                 <Line
                                                                     type="monotone"
@@ -1034,8 +1052,8 @@ export default function HistoricalData(props) {
                                                             />
 
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                                            <Tooltip />
-                                                            <Legend />
+                                                            <Tooltip content={renderTooltipContent} />
+                                                            <Legend iconType="plainline" />
                                                             {dataoption.electricitygeneration.DCCurrentPV1 ?
                                                                 <Line
                                                                     type="monotone"
@@ -1099,8 +1117,8 @@ export default function HistoricalData(props) {
                                                                 ]}
                                                             />
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                                            <Tooltip />
-                                                            <Legend />
+                                                            <Tooltip content={renderTooltipContent} />
+                                                            <Legend iconType="plainline" />
                                                             {dataoption.electricitygeneration.DCVoltPV1 ?
                                                                 <Line
                                                                     type="monotone"
@@ -1164,8 +1182,8 @@ export default function HistoricalData(props) {
                                                                 ]}
                                                             />
                                                             <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                                            <Tooltip />
-                                                            <Legend />
+                                                            <Tooltip content={renderTooltipContent} />
+                                                            <Legend iconType="plainline" />
                                                             {dataoption.electricitygeneration.DCPowerPV1 ?
                                                                 <Line
                                                                     type="monotone"
