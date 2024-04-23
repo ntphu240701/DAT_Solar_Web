@@ -383,7 +383,7 @@ export default function Home(props) {
     });
     if (d.status) {
       logger.value = d.data;
-      d.data.map(async (item,i) => {
+      d.data.map(async (item, i) => {
         const res = await invtCloud(
           '{"deviceCode":"' + item.psn + '"}',
           Token.value.token
@@ -393,7 +393,7 @@ export default function Home(props) {
         } else {
           setInvt((pre) => ({ ...pre, [item.psn]: {} }));
         }
-        if(i == d.data.length - 1){
+        if (i == d.data.length - 1) {
           setStep(2)
         }
       });
@@ -534,7 +534,7 @@ export default function Home(props) {
         sidebartabli.value = "/Project";
       });
       return markerElement;
-     
+
     });
     setStep(4)
   };
@@ -765,10 +765,10 @@ export default function Home(props) {
   ]);
 
   useEffect(() => {
-    if(step === 5){
+    if (step === 5) {
       setStep(2)
     }
-  
+
   }, [lang]);
 
   return (
@@ -1412,7 +1412,7 @@ export default function Home(props) {
               {dataLang.formatMessage({ id: "rushhour" })}
             </div>
           </div>
-  
+
           {isMobile.value ? (
             <div className="DAT_Home_Rank-Container" >
               {plant.value.map((item, index) => {

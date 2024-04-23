@@ -407,13 +407,34 @@
     }
 
     &_Rank {
-        // height: 300px;
         background-color: rgb(255, 255, 255);
         width: 100%;
         border-radius: 3px;
         // box-shadow: 2px 2px 5px rgba(198, 197, 197, 0.4);
         border: solid 1px rgba(198, 197, 197, 0.5);
-      
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+            width: 7px;
+            height: 10px;
+        }
+
+        /* Track */
+        &::-webkit-scrollbar-track {
+            background-color: rgba(0, 0, 0, 0);
+            border-radius: 2px;
+        }
+
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 5px;
+        }
+
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
 
         &-Head {
             display: flex;
@@ -442,7 +463,7 @@
         }
 
         &-ContentMobile {
-            width: 100%;
+            width: 95%;
             margin: auto;
             margin-bottom: 10px;
             border-radius: 5px;
@@ -591,40 +612,6 @@
         display: flex;
         flex-wrap: wrap;
         margin-bottom: 15px;
-        &_Rank{
-            &-Container{
-                width: 100%;
-                height: 300px;
-                overflow: hidden;
-                overflow-y: scroll;
-                padding: 5px;
-                box-sizing: border-box;
-                border-top: solid 1px rgba(198, 197, 197, 0.5);
-                // border-bottom: solid 1px rgba(198, 197, 197, 0.5);
-
-                &::-webkit-scrollbar {
-                    width: 7px;
-                    height: 10px;
-                }
-        
-                /* Track */
-                &::-webkit-scrollbar-track {
-                    background-color: rgba(0, 0, 0, 0);
-                    border-radius: 2px;
-                }
-        
-                /* Handle */
-                &::-webkit-scrollbar-thumb {
-                    background: #888;
-                    border-radius: 5px;
-                }
-        
-                /* Handle on hover */
-                &::-webkit-scrollbar-thumb:hover {
-                    background: #555;
-                }
-            }
-        }
         // overflow: hidden;
     }
 }
