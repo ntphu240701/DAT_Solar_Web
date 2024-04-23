@@ -14,17 +14,16 @@ import { COLOR, Token, convertUnit, ruleInfor, userInfor } from "../../App";
 import { useIntl } from "react-intl";
 import Filter from "../Project/Filter";
 import axios from "axios";
-
-import { MdDelete, MdEdit, MdDevices, MdOutlineError } from "react-icons/md";
-import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore } from "react-icons/io";
-import { FaCheckCircle } from "react-icons/fa";
-import { CiSearch } from "react-icons/ci";
-import { RxCross2 } from "react-icons/rx";
-import { FiEdit, FiFilter } from "react-icons/fi";
-import { IoTrashOutline } from "react-icons/io5";
 import { lowercasedata } from "../ErrorSetting/ErrorSetting";
 import PopupState, { bindMenu, bindToggle } from "material-ui-popup-state";
 import { Menu, MenuItem } from "@mui/material";
+
+import { MdDevices, MdOutlineError } from "react-icons/md";
+import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore } from "react-icons/io";
+import { FaCheckCircle } from "react-icons/fa";
+import { CiSearch } from "react-icons/ci";
+import { FiEdit, FiFilter } from "react-icons/fi";
+import { IoTrashOutline } from "react-icons/io5";
 
 export const tab = signal("logger");
 export const info = signal({});
@@ -38,7 +37,7 @@ const tabLable = signal("");
 export default function Device(props) {
   const dataLang = useIntl();
   const user = useSelector((state) => state.admin.usr);
-  const [filter, setFilter] = useState(false);
+  // const [filter, setFilter] = useState(false);
   const [type, setType] = useState("");
   const [plantid, setPlantid] = useState("");
   const [snlogger, setSnlogger] = useState("");
@@ -218,18 +217,18 @@ export default function Device(props) {
             //   </span>
             // </div>
             <PopupState variant="popper" popupId="demo-popup-popper">
-            {(popupState) => (<div className="DAT_TableEdit">
-              <IoMdMore size={20}   {...bindToggle(popupState)} />
-              <Menu {...bindMenu(popupState)}>
-               
+              {(popupState) => (<div className="DAT_TableEdit">
+                <IoMdMore size={20}   {...bindToggle(popupState)} />
+                <Menu {...bindMenu(popupState)}>
+
                   <MenuItem id={`${row.psn}-${row.pname}-edit`} onClick={(e) => { handleEdit(e); popupState.close() }}>
                     <FiEdit size={14} />&nbsp;
                     {dataLang.formatMessage({ id: "change" })}
                   </MenuItem>
-                
-              </Menu>
-            </div>)}
-          </PopupState>
+
+                </Menu>
+              </div>)}
+            </PopupState>
           ) : (
             <div></div>
           )}
@@ -323,28 +322,28 @@ export default function Device(props) {
             //   </span>
             // </div>
             <PopupState variant="popper" popupId="demo-popup-popper">
-            {(popupState) => (<div className="DAT_TableEdit">
-              <IoMdMore size={20}   {...bindToggle(popupState)} />
-              <Menu {...bindMenu(popupState)}>
-                {ruleInfor.value.setting.device.modify === true ?
-                  <MenuItem id={`${row.psn}-${row.pname}-edit`} onClick={(e) => { handleEdit(e); popupState.close() }}>
-                    <FiEdit size={14} />&nbsp;
-                    {dataLang.formatMessage({ id: "change" })}
-                  </MenuItem>
-                  : <></>
-                }
-                {ruleInfor.value.setting.device.remove === true ?
-                  <MenuItem id={row.psn + "_" + row.pplantid + "_remove"} onClick={(e) => { handleRemove(e); popupState.close() }}>
-                    <IoTrashOutline size={16} />
-                    &nbsp;
-                    {dataLang.formatMessage({ id: "delete" })}
-                  </MenuItem>
-                  : <></>}
+              {(popupState) => (<div className="DAT_TableEdit">
+                <IoMdMore size={20}   {...bindToggle(popupState)} />
+                <Menu {...bindMenu(popupState)}>
+                  {ruleInfor.value.setting.device.modify === true ?
+                    <MenuItem id={`${row.psn}-${row.pname}-edit`} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                      <FiEdit size={14} />&nbsp;
+                      {dataLang.formatMessage({ id: "change" })}
+                    </MenuItem>
+                    : <></>
+                  }
+                  {ruleInfor.value.setting.device.remove === true ?
+                    <MenuItem id={row.psn + "_" + row.pplantid + "_remove"} onClick={(e) => { handleRemove(e); popupState.close() }}>
+                      <IoTrashOutline size={16} />
+                      &nbsp;
+                      {dataLang.formatMessage({ id: "delete" })}
+                    </MenuItem>
+                    : <></>}
 
-              
-              </Menu>
-            </div>)}
-          </PopupState>
+
+                </Menu>
+              </div>)}
+            </PopupState>
           ) : (
             <div></div>
           )}
@@ -482,12 +481,12 @@ export default function Device(props) {
     }
   };
 
-  const handleModify = (e, type) => {
-    const id = e.currentTarget.id;
-    var arr = id.split("_");
-    const mod = document.getElementById(arr[0] + "_Modify");
-    mod.style.display = type;
-  };
+  // const handleModify = (e, type) => {
+  //   const id = e.currentTarget.id;
+  //   var arr = id.split("_");
+  //   const mod = document.getElementById(arr[0] + "_Modify");
+  //   mod.style.display = type;
+  // };
 
   const handleTabMobile = (e) => {
     const id = e.currentTarget.id;
@@ -1001,8 +1000,7 @@ export default function Device(props) {
         </div>
       )}
 
-      <div
-        className="DAT_DeviceInfor"
+      <div className="DAT_DeviceInfor"
         style={{ height: infoState ? "100%" : "0px", transition: "0.5s" }}
       >
         {infoState ? <Info handleClose={handleCloseInfo} /> : <></>}

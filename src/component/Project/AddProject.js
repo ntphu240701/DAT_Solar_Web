@@ -52,9 +52,6 @@ const BasicInfo = (props) => {
     libraries: ["places"],
   });
 
-
-
-
   const initMap = async (name, lat, long, state) => {
 
     loader.load().then(async (google) => {
@@ -112,17 +109,11 @@ const BasicInfo = (props) => {
         });
         return markerElement;
       }
-
-
     })
-
-
-
 
     // const { AdvancedMarkerElement } = await loader.importLibrary("marker");
     // const { Map } = await loader.importLibrary("maps");
     // const { InfoWindow } = await loader.importLibrary("infowindow");
-
 
     // let map = new Map(document.getElementById("map"), defaultProps);
     // if (state) {
@@ -786,7 +777,6 @@ export default function AddProject(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [plantState.value]);
 
-
   return (
     <div className="DAT_AddProject">
       <div className="DAT_AddProject_Header">
@@ -795,15 +785,13 @@ export default function AddProject(props) {
         </div>
 
         <div className="DAT_AddProject_Header_Right">
-          <div
-            className="DAT_AddProject_Header_Right_Save"
+          <div className="DAT_AddProject_Header_Right_Save"
             onClick={() => handleSaveBasic()}
           >
             <IoSaveOutline size={20} color="white" />
             <span>{dataLang.formatMessage({ id: "save" })}</span>
           </div>
-          <div
-            className="DAT_AddProject_Header_Right_Close"
+          <div className="DAT_AddProject_Header_Right_Close"
             onClick={() => (plantState.value = "default")}
           >
             <IoClose
