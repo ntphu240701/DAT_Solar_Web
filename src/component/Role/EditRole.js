@@ -10,6 +10,7 @@ import { alertDispatch } from "../Alert/Alert";
 
 import { IoClose } from "react-icons/io5";
 import { partnerInfor, userInfor } from "../../App";
+import { groupID } from "../GroupRole/GroupRole";
 
 export default function EditRole(props) {
   const dataLang = useIntl();
@@ -84,6 +85,20 @@ export default function EditRole(props) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const getRule = async (partnerid) => {
+      const rule = await callApi("post", host.DATA + "/getRule", {
+        partnerid: groupID.value,
+      });
+      if (rule.status) {
+        datarule.value = rule.data;
+        datarule.value = datarule.value.sort((a, b) => a.ruleid_ - b.ruleid_);
+        // setdatafilter(rule.data);
+      }
+    };
+    getRule();
+  }, [partnerInfor.value.partnerid]);
 
   return (
     <div className="DAT_EditRole">
