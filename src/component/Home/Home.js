@@ -1417,9 +1417,9 @@ export default function Home(props) {
             <div className="DAT_Home_Rank-Container" >
               {plant.value.map((item, index) => {
                 return (
-                  <div key={index} className="DAT_Home_Rank-ContentMobile">
-                    <div className="DAT_Home_Rank-ContentMobile_Top">
-                      <div className="DAT_Home_Rank-ContentMobile_Top_Ava">
+                  <div key={index} className="DAT_Home_Rank-Container-ContentMobile">
+                    <div className="DAT_Home_Rank-Container-ContentMobile_Top">
+                      <div className="DAT_Home_Rank-Container-ContentMobile_Top_Ava">
                         <img
                           src={
                             item.img ? item.img : "/dat_picture/solar_panel.png"
@@ -1430,15 +1430,15 @@ export default function Home(props) {
                         />
                       </div>
 
-                      <div className="DAT_Home_Rank-ContentMobile_Top_Info">
+                      <div className="DAT_Home_Rank-Container-ContentMobile_Top_Info">
                         <div
-                          className="DAT_Home_Rank-ContentMobile_Top_Info_Name"
+                          className="DAT_Home_Rank-Container-ContentMobile_Top_Info_Name"
                           id={item.plantid_}
                           onClick={(e) => handleInfo(e)}
                         >
                           {item.plantname}
                         </div>
-                        <div className="DAT_Home_Rank-ContentMobile_Top_Info_Sun">
+                        <div className="DAT_Home_Rank-Container-ContentMobile_Top_Info_Sun">
                           kWh/kWp(h):{" "}
                           {parseFloat(sun[item.plantid_]).toFixed(2) === "NaN"
                             ? 0
@@ -1451,7 +1451,7 @@ export default function Home(props) {
                       </div>
                     </div>
 
-                    <div className="DAT_Home_Rank-ContentMobile_Bottom">
+                    <div className="DAT_Home_Rank-Container-ContentMobile_Bottom">
                       {item.addr}
                     </div>
                   </div>
