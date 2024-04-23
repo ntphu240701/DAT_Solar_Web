@@ -126,13 +126,11 @@ export default function ProjectData(props) {
     {
       name: dataLang.formatMessage({ id: "production" }),
       selector: (row) => {
-        // console.log(row.data.mode)
         let power = 0;
         let d = JSON.parse(row.data.total?.register || "[]");
 
         if (row.data.mode === "HYBRID") {
           let num = [];
-          // console.log(invt[row.logger_])
           d.map((item, i) => {
             num[i] = invt[row.logger_]?.[item];
           });
@@ -194,20 +192,20 @@ export default function ProjectData(props) {
               //   </span>
               // </div>
               <PopupState variant="popper" popupId="demo-popup-popper">
-              {(popupState) => (<div className="DAT_TableEdit">
-                <IoMdMore size={20}   {...bindToggle(popupState)} />
-                <Menu {...bindMenu(popupState)}>
-                  {ruleInfor.value.setting.project.modify === true ?
-                    <MenuItem  id={`${row.sn}_${row.name}_edit`} onClick={(e) => { handleEdit(e); popupState.close() }}>
-                      <FiEdit size={14} />&nbsp;
-                      {dataLang.formatMessage({ id: "change" })}
-                    </MenuItem>
-                    : <></>
-                  }
-                 
-                </Menu>
-              </div>)}
-            </PopupState>
+                {(popupState) => (<div className="DAT_TableEdit">
+                  <IoMdMore size={20}   {...bindToggle(popupState)} />
+                  <Menu {...bindMenu(popupState)}>
+                    {ruleInfor.value.setting.project.modify === true ?
+                      <MenuItem id={`${row.sn}_${row.name}_edit`} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                        <FiEdit size={14} />&nbsp;
+                        {dataLang.formatMessage({ id: "change" })}
+                      </MenuItem>
+                      : <></>
+                    }
+
+                  </Menu>
+                </div>)}
+              </PopupState>
             )
           ) : (
             <div></div>
@@ -341,28 +339,28 @@ export default function ProjectData(props) {
               //   </span>
               // </div>
               <PopupState variant="popper" popupId="demo-popup-popper">
-              {(popupState) => (<div className="DAT_TableEdit">
-                <IoMdMore size={20}   {...bindToggle(popupState)} />
-                <Menu {...bindMenu(popupState)}>
-                  {ruleInfor.value.setting.project.modify === true ?
-                    <MenuItem  id={`${row.sn}_${row.name}_edit`} onClick={(e) => { handleEdit(e); popupState.close() }}>
-                      <FiEdit size={14} />&nbsp;
-                      {dataLang.formatMessage({ id: "change" })}
-                    </MenuItem>
-                    : <></>
-                  }
-                  {ruleInfor.value.setting.project.remove === true ?
-                    <MenuItem id={row.sn + "_remove"} onClick={(e) => { handleDelete(e); popupState.close() }}>
-                      <IoTrashOutline size={16} />
-                      &nbsp;
-                      {dataLang.formatMessage({ id: "delete" })}
-                    </MenuItem>
-                    : <></>}
+                {(popupState) => (<div className="DAT_TableEdit">
+                  <IoMdMore size={20}   {...bindToggle(popupState)} />
+                  <Menu {...bindMenu(popupState)}>
+                    {ruleInfor.value.setting.project.modify === true ?
+                      <MenuItem id={`${row.sn}_${row.name}_edit`} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                        <FiEdit size={14} />&nbsp;
+                        {dataLang.formatMessage({ id: "change" })}
+                      </MenuItem>
+                      : <></>
+                    }
+                    {ruleInfor.value.setting.project.remove === true ?
+                      <MenuItem id={row.sn + "_remove"} onClick={(e) => { handleDelete(e); popupState.close() }}>
+                        <IoTrashOutline size={16} />
+                        &nbsp;
+                        {dataLang.formatMessage({ id: "delete" })}
+                      </MenuItem>
+                      : <></>}
 
-                 
-                </Menu>
-              </div>)}
-            </PopupState>
+
+                  </Menu>
+                </div>)}
+              </PopupState>
             )
           ) : (
             <div></div>
@@ -744,7 +742,6 @@ export default function ProjectData(props) {
     getLogger();
 
     return () => {
-      // console.log("unmount");
       tab_.value = "logger";
       inverterDB.value = [];
       temp.value = [];
@@ -868,8 +865,6 @@ export default function ProjectData(props) {
     if (temp.value.length > 0) {
       temp.value.map((item) => {
         socket.value.on("Server/" + item.sn, function (data) {
-          console.log("Toollist socket")
-          // console.log(data.data)
           Object.keys(data.data).map((keyName, i) => {
 
             setInvt(pre => ({

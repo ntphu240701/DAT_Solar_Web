@@ -205,7 +205,6 @@ export default function GroupRole(props) {
 
     const handleEdit = (e) => {
       const id = parseInt(e.currentTarget.id);
-      console.log(id);
       roleData.value = Usr_.value.find((item) => item.id_ == id);
       setEditrole(true);
     };
@@ -255,10 +254,6 @@ export default function GroupRole(props) {
       }
     };
     const [userList, setUserlist] = useState(false);
-
-    // useEffect(() => {
-    //   console.log(datafilter.value);
-    // }, [datafilter.value]);
 
     const colorbackground = {
       master: "rgba(255, 0, 0)",

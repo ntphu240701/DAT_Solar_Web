@@ -319,7 +319,6 @@ export default function ErrorSetting(props) {
   const handleEdit = (e) => {
     const arr = e.currentTarget.id.split("-");
     setEditarray(arr);
-    console.log(arr);
     switch (arr[2]) {
       case "EDITCAUSE":
         const index = data
@@ -377,13 +376,13 @@ export default function ErrorSetting(props) {
       ),
     });
 
-    // console.log("Data with Stringified Cause and Solution:");
-    console.log(JSON.stringify(data, (key, value) => {
-      if (key === 'cause' || key === 'solution') {
-        return JSON.stringify(value);
-      }
-      return value;
-    }, 2));
+    // console.log(JSON.stringify(data, (key, value) => {
+    //   if (key === 'cause' || key === 'solution') {
+    //     return JSON.stringify(value);
+    //   }
+    //   return value;
+    // }, 2));
+
     if (req.status) {
       alertDispatch(dataLang.formatMessage({ id: "alert_58" }));
       setEditState(false);
@@ -398,7 +397,6 @@ export default function ErrorSetting(props) {
 
   const handleDelete = (e) => {
     let arr = e.currentTarget.id.split("_");
-    console.log(arr);
     setArrayData(arr);
     setRemoveType(arr[4]);
     setRemoveState(true);
@@ -430,7 +428,6 @@ export default function ErrorSetting(props) {
             data.find((item) => item.boxid_ === boxid).solution_
           ),
         });
-        console.log(req1);
         if (req1.status) {
           setRemoveState(false);
         }
@@ -446,7 +443,6 @@ export default function ErrorSetting(props) {
           );
           tremovesolution.solution_ = temp;
           data[indexsolution] = tremovesolution;
-          console.log(data);
         }
         let req2 = await callApi("post", `${host.DATA}/updateWarnBox`, {
           boxid: boxid,
@@ -457,7 +453,6 @@ export default function ErrorSetting(props) {
             data.find((item) => item.boxid_ === boxid).solution_
           ),
         });
-        console.log(req2);
         if (req2.status) {
           setRemoveState(false);
         }
@@ -485,7 +480,6 @@ export default function ErrorSetting(props) {
     const arr = e.currentTarget.id.split("-");
     const bigdata = data;
     const index = bigdata.findIndex((item) => item.boxid_ === arr[0]);
-    // console.log(arr);
     switch (arr[1]) {
       case "ADDCAUSE":
         const causelength = bigdata[index].cause_.length;
@@ -513,7 +507,6 @@ export default function ErrorSetting(props) {
           },
         ];
         setData([...bigdata]);
-        // console.log(bigdata);
         break;
       default:
         break;
@@ -529,7 +522,6 @@ export default function ErrorSetting(props) {
 
   const handleFilter = (e) => {
     const input = lowercasedata(e.currentTarget.value);
-    console.log(input);
     const temp = dataApi.filter((item) => {
       return (
         lowercasedata(item.boxid_).includes(input) ||
@@ -545,7 +537,6 @@ export default function ErrorSetting(props) {
         )
       );
     });
-    console.log(temp);
     setData(temp);
   };
 

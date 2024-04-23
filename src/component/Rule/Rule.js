@@ -57,7 +57,6 @@ export default function Rule() {
 
   useEffect(() => {
     setdatafilter(datarule.value);
-    // console.log(datarule.value);
   }, [datarule.value]);
 
   const columnrule = [

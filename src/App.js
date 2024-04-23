@@ -146,7 +146,6 @@ export default function App() {
         window.location.pathname !== "/VerifyRegister"
       ) {
         let inf = await callApi("get", host.AUTH + "/Inf");
-        //console.log(inf)
         if (inf.status) {
           rootDispatch(adminslice.actions.setstatus(inf.status));
           rootDispatch(adminslice.actions.setusr(inf.data.usr));
@@ -163,7 +162,6 @@ export default function App() {
             type: inf.data.type,
             avatar: inf.data.avatar,
           };
-          // console.log(userInfor.value);
           setLoading(false);
         } else {
           setLoading(false);
@@ -254,7 +252,6 @@ export default function App() {
         open.value = dataWarn.value.filter((item) => item.status == "open");
         closed.value = dataWarn.value.filter((item) => item.status == "closed");
       }
-      //console.log(dataWarn.value);
     };
     if (userInfor.value.type && partnerInfor.value.partnerid && usr) {
       getwarn(usr, partnerInfor.value.partnerid, userInfor.value.type);

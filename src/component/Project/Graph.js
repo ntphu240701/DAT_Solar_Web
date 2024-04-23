@@ -207,7 +207,6 @@ const GraphConsumption = (props) => {
     const [lineD_, setLinD] = useState("Default")
 
     useEffect(() => {
-        console.log(props.state)
         if (props.state) {
             if (parseFloat(props.cal?.pro_1 / 1000).toFixed(2) > 0) {
                 setLinA("moveLtoR");
@@ -569,9 +568,9 @@ const GraphFull = (props) => {
                 </foreignObject>
 
                 <foreignObject x="5.138" y="215.936" width="99.953" height="22.554" style={{ overflow: "hidden", padding: "2px" }}>
-                    <div style={{color:"gray", fontSize:"13px", width:"100%", textAlign:"center", alignItems:"center"}} >SoC: <span style={{color:"black"}}>{parseInt(props.cal?.bat_2 || 0)}%</span></div>
+                    <div style={{ color: "gray", fontSize: "13px", width: "100%", textAlign: "center", alignItems: "center" }} >SoC: <span style={{ color: "black" }}>{parseInt(props.cal?.bat_2 || 0)}%</span></div>
                 </foreignObject>
-              
+
 
 
                 <foreignObject x="193" y="112" width="102" height="68" style={{ overflow: "hidden", padding: "2px" }}>

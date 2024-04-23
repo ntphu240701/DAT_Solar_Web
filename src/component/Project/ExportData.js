@@ -35,10 +35,8 @@ export default function ExportData(props) {
   };
 
   const handleConfirm = async (e) => {
-    // console.log(idRef.current.value)
     const t = ReportData.value.find((item) => item.id == idRef.current.value);
     if (t) {
-      // console.log(t.id, t.type, props.datetime);
       const d = await Download(
         host.DATA + "/Report",
         {
@@ -71,7 +69,6 @@ export default function ExportData(props) {
       if (d.status) {
         ReportData.value = d.data;
         const t = ReportData.value.filter((item) => item.type == type);
-        console.log(ReportData.value);
       }
     };
     getReport();

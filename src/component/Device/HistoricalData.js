@@ -378,11 +378,9 @@ export default function HistoricalData(props) {
 
     useEffect(() => {
         setOption(dataoption);
-        // console.log(option);
     }, []);
 
     const handleCheck = (e) => {
-        // console.log(option.electricitygeneration.ACOutputFreqR);
         const arr = e.currentTarget.id.split("_");
         setOption({
             ...option,
@@ -391,9 +389,6 @@ export default function HistoricalData(props) {
                 [arr[1]]: e.currentTarget.checked
             }
         })
-        console.log(option[arr[0]])
-        // console.log(`${e.currentTarget.id}: ${e.currentTarget.checked}`)
-
     };
 
     const handleCancelChangeChart = () => {
@@ -498,12 +493,10 @@ export default function HistoricalData(props) {
                                                                 domain={[
                                                                     0,
                                                                     chart.reduce((max, item) => {
-                                                                        // console.log(item)
                                                                         const values = Object.values({
                                                                             x: item[acfre],
                                                                         });
                                                                         const currentMax = Math.max(...values.map(Number));
-                                                                        // console.log(currentMax)
                                                                         return currentMax > max ? currentMax : max;
                                                                     }, -Infinity),
                                                                 ]}
@@ -538,14 +531,12 @@ export default function HistoricalData(props) {
                                                                 domain={[
                                                                     0,
                                                                     chart.reduce((max, item) => {
-                                                                        // console.log(item)
                                                                         const values = Object.values({
                                                                             x: item[acrvolt],
                                                                             y: item[acsvolt],
                                                                             z: item[actvolt],
                                                                         });
                                                                         const currentMax = Math.max(...values.map(Number));
-                                                                        // console.log(currentMax)
                                                                         return currentMax > max ? currentMax : max;
                                                                     }, -Infinity),
                                                                 ]} />
@@ -590,7 +581,6 @@ export default function HistoricalData(props) {
                                                                 domain={[
                                                                     0,
                                                                     chart.reduce((max, item) => {
-                                                                        // console.log(item)
                                                                         const values = Object.values({
                                                                             x: item[acrcur],
                                                                             y: item[acscur],
@@ -598,7 +588,6 @@ export default function HistoricalData(props) {
 
                                                                         });
                                                                         const currentMax = Math.max(...values.map(Number));
-                                                                        // console.log(currentMax)
                                                                         return currentMax > max ? currentMax : max;
                                                                     }, -Infinity),
                                                                 ]}
@@ -644,7 +633,6 @@ export default function HistoricalData(props) {
                                                                 domain={[
                                                                     0,
                                                                     chart.reduce((max, item) => {
-                                                                        // console.log(item)/
                                                                         const values = Object.values({
                                                                             x: item[pv1cur],
                                                                             y: item[pv2cur],
@@ -652,7 +640,6 @@ export default function HistoricalData(props) {
                                                                             t: item[pv4cur],
                                                                         });
                                                                         const currentMax = Math.max(...values.map(Number));
-                                                                        // console.log(currentMax)
                                                                         return currentMax > max ? currentMax : max;
                                                                     }, -Infinity),
                                                                 ]}
@@ -710,7 +697,6 @@ export default function HistoricalData(props) {
                                                                 domain={[
                                                                     0,
                                                                     chart.reduce((max, item) => {
-                                                                        // console.log(item)
                                                                         const values = Object.values({
                                                                             x: item[pv1volt],
                                                                             y: item[pv2volt],
@@ -718,7 +704,6 @@ export default function HistoricalData(props) {
                                                                             w: item[pv4volt],
                                                                         });
                                                                         const currentMax = Math.max(...values.map(Number));
-                                                                        // console.log(currentMax)
                                                                         return currentMax > max ? currentMax : max;
                                                                     }, -Infinity),
                                                                 ]}
@@ -775,7 +760,6 @@ export default function HistoricalData(props) {
                                                                 domain={[
                                                                     0,
                                                                     chart.reduce((max, item) => {
-                                                                        // console.log(item)
                                                                         const values = Object.values({
                                                                             x: item[pv1power],
                                                                             y: item[pv2power],
@@ -783,7 +767,6 @@ export default function HistoricalData(props) {
                                                                             w: item[pv4power],
                                                                         });
                                                                         const currentMax = Math.max(...values.map(Number));
-                                                                        // console.log(currentMax)
                                                                         return currentMax > max ? currentMax : max;
                                                                     }, -Infinity),
                                                                 ]}
@@ -892,12 +875,10 @@ export default function HistoricalData(props) {
                                                                 domain={[
                                                                     0,
                                                                     chart.reduce((max, item) => {
-                                                                        // console.log(item)
                                                                         const values = Object.values({
                                                                             x: item[acfre],
                                                                         });
                                                                         const currentMax = Math.max(...values.map(Number));
-                                                                        // console.log(currentMax)
                                                                         return currentMax > max ? currentMax : max;
                                                                     }, -Infinity),
                                                                 ]}
@@ -931,14 +912,12 @@ export default function HistoricalData(props) {
                                                                 domain={[
                                                                     0,
                                                                     chart.reduce((max, item) => {
-                                                                        // console.log(item)
                                                                         const values = Object.values({
                                                                             x: item[acrvolt],
                                                                             y: item[acsvolt],
                                                                             z: item[actvolt],
                                                                         });
                                                                         const currentMax = Math.max(...values.map(Number));
-                                                                        // console.log(currentMax)
                                                                         return currentMax > max ? currentMax : max;
                                                                     }, -Infinity),
                                                                 ]} />
@@ -983,7 +962,6 @@ export default function HistoricalData(props) {
                                                                 domain={[
                                                                     0,
                                                                     chart.reduce((max, item) => {
-                                                                        // console.log(item)
                                                                         const values = Object.values({
                                                                             x: item[acrcur],
                                                                             y: item[acscur],
@@ -991,7 +969,6 @@ export default function HistoricalData(props) {
 
                                                                         });
                                                                         const currentMax = Math.max(...values.map(Number));
-                                                                        // console.log(currentMax)
                                                                         return currentMax > max ? currentMax : max;
                                                                     }, -Infinity),
                                                                 ]}
@@ -1037,7 +1014,6 @@ export default function HistoricalData(props) {
                                                                 domain={[
                                                                     0,
                                                                     chart.reduce((max, item) => {
-                                                                        // console.log(item)/
                                                                         const values = Object.values({
                                                                             x: item[pv1cur],
                                                                             y: item[pv2cur],
@@ -1045,7 +1021,6 @@ export default function HistoricalData(props) {
                                                                             t: item[pv4cur],
                                                                         });
                                                                         const currentMax = Math.max(...values.map(Number));
-                                                                        // console.log(currentMax)
                                                                         return currentMax > max ? currentMax : max;
                                                                     }, -Infinity),
                                                                 ]}
@@ -1103,7 +1078,6 @@ export default function HistoricalData(props) {
                                                                 domain={[
                                                                     0,
                                                                     chart.reduce((max, item) => {
-                                                                        // console.log(item)
                                                                         const values = Object.values({
                                                                             x: item[pv1volt],
                                                                             y: item[pv2volt],
@@ -1111,7 +1085,6 @@ export default function HistoricalData(props) {
                                                                             w: item[pv4volt],
                                                                         });
                                                                         const currentMax = Math.max(...values.map(Number));
-                                                                        // console.log(currentMax)
                                                                         return currentMax > max ? currentMax : max;
                                                                     }, -Infinity),
                                                                 ]}
@@ -1168,7 +1141,6 @@ export default function HistoricalData(props) {
                                                                 domain={[
                                                                     0,
                                                                     chart.reduce((max, item) => {
-                                                                        // console.log(item)
                                                                         const values = Object.values({
                                                                             x: item[pv1power],
                                                                             y: item[pv2power],
@@ -1176,7 +1148,6 @@ export default function HistoricalData(props) {
                                                                             w: item[pv4power],
                                                                         });
                                                                         const currentMax = Math.max(...values.map(Number));
-                                                                        // console.log(currentMax)
                                                                         return currentMax > max ? currentMax : max;
                                                                     }, -Infinity),
                                                                 ]}

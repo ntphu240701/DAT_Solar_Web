@@ -26,7 +26,6 @@ export default function GraphComponent(props) {
 
             intervalIDRef.current = setInterval(() => {
                 second.value = second.value + 1
-                // console.log(second.value)
 
                 if (second.value === max) {
                     second.value = 0

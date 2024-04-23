@@ -549,7 +549,6 @@ export default function Project(props) {
       location: _location,
       elecmode: _elecmode,
     });
-    console.log(_elecmode);
     let filter1 = dataproject.value.filter((item) => {
       if (
         parseFloat(item.capacity) >= parseFloat(min_) &&
@@ -560,7 +559,6 @@ export default function Project(props) {
     });
     let filter2 = dataproject.value.filter((item) => {
       if (_location) {
-        console.log(lowercasedata(item.addr), lowercasedata(_location));
         return lowercasedata(item.addr).includes(lowercasedata(_location));
       } else {
         return item;
@@ -586,7 +584,6 @@ export default function Project(props) {
       filter3 = [...filter3, ...t];
     }
 
-    console.log(filter1, filter2, filter3);
 
     const set1 = new Set(filter1.map((obj) => Object.values(obj)[0]));
     const set2 = new Set(filter2.map((obj) => Object.values(obj)[0]));
@@ -596,7 +593,6 @@ export default function Project(props) {
     const commonKeys = [...set1].filter(
       (value) => set2.has(value) && set3.has(value)
     );
-    console.log(commonKeys);
 
     // TRẢ LẠI OBJECT {45, 68}
     // const y = set1.intersection(set2, set3);
@@ -773,10 +769,6 @@ export default function Project(props) {
     setDailyProduction(daily_);
     setPower(power_);
   }, [invt, user]);
-
-  // useEffect(() => {
-  //   console.log(datafilter)
-  // }, [datafilter]);
 
   return (
     <>

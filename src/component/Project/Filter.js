@@ -36,13 +36,11 @@ export default function Filter(props) {
   });
   useEffect(() => {
     // mo filter la lay pre
-    // console.log(pre, next);
   }, [pre, next]);
 
   useEffect(() => {
     // mo filter la lay pre
     if (props.display) {
-      // console.log("next da lay cua pre");
       setNext({
         ...pre,
       });
@@ -53,7 +51,6 @@ export default function Filter(props) {
     // nhan luu
     if (props.type == "project") {
       setPre(props.data.elecmode);
-      // console.log(props.data.elecmode);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data]);
@@ -77,7 +74,6 @@ export default function Filter(props) {
     if (document.getElementById("warn").checked) {
       props.warn.value = "warn";
       setWarnChecked(true);
-      // console.log(props.warn.value);
     } else {
       document.getElementById("warn").checked = false;
       props.warn.value = {};
@@ -85,7 +81,6 @@ export default function Filter(props) {
     }
     if (document.getElementById("notice").checked) {
       props.notice.value = "notice";
-      // console.log(props.notice.value);
       setNoticeChecked(true);
     } else {
       document.getElementById("notice").checked = false;
@@ -104,7 +99,6 @@ export default function Filter(props) {
   };
 
   const filterdevice = (e) => {
-    // console.log(e.target.id);
     setDeviceF(e.target.id);
   };
 
@@ -125,13 +119,10 @@ export default function Filter(props) {
   }, [props.display]);
 
   const handleReadPlantMode = (e) => {
-    // console.log(e.target.checked);
-    // console.log(e.target.id);
     setNext({
       ...next,
       [e.target.id]: e.target.checked,
     });
-    // console.log(elecmode);
   };
 
   return (

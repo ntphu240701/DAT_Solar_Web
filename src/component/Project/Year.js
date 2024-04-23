@@ -62,12 +62,10 @@ export default function Year(props) {
                       domain={[
                         0,
                         props.data.reduce((max, item) => {
-                          // console.log(item)/
                           const values = Object.values({
                             x: item[props.v],
                           });
                           const currentMax = Math.max(...values.map(Number));
-                          // console.log(currentMax)
                           return currentMax > max ? currentMax : max;
                         }, -Infinity),
                       ]}
@@ -105,7 +103,6 @@ export default function Year(props) {
                       domain={[
                         0,
                         props.data.reduce((max, item) => {
-                          // console.log(item)/
                           const values = Object.values({
                             x: item[props.v],
                             y: item[props.v2],
@@ -115,7 +112,6 @@ export default function Year(props) {
                             // p: item[props.v6],
                           });
                           const currentMax = Math.max(...values.map(Number));
-                          // console.log(currentMax)
                           return currentMax > max ? currentMax : max;
                         }, -Infinity),
                       ]}
@@ -192,7 +188,6 @@ export default function Year(props) {
                       domain={[
                         0,
                         props.data.reduce((max, item) => {
-                          // console.log(item)/
                           const values = Object.values({
                             x: item[props.v],
                             y: item[props.v2],
@@ -202,7 +197,6 @@ export default function Year(props) {
                             p: item[props.v6],
                           });
                           const currentMax = Math.max(...values.map(Number));
-                          // console.log(currentMax)
                           return currentMax > max ? currentMax : max;
                         }, -Infinity),
                       ]}

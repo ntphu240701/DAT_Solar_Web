@@ -87,7 +87,6 @@ const BasicInfo = (props) => {
           JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2),
         );
         infoWindow.open(map);
-        // console.log(mapsMouseEvent.latLng.toJSON());
         var long_ = document.getElementById("long");
         var lat_ = document.getElementById("lat");
         lat_.value = mapsMouseEvent.latLng.toJSON().lat;
@@ -151,7 +150,6 @@ const BasicInfo = (props) => {
           lat: response.results[0].geometry.location.lat,
           long: response.results[0].geometry.location.lng,
         };
-        // console.log(response.results[0].geometry.location)
         initMap(
           plantData.value.plantname,
           response.results[0].geometry.location.lat,
@@ -626,7 +624,6 @@ const OwnerInfo = (props) => {
 
 //   const handleChooseAvatar = (e) => {
 //     setAva(URL.createObjectURL(e.target.files[0]));
-//     console.log(e.target.files[0].name);
 //   };
 
 //   return (

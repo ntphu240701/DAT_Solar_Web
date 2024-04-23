@@ -172,7 +172,6 @@ export default function GridFirst(props) {
                         value = parseInt(document.getElementById("stop_soc_atdischarge").value);
                     }
 
-                    // console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + value + '"}')
                     let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + value + '"}', Token.value.token)
                     console.log(res)
                     if (res.ret === 0) {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Contact.scss";
 
 import PopupAvatar from "./PopupAva";
@@ -62,7 +62,7 @@ export default function Contact(props) {
               style={{ marginBottom: "0px" }}
             >
               <div>{dataLang.formatMessage({ id: 'businesstype' })}</div>
-              <div>{dataLang.formatMessage({ id: partnerInfor.value.businesstype })}</div>
+              <div>{dataLang.formatMessage({ id: partnerInfor.value?.businesstype ? partnerInfor.value.businesstype : "unknown", defaultMessage: "...", })}</div>
             </div>
           </div>
         </div>

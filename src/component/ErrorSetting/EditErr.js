@@ -23,14 +23,6 @@ export default function EditErr(props) {
     popup.style.color = popup_state[state].color;
   };
 
-  // const handleSave = () => {
-  //   console.log(editVi.current.value, editEn.current.value);
-  // };
-
-  //   useEffect(() => {
-  //     console.log(editVi.current.value, editEn.current.value);
-  //   }, [editVi.current.value, editEn.current.value]);
-
   // Handle close when press ESC
   useEffect(() => {
     const handleKeyDown = (event) => {

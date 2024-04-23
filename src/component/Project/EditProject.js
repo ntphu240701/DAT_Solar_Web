@@ -67,7 +67,6 @@ const BasicInfo = (props) => {
           JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2),
         );
         infoWindow.open(map);
-        // console.log(mapsMouseEvent.latLng.toJSON());
         var long_ = document.getElementById("long");
         var lat_ = document.getElementById("lat");
         lat_.value = mapsMouseEvent.latLng.toJSON().lat;
@@ -662,7 +661,6 @@ const ImgInfo = (props) => {
 
   const handleChooseAvatar = async (e) => {
     // setAva(URL.createObjectURL(e.target.files[0]));
-    // console.log(e.target.files[0].name);
     // projectData.value[e.currentTarget.id] = e.current
     var reader = new FileReader();
     if (e.target.files[0].size > 50000) {
@@ -789,7 +787,6 @@ export default function EditProject(props) {
           plantState.value = "default";
         }
       };
-      console.log(projectData.value);
       editProject();
     }
   };

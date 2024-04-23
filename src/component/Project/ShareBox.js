@@ -31,7 +31,6 @@ export default function ShareBox(props) {
     const handleShared = async (e) => {
         e.preventDefault();
         let req = await callApi("post", host.DATA + "/addPlantmem", { mail: mail.current.value, plantid: props.plantid, usr: props.usr });
-        console.log(req);
         if (req.status) {
             mail.current.value = "";
             setShared([...shared, req.data]);
