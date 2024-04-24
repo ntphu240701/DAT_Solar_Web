@@ -29,7 +29,7 @@ const temp = signal({
       remove: false,
     },
     rule: {
-      active: false,
+      // active: false,
       add: false,
       modify: false,
       remove: false,

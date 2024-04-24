@@ -12,7 +12,7 @@ import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { partnerInfor, userInfor } from "../../App";
+import { partnerInfor, ruleInfor, userInfor } from "../../App";
 
 import { CiSearch } from "react-icons/ci";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
@@ -42,6 +42,11 @@ export default function Rule() {
   };
 
   useEffect(() => {
+    let x = false;
+    let y = true;
+    let z = ruleInfor.value.setting.rule.modify && ruleInfor.value.setting.rule.remove;
+    console.log(z);
+
     const getRule = async (partnerid) => {
       const rule = await callApi("post", host.DATA + "/getRule", {
         partnerid: partnerInfor.value.partnerid,
@@ -111,15 +116,11 @@ export default function Rule() {
                           {dataLang.formatMessage({ id: "change" })}
                         </MenuItem>
 
-
                         <MenuItem id={row.ruleid_} onClick={(e) => { handleDel(e); popupState.close() }}>
                           <IoTrashOutline size={16} />
                           &nbsp;
                           {dataLang.formatMessage({ id: "delete" })}
                         </MenuItem>
-
-
-
                       </Menu>
                     </div>)}
                   </PopupState>
@@ -128,62 +129,70 @@ export default function Rule() {
               case "mainadmin":
                 return (
                   <>
-                    {row.type_ === "master"  ? (
+                    {row.type_ === "master" ? (
                       <></>
                     ) : (
-                      <PopupState variant="popper" popupId="demo-popup-popper">
-                        {(popupState) => (<div className="DAT_TableEdit">
-                          <IoMdMore size={20}   {...bindToggle(popupState)} />
-                          <Menu {...bindMenu(popupState)}>
+                      ruleInfor.value.setting.rule.modify || ruleInfor.value.setting.rule.remove ? (
+                        <PopupState variant="popper" popupId="demo-popup-popper">
+                          {(popupState) => (<div className="DAT_TableEdit">
+                            <IoMdMore size={20}   {...bindToggle(popupState)} />
+                            <Menu {...bindMenu(popupState)}>
+                              {ruleInfor.value.setting.rule.modify ? (
+                                <MenuItem id={row.ruleid_} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                                  <FiEdit size={14} />&nbsp;
+                                  {dataLang.formatMessage({ id: "change" })}
+                                </MenuItem>
+                              ) : (<></>)}
 
-                            <MenuItem id={row.ruleid_} onClick={(e) => { handleEdit(e); popupState.close() }}>
-                              <FiEdit size={14} />&nbsp;
-                              {dataLang.formatMessage({ id: "change" })}
-                            </MenuItem>
+                              {ruleInfor.value.setting.rule.remove ? (
+                                <MenuItem id={row.ruleid_} onClick={(e) => { handleDel(e); popupState.close() }}>
+                                  <IoTrashOutline size={16} />
+                                  &nbsp;
+                                  {dataLang.formatMessage({ id: "delete" })}
+                                </MenuItem>
+                              ) : (<></>)}
 
-
-                            <MenuItem id={row.ruleid_} onClick={(e) => { handleDel(e); popupState.close() }}>
-                              <IoTrashOutline size={16} />
-                              &nbsp;
-                              {dataLang.formatMessage({ id: "delete" })}
-                            </MenuItem>
-
-
-
-                          </Menu>
-                        </div>)}
-                      </PopupState>
+                            </Menu>
+                          </div>)}
+                        </PopupState>
+                      ) : (
+                        <></>
+                      )
                     )}
                   </>
                 )
               case "admin":
                 return (
                   <>
-                    {row.type_ === "master" || row.type_ === "mainadmin"  ? (
+                    {row.type_ === "master" || row.type_ === "mainadmin" ? (
                       <></>
                     ) : (
-                      <PopupState variant="popper" popupId="demo-popup-popper">
-                        {(popupState) => (<div className="DAT_TableEdit">
-                          <IoMdMore size={20}   {...bindToggle(popupState)} />
-                          <Menu {...bindMenu(popupState)}>
+                      ruleInfor.value.setting.rule.modify || ruleInfor.value.setting.rule.remove ? (
+                        <PopupState variant="popper" popupId="demo-popup-popper">
+                          {(popupState) => (<div className="DAT_TableEdit">
+                            <IoMdMore size={20}   {...bindToggle(popupState)} />
+                            <Menu {...bindMenu(popupState)}>
+                              {ruleInfor.value.setting.rule.modify ? (
+                                <MenuItem id={row.ruleid_} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                                  <FiEdit size={14} />&nbsp;
+                                  {dataLang.formatMessage({ id: "change" })}
+                                </MenuItem>
+                              ) : (<></>)}
 
-                            <MenuItem id={row.ruleid_} onClick={(e) => { handleEdit(e); popupState.close() }}>
-                              <FiEdit size={14} />&nbsp;
-                              {dataLang.formatMessage({ id: "change" })}
-                            </MenuItem>
+                              {ruleInfor.value.setting.rule.remove ? (
+                                <MenuItem id={row.ruleid_} onClick={(e) => { handleDel(e); popupState.close() }}>
+                                  <IoTrashOutline size={16} />
+                                  &nbsp;
+                                  {dataLang.formatMessage({ id: "delete" })}
+                                </MenuItem>
+                              ) : (<></>)}
 
-
-                            <MenuItem id={row.ruleid_} onClick={(e) => { handleDel(e); popupState.close() }}>
-                              <IoTrashOutline size={16} />
-                              &nbsp;
-                              {dataLang.formatMessage({ id: "delete" })}
-                            </MenuItem>
-
-
-
-                          </Menu>
-                        </div>)}
-                      </PopupState>
+                            </Menu>
+                          </div>)}
+                        </PopupState>
+                      ) : (
+                        <></>
+                      )
                     )}
                   </>
                 )
@@ -248,17 +257,19 @@ export default function Rule() {
             <div className="DAT_RuleHeaderMobile_Top_Filter">
               <input
                 type="text"
-                placeholder={dataLang.formatMessage({ id: "enterName" })}
+                placeholder={dataLang.formatMessage({ id: "enterRight" })}
                 onChange={(e) => handleFilter(e)}
               />
               <CiSearch color="gray" size={20} />
             </div>
-            <button
-              className="DAT_RuleHeaderMobile_Top_New"
-              onClick={() => setViewState("create")}
-            >
-              <IoAddOutline color="white" size={20} />
-            </button>
+            {ruleInfor.value.setting.rule.add ? (
+              <button
+                className="DAT_RuleHeaderMobile_Top_New"
+                onClick={() => setViewState("create")}
+              >
+                <IoAddOutline color="white" size={20} />
+              </button>
+            ) : (<></>)}
           </div>
 
           <div className="DAT_RuleHeaderMobile_Title">
@@ -275,21 +286,24 @@ export default function Rule() {
           <div className="DAT_RuleHeader_Filter">
             <input
               type="text"
-              placeholder={dataLang.formatMessage({ id: "enterName" })}
+              placeholder={dataLang.formatMessage({ id: "enterRight" })}
               onChange={(e) => handleFilter(e)}
             />
             <CiSearch color="gray" size={20} />
           </div>
-          <button
-            className="DAT_RuleHeader_New"
-            onClick={() => setViewState("create")}
-          >
-            <span>
-              <GrUserAdmin color="white" size={20} />
-              &nbsp;
-              {dataLang.formatMessage({ id: "newRule" })}
-            </span>
-          </button>
+          {ruleInfor.value.setting.rule.add ? (
+            <button
+              className="DAT_RuleHeader_New"
+              onClick={() => setViewState("create")}
+            >
+              <span>
+                <GrUserAdmin color="white" size={20} />
+                &nbsp;
+                {dataLang.formatMessage({ id: "newRule" })}
+              </span>
+            </button>
+          ) : (<></>)}
+
         </div>
       )}
 
@@ -314,17 +328,21 @@ export default function Rule() {
                     {dataLang.formatMessage({ id: "createdate" })}: ...
                   </div>
                   <div className="DAT_RuleMobile_Content_Bottom_Right">
-                    <div className="DAT_RuleMobile_Content_Bottom_Right_Item"
-                      id={item.ruleid_}
-                      onClick={(e) => handleEdit(e)}
-                    >
-                      <FiEdit size={14} />
-                    </div>
-                    <div className="DAT_RuleMobile_Content_Bottom_Right_Item"
-                      onClick={(e) => handleDel(e)}
-                    >
-                      <IoTrashOutline size={16} />
-                    </div>
+                    {ruleInfor.value.setting.rule.modify ? (
+                      <div className="DAT_RuleMobile_Content_Bottom_Right_Item"
+                        id={item.ruleid_}
+                        onClick={(e) => handleEdit(e)}
+                      >
+                        <FiEdit size={14} />
+                      </div>
+                    ) : (<></>)}
+                    {ruleInfor.value.setting.rule.remove ? (
+                      <div className="DAT_RuleMobile_Content_Bottom_Right_Item"
+                        onClick={(e) => handleDel(e)}
+                      >
+                        <IoTrashOutline size={16} />
+                      </div>
+                    ) : (<></>)}
                   </div>
                 </div>
               </div>

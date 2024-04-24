@@ -116,7 +116,7 @@ export default function Report(props) {
                   ) : (
                     <div></div>
                   )}
-                  {ruleInfor.value.setting.report.modify ? (
+                  {ruleInfor.value.setting.report.remove ? (
                     <div
                       className="DAT_Report_List_Form_Custom_Remove"
                       id={item.id}

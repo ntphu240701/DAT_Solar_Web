@@ -347,8 +347,9 @@ export default function App() {
                   <Route path="/Log" element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color="#007bff" size={50} loading={loading} /></div>}><Log /></Suspense>} />
                   <Route path="/Language" element={<Suspense fallback={<div className="DAT_Loading"><ClockLoader color="#007bff" size={50} loading={loading} /></div>}><Language /></Suspense>} />
                   <Route path="/Login" element={<Navigate to="/" />} />
-                  <Route path="/Logout" element={<Navigate to="/Login" />}
-                  />
+                  <Route path="/Logout" element={<Navigate to="/Login" />} />
+                  <Route path="*" element={<NotfoundErr />} />
+
                 </Routes>
               </div>
             </div>

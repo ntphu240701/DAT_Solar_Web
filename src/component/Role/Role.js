@@ -147,31 +147,8 @@ export default function Role(props) {
             switch (userInfor.value.type) {
               case "master":
                 return (
-                  <PopupState variant="popper" popupId="demo-popup-popper">
-                    {(popupState) => (<div className="DAT_TableEdit">
-                      <IoMdMore size={20}   {...bindToggle(popupState)} />
-                      <Menu {...bindMenu(popupState)}>
-
-                        <MenuItem id={row.id_} onClick={(e) => { handleEdit(e); popupState.close() }}>
-                          <FiEdit size={14} />&nbsp;
-                          {dataLang.formatMessage({ id: "change" })}
-                        </MenuItem>
-
-
-                        <MenuItem id={row.usr_} onClick={(e) => { handleDelete_(e); popupState.close() }}>
-                          <IoTrashOutline size={16} />
-                          &nbsp;
-                          {dataLang.formatMessage({ id: "delete" })}
-                        </MenuItem>
-                      </Menu>
-                    </div>)}
-                  </PopupState>
-
-                )
-              case "mainadmin":
-                return (
                   <>
-                    {row.type_ === "master" || row.type_ === "mainadmin" ? (
+                    {row.type_ === "master" ? (
                       <></>
                     ) : (
                       <PopupState variant="popper" popupId="demo-popup-popper">
@@ -190,12 +167,44 @@ export default function Role(props) {
                               &nbsp;
                               {dataLang.formatMessage({ id: "delete" })}
                             </MenuItem>
-
-
-
                           </Menu>
                         </div>)}
                       </PopupState>
+                    )}
+                  </>
+                )
+              case "mainadmin":
+                return (
+                  <>
+                    {row.type_ === "master" || row.type_ === "mainadmin" ? (
+                      <></>
+                    ) : (
+                      ruleInfor.value.setting.user.modify || ruleInfor.value.setting.user.remove ? (
+                        <PopupState variant="popper" popupId="demo-popup-popper">
+                          {(popupState) => (<div className="DAT_TableEdit">
+                            <IoMdMore size={20}   {...bindToggle(popupState)} />
+                            <Menu {...bindMenu(popupState)}>
+                              {ruleInfor.value.setting.user.modify ? (
+                                <MenuItem id={row.id_} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                                  <FiEdit size={14} />&nbsp;
+                                  {dataLang.formatMessage({ id: "change" })}
+                                </MenuItem>
+                              ) : (<></>)}
+
+                              {ruleInfor.value.setting.user.remove ? (
+                                <MenuItem id={row.usr_} onClick={(e) => { handleDelete_(e); popupState.close() }}>
+                                  <IoTrashOutline size={16} />
+                                  &nbsp;
+                                  {dataLang.formatMessage({ id: "delete" })}
+                                </MenuItem>
+                              ) : (<></>)}
+
+                            </Menu>
+                          </div>)}
+                        </PopupState>
+                      ) : (
+                        <></>
+                      )
                     )}
                   </>
                 )
@@ -205,28 +214,32 @@ export default function Role(props) {
                     {row.type_ === "master" || row.type_ === "mainadmin" || row.type_ === "admin" ? (
                       <></>
                     ) : (
-                      <PopupState variant="popper" popupId="demo-popup-popper">
-                        {(popupState) => (<div className="DAT_TableEdit">
-                          <IoMdMore size={20}   {...bindToggle(popupState)} />
-                          <Menu {...bindMenu(popupState)}>
+                      ruleInfor.value.setting.user.modify || ruleInfor.value.setting.user.remove ? (
+                        <PopupState variant="popper" popupId="demo-popup-popper">
+                          {(popupState) => (<div className="DAT_TableEdit">
+                            <IoMdMore size={20}   {...bindToggle(popupState)} />
+                            <Menu {...bindMenu(popupState)}>
+                              {ruleInfor.value.setting.user.modify ? (
+                                <MenuItem id={row.id_} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                                  <FiEdit size={14} />&nbsp;
+                                  {dataLang.formatMessage({ id: "change" })}
+                                </MenuItem>
+                              ) : (<></>)}
 
-                            <MenuItem id={row.id_} onClick={(e) => { handleEdit(e); popupState.close() }}>
-                              <FiEdit size={14} />&nbsp;
-                              {dataLang.formatMessage({ id: "change" })}
-                            </MenuItem>
+                              {ruleInfor.value.setting.user.remove ? (
+                                <MenuItem id={row.usr_} onClick={(e) => { handleDelete_(e); popupState.close() }}>
+                                  <IoTrashOutline size={16} />
+                                  &nbsp;
+                                  {dataLang.formatMessage({ id: "delete" })}
+                                </MenuItem>
+                              ) : (<></>)}
 
-
-                            <MenuItem id={row.usr_} onClick={(e) => { handleDelete_(e); popupState.close() }}>
-                              <IoTrashOutline size={16} />
-                              &nbsp;
-                              {dataLang.formatMessage({ id: "delete" })}
-                            </MenuItem>
-
-
-
-                          </Menu>
-                        </div>)}
-                      </PopupState>
+                            </Menu>
+                          </div>)}
+                        </PopupState>
+                      ) : (
+                        <></>
+                      )
                     )}
                   </>
                 )
@@ -342,12 +355,15 @@ export default function Role(props) {
                 onChange={(e) => handleFilter(e)}
               />
             </div>
-            <button
-              className="DAT_ProjectHeaderMobile_Top_New"
-              onClick={() => setRoleState("create")}
-            >
-              <IoAddOutline color="white" size={20} />
-            </button>
+            {ruleInfor.value.setting.user.add ? (
+              <button
+                className="DAT_ProjectHeaderMobile_Top_New"
+                onClick={() => setRoleState("create")}
+              >
+                <IoAddOutline color="white" size={20} />
+              </button>
+            ) : (<></>)}
+
           </div>
 
           <div
@@ -542,7 +558,7 @@ export default function Role(props) {
                     </div>
 
                     <div className="DAT_ProjectMobile_Content_Bottom_Right">
-                      {ruleInfor.value.setting.project.modify === true ? (
+                      {ruleInfor.value.setting.user.modify === true ? (
                         <div
                           className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                           id={item.id_}
@@ -553,7 +569,7 @@ export default function Role(props) {
                       ) : (
                         <div></div>
                       )}
-                      {ruleInfor.value.setting.project.modify === true ? (
+                      {ruleInfor.value.setting.user.remove === true ? (
                         <div
                           className="DAT_ProjectMobile_Content_Bottom_Right_Item"
                           id={item.id_}

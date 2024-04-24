@@ -143,11 +143,11 @@ export default function RolePopup(props) {
                                         case "master":
                                             return (
                                                 <>
-                                                    <option value="admin">
-                                                        {dataLang.formatMessage({ id: "admin" })}
-                                                    </option>
                                                     <option value="mainadmin">
                                                         {dataLang.formatMessage({ id: "mainadmin" })}
+                                                    </option>
+                                                    <option value="admin">
+                                                        {dataLang.formatMessage({ id: "admin" })}
                                                     </option>
                                                 </>
                                             );
