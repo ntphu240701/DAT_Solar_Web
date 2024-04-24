@@ -58,21 +58,17 @@ export default function Day(props) {
                       tickLine={false}
                       domain={[
                         props.data.reduce((min, item) => {
-                          // console.log(item)
                           const values = Object.values({
                             x: item[props.v],
                           });
                           const currentMin = Math.min(...values.map(Number));
-                          // console.log(currentMax)
                           return currentMin < min ? currentMin : min;
                         }, Infinity),
                         props.data.reduce((max, item) => {
-                          // console.log(item)/
                           const values = Object.values({
                             x: item[props.v],
                           });
                           const currentMax = Math.max(...values.map(Number));
-                          // console.log(currentMax)
                           return currentMax > max ? currentMax : max;
                         }, -Infinity),
                       ]}
@@ -156,7 +152,6 @@ export default function Day(props) {
                       tickLine={false}
                       domain={[
                         props.data.reduce((min, item) => {
-                          // console.log(item)
                           const values = Object.values({
                             x: item[props.v],
                             y: item[props.v2],
@@ -164,11 +159,9 @@ export default function Day(props) {
                             t: item[props.v4],
                           });
                           const currentMin = Math.min(...values.map(Number));
-                          // console.log(currentMax)
                           return currentMin < min ? currentMin : min;
                         }, Infinity),
                         props.data.reduce((max, item) => {
-                          // console.log(item)/
                           const values = Object.values({
                             x: item[props.v],
                             y: item[props.v2],
@@ -176,7 +169,6 @@ export default function Day(props) {
                             t: item[props.v4],
                           });
                           const currentMax = Math.max(...values.map(Number));
-                          // console.log(currentMax)
                           return currentMax > max ? currentMax : max;
                         }, -Infinity),
                       ]}
@@ -264,7 +256,6 @@ export default function Day(props) {
                       tickLine={false}
                       domain={[
                         props.data.reduce((min, item) => {
-                          // console.log(item)
                           const values = Object.values({
                             x: item[props.v],
                             y: item[props.v2],
@@ -272,11 +263,9 @@ export default function Day(props) {
                             t: item[props.v4],
                           });
                           const currentMin = Math.min(...values.map(Number));
-                          // console.log(currentMax)
                           return currentMin < min ? currentMin : min;
                         }, Infinity),
                         props.data.reduce((max, item) => {
-                          // console.log(item)/
                           const values = Object.values({
                             x: item[props.v],
                             y: item[props.v2],
@@ -284,7 +273,6 @@ export default function Day(props) {
                             t: item[props.v4],
                           });
                           const currentMax = Math.max(...values.map(Number));
-                          // console.log(currentMax)
                           return currentMax > max ? currentMax : max;
                         }, -Infinity),
                       ]}

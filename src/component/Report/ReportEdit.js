@@ -56,7 +56,6 @@ export const CheckBox = (props) => {
         };
         break;
     }
-    // console.log(editData.value);
   };
 
   useEffect(() => {

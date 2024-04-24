@@ -17,7 +17,6 @@ import { alertDispatch } from "../Alert/Alert";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { isMobile } from "../Navigation/Navigation";
-import { forEach } from "lodash";
 import PopupState, { bindMenu, bindToggle } from "material-ui-popup-state";
 import { Menu, MenuItem } from "@mui/material";
 
@@ -29,6 +28,7 @@ export const lowercasedata = (str) => {
     .replace(/đ/g, "d")
     .replace(/Đ/g, "D");
 };
+
 // data = [
 //   {
 //     warnid: 1,
@@ -232,21 +232,21 @@ export default function ErrorSetting(props) {
             //   </span>
             // </div>
             <PopupState variant="popper" popupId="demo-popup-popper">
-            {(popupState) => (<div className="DAT_TableEdit">
-              <IoMdMore size={20}   {...bindToggle(popupState)} />
-              <Menu {...bindMenu(popupState)}>
+              {(popupState) => (<div className="DAT_TableEdit">
+                <IoMdMore size={20}   {...bindToggle(popupState)} />
+                <Menu {...bindMenu(popupState)}>
 
                   <MenuItem id={row.boxid_} onClick={(e) => { handleDelete(e); popupState.close() }}>
                     <IoTrashOutline size={16} />
                     &nbsp;
                     {dataLang.formatMessage({ id: "delete" })}
                   </MenuItem>
-           
 
-               
-              </Menu>
-            </div>)}
-          </PopupState>
+
+
+                </Menu>
+              </div>)}
+            </PopupState>
           )}
           {/* <div
             className="DAT_ModifyBox"
@@ -276,13 +276,13 @@ export default function ErrorSetting(props) {
     },
   ];
 
-  const handleModify = (e, type) => {
-    const id = e.currentTarget.id;
-    var arr = id.split("_");
+  // const handleModify = (e, type) => {
+  //   const id = e.currentTarget.id;
+  //   var arr = id.split("_");
 
-    const mod = document.getElementById(arr[0] + "_Modify");
-    mod.style.display = type;
-  };
+  //   const mod = document.getElementById(arr[0] + "_Modify");
+  //   mod.style.display = type;
+  // };
 
   const handleCloseCreate = () => {
     setCreateState(false);
@@ -319,7 +319,6 @@ export default function ErrorSetting(props) {
   const handleEdit = (e) => {
     const arr = e.currentTarget.id.split("-");
     setEditarray(arr);
-    console.log(arr);
     switch (arr[2]) {
       case "EDITCAUSE":
         const index = data
@@ -377,13 +376,13 @@ export default function ErrorSetting(props) {
       ),
     });
 
-    // console.log("Data with Stringified Cause and Solution:");
-    console.log(JSON.stringify(data, (key, value) => {
-      if (key === 'cause' || key === 'solution') {
-        return JSON.stringify(value);
-      }
-      return value;
-    }, 2));
+    // console.log(JSON.stringify(data, (key, value) => {
+    //   if (key === 'cause' || key === 'solution') {
+    //     return JSON.stringify(value);
+    //   }
+    //   return value;
+    // }, 2));
+
     if (req.status) {
       alertDispatch(dataLang.formatMessage({ id: "alert_58" }));
       setEditState(false);
@@ -398,7 +397,6 @@ export default function ErrorSetting(props) {
 
   const handleDelete = (e) => {
     let arr = e.currentTarget.id.split("_");
-    console.log(arr);
     setArrayData(arr);
     setRemoveType(arr[4]);
     setRemoveState(true);
@@ -430,7 +428,6 @@ export default function ErrorSetting(props) {
             data.find((item) => item.boxid_ === boxid).solution_
           ),
         });
-        console.log(req1);
         if (req1.status) {
           setRemoveState(false);
         }
@@ -446,7 +443,6 @@ export default function ErrorSetting(props) {
           );
           tremovesolution.solution_ = temp;
           data[indexsolution] = tremovesolution;
-          console.log(data);
         }
         let req2 = await callApi("post", `${host.DATA}/updateWarnBox`, {
           boxid: boxid,
@@ -457,7 +453,6 @@ export default function ErrorSetting(props) {
             data.find((item) => item.boxid_ === boxid).solution_
           ),
         });
-        console.log(req2);
         if (req2.status) {
           setRemoveState(false);
         }
@@ -485,7 +480,6 @@ export default function ErrorSetting(props) {
     const arr = e.currentTarget.id.split("-");
     const bigdata = data;
     const index = bigdata.findIndex((item) => item.boxid_ === arr[0]);
-    // console.log(arr);
     switch (arr[1]) {
       case "ADDCAUSE":
         const causelength = bigdata[index].cause_.length;
@@ -513,7 +507,6 @@ export default function ErrorSetting(props) {
           },
         ];
         setData([...bigdata]);
-        // console.log(bigdata);
         break;
       default:
         break;
@@ -529,7 +522,6 @@ export default function ErrorSetting(props) {
 
   const handleFilter = (e) => {
     const input = lowercasedata(e.currentTarget.value);
-    console.log(input);
     const temp = dataApi.filter((item) => {
       return (
         lowercasedata(item.boxid_).includes(input) ||
@@ -545,7 +537,6 @@ export default function ErrorSetting(props) {
         )
       );
     });
-    console.log(temp);
     setData(temp);
   };
 
@@ -566,7 +557,8 @@ export default function ErrorSetting(props) {
 
   return (
     <>
-      {isMobile.value ? (
+      {isMobile.value
+        ?
         <>
           <div className="DAT_ErrSettingHeaderMobile">
             <div className="DAT_ErrSettingHeaderMobile_Top">
@@ -731,7 +723,7 @@ export default function ErrorSetting(props) {
             })}
           </div>
         </>
-      ) : (
+        :
         <>
           <div className="DAT_ErrSetting">
             <div className="DAT_ErrSetting_Title">
@@ -742,19 +734,14 @@ export default function ErrorSetting(props) {
             <div className="DAT_ErrSetting_Filter">
               <input
                 type="text"
-                placeholder={
-                  dataLang.formatMessage({ id: "enterError" }) + "..."
-                }
+                placeholder={dataLang.formatMessage({ id: "enterError" }) + "..."}
                 ref={filterRef}
-                onChange={(e) => {
-                  handleFilter(e);
-                }}
+                onChange={(e) => { handleFilter(e) }}
               />
               <CiSearch color="gray" size={20} />
             </div>
 
-            <button
-              className="DAT_ErrSetting_New"
+            <button className="DAT_ErrSetting_New"
               onClick={() => setCreateState(true)}
             >
               <span>
@@ -783,10 +770,10 @@ export default function ErrorSetting(props) {
             </div>
           </div>
         </>
-      )}
+      }
 
       {createState ? (
-        <div className="DAT_ErrSettingBG">
+        <div className="DAT_PopupBG">
           <CreateErrSetting
             handleClose={handleCloseCreate}
             handleConfirm={handleConfirmCreate}
@@ -797,7 +784,7 @@ export default function ErrorSetting(props) {
       )}
 
       {editState ? (
-        <div className="DAT_ErrSettingBG">
+        <div className="DAT_PopupBG">
           <EditErr
             type={editType}
             handleClose={handleCloseEdit}
@@ -811,7 +798,7 @@ export default function ErrorSetting(props) {
       )}
 
       {removeState ? (
-        <div className="DAT_ErrSettingBG">
+        <div className="DAT_PopupBG">
           <RemoveErr
             type={removeType}
             handleClose={handleCloseRemove}

@@ -244,7 +244,6 @@ export default function DashboardHistory(props) {
         });
 
         if (d.status) {
-          //console.log(d.data)
           let vYear = dataLang.formatMessage({ id: "monthlyproduction" });
           let vYear2 = dataLang.formatMessage({ id: "monthlyconsumption" });
           let vYear3 = dataLang.formatMessage({ id: "monthlygridin" });
@@ -342,7 +341,6 @@ export default function DashboardHistory(props) {
 
   const handleExport = () => {
     setExportReport(true);
-    // console.log(exportReport);
   };
 
   const handleClose = () => {
@@ -352,7 +350,6 @@ export default function DashboardHistory(props) {
   const handlefilterchart = (e) => {
     const state = e.currentTarget.checked;
     const chartfield = e.currentTarget.id.split("_");
-    // console.log(chartfield);
     // temp[chartfield[1]][dateType][chartfield[0]] = state;
     filterchartTemp.value = {
       ...filterchartTemp.value,
@@ -541,7 +538,6 @@ export default function DashboardHistory(props) {
   useEffect(() => {
     let d = document.getElementById("datepicker");
     let v = d.querySelector("span");
-    // console.log(v.innerHTML);
     setDatatime_(v.innerHTML);
   }, [dateType]);
 

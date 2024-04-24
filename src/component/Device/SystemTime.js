@@ -106,7 +106,6 @@ export default function SystemTime(props) {
                     if (key === 'realtime_yearmonth') {
                         value = yearmonth;
                     }
-                    //console.log(yearmonth, minutesecond, dayhour);
 
                     console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + value + '"}')
                     let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + value + '"}', Token.value.token)
@@ -160,8 +159,6 @@ export default function SystemTime(props) {
             let minute = 0;
             let second = 0;
             config.map((key) => {
-                // document.getElementById(key).innerHTML = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal);
-
                 let fullNumber = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal);
                 if (key === 'realtime_dayhour') {
                     day = ((fullNumber >> 8) & 0xFF) < 10 ? '0' + ((fullNumber >> 8) & 0xFF) : ((fullNumber >> 8) & 0xFF);
@@ -178,8 +175,6 @@ export default function SystemTime(props) {
                     month = (fullNumber & 0xFF) < 10 ? '0' + (fullNumber & 0xFF) : (fullNumber & 0xFF);
                 }
                 date.current.value = (moment(new Date(`${month}/${day}/${year + 2000}`)).format("yyyy-MM-DD"))
-                //console.log(`${year + 2000}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`);
-                // date.current.value = `${year + 2000}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`
                 time.current.value = (`${hour}:${minute}:${second}`)
             })
         }

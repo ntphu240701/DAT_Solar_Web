@@ -12,15 +12,7 @@ import { sidebartab, sidebartabli } from "../Sidenar/Sidenar";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
 import { alertDispatch } from "../Alert/Alert";
-import {
-  ruleInfor,
-  Token,
-  partnerInfor,
-  userInfor,
-  convertUnit,
-  showUnitk,
-  showUnit,
-} from "../../App";
+import { ruleInfor, Token, partnerInfor, userInfor, convertUnit, showUnitk, showUnit, } from "../../App";
 import { useSelector } from "react-redux";
 import { signal } from "@preact/signals-react";
 import { useIntl } from "react-intl";
@@ -37,12 +29,10 @@ import { IoIosArrowDown, IoIosArrowForward, IoIosArrowUp, IoMdMore } from "react
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { FiEdit, FiFilter } from "react-icons/fi";
 import { RiShareForwardLine } from "react-icons/ri";
-import PopupState, { bindPopper, bindHover, bindFocus, bindToggle, bindMenu } from "material-ui-popup-state";
+import PopupState, { bindToggle, bindMenu } from "material-ui-popup-state";
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import Fade from "@mui/material/Fade";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
+
 const tabLable = signal("");
 const tabMobile = signal(false);
 const online = signal([]);
@@ -59,12 +49,13 @@ export const popupState = signal(false);
 export const shareState = signal(false);
 export const deviceData = signal([]);
 export const inverterData = signal([]);
-
+export const projectwarnfilter = signal(0);
 export const dataproject = signal([]);
 const logger = signal([]);
 
 export const Empty = (props) => {
   const dataLang = useIntl();
+
   return (
     <div
       className="DAT_TableEmpty"
@@ -90,7 +81,6 @@ export const Empty = (props) => {
     </div>
   );
 };
-export const projectwarnfilter = signal(0);
 
 export default function Project(props) {
   const dataLang = useIntl();
@@ -98,7 +88,7 @@ export default function Project(props) {
   const navigate = useNavigate();
   const [datafilter, setDatafilter] = useState([]);
   const [type, setType] = useState("name");
-  const [filter, setFilter] = useState(false);
+  // const [filter, setFilter] = useState(false);
   const [invt, setInvt] = useState(0);
   const [power, setPower] = useState([]);
   const [dailyProduction, setDailyProduction] = useState([]);
@@ -135,16 +125,12 @@ export default function Project(props) {
     {
       name: dataLang.formatMessage({ id: "name" }),
       selector: (row) => (
-        <div
-          className="DAT_Table"
+        <div className="DAT_Table"
           id={row.plantid_}
           style={{ cursor: "pointer" }}
           onClick={(e) => handlePlant(e)}
         >
-          <img
-            src={row.img ? row.img : "/dat_picture/solar_panel.png"}
-            alt=""
-          />
+          <img src={row.img ? row.img : "/dat_picture/solar_panel.png"} alt="" />
 
           <div className="DAT_Table_Infor">
             <div className="DAT_Table_Infor_Name">{row.plantname}</div>
@@ -204,20 +190,18 @@ export default function Project(props) {
       width: "100px",
     },
     {
-      name: dataLang.formatMessage({
-        id: "electricType",
-        defaultMessage: "Plant Mode",
-      }),
+      name: dataLang.formatMessage({ id: "electricType", defaultMessage: "Plant Mode", }),
       selector: (row) => dataLang.formatMessage({ id: `${row.plantmode}Type` }),
       width: "250px",
+      style: {
+        justifyContent: "left !important",
+      },
     },
     {
       name: dataLang.formatMessage({ id: "inCapacity" }),
       selector: (row) => (
         <>
-          {Number(
-            parseFloat(convertUnit(row.capacity)).toFixed(2)
-          ).toLocaleString("en-US")}
+          {Number(parseFloat(convertUnit(row.capacity)).toFixed(2)).toLocaleString("en-US")}
           &nbsp;
           {showUnitk(row.capacity)}Wp
         </>
@@ -228,40 +212,38 @@ export default function Project(props) {
     {
       name: dataLang.formatMessage({ id: "daily" }),
       selector: (row) =>
-        parseFloat(dailyProduction[row.plantid_]).toFixed(2) === "NaN" ? (
+        parseFloat(dailyProduction[row.plantid_]).toFixed(2) === "NaN"
+          ?
           <>
             0 &nbsp;
             {showUnitk(dailyProduction[row.plantid_])}Wh
           </>
-        ) : (
+          :
           <>
-            {Number(
-              parseFloat(convertUnit(dailyProduction[row.plantid_])).toFixed(2)
-            ).toLocaleString("en-US")}
+            {Number(parseFloat(convertUnit(dailyProduction[row.plantid_])).toFixed(2)).toLocaleString("en-US")}
             &nbsp;
             {showUnitk(dailyProduction[row.plantid_])}Wh
           </>
-        ),
+      ,
       sortable: true,
       width: "160px",
     },
     {
       name: dataLang.formatMessage({ id: "power" }),
       selector: (row) =>
-        parseFloat(power[row.plantid_]).toFixed(2) === "NaN" ? (
+        parseFloat(power[row.plantid_]).toFixed(2) === "NaN"
+          ?
           <>
             0 &nbsp;
             {showUnitk(power[row.plantid_])}W
           </>
-        ) : (
+          :
           <>
-            {Number(
-              parseFloat(convertUnit(power[row.plantid_] / 1000)).toFixed(2)
-            ).toLocaleString("en-US")}
+            {Number(parseFloat(convertUnit(power[row.plantid_] / 1000)).toFixed(2)).toLocaleString("en-US")}
             &nbsp;
             {showUnit(power[row.plantid_])}W
           </>
-        ),
+      ,
       sortable: true,
       width: "160px",
     },
@@ -287,11 +269,11 @@ export default function Project(props) {
             alignItems: "center",
           }}
         >
-          {ruleInfor.value.setting.project.modify == true ||
-            ruleInfor.value.setting.project.remove == true ? (
-            row.shared == 1 ? (
-              <></>
-            ) : (
+          {ruleInfor.value.setting.project.modify == true || ruleInfor.value.setting.project.remove == true
+            ?
+            row.shared == 1
+              ? <></>
+              :
               <PopupState variant="popper" popupId="demo-popup-popper">
                 {(popupState) => (<div className="DAT_TableEdit">
                   <IoMdMore size={20}   {...bindToggle(popupState)} />
@@ -319,20 +301,16 @@ export default function Project(props) {
                   </Menu>
                 </div>)}
               </PopupState>
-              // <div className="DAT_TableEdit">
-              //   <span
-              //     id={row.plantid_ + "_MORE"}
-              //     onClick={(e) => handleModify(e, "block")}
-              //   >
-              //     <IoMdMore size={20} />
-              //   </span>
-              // </div>
-            )
-          ) : (
-            <div></div>
-          )}
-
-
+            // <div className="DAT_TableEdit">
+            //   <span
+            //     id={row.plantid_ + "_MORE"}
+            //     onClick={(e) => handleModify(e, "block")}
+            //   >
+            //     <IoMdMore size={20} />
+            //   </span>
+            // </div>
+            : <div></div>
+          }
 
           {/* <div
             className="DAT_ModifyBox"
@@ -391,6 +369,7 @@ export default function Project(props) {
               {dataLang.formatMessage({ id: "share" })}
             </div>
           </div> */}
+
           <div className="DAT_TableMark">
             <FaStar
               id={row.plantid_}
@@ -473,12 +452,12 @@ export default function Project(props) {
     }
   };
 
-  const handleModify = (e, type) => {
-    const id = e.currentTarget.id;
-    var arr = id.split("_");
-    const mod = document.getElementById(arr[0] + "_Modify");
-    mod.style.display = type;
-  };
+  // const handleModify = (e, type) => {
+  //   const id = e.currentTarget.id;
+  //   var arr = id.split("_");
+  //   const mod = document.getElementById(arr[0] + "_Modify");
+  //   mod.style.display = type;
+  // };
 
   const handleTabMobile = (e) => {
     const id = e.currentTarget.id;
@@ -570,7 +549,6 @@ export default function Project(props) {
       location: _location,
       elecmode: _elecmode,
     });
-    console.log(_elecmode);
     let filter1 = dataproject.value.filter((item) => {
       if (
         parseFloat(item.capacity) >= parseFloat(min_) &&
@@ -581,7 +559,6 @@ export default function Project(props) {
     });
     let filter2 = dataproject.value.filter((item) => {
       if (_location) {
-        console.log(lowercasedata(item.addr), lowercasedata(_location));
         return lowercasedata(item.addr).includes(lowercasedata(_location));
       } else {
         return item;
@@ -607,7 +584,6 @@ export default function Project(props) {
       filter3 = [...filter3, ...t];
     }
 
-    console.log(filter1, filter2, filter3);
 
     const set1 = new Set(filter1.map((obj) => Object.values(obj)[0]));
     const set2 = new Set(filter2.map((obj) => Object.values(obj)[0]));
@@ -617,7 +593,6 @@ export default function Project(props) {
     const commonKeys = [...set1].filter(
       (value) => set2.has(value) && set3.has(value)
     );
-    console.log(commonKeys);
 
     // TRẢ LẠI OBJECT {45, 68}
     // const y = set1.intersection(set2, set3);
@@ -794,10 +769,6 @@ export default function Project(props) {
     setDailyProduction(daily_);
     setPower(power_);
   }, [invt, user]);
-
-  useEffect(() => {
-    console.log(datafilter)
-  }, [datafilter]);
 
   return (
     <>
@@ -2151,8 +2122,7 @@ export default function Project(props) {
         </div>
       )}
 
-      <div
-        className="DAT_ProjectInfor"
+      <div className="DAT_ProjectInfor"
         style={{
           height: plantState.value === "default" ? "0px" : "100vh",
           transition: "0.5s",

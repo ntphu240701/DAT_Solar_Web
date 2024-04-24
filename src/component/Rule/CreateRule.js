@@ -11,7 +11,6 @@ import { host } from "../Lang/Contant";
 import { userInfor } from "../../App";
 
 import { IoClose, IoSaveOutline } from "react-icons/io5";
-import { Abc } from "@mui/icons-material";
 
 const temp = signal({
   ruleid_: 0,
@@ -105,10 +104,7 @@ export default function CreateRule(props) {
   const TypeReport = (props) => {
     const handerChangeReportName = (e) => {
       rulenameRef.current = e.target.value;
-      console.log(rulenameRef.current)
     };
-
-
 
     return (
       <div className="DAT_CreateRule_Body_Item"

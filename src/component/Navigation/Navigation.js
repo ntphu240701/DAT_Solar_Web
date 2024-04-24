@@ -58,7 +58,6 @@ export default function Navigation(props) {
 
   const handleOutsideLang = () => {
     setTimeout(() => {
-      //console.log(langState.value[0],langState.value[1])
       if (langStateNav.value[1] == false) {
         langNav.value = false;
         langStateNav.value = [false, false];
@@ -113,14 +112,11 @@ export default function Navigation(props) {
   };
 
   const handleFilterWarn = async (e) => {
-    // console.log(e.currentTarget.id);
     projectwarnfilter.value = 0;
 
-    console.log(dataWarn.value);
     let newdata = dataWarn.value.find(
       (item) => item.warnid == parseInt(e.currentTarget.id)
     );
-    console.log(newdata);
 
     warnfilter.value = newdata;
     notifNav.value = false;
@@ -128,12 +124,9 @@ export default function Navigation(props) {
     const state = await callApi("post", host.DATA + "/updateWarn", {
       id: e.currentTarget.id,
     });
-    console.log(state);
     if (state.status) {
       notifNav.value = false;
     }
-
-    // console.log(warnfilter.value);
   };
 
   useEffect(function () {

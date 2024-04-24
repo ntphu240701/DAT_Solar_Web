@@ -67,14 +67,13 @@ const BasicInfo = (props) => {
           JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2),
         );
         infoWindow.open(map);
-        // console.log(mapsMouseEvent.latLng.toJSON());
         var long_ = document.getElementById("long");
         var lat_ = document.getElementById("lat");
         lat_.value = mapsMouseEvent.latLng.toJSON().lat;
         long_.value = mapsMouseEvent.latLng.toJSON().lng;
         projectData.value = {
           ...projectData.value,
-          lat:  mapsMouseEvent.latLng.toJSON().lat,
+          lat: mapsMouseEvent.latLng.toJSON().lat,
           long: mapsMouseEvent.latLng.toJSON().lng
         };
 
@@ -83,7 +82,7 @@ const BasicInfo = (props) => {
         )
         dataproject.value[index] = {
           ...dataproject.value[index],
-          lat:  mapsMouseEvent.latLng.toJSON().lat,
+          lat: mapsMouseEvent.latLng.toJSON().lat,
           long: mapsMouseEvent.latLng.toJSON().lng
         }
 
@@ -98,10 +97,7 @@ const BasicInfo = (props) => {
         });
         return markerElement;
       }
-
-
     })
-
 
     // const defaultProps = {
     //   center: {
@@ -186,8 +182,7 @@ const BasicInfo = (props) => {
       <div className="DAT_EditProject_BasicInfo_Tit">
         <div className="DAT_EditProject_BasicInfo_Tit_Left">{props.tit}</div>
 
-        <div
-          className="DAT_EditProject_BasicInfo_Tit_Right"
+        <div className="DAT_EditProject_BasicInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -240,7 +235,7 @@ const BasicInfo = (props) => {
                 /> */}
 
                 <label htmlFor="copy-button" style={{ display: "flex", position: 'relative', alignItems: "center", gap: "5px", cursor: "pointer" }}>
-                  <input name="copy-button" aria-label="copy-button" id="addr" type="text" defaultValue={projectData.value.addr} style={{ padding: '5px' }}  onChange={(e) => handleBasic(e)} />
+                  <input name="copy-button" aria-label="copy-button" id="addr" type="text" defaultValue={projectData.value.addr} style={{ padding: '5px' }} onChange={(e) => handleBasic(e)} />
                   <FaMapMarkerAlt color="red" size={20} onClick={(e) => handleMap(e)} style={{ position: 'absolute', right: '10px', cursor: "pointer" }} />
                 </label>
               </div>
@@ -335,8 +330,7 @@ const SystemInfo = (props) => {
       <div className="DAT_EditProject_SystemInfo_Tit">
         <div className="DAT_EditProject_SystemInfo_Tit_Left">{props.tit}</div>
 
-        <div
-          className="DAT_EditProject_SystemInfo_Tit_Right"
+        <div className="DAT_EditProject_SystemInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -479,8 +473,7 @@ const YieldInfo = (props) => {
       <div className="DAT_EditProject_YieldInfo_Tit">
         <div className="DAT_EditProject_YieldInfo_Tit_Left">{props.tit}</div>
 
-        <div
-          className="DAT_EditProject_YieldInfo_Tit_Right"
+        <div className="DAT_EditProject_YieldInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -561,8 +554,7 @@ const OwnerInfo = (props) => {
       <div className="DAT_EditProject_OwnerInfo_Tit">
         <div className="DAT_EditProject_OwnerInfo_Tit_Left">{props.tit}</div>
 
-        <div
-          className="DAT_EditProject_OwnerInfo_Tit_Right"
+        <div className="DAT_EditProject_OwnerInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -669,7 +661,6 @@ const ImgInfo = (props) => {
 
   const handleChooseAvatar = async (e) => {
     // setAva(URL.createObjectURL(e.target.files[0]));
-    // console.log(e.target.files[0].name);
     // projectData.value[e.currentTarget.id] = e.current
     var reader = new FileReader();
     if (e.target.files[0].size > 50000) {
@@ -693,8 +684,7 @@ const ImgInfo = (props) => {
       <div className="DAT_EditProject_ImgInfo_Tit">
         <div className="DAT_EditProject_ImgInfo_Tit_Left">{props.tit}</div>
 
-        <div
-          className="DAT_EditProject_ImgInfo_Tit_Right"
+        <div className="DAT_EditProject_ImgInfo_Tit_Right"
           onClick={() => setState(!state)}
         >
           <IoIosArrowDown
@@ -797,7 +787,6 @@ export default function EditProject(props) {
           plantState.value = "default";
         }
       };
-      console.log(projectData.value);
       editProject();
     }
   };
@@ -811,8 +800,7 @@ export default function EditProject(props) {
         </div>
 
         <div className="DAT_EditProject_Header_Right">
-          <div
-            className="DAT_EditProject_Header_Right_Save"
+          <div className="DAT_EditProject_Header_Right_Save"
             onClick={() => handleSave()}
           >
             <IoSaveOutline size={20} color="white" />

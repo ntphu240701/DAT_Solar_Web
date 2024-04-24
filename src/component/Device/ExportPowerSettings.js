@@ -35,7 +35,6 @@ export default function ExportPowerSettings(props) {
     ]
 
     const handleChange = (e) => {
-        console.log(e.target.value);
     };
 
     const invtCloud = async (data, token) => {

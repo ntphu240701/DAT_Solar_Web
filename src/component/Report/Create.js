@@ -90,7 +90,6 @@ export const CheckBox = (props) => {
       default:
         break;
     }
-    // console.log(newdata.value);
   };
 
   return (
@@ -299,7 +298,6 @@ export default function Create(props) {
     } else {
       setWidwidthCheckBox("25%");
     }
-    // console.log(isMobile.value);
   }, [isMobile.value]);
 
   // Handle close when press ESC

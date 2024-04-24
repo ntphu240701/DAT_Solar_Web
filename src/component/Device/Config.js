@@ -35,10 +35,6 @@ export default function Config() {
     configState.value = false;
   };
 
-  useEffect(() => {
-    console.log(configState.value);
-  });
-
   return (
     <div className="DAT_Config">
       <div className="DAT_Config_Header">

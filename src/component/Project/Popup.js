@@ -125,7 +125,8 @@ export default function Popup(props) {
   }, []);
 
   return (
-    props.func === "remove" ?
+    props.func === "remove"
+      ?
       <div className="DAT_Popup_Box">
         <div className="DAT_Popup_Box_Head">
           <div className="DAT_Popup_Box_Head_Left">
@@ -149,7 +150,7 @@ export default function Popup(props) {
               dataLang.formatMessage({ id: 'delPlant' })
               : dataLang.formatMessage({ id: 'delDevicemess' })}
             &nbsp;
-            <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
+            <span style={{ fontFamily: "Montserrat-Bold" }}>
               {props.type === "plant" ? projectData.value.plantname : props.sn}
             </span>
           </span>
@@ -164,7 +165,8 @@ export default function Popup(props) {
           </button>
         </div>
       </div>
-      : <div className="DAT_Popup_Box">
+      :
+      <div className="DAT_Popup_Box">
         <div className="DAT_Popup_Box_Head">
           <div className="DAT_Popup_Box_Head_Left">
             {dataLang.formatMessage({ id: 'edits' })}

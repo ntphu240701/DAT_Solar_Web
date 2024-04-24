@@ -158,7 +158,6 @@ export default function Login(props) {
         mail: mail,
         code: join ? joinCode : "S01",
       });
-      //console.log(res)
       if (res.status) {
         let res = await callApi("post", host.AUTH + "/Register", {
           usr: user,

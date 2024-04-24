@@ -215,7 +215,6 @@ export default function Warn(props) {
     let req = await callApi("post", `${host.DATA}/getWarninf`, {
       boxid: id,
     });
-    // console.log(req);
     if (req.status) {
       setPopupState(true);
       setType("info");
@@ -316,7 +315,6 @@ export default function Warn(props) {
             .includes(searchTerm)
       );
       setDatafilterclosed([...temp3]);
-      // console.log(temp);
 
       warnfilter.value = {};
     }
@@ -338,8 +336,6 @@ export default function Warn(props) {
     //Gọi biến thời gian nhập vào
     const openInput = moment(opentime).format("MM/DD/YYYY");
     const closeInput = moment(closetime).format("MM/DD/YYYY");
-
-    console.log("openINPUT", openInput, closeInput);
 
     const newdb = dataWarn.value.filter((item) => {
       // Gọi biến thời gian trong dataWarn

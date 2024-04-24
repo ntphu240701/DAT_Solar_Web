@@ -23,14 +23,6 @@ export default function EditErr(props) {
     popup.style.color = popup_state[state].color;
   };
 
-  // const handleSave = () => {
-  //   console.log(editVi.current.value, editEn.current.value);
-  // };
-
-  //   useEffect(() => {
-  //     console.log(editVi.current.value, editEn.current.value);
-  //   }, [editVi.current.value, editEn.current.value]);
-
   // Handle close when press ESC
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -67,11 +59,10 @@ export default function EditErr(props) {
       </div>
 
       <div className="DAT_EditErr_Body">
-        {props.type === "EDITCAUSE" ? (
-          <div className="DAT_EditErr_Body_Head">{dataLang.formatMessage({ id: "cause" })}</div>
-        ) : (
-          <div className="DAT_EditErr_Body_Head">{dataLang.formatMessage({ id: "solution" })}</div>
-        )}
+        {props.type === "EDITCAUSE"
+          ? <div className="DAT_EditErr_Body_Head">{dataLang.formatMessage({ id: "cause" })}</div>
+          : <div className="DAT_EditErr_Body_Head">{dataLang.formatMessage({ id: "solution" })}</div>
+        }
         <div className="DAT_EditErr_Body_Content">
           <div className="DAT_EditErr_Body_Content_Item"
             style={{ marginBottom: "16px" }}

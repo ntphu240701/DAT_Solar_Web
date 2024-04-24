@@ -96,7 +96,8 @@ export default function Popup(props) {
   }, []);
 
   return (
-    props.type === "remove" ?
+    props.type === "remove"
+      ?
       <div className="DAT_Popup_Box">
         <div className="DAT_Popup_Box_Head">
           <div className="DAT_Popup_Box_Head_Left">
@@ -118,8 +119,8 @@ export default function Popup(props) {
         <div className="DAT_Popup_Box_Body">
           {dataLang.formatMessage({ id: 'delDevicemess' })}
           &nbsp;
-          <span style={{ fontWeight: "650", fontFamily: "sans-serif" }}>
-            {props.sn}?
+          <span style={{ fontFamily: "Montserrat-Bold" }}>
+            {props.sn} ?
           </span>
         </div>
 

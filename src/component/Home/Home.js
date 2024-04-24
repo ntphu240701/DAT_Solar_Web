@@ -647,9 +647,7 @@ export default function Home(props) {
     setProduction(cal?.pro_1 || 0);
     setDailyProduction(cal?.pro_2 || 0);
     setTotalProduction(cal?.pro_3 || 0);
-    console.log(cal, capacity);
     let x = ((cal?.pro_1 / 1000) * 100) / capacity || 0;
-    console.log(x);
     setPer(mapValue(x, in_min, in_max, out_min, out_max));
     setStep(5);
 

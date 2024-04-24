@@ -98,10 +98,6 @@ export default function Info(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    console.log(info.value);
-  }, []);
-
   return (
     <div ref={box} style={{ width: "98%", margin: "auto" }}>
       <div className="DAT_Info">
