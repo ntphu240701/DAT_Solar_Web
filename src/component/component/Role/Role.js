@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import "./Role.scss";
-
 import DataTable from "react-data-table-component";
 import { Empty } from "../Project/Project";
 import { signal } from "@preact/signals-react";
 import CreateRole from "./CreateRole";
-import RolePopup from "./RolePopup";
+import DeleteRole from "./DeleteRole";
+import EditRole from "./EditRole";
 import { host } from "../Lang/Contant";
 import { callApi } from "../Api/Api";
 import { partnerInfor, ruleInfor, userInfor } from "../../App";
 import { useIntl } from "react-intl";
 import { isMobile } from "../Navigation/Navigation";
-import { lowercasedata } from "../ErrorSetting/ErrorSetting";
-import PopupState, { bindMenu, bindToggle } from "material-ui-popup-state";
-import { Menu, MenuItem } from "@mui/material";
-
+import { datarule } from "../Rule/Rule";
 import { CiSearch } from "react-icons/ci";
 import { IoAddOutline, IoTrashOutline } from "react-icons/io5";
 import { IoMdMore } from "react-icons/io";
 import { LuUserSquare } from "react-icons/lu";
 import { FiEdit } from "react-icons/fi";
+import { lowercasedata } from "../ErrorSetting/ErrorSetting";
 import { MdAddchart } from "react-icons/md";
 import { GoProject } from "react-icons/go";
+import { useDispatch, useSelector } from "react-redux";
+import { groupID } from "../GroupRole/GroupRole";
 
 export const roleData = signal({});
 export const Usr_ = signal([]);
@@ -56,11 +56,10 @@ export const access = {
 export default function Role(props) {
   const dataLang = useIntl();
   const [temp, setTemp] = useState();
-  // const [filter, setFilter] = useState(false);
+  const [filter, setFilter] = useState(false);
   const [datafilter, setdatafilter] = useState([]);
   const [roleState, setRoleState] = useState("default");
-  const [popupState, setPopupState] = useState(false);
-  const [type, setType] = useState("default");
+  const [popupState, setPopupState] = useState("default");
 
   const paginationComponentOptions = {
     rowsPerPageText: dataLang.formatMessage({ id: "row" }),
@@ -76,7 +75,7 @@ export default function Role(props) {
     mainadmin: "/dat_picture/admin.jpg",
   };
 
-  // const type = userInfor.value.type;
+  const type = userInfor.value.type;
 
   const columnrole = [
     {
@@ -143,101 +142,52 @@ export default function Role(props) {
       name: dataLang.formatMessage({ id: "setting" }),
       selector: (row) => (
         <>
-          {(() => {
-            switch (userInfor.value.type) {
-              case "master":
-                return (
-                  <PopupState variant="popper" popupId="demo-popup-popper">
-                    {(popupState) => (<div className="DAT_TableEdit">
-                      <IoMdMore size={20}   {...bindToggle(popupState)} />
-                      <Menu {...bindMenu(popupState)}>
-
-                        <MenuItem id={row.id_} onClick={(e) => { handleEdit(e); popupState.close() }}>
-                          <FiEdit size={14} />&nbsp;
-                          {dataLang.formatMessage({ id: "change" })}
-                        </MenuItem>
-
-
-                        <MenuItem id={row.usr_} onClick={(e) => { handleDelete_(e); popupState.close() }}>
-                          <IoTrashOutline size={16} />
-                          &nbsp;
-                          {dataLang.formatMessage({ id: "delete" })}
-                        </MenuItem>
-                      </Menu>
-                    </div>)}
-                  </PopupState>
-
-                )
-              case "mainadmin":
-                return (
-                  <>
-                    {row.type_ === "master" || row.type_ === "mainadmin" ? (
-                      <></>
-                    ) : (
-                      <PopupState variant="popper" popupId="demo-popup-popper">
-                        {(popupState) => (<div className="DAT_TableEdit">
-                          <IoMdMore size={20}   {...bindToggle(popupState)} />
-                          <Menu {...bindMenu(popupState)}>
-
-                            <MenuItem id={row.id_} onClick={(e) => { handleEdit(e); popupState.close() }}>
-                              <FiEdit size={14} />&nbsp;
-                              {dataLang.formatMessage({ id: "change" })}
-                            </MenuItem>
-
-
-                            <MenuItem id={row.usr_} onClick={(e) => { handleDelete_(e); popupState.close() }}>
-                              <IoTrashOutline size={16} />
-                              &nbsp;
-                              {dataLang.formatMessage({ id: "delete" })}
-                            </MenuItem>
-
-
-
-                          </Menu>
-                        </div>)}
-                      </PopupState>
-                    )}
-                  </>
-                )
-              case "admin":
-                return (
-                  <>
-                    {row.type_ === "master" || row.type_ === "mainadmin" || row.type_ === "admin" ? (
-                      <></>
-                    ) : (
-                      <PopupState variant="popper" popupId="demo-popup-popper">
-                        {(popupState) => (<div className="DAT_TableEdit">
-                          <IoMdMore size={20}   {...bindToggle(popupState)} />
-                          <Menu {...bindMenu(popupState)}>
-
-                            <MenuItem id={row.id_} onClick={(e) => { handleEdit(e); popupState.close() }}>
-                              <FiEdit size={14} />&nbsp;
-                              {dataLang.formatMessage({ id: "change" })}
-                            </MenuItem>
-
-
-                            <MenuItem id={row.usr_} onClick={(e) => { handleDelete_(e); popupState.close() }}>
-                              <IoTrashOutline size={16} />
-                              &nbsp;
-                              {dataLang.formatMessage({ id: "delete" })}
-                            </MenuItem>
-
-
-
-                          </Menu>
-                        </div>)}
-                      </PopupState>
-                    )}
-                  </>
-                )
-              default:
-                return (<></>)
-            }
-          })()}
-
-
-
-
+          {row.type_ === "master" ? (
+            <></>
+          ) : (
+            <div
+              className="DAT_TableEdit"
+              style={{
+                display: access[`${type}editfor`][row.type_] ? "block" : "none",
+              }}
+            >
+              <span
+                id={row.id_ + "_MORE"}
+                // onMouseEnter={(e) => handleModify(e, "block")}
+                onClick={(e) => {
+                  handleModify(e, "block");
+                  groupID.value = 0;
+                }}
+              >
+                <IoMdMore size={20} />
+              </span>
+            </div>
+          )}
+          <div
+            className="DAT_ModifyBox"
+            id={row.id_ + "_Modify"}
+            style={{ display: "none", marginRight: "4px", marginTop: "2px" }}
+            onMouseLeave={(e) => handleModify(e, "none")}
+          >
+            <div
+              className="DAT_ModifyBox_Fix"
+              id={row.id_}
+              onClick={(e) => handleEdit(e)}
+            >
+              <FiEdit size={14} />
+              &nbsp;
+              {dataLang.formatMessage({ id: "change" })}
+            </div>
+            <div
+              className="DAT_ModifyBox_Remove"
+              id={row.usr_}
+              onClick={(e) => handleDelete_(e)}
+            >
+              <IoTrashOutline size={16} />
+              &nbsp;
+              {dataLang.formatMessage({ id: "remove" })}
+            </div>
+          </div>
         </>
       ),
       width: "110px",
@@ -249,30 +199,27 @@ export default function Role(props) {
   };
 
   const handleDelete_ = (e) => {
-    setPopupState(true);
-    setType("delete");
+    setPopupState("delete");
     setTemp(e.currentTarget.id);
   };
 
   const handleEdit = (e) => {
-    setPopupState(true);
-    setType("edit");
+    setPopupState("edit");
     const id = e.currentTarget.id;
     roleData.value = Usr_.value.find((item) => item.id_ == id);
   };
 
   const handleClosePopup = () => {
-    setPopupState(false);
-    setType("default");
+    setPopupState("default");
   };
 
-  // const handleModify = (e, type) => {
-  //   const id = e.currentTarget.id;
-  //   var arr = id.split("_");
+  const handleModify = (e, type) => {
+    const id = e.currentTarget.id;
+    var arr = id.split("_");
 
-  //   const mod = document.getElementById(arr[0] + "_Modify");
-  //   mod.style.display = type;
-  // };
+    const mod = document.getElementById(arr[0] + "_Modify");
+    mod.style.display = type;
+  };
 
   const handleFilter = (e) => {
     const searchterm = lowercasedata(e.currentTarget.value);
@@ -591,7 +538,7 @@ export default function Role(props) {
                 data={datafilter}
                 pagination
                 paginationComponentOptions={paginationComponentOptions}
-                // fixedHeader={true}
+                fixedHeader={true}
                 noDataComponent={<Empty />}
               />
             </div>
@@ -599,7 +546,10 @@ export default function Role(props) {
         </>
       )}
 
-      <div className="DAT_ViewPopup"
+      {isMobile.value ? <></> : <></>}
+
+      <div
+        className="DAT_RoleInfor"
         style={{
           height: roleState === "default" ? "0px" : "100vh",
           transition: "0.5s",
@@ -615,11 +565,23 @@ export default function Role(props) {
         })()}
       </div>
 
-      {popupState ?
-        <div className="DAT_PopupBG">
-          <RolePopup user={temp} type={type} handleClose={handleClosePopup} />
-        </div>
-        : <></>}
+      <div
+        className="DAT_RolePopup"
+        style={{
+          height: popupState === "default" ? "0px" : "100vh",
+        }}
+      >
+        {(() => {
+          switch (popupState) {
+            case "delete":
+              return <DeleteRole user={temp} handleClose={handleClosePopup} />;
+            case "edit":
+              return <EditRole handleClose={handleClosePopup} />;
+            default:
+              return <></>;
+          }
+        })()}
+      </div>
     </>
   );
 }

@@ -11,6 +11,7 @@ import { host } from "../Lang/Contant";
 import { userInfor } from "../../App";
 
 import { IoClose, IoSaveOutline } from "react-icons/io5";
+import { Abc } from "@mui/icons-material";
 
 const temp = signal({
   ruleid_: 0,
@@ -104,7 +105,10 @@ export default function CreateRule(props) {
   const TypeReport = (props) => {
     const handerChangeReportName = (e) => {
       rulenameRef.current = e.target.value;
+      console.log(rulenameRef.current)
     };
+
+
 
     return (
       <div className="DAT_CreateRule_Body_Item"
@@ -132,7 +136,6 @@ export default function CreateRule(props) {
     if (rulenameRef.current != "" && d.length == 0) {
       const createRule = await callApi("post", host.DATA + "/addRule", {
         name: rulenameRef.current,
-        type: userInfor.value.type,
         partnerid: userInfor.value.partnerid,
         setting: JSON.stringify(newruledata.value.setting),
       });
