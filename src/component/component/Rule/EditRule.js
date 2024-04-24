@@ -8,55 +8,19 @@ import { alertDispatch } from "../Alert/Alert";
 import { useIntl } from "react-intl";
 import { callApi } from "../Api/Api";
 import { host } from "../Lang/Contant";
-import { userInfor } from "../../App";
 
 import { IoClose, IoSaveOutline } from "react-icons/io5";
 
-const temp = signal({
-  ruleid_: 0,
-  rulename_: "",
-  setting: {
-    contact: { edit: false },
-    device: { add: false, modify: false, remove: false },
-    project: {
-      add: false,
-      modify: false,
-      remove: false,
-    },
-    report: {
-      add: false,
-      modify: false,
-      remove: false,
-    },
-    rule: {
-      active: false,
-      add: false,
-      modify: false,
-      remove: false,
-    },
-    user: { add: false, modify: false, remove: false },
-    warn: { remove: false },
-    partner: {
-      modify: false,
-    },
-  },
-});
-
-const newruledata = signal(temp.value);
-
-export const ruletitle = signal([
-  "alert",
-  "device",
-  "partner",
-  "plant",
-  "report",
-  "rule",
-]);
+export const editruledata = signal();
+const temp = signal();
 
 export const CheckBox = (props) => {
   const handleShow = (e) => {
     let arr = props.html.split("_");
-    newruledata.value.setting[props.rights][props.custom] = e.target.checked;
+    temp.value = {
+      ...editruledata.value,
+    };
+    editruledata.value.setting[props.rights][props.custom] = e.target.checked;
   };
 
   return (
@@ -64,11 +28,11 @@ export const CheckBox = (props) => {
       style={{ width: props.width }}
     >
       <div className="form-check">
-        <input
-          className="form-check-input"
+        <input className="form-check-input"
           type="checkbox"
           value=""
           id={props.html}
+          defaultChecked={props.status}
           onChange={(e) => {
             handleShow(e);
           }}
@@ -84,10 +48,10 @@ export const CheckBox = (props) => {
   );
 };
 
-export default function CreateRule(props) {
+export default function EditRule(props) {
   const dataLang = useIntl();
   const [widthCheckBox, setWidwidthCheckBox] = useState("");
-  const rulenameRef = useRef("");
+  const rulenameRef = useRef();
 
   const popup_state = {
     pre: { transform: "rotate(0deg)", transition: "0.5s", color: "white" },
@@ -102,10 +66,6 @@ export default function CreateRule(props) {
   };
 
   const TypeReport = (props) => {
-    const handerChangeReportName = (e) => {
-      rulenameRef.current = e.target.value;
-    };
-
     return (
       <div className="DAT_CreateRule_Body_Item"
         style={{ borderBottom: "dashed 1px rgba(198, 197, 197, 0.5)" }}
@@ -118,8 +78,8 @@ export default function CreateRule(props) {
               placeholder={dataLang.formatMessage({ id: "required" })}
               required
               id="reportname"
-              defaultValue={rulenameRef.current}
-              onChange={(e) => handerChangeReportName(e)}
+              defaultValue={editruledata.value.rulename_}
+              ref={rulenameRef}
             />
           </div>
         </div>
@@ -127,22 +87,26 @@ export default function CreateRule(props) {
     );
   };
 
-  const handleCreate = async () => {
-    let d = datarule.value.filter((item) => rulenameRef.current == item.rulename_)
-    if (rulenameRef.current != "" && d.length == 0) {
-      const createRule = await callApi("post", host.DATA + "/addRule", {
-        name: rulenameRef.current,
-        type: userInfor.value.type,
-        partnerid: userInfor.value.partnerid,
-        setting: JSON.stringify(newruledata.value.setting),
+  const handleSave = async () => {
+    if (rulenameRef.current.value !== "") {
+      let d = await callApi("post", host.DATA + "/updateRule", {
+        ruleid: editruledata.value.ruleid_,
+        name: rulenameRef.current.value,
+        setting: JSON.stringify(editruledata.value.setting),
       });
-      if (createRule.status) {
-        datarule.value = [...datarule.value, createRule.data];
+      if (d.status) {
+        let newData = datarule.value;
+        let index = newData.findIndex(
+          (d) => d.ruleid_ == editruledata.value.ruleid_
+        );
+        newData[index].rulename_ = rulenameRef.current.value;
+        datarule.value = [...newData];
         props.handleClose();
-        alertDispatch(dataLang.formatMessage({ id: "alert_61" }));
+        alertDispatch(dataLang.formatMessage({ id: "alert_62" }));
       }
-    } else {
-      alertDispatch(dataLang.formatMessage({ id: "alert_17" }));
+    }
+    else {
+      alertDispatch(dataLang.formatMessage({ id: "alert_7" }));
     }
   };
 
@@ -175,17 +139,18 @@ export default function CreateRule(props) {
       <div className="DAT_CreateRule_Header">
         <div className="DAT_CreateRule_Header_Left">
           <p>
-            {dataLang.formatMessage({ id: "newRule" })}
+            {dataLang.formatMessage({ id: "editRule" })}
           </p>
         </div>
 
         <div className="DAT_CreateRule_Header_Right">
           <div className="DAT_CreateRule_Header_Right_Save"
-            onClick={() => handleCreate()}
+            onClick={() => handleSave()}
           >
             <IoSaveOutline size={20} color={'white'} />
-            <span>{dataLang.formatMessage({ id: 'save' })}</span>
+            <span>{dataLang.formatMessage({ id: "save" })}</span>
           </div>
+
           <div className="DAT_CreateRule_Header_Right_Close"
             id="Popup"
             onClick={() => (props.handleClose())}
@@ -207,7 +172,7 @@ export default function CreateRule(props) {
               {dataLang.formatMessage({ id: "ruleOptions" })}
             </label>
 
-            {Object.entries(newruledata.value.setting).map(
+            {Object.entries(editruledata.value.setting).map(
               ([key, value], index) => (
                 <div className="DAT_CreateRule_Body_Item_Option_Check"
                   key={key}
