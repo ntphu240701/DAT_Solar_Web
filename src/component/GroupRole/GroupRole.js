@@ -139,7 +139,7 @@ export default function GroupRole(props) {
         name: dataLang.formatMessage({ id: "setting" }),
         selector: (user) => (
           <>
-            {user.type_ === "master" ? (
+            {user.type_ === "master" && user.usr_ === "mainadmin" ? (
               <></>
             ) : (
               // <div className="DAT_TableEdit">
@@ -151,25 +151,25 @@ export default function GroupRole(props) {
               //   </span>
               // </div>
               <PopupState variant="popper" popupId="demo-popup-popper">
-                {(popupState) => (<div className="DAT_TableEdit">
-                  <IoMdMore size={20}   {...bindToggle(popupState)} />
-                  <Menu {...bindMenu(popupState)}>
+                {(popupState) => (
+                  <div className="DAT_TableEdit">
+                    <IoMdMore size={20}   {...bindToggle(popupState)} />
+                    <Menu {...bindMenu(popupState)}>
 
-                    <MenuItem id={user.id_} onClick={(e) => { handleEdit(e); popupState.close() }}>
-                      <FiEdit size={14} />&nbsp;
-                      {dataLang.formatMessage({ id: "change" })}
-                    </MenuItem>
-
-
-                    <MenuItem id={user.id_} onClick={(e) => { handleDeleteUser(e); popupState.close() }}>
-                      <IoTrashOutline size={16} />
-                      &nbsp;
-                      {dataLang.formatMessage({ id: "delete" })}
-                    </MenuItem>
+                      <MenuItem id={user.id_} onClick={(e) => { handleEdit(e); popupState.close() }}>
+                        <FiEdit size={14} />&nbsp;
+                        {dataLang.formatMessage({ id: "change" })}
+                      </MenuItem>
 
 
-                  </Menu>
-                </div>)}
+                      <MenuItem id={user.id_} onClick={(e) => { handleDeleteUser(e); popupState.close() }}>
+                        <IoTrashOutline size={16} />
+                        &nbsp;
+                        {dataLang.formatMessage({ id: "delete" })}
+                      </MenuItem>
+                    </Menu>
+                  </div>
+                )}
               </PopupState>
             )}
             {/* <div
