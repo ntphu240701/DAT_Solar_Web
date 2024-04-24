@@ -1879,7 +1879,7 @@ export default function DashboardHistory(props) {
 
       {exportReport ? (
         <div
-          className="DAT_RolePopup"
+          className="DAT_PopupBG"
           style={{
             height: exportReport === "default" ? "0px" : "100vh",
           }}
