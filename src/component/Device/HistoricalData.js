@@ -9,10 +9,10 @@ import { host } from '../Lang/Contant';
 import { info } from './Device';
 import { isMobile } from '../Navigation/Navigation';
 import DatePicker from "react-datepicker";
-import { IoCalendarOutline } from 'react-icons/io5';
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend, } from "recharts";
 import { COLOR } from '../../App';
 
+import { IoCalendarOutline } from 'react-icons/io5';
 import { IoIosArrowUp } from 'react-icons/io';
 import { CiSearch } from 'react-icons/ci';
 
@@ -451,17 +451,17 @@ export default function HistoricalData(props) {
                                         <option value={"DCPOWER"}>{dataLang.formatMessage({ id: "DCPower" })}(kW)</option>
                                     </select>
                                     {/* <div className="DAT_Info_Databox_HistoricalData_Picker_Type">
-            <p>{dataLang.formatMessage({ id: "day" })}</p>
-            <p>{dataLang.formatMessage({ id: "month" })}</p>
-            <p>{dataLang.formatMessage({ id: "year" })}</p>
-            <p>{dataLang.formatMessage({ id: "total" })}</p>
-          </div>
-          <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
-            <div>{dataLang.formatMessage({ id: "choosePara" })}</div>
-          </div>
-          <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
-            <div>{dataLang.formatMessage({ id: "export" })}</div>
-          </div> */}
+                                        <p>{dataLang.formatMessage({ id: "day" })}</p>
+                                        <p>{dataLang.formatMessage({ id: "month" })}</p>
+                                        <p>{dataLang.formatMessage({ id: "year" })}</p>
+                                        <p>{dataLang.formatMessage({ id: "total" })}</p>
+                                    </div>
+                                    <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
+                                        <div>{dataLang.formatMessage({ id: "choosePara" })}</div>
+                                    </div>
+                                    <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
+                                        <div>{dataLang.formatMessage({ id: "export" })}</div>
+                                    </div> */}
                                     <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
                                         <button onClick={() => { setOption(dataoption) }}>
                                             {dataLang.formatMessage({ id: "choosePara" })}
@@ -819,14 +819,14 @@ export default function HistoricalData(props) {
                             <div className="DAT_Info_Databox_HistoriccalData">
                                 <div className="DAT_Info_Databox_HistoricalData_Picker">
                                     {/* <div className="DAT_Info_Databox_HistoricalData_Picker_Type">
-                <p>{dataLang.formatMessage({ id: "day" })}</p>
-                <p>{dataLang.formatMessage({ id: "month" })}</p>
-                <p>{dataLang.formatMessage({ id: "year" })}</p>
-                <p>{dataLang.formatMessage({ id: "total" })}</p>
-              </div> */}
-                                    {/* <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
-                <div>{dataLang.formatMessage({ id: "export" })}</div>
-              </div> */}
+                                        <p>{dataLang.formatMessage({ id: "day" })}</p>
+                                        <p>{dataLang.formatMessage({ id: "month" })}</p>
+                                        <p>{dataLang.formatMessage({ id: "year" })}</p>
+                                        <p>{dataLang.formatMessage({ id: "total" })}</p>
+                                    </div>
+                                    <div className="DAT_Info_Databox_HistoricalData_Picker_Export">
+                                        <div>{dataLang.formatMessage({ id: "export" })}</div>
+                                    </div> */}
                                     <div className="DAT_Info_Databox_HistoricalData_Picker_ParametersPicker">
                                         <button
                                             onClick={(e) => {

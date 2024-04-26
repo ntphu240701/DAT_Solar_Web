@@ -268,8 +268,8 @@ export default function ExportPowerSettings(props) {
                                                     {dataLang.formatMessage({ id: 'ExportPEnable' })}:
                                                     {/* &nbsp;
                                                     <span id="export_power_enable"></span> */}
-                                                    &nbsp;
-                                                    <span id="inverter">{inverter}</span>
+                                                    {/* &nbsp;
+                                                    <span id="inverter">{inverter}</span> */}
                                                 </div>
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
                                                     <select id="export_power_enable">
@@ -348,8 +348,8 @@ export default function ExportPowerSettings(props) {
                                                     {dataLang.formatMessage({ id: 'ExportPEnable' })}:
                                                     {/* &nbsp;
                                                 <span id="export_power_enable"></span> */}
-                                                    &nbsp;
-                                                    <span id="inverter">{inverter}</span>
+                                                    {/* &nbsp;
+                                                    <span id="inverter">{inverter}</span> */}
                                                 </div>
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
                                                     <select id="export_power_enable">
@@ -430,8 +430,8 @@ export default function ExportPowerSettings(props) {
                                                     {dataLang.formatMessage({ id: 'ExportPEnable' })}:
                                                     {/* &nbsp;
                                                     <span id="export_power_enable"></span> */}
-                                                    &nbsp;
-                                                    <span id="inverter">{inverter}</span>
+                                                    {/* &nbsp;
+                                                    <span id="inverter">{inverter}</span> */}
                                                 </div>
                                                 <div className="DAT_Info_Databox_ExportPowerSettings_Content_Item_Content">
                                                     <select id="export_power_enable">

@@ -19,10 +19,11 @@ export default function DeviceSettings(props) {
     const [step, setStep] = useState(0);
     const [invt, setInvt] = useState({});
     const intervalIDRef = useReducer(null);
+    const [manu, setManu] = useState(0);
 
     const config = [
         "remote_control",
-        // "safety_setting",
+        "safety_setting",
         "active_power_setting",
         "reactive_power_control",
         "input_mode_setting",
@@ -81,13 +82,21 @@ export default function DeviceSettings(props) {
         intervalIDRef.current = null;
     };
 
-    const startTimer = () => {
+    const startTimer = (type) => {
         intervalIDRef.current = setInterval(async () => {
             if (remote.value !== 255) {
                 if (remote.value < config.length) {
                     let key = config[remote.value]
-                    console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}')
-                    let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + parseInt(document.getElementById(key).value / info.value.psetting[key].cal) + '"}', Token.value.token)
+                    let value = 0;
+
+                    if (key === "safety_setting") {
+                        value = type;
+                    } else {
+                        value = parseInt(document.getElementById(key).value / info.value.psetting[key].cal);
+                    }
+
+                    console.log('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + value + '"}')
+                    let res = await remotecloud('{"deviceCode":"' + info.value.plogger + '","address":"' + info.value.psetting[key].register + '","value":"' + value + '"}', Token.value.token)
                     console.log(res)
                     if (res.ret === 0) {
                         alertDispatch(dataLang.formatMessage({ id: "alert_6" }))
@@ -106,7 +115,9 @@ export default function DeviceSettings(props) {
     const handleSetup = (e) => {
         e.preventDefault();
         remote.value = 0
-        startTimer()
+
+        let type = (Number(document.getElementById('safety_setting').value) << 8) | Number(manu);
+        startTimer(type)
     };
 
     const handleRead = async (e) => {
@@ -125,12 +136,16 @@ export default function DeviceSettings(props) {
     useEffect(() => {
         if (step) {
             setStep(0)
+            let type = 0;
             config.map((key) => {
-                // if (key === "safety_setting") {
-                // document.getElementById(key).innerHTML = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal);
-                // } else {
-                document.getElementById(key).value = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal);
-                // }
+                let fullNumber = parseInt(invt[info.value.psetting[key].register] * info.value.psetting[key].cal);
+                if (key === "safety_setting") {
+                    type = (fullNumber >> 8);
+                    setManu(fullNumber & 0xFF);
+                    document.getElementById(key).value = type;
+                } else {
+                    document.getElementById(key).value = fullNumber;
+                }
             });
         }
     }, [step])
@@ -155,7 +170,7 @@ export default function DeviceSettings(props) {
             <div className="Animation"
                 style={{ height: display ? "100%" : "0px", transition: "0.5s" }}
             >
-                {display ? (
+                {display ?
                     <form className="DAT_Info_Databox_DeviceSettings" onSubmit={(e) => handleSetup(e)}>
                         <div className="DAT_Info_Databox_DeviceSettings_Content">
                             {/* remote_control */}
@@ -174,42 +189,44 @@ export default function DeviceSettings(props) {
                             </div>
 
                             {/* safety_setting */}
-                            {/* <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
+                            <div className="DAT_Info_Databox_DeviceSettings_Content_Item">
                                 <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Tit">
-                                    {dataLang.formatMessage({ id: 'SafetySetting' })}: <span id="safety_setting"></span>
+                                    {dataLang.formatMessage({ id: 'SafetySetting' })}:
+                                    {/* &nbsp;
+                                    <span id="safety_setting"></span> */}
                                 </div>
                                 <div className="DAT_Info_Databox_DeviceSettings_Content_Item_Content">
-                                    <select>
+                                    <select id="safety_setting">
                                         <option style={{ display: "none" }}>{dataLang.formatMessage({ id: 'PleaseSel' })}</option>
-                                        <option>CQC2013</option>
-                                        <option>SKYWORTH</option>
-                                        <option>EN50549</option>
-                                        <option>Brazil</option>
-                                        <option>{dataLang.formatMessage({ id: 'Spain' })}</option>
-                                        <option>Philippines</option>
-                                        <option>{dataLang.formatMessage({ id: 'India' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'Belgium' })}</option>
-                                        <option>EU EN50438</option>
-                                        <option>{dataLang.formatMessage({ id: 'SouthAfrica' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'WestAustralia' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'Netherlands' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'Thailand' })}</option>
-                                        <option>Bangkok</option>
-                                        <option>China CQC2018</option>
-                                        <option>{dataLang.formatMessage({ id: 'Greece' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'Norway' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'SouthKorea' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'Germany' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'France' })}</option>
-                                        <option>Ireland</option>
-                                        <option>{dataLang.formatMessage({ id: 'Turkey' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'Taiwan' })}</option>
-                                        <option>{dataLang.formatMessage({ id: 'Italy' })}</option>
-                                        <option>Slovakia</option>
-                                        <option>Romania 280V</option>
+                                        <option value={0}>CQC2013</option>
+                                        <option value={1}>SKYWORTH</option>
+                                        <option value={2}>EN50549</option>
+                                        <option value={3}>Brazil</option>
+                                        <option value={4}>{dataLang.formatMessage({ id: 'Spain' })}</option>
+                                        <option value={5}>Philippines</option>
+                                        <option value={6}>{dataLang.formatMessage({ id: 'India' })}</option>
+                                        <option value={7}>{dataLang.formatMessage({ id: 'Belgium' })}</option>
+                                        <option value={8}>EU EN50438</option>
+                                        <option value={9}>{dataLang.formatMessage({ id: 'SouthAfrica' })}</option>
+                                        <option value={10}>{dataLang.formatMessage({ id: 'WestAustralia' })}</option>
+                                        <option value={11}>{dataLang.formatMessage({ id: 'Netherlands' })}</option>
+                                        <option value={12}>{dataLang.formatMessage({ id: 'Thailand' })}</option>
+                                        <option value={13}>Bangkok</option>
+                                        <option value={14}>China CQC2018</option>
+                                        <option value={15}>{dataLang.formatMessage({ id: 'Greece' })}</option>
+                                        <option value={16}>{dataLang.formatMessage({ id: 'Norway' })}</option>
+                                        <option value={17}>{dataLang.formatMessage({ id: 'SouthKorea' })}</option>
+                                        <option value={18}>{dataLang.formatMessage({ id: 'Germany' })}</option>
+                                        <option value={19}>{dataLang.formatMessage({ id: 'France' })}</option>
+                                        <option value={20}>Ireland</option>
+                                        <option value={21}>{dataLang.formatMessage({ id: 'Turkey' })}</option>
+                                        <option value={22}>{dataLang.formatMessage({ id: 'Taiwan' })}</option>
+                                        <option value={23}>{dataLang.formatMessage({ id: 'Italy' })}</option>
+                                        <option value={24}>Slovakia</option>
+                                        <option value={25}>Romania 280V</option>
                                     </select>
                                 </div>
-                            </div> */}
+                            </div>
 
                             {/* <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item">
                                 <div className="DAT_Info_Databox_DeviceSettings_Content_Left_Item_Tit">
@@ -288,9 +305,9 @@ export default function DeviceSettings(props) {
                             </button>
                         </div>
                     </form>
-                ) : (
+                    :
                     <></>
-                )}
+                }
             </div>
         </div>
     );
