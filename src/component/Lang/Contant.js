@@ -128,7 +128,7 @@ export const messages = {
     role: "Users",
     rule: "Rights",
     partner: "Partner",
-    rushhour: "Rush Hour",
+    rushhour: "Peak Sun Hour",
     environment: "Environment and Economic Benefits",
     envi: "Environment",
     weather: "Weather",
